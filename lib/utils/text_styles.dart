@@ -77,8 +77,17 @@ class MmmTextStyles {
     return TextStyle(
         fontFamily: "MakeMyMarry",
         fontSize: 14,
-        height: 1.857,
+        height: 1.57,
         color: textColor);
+  }
+
+  static TextStyle bodyMediumSmall({Color textColor: kTextColor}) {
+    return TextStyle(
+      color: textColor,
+      fontFamily: "MakeMyMarryMedium",
+      fontSize: 14,
+      height: 1.57,
+    );
   }
 
   static TextStyle captionBold({Color textColor: kTextColor}) {

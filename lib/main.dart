@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/widget_views.dart';
@@ -32,13 +33,50 @@ class MyHomePage extends StatefulWidget {
 }
 
 class MyHomePageState extends State<MyHomePage> {
+  List<String> buttons = [
+    'Primary Button',
+    'enabledRedButton328x50bodyMedium',
+    'enabledRedButton328x50heading5',
+    'enabledRedButton327x50bodyMedium',
+    'enabledRedButton326x50bodyMedium',
+    'enabledRedButton280x42heading6',
+    'disabledGreyButton328x50',
+    'facebookSigninButton',
+    'googleSigninButton',
+    'facebookSignupButton',
+    'googleSignupButton',
+    'emailButton',
+    'cancelButtonForgotPassword',
+    'confirmButtonForgotPassword',
+    'habitsEnabled',
+    'habitsDisabled',
+    'changePasswordSidebarNavigation',
+    'logoutSidebarNavigation',
+    'deleteAccountSidebarNavigation',
+    'searchScreenButtons',
+    'virtualDateMeetScreen',
+    'cancelButtonBookYourDate',
+    'cancelButtonMeet',
+    'cancelButtonBookyourlocation',
+    'rescheduleButtonMeet',
+    'preferenceFliterScreen',
+    'acceptInterestScreen',
+    'cancelButtonInterestScreen',
+    'rejectButtonInterestScreen',
+    'verifyAccountFliterScreen',
+    'interestSelected',
+    'Heart Icon',
+    'Meet Icon',
+    'Cancel Icon',
+    'Connect Icon',
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: MmmText(
+        title: Text(
           'Widget List',
-          MmmTextStyles.heading5(textColor: Colors.white),
+          style: MmmTextStyles.heading5(textColor: Colors.white),
         ),
       ),
       body: Container(
@@ -46,19 +84,21 @@ class MyHomePageState extends State<MyHomePage> {
         child: ListView.separated(
           itemBuilder: (context, index) {
             return ListTile(
-              title: Text('Primary Button', style: MmmTextStyles.heading6()),
+              title: Text(buttons[index], style: MmmTextStyles.heading6()),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => WidgetView(
                           pos: index,
-                          title: 'Primary Button',
+                          title: buttons[index],
                         )));
               },
             );
           },
-          itemCount: 1,
+          itemCount: 35,
           separatorBuilder: (BuildContext context, int index) {
-            return Divider();
+            return Divider(
+              color: Colors.orange,
+            );
           },
         ),
       ),
