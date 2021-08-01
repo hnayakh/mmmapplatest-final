@@ -25,7 +25,7 @@ class MmmTextStyles {
 
   static TextStyle heading3({Color textColor: kTextColor}) {
     return TextStyle(
-        fontFamily: "MakeMyMarryBold",
+        fontFamily: "MakeMyMarryMedium",
         fontSize: 24,
         height: 1.583,
         color: textColor);

@@ -1,11 +1,20 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-import 'package:makemymarry/utils/dimens.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 import 'package:makemymarry/utils/text_styles.dart';
-import 'package:makemymarry/views/widget_views.dart';
+import 'package:makemymarry/views/signinscreens/otp_screen.dart';
+import 'package:makemymarry/views/signinscreens/signin_screen1.dart';
 
 void main() {
   runApp(MyApp());
+  if (Platform.isAndroid) {
+// The following two lines set the android status bar to be transparent immersive. Written after component rendering, in order to assign a value after rendering, override the status bar, the MaterialApp component will override this value before rendering.
+    SystemUiOverlayStyle systemUiOverlayStyle =
+        SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -20,7 +29,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.pink,
       ),
-      home: MyHomePage(),
+      home: SigninScreen1(),
     );
   }
 }
@@ -79,29 +88,32 @@ class MyHomePageState extends State<MyHomePage> {
           style: MmmTextStyles.heading5(textColor: Colors.white),
         ),
       ),
-      body: Container(
-        padding: kMargin16,
-        child: ListView.separated(
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(buttons[index], style: MmmTextStyles.heading6()),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => WidgetView(
-                          pos: index,
-                          title: buttons[index],
-                        )));
-              },
-            );
-          },
-          itemCount: 35,
-          separatorBuilder: (BuildContext context, int index) {
-            return Divider(
-              color: Colors.orange,
-            );
-          },
-        ),
-      ),
+      body: SigninScreen1(),
     );
   }
 }
+
+
+//Container(
+  //      padding: kMargin16,
+ //       child: ListView.separated(
+  //        itemBuilder: (context, index) {
+   //         return ListTile(
+  //            title: Text(buttons[index], style: MmmTextStyles.heading6()),
+   //           onTap: () {
+   //             Navigator.of(context).push(MaterialPageRoute(
+   //                 builder: (context) => WidgetView(
+    //                      pos: index,
+     //                     title: buttons[index],
+     //                   )));
+     //         },
+      //      );
+      //    },
+       //   itemCount: 35,
+       //   separatorBuilder: (BuildContext context, int index) {
+       //     return Divider(
+        //      color: Colors.orange,
+        //    );
+        //  },
+      //  ),
+   //   )

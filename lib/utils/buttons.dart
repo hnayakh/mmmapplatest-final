@@ -147,7 +147,7 @@ class MmmButtons {
     );
   }
 
-  static Container disabledGreyButton328x50(
+  static Container disabledGreyButton(
       double containerHeight, double containerWidth, String text) {
     return Container(
       decoration: BoxDecoration(
@@ -196,14 +196,12 @@ class MmmButtons {
               SizedBox(
                 width: 21.5,
               ),
-              Container(
-                height: 24,
+              SvgPicture.asset(
+                "images/social/facebook.svg",
                 width: 24,
-                child: SvgPicture.asset(
-                  "images/social/facebook.svg",
-                  fit: BoxFit.cover,
-                  color: Colors.red,
-                ),
+                height: 24,
+                fit: BoxFit.cover,
+                color: Colors.yellow,
               ),
               SizedBox(
                 width: 10,
@@ -242,14 +240,12 @@ class MmmButtons {
               SizedBox(
                 width: 37,
               ),
-              Container(
+              SvgPicture.asset(
+                "images/social/google.svg",
                 height: 24,
                 width: 24,
-                child: SvgPicture.asset(
-                  "images/social/google.svg",
-                  fit: BoxFit.cover,
-                  color: Colors.red,
-                ),
+                fit: BoxFit.cover,
+                color: Colors.greenAccent,
               ),
               SizedBox(
                 width: 10,
