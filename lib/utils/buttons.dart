@@ -38,7 +38,6 @@ class MmmButtons {
             padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
             alignment: Alignment.center,
             height: 50,
-            width: 328,
             child: Text(
               title,
               textScaleFactor: 1.0,
@@ -178,7 +177,7 @@ class MmmButtons {
   static Container facebookSigninButton() {
     return Container(
       height: 50,
-      width: 156,
+      margin: const EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         color: Color(0xffFCFCFD),
@@ -192,16 +191,15 @@ class MmmButtons {
         child: InkWell(
           onTap: () {},
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
-                width: 21.5,
-              ),
-              SvgPicture.asset(
-                "images/social/facebook.svg",
-                width: 24,
+              Container(
                 height: 24,
-                fit: BoxFit.cover,
-                color: Colors.yellow,
+                width: 24,
+                child: SvgPicture.asset(
+                  "images/social/facebook.svg",
+                  fit: BoxFit.cover,
+                ),
               ),
               SizedBox(
                 width: 10,
@@ -222,7 +220,7 @@ class MmmButtons {
   static Container googleSigninButton() {
     return Container(
       height: 50,
-      width: 156,
+      margin: const EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         color: Color(0xffFCFCFD),
@@ -236,16 +234,15 @@ class MmmButtons {
         child: InkWell(
           onTap: () {},
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
-                width: 37,
-              ),
-              SvgPicture.asset(
-                "images/social/google.svg",
+              Container(
                 height: 24,
                 width: 24,
-                fit: BoxFit.cover,
-                color: Colors.greenAccent,
+                child: SvgPicture.asset(
+                  "images/social/google.svg",
+                  fit: BoxFit.cover,
+                ),
               ),
               SizedBox(
                 width: 10,
@@ -262,6 +259,7 @@ class MmmButtons {
       ),
     );
   }
+
   // signup screen==============================================================
 
   static Container facebookSignupButton() {
@@ -751,6 +749,7 @@ class MmmButtons {
       ),
     );
   }
+
   //search screen=============================================================
 
   static Container searchScreenButtons(String icon, String text) {
