@@ -146,8 +146,7 @@ class MmmButtons {
     );
   }
 
-  static Container disabledGreyButton(
-      double containerHeight, double containerWidth, String text) {
+  static Container disabledGreyButton(double containerHeight, String text) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
@@ -161,7 +160,6 @@ class MmmButtons {
             padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
             alignment: Alignment.center,
             height: containerHeight,
-            width: containerWidth,
             child: Text(
               text,
               textScaleFactor: 1.0,
@@ -177,12 +175,11 @@ class MmmButtons {
   static Container facebookSigninButton() {
     return Container(
       height: 50,
-      margin: const EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: Color(0xffFCFCFD),
+        color: kLight2,
         border: Border.all(
-          color: Color(0xffF0EFF5),
+          color: gray6,
           width: 1,
         ),
       ),
@@ -208,7 +205,7 @@ class MmmButtons {
                 'Facebook',
                 textScaleFactor: 1.0,
                 textAlign: TextAlign.center,
-                style: MmmTextStyles.bodyMedium(textColor: gray2),
+                style: MmmTextStyles.bodyMedium(textColor: kDark5),
               ),
             ],
           ),
@@ -220,7 +217,6 @@ class MmmButtons {
   static Container googleSigninButton() {
     return Container(
       height: 50,
-      margin: const EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         color: Color(0xffFCFCFD),
@@ -251,7 +247,7 @@ class MmmButtons {
                 'Gmail',
                 textScaleFactor: 1.0,
                 textAlign: TextAlign.center,
-                style: MmmTextStyles.bodyMedium(textColor: gray2),
+                style: MmmTextStyles.bodyMedium(textColor: kDark5),
               ),
             ],
           ),
@@ -301,7 +297,7 @@ class MmmButtons {
                 child: Text(
                   'Facebook',
                   textAlign: TextAlign.center,
-                  style: MmmTextStyles.heading5(textColor: gray2),
+                  style: MmmTextStyles.heading5(textColor: kDark5),
                 ),
               ),
             ],
@@ -351,7 +347,7 @@ class MmmButtons {
                   'Gmail',
                   textScaleFactor: 1.0,
                   textAlign: TextAlign.center,
-                  style: MmmTextStyles.heading5(textColor: gray2),
+                  style: MmmTextStyles.heading5(textColor: kDark5),
                 ),
               ),
             ],
@@ -544,7 +540,7 @@ class MmmButtons {
                   text,
                   textScaleFactor: 1.0,
                   textAlign: TextAlign.center,
-                  style: MmmTextStyles.bodyRegular(textColor: gray2),
+                  style: MmmTextStyles.bodyRegular(textColor: kDark5),
                 ),
               ],
             ),
@@ -597,7 +593,7 @@ class MmmButtons {
                     'Change Password',
                     textScaleFactor: 1.0,
                     textAlign: TextAlign.start,
-                    style: MmmTextStyles.bodyMedium(textColor: gray2),
+                    style: MmmTextStyles.bodyMedium(textColor: kDark5),
                   ),
                 ),
                 SizedBox(
@@ -662,7 +658,7 @@ class MmmButtons {
                     'Logout',
                     textScaleFactor: 1.0,
                     textAlign: TextAlign.start,
-                    style: MmmTextStyles.bodyMedium(textColor: gray2),
+                    style: MmmTextStyles.bodyMedium(textColor: kDark5),
                   ),
                 ),
                 SizedBox(
@@ -727,7 +723,7 @@ class MmmButtons {
                     'Delete Account',
                     textAlign: TextAlign.start,
                     textScaleFactor: 1.0,
-                    style: MmmTextStyles.bodyMedium(textColor: gray2),
+                    style: MmmTextStyles.bodyMedium(textColor: kDark5),
                   ),
                 ),
                 SizedBox(
@@ -786,7 +782,7 @@ class MmmButtons {
                       text,
                       textScaleFactor: 1.0,
                       textAlign: TextAlign.start,
-                      style: MmmTextStyles.bodyRegular(textColor: gray2),
+                      style: MmmTextStyles.bodyRegular(textColor: kDark5),
                     ),
                   ),
                   SizedBox(
@@ -827,7 +823,7 @@ class MmmButtons {
               'Virtual Date',
               textScaleFactor: 1.0,
               textAlign: TextAlign.center,
-              style: MmmTextStyles.heading5(textColor: gray2),
+              style: MmmTextStyles.heading5(textColor: kDark5),
             ),
           ),
         ),
@@ -877,7 +873,7 @@ class MmmButtons {
               'Cancel',
               textScaleFactor: 1.0,
               textAlign: TextAlign.center,
-              style: MmmTextStyles.captionBold(textColor: gray2),
+              style: MmmTextStyles.captionBold(textColor: kDark5),
             ),
           ),
         ),
@@ -902,7 +898,7 @@ class MmmButtons {
             child: Text(
               'Cancel',
               textAlign: TextAlign.center,
-              style: MmmTextStyles.heading6(textColor: gray2),
+              style: MmmTextStyles.heading6(textColor: kDark5),
             ),
           ),
         ),
@@ -981,7 +977,7 @@ class MmmButtons {
                   text,
                   textScaleFactor: 1.0,
                   textAlign: TextAlign.start,
-                  style: MmmTextStyles.bodyRegular(textColor: gray2),
+                  style: MmmTextStyles.bodyRegular(textColor: kDark5),
                 ),
               ),
               SizedBox(
@@ -1065,7 +1061,7 @@ class MmmButtons {
               'Cancel',
               textScaleFactor: 1.0,
               textAlign: TextAlign.center,
-              style: MmmTextStyles.caption(textColor: gray2),
+              style: MmmTextStyles.caption(textColor: kDark5),
             ),
           ),
         ),
@@ -1091,7 +1087,7 @@ class MmmButtons {
               'Reject',
               textScaleFactor: 1.0,
               textAlign: TextAlign.center,
-              style: MmmTextStyles.caption(textColor: gray2),
+              style: MmmTextStyles.caption(textColor: kDark5),
             ),
           ),
         ),
@@ -1141,7 +1137,7 @@ class MmmButtons {
                     'Verify your account',
                     textScaleFactor: 1.0,
                     textAlign: TextAlign.center,
-                    style: MmmTextStyles.heading5(textColor: gray2),
+                    style: MmmTextStyles.heading5(textColor: kDark5),
                   ),
                 ),
                 SizedBox(

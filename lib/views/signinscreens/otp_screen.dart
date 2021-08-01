@@ -105,7 +105,7 @@ class _OtpScreenState extends State<OtpScreen> {
             margin: EdgeInsets.only(left: 15.5),
             child: Text(
               'Mobile Verification',
-              style: MmmTextStyles.heading2(textColor: gray2),
+              style: MmmTextStyles.heading2(textColor: kDark5),
             ),
           ),
           SizedBox(

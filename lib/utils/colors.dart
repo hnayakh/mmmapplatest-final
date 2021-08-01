@@ -10,9 +10,14 @@ const kTextColor = Color(0xff121619);
 const kShadowColorForWhite = Color(0xff3d4b5c);
 const kShadowColorForPink = Color(0xffff4d6d);
 const kPrimaryHeart = Color(0xffFD0051);
+
+const kLight2 = Color(0xffFCFCFD);
+const kLight4 = Color(0xffF0EFF5);
+const kDark2 = Color(0xFF878D96);
+const kInputBorder = Color(0xFFF178B6);
 const gray1 = Color(0xffA2A9B0);
 
-const gray2 = Color(0xff121619);
+const kDark5 = Color(0xff121619);
 
 const gray3 = Color(0xff343A3F);
 

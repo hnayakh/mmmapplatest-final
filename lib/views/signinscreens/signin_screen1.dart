@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:makemymarry/utils/buttons.dart';
 
 import 'package:makemymarry/utils/colors.dart';
+import 'package:makemymarry/utils/dimens.dart';
+import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
+import 'package:makemymarry/utils/view_decorations.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class SigninScreen1 extends StatefulWidget {
@@ -21,6 +24,7 @@ class _SigninScreen1State extends State<SigninScreen1> {
   TextEditingController passwordController = TextEditingController();
   String _hint = 'Enter your email';
   String _hint2 = 'Enter your password';
+
   @override
   void initState() {
     super.initState();
@@ -77,210 +81,148 @@ class _SigninScreen1State extends State<SigninScreen1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(0.0),
-          child: Container(
-            child: AppBar(
-              toolbarHeight: 0.0,
-              //title: Text(widget.title),
-              backgroundColor: Colors.transparent,
-              elevation: 0.0,
-            ),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [kPrimary, kSecondary],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight),
-            ),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(0.0),
+        child: Container(
+          child: AppBar(
+            toolbarHeight: 0.0,
+            //title: Text(widget.title),
+            backgroundColor: Colors.transparent,
+            elevation: 0.0,
           ),
-          //preferredSize: Size(MediaQuery.of(context).size.width, 0.0),
+          decoration: BoxDecoration(
+            gradient: MmmDecorations.primaryGradient(),
+          ),
         ),
-        body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          SizedBox(
-            width: double.infinity,
-            height: 20,
-          ),
+        //preferredSize: Size(MediaQuery.of(context).size.width, 0.0),
+      ),
+      body: Container(
+        padding: kMargin16,
+        child:
+            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Container(
-            margin: EdgeInsets.only(left: 16),
+            margin: const EdgeInsets.only(top: 20),
             child: Text(
               'Sign in to find your\nperfect partner',
-              style: MmmTextStyles.heading2(textColor: gray2),
+              style: MmmTextStyles.heading2(textColor: kDark5),
             ),
           ),
           SizedBox(
-            height: 17,
+            height: 16,
           ),
-          Container(
-            margin: EdgeInsets.only(left: 14),
-            child: Text(
-              'Email',
-              style: MmmTextStyles.bodySmall(textColor: gray2),
+          Expanded(
+              child: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                MmmTextFileds.textFiledWithLabel(
+                    "Email", _hint, emailController,
+                    inputType: TextInputType.emailAddress),
+                SizedBox(
+                  height: 16,
+                ),
+                MmmTextFileds.textFiledWithLabel(
+                    "Password", _hint2, passwordController,
+                    inputType: TextInputType.emailAddress, isPassword: true),
+                SizedBox(
+                  height: 24,
+                ),
+                Container(
+                    padding: kMargin4,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        InkWell(
+                          onTap: () {},
+                          child: GradientText(
+                            'Forgot password?',
+                            style: MmmTextStyles.bodySmall(),
+                            colors: [kPrimary, kSecondary],
+                          ),
+                        )
+                      ],
+                    )),
+                SizedBox(
+                  height: 24,
+                ),
+                Container(child: MmmButtons.disabledGreyButton(50, 'Sign in')),
+                SizedBox(
+                  height: 24,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                        child: Container(
+                      height: 1,
+                      color: gray5,
+                    )),
+                    Container(
+                      width: 27,
+                      height: 22,
+                      alignment: Alignment.center,
+                      child: Text(
+                        'OR',
+                        textAlign: TextAlign.center,
+                        style: MmmTextStyles.bodyMediumSmall(textColor: kDark2),
+                      ),
+                    ),
+                    Expanded(
+                        child: Container(
+                      height: 1,
+                      color: gray5,
+                    )),
+                  ],
+                ),
+                SizedBox(
+                  height: 24,
+                ),
+                Row(
+                  children: [
+                    Expanded(child: MmmButtons.facebookSigninButton()),
+                    SizedBox(
+                      width: 16,
+                    ),
+                    Expanded(child: MmmButtons.googleSigninButton())
+                  ],
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 16),
+                  child: MmmButtons.enabledRedButton328x50bodyMedium(
+                      'Connect via OTP'),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+              ],
             ),
-          ),
-          SizedBox(
-            height: 4,
-          ),
+          )),
           Container(
-            margin: EdgeInsets.only(left: 14),
-            width: 329,
-            height: 54,
-            child: TextField(
-              style: MmmTextStyles.bodyRegular(textColor: gray2),
-              controller: emailController,
-              cursorColor: Color(0xff423C5D),
-              focusNode: emailFocusNode,
-              decoration: InputDecoration(
-                  isDense: true,
-                  hintText: _hint,
-                  hintStyle: MmmTextStyles.bodyRegular(textColor: gray4),
-                  contentPadding: //EdgeInsets.only(left: 20, top: 12),
-                      EdgeInsets.fromLTRB(16, 10, 16, 10),
-                  filled: true,
-                  fillColor: Color(0xffF0EFF5),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    borderSide: BorderSide(color: Color(0xff878D96), width: 1),
+            margin: const EdgeInsets.only(bottom: 44, top: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  padding: const EdgeInsets.only(top: 2),
+                  child: Text('Dont have an account?',
+                      textScaleFactor: 1.0,
+                      style: MmmTextStyles.bodySmall(textColor: kDark5)),
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: GradientText(
+                    ' Signup',
+                    style: MmmTextStyles.bodyMedium(),
+                    colors: [kPrimary, kSecondary],
                   ),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                      borderSide: BorderSide(color: borderColor, width: 1))),
+                )
+              ],
             ),
           ),
-          SizedBox(
-            height: 17,
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 14),
-            child: Text(
-              'Password',
-              style: MmmTextStyles.bodySmall(textColor: gray2),
-            ),
-          ),
-          SizedBox(
-            height: 4,
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 14),
-            width: 329,
-            height: 54,
-            child: TextField(
-              style: MmmTextStyles.bodyRegular(textColor: gray2),
-              controller: passwordController,
-              cursorColor: Color(0xff423C5D),
-              focusNode: passwordFocusNode,
-              decoration: InputDecoration(
-                  isDense: true,
-                  hintText: _hint2,
-                  hintStyle: MmmTextStyles.bodyRegular(textColor: gray4),
-                  contentPadding: //EdgeInsets.only(left: 20, top: 12),
-                      EdgeInsets.fromLTRB(16, 10, 16, 10),
-                  filled: true,
-                  fillColor: Color(0xffF0EFF5),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    borderSide: BorderSide(color: Color(0xff878D96), width: 1),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                      borderSide: BorderSide(color: borderColor, width: 1))),
-            ),
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          Container(
-              margin: EdgeInsets.only(left: 217),
-              child: InkWell(
-                onTap: () {},
-                child: GradientText(
-                  'Forgot password?',
-                  style: MmmTextStyles.bodySmall(),
-                  colors: [kPrimary, kSecondary],
-                ),
-              )),
-          SizedBox(
-            height: 24,
-          ),
-          Container(
-              margin: EdgeInsets.only(left: 14),
-              child: MmmButtons.disabledGreyButton(50, 330, 'Sign in')),
-          SizedBox(
-            height: 24,
-          ),
-          Row(
-            children: [
-              SizedBox(
-                width: 16,
-              ),
-              Container(
-                width: 146.31,
-                height: 0,
-                decoration:
-                    BoxDecoration(border: Border.all(width: 0.5, color: gray4)),
-              ),
-              SizedBox(
-                width: 8.69,
-              ),
-              Container(
-                width: 27,
-                height: 22,
-                child: Text(
-                  'OR',
-                  textAlign: TextAlign.center,
-                  style: MmmTextStyles.bodyMediumSmall(textColor: gray4),
-                ),
-              ),
-              Container(
-                width: 146.31,
-                height: 0,
-                decoration:
-                    BoxDecoration(border: Border.all(width: 0.5, color: gray4)),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          Row(
-            children: [
-              SizedBox(
-                width: 16,
-              ),
-              MmmButtons.facebookSigninButton(),
-              SizedBox(
-                width: 16,
-              ),
-              MmmButtons.googleSigninButton()
-            ],
-          ),
-          SizedBox(
-            height: 8,
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 16),
-            child:
-                MmmButtons.enabledRedButton328x50bodyMedium('Connect via OTP'),
-          ),
-          SizedBox(
-            height: 30,
-          ),
-          Row(
-            children: [
-              Container(
-                margin: EdgeInsets.only(left: 64),
-                child: Text('Dont have an account?',
-                    style: MmmTextStyles.bodySmall(textColor: gray2)),
-              ),
-              InkWell(
-                onTap: () {},
-                child: GradientText(
-                  ' Signup',
-                  style: MmmTextStyles.bodyMedium(),
-                  colors: [kPrimary, kSecondary],
-                ),
-              )
-            ],
-          ),
-        ]));
+        ]),
+      ),
+    );
   }
 }

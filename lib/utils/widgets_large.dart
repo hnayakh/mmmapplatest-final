@@ -27,7 +27,7 @@ class MmmWidgets {
               child: Text(
                 'Password doesnot match',
                 textAlign: TextAlign.center,
-                style: MmmTextStyles.heading4(textColor: gray2),
+                style: MmmTextStyles.heading4(textColor: kDark5),
               ),
             ),
           ),
@@ -39,7 +39,7 @@ class MmmWidgets {
               child: Text(
                 'The entered password and confirm \npassword doesnot match.Please enter \nsame password.',
                 textAlign: TextAlign.center,
-                style: MmmTextStyles.bodySmall(textColor: gray2),
+                style: MmmTextStyles.bodySmall(textColor: kDark5),
               ),
             ),
           ),
@@ -102,7 +102,7 @@ class MmmWidgets {
             child: Text(
               'Picture shared',
               textAlign: TextAlign.center,
-              style: MmmTextStyles.heading4(textColor: gray2),
+              style: MmmTextStyles.heading4(textColor: kDark5),
             ),
           ),
           Container(
@@ -112,7 +112,7 @@ class MmmWidgets {
               child: Text(
                 'The entered password and confirm \npassword doesnot match.Please enter \nsame password.',
                 textAlign: TextAlign.center,
-                style: MmmTextStyles.bodySmall(textColor: gray2),
+                style: MmmTextStyles.bodySmall(textColor: kDark5),
               )),
           Container(
             height: 82,
@@ -156,7 +156,7 @@ class MmmWidgets {
             padding: EdgeInsets.fromLTRB(24, 16, 24, 16),
             child: Text(
               'Account Deleted',
-              style: MmmTextStyles.heading4(textColor: gray2),
+              style: MmmTextStyles.heading4(textColor: kDark5),
             ),
           ),
           Container(
@@ -165,7 +165,7 @@ class MmmWidgets {
             padding: EdgeInsets.fromLTRB(24, 8, 24, 8),
             child: Text(
               'Are you want to delete your account?',
-              style: MmmTextStyles.bodySmall(textColor: gray2),
+              style: MmmTextStyles.bodySmall(textColor: kDark5),
             ),
           ),
           Container(
@@ -249,7 +249,7 @@ class MmmWidgets {
                   children: [
                     Text(
                       'Abhisekh Sharma',
-                      style: MmmTextStyles.heading4(textColor: gray2),
+                      style: MmmTextStyles.heading4(textColor: kDark5),
                     ),
                     SizedBox(
                       width: 7,
@@ -290,7 +290,7 @@ class MmmWidgets {
             height: 44,
             child: Text(
               'Please accept the request to \nread a message',
-              style: MmmTextStyles.bodySmall(textColor: gray2),
+              style: MmmTextStyles.bodySmall(textColor: kDark5),
               textAlign: TextAlign.center,
             ),
           ),
@@ -384,7 +384,7 @@ class MmmWidgets {
                   children: [
                     Text(
                       'Abhisekh Sharma',
-                      style: MmmTextStyles.heading4(textColor: gray2),
+                      style: MmmTextStyles.heading4(textColor: kDark5),
                     ),
                     SizedBox(
                       width: 7,
@@ -425,7 +425,7 @@ class MmmWidgets {
             height: 66,
             child: Text(
               'Your date is scheduled on 27 APR 2021 at \n11:00 PM IST \nPizza Royal,Dwarka,New Delhi',
-              style: MmmTextStyles.bodySmall(textColor: gray2),
+              style: MmmTextStyles.bodySmall(textColor: kDark5),
               textAlign: TextAlign.center,
             ),
           ),
@@ -494,7 +494,7 @@ class MmmWidgets {
             width: 232,
             child: Text(
               'We ll notify you if Abhiskhek  confirms \nyour request',
-              style: MmmTextStyles.caption(textColor: gray2),
+              style: MmmTextStyles.caption(textColor: kDark5),
               textAlign: TextAlign.center,
             ),
           )

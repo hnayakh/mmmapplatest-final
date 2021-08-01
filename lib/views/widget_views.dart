@@ -46,7 +46,7 @@ class WidgetViewState extends State<WidgetView> {
         return MmmButtons.enabledRedButton280x42heading6('Continue');
         break;
       case 6:
-        return MmmButtons.disabledGreyButton(50, 328, 'Send OTP');
+        return MmmButtons.disabledGreyButton(50, 'Send OTP');
         break;
       case 7:
         return MmmButtons.facebookSigninButton();

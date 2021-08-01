@@ -7,29 +7,27 @@ class MmmDecorations {
     return BoxDecoration(
         boxShadow: [MmmShadow.elevation3()],
         borderRadius: BorderRadius.circular(8),
-        gradient: LinearGradient(
-            colors: [kPrimary, kSecondary],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight));
+        gradient: primaryGradient());
   }
 
   static BoxDecoration elevation2Decoration() {
     return BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        gradient: LinearGradient(
-            colors: [kPrimary, kSecondary],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight),
+        gradient: primaryGradient(),
         boxShadow: [MmmShadow.elevation2(shadowColor: kShadowColorForPink)]);
   }
 
   static BoxDecoration elevation4Decoration() {
     return BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        gradient: LinearGradient(
-            colors: [kPrimary, kSecondary],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight),
+        gradient: primaryGradient(),
         boxShadow: [MmmShadow.elevation4(shadowColor: kShadowColorForPink)]);
+  }
+
+  static LinearGradient primaryGradient() {
+    return LinearGradient(
+        colors: [kPrimary, kSecondary],
+        begin: Alignment.centerLeft,
+        end: Alignment.centerRight);
   }
 }
