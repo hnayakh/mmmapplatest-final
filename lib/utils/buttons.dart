@@ -74,7 +74,7 @@ class MmmButtons {
     );
   }
 
-  static Container enabledRedButton327x50bodyMedium(String text) {
+  static Container enabledRedButton50bodyMedium(String text) {
     return Container(
       decoration: MmmDecorations.primaryButtonDecoration(),
       child: Material(
@@ -85,7 +85,6 @@ class MmmButtons {
             padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
             alignment: Alignment.center,
             height: 50,
-            width: 327,
             child: Text(
               text,
               textAlign: TextAlign.center,
