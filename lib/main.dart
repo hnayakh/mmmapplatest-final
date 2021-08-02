@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.pink,
       ),
-      home: OtpScreen(),
+      home: SigninScreen1(),
     );
   }
 }
