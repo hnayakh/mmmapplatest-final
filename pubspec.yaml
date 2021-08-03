@@ -30,6 +30,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   simple_gradient_text: ^1.2.2
   pin_code_fields: ^7.3.0
+  flutter_typeahead: ^3.2.0
   flutter_svg:
 
 

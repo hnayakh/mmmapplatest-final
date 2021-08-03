@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/signinscreens/otp_screen.dart';
+import 'package:makemymarry/views/signinscreens/phone_screen.dart';
 import 'package:makemymarry/views/signinscreens/signin_screen1.dart';
 
 void main() {
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.pink,
       ),
-      home: OtpScreen(),
+      home: SigninScreen1(),
     );
   }
 }
