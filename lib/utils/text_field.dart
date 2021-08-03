@@ -13,7 +13,7 @@ class MmmTextFileds {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
-            padding: const EdgeInsets.only(top: 4, left: 4),
+            //padding: const EdgeInsets.only(top: 4, left: 4),
             child: Text(
               label,
               textScaleFactor: 1.0,
@@ -21,7 +21,7 @@ class MmmTextFileds {
             ),
           ),
           SizedBox(
-            height: 8,
+            height: 4,
           ),
           TextField(
             controller: controller,
