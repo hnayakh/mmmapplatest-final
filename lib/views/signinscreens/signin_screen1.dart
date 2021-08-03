@@ -140,8 +140,7 @@ class _SigninScreen1State extends State<SigninScreen1> {
                     height: 8,
                   ),
                   Container(
-                    margin: EdgeInsets.only(left: 16),
-                    child: MmmButtons.enabledRedButton328x50bodyMedium(
+                    child: MmmButtons.enabledRedButton50bodyMedium(
                         'Connect via OTP'),
                   ),
                   SizedBox(
