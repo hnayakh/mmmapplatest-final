@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
+import 'package:makemymarry/views/forgotpasswordscreens/forgot_password.dart';
+import 'package:makemymarry/views/forgotpasswordscreens/reset_password.dart';
 import 'package:makemymarry/views/signinscreens/otp_screen.dart';
 import 'package:makemymarry/views/signinscreens/phone_screen.dart';
 import 'package:makemymarry/views/signinscreens/signin_screen1.dart';
@@ -91,7 +93,7 @@ class MyHomePageState extends State<MyHomePage> {
           style: MmmTextStyles.heading5(textColor: Colors.white),
         ),
       ),
-      body: Center(child: MmmWidgets.accountCreatedWidget()),
+      body: Center(child: MmmWidgets.resetPasswordWidget()),
     );
   }
 }

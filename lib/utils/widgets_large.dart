@@ -8,6 +8,87 @@ import 'package:makemymarry/utils/view_decorations.dart';
 import 'colors.dart';
 
 class MmmWidgets {
+  static Container resetPasswordWidget() {
+    return Container(
+      width: 328,
+      height: 192,
+      padding: EdgeInsets.only(top: 8),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          color: Color(0xffFCFCFD),
+          boxShadow: [MmmShadow.elevation3(shadowColor: kShadowColorForWhite)]),
+      child: Column(
+        children: [
+          Container(
+            height: 64,
+            width: 328,
+            padding: EdgeInsets.fromLTRB(24, 16, 24, 16),
+            child: Text(
+              'Password Reset',
+              style: MmmTextStyles.heading4(textColor: kDark5),
+            ),
+          ),
+          Container(
+            height: 38,
+            width: 328,
+            padding: EdgeInsets.fromLTRB(24, 8, 24, 8),
+            child: Text(
+              'Are you want to reset your account?',
+              style: MmmTextStyles.bodySmall(textColor: kDark5),
+            ),
+          ),
+          Container(
+            height: 82,
+            width: 328,
+            padding: EdgeInsets.fromLTRB(24, 16, 24, 24),
+            child: Row(
+              children: [
+                Container(
+                  height: 42,
+                  width: 136,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: Color(0xffDDE1E6))),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () {},
+                      child: Center(
+                        child: Text(
+                          'Cancel',
+                          style: MmmTextStyles.heading6(textColor: gray4),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                Container(
+                    height: 42,
+                    width: 136,
+                    decoration: MmmDecorations.primaryButtonDecoration(),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () {},
+                        child: Center(
+                          child: Text(
+                            'Confirm',
+                            style: MmmTextStyles.heading6(textColor: gray7),
+                          ),
+                        ),
+                      ),
+                    ))
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
   static Container accountCreatedWidget() {
     return Container(
       width: 328,

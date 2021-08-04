@@ -111,7 +111,6 @@ class _OtpScreenState extends State<OtpScreen> {
               enableActiveFill: true,
               appContext: context,
               onChanged: (value) {
-                print(value);
                 setState(() {
                   currentText = value;
                 });
