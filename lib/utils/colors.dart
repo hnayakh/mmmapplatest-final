@@ -10,6 +10,7 @@ const kTextColor = Color(0xff121619);
 const kShadowColorForWhite = Color(0xff3d4b5c);
 const kShadowColorForPink = Color(0xffff4d6d);
 const kPrimaryHeart = Color(0xffFD0051);
+const kredStar = Color(0xffE81113);
 
 const kLight2 = Color(0xffFCFCFD);
 const kLight4 = Color(0xffF0EFF5);
@@ -28,3 +29,4 @@ const gray5 = Color(0xffDDE1E6);
 const gray6 = Color(0xffF0EFF5);
 
 const gray7 = Color(0xffFCFCFD);
+const kModalPrimary = Color(0xff423C5D);

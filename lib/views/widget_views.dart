@@ -40,7 +40,7 @@ class WidgetViewState extends State<WidgetView> {
         return MmmButtons.enabledRedButton50bodyMedium('Resend OTP');
         break;
       case 4:
-        return MmmButtons.enabledRedButton326x50bodyMedium('Sign in');
+        return MmmButtons.enabledRedButtonbodyMedium(50, 'Sign in');
         break;
       case 5:
         return MmmButtons.enabledRedButton280x42heading6('Continue');

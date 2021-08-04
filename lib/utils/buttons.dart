@@ -6,6 +6,49 @@ import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
 
 class MmmButtons {
+  static Widget profileSelectButton(
+      double containerHeight, String text, Function ontap) {
+    return Container(
+      height: containerHeight,
+      decoration: BoxDecoration(
+        color: kLight4,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(width: 1, color: kDark2),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: ontap,
+          child: Row(
+            children: [
+              SizedBox(
+                width: 16,
+              ),
+              Container(
+                child: Text(
+                  text,
+                  textScaleFactor: 1.0,
+                  textAlign: TextAlign.start,
+                  style: MmmTextStyles.bodyRegular(textColor: kDark2),
+                ),
+              ),
+              SizedBox(
+                width: 130,
+              ),
+              SvgPicture.asset(
+                "images/rightArrow.svg",
+                width: 24,
+                height: 24,
+                color: Color(0xff878D96),
+                fit: BoxFit.cover,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   static Widget primaryButton(String title, Function onTap) {
     return Container(
       child: InkWell(
@@ -97,7 +140,7 @@ class MmmButtons {
     );
   }
 
-  static Container enabledRedButton326x50bodyMedium(String text) {
+  static Container enabledRedButtonbodyMedium(double height, String text) {
     return Container(
       decoration: MmmDecorations.primaryButtonDecoration(),
       child: Material(
@@ -107,8 +150,7 @@ class MmmButtons {
           child: Container(
             padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
             alignment: Alignment.center,
-            height: 50,
-            width: 326,
+            height: height,
             child: Text(
               text,
               textScaleFactor: 1.0,
@@ -260,7 +302,6 @@ class MmmButtons {
   static Container facebookSignupButton() {
     return Container(
       height: 50,
-      width: 326,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         color: Color(0xffFCFCFD),
@@ -284,7 +325,6 @@ class MmmButtons {
                 child: SvgPicture.asset(
                   "images/social/facebook.svg",
                   fit: BoxFit.cover,
-                  color: Colors.red,
                 ),
               ),
               SizedBox(
@@ -309,7 +349,6 @@ class MmmButtons {
   static Container googleSignupButton() {
     return Container(
       height: 50,
-      width: 326,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         color: Color(0xffFCFCFD),
@@ -333,7 +372,6 @@ class MmmButtons {
                 child: SvgPicture.asset(
                   "images/social/google.svg",
                   fit: BoxFit.cover,
-                  color: Colors.green,
                 ),
               ),
               SizedBox(
@@ -359,7 +397,6 @@ class MmmButtons {
   static Container emailButton() {
     return Container(
       height: 50,
-      width: 326,
       child: Container(
         decoration: MmmDecorations.primaryButtonDecoration(),
         child: Material(
@@ -1204,6 +1241,27 @@ class MmmButtons {
           ),
         ),
       ),
+    );
+  }
+
+  static Widget backButton() {
+    return Container(
+      child: InkWell(
+          onTap: () {},
+          child: ShaderMask(
+            shaderCallback: (bounds) => RadialGradient(
+              center: Alignment.center,
+              radius: 0.5,
+              colors: [kPrimary, kSecondary],
+              tileMode: TileMode.mirror,
+            ).createShader(bounds),
+            child: SvgPicture.asset(
+              'images/leftArrow.svg',
+              color: Colors.white,
+              height: 24,
+              width: 24,
+            ),
+          )),
     );
   }
 }

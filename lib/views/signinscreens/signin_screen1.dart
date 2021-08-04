@@ -6,6 +6,7 @@ import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
+import 'package:makemymarry/views/signupscreens/create_account_screen.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class SigninScreen1 extends StatefulWidget {
@@ -161,7 +162,12 @@ class _SigninScreen1State extends State<SigninScreen1> {
                         style: MmmTextStyles.bodySmall(textColor: kDark5)),
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: () => showModalBottomSheet(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(16))),
+                        context: context,
+                        builder: (context) => buildSigninSheet()),
                     child: GradientText(
                       ' Signup',
                       style: MmmTextStyles.bodyMedium(),

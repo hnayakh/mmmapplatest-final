@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:makemymarry/utils/text_styles.dart';
+import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/signinscreens/otp_screen.dart';
 import 'package:makemymarry/views/signinscreens/phone_screen.dart';
 import 'package:makemymarry/views/signinscreens/signin_screen1.dart';
+import 'package:makemymarry/views/signupscreens/create_account_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -30,7 +32,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.pink,
       ),
-      home: SigninScreen1(),
+      home: MyHomePage(),
     );
   }
 }
@@ -89,7 +91,7 @@ class MyHomePageState extends State<MyHomePage> {
           style: MmmTextStyles.heading5(textColor: Colors.white),
         ),
       ),
-      body: SigninScreen1(),
+      body: Center(child: MmmWidgets.accountCreatedWidget()),
     );
   }
 }
