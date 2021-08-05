@@ -25,4 +25,13 @@ class MmmShadow {
         offset: Offset(0, 16),
         blurRadius: 16);
   }
+
+  static BoxShadow elevationbBackButton(
+      {Color shadowColor: kShadowColorForWhite}) {
+    return BoxShadow(
+        color: kShadowColorForWhite.withAlpha(7),
+        offset: Offset(0, 10),
+        blurRadius: 25,
+        spreadRadius: 8);
+  }
 }

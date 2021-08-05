@@ -2,15 +2,19 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:makemymarry/utils/dimens.dart';
 
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/forgotpasswordscreens/forgot_password.dart';
 import 'package:makemymarry/views/forgotpasswordscreens/reset_password.dart';
+import 'package:makemymarry/views/profilescreens/about.dart';
+import 'package:makemymarry/views/profilescreens/habits.dart';
 import 'package:makemymarry/views/signinscreens/otp_screen.dart';
 import 'package:makemymarry/views/signinscreens/phone_screen.dart';
 import 'package:makemymarry/views/signinscreens/signin_screen1.dart';
 import 'package:makemymarry/views/signupscreens/create_account_screen.dart';
+import 'package:makemymarry/views/widget_views.dart';
 
 void main() {
   runApp(MyApp());
@@ -34,7 +38,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.pink,
       ),
-      home: MyHomePage(),
+      home: HabitScreen(),
     );
   }
 }
@@ -93,32 +97,29 @@ class MyHomePageState extends State<MyHomePage> {
           style: MmmTextStyles.heading5(textColor: Colors.white),
         ),
       ),
-      body: Center(child: MmmWidgets.resetPasswordWidget()),
+      body: Container(
+        padding: kMargin16,
+        child: ListView.separated(
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Text(buttons[index], style: MmmTextStyles.heading6()),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => WidgetView(
+                          pos: index,
+                          title: buttons[index],
+                        )));
+              },
+            );
+          },
+          itemCount: 35,
+          separatorBuilder: (BuildContext context, int index) {
+            return Divider(
+              color: Colors.orange,
+            );
+          },
+        ),
+      ),
     );
   }
 }
-
-
-//Container(
-  //      padding: kMargin16,
- //       child: ListView.separated(
-  //        itemBuilder: (context, index) {
-   //         return ListTile(
-  //            title: Text(buttons[index], style: MmmTextStyles.heading6()),
-   //           onTap: () {
-   //             Navigator.of(context).push(MaterialPageRoute(
-   //                 builder: (context) => WidgetView(
-    //                      pos: index,
-     //                     title: buttons[index],
-     //                   )));
-     //         },
-      //      );
-      //    },
-       //   itemCount: 35,
-       //   separatorBuilder: (BuildContext context, int index) {
-       //     return Divider(
-        //      color: Colors.orange,
-        //    );
-        //  },
-      //  ),
-   //   )
