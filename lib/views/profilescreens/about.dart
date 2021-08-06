@@ -50,20 +50,23 @@ class _AboutScreenState extends State<AboutScreen> {
                     MmmShadow.elevationbBackButton(
                         shadowColor: kShadowColorForWhite)
                   ]),
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: () {},
-                  child: Container(
-                      height: 32,
-                      width: 32,
-                      alignment: Alignment.center,
-                      child: SvgPicture.asset(
-                        'images/arrowLeft.svg',
-                        height: 17.45,
-                        width: 17.45,
-                        color: gray3,
-                      )),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () {},
+                    child: Container(
+                        height: 32,
+                        width: 32,
+                        alignment: Alignment.center,
+                        child: SvgPicture.asset(
+                          'images/arrowLeft.svg',
+                          height: 17.45,
+                          width: 17.45,
+                          color: gray3,
+                        )),
+                  ),
                 ),
               ),
             ),

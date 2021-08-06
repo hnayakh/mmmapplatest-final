@@ -30,3 +30,5 @@ const gray6 = Color(0xffF0EFF5);
 
 const gray7 = Color(0xffFCFCFD);
 const kModalPrimary = Color(0xff423C5D);
+const kBio = Color(0xffC5C1D7);
+const kBioSecondary = Color(0xff8B83AF);

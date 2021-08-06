@@ -14,7 +14,7 @@ class MmmShadow {
 
   static BoxShadow elevation3({Color shadowColor: kShadowColorForWhite}) {
     return BoxShadow(
-        color: shadowColor.withAlpha(12),
+        color: shadowColor.withOpacity(0.12),
         offset: Offset(0, 12),
         blurRadius: 22);
   }
