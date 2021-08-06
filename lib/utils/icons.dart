@@ -288,8 +288,8 @@ class MmmIcons {
           child: InkWell(
             onTap: () {},
             child: Container(
-              height: 50,
-              width: 50,
+              height: 45,
+              width: 45,
               padding: EdgeInsets.fromLTRB(14, 13, 12, 13),
               child: SvgPicture.asset(
                 "images/rightArrow.svg",
@@ -317,8 +317,8 @@ class MmmIcons {
           child: InkWell(
             onTap: () {},
             child: Container(
-              height: 50,
-              width: 50,
+              height: 45,
+              width: 45,
               padding: EdgeInsets.fromLTRB(14, 13, 12, 13),
               child: SvgPicture.asset(
                 "images/rightArrow.svg",
