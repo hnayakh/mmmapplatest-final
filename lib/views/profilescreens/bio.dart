@@ -188,7 +188,6 @@ class Bio extends StatelessWidget {
                               width: 180,
                               decoration: BoxDecoration(
                                   color: Color(0xffFFFFFF),
-                                  border: Border.all(color: kBio),
                                   borderRadius: BorderRadius.circular(8),
                                   boxShadow: [
                                     MmmShadow.elevation3(
@@ -202,12 +201,12 @@ class Bio extends StatelessWidget {
                                       onTap: () {},
                                       child: Container(
                                         decoration: BoxDecoration(
-                                            color: Color(0xffFFFFFF),
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            border: Border.all(
-                                                width: 1.5,
-                                                color: kBioSecondary)),
+                                          color: Color(0xffFFFFFF),
+                                          border: Border.all(
+                                              width: 1.5, color: kBioSecondary),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
                                         child: SvgPicture.asset(
                                           'images/plus.svg',
                                           color: kBioSecondary,
@@ -232,7 +231,6 @@ class Bio extends StatelessWidget {
                               width: 180,
                               decoration: BoxDecoration(
                                   color: Color(0xffFFFFFF),
-                                  border: Border.all(color: kBio),
                                   borderRadius: BorderRadius.circular(8),
                                   boxShadow: [
                                     MmmShadow.elevation3(
@@ -272,7 +270,6 @@ class Bio extends StatelessWidget {
                               width: 180,
                               decoration: BoxDecoration(
                                   color: Color(0xffFFFFFF),
-                                  border: Border.all(color: kBio),
                                   borderRadius: BorderRadius.circular(8),
                                   boxShadow: [
                                     MmmShadow.elevation3(
