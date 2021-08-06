@@ -143,19 +143,22 @@ class MmmButtons {
   static Container enabledRedButtonbodyMedium(double height, String text) {
     return Container(
       decoration: MmmDecorations.primaryButtonDecoration(),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () {},
-          child: Container(
-            padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
-            alignment: Alignment.center,
-            height: height,
-            child: Text(
-              text,
-              textScaleFactor: 1.0,
-              textAlign: TextAlign.center,
-              style: MmmTextStyles.bodyMedium(textColor: gray7),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () {},
+            child: Container(
+              padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+              alignment: Alignment.center,
+              height: height,
+              child: Text(
+                text,
+                textScaleFactor: 1.0,
+                textAlign: TextAlign.center,
+                style: MmmTextStyles.bodyMedium(textColor: gray7),
+              ),
             ),
           ),
         ),
