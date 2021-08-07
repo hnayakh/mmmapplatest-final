@@ -6,6 +6,139 @@ import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
 
 class MmmButtons {
+  static Widget cameraimportButton() {
+    return Container(
+      height: 50,
+      child: Container(
+        decoration: MmmDecorations.primaryButtonDecoration(),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () {},
+            child: Center(
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 16,
+                  ),
+                  SvgPicture.asset(
+                    "images/camera.svg",
+                    color: Color(0xffFCFCFD),
+                    fit: BoxFit.cover,
+                  ),
+                  SizedBox(width: 10),
+                  Container(
+                    height: 26,
+                    width: 260,
+                    child: Text(
+                      'Click via camera',
+                      textAlign: TextAlign.center,
+                      style: MmmTextStyles.heading5(textColor: gray7),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  static Widget facebookImportbutton() {
+    return Container(
+      height: 50,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: Color(0xffFCFCFD),
+        border: Border.all(
+          color: Color(0xff878D96),
+          width: 1,
+        ),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {},
+          child: Row(
+            children: [
+              SizedBox(
+                width: 16,
+              ),
+              Container(
+                height: 24,
+                width: 24,
+                child: SvgPicture.asset(
+                  "images/social/facebook.svg",
+                  fit: BoxFit.cover,
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Container(
+                height: 26,
+                width: 260,
+                child: Text(
+                  'Import from Facebook',
+                  textAlign: TextAlign.center,
+                  style: MmmTextStyles.heading5(textColor: kDark5),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  static Widget importGalleryButton() {
+    return Container(
+      height: 50,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: Color(0xffFCFCFD),
+        border: Border.all(
+          color: Color(0xff878D96),
+          width: 1,
+        ),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {},
+          child: Row(
+            children: [
+              SizedBox(
+                width: 16,
+              ),
+              Container(
+                height: 24,
+                width: 24,
+                child: SvgPicture.asset(
+                  "images/gallery.svg",
+                  fit: BoxFit.cover,
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Container(
+                height: 26,
+                width: 260,
+                child: Text(
+                  'Import from Gallery',
+                  textAlign: TextAlign.center,
+                  style: MmmTextStyles.heading5(textColor: kDark5),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   static Widget profileSelectButton(
       double containerHeight, String text, Function ontap) {
     return Container(
