@@ -10,6 +10,7 @@ import 'package:makemymarry/views/forgotpasswordscreens/forgot_password.dart';
 import 'package:makemymarry/views/forgotpasswordscreens/reset_password.dart';
 import 'package:makemymarry/views/profilescreens/about.dart';
 import 'package:makemymarry/views/profilescreens/bio.dart';
+import 'package:makemymarry/views/profilescreens/family.dart';
 import 'package:makemymarry/views/profilescreens/habits.dart';
 import 'package:makemymarry/views/profilescreens/occupation.dart';
 import 'package:makemymarry/views/profilescreens/religion.dart';

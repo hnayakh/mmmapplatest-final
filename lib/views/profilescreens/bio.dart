@@ -198,7 +198,37 @@ class Bio extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(8),
                                   child: Material(
                                     child: InkWell(
-                                      onTap: () {},
+                                      onTap: () {
+                                        showModalBottomSheet(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.vertical(
+                                                        top: Radius.circular(
+                                                            16))),
+                                            context: context,
+                                            builder: (context) => Container(
+                                                  padding: kMargin16,
+                                                  child: Column(
+                                                    children: [
+                                                      SizedBox(
+                                                        height: 60,
+                                                      ),
+                                                      MmmButtons
+                                                          .facebookImportbutton(),
+                                                      SizedBox(
+                                                        height: 16,
+                                                      ),
+                                                      MmmButtons
+                                                          .importGalleryButton(),
+                                                      SizedBox(
+                                                        height: 16,
+                                                      ),
+                                                      MmmButtons
+                                                          .cameraimportButton()
+                                                    ],
+                                                  ),
+                                                ));
+                                      },
                                       child: Container(
                                         decoration: BoxDecoration(
                                           color: Color(0xffFFFFFF),
@@ -241,7 +271,37 @@ class Bio extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(8),
                                   child: Material(
                                     child: InkWell(
-                                      onTap: () {},
+                                      onTap: () {
+                                        showModalBottomSheet(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.vertical(
+                                                        top: Radius.circular(
+                                                            16))),
+                                            context: context,
+                                            builder: (context) => Container(
+                                                  padding: kMargin16,
+                                                  child: Column(
+                                                    children: [
+                                                      SizedBox(
+                                                        height: 60,
+                                                      ),
+                                                      MmmButtons
+                                                          .facebookImportbutton(),
+                                                      SizedBox(
+                                                        height: 16,
+                                                      ),
+                                                      MmmButtons
+                                                          .importGalleryButton(),
+                                                      SizedBox(
+                                                        height: 16,
+                                                      ),
+                                                      MmmButtons
+                                                          .cameraimportButton()
+                                                    ],
+                                                  ),
+                                                ));
+                                      },
                                       child: Container(
                                         decoration: BoxDecoration(
                                             color: Color(0xffFFFFFF),
@@ -280,7 +340,37 @@ class Bio extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(8),
                                   child: Material(
                                     child: InkWell(
-                                      onTap: () {},
+                                      onTap: () {
+                                        showModalBottomSheet(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.vertical(
+                                                        top: Radius.circular(
+                                                            16))),
+                                            context: context,
+                                            builder: (context) => Container(
+                                                  padding: kMargin16,
+                                                  child: Column(
+                                                    children: [
+                                                      SizedBox(
+                                                        height: 60,
+                                                      ),
+                                                      MmmButtons
+                                                          .facebookImportbutton(),
+                                                      SizedBox(
+                                                        height: 16,
+                                                      ),
+                                                      MmmButtons
+                                                          .importGalleryButton(),
+                                                      SizedBox(
+                                                        height: 16,
+                                                      ),
+                                                      MmmButtons
+                                                          .cameraimportButton()
+                                                    ],
+                                                  ),
+                                                ));
+                                      },
                                       child: Container(
                                         decoration: BoxDecoration(
                                             color: Color(0xffFFFFFF),
