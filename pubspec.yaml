@@ -32,11 +32,20 @@ dependencies:
   pin_code_fields: ^7.3.0
   flutter_typeahead: ^3.2.0
   flutter_svg:
-
-
+  google_sign_in: ^5.0.5
+  flutter_facebook_auth: ^3.5.0
+  firebase_auth: ^3.0.1
+  introduction_screen: ^2.1.0
+  shared_preferences: ^2.0.6
+  flutter_bloc: ^7.1.0
+  equatable: ^2.0.3
+  dio: ^4.0.0
+  dio_logger: ^4.0.8+8
+  intro_slider: ^3.0.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
