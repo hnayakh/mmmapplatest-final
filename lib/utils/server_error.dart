@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart' hide Headers;
 
 class ServerError implements Exception {
-  int _errorCode;
+  late int _errorCode;
   String _errorMessage = "";
 
-  ServerError.withError({DioError error}) {
+  ServerError.withError({required DioError error}) {
     _handleError(error);
   }
 
@@ -29,7 +29,7 @@ class ServerError implements Exception {
         break;
       case DioErrorType.response:
         _errorMessage =
-            "Received invalid status code: ${error.response.statusCode}";
+            "Received invalid status code: ${error.response!.statusCode}";
         break;
       case DioErrorType.cancel:
         _errorMessage = "Request was cancelled";

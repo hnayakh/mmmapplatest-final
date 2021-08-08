@@ -5,9 +5,10 @@ import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/text_styles.dart';
+import 'package:makemymarry/views/profilescreens/occupation.dart';
 
 class Religion extends StatefulWidget {
-  Religion({Key key}) : super(key: key);
+  Religion({Key? key}) : super(key: key);
 
   @override
   _ReligionState createState() => _ReligionState();
@@ -84,12 +85,19 @@ class _ReligionState extends State<Religion> {
         ),
         //preferredSize: Size(MediaQuery.of(context).size.width, 0.0),
       ),
+      floatingActionButton: FloatingActionButton(
+        child: MmmIcons.rightArrowDisabled(),
+        onPressed: () {
+          navigateToCarrer();
+        },
+        backgroundColor: gray5,
+      ),
       body: Container(
         padding: kMargin16,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
+            SizedBox(height: 24,),
             Column(
               children: [
                 Row(
@@ -156,6 +164,7 @@ class _ReligionState extends State<Religion> {
                 ),
               ],
             ),
+            SizedBox(height: 24,),
             Column(
               children: [
                 Row(
@@ -222,6 +231,7 @@ class _ReligionState extends State<Religion> {
                 ),
               ],
             ),
+            SizedBox(height: 24,),
             Column(
               children: [
                 Row(
@@ -288,6 +298,7 @@ class _ReligionState extends State<Religion> {
                 ),
               ],
             ),
+            SizedBox(height: 24,),
             Column(
               children: [
                 Row(
@@ -355,6 +366,7 @@ class _ReligionState extends State<Religion> {
                 ),
               ],
             ),
+            SizedBox(height: 24,),
             Column(
               children: [
                 Row(
@@ -421,6 +433,7 @@ class _ReligionState extends State<Religion> {
                 ),
               ],
             ),
+            SizedBox(height: 24,),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -483,10 +496,15 @@ class _ReligionState extends State<Religion> {
                 ),
               ],
             ),
-            MmmIcons.rightArrowEnabled()
           ],
         ),
       ),
     );
+  }
+
+  void navigateToCarrer() {
+
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => Occupation()));
   }
 }

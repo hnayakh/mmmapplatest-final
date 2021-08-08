@@ -151,7 +151,7 @@ class MmmButtons {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: ontap,
+          onTap: () => ontap,
           child: Row(
             children: [
               SizedBox(
@@ -250,13 +250,14 @@ class MmmButtons {
     );
   }
 
-  static Container enabledRedButton50bodyMedium(String text) {
+  static Container enabledRedButton50bodyMedium(String text,
+      {Function()? action}) {
     return Container(
       decoration: MmmDecorations.primaryButtonDecoration(),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {},
+          onTap: action,
           child: Container(
             padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
             alignment: Alignment.center,
@@ -323,7 +324,8 @@ class MmmButtons {
     );
   }
 
-  static Container disabledGreyButton(double containerHeight, String text) {
+  static Container disabledGreyButton(double containerHeight, String text,
+      {Function()? action}) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
@@ -332,7 +334,7 @@ class MmmButtons {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {},
+          onTap:  action,
           child: Container(
             padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
             alignment: Alignment.center,
@@ -1380,10 +1382,12 @@ class MmmButtons {
     );
   }
 
-  static Widget backButton() {
+  static Widget backButton(BuildContext context) {
     return Container(
       child: InkWell(
-          onTap: () {},
+          onTap: () {
+            Navigator.of(context).pop();
+          },
           child: ShaderMask(
             shaderCallback: (bounds) => RadialGradient(
               center: Alignment.center,

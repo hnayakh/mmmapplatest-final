@@ -8,7 +8,7 @@ import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 
 class Bio extends StatelessWidget {
-  const Bio({Key key}) : super(key: key);
+  const Bio({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

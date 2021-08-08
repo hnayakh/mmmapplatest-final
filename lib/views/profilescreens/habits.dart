@@ -5,18 +5,20 @@ import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/text_styles.dart';
+import 'package:makemymarry/views/profilescreens/religion.dart';
 
 class HabitScreen extends StatefulWidget {
-  HabitScreen({Key key}) : super(key: key);
+  HabitScreen({Key? key}) : super(key: key);
 
   @override
   _HabitScreenState createState() => _HabitScreenState();
 }
 
 class _HabitScreenState extends State<HabitScreen> {
-  int eatValue;
-  int smokeValue;
-  int alcValue;
+  late int eatValue = 0;
+  late int smokeValue = 1;
+  late int alcValue = 2;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,10 +73,16 @@ class _HabitScreenState extends State<HabitScreen> {
         ),
         //preferredSize: Size(MediaQuery.of(context).size.width, 0.0),
       ),
+      floatingActionButton: FloatingActionButton(
+        child: MmmIcons.rightArrowDisabled(),
+        onPressed: () {
+          navigateToReligion();
+        },
+        backgroundColor: gray5,
+      ),
       body: Container(
         margin: kMargin16,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Column(
@@ -393,6 +401,9 @@ class _HabitScreenState extends State<HabitScreen> {
                       ),
               ],
             ),
+            SizedBox(
+              height: 24,
+            ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -607,6 +618,9 @@ class _HabitScreenState extends State<HabitScreen> {
                   ],
                 ),
               ],
+            ),
+            SizedBox(
+              height: 24,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -924,10 +938,14 @@ class _HabitScreenState extends State<HabitScreen> {
                       ),
               ],
             ),
-            MmmIcons.rightArrowEnabled()
           ],
         ),
       ),
     );
+  }
+
+  void navigateToReligion() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => Religion()));
   }
 }

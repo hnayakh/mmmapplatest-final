@@ -9,15 +9,17 @@ import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
 
+import 'habits.dart';
+
 class AboutScreen extends StatefulWidget {
-  AboutScreen({Key key}) : super(key: key);
+  AboutScreen({Key? key}) : super(key: key);
 
   @override
   _AboutScreenState createState() => _AboutScreenState();
 }
 
 class _AboutScreenState extends State<AboutScreen> {
-  TextEditingController namecontroller;
+  TextEditingController namecontroller = TextEditingController();
 
   int value1 = 1;
 
@@ -90,23 +92,28 @@ class _AboutScreenState extends State<AboutScreen> {
       ),
 
       //preferredSize: Size(MediaQuery.of(context).size.width, 0.0),
-
+      floatingActionButton: FloatingActionButton(
+        child: MmmIcons.rightArrowDisabled(),
+        onPressed: () {
+          navigateToHabits();
+        },
+        backgroundColor: gray5,
+      ),
       body: Container(
         padding: kMargin16,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             SizedBox(
-                //height: 24,
-                ),
+              height: 24,
+            ),
             MmmTextFileds.textFiledWithLabelStar(
                 'Name of Son/Daughter/Sister/Brother',
                 "Enter Son's name",
                 namecontroller),
             SizedBox(
-                //height: 20,
-                ),
+              height: 24,
+            ),
             Column(
               children: [
                 Row(
@@ -174,8 +181,8 @@ class _AboutScreenState extends State<AboutScreen> {
               ],
             ),
             SizedBox(
-                //height: 24,
-                ),
+              height: 24,
+            ),
             Column(
               children: [
                 Row(
@@ -244,8 +251,8 @@ class _AboutScreenState extends State<AboutScreen> {
               ],
             ),
             SizedBox(
-                //height: 24,
-                ),
+              height: 24,
+            ),
             Container(
               margin: EdgeInsets.only(left: 8),
               child: Text(
@@ -304,8 +311,8 @@ class _AboutScreenState extends State<AboutScreen> {
               ),
             ),
             SizedBox(
-                // height: 21,
-                ),
+              height: 24,
+            ),
             Column(
               children: [
                 Row(
@@ -372,6 +379,9 @@ class _AboutScreenState extends State<AboutScreen> {
                 ),
               ],
             ),
+            SizedBox(
+              height: 24,
+            ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -434,12 +444,14 @@ class _AboutScreenState extends State<AboutScreen> {
                 )
               ],
             ),
-            Container(
-                margin: EdgeInsets.only(left: 330),
-                child: MmmIcons.rightArrowDisabled())
           ],
         ),
       ),
     );
+  }
+
+  void navigateToHabits() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => HabitScreen()));
   }
 }

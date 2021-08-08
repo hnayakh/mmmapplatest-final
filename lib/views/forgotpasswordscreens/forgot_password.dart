@@ -6,14 +6,14 @@ import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 
 class ForgotPassword extends StatefulWidget {
-  ForgotPassword({Key key}) : super(key: key);
+  ForgotPassword({Key? key}) : super(key: key);
 
   @override
   _ForgotPasswordState createState() => _ForgotPasswordState();
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
-  TextEditingController emailcontroller;
+  late TextEditingController emailcontroller;
 
   var controller;
 
@@ -49,7 +49,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               SizedBox(
                 height: 13,
               ),
-              MmmButtons.backButton(),
+              MmmButtons.backButton(context),
               SizedBox(
                 height: 26,
               ),

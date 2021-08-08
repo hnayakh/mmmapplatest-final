@@ -4,7 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import '../colors.dart';
 
 class MeetIcon extends StatefulWidget {
-  const MeetIcon({Key key}) : super(key: key);
+  const MeetIcon({Key? key}) : super(key: key);
 
   @override
   _MeetIconState createState() => _MeetIconState();

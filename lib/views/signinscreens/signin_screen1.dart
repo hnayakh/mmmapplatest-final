@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:makemymarry/bloc/sign_in/signin_bloc.dart';
+import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 
 import 'package:makemymarry/utils/colors.dart';
@@ -6,23 +10,47 @@ import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
+import 'package:makemymarry/views/forgotpasswordscreens/forgot_password.dart';
+import 'package:makemymarry/views/profilescreens/about.dart';
+import 'package:makemymarry/views/signinscreens/phone_screen.dart';
 import 'package:makemymarry/views/signupscreens/create_account_screen.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
-class SigninScreen1 extends StatefulWidget {
-  const SigninScreen1({Key key}) : super(key: key);
+class SignIn extends StatelessWidget {
+  final UserRepository userRepository;
+
+  const SignIn({Key? key, required this.userRepository}) : super(key: key);
 
   @override
-  _SigninScreen1State createState() => _SigninScreen1State();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => SignInBloc(userRepository),
+      child: SignInScreen(),
+    );
+  }
 }
 
-class _SigninScreen1State extends State<SigninScreen1> {
+class SignInScreen extends StatefulWidget {
+  @override
+  SignInScreenState createState() => SignInScreenState();
+}
+
+class SignInScreenState extends State<SignInScreen> {
   FocusNode emailFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   String _hint = 'Enter your email';
   String _hint2 = 'Enter your password';
+
+  @override
+  void initState() {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: kSecondary, // navigation bar color
+      statusBarColor: kSecondary, // status bar color
+    ));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +111,9 @@ class _SigninScreen1State extends State<SigninScreen1> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          navigateToForgotPassword();
+                        },
                         child: GradientText(
                           'Forgot password?',
                           style: MmmTextStyles.bodySmall(),
@@ -96,7 +126,10 @@ class _SigninScreen1State extends State<SigninScreen1> {
                     height: 24,
                   ),
                   Container(
-                      child: MmmButtons.disabledGreyButton(50, 'Sign in')),
+                      child: MmmButtons.disabledGreyButton(50, 'Sign in',
+                          action: () {
+                    navigateToProfileSetup();
+                  })),
                   SizedBox(
                     height: 24,
                   ),
@@ -142,7 +175,9 @@ class _SigninScreen1State extends State<SigninScreen1> {
                   ),
                   Container(
                     child: MmmButtons.enabledRedButton50bodyMedium(
-                        'Connect via OTP'),
+                        'Connect via OTP', action: () {
+                      navigateToSigninWithMobile();
+                    }),
                   ),
                   SizedBox(
                     height: 19,
@@ -162,12 +197,9 @@ class _SigninScreen1State extends State<SigninScreen1> {
                         style: MmmTextStyles.bodySmall(textColor: kDark5)),
                   ),
                   InkWell(
-                    onTap: () => showModalBottomSheet(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(16))),
-                        context: context,
-                        builder: (context) => buildSigninSheet()),
+                    onTap: () {
+                      navigateToRegister();
+                    },
                     child: GradientText(
                       ' Signup',
                       style: MmmTextStyles.bodyMedium(),
@@ -181,5 +213,25 @@ class _SigninScreen1State extends State<SigninScreen1> {
         ),
       ),
     );
+  }
+
+  void navigateToForgotPassword() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => ForgotPassword()));
+  }
+
+  void navigateToSigninWithMobile() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => SinginWithPhone()));
+  }
+
+  navigateToRegister() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => CreateAccount()));
+  }
+
+  void navigateToProfileSetup() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => AboutScreen()));
   }
 }

@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 
 import 'package:makemymarry/utils/text_styles.dart';
@@ -18,16 +20,44 @@ import 'package:makemymarry/views/signinscreens/otp_screen.dart';
 import 'package:makemymarry/views/signinscreens/phone_screen.dart';
 import 'package:makemymarry/views/signinscreens/signin_screen1.dart';
 import 'package:makemymarry/views/signupscreens/create_account_screen.dart';
+import 'package:makemymarry/views/splash_screen.dart';
 import 'package:makemymarry/views/widget_views.dart';
 
-void main() {
-  runApp(MyApp());
-  if (Platform.isAndroid) {
-// The following two lines set the android status bar to be transparent immersive. Written after component rendering, in order to assign a value after rendering, override the status bar, the MaterialApp component will override this value before rendering.
-    SystemUiOverlayStyle systemUiOverlayStyle =
-        SystemUiOverlayStyle(statusBarColor: Colors.transparent);
-    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+class SimpleObserver extends BlocObserver {
+  @override
+  void onCreate(BlocBase bloc) {
+    print(bloc.state);
+    super.onCreate(bloc);
   }
+
+  @override
+  void onClose(BlocBase bloc) {
+    print(bloc.stream.toString());
+    super.onClose(bloc);
+  }
+
+  @override
+  void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
+    print(stackTrace);
+    super.onError(bloc, error, stackTrace);
+  }
+
+  @override
+  void onTransition(Bloc bloc, Transition transition) {
+    print(transition.toString());
+    super.onTransition(bloc, transition);
+  }
+
+  @override
+  void onChange(BlocBase bloc, Change change) {
+    print(change.toString());
+    super.onChange(bloc, change);
+  }
+}
+
+void main() {
+  Bloc.observer = SimpleObserver();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -38,11 +68,11 @@ class MyApp extends StatelessWidget {
       title: 'Make My Marry',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: "MakeMyMarry",
+        fontFamily: "MakeMyMarry", backgroundColor: Colors.white,
         // is not restarted.
         primarySwatch: Colors.pink,
       ),
-      home: Bio(),
+      home: Splash(),
     );
   }
 }
@@ -92,6 +122,7 @@ class MyHomePageState extends State<MyHomePage> {
     'Cancel Icon',
     'Connect Icon',
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

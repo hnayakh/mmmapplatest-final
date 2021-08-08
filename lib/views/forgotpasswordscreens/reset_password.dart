@@ -5,7 +5,7 @@ import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 
 class ResetPassword extends StatefulWidget {
-  ResetPassword({Key key}) : super(key: key);
+  ResetPassword({Key? key}) : super(key: key);
 
   @override
   _ResetPasswordState createState() => _ResetPasswordState();
@@ -50,7 +50,7 @@ class _ResetPasswordState extends State<ResetPassword> {
               SizedBox(
                 height: 13,
               ),
-              MmmButtons.backButton(),
+              MmmButtons.backButton(context),
               SizedBox(
                 height: 26,
               ),

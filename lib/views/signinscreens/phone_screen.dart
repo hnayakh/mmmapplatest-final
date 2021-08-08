@@ -6,16 +6,23 @@ import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
+import 'package:makemymarry/views/signinscreens/otp_screen.dart';
+import 'package:makemymarry/views/signupscreens/create_account_screen.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
-class PhoneTextField extends StatefulWidget {
-  PhoneTextField({Key key}) : super(key: key);
-
+class SinginWithPhone extends StatelessWidget {
   @override
-  _PhoneTextFieldState createState() => _PhoneTextFieldState();
+  Widget build(BuildContext context) {
+    return SigninWithPhoneScreen();
+  }
 }
 
-class _PhoneTextFieldState extends State<PhoneTextField> {
+class SigninWithPhoneScreen extends StatefulWidget {
+  @override
+  _SigninWithPhoneScreenState createState() => _SigninWithPhoneScreenState();
+}
+
+class _SigninWithPhoneScreenState extends State<SigninWithPhoneScreen> {
   final phoneController = TextEditingController();
 
   String currentText = '';
@@ -109,12 +116,12 @@ class _PhoneTextFieldState extends State<PhoneTextField> {
                               ),
                               Material(
                                 child: InkWell(
-                                  onTap: () => showModalBottomSheet(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.vertical(
-                                              top: Radius.circular(16))),
-                                      context: context,
-                                      builder: (context) => buildSheet()),
+                                  // onTap: () => showModalBottomSheet(
+                                  //     shape: RoundedRectangleBorder(
+                                  //         borderRadius: BorderRadius.vertical(
+                                  //             top: Radius.circular(16))),
+                                  //     context: context,
+                                  //     builder: (context) => buildSheet()),
                                   child: Container(
                                       height: 16,
                                       width: 16,
@@ -133,7 +140,10 @@ class _PhoneTextFieldState extends State<PhoneTextField> {
               ),
               currentText.length < 10
                   ? MmmButtons.disabledGreyButton(50, 'Send OTP')
-                  : MmmButtons.enabledRedButton50bodyMedium('Send OTP'),
+                  : MmmButtons.enabledRedButton50bodyMedium('Send OTP',
+                      action: () {
+                      navigateToOtp();
+                    }),
               SizedBox(
                 height: 24,
               ),
@@ -211,77 +221,14 @@ class _PhoneTextFieldState extends State<PhoneTextField> {
       ),
     );
   }
-}
 
-Widget buildSheet() => Container(
-      child: Column(
-        children: [
-          Container(
-            height: 130,
-            padding: EdgeInsets.only(left: 16, top: 16, right: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: double.infinity,
-                ),
-                InkWell(
-                    onTap: () {},
-                    child: ShaderMask(
-                      shaderCallback: (bounds) => RadialGradient(
-                        center: Alignment.center,
-                        radius: 0.5,
-                        colors: [kPrimary, kSecondary],
-                        tileMode: TileMode.mirror,
-                      ).createShader(bounds),
-                      child: SvgPicture.asset(
-                        'images/leftArrow.svg',
-                        color: Colors.white,
-                        height: 24,
-                        width: 24,
-                      ),
-                    )),
-                SizedBox(
-                  height: 24,
-                ),
-                Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Color(0xffE2E0EB),
-                    borderRadius: BorderRadius.circular(8),
-                    boxShadow: [
-                      MmmShadow.elevation3(shadowColor: kShadowColorForWhite)
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.only(left: 16, right: 16, bottom: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 20,
-                  width: double.infinity,
-                ),
-                Text(
-                  'Select your country name',
-                  style: MmmTextStyles.bodyMedium(textColor: kDark5),
-                ),
-                SizedBox(
-                  height: 8,
-                ),
-                Container(
-                  height: 0,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: gray6, width: 0.5)),
-                ),
-                //ListView.separated(itemBuilder: itemBuilder, separatorBuilder: separatorBuilder, itemCount: itemCount)
-              ],
-            ),
-          )
-        ],
-      ),
-    );
+  navigateToRegister() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => CreateAccount()));
+  }
+
+  void navigateToOtp() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => OtpScreen()));
+  }
+}

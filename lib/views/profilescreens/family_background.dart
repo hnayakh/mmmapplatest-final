@@ -2,19 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
-import 'package:makemymarry/utils/elevations.dart';
-import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/text_styles.dart';
-import 'package:makemymarry/views/profilescreens/family.dart';
 
-class Occupation extends StatelessWidget {
-  String employtext = 'Select your organisation';
+class FamilyBackground extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return FamilyBackgroundState();
+  }
+}
 
-  String occupationtext = 'Select your occupation';
+class FamilyBackgroundState extends State<FamilyBackground> {
+  String familyStatustext = 'Select your family status';
+  String familyValuestext = 'Select your family values';
+  int brothers = 0;
+  int marriedBrothers = 0;
+  int sisters = 0;
+  int marriedSisters = 0;
 
-  String incometext = 'Select your annual income';
+  int value1 = 1;
 
-  String highestEdutext = 'Select your highest education';
+  int group = 0;
+
+  int value2 = 2;
 
   String countrytext = 'Select your country';
 
@@ -22,86 +31,24 @@ class Occupation extends StatelessWidget {
 
   String citytext = 'Select your city';
 
-  Occupation({Key? key}) : super(key: key);
+  String fatherOcctext = 'Select your father’s occupation';
+
+  String motherOcctext = 'Select your mother’s occupation';
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(74.0),
-        child: Container(
-          child: AppBar(
-            leading: Container(
-              margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
-              decoration: BoxDecoration(
-                  color: kLight2.withOpacity(0.60),
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
-                  boxShadow: [
-                    MmmShadow.elevationbBackButton(
-                        shadowColor: kShadowColorForWhite)
-                  ]),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: () {},
-                    child: Container(
-                        height: 32,
-                        width: 32,
-                        alignment: Alignment.center,
-                        child: SvgPicture.asset(
-                          'images/arrowLeft.svg',
-                          height: 17.45,
-                          width: 17.45,
-                          color: gray3,
-                        )),
-                  ),
-                ),
-              ),
-            ),
-            toolbarHeight: 74.0,
-            title: Text(
-              'Carrer',
-              style: MmmTextStyles.heading4(textColor: kLight2),
-            ),
-            backgroundColor: Colors.transparent,
-            elevation: 0.0,
-          ),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(bottomRight: Radius.circular(32)),
-            gradient: LinearGradient(
-                colors: [kPrimary, kSecondary],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight),
-          ),
-        ),
-        //preferredSize: Size(MediaQuery.of(context).size.width, 0.0),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: MmmIcons.rightArrowDisabled(),
-        onPressed: () {
-          navigateToFamily(context);
-        },
-        backgroundColor: gray5,
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.only(left: 16, right: 16),
+    return Container(
+        padding: kMargin16,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                SizedBox(
-                  height: 24,
-                ),
                 Column(
                   children: [
                     Row(
                       children: [
                         Text(
-                          'Employeed in',
+                          'Family Status',
                           textScaleFactor: 1.0,
                           style: MmmTextStyles.bodySmall(textColor: kDark5),
                         ),
@@ -118,7 +65,7 @@ class Occupation extends StatelessWidget {
                       height: 4,
                     ),
                     Container(
-                      height: 45,
+                      height: 40,
                       decoration: BoxDecoration(
                         color: kLight4,
                         borderRadius: BorderRadius.circular(8),
@@ -136,224 +83,11 @@ class Occupation extends StatelessWidget {
                               Container(
                                 width: 205,
                                 child: Text(
-                                  employtext,
+                                  familyStatustext,
                                   textScaleFactor: 1.0,
                                   textAlign: TextAlign.start,
-                                  style:
-                                      employtext == 'Select your organisation'
-                                          ? MmmTextStyles.bodyRegular(
-                                              textColor: kDark2)
-                                          : MmmTextStyles.bodyRegular(
-                                              textColor: kDark5),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 120,
-                              ),
-                              SvgPicture.asset(
-                                "images/rightArrow.svg",
-                                width: 24,
-                                height: 24,
-                                color: Color(0xff878D96),
-                                fit: BoxFit.cover,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 24,
-                ),
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          'Occupation',
-                          textScaleFactor: 1.0,
-                          style: MmmTextStyles.bodySmall(textColor: kDark5),
-                        ),
-                        SizedBox(
-                          width: 2,
-                        ),
-                        Text(
-                          '*',
-                          style: MmmTextStyles.bodySmall(textColor: kredStar),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 4,
-                    ),
-                    Container(
-                      height: 45,
-                      decoration: BoxDecoration(
-                        color: kLight4,
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(width: 1, color: kDark2),
-                      ),
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () {},
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 16,
-                              ),
-                              Container(
-                                width: 205,
-                                child: Text(
-                                  occupationtext,
-                                  textScaleFactor: 1.0,
-                                  textAlign: TextAlign.start,
-                                  style:
-                                      occupationtext == 'Select your occupation'
-                                          ? MmmTextStyles.bodyRegular(
-                                              textColor: kDark2)
-                                          : MmmTextStyles.bodyRegular(
-                                              textColor: kDark5),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 120,
-                              ),
-                              SvgPicture.asset(
-                                "images/rightArrow.svg",
-                                width: 24,
-                                height: 24,
-                                color: Color(0xff878D96),
-                                fit: BoxFit.cover,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 24,
-                ),
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          'Annual Income',
-                          textScaleFactor: 1.0,
-                          style: MmmTextStyles.bodySmall(textColor: kDark5),
-                        ),
-                        SizedBox(
-                          width: 2,
-                        ),
-                        Text(
-                          '*',
-                          style: MmmTextStyles.bodySmall(textColor: kredStar),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 4,
-                    ),
-                    Container(
-                      height: 45,
-                      decoration: BoxDecoration(
-                        color: kLight4,
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(width: 1, color: kDark2),
-                      ),
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () {},
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 16,
-                              ),
-                              Container(
-                                width: 221,
-                                child: Text(
-                                  incometext,
-                                  textScaleFactor: 1.0,
-                                  textAlign: TextAlign.start,
-                                  style:
-                                      incometext == 'Select your annual income'
-                                          ? MmmTextStyles.bodyRegular(
-                                              textColor: kDark2)
-                                          : MmmTextStyles.bodyRegular(
-                                              textColor: kDark5),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 105,
-                              ),
-                              SvgPicture.asset(
-                                "images/rightArrow.svg",
-                                width: 24,
-                                height: 24,
-                                color: Color(0xff878D96),
-                                fit: BoxFit.cover,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 24,
-                ),
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          'Highest Education',
-                          textScaleFactor: 1.0,
-                          style: MmmTextStyles.bodySmall(textColor: kDark5),
-                        ),
-                        SizedBox(
-                          width: 2,
-                        ),
-                        Text(
-                          '*',
-                          style: MmmTextStyles.bodySmall(textColor: kredStar),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 4,
-                    ),
-                    Container(
-                      height: 45,
-                      decoration: BoxDecoration(
-                        color: kLight4,
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(width: 1, color: kDark2),
-                      ),
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () {},
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 16,
-                              ),
-                              Container(
-                                width: 240,
-                                child: Text(
-                                  highestEdutext,
-                                  textScaleFactor: 1.0,
-                                  textAlign: TextAlign.start,
-                                  style: highestEdutext ==
-                                          'Select your highest education'
+                                  style: familyStatustext ==
+                                          'Select your family status'
                                       ? MmmTextStyles.bodyRegular(
                                           textColor: kDark2)
                                       : MmmTextStyles.bodyRegular(
@@ -361,7 +95,7 @@ class Occupation extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(
-                                width: 85,
+                                width: 120,
                               ),
                               SvgPicture.asset(
                                 "images/rightArrow.svg",
@@ -377,20 +111,161 @@ class Occupation extends StatelessWidget {
                     ),
                   ],
                 ),
+                SizedBox(
+                  height: 24,
+                ),
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          'Family Values',
+                          textScaleFactor: 1.0,
+                          style: MmmTextStyles.bodySmall(textColor: kDark5),
+                        ),
+                        SizedBox(
+                          width: 2,
+                        ),
+                        Text(
+                          '*',
+                          style: MmmTextStyles.bodySmall(textColor: kredStar),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    Container(
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: kLight4,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(width: 1, color: kDark2),
+                      ),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () {},
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 16,
+                              ),
+                              Container(
+                                width: 205,
+                                child: Text(
+                                  familyValuestext,
+                                  textScaleFactor: 1.0,
+                                  textAlign: TextAlign.start,
+                                  style: familyValuestext ==
+                                          'Select your family values'
+                                      ? MmmTextStyles.bodyRegular(
+                                          textColor: kDark2)
+                                      : MmmTextStyles.bodyRegular(
+                                          textColor: kDark5),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 120,
+                              ),
+                              SvgPicture.asset(
+                                "images/rightArrow.svg",
+                                width: 24,
+                                height: 24,
+                                color: Color(0xff878D96),
+                                fit: BoxFit.cover,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 24,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(top: 10, left: 8),
+                      child: Text(
+                        'Family Type',
+                        style: MmmTextStyles.bodyRegular(textColor: kDark5),
+                      ),
+                    ),
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Transform.scale(
+                            scale: 1.2,
+                            child: Radio(
+                                activeColor: Colors.pinkAccent,
+                                value: value1,
+                                groupValue: group,
+                                onChanged: (val) {
+                                  setState(() {
+                                    value1 = group;
+                                    value2 = 2;
+                                  });
+                                }),
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            'Nuclear Family',
+                            style: MmmTextStyles.bodySmall(textColor: kDark5),
+                          ),
+                          SizedBox(
+                            width: 22,
+                          ),
+                          Transform.scale(
+                            scale: 1.2,
+                            child: Radio(
+                                activeColor: Colors.pinkAccent,
+                                value: value2,
+                                groupValue: group,
+                                onChanged: (val) {
+                                  setState(() {
+                                    value2 = group;
+                                    value1 = 1;
+                                  });
+                                }),
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            'Joint Family',
+                            style: MmmTextStyles.bodySmall(textColor: kDark5),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  width: 360,
+                  decoration: BoxDecoration(
+                      border: Border.all(width: 1, color: kLight4)),
+                )
               ],
             ),
             SizedBox(
               height: 48,
             ),
             Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      'Current location of groom’s',
-                      style: MmmTextStyles.bodyMedium(textColor: kModalPrimary),
+                      '   Current location of groom’s family',
+                      style: MmmTextStyles.bodyMedium(textColor: kDark5),
                     ),
                   ],
                 ),
@@ -416,7 +291,7 @@ class Occupation extends StatelessWidget {
                       height: 4,
                     ),
                     Container(
-                      height: 45,
+                      height: 40,
                       decoration: BoxDecoration(
                         color: kLight4,
                         borderRadius: BorderRadius.circular(8),
@@ -486,7 +361,7 @@ class Occupation extends StatelessWidget {
                       height: 4,
                     ),
                     Container(
-                      height: 45,
+                      height: 40,
                       decoration: BoxDecoration(
                         color: kLight4,
                         borderRadius: BorderRadius.circular(8),
@@ -556,7 +431,7 @@ class Occupation extends StatelessWidget {
                       height: 4,
                     ),
                     Container(
-                      height: 45,
+                      height: 40,
                       decoration: BoxDecoration(
                         color: kLight4,
                         borderRadius: BorderRadius.circular(8),
@@ -601,16 +476,12 @@ class Occupation extends StatelessWidget {
                     ),
                   ],
                 ),
+                SizedBox(
+                  height: 20,
+                ),
               ],
-            ),
+            )
           ],
-        ),
-      ),
-    );
-  }
-
-  void navigateToFamily(BuildContext context) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => FamilyScreen()));
+        ));
   }
 }

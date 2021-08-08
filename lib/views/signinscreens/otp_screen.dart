@@ -3,11 +3,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/text_styles.dart';
+import 'package:makemymarry/views/profilescreens/about.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class OtpScreen extends StatefulWidget {
-  OtpScreen({Key key}) : super(key: key);
+  OtpScreen({Key? key}) : super(key: key);
 
   @override
   _OtpScreenState createState() => _OtpScreenState();
@@ -109,6 +110,7 @@ class _OtpScreenState extends State<OtpScreen> {
                 fieldWidth: 60,
               ),
               enableActiveFill: true,
+              keyboardType: TextInputType.number,
               appContext: context,
               onChanged: (value) {
                 setState(() {
@@ -117,59 +119,66 @@ class _OtpScreenState extends State<OtpScreen> {
               },
             ),
             TweenAnimationBuilder(
-              tween: Tween(begin: 30.0, end: 0),
-              duration: Duration(seconds: 30),
-              builder: (context, value, child) => value > 0
-                  ? Column(
+                tween: Tween(begin: 30.0, end: 0),
+                duration: Duration(seconds: 30),
+                builder: (context, value, child) => Column(
                       children: [
                         SizedBox(
                           height: 82,
                         ),
-                        Container(
-                          margin: EdgeInsets.only(left: 190),
-                          child: value > 10
-                              ? GradientText(
-                                  "0:${value.toInt()}",
-                                  style: MmmTextStyles.bodyMedium(),
-                                  colors: [kPrimary, kSecondary],
-                                )
-                              : GradientText(
-                                  "0:0${value.toInt()}",
-                                  style: MmmTextStyles.bodyMedium(),
-                                  colors: [kPrimary, kSecondary],
-                                ),
-                        ),
+                        // Container(
+                        //   margin: EdgeInsets.only(left: 190),
+                        //   child: value! > 10
+                        //       ? GradientText(
+                        //           "0:$value",
+                        //           style: MmmTextStyles.bodyMedium(),
+                        //           colors: [kPrimary, kSecondary],
+                        //         )
+                        //       : GradientText(
+                        //           "0:0$value",
+                        //           style: MmmTextStyles.bodyMedium(),
+                        //           colors: [kPrimary, kSecondary],
+                        //         ),
+                        // ),
                         SizedBox(
                           height: 24,
                         )
                       ],
                     )
-                  : Column(
-                      children: [
-                        SizedBox(
-                          height: 66,
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 17, right: 16),
-                          child: MmmButtons.enabledRedButton50bodyMedium(
-                              'Resend OTP'),
-                        ),
-                        SizedBox(
-                          height: 16,
-                        )
-                      ],
-                    ),
-            ),
+                // : Column(
+                //     children: [
+                //       SizedBox(
+                //         height: 66,
+                //       ),
+                //       Container(
+                //         margin: EdgeInsets.only(left: 17, right: 16),
+                //         child: MmmButtons.enabledRedButton50bodyMedium(
+                //             'Resend OTP'),
+                //       ),
+                //       SizedBox(
+                //         height: 16,
+                //       )
+                //     ],
+                //   ),
+                ),
             currentText.length < 4
                 ? Container(
                     margin: EdgeInsets.only(left: 17, right: 16),
                     child: MmmButtons.disabledGreyButton(50, 'Sign in'))
                 : Container(
                     margin: EdgeInsets.only(left: 17, right: 16),
-                    child: MmmButtons.enabledRedButton50bodyMedium('Sign in'))
+                    child: MmmButtons.enabledRedButton50bodyMedium('Sign in',
+                        action: () {
+                      navigateToProfileSetup();
+                    }))
           ],
         ),
       ),
     );
+  }
+
+  void navigateToProfileSetup() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => AboutScreen()));
   }
 }

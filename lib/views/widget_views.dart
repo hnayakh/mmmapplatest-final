@@ -7,7 +7,7 @@ class WidgetView extends StatefulWidget {
   final int pos;
   final String title;
 
-  const WidgetView({Key key, this.pos, this.title}) : super(key: key);
+  const WidgetView({Key? key, required this.pos, required this.title}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
