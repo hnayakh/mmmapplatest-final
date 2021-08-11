@@ -2,10 +2,156 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
+import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
 
 class MmmButtons {
+  static Widget categoryButton(String labelText, String hintText, String icon) {
+    String newhintText = hintText;
+    return Column(
+      children: [
+        Row(
+          children: [
+            Text(
+              labelText,
+              textScaleFactor: 1.0,
+              style: MmmTextStyles.bodySmall(textColor: kDark5),
+            ),
+            SizedBox(
+              width: 2,
+            ),
+            Text(
+              '*',
+              style: MmmTextStyles.bodySmall(textColor: kredStar),
+            )
+          ],
+        ),
+        SizedBox(
+          height: 4,
+        ),
+        Container(
+          height: 50,
+          decoration: BoxDecoration(
+            color: kLight4,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(width: 1, color: kDark2),
+          ),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {},
+              child: Container(
+                padding: EdgeInsets.only(left: 16, right: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    //SizedBox(
+                    //  width: 16,
+                    // ),
+                    Container(
+                      //width: 216,
+                      child: Text(
+                        newhintText,
+                        textScaleFactor: 1.0,
+                        textAlign: TextAlign.start,
+                        style: newhintText == hintText
+                            ? MmmTextStyles.bodyRegular(textColor: kDark2)
+                            : MmmTextStyles.bodyRegular(textColor: kDark5),
+                      ),
+                    ),
+                    // SizedBox(
+                    //width: 110,
+                    //  ),
+                    SvgPicture.asset(
+                      icon,
+                      width: 24,
+                      height: 24,
+                      color: Color(0xff878D96),
+                      fit: BoxFit.cover,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  static PreferredSize appBarCurved(String title) {
+    return PreferredSize(
+      preferredSize: Size.fromHeight(74.0),
+      child: Container(
+        child: AppBar(
+          leading: Container(
+            margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
+            decoration: BoxDecoration(
+                color: kLight2.withOpacity(0.60),
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+                boxShadow: [
+                  MmmShadow.elevationbBackButton(
+                      shadowColor: kShadowColorForWhite)
+                ]),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {},
+                  child: Container(
+                      height: 32,
+                      width: 32,
+                      alignment: Alignment.center,
+                      child: SvgPicture.asset(
+                        'images/arrowLeft.svg',
+                        height: 17.45,
+                        width: 17.45,
+                        color: gray3,
+                      )),
+                ),
+              ),
+            ),
+          ),
+          toolbarHeight: 74.0,
+          title: Text(
+            title,
+            style: MmmTextStyles.heading4(textColor: kLight2),
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(bottomRight: Radius.circular(32)),
+          gradient: LinearGradient(
+              colors: [kPrimary, kSecondary],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight),
+        ),
+      ),
+      //preferredSize: Size(MediaQuery.of(context).size.width, 0.0),
+    );
+  }
+
+  static PreferredSize appbarThin() {
+    return PreferredSize(
+      preferredSize: Size.fromHeight(0.0),
+      child: Container(
+        child: AppBar(
+          toolbarHeight: 0.0,
+          //title: Text(widget.title),
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+        ),
+        decoration: BoxDecoration(
+          gradient: MmmDecorations.primaryGradient(),
+        ),
+      ),
+      //preferredSize: Size(MediaQuery.of(context).size.width, 0.0),
+    );
+  }
+
   static Widget cameraimportButton() {
     return Container(
       height: 50,
@@ -151,7 +297,7 @@ class MmmButtons {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: ontap,
+          onTap: () => ontap,
           child: Row(
             children: [
               SizedBox(
@@ -250,13 +396,14 @@ class MmmButtons {
     );
   }
 
-  static Container enabledRedButton50bodyMedium(String text) {
+  static Container enabledRedButton50bodyMedium(String text,
+      {Function()? action}) {
     return Container(
       decoration: MmmDecorations.primaryButtonDecoration(),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {},
+          onTap: action,
           child: Container(
             padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
             alignment: Alignment.center,
@@ -323,7 +470,8 @@ class MmmButtons {
     );
   }
 
-  static Container disabledGreyButton(double containerHeight, String text) {
+  static Container disabledGreyButton(double containerHeight, String text,
+      {Function()? action}) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
@@ -332,7 +480,7 @@ class MmmButtons {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {},
+          onTap: action,
           child: Container(
             padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
             alignment: Alignment.center,
@@ -1380,10 +1528,12 @@ class MmmButtons {
     );
   }
 
-  static Widget backButton() {
+  static Widget backButton(BuildContext context) {
     return Container(
       child: InkWell(
-          onTap: () {},
+          onTap: () {
+            Navigator.of(context).pop();
+          },
           child: ShaderMask(
             shaderCallback: (bounds) => RadialGradient(
               center: Alignment.center,

@@ -1,33 +1,60 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:makemymarry/utils/dimens.dart';
 
 import 'package:makemymarry/utils/text_styles.dart';
-import 'package:makemymarry/utils/widgets_large.dart';
-import 'package:makemymarry/views/forgotpasswordscreens/forgot_password.dart';
-import 'package:makemymarry/views/forgotpasswordscreens/reset_password.dart';
 import 'package:makemymarry/views/profilescreens/about.dart';
 import 'package:makemymarry/views/profilescreens/bio.dart';
 import 'package:makemymarry/views/profilescreens/family.dart';
-import 'package:makemymarry/views/profilescreens/habits.dart';
+import 'package:makemymarry/views/profilescreens/family_background.dart';
+import 'package:makemymarry/views/profilescreens/family_details.dart';
 import 'package:makemymarry/views/profilescreens/occupation.dart';
 import 'package:makemymarry/views/profilescreens/religion.dart';
 import 'package:makemymarry/views/signinscreens/otp_screen.dart';
 import 'package:makemymarry/views/signinscreens/phone_screen.dart';
 import 'package:makemymarry/views/signinscreens/signin_screen1.dart';
 import 'package:makemymarry/views/signupscreens/create_account_screen.dart';
+
+import 'package:makemymarry/views/splash_screen.dart';
 import 'package:makemymarry/views/widget_views.dart';
 
-void main() {
-  runApp(MyApp());
-  if (Platform.isAndroid) {
-// The following two lines set the android status bar to be transparent immersive. Written after component rendering, in order to assign a value after rendering, override the status bar, the MaterialApp component will override this value before rendering.
-    SystemUiOverlayStyle systemUiOverlayStyle =
-        SystemUiOverlayStyle(statusBarColor: Colors.transparent);
-    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+class SimpleObserver extends BlocObserver {
+  @override
+  void onCreate(BlocBase bloc) {
+    print(bloc.state);
+    super.onCreate(bloc);
   }
+
+  @override
+  void onClose(BlocBase bloc) {
+    print(bloc.stream.toString());
+    super.onClose(bloc);
+  }
+
+  @override
+  void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
+    print(stackTrace);
+    super.onError(bloc, error, stackTrace);
+  }
+
+  @override
+  void onTransition(Bloc bloc, Transition transition) {
+    print(transition.toString());
+    super.onTransition(bloc, transition);
+  }
+
+  @override
+  void onChange(BlocBase bloc, Change change) {
+    print(change.toString());
+    super.onChange(bloc, change);
+  }
+}
+
+void main() {
+  Bloc.observer = SimpleObserver();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -38,11 +65,11 @@ class MyApp extends StatelessWidget {
       title: 'Make My Marry',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: "MakeMyMarry",
+        fontFamily: "MakeMyMarry", backgroundColor: Colors.white,
         // is not restarted.
         primarySwatch: Colors.pink,
       ),
-      home: FamilyScreen(),
+      home: CreateAccount(),
     );
   }
 }
@@ -92,6 +119,7 @@ class MyHomePageState extends State<MyHomePage> {
     'Cancel Icon',
     'Connect Icon',
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

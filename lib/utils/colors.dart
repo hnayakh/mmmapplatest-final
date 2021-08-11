@@ -32,3 +32,4 @@ const gray7 = Color(0xffFCFCFD);
 const kModalPrimary = Color(0xff423C5D);
 const kBio = Color(0xffC5C1D7);
 const kBioSecondary = Color(0xff8B83AF);
+const kWhite = Color(0xffFFFFFF);

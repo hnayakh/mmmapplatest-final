@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
-import 'package:makemymarry/utils/text_field.dart';
+
 import 'package:makemymarry/utils/text_styles.dart';
 
 class ForgotPassword extends StatefulWidget {
-  ForgotPassword({Key key}) : super(key: key);
+  ForgotPassword({Key? key}) : super(key: key);
 
   @override
   _ForgotPasswordState createState() => _ForgotPasswordState();
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
-  TextEditingController emailcontroller;
+  late TextEditingController emailcontroller;
 
   var controller;
 
@@ -22,24 +22,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(0.0),
-        child: Container(
-          child: AppBar(
-            toolbarHeight: 0.0,
-            //title: Text(widget.title),
-            backgroundColor: Colors.transparent,
-            elevation: 0.0,
-          ),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: [kPrimary, kSecondary],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight),
-          ),
-        ),
-        //preferredSize: Size(MediaQuery.of(context).size.width, 0.0),
-      ),
+      appBar: MmmButtons.appbarThin(),
       body: SingleChildScrollView(
         child: Container(
           padding: kMargin16,
@@ -49,7 +32,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               SizedBox(
                 height: 13,
               ),
-              MmmButtons.backButton(),
+              MmmButtons.backButton(context),
               SizedBox(
                 height: 26,
               ),

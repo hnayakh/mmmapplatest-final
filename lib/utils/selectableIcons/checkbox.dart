@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../colors.dart';
 
 class CheckboxIcon extends StatefulWidget {
-  const CheckboxIcon({Key key}) : super(key: key);
+  const CheckboxIcon({Key? key}) : super(key: key);
 
   @override
   _CheckboxIconState createState() => _CheckboxIconState();
