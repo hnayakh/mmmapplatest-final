@@ -69,7 +69,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.pink,
       ),
-      home: CreateAccount(),
+      home: FamilyScreen(),
     );
   }
 }
