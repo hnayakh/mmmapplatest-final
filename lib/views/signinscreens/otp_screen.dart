@@ -5,7 +5,6 @@ import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/profilescreens/about.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class OtpScreen extends StatefulWidget {
   OtpScreen({Key? key}) : super(key: key);
@@ -22,24 +21,7 @@ class _OtpScreenState extends State<OtpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(0.0),
-        child: Container(
-          child: AppBar(
-            toolbarHeight: 0.0,
-            //title: Text(widget.title),
-            backgroundColor: Colors.transparent,
-            elevation: 0.0,
-          ),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: [kPrimary, kSecondary],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight),
-          ),
-        ),
-        //preferredSize: Size(MediaQuery.of(context).size.width, 0.0),
-      ),
+      appBar: MmmButtons.appbarThin(),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,9 +79,9 @@ class _OtpScreenState extends State<OtpScreen> {
               length: 4,
               obscureText: false,
               pinTheme: PinTheme(
-                activeFillColor: Color(0xffFFFFFF),
-                selectedFillColor: Color(0xffFFFFFF),
-                inactiveFillColor: Color(0xffFFFFFF),
+                activeFillColor: kWhite,
+                selectedFillColor: kWhite,
+                inactiveFillColor: kWhite,
                 activeColor: gray3,
                 selectedColor: gray3,
                 inactiveColor: gray3,

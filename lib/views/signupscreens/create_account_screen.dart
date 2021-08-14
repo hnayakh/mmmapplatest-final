@@ -33,36 +33,19 @@ class _CreateAccountState extends State<CreateAccount> {
   TextEditingController passwordController = TextEditingController();
 
   bool checkboxvalue = false;
-  Color clr = kModalPrimary;
-  List<String> profiles = ['Self', 'Son', 'Daughter', 'Sister', 'Brother'];
 
-  late int profile;
+  List<String> categories = ['Self', 'Son', 'Daughter', 'Sister', 'Brother'];
 
-  String profiletext = 'Select profile created for';
+  late int category;
+
+  String hintText = 'Select profile created for';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(0.0),
-        child: Container(
-          child: AppBar(
-            toolbarHeight: 0.0,
-            //title: Text(widget.title),
-            backgroundColor: Colors.transparent,
-            elevation: 0.0,
-          ),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: [kPrimary, kSecondary],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight),
-          ),
-        ),
-        //preferredSize: Size(MediaQuery.of(context).size.width, 0.0),
-      ),
-      body: SafeArea(
+      appBar: MmmButtons.appbarThin(),
+      body: SingleChildScrollView(
           child: Container(
         padding: EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 10),
         child: Column(
@@ -70,7 +53,7 @@ class _CreateAccountState extends State<CreateAccount> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             topBar(context),
-            Expanded(
+            Container(
                 child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -134,7 +117,7 @@ class _CreateAccountState extends State<CreateAccount> {
                           Transform.scale(
                             scale: 1.2,
                             child: Radio(
-                                activeColor: Colors.pinkAccent,
+                                activeColor: kPrimary,
                                 value: value1,
                                 groupValue: group,
                                 onChanged: (val) {
@@ -158,7 +141,7 @@ class _CreateAccountState extends State<CreateAccount> {
                           Transform.scale(
                             scale: 1.2,
                             child: Radio(
-                                activeColor: Colors.pinkAccent,
+                                activeColor: kPrimary,
                                 value: value2,
                                 groupValue: group,
                                 onChanged: (val) {
@@ -391,11 +374,11 @@ class _CreateAccountState extends State<CreateAccount> {
                                 title: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(profiles[index],
+                                    Text(categories[index],
                                         style: MmmTextStyles.bodyMediumSmall(
-                                            textColor: profile == index
+                                            textColor: category == index
                                                 ? kPrimary
-                                                : clr)),
+                                                : kModalPrimary)),
                                     SizedBox(
                                       height: 8,
                                     ),
@@ -410,8 +393,8 @@ class _CreateAccountState extends State<CreateAccount> {
                                 onTap: () {
                                   Navigator.of(context).pop();
                                   setState(() {
-                                    profile = index;
-                                    profiletext = profiles[index];
+                                    category = index;
+                                    hintText = categories[index];
                                   });
                                 },
                               );
@@ -430,10 +413,10 @@ class _CreateAccountState extends State<CreateAccount> {
               Container(
                 width: 205,
                 child: Text(
-                  profiletext,
+                  hintText,
                   textScaleFactor: 1.0,
                   textAlign: TextAlign.start,
-                  style: profiletext == 'Select profile created for'
+                  style: hintText == 'Select profile created for'
                       ? MmmTextStyles.bodyRegular(textColor: kDark2)
                       : MmmTextStyles.bodyRegular(textColor: kDark5),
                 ),
@@ -445,7 +428,7 @@ class _CreateAccountState extends State<CreateAccount> {
                 "images/rightArrow.svg",
                 width: 24,
                 height: 24,
-                color: Color(0xff878D96),
+                color: kDark2,
                 fit: BoxFit.cover,
               ),
             ],
@@ -482,7 +465,6 @@ class _CreateAccountState extends State<CreateAccount> {
 }
 
 Widget buildProfileSheet() {
-  Color clr = kModalPrimary;
   List<String> profiles = ['Self', 'Son', 'Daughter', 'Sister', 'Brother'];
   return Container(
     padding: kMargin16,
@@ -521,7 +503,8 @@ Widget buildProfileSheet() {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(profiles[index],
-                        style: MmmTextStyles.bodyMediumSmall(textColor: clr)),
+                        style: MmmTextStyles.bodyMediumSmall(
+                            textColor: kModalPrimary)),
                     SizedBox(
                       height: 8,
                     ),

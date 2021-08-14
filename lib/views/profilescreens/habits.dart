@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/elevations.dart';
@@ -22,57 +23,7 @@ class _HabitScreenState extends State<HabitScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(74.0),
-        child: Container(
-          child: AppBar(
-            leading: Container(
-              margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
-              decoration: BoxDecoration(
-                  color: kLight2.withOpacity(0.60),
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
-                  boxShadow: [
-                    MmmShadow.elevationbBackButton(
-                        shadowColor: kShadowColorForWhite)
-                  ]),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: () {},
-                    child: Container(
-                        height: 32,
-                        width: 32,
-                        alignment: Alignment.center,
-                        child: SvgPicture.asset(
-                          'images/arrowLeft.svg',
-                          height: 17.45,
-                          width: 17.45,
-                          color: gray3,
-                        )),
-                  ),
-                ),
-              ),
-            ),
-            toolbarHeight: 74.0,
-            title: Text(
-              'Habits',
-              style: MmmTextStyles.heading4(textColor: kLight2),
-            ),
-            backgroundColor: Colors.transparent,
-            elevation: 0.0,
-          ),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(bottomRight: Radius.circular(32)),
-            gradient: LinearGradient(
-                colors: [kPrimary, kSecondary],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight),
-          ),
-        ),
-        //preferredSize: Size(MediaQuery.of(context).size.width, 0.0),
-      ),
+      appBar: MmmButtons.appBarCurved('Habits'),
       floatingActionButton: FloatingActionButton(
         child: MmmIcons.rightArrowDisabled(),
         onPressed: () {

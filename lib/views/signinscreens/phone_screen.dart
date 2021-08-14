@@ -30,21 +30,7 @@ class _SigninWithPhoneScreenState extends State<SigninWithPhoneScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(0.0),
-        child: Container(
-          child: AppBar(
-            toolbarHeight: 0.0,
-            //title: Text(widget.title),
-            backgroundColor: Colors.transparent,
-            elevation: 0.0,
-          ),
-          decoration: BoxDecoration(
-            gradient: MmmDecorations.primaryGradient(),
-          ),
-        ),
-        //preferredSize: Size(MediaQuery.of(context).size.width, 0.0),
-      ),
+      appBar: MmmButtons.appbarThin(),
       body: SingleChildScrollView(
         child: Container(
           padding: kMargin16,

@@ -9,7 +9,7 @@ import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
-import 'package:makemymarry/utils/view_decorations.dart';
+
 import 'package:makemymarry/views/forgotpasswordscreens/forgot_password.dart';
 import 'package:makemymarry/views/profilescreens/about.dart';
 import 'package:makemymarry/views/signinscreens/phone_screen.dart';
@@ -60,21 +60,7 @@ class SignInScreenState extends State<SignInScreen> {
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(0.0),
-          child: Container(
-            child: AppBar(
-              toolbarHeight: 0.0,
-              //title: Text(widget.title),
-              backgroundColor: Colors.transparent,
-              elevation: 0.0,
-            ),
-            decoration: BoxDecoration(
-              gradient: MmmDecorations.primaryGradient(),
-            ),
-          ),
-          //preferredSize: Size(MediaQuery.of(context).size.width, 0.0),
-        ),
+        appBar: MmmButtons.appbarThin(),
         body: Container(
           padding: kMargin16,
           child:
