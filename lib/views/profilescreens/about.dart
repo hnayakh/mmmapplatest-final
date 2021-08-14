@@ -148,11 +148,7 @@ class _AboutScreenState extends State<AboutScreen> {
                       onTap: () {},
                       child: Row(
                         children: [
-                          SizedBox(
-                            width: 16,
-                          ),
-                          Container(
-                            width: 205,
+                          Expanded(
                             child: Text(
                               datetext,
                               textScaleFactor: 1.0,
@@ -162,9 +158,6 @@ class _AboutScreenState extends State<AboutScreen> {
                                   : MmmTextStyles.bodyRegular(
                                       textColor: kDark5),
                             ),
-                          ),
-                          SizedBox(
-                            width: 120,
                           ),
                           SvgPicture.asset(
                             "images/Calendar.svg",

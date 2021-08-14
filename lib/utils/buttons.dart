@@ -334,7 +334,7 @@ class MmmButtons {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap:  action,
+          onTap: action,
           child: Container(
             padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
             alignment: Alignment.center,
@@ -1343,10 +1343,10 @@ class MmmButtons {
             color: Color(0xffF0EFF5),
             width: 1,
           ),
-          color: Color(0xffFF4D6D),
+          color: kShadowColorForPink,
           boxShadow: [
             BoxShadow(
-              color: Color(0xffFF4D6D).withOpacity(0.12),
+              color: kShadowColorForPink.withOpacity(0.12),
               blurRadius: 22.0,
               spreadRadius: 0.0,
               offset: Offset(0.0, 12.0),
@@ -1403,5 +1403,50 @@ class MmmButtons {
             ),
           )),
     );
+  }
+
+  static Widget buildOptionSelectWidget(
+      String hint, String iconName, String? text,
+      {Function()? action}) {
+    return Container(
+        height: 50,
+        decoration: BoxDecoration(
+          color: kLight4,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(width: 1, color: kDark2),
+        ),
+        child: InkWell(
+          onTap: action,
+          child: Row(
+            children: [
+              SizedBox(
+                width: 8,
+              ),
+              Expanded(
+                child: Text(
+                  text != null ? text : hint,
+                  textScaleFactor: 1.0,
+                  textAlign: TextAlign.start,
+                  style: text != null
+                      ? MmmTextStyles.bodyRegular(textColor: kDark2)
+                      : MmmTextStyles.bodyRegular(textColor: kDark5),
+                ),
+              ),
+              SizedBox(
+                width: 8,
+              ),
+              SvgPicture.asset(
+                "images/$iconName.svg",
+                width: 24,
+                height: 24,
+                color: Color(0xff878D96),
+                fit: BoxFit.cover,
+              ),
+              SizedBox(
+                width: 8,
+              ),
+            ],
+          ),
+        ));
   }
 }

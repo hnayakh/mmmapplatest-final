@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/elevations.dart';
@@ -97,7 +98,9 @@ class _ReligionState extends State<Religion> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            SizedBox(height: 24,),
+            SizedBox(
+              height: 24,
+            ),
             Column(
               children: [
                 Row(
@@ -164,7 +167,9 @@ class _ReligionState extends State<Religion> {
                 ),
               ],
             ),
-            SizedBox(height: 24,),
+            SizedBox(
+              height: 24,
+            ),
             Column(
               children: [
                 Row(
@@ -231,7 +236,9 @@ class _ReligionState extends State<Religion> {
                 ),
               ],
             ),
-            SizedBox(height: 24,),
+            SizedBox(
+              height: 24,
+            ),
             Column(
               children: [
                 Row(
@@ -298,7 +305,9 @@ class _ReligionState extends State<Religion> {
                 ),
               ],
             ),
-            SizedBox(height: 24,),
+            SizedBox(
+              height: 24,
+            ),
             Column(
               children: [
                 Row(
@@ -320,53 +329,17 @@ class _ReligionState extends State<Religion> {
                 SizedBox(
                   height: 4,
                 ),
-                Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: kLight4,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(width: 1, color: kDark2),
-                  ),
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () {},
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 16,
-                          ),
-                          Container(
-                            width: 221,
-                            child: Text(
-                              mothertonguetext,
-                              textScaleFactor: 1.0,
-                              textAlign: TextAlign.start,
-                              style: mothertonguetext ==
-                                      'Select your mother tongue'
-                                  ? MmmTextStyles.bodyRegular(textColor: kDark2)
-                                  : MmmTextStyles.bodyRegular(
-                                      textColor: kDark5),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 105,
-                          ),
-                          SvgPicture.asset(
-                            "images/rightArrow.svg",
-                            width: 24,
-                            height: 24,
-                            color: Color(0xff878D96),
-                            fit: BoxFit.cover,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                MmmButtons.buildOptionSelectWidget(
+                    "Select Your Mother Tongue",
+                    "rightArrow",
+                    mothertonguetext, action: () {
+                  print("hauchi");
+                }),
               ],
             ),
-            SizedBox(height: 24,),
+            SizedBox(
+              height: 24,
+            ),
             Column(
               children: [
                 Row(
@@ -433,7 +406,9 @@ class _ReligionState extends State<Religion> {
                 ),
               ],
             ),
-            SizedBox(height: 24,),
+            SizedBox(
+              height: 24,
+            ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -503,7 +478,6 @@ class _ReligionState extends State<Religion> {
   }
 
   void navigateToCarrer() {
-
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => Occupation()));
   }

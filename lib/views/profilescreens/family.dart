@@ -48,58 +48,43 @@ class _FamilyScreenState extends State<FamilyScreen>
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
+    return Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(150.0),
           child: Container(
             child: AppBar(
-              flexibleSpace: Column(
-                //mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  SizedBox(
-                    height: 95,
-                  ),
-                  Container(
-                    width: double.infinity,
-                    color: Color(0xffFFFFFF),
-                    height: 49,
-                    child: TabBar(
-                      controller: tabController,
-                      indicator: UnderlineTabIndicator(
-                          borderSide: BorderSide(
-                            width: 4.0,
-                            color: kPrimary,
-                          ),
-                          insets: EdgeInsets.symmetric(horizontal: 16.0)),
-                      automaticIndicatorColorAdjustment: true,
-                      labelColor: kPrimary,
-                      labelStyle: MmmTextStyles.heading6(),
-                      unselectedLabelColor: kDark5,
-                      unselectedLabelStyle: MmmTextStyles.heading6(),
-                      tabs: [
-                        Tab(
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Family Background',
-                            ),
-                          ),
-                        ),
-                        Tab(
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Family Details',
-                            ),
-                          ),
-                        )
-                      ],
+              bottom:TabBar(
+                controller: tabController,
+                indicator: UnderlineTabIndicator(
+                    borderSide: BorderSide(
+                      width: 4.0,
+                      color: kPrimary,
+                    ),
+                    insets: EdgeInsets.symmetric(horizontal: 16.0)),
+                automaticIndicatorColorAdjustment: true,
+                labelColor: kPrimary,
+                labelStyle: MmmTextStyles.heading6(),
+                unselectedLabelColor: kDark5,
+                unselectedLabelStyle: MmmTextStyles.heading6(),
+                tabs: [
+                  Tab(
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Family Background',
+                      ),
                     ),
                   ),
+                  Tab(
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Family Details',
+                      ),
+                    ),
+                  )
                 ],
-              ),
+              ) ,
               leading: Container(
                 margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
                 decoration: BoxDecoration(
@@ -130,23 +115,28 @@ class _FamilyScreenState extends State<FamilyScreen>
                 ),
               ),
               toolbarHeight: 74.0,
-              title: Text(
-                'Family',
-                style: MmmTextStyles.heading4(textColor: kLight2),
+              title: Container(
+                width: MediaQuery.of(context).size.width,
+                child:  Text(
+                  'Family',
+                  style: MmmTextStyles.heading4(textColor: kLight2),
+                ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(bottomRight: Radius.circular(32)),
+                    gradient: LinearGradient(
+                        colors: [kPrimary, kSecondary],
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight),
+                  )
               ),
               backgroundColor: Colors.transparent,
               elevation: 0.0,
             ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(bottomRight: Radius.circular(32)),
-              gradient: LinearGradient(
-                  colors: [kPrimary, kSecondary],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight),
-            ),
+
           ),
           //preferredSize: Size(MediaQuery.of(context).size.width, 0.0),
         ),
+
         floatingActionButton: FloatingActionButton(
           child: MmmIcons.rightArrowDisabled(),
           onPressed: () {
@@ -161,8 +151,7 @@ class _FamilyScreenState extends State<FamilyScreen>
             FamilyDetails(),
           ],
         ),
-      ),
-    );
+      );
   }
 
   void navigateTobio(BuildContext context) {
