@@ -420,7 +420,8 @@ class MmmButtons {
     );
   }
 
-  static Container enabledRedButtonbodyMedium(double height, String text) {
+  static Container enabledRedButtonbodyMedium(double height, String text,
+      {Function()? action}) {
     return Container(
       decoration: MmmDecorations.primaryButtonDecoration(),
       child: ClipRRect(
@@ -428,7 +429,7 @@ class MmmButtons {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () {},
+            onTap: action,
             child: Container(
               padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
               alignment: Alignment.center,

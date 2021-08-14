@@ -7,7 +7,7 @@ import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
 import 'package:makemymarry/views/signinscreens/otp_screen.dart';
-import 'package:makemymarry/views/signupscreens/create_account_screen.dart';
+import 'package:makemymarry/views/signupscreens/create_account/create_account_screen.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class SinginWithPhone extends StatelessWidget {
@@ -209,8 +209,8 @@ class _SigninWithPhoneScreenState extends State<SigninWithPhoneScreen> {
   }
 
   navigateToRegister() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => CreateAccount()));
+    // Navigator.of(context)
+    //     .push(MaterialPageRoute(builder: (context) => CreateAccount()));
   }
 
   void navigateToOtp() {

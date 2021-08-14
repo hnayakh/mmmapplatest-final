@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/bloc/sign_in/signin_bloc.dart';
+import 'package:makemymarry/bloc/sign_in/signin_state.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 
@@ -13,7 +14,7 @@ import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/forgotpasswordscreens/forgot_password.dart';
 import 'package:makemymarry/views/profilescreens/about.dart';
 import 'package:makemymarry/views/signinscreens/phone_screen.dart';
-import 'package:makemymarry/views/signupscreens/create_account_screen.dart';
+import 'package:makemymarry/views/signupscreens/create_account/create_account_screen.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class SignIn extends StatelessWidget {
@@ -61,141 +62,150 @@ class SignInScreenState extends State<SignInScreen> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: MmmButtons.appbarThin(),
-        body: Container(
-          padding: kMargin16,
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            Container(
-              margin: const EdgeInsets.only(top: 4),
-              child: Text(
-                'Sign in to find your\nperfect partner',
-                style: MmmTextStyles.heading2(textColor: kDark5),
-              ),
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            Container(
+        body: BlocConsumer<SignInBloc, SigninState>(
+          builder: (context, state) {
+            return Container(
+              padding: kMargin16,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  MmmTextFileds.textFiledWithLabel(
-                      "Email", _hint, emailController,
-                      inputType: TextInputType.emailAddress),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  MmmTextFileds.textFiledWithLabel(
-                      "Password", _hint2, passwordController,
-                      inputType: TextInputType.emailAddress, isPassword: true),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  Container(
-                      //padding: kMargin4,
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          navigateToForgotPassword();
-                        },
-                        child: GradientText(
-                          'Forgot password?',
-                          style: MmmTextStyles.bodySmall(),
-                          colors: [kPrimary, kSecondary],
-                        ),
-                      )
-                    ],
-                  )),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  Container(
-                      child: MmmButtons.disabledGreyButton(50, 'Sign in',
-                          action: () {
-                    navigateToProfileSetup();
-                  })),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                          child: Container(
-                        height: 1,
-                        color: gray5,
-                      )),
-                      Container(
-                        width: 27,
-                        height: 22,
-                        alignment: Alignment.center,
-                        child: Text(
-                          'OR',
-                          textAlign: TextAlign.center,
-                          style:
-                              MmmTextStyles.bodyMediumSmall(textColor: kDark2),
-                        ),
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(top: 4),
+                      child: Text(
+                        'Sign in to find your\nperfect partner',
+                        style: MmmTextStyles.heading2(textColor: kDark5),
                       ),
-                      Expanded(
-                          child: Container(
-                        height: 1,
-                        color: gray5,
-                      )),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(child: MmmButtons.facebookSigninButton()),
-                      SizedBox(
-                        width: 16,
-                      ),
-                      Expanded(child: MmmButtons.googleSigninButton())
-                    ],
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Container(
-                    child: MmmButtons.enabledRedButton50bodyMedium(
-                        'Connect via OTP', action: () {
-                      navigateToSigninWithMobile();
-                    }),
-                  ),
-                  SizedBox(
-                    height: 19,
-                  )
-                ],
-              ),
-            ),
-            Container(
-              //margin: const EdgeInsets.only(bottom: 44, top: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    //padding: const EdgeInsets.only(top: 2),
-                    child: Text('Dont have an account?',
-                        textScaleFactor: 1.0,
-                        style: MmmTextStyles.bodySmall(textColor: kDark5)),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      navigateToRegister();
-                    },
-                    child: GradientText(
-                      ' Signup',
-                      style: MmmTextStyles.bodyMedium(),
-                      colors: [kPrimary, kSecondary],
                     ),
-                  )
-                ],
-              ),
-            ),
-          ]),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          MmmTextFileds.textFiledWithLabel(
+                              "Email", _hint, emailController,
+                              inputType: TextInputType.emailAddress),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          MmmTextFileds.textFiledWithLabel(
+                              "Password", _hint2, passwordController,
+                              inputType: TextInputType.emailAddress,
+                              isPassword: true),
+                          SizedBox(
+                            height: 24,
+                          ),
+                          Container(
+                              //padding: kMargin4,
+                              child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  navigateToForgotPassword();
+                                },
+                                child: GradientText(
+                                  'Forgot password?',
+                                  style: MmmTextStyles.bodySmall(),
+                                  colors: [kPrimary, kSecondary],
+                                ),
+                              )
+                            ],
+                          )),
+                          SizedBox(
+                            height: 24,
+                          ),
+                          Container(
+                              child: MmmButtons.disabledGreyButton(
+                                  50, 'Sign in', action: () {
+                            navigateToProfileSetup();
+                          })),
+                          SizedBox(
+                            height: 24,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                  child: Container(
+                                height: 1,
+                                color: gray5,
+                              )),
+                              Container(
+                                width: 27,
+                                height: 22,
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'OR',
+                                  textAlign: TextAlign.center,
+                                  style: MmmTextStyles.bodyMediumSmall(
+                                      textColor: kDark2),
+                                ),
+                              ),
+                              Expanded(
+                                  child: Container(
+                                height: 1,
+                                color: gray5,
+                              )),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 24,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                  child: MmmButtons.facebookSigninButton()),
+                              SizedBox(
+                                width: 16,
+                              ),
+                              Expanded(child: MmmButtons.googleSigninButton())
+                            ],
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Container(
+                            child: MmmButtons.enabledRedButton50bodyMedium(
+                                'Connect via OTP', action: () {
+                              navigateToSigninWithMobile();
+                            }),
+                          ),
+                          SizedBox(
+                            height: 19,
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      //margin: const EdgeInsets.only(bottom: 44, top: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            //padding: const EdgeInsets.only(top: 2),
+                            child: Text('Dont have an account?',
+                                textScaleFactor: 1.0,
+                                style:
+                                    MmmTextStyles.bodySmall(textColor: kDark5)),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              navigateToRegister();
+                            },
+                            child: GradientText(
+                              ' Signup',
+                              style: MmmTextStyles.bodyMedium(),
+                              colors: [kPrimary, kSecondary],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ]),
+            );
+          },
+          listener: (context, state) {},
         ),
       ),
     );
@@ -212,8 +222,11 @@ class SignInScreenState extends State<SignInScreen> {
   }
 
   navigateToRegister() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => CreateAccount()));
+    var userRepo = BlocProvider.of<SignInBloc>(context).userRepository;
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => CreateAccount(
+              userRepository: userRepo,
+            )));
   }
 
   void navigateToProfileSetup() {

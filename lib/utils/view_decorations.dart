@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/elevations.dart';
+import 'package:makemymarry/utils/text_styles.dart';
 
 class MmmDecorations {
   static BoxDecoration primaryButtonDecoration() {
@@ -29,5 +31,22 @@ class MmmDecorations {
         colors: [kPrimary, kSecondary],
         begin: Alignment.centerLeft,
         end: Alignment.centerRight);
+  }
+
+  static InputDecoration textfieldDecoration(String hintText) {
+    return InputDecoration(
+        border: OutlineInputBorder(
+            borderSide: BorderSide(color: kDark2, width: 1),
+            borderRadius: BorderRadius.circular(8)),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+            borderSide: BorderSide(color: kInputBorder, width: 1)),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+        hintText: hintText,
+        isDense: true,
+        filled: true,
+        fillColor: kLight4,
+        hintStyle: MmmTextStyles.bodyRegular(textColor: kDark2));
   }
 }
