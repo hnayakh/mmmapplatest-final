@@ -7,6 +7,80 @@ import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
 
 class MmmButtons {
+  static Widget categoryButtons(String labelText, String hintText, String icon,
+      {Function()? action}) {
+    String newhintText = hintText;
+    return Column(
+      children: [
+        Row(
+          children: [
+            Text(
+              labelText,
+              textScaleFactor: 1.0,
+              style: MmmTextStyles.bodySmall(textColor: kDark5),
+            ),
+            SizedBox(
+              width: 2,
+            ),
+            Text(
+              '*',
+              style: MmmTextStyles.bodySmall(textColor: kredStar),
+            )
+          ],
+        ),
+        SizedBox(
+          height: 4,
+        ),
+        Container(
+          height: 50,
+          decoration: BoxDecoration(
+            color: kLight4,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(width: 1, color: kDark2),
+          ),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: action,
+              child: Container(
+                padding: EdgeInsets.only(left: 16, right: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    //SizedBox(
+                    //  width: 16,
+                    // ),
+                    Container(
+                      //width: 216,
+                      child: Text(
+                        newhintText,
+                        textScaleFactor: 1.0,
+                        textAlign: TextAlign.start,
+                        style: newhintText == hintText
+                            ? MmmTextStyles.bodyRegular(textColor: kDark2)
+                            : MmmTextStyles.bodyRegular(textColor: kDark5),
+                      ),
+                    ),
+                    // SizedBox(
+                    //width: 110,
+                    //  ),
+                    SvgPicture.asset(
+                      icon,
+                      width: 24,
+                      height: 24,
+                      color: Color(0xff878D96),
+                      fit: BoxFit.cover,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   static Widget categoryButton(String labelText, String hintText, String icon) {
     String newhintText = hintText;
     return Column(
@@ -420,7 +494,8 @@ class MmmButtons {
     );
   }
 
-  static Container enabledRedButtonbodyMedium(double height, String text) {
+  static Container enabledRedButtonbodyMedium(double height, String text,
+      {Function()? action}) {
     return Container(
       decoration: MmmDecorations.primaryButtonDecoration(),
       child: ClipRRect(
@@ -428,7 +503,7 @@ class MmmButtons {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () {},
+            onTap: action,
             child: Container(
               padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
               alignment: Alignment.center,
@@ -1489,10 +1564,10 @@ class MmmButtons {
             color: Color(0xffF0EFF5),
             width: 1,
           ),
-          color: Color(0xffFF4D6D),
+          color: kShadowColorForPink,
           boxShadow: [
             BoxShadow(
-              color: Color(0xffFF4D6D).withOpacity(0.12),
+              color: kShadowColorForPink.withOpacity(0.12),
               blurRadius: 22.0,
               spreadRadius: 0.0,
               offset: Offset(0.0, 12.0),
@@ -1549,5 +1624,50 @@ class MmmButtons {
             ),
           )),
     );
+  }
+
+  static Widget buildOptionSelectWidget(
+      String hint, String iconName, String? text,
+      {Function()? action}) {
+    return Container(
+        height: 50,
+        decoration: BoxDecoration(
+          color: kLight4,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(width: 1, color: kDark2),
+        ),
+        child: InkWell(
+          onTap: action,
+          child: Row(
+            children: [
+              SizedBox(
+                width: 8,
+              ),
+              Expanded(
+                child: Text(
+                  text != null ? text : hint,
+                  textScaleFactor: 1.0,
+                  textAlign: TextAlign.start,
+                  style: text != null
+                      ? MmmTextStyles.bodyRegular(textColor: kDark2)
+                      : MmmTextStyles.bodyRegular(textColor: kDark5),
+                ),
+              ),
+              SizedBox(
+                width: 8,
+              ),
+              SvgPicture.asset(
+                "images/$iconName.svg",
+                width: 24,
+                height: 24,
+                color: Color(0xff878D96),
+                fit: BoxFit.cover,
+              ),
+              SizedBox(
+                width: 8,
+              ),
+            ],
+          ),
+        ));
   }
 }

@@ -15,7 +15,7 @@ import 'package:makemymarry/views/profilescreens/religion.dart';
 import 'package:makemymarry/views/signinscreens/otp_screen.dart';
 import 'package:makemymarry/views/signinscreens/phone_screen.dart';
 import 'package:makemymarry/views/signinscreens/signin_screen1.dart';
-import 'package:makemymarry/views/signupscreens/create_account_screen.dart';
+import 'package:makemymarry/views/signupscreens/create_account/create_account_screen.dart';
 
 import 'package:makemymarry/views/splash_screen.dart';
 import 'package:makemymarry/views/widget_views.dart';
@@ -69,7 +69,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.pink,
       ),
-      home: FamilyScreen(),
+      home: Splash(),
     );
   }
 }

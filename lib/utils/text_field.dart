@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:makemymarry/utils/text_styles.dart';
+import 'package:makemymarry/utils/view_decorations.dart';
 
 import 'colors.dart';
 
@@ -86,20 +87,7 @@ class MmmTextFileds {
               style: MmmTextStyles.bodyRegular(textColor: kDark5),
               cursorColor: kDark5,
               obscureText: isPassword,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide(color: kDark2, width: 1),
-                      borderRadius: BorderRadius.circular(8)),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                      borderSide: BorderSide(color: kInputBorder, width: 1)),
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                  hintText: hintText,
-                  isDense: true,
-                  filled: true,
-                  fillColor: kLight4,
-                  hintStyle: MmmTextStyles.bodyRegular(textColor: kDark2)),
+              decoration: MmmDecorations.textfieldDecoration(hintText),
             ),
           ),
         ],
