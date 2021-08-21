@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:dio_logger/dio_logger.dart';
+import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
@@ -83,6 +84,25 @@ class ApiClient {
         print(error.message);
       }
       return SigninResponse.fromError("Error Occurred. Please try againa.");
+    }
+  }
+
+  Future<MasterDataResponse> getMasterData(String? userId) async {
+    try {
+      Response response = await this.dio.get(
+          AppConstants.ENDPOINT + "masters/profile-raw-data",
+          queryParameters: userId != null ? {"userBasicId": userId} : {});
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return MasterDataResponse.fromJson(response.data);
+      } else {
+        return MasterDataResponse.fromError(
+            "Error Occurred. Please try againa.");
+      }
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      return MasterDataResponse.fromError("Error Occurred. Please try againa.");
     }
   }
 }

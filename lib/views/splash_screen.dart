@@ -47,7 +47,7 @@ class SplashScreenState extends State<SplashScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Image.asset(
-                    "images/app_icon.png",
+                    "images/app_loader2.gif",
                     width: 120,
                     height: 120,
                   ),
@@ -61,15 +61,15 @@ class SplashScreenState extends State<SplashScreen> {
                 ],
               ),
             ),
-            Center(
-              child: Platform.isAndroid
-                  ? CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation(kPrimary),
-                    )
-                  : CupertinoActivityIndicator(
-                      animating: true,
-                    ),
-            )
+            // Center(
+            //   child: Platform.isAndroid
+            //       ? CircularProgressIndicator(
+            //           valueColor: AlwaysStoppedAnimation(kPrimary),
+            //         )
+            //       : CupertinoActivityIndicator(
+            //           animating: true,
+            //         ),
+            // )
           ],
         );
       }, listener: (context, state) {
@@ -83,14 +83,13 @@ class SplashScreenState extends State<SplashScreen> {
   }
 
   void navigateToIntroScreen() {
-    Timer(Duration(seconds: 3), (){
+    Timer(Duration(seconds: 3), () {
       var userRepo = BlocProvider.of<SplashBloc>(context).userRepository;
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => IntroScreen(
-            userRepository: userRepo,
-          )));
+                userRepository: userRepo,
+              )));
     });
-
   }
 
   void navigateToLogin() {
