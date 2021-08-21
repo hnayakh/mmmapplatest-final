@@ -3,6 +3,7 @@ import 'package:dio_logger/dio_logger.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/utils/app_constants.dart';
+import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 
 class ApiClient {
@@ -61,19 +62,19 @@ class ApiClient {
       MaritalStatus? maritalStatus,
       AbilityStatus? abilityStatus,
       ChildrenStatus? childrenStatus,
-      HeightStatus? heightStatus,
+      int? heightStatus,
       String? dob,
-      String? name) async {
+      String? name,String userId) async {
     try {
       Response response =
           await this.dio.post(AppConstants.ENDPOINT + "users/about", data: {
-        "userBasicId": "c6feebb2-f5db-4958-b719-1edfca0d603e",
+        "userBasicId": userId,
         "name": name,
         "dateOfBirth": dob,
-        "maritalStatus": maritalStatus,
-        "childrenStatus": childrenStatus,
-        "abilityStatus": abilityStatus,
-        "height": heightStatus
+        "maritalStatus": maritalStatus!.index,
+        "childrenStatus": childrenStatus!.index,
+        "abilityStatus": abilityStatus!.index,
+        "height": AppHelper.getHeights()[heightStatus!]
       });
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SigninResponse.fromJson(response.data);

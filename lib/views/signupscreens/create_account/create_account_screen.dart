@@ -11,6 +11,7 @@ import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
+import 'package:makemymarry/views/profilescreens/about.dart';
 import 'package:makemymarry/views/signupscreens/create_account/create_account_bloc.dart';
 import 'package:makemymarry/views/signupscreens/create_account/create_account_event.dart';
 import 'package:makemymarry/views/signupscreens/create_account/profile_create_for_bottom_sheet.dart';
@@ -284,9 +285,12 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                   ],
                 )),
                 state is OnLoading
-                    ? Container(
-                        height: 50,
-                        child: CircularProgressIndicator(),
+                    ? Center(
+                        child: Container(
+                          height: 50,
+                          width: 50,
+                          child: CircularProgressIndicator(),
+                        ),
                       )
                     : acceptTerms
                         ? MmmButtons.enabledRedButtonbodyMedium(50, 'Sign up',
@@ -303,7 +307,11 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
             ),
           ));
         },
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is OnSignUp) {
+            navigateToAbout();
+          }
+        },
       ),
     );
   }
@@ -448,5 +456,11 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
     this.selectedCountry =
         BlocProvider.of<CreateAccountBloc>(context).selectedCountry;
     this.acceptTerms = BlocProvider.of<CreateAccountBloc>(context).acceptTerms;
+  }
+
+  void navigateToAbout() {
+    var userRepo = BlocProvider.of<CreateAccountBloc>(context).userRepository;
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => About(userRepository: userRepo)));
   }
 }

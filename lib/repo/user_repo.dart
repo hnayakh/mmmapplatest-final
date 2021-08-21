@@ -37,11 +37,11 @@ class UserRepository {
       MaritalStatus? maritalStatus,
       AbilityStatus? abilityStatus,
       ChildrenStatus? childrenStatus,
-      HeightStatus? heightStatus,
+      int? heightStatus,
       String? dob,
       String? name) async {
-    return this.apiClient.aboutVerification(
-        maritalStatus, abilityStatus, childrenStatus, heightStatus, dob, name);
+    return this.apiClient.aboutVerification(maritalStatus, abilityStatus,
+        childrenStatus, heightStatus, dob, name, this.useDetails!.id);
   }
 
   Future<MasterDataResponse> getMasterData() async {

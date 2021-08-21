@@ -7,11 +7,12 @@ import 'package:makemymarry/utils/mmm_enums.dart';
 
 class AboutBloc extends Bloc<AboutEvent, AboutState> {
   late final UserRepository userRepository;
+
   AboutBloc(this.userRepository) : super(AboutInitialState());
   MaritalStatus? maritalStatus;
   AbilityStatus? abilityStatus;
   ChildrenStatus? childrenStatus;
-  HeightStatus? heightStatus;
+  int? heightStatus;
   String? dob;
   String? name;
 
@@ -37,13 +38,8 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
     if (event is OnDOBSelected) {
       this.dob = event.dob;
     }
-    if (event is OnNavigationButtonClicked) {
+    if (event is OnAboutDone) {
       this.name = event.name;
-      this.maritalStatus = event.ms;
-      this.heightStatus = event.height;
-      this.dob = event.dob;
-      this.childrenStatus = event.childrenStatus;
-      this.abilityStatus = event.abilityStatus;
       if (this.name == '') {
         yield OnError('Enter valid username.');
       } else if (this.maritalStatus == null) {

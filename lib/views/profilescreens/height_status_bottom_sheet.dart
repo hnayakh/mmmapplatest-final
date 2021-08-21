@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
@@ -7,7 +8,8 @@ import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 
 class HeightStatusBottomSheet extends StatelessWidget {
-  final HeightStatus? selectedHeightStatus;
+  final int? selectedHeightStatus;
+
   const HeightStatusBottomSheet({Key? key, this.selectedHeightStatus})
       : super(key: key);
 
@@ -24,7 +26,7 @@ class HeightStatusBottomSheet extends StatelessWidget {
               height: 24,
             ),
             Text(
-              'Select profile created for:',
+              'Select Height:',
               style: MmmTextStyles.bodyMedium(textColor: kDark5),
             ),
             SizedBox(
@@ -48,10 +50,9 @@ class HeightStatusBottomSheet extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(describeEnum(HeightStatus.values[index]),
+                          Text('${AppHelper.getHeights()[index]} cm',
                               style: MmmTextStyles.bodyMediumSmall(
-                                  textColor: HeightStatus.values[index] ==
-                                          this.selectedHeightStatus
+                                  textColor: index == this.selectedHeightStatus
                                       ? kPrimary
                                       : kModalPrimary)),
                           SizedBox(
@@ -64,11 +65,11 @@ class HeightStatusBottomSheet extends StatelessWidget {
                       ),
                     ),
                     onTap: () {
-                      Navigator.of(context).pop(HeightStatus.values[index]);
+                      Navigator.of(context).pop(index);
                     },
                   );
                 },
-                itemCount: HeightStatus.values.length,
+                itemCount: AppHelper.getHeights().length,
                 // separatorBuilder: (context, index) {
                 //   return Divider(
                 //     color: kLight4,

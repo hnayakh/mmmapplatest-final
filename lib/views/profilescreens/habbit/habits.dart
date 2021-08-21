@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
@@ -8,9 +10,18 @@ import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/profilescreens/religion.dart';
 
-class HabitScreen extends StatefulWidget {
-  HabitScreen({Key? key}) : super(key: key);
+class Habbit extends StatelessWidget {
+  final UserRepository userRepository;
 
+  const Habbit({Key? key, required this.userRepository}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return HabitScreen();
+  }
+}
+
+class HabitScreen extends StatefulWidget {
   @override
   _HabitScreenState createState() => _HabitScreenState();
 }

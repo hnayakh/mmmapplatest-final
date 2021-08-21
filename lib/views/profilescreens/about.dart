@@ -6,7 +6,9 @@ import 'package:intl/intl.dart';
 import 'package:makemymarry/bloc/about/about_bloc.dart';
 import 'package:makemymarry/bloc/about/about_event.dart';
 import 'package:makemymarry/bloc/about/about_state.dart';
+import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/repo/user_repo.dart';
+import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
@@ -19,7 +21,7 @@ import 'package:makemymarry/utils/view_decorations.dart';
 import 'package:makemymarry/views/profilescreens/height_status_bottom_sheet.dart';
 import 'package:makemymarry/views/profilescreens/marital_status_bottom_sheet.dart';
 
-import 'habits.dart';
+import 'habbit/habits.dart';
 
 class About extends StatelessWidget {
   final UserRepository userRepository;
@@ -51,10 +53,11 @@ class _AboutScreenState extends State<AboutScreen> {
   MaritalStatus? maritalStatus;
 
   String heightStatusHintText = 'Select your height';
-  String dobHintText = 'DD/MM/YYYY';
+  String dobHintText = 'dd MMM yyyy';
 
-  HeightStatus? heightStatus;
-  final dateFormat = DateFormat('yyyy-mm-dd');
+  int? heightStatus;
+  final dateFormat = DateFormat('dd MMM yyyy');
+  late UserDetails userDetails;
 
   @override
   Widget build(BuildContext context) {
@@ -65,237 +68,226 @@ class _AboutScreenState extends State<AboutScreen> {
       floatingActionButton: FloatingActionButton(
         child: MmmIcons.rightArrowDisabled(),
         onPressed: () {
-          // BlocProvider.of<AboutBloc>(context).add(OnNavigationButtonClicked(
-          // namecontroller.text.trim(),
-          // ms,
-          //  height,
-          // childrenStatus,
-          // abilityStatus,
-          // dob)
-          //  );
+          BlocProvider.of<AboutBloc>(context).add(OnAboutDone(
+            namecontroller.text.trim(),
+          ));
         },
         backgroundColor: gray5,
       ),
       body: BlocConsumer<AboutBloc, AboutState>(
         listener: (context, state) {
-          // TODO: implement listener
+          if (state is OnError) {
+            Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text(state.message),
+              backgroundColor: kError,
+            ));
+          }
+          if (state is OnNavigationToHabits) {
+            navigateToHabits();
+          }
         },
         builder: (context, state) {
           initData();
-          return SingleChildScrollView(
-            child: Container(
-              padding: kMargin16,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 24,
-                  ),
-                  MmmTextFileds.textFiledWithLabelStar(
-                      'Name of Son/Daughter/Sister/Brother',
-                      "Enter Son's name",
-                      namecontroller),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  MmmButtons.categoryButtons(
-                      'Date of birth', dobHintText, 'images/Calendar.svg',
-                      action: () {
-                    showDate(context);
-                  }),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  MmmButtons.categoryButtons(
-                      'Marital Status',
-                      maritalStatusHintText,
-                      'images/rightArrow.svg', action: () {
-                    showMaritalStatusBottomSheet();
-                  }),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 8),
-                    child: Text(
-                      'Children',
-                      style: MmmTextStyles.bodyRegular(textColor: kDark5),
-                    ),
-                  ),
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Transform.scale(
-                          scale: 1.2,
-                          child: Radio(
-                              activeColor: kPrimary,
-                              value: ChildrenStatus.YesLivingTogether,
-                              groupValue: childrenStatus,
-                              onChanged: (val) {
-                                BlocProvider.of<AboutBloc>(context).add(
-                                    OnChildrenSelected(
-                                        ChildrenStatus.YesLivingTogether));
-                              }),
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Text(
-                          'Yes Living Together',
-                          style: MmmTextStyles.bodySmall(textColor: kDark5),
-                        ),
-                        SizedBox(
-                          width: 22,
-                        ),
-                        Transform.scale(
-                          scale: 1.2,
-                          child: Radio(
-                              activeColor: kPrimary,
-                              value: ChildrenStatus.No,
-                              groupValue: childrenStatus,
-                              onChanged: (val) {
-                                BlocProvider.of<AboutBloc>(context)
-                                    .add(OnChildrenSelected(ChildrenStatus.No));
-                              }),
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Text(
-                          'No',
-                          style: MmmTextStyles.bodySmall(textColor: kDark5),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Transform.scale(
-                          scale: 1.2,
-                          child: Radio(
-                              activeColor: kPrimary,
-                              value: ChildrenStatus.YesNotLivingTogether,
-                              groupValue: childrenStatus,
-                              onChanged: (val) {
-                                BlocProvider.of<AboutBloc>(context).add(
-                                    OnChildrenSelected(
-                                        ChildrenStatus.YesNotLivingTogether));
-                              }),
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Text(
-                          'Yes Not Living Together',
-                          style: MmmTextStyles.bodySmall(textColor: kDark5),
-                        ),
-                        SizedBox(
-                          width: 22,
-                        ),
-                        Transform.scale(
-                          scale: 1.2,
-                          child: Radio(
-                              activeColor: kPrimary,
-                              value: ChildrenStatus.No,
-                              groupValue: childrenStatus,
-                              onChanged: (val) {
-                                BlocProvider.of<AboutBloc>(context)
-                                    .add(OnChildrenSelected(ChildrenStatus.No));
-                              }),
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Text(
-                          'No',
-                          style: MmmTextStyles.bodySmall(textColor: kDark5),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  MmmButtons.categoryButtons(
-                      'Height', heightStatusHintText, 'images/rightArrow.svg',
-                      action: () {
-                    showHeightStatusBottomSheet();
-                  }),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(left: 8),
-                        child: Text(
-                          'Disability',
-                          style: MmmTextStyles.bodyRegular(textColor: kDark5),
-                        ),
-                      ),
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Transform.scale(
-                              scale: 1.2,
-                              child: Radio(
-                                  activeColor: kPrimary,
-                                  value: AbilityStatus.Normal,
-                                  groupValue: abilityStatus,
-                                  onChanged: (val) {
-                                    BlocProvider.of<AboutBloc>(context).add(
-                                        OnDisabilitySelected(
-                                            AbilityStatus.Normal));
-                                  }),
-                            ),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            Text(
-                              'Normal',
-                              style: MmmTextStyles.bodySmall(textColor: kDark5),
-                            ),
-                            SizedBox(
-                              width: 22,
-                            ),
-                            Transform.scale(
-                              scale: 1.2,
-                              child: Radio(
-                                  activeColor: kPrimary,
-                                  value: AbilityStatus.PhysicallyChallenged,
-                                  groupValue: abilityStatus,
-                                  onChanged: (val) {
-                                    BlocProvider.of<AboutBloc>(context).add(
-                                        OnDisabilitySelected(AbilityStatus
-                                            .PhysicallyChallenged));
-                                  }),
-                            ),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            Text(
-                              'Physically Challenged',
-                              style: MmmTextStyles.bodySmall(textColor: kDark5),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ],
+          return Stack(
+            children: [
+              SingleChildScrollView(
+                child: Container(
+                  padding: kMargin16,
+                  child: buildForm(),
+                ),
               ),
-            ),
+              state is OnLoading
+                  ? Center(
+                child: Image.asset(
+                  "images/app_loader2.gif",
+                  width: 96,
+                  height: 96,
+                ),
+              )
+                  : Container()
+            ],
           );
         },
       ),
+    );
+  }
+
+  Widget buildForm() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: 24,
+        ),
+        MmmTextFileds.textFiledWithLabelStar(
+            userDetails.relationship == Relationship.Self
+                ? "Name"
+                : 'Name of ${describeEnum(userDetails.relationship)}',
+            userDetails.relationship == Relationship.Self
+                ? "Enter Name"
+                : 'Enter Name of ${describeEnum(userDetails.relationship)}',
+            namecontroller),
+        SizedBox(
+          height: 24,
+        ),
+        MmmButtons.categoryButtons(
+            'Date of birth', dobHintText, 'images/Calendar.svg', action: () {
+          showDate(context);
+        }),
+        SizedBox(
+          height: 24,
+        ),
+        MmmButtons.categoryButtons(
+            'Marital Status', maritalStatusHintText, 'images/rightArrow.svg',
+            action: () {
+          showMaritalStatusBottomSheet();
+        }),
+        SizedBox(
+          height: 24,
+        ),
+        Container(
+          margin: EdgeInsets.only(left: 8),
+          child: Text(
+            'Children',
+            style: MmmTextStyles.bodyRegular(textColor: kDark5),
+          ),
+        ),
+        Container(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Transform.scale(
+                scale: 1.2,
+                child: Radio(
+                    activeColor: kPrimary,
+                    value: ChildrenStatus.YesLivingTogether,
+                    groupValue: childrenStatus,
+                    onChanged: (val) {
+                      BlocProvider.of<AboutBloc>(context).add(
+                          OnChildrenSelected(ChildrenStatus.YesLivingTogether));
+                    }),
+              ),
+              Text(
+                'Yes Living Together',
+                style: MmmTextStyles.bodySmall(textColor: kDark5),
+              ),
+              SizedBox(
+                width: 8,
+              ),
+              Transform.scale(
+                scale: 1.2,
+                child: Radio(
+                    activeColor: kPrimary,
+                    value: ChildrenStatus.YesNotLivingTogether,
+                    groupValue: childrenStatus,
+                    onChanged: (val) {
+                      BlocProvider.of<AboutBloc>(context).add(
+                          OnChildrenSelected(
+                              ChildrenStatus.YesNotLivingTogether));
+                    }),
+              ),
+              Text(
+                'Yes Not Living Together',
+                style: MmmTextStyles.bodySmall(textColor: kDark5),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          child: Row(
+            children: [
+              Transform.scale(
+                scale: 1.2,
+                child: Radio(
+                    activeColor: kPrimary,
+                    value: ChildrenStatus.No,
+                    groupValue: childrenStatus,
+                    onChanged: (val) {
+                      BlocProvider.of<AboutBloc>(context)
+                          .add(OnChildrenSelected(ChildrenStatus.No));
+                    }),
+              ),
+              Text(
+                'No',
+                style: MmmTextStyles.bodySmall(textColor: kDark5),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 24,
+        ),
+        MmmButtons.categoryButtons(
+            "Height",
+            this.heightStatus != null
+                ? '${AppHelper.getHeights()[heightStatus!]} cm'
+                : '',
+            'images/rightArrow.svg', action: () {
+          showHeightStatusBottomSheet();
+        }),
+        SizedBox(
+          height: 24,
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              margin: EdgeInsets.only(left: 8),
+              child: Text(
+                'Disability',
+                style: MmmTextStyles.bodyRegular(textColor: kDark5),
+              ),
+            ),
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Transform.scale(
+                    scale: 1.2,
+                    child: Radio(
+                        activeColor: kPrimary,
+                        value: AbilityStatus.Normal,
+                        groupValue: abilityStatus,
+                        onChanged: (val) {
+                          BlocProvider.of<AboutBloc>(context)
+                              .add(OnDisabilitySelected(AbilityStatus.Normal));
+                        }),
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    'Normal',
+                    style: MmmTextStyles.bodySmall(textColor: kDark5),
+                  ),
+                  SizedBox(
+                    width: 22,
+                  ),
+                  Transform.scale(
+                    scale: 1.2,
+                    child: Radio(
+                        activeColor: kPrimary,
+                        value: AbilityStatus.PhysicallyChallenged,
+                        groupValue: abilityStatus,
+                        onChanged: (val) {
+                          BlocProvider.of<AboutBloc>(context).add(
+                              OnDisabilitySelected(
+                                  AbilityStatus.PhysicallyChallenged));
+                        }),
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    'Physically Challenged',
+                    style: MmmTextStyles.bodySmall(textColor: kDark5),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ],
     );
   }
 
@@ -335,18 +327,22 @@ class _AboutScreenState extends State<AboutScreen> {
               selectedHeightStatus: heightStatus,
             ));
 
-    if (result != null && result is HeightStatus) {
-      this.heightStatusHintText = describeEnum(result);
+    if (result != null && result is int) {
       BlocProvider.of<AboutBloc>(context).add(OnHeightStatusSelected(result));
     }
   }
 
   void navigateToHabits() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => HabitScreen()));
+    var userRepo = BlocProvider.of<AboutBloc>(context).userRepository;
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => Habbit(
+              userRepository: userRepo,
+            )));
   }
 
   void initData() {
+    this.userDetails =
+        BlocProvider.of<AboutBloc>(context).userRepository.useDetails!;
     this.maritalStatus = BlocProvider.of<AboutBloc>(context).maritalStatus;
     this.heightStatus = BlocProvider.of<AboutBloc>(context).heightStatus;
     this.childrenStatus = BlocProvider.of<AboutBloc>(context).childrenStatus;

@@ -1,4 +1,5 @@
 import 'package:makemymarry/bloc/base_event_state.dart';
+import 'package:makemymarry/datamodels/user_model.dart';
 
 class SigninState extends BaseEventState {}
 
@@ -10,7 +11,11 @@ class OnValidationFail extends SigninState {
   OnValidationFail(this.message);
 }
 
-class OnSignIn extends SigninState {}
+class OnSignIn extends SigninState {
+  final UserDetails userDetails;
+
+  OnSignIn(this.userDetails);
+}
 
 class OnSigninFailed extends SigninState {}
 
