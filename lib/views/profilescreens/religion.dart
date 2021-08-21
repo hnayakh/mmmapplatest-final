@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
@@ -25,12 +26,17 @@ class _ReligionState extends State<Religion> {
   String mothertonguetext = 'Select your mother tongue';
 
   String gothratext = 'Select your gothra';
+  late String religion;
+  late MasterData masterData;
+  late SimpleMasterData simpleMasterData;
 
   int value1 = 1;
 
   int group = 0;
 
   int value2 = 2;
+
+  late String religionStatusHintText;
 
   @override
   Widget build(BuildContext context) {
@@ -52,28 +58,33 @@ class _ReligionState extends State<Religion> {
               SizedBox(
                 height: 24,
               ),
-              MmmButtons.categoryButton(
-                  'Religion', 'Select your religion', 'images/rightArrow.svg'),
+              MmmButtons.categoryButtons(
+                  'Religion', 'Select your religion', 'images/rightArrow.svg',
+                  action: () {}),
               SizedBox(
                 height: 24,
               ),
-              MmmButtons.categoryButton(
-                  'Caste', 'Select your caste', 'images/rightArrow.svg'),
+              MmmButtons.categoryButtons(
+                  'Caste', 'Select your caste', 'images/rightArrow.svg',
+                  action: () {}),
               SizedBox(
                 height: 24,
               ),
-              MmmButtons.categoryButton('Sub-Caste', 'Select your sub-caste',
-                  'images/rightArrow.svg'),
+              MmmButtons.categoryButtons(
+                  'Sub-Caste', 'Select your sub-caste', 'images/rightArrow.svg',
+                  action: () {}),
               SizedBox(
                 height: 24,
               ),
-              MmmButtons.categoryButton('Mother Tongue',
-                  'Select your mother tongue', 'images/rightArrow.svg'),
+              MmmButtons.categoryButtons('Mother Tongue',
+                  'Select your mother tongue', 'images/rightArrow.svg',
+                  action: () {}),
               SizedBox(
                 height: 24,
               ),
-              MmmButtons.categoryButton(
-                  'Gothra', 'Select your gothra', 'images/rightArrow.svg'),
+              MmmButtons.categoryButtons(
+                  'Gothra', 'Select your gothra', 'images/rightArrow.svg',
+                  action: () {}),
               SizedBox(
                 height: 24,
               ),
@@ -147,7 +158,7 @@ class _ReligionState extends State<Religion> {
   }
 
   void navigateToCarrer() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => Occupation()));
+    //  Navigator.of(context)
+    //     .push(MaterialPageRoute(builder: (context) => Occupation()));
   }
 }
