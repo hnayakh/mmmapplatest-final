@@ -900,7 +900,8 @@ class MmmButtons {
   }
 
   static Container habitsDisabled(
-      double containerheight, double containerwidth, String icon, String text) {
+      double containerheight, double containerwidth, String icon, String text,
+      {Function()? action}) {
     return Container(
       decoration: BoxDecoration(
         color: Color(0xffF0EFF5),
@@ -913,7 +914,7 @@ class MmmButtons {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {},
+          onTap: action,
           child: Container(
             alignment: Alignment.center,
             height: containerheight,

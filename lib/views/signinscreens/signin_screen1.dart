@@ -239,7 +239,10 @@ class SignInScreenState extends State<SignInScreen> {
   }
 
   void navigateToProfileSetup() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => AboutScreen()));
+    var userRepo = BlocProvider.of<SignInBloc>(context).userRepository;
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => About(
+              userRepository: userRepo,
+            )));
   }
 }

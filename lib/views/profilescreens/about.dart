@@ -44,20 +44,21 @@ class AboutScreen extends StatefulWidget {
 
 class _AboutScreenState extends State<AboutScreen> {
   TextEditingController namecontroller = TextEditingController();
-  ChildrenStatus? childrenStatus;
-  AbilityStatus? abilityStatus;
+  late ChildrenStatus childrenStatus;
+  late AbilityStatus abilityStatus;
 
   String maritalStatusHintText = 'Select your maritial status';
-  MaritalStatus? maritalStatus;
+  late MaritalStatus maritalStatus;
 
   String heightStatusHintText = 'Select your height';
   String dobHintText = 'DD/MM/YYYY';
 
-  HeightStatus? heightStatus;
+  late HeightStatus heightStatus;
   final dateFormat = DateFormat('yyyy-mm-dd');
 
   @override
   Widget build(BuildContext context) {
+    initData();
     return Scaffold(
       appBar: MmmButtons.appBarCurved('About'),
 
@@ -65,20 +66,23 @@ class _AboutScreenState extends State<AboutScreen> {
       floatingActionButton: FloatingActionButton(
         child: MmmIcons.rightArrowDisabled(),
         onPressed: () {
-          // BlocProvider.of<AboutBloc>(context).add(OnNavigationButtonClicked(
-          // namecontroller.text.trim(),
-          // ms,
-          //  height,
-          // childrenStatus,
-          // abilityStatus,
-          // dob)
-          //  );
+          BlocProvider.of<AboutBloc>(context).add(OnNavigationButtonClicked(
+              namecontroller.text.trim(),
+              this.maritalStatus,
+              this.heightStatus,
+              this.childrenStatus,
+              this.abilityStatus,
+              this.dobHintText));
         },
         backgroundColor: gray5,
       ),
       body: BlocConsumer<AboutBloc, AboutState>(
         listener: (context, state) {
-          // TODO: implement listener
+          if (state is OnNavigationToHabits) {
+            var userRepo = BlocProvider.of<AboutBloc>(context).userRepository;
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => Habit(userRepository: userRepo)));
+          }
         },
         builder: (context, state) {
           initData();
@@ -296,10 +300,10 @@ class _AboutScreenState extends State<AboutScreen> {
   }
 
   void initData() {
-    this.maritalStatus = BlocProvider.of<AboutBloc>(context).maritalStatus;
-    this.heightStatus = BlocProvider.of<AboutBloc>(context).heightStatus;
-    this.childrenStatus = BlocProvider.of<AboutBloc>(context).childrenStatus;
-    this.abilityStatus = BlocProvider.of<AboutBloc>(context).abilityStatus;
-    //this.dobHintText = BlocProvider.of<AboutBloc>(context).dob;
+    this.maritalStatus = BlocProvider.of<AboutBloc>(context).maritalStatus!;
+    this.heightStatus = BlocProvider.of<AboutBloc>(context).heightStatus!;
+    this.childrenStatus = BlocProvider.of<AboutBloc>(context).childrenStatus!;
+    this.abilityStatus = BlocProvider.of<AboutBloc>(context).abilityStatus!;
+    this.dobHintText = BlocProvider.of<AboutBloc>(context).dob.toString();
   }
 }

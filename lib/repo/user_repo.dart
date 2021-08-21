@@ -41,4 +41,11 @@ class UserRepository {
     return this.apiClient.aboutVerification(
         maritalStatus, abilityStatus, childrenStatus, heightStatus, dob, name);
   }
+
+  Future<SigninResponse> habit(EatingHabit? eatingHabit,
+      SmokingHabit? smokingHabit, DrinkingHabit? drinkingHabit) async {
+    return this
+        .apiClient
+        .habitVerification(eatingHabit, smokingHabit, drinkingHabit);
+  }
 }

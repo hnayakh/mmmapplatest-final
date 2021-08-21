@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:dio_logger/dio_logger.dart';
+import 'package:makemymarry/bloc/habits/habit_event.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
@@ -72,6 +73,29 @@ class ApiClient {
         "childrenStatus": childrenStatus,
         "abilityStatus": abilityStatus,
         "height": heightStatus
+      });
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return SigninResponse.fromJson(response.data);
+      } else {
+        return SigninResponse.fromError("Error Occurred. Please try againa.");
+      }
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      return SigninResponse.fromError("Error Occurred. Please try againa.");
+    }
+  }
+
+  Future<SigninResponse> habitVerification(EatingHabit? eatingHabit,
+      SmokingHabit? smokingHabit, DrinkingHabit? drinkingHabit) async {
+    try {
+      Response response =
+          await this.dio.post(AppConstants.ENDPOINT + "users/habit", data: {
+        "userBasicId": "c6feebb2-f5db-4958-b719-1edfca0d603e",
+        "eatingHabit": eatingHabit,
+        "smokingHabit": smokingHabit,
+        "drinkingHabit": drinkingHabit
       });
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SigninResponse.fromJson(response.data);
