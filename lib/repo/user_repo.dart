@@ -1,3 +1,4 @@
+import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/utils/api_client.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
@@ -8,6 +9,7 @@ class UserRepository {
   ApiClient apiClient = ApiClient();
 
   UserDetails? useDetails;
+  MasterData? masterData;
 
   UserRepository() {
     this.storageService = StorageService();
@@ -17,7 +19,7 @@ class UserRepository {
     return this.storageService.isFirstTimeLogin();
   }
 
-  Future<String?> getUserDetails() async {
+  Future<UserDetails?> getUserDetails() async {
     return this.storageService.getUserDetails();
   }
 
@@ -32,20 +34,28 @@ class UserRepository {
   }
 
   Future<SigninResponse> about(
-      MaritalStatus? maritalStatus,
-      AbilityStatus? abilityStatus,
-      ChildrenStatus? childrenStatus,
-      HeightStatus? heightStatus,
-      String? dob,
-      String? name) async {
+      MaritalStatus maritalStatus,
+      AbilityStatus abilityStatus,
+      ChildrenStatus childrenStatus,
+      HeightStatus heightStatus,
+      String dob,
+      String name) async {
     return this.apiClient.aboutVerification(
         maritalStatus, abilityStatus, childrenStatus, heightStatus, dob, name);
   }
 
-  Future<SigninResponse> habit(EatingHabit? eatingHabit,
-      SmokingHabit? smokingHabit, DrinkingHabit? drinkingHabit) async {
+  Future<SigninResponse> habit(EatingHabit eatingHabit,
+      SmokingHabit smokingHabit, DrinkingHabit drinkingHabit) async {
     return this
         .apiClient
         .habitVerification(eatingHabit, smokingHabit, drinkingHabit);
+  }
+
+  Future<MasterDataResponse> getMasterData() async {
+    return apiClient.getMasterData(null);
+  }
+
+  saveUserDetails() async {
+    this.storageService.saveUserDetails(this.useDetails!);
   }
 }

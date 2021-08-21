@@ -300,10 +300,10 @@ class _AboutScreenState extends State<AboutScreen> {
   }
 
   void initData() {
-    this.maritalStatus = BlocProvider.of<AboutBloc>(context).maritalStatus!;
-    this.heightStatus = BlocProvider.of<AboutBloc>(context).heightStatus!;
-    this.childrenStatus = BlocProvider.of<AboutBloc>(context).childrenStatus!;
-    this.abilityStatus = BlocProvider.of<AboutBloc>(context).abilityStatus!;
+    this.maritalStatus = BlocProvider.of<AboutBloc>(context).maritalStatus;
+    this.heightStatus = BlocProvider.of<AboutBloc>(context).heightStatus;
+    this.childrenStatus = BlocProvider.of<AboutBloc>(context).childrenStatus;
+    this.abilityStatus = BlocProvider.of<AboutBloc>(context).abilityStatus;
     this.dobHintText = BlocProvider.of<AboutBloc>(context).dob.toString();
   }
 }

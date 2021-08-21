@@ -8,12 +8,12 @@ import 'package:makemymarry/utils/mmm_enums.dart';
 class AboutBloc extends Bloc<AboutEvent, AboutState> {
   late final UserRepository userRepository;
   AboutBloc(this.userRepository) : super(AboutInitialState());
-  MaritalStatus? maritalStatus;
-  AbilityStatus? abilityStatus;
-  ChildrenStatus? childrenStatus;
-  HeightStatus? heightStatus;
-  String? dob;
-  String? name;
+  late MaritalStatus maritalStatus;
+  late AbilityStatus abilityStatus;
+  late ChildrenStatus childrenStatus;
+  late HeightStatus heightStatus;
+  late String dob;
+  late String name;
 
   @override
   Stream<AboutState> mapEventToState(AboutEvent event) async* {
@@ -46,15 +46,15 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
       this.abilityStatus = event.abilityStatus;
       if (this.name == '') {
         yield OnError('Enter valid username.');
-      } else if (this.maritalStatus == null) {
+      } else if (this.maritalStatus == 0) {
         yield OnError('Select marital status.');
-      } else if (this.heightStatus == null) {
+      } else if (this.heightStatus == 0) {
         yield OnError('Select your height.');
       } else if (this.dob == '') {
         yield OnError('Select date of birth.');
-      } else if (this.childrenStatus == null) {
+      } else if (this.childrenStatus == 0) {
         yield OnError('Specify if you have children.');
-      } else if (this.abilityStatus == null) {
+      } else if (this.abilityStatus == 0) {
         yield OnError('Specify disability if any.');
       } else {
         var result = await this.userRepository.about(
@@ -67,6 +67,7 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
 
         if (result.status == AppConstants.SUCCESS) {
           this.userRepository.useDetails = result.userDetails;
+          await this.userRepository.saveUserDetails();
           yield OnNavigationToHabits();
         } else {
           yield OnError(result.message);

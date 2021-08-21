@@ -256,8 +256,8 @@ class _HabitScreenState extends State<HabitScreen> {
   }
 
   void initData() {
-    this.eatingHabit = BlocProvider.of<HabitBloc>(context).eatingHabit!;
-    this.drinkingHabit = BlocProvider.of<HabitBloc>(context).drinkingHabit!;
-    this.smokingHabit = BlocProvider.of<HabitBloc>(context).smokingHabit!;
+    this.eatingHabit = BlocProvider.of<HabitBloc>(context).eatingHabit;
+    this.drinkingHabit = BlocProvider.of<HabitBloc>(context).drinkingHabit;
+    this.smokingHabit = BlocProvider.of<HabitBloc>(context).smokingHabit;
   }
 }

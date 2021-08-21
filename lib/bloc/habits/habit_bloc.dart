@@ -10,9 +10,9 @@ import 'habit_state.dart';
 class HabitBloc extends Bloc<HabitEvent, HabitState> {
   late final UserRepository userRepository;
   HabitBloc(this.userRepository) : super(HabitInitialState());
-  EatingHabit? eatingHabit;
-  DrinkingHabit? drinkingHabit;
-  SmokingHabit? smokingHabit;
+  late EatingHabit eatingHabit;
+  late DrinkingHabit drinkingHabit;
+  late SmokingHabit smokingHabit;
   @override
   Stream<HabitState> mapEventToState(HabitEvent event) async* {
     yield OnLoading();
@@ -32,11 +32,11 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
       this.eatingHabit = event.eatingHabit;
       this.drinkingHabit = event.drinkingHabit;
       this.smokingHabit = event.smokingHabit;
-      if (this.eatingHabit == null) {
+      if (this.eatingHabit == 0) {
         yield OnError('Select eating habit.');
-      } else if (this.drinkingHabit == null) {
+      } else if (this.drinkingHabit == 0) {
         yield OnError('Select drinking habit.');
-      } else if (this.smokingHabit == null) {
+      } else if (this.smokingHabit == 0) {
         yield OnError('Select smoking habit.');
       } else {
         var result = await this.userRepository.habit(
@@ -47,6 +47,7 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
 
         if (result.status == AppConstants.SUCCESS) {
           this.userRepository.useDetails = result.userDetails;
+          await this.userRepository.saveUserDetails();
           yield NavigationToReligion();
         } else {
           yield OnError(result.message);

@@ -16,6 +16,17 @@ class UserDetails {
     this.lifecycleStatus = json["lifecycleStatus"];
     this.activationStatus = json["activationStatus"];
   }
+
+  UserDetails.fromStorage(
+      this.id,
+      this.mobile,
+      this.dialCode,
+      this.email,
+      this.gender,
+      this.isActive,
+      this.lifecycleStatus,
+      this.activationStatus,
+      this.registrationStep);
 }
 
 class RegistrationResponse {
