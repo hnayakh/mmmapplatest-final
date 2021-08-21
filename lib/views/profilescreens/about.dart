@@ -335,7 +335,7 @@ class _AboutScreenState extends State<AboutScreen> {
   void navigateToHabits() {
     var userRepo = BlocProvider.of<AboutBloc>(context).userRepository;
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => Habbit(
+        builder: (context) => Habit(
               userRepository: userRepo,
             )));
   }

@@ -5,6 +5,8 @@ import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 
+import 'app_helper.dart';
+
 class ApiClient {
   final Dio dio = Dio();
 
@@ -63,10 +65,11 @@ class ApiClient {
       ChildrenStatus? childrenStatus,
       int? heightStatus,
       String? dob,
-      String? name,String userId) async {
+      String? name,
+      String userId) async {
     try {
       Response response =
-      await this.dio.post(AppConstants.ENDPOINT + "users/about", data: {
+          await this.dio.post(AppConstants.ENDPOINT + "users/about", data: {
         "userBasicId": userId,
         "name": name,
         "dateOfBirth": dob,
@@ -104,6 +107,29 @@ class ApiClient {
         print(error.message);
       }
       return MasterDataResponse.fromError("Error Occurred. Please try againa.");
+    }
+  }
+
+  Future<SigninResponse> habitVerification(EatingHabit eatingHabit,
+      SmokingHabit smokingHabit, DrinkingHabit drinkingHabit, String id) async {
+    try {
+      Response response =
+          await this.dio.post(AppConstants.ENDPOINT + "users/habit", data: {
+        "userBasicId": id,
+        "eatingHabit": eatingHabit.index,
+        "smokingHabit": smokingHabit.index,
+        "drinkingHabit": drinkingHabit.index
+      });
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return SigninResponse.fromJson(response.data);
+      } else {
+        return SigninResponse.fromError("Error Occurred. Please try againa.");
+      }
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      return SigninResponse.fromError("Error Occurred. Please try againa.");
     }
   }
 

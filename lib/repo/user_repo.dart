@@ -56,4 +56,10 @@ class UserRepository {
       OtpType registration) async {
     this.apiClient.sendOtp(email, dialCode, mobile, registration);
   }
+
+  Future<SigninResponse> habit(EatingHabit eatingHabit,
+      SmokingHabit smokingHabit, DrinkingHabit drinkingHabit) async {
+    return apiClient.habitVerification(
+        eatingHabit, smokingHabit, drinkingHabit, useDetails!.id);
+  }
 }
