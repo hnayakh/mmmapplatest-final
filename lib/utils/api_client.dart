@@ -21,7 +21,8 @@ class ApiClient {
         "gender": gender.index,
         "countryCode": phoneCode,
         "phoneNumber": mobile,
-        "password": password
+        "password": password,
+        "relationship": profileCreatedFor
       });
       if (response.statusCode == 200 || response.statusCode == 201) {
         return RegistrationResponse.fromJson(response.data);
@@ -105,4 +106,7 @@ class ApiClient {
       return MasterDataResponse.fromError("Error Occurred. Please try againa.");
     }
   }
+
+  void sendOtp(String email, String dialCode, String mobile,
+      OtpType registration) async {}
 }

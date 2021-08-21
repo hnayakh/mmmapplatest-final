@@ -239,12 +239,14 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                       height: 24,
                     ),
                     MmmTextFileds.textFiledWithLabelStar(
-                        'Password', 'Enter password', passwordController),
+                        'Password', 'Enter password', passwordController,
+                        isPassword: true),
                     SizedBox(
                       height: 24,
                     ),
                     MmmTextFileds.textFiledWithLabelStar('Confirm Password',
-                        'Enter confirm password', emailController),
+                        'Enter confirm password', confirmpasswordController,
+                        isPassword: true),
                     SizedBox(
                       height: 24,
                     ),

@@ -69,7 +69,12 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
 
         if (result.status == AppConstants.SUCCESS) {
           this.userRepository.useDetails = result.userDetails;
-          await this.userRepository.saveUserDetails();
+          // await this.userRepository.saveUserDetails();
+          // var otpResponse = await this.userRepository.sendOtp(
+          //     userRepository.useDetails.email,
+          //     userRepository.useDetails.dialCode,
+          //     userRepository.useDetails.mobile,
+          //     OtpType.Registration);
           yield OnSignUp();
         } else {
           yield OnError(result.message);

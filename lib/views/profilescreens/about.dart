@@ -130,18 +130,69 @@ class _AboutScreenState extends State<AboutScreen> {
                           scale: 1.2,
                           child: Radio(
                               activeColor: kPrimary,
-                              value: ChildrenStatus.Yes,
+                              value: ChildrenStatus.YesLivingTogether,
                               groupValue: childrenStatus,
                               onChanged: (val) {
                                 BlocProvider.of<AboutBloc>(context).add(
-                                    OnChildrenSelected(ChildrenStatus.Yes));
+                                    OnChildrenSelected(
+                                        ChildrenStatus.YesLivingTogether));
                               }),
                         ),
                         SizedBox(
                           width: 8,
                         ),
                         Text(
-                          'Yes',
+                          'Yes Living Together',
+                          style: MmmTextStyles.bodySmall(textColor: kDark5),
+                        ),
+                        SizedBox(
+                          width: 22,
+                        ),
+                        Transform.scale(
+                          scale: 1.2,
+                          child: Radio(
+                              activeColor: kPrimary,
+                              value: ChildrenStatus.No,
+                              groupValue: childrenStatus,
+                              onChanged: (val) {
+                                BlocProvider.of<AboutBloc>(context)
+                                    .add(OnChildrenSelected(ChildrenStatus.No));
+                              }),
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Text(
+                          'No',
+                          style: MmmTextStyles.bodySmall(textColor: kDark5),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 24,
+                  ),
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Transform.scale(
+                          scale: 1.2,
+                          child: Radio(
+                              activeColor: kPrimary,
+                              value: ChildrenStatus.YesNotLivingTogether,
+                              groupValue: childrenStatus,
+                              onChanged: (val) {
+                                BlocProvider.of<AboutBloc>(context).add(
+                                    OnChildrenSelected(
+                                        ChildrenStatus.YesNotLivingTogether));
+                              }),
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Text(
+                          'Yes Not Living Together',
                           style: MmmTextStyles.bodySmall(textColor: kDark5),
                         ),
                         SizedBox(

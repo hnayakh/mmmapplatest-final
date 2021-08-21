@@ -9,7 +9,7 @@ class UserRepository {
   ApiClient apiClient = ApiClient();
 
   UserDetails? useDetails;
-  MasterData? masterData;
+  late MasterData masterData;
 
   UserRepository() {
     this.storageService = StorageService();
@@ -50,5 +50,10 @@ class UserRepository {
 
   saveUserDetails() async {
     this.storageService.saveUserDetails(this.useDetails!);
+  }
+
+  sendOtp(String email, String dialCode, String mobile,
+      OtpType registration) async {
+    this.apiClient.sendOtp(email, dialCode, mobile, registration);
   }
 }
