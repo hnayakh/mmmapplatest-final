@@ -135,4 +135,35 @@ class ApiClient {
 
   void sendOtp(String email, String dialCode, String mobile,
       OtpType registration) async {}
+
+  Future<SigninResponse> updateReligion(
+      SimpleMasterData religion,
+      String cast,
+      subCaste,
+      SimpleMasterData motherTongue,
+      gothra,
+      bool isManglik,
+      String id) async {
+    try {
+      Response response =
+          await this.dio.post(AppConstants.ENDPOINT + "users/religion", data: {
+        "userBasicId": id,
+        "religion": religion.id,
+        "cast": cast,
+        "subCast": subCaste,
+        "motherTongue": motherTongue.id,
+        "isManglik": isManglik
+      });
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return SigninResponse.fromJson(response.data);
+      } else {
+        return SigninResponse.fromError("Error Occurred. Please try againa.");
+      }
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      return SigninResponse.fromError("Error Occurred. Please try againa.");
+    }
+  }
 }

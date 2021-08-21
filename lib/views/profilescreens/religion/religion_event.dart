@@ -16,7 +16,7 @@ class OnCastSelected extends ReligionEvent {
 }
 
 class OnSubCastSelected extends ReligionEvent {
-  final SimpleMasterData subCast;
+  final dynamic subCast;
 
   OnSubCastSelected(this.subCast);
 }

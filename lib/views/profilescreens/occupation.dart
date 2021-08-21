@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
@@ -8,9 +9,25 @@ import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/profilescreens/family.dart';
 
-class Occupation extends StatelessWidget {
-  Occupation({Key? key}) : super(key: key);
+class Carrer extends StatelessWidget {
+  final UserRepository userRepository;
 
+  Carrer({Key? key,required this.userRepository}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return OccupationScreen();
+  }
+}
+
+class OccupationScreen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return OccupationScreenState();
+  }
+}
+
+class OccupationScreenState extends State<OccupationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

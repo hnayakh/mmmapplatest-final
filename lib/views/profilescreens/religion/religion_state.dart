@@ -12,4 +12,4 @@ class OnError extends ReligionState {
 
 class ReligionInitialState extends ReligionState {}
 
-class MoveToFamily extends ReligionState {}
+class MoveToCarrer extends ReligionState {}

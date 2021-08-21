@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/repo/user_repo.dart';
+import 'package:makemymarry/utils/app_constants.dart';
 
 import 'religion_event.dart';
 import 'religion_state.dart';
@@ -9,7 +10,7 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
   final UserRepository userRepository;
 
   SimpleMasterData? religion;
-  SimpleMasterData? subCaste;
+  dynamic subCaste;
   CastSubCast? cast;
   SimpleMasterData? motherTongue;
   dynamic gothra;
@@ -45,6 +46,35 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
       this.isManglik = event.value == 1;
       yield ReligionInitialState();
     }
-    if (event is UpdateReligion) {}
+    if (event is UpdateReligion) {
+      if (this.religion == null) {
+        yield OnError("Please select religion");
+      } else if (this.cast == null) {
+        yield OnError("Please select caste");
+      } else if (this.subCaste == null) {
+        yield OnError("Please select ub-caste");
+      } else if (this.motherTongue == null) {
+        yield OnError("Please select mother tongue");
+      } else if (this.religion!.title.toLowerCase().contains("hindu") &&
+          this.gothra == null) {
+        yield OnError("Please select Gothra");
+      } else {
+        var result = await this.userRepository.updateReligion(
+            this.religion!,
+            this.cast!.cast,
+            this.subCaste,
+            this.motherTongue!,
+            this.gothra,
+            this.isManglik);
+
+        if (result.status == AppConstants.SUCCESS) {
+          // this.userRepository.useDetails = result.userDetails;
+          // await this.userRepository.saveUserDetails();
+          yield MoveToCarrer();
+        } else {
+          yield OnError(result.message);
+        }
+      }
+    }
   }
 }
