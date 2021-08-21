@@ -1,913 +1,263 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
+
+import 'package:makemymarry/bloc/habits/habit_bloc.dart';
+import 'package:makemymarry/bloc/habits/habit_event.dart';
+import 'package:makemymarry/bloc/habits/habit_state.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
-import 'package:makemymarry/utils/elevations.dart';
+
 import 'package:makemymarry/utils/icons.dart';
+import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/profilescreens/religion.dart';
 
-class Habbit extends StatelessWidget {
+class Habit extends StatelessWidget {
   final UserRepository userRepository;
 
-  const Habbit({Key? key, required this.userRepository}) : super(key: key);
+  const Habit({Key? key, required this.userRepository}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return HabitScreen();
+    return BlocProvider(
+      create: (context) => HabitBloc(userRepository),
+      child: HabitScreen(),
+    );
   }
 }
 
 class HabitScreen extends StatefulWidget {
+  HabitScreen({Key? key}) : super(key: key);
+
   @override
   _HabitScreenState createState() => _HabitScreenState();
 }
 
 class _HabitScreenState extends State<HabitScreen> {
-  late int eatValue = 0;
-  late int smokeValue = 1;
-  late int alcValue = 2;
+  late EatingHabit eatingHabit;
+  late SmokingHabit smokingHabit;
+  late DrinkingHabit drinkingHabit;
 
   @override
   Widget build(BuildContext context) {
+    initData();
     return Scaffold(
       appBar: MmmButtons.appBarCurved('Habits'),
       floatingActionButton: FloatingActionButton(
         child: MmmIcons.rightArrowDisabled(),
         onPressed: () {
-          navigateToReligion();
+          navigateToReligion(
+              this.eatingHabit, this.smokingHabit, this.drinkingHabit);
         },
         backgroundColor: gray5,
       ),
-      body: Container(
-        margin: kMargin16,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      body: BlocConsumer<HabitBloc, HabitState>(
+        listener: (context, state) {
+          if (state is NavigationToReligion) {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => Religion()));
+          }
+        },
+        builder: (context, state) {
+          return Container(
+            margin: kMargin16,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(
-                  'Eating',
-                  style: MmmTextStyles.bodySmall(textColor: kModalPrimary),
-                ),
-                SizedBox(
-                  height: 4,
-                ),
-                Row(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    eatValue == 1
-                        ? Container(
-                            decoration: BoxDecoration(
-                                color: Color(0xffFF4D6D),
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                  color: Color(0xffF0EFF5),
-                                  width: 1,
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Color(0xffFF4D6D).withOpacity(0.24),
-                                    blurRadius: 14.0,
-                                    spreadRadius: 0.0,
-                                    offset: Offset(0.0, 4.0),
-                                  )
-                                ]),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () {},
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: 50,
-                                  width: 152,
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 12,
-                                      ),
-                                      SvgPicture.asset(
-                                        'images/Veg2.svg',
-                                        color: Color(0xffFCFCFD),
-                                        fit: BoxFit.cover,
-                                      ),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Text(
-                                        'Vegeterrian',
-                                        textAlign: TextAlign.center,
-                                        textScaleFactor: 1.0,
-                                        style: MmmTextStyles.bodyRegular(
-                                            textColor: gray7),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                        : Container(
-                            decoration: BoxDecoration(
-                              color: Color(0xffF0EFF5),
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: Color(0xffF0EFF5),
-                                width: 1,
-                              ),
-                            ),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    eatValue = 1;
-                                  });
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: 50,
-                                  width: 152,
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 12,
-                                      ),
-                                      SvgPicture.asset(
-                                        'images/Veg2.svg',
-                                        color: Color(0xff121619),
-                                        fit: BoxFit.cover,
-                                      ),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Text(
-                                        'Vegetarrian',
-                                        textScaleFactor: 1.0,
-                                        textAlign: TextAlign.center,
-                                        style: MmmTextStyles.bodyRegular(
-                                            textColor: kDark5),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                    SizedBox(
-                      width: 8,
+                    Text(
+                      'Eating',
+                      style: MmmTextStyles.bodySmall(textColor: kModalPrimary),
                     ),
-                    eatValue == 2
-                        ? Container(
-                            decoration: BoxDecoration(
-                                color: Color(0xffFF4D6D),
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                  color: Color(0xffF0EFF5),
-                                  width: 1,
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Color(0xffFF4D6D).withOpacity(0.24),
-                                    blurRadius: 14.0,
-                                    spreadRadius: 0.0,
-                                    offset: Offset(0.0, 4.0),
-                                  )
-                                ]),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () {},
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: 50,
-                                  width: 144,
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 12,
-                                      ),
-                                      SvgPicture.asset(
-                                        'images/egg.svg',
-                                        color: Color(0xffFCFCFD),
-                                        fit: BoxFit.cover,
-                                      ),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Text(
-                                        'eggetarian',
-                                        textAlign: TextAlign.center,
-                                        textScaleFactor: 1.0,
-                                        style: MmmTextStyles.bodyRegular(
-                                            textColor: gray7),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                        : Container(
-                            decoration: BoxDecoration(
-                              color: Color(0xffF0EFF5),
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: Color(0xffF0EFF5),
-                                width: 1,
-                              ),
-                            ),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    eatValue = 2;
-                                  });
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: 50,
-                                  width: 144,
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 12,
-                                      ),
-                                      SvgPicture.asset(
-                                        'images/egg.svg',
-                                        color: Color(0xff121619),
-                                        fit: BoxFit.cover,
-                                      ),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Text(
-                                        'Eggetarian',
-                                        textScaleFactor: 1.0,
-                                        textAlign: TextAlign.center,
-                                        style: MmmTextStyles.bodyRegular(
-                                            textColor: kDark5),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    Row(
+                      children: [
+                        eatingHabit == EatingHabit.Vegetarrian
+                            ? MmmButtons.habitsEnabled(
+                                50, 152, 'images/Veg2.svg', 'Vegetarrian')
+                            : MmmButtons.habitsDisabled(
+                                50, 152, 'images/Veg2.svg', 'Vegetarrian',
+                                action: () {
+                                vegOptionSelected();
+                              }),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        eatingHabit == EatingHabit.Eggitarrian
+                            ? MmmButtons.habitsEnabled(
+                                50, 144, 'images/egg.svg', 'eggetarian')
+                            : MmmButtons.habitsDisabled(
+                                50, 144, 'images/egg.svg', 'eggetarian',
+                                action: () {
+                                eggOptionSelected();
+                              }),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    eatingHabit == EatingHabit.Nonvegetarrian
+                        ? MmmButtons.habitsEnabled(
+                            50, 193, 'images/non veg.svg', 'Non-Vegetarrian')
+                        : MmmButtons.habitsDisabled(
+                            50, 193, 'images/non veg.svg', 'Non-Vegetarrian',
+                            action: () {
+                            nonvegOptionSelected();
+                          }),
                   ],
                 ),
                 SizedBox(
-                  height: 8,
+                  height: 24,
                 ),
-                eatValue == 3
-                    ? Container(
-                        decoration: BoxDecoration(
-                            color: Color(0xffFF4D6D),
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              color: Color(0xffF0EFF5),
-                              width: 1,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color(0xffFF4D6D).withOpacity(0.24),
-                                blurRadius: 14.0,
-                                spreadRadius: 0.0,
-                                offset: Offset(0.0, 4.0),
-                              )
-                            ]),
-                        child: Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: () {},
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 50,
-                              width: 193,
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    width: 12,
-                                  ),
-                                  SvgPicture.asset(
-                                    'images/non veg.svg',
-                                    color: Color(0xffFCFCFD),
-                                    fit: BoxFit.cover,
-                                  ),
-                                  SizedBox(
-                                    width: 8,
-                                  ),
-                                  Text(
-                                    'Non-Vegetarrian',
-                                    textAlign: TextAlign.center,
-                                    textScaleFactor: 1.0,
-                                    style: MmmTextStyles.bodyRegular(
-                                        textColor: gray7),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Smoking',
+                      style: MmmTextStyles.bodySmall(textColor: kModalPrimary),
+                    ),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    Row(
+                      children: [
+                        smokingHabit == SmokingHabit.Smoker
+                            ? MmmButtons.habitsEnabled(
+                                50, 116, 'images/smoke.svg', 'Smoker')
+                            : MmmButtons.habitsDisabled(
+                                50, 116, 'images/smoke.svg', 'Smoker',
+                                action: () {
+                                smokingOptionSelected();
+                              }),
+                        SizedBox(
+                          width: 8,
                         ),
-                      )
-                    : Container(
-                        decoration: BoxDecoration(
-                          color: Color(0xffF0EFF5),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: Color(0xffF0EFF5),
-                            width: 1,
-                          ),
-                        ),
-                        child: Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: () {
-                              setState(() {
-                                eatValue = 3;
-                              });
-                            },
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 50,
-                              width: 193,
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    width: 12,
-                                  ),
-                                  SvgPicture.asset(
-                                    'images/non veg.svg',
-                                    color: Color(0xff121619),
-                                    fit: BoxFit.cover,
-                                  ),
-                                  SizedBox(
-                                    width: 8,
-                                  ),
-                                  Text(
-                                    'Non-Vegetarrian',
-                                    textScaleFactor: 1.0,
-                                    textAlign: TextAlign.center,
-                                    style: MmmTextStyles.bodyRegular(
-                                        textColor: kDark5),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-              ],
-            ),
-            SizedBox(
-              height: 24,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Smoking',
-                  style: MmmTextStyles.bodySmall(textColor: kModalPrimary),
+                        smokingHabit == SmokingHabit.NonSmoker
+                            ? MmmButtons.habitsEnabled(
+                                50, 161, 'images/noSmoke.svg', 'Never Smoke')
+                            : MmmButtons.habitsDisabled(
+                                50, 161, 'images/noSmoke.svg', 'Never Smoke',
+                                action: () {
+                                nonSmokingOptionSelected();
+                              }),
+                      ],
+                    ),
+                  ],
                 ),
                 SizedBox(
-                  height: 4,
+                  height: 24,
                 ),
-                Row(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    smokeValue == 1
-                        ? Container(
-                            decoration: BoxDecoration(
-                                color: Color(0xffFF4D6D),
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                  color: Color(0xffF0EFF5),
-                                  width: 1,
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Color(0xffFF4D6D).withOpacity(0.24),
-                                    blurRadius: 14.0,
-                                    spreadRadius: 0.0,
-                                    offset: Offset(0.0, 4.0),
-                                  )
-                                ]),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () {},
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: 50,
-                                  width: 116,
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 12,
-                                      ),
-                                      SvgPicture.asset(
-                                        'images/smoke.svg',
-                                        color: Color(0xffFCFCFD),
-                                        fit: BoxFit.cover,
-                                      ),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Text(
-                                        'Smoker',
-                                        textAlign: TextAlign.center,
-                                        textScaleFactor: 1.0,
-                                        style: MmmTextStyles.bodyRegular(
-                                            textColor: gray7),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                        : Container(
-                            decoration: BoxDecoration(
-                              color: Color(0xffF0EFF5),
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: Color(0xffF0EFF5),
-                                width: 1,
-                              ),
-                            ),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    smokeValue = 1;
-                                  });
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: 50,
-                                  width: 116,
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 12,
-                                      ),
-                                      SvgPicture.asset(
-                                        'images/smoke.svg',
-                                        color: Color(0xff121619),
-                                        fit: BoxFit.cover,
-                                      ),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Text(
-                                        'Smoker',
-                                        textScaleFactor: 1.0,
-                                        textAlign: TextAlign.center,
-                                        style: MmmTextStyles.bodyRegular(
-                                            textColor: kDark5),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                    SizedBox(
-                      width: 8,
+                    Text(
+                      'Alcoholic',
+                      style: MmmTextStyles.bodySmall(textColor: kModalPrimary),
                     ),
-                    smokeValue == 2
-                        ? Container(
-                            decoration: BoxDecoration(
-                                color: Color(0xffFF4D6D),
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                  color: Color(0xffF0EFF5),
-                                  width: 1,
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Color(0xffFF4D6D).withOpacity(0.24),
-                                    blurRadius: 14.0,
-                                    spreadRadius: 0.0,
-                                    offset: Offset(0.0, 4.0),
-                                  )
-                                ]),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () {},
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: 50,
-                                  width: 161,
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 12,
-                                      ),
-                                      SvgPicture.asset(
-                                        'images/noSmoke.svg',
-                                        color: Color(0xffFCFCFD),
-                                        fit: BoxFit.cover,
-                                      ),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Text(
-                                        'Never Smoke',
-                                        textAlign: TextAlign.center,
-                                        textScaleFactor: 1.0,
-                                        style: MmmTextStyles.bodyRegular(
-                                            textColor: gray7),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                        : Container(
-                            decoration: BoxDecoration(
-                              color: Color(0xffF0EFF5),
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: Color(0xffF0EFF5),
-                                width: 1,
-                              ),
-                            ),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    smokeValue = 2;
-                                  });
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: 50,
-                                  width: 161,
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 12,
-                                      ),
-                                      SvgPicture.asset(
-                                        'images/noSmoke.svg',
-                                        color: Color(0xff121619),
-                                        fit: BoxFit.cover,
-                                      ),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Text(
-                                        'Never Smoke',
-                                        textScaleFactor: 1.0,
-                                        textAlign: TextAlign.center,
-                                        style: MmmTextStyles.bodyRegular(
-                                            textColor: kDark5),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    Row(
+                      children: [
+                        drinkingHabit == DrinkingHabit.Alcoholic
+                            ? MmmButtons.habitsEnabled(
+                                50, 130, 'images/alco holic.svg', 'Alcoholic')
+                            : MmmButtons.habitsDisabled(
+                                50, 130, 'images/alco holic.svg', 'Alcoholic',
+                                action: () {
+                                alchoholicOptionSelected();
+                              }),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        drinkingHabit == DrinkingHabit.Nonalcoholic
+                            ? MmmButtons.habitsEnabled(50, 165,
+                                'images/non_alcoholic.svg', 'Non-Alcoholic')
+                            : MmmButtons.habitsDisabled(
+                                50,
+                                165,
+                                'images/non_alcoholic.svg',
+                                'Non-Alcoholic', action: () {
+                                nonalchoholicOptionSelected();
+                              }),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    drinkingHabit == DrinkingHabit.Occasionally
+                        ? MmmButtons.habitsEnabled(
+                            50, 160, 'images/occasionally.svg', 'Occasionally')
+                        : MmmButtons.habitsDisabled(
+                            50, 160, 'images/occasionally.svg', 'Occasionally',
+                            action: () {
+                            occasionalOptionSelected();
+                          }),
                   ],
                 ),
               ],
             ),
-            SizedBox(
-              height: 24,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Alcoholic',
-                  style: MmmTextStyles.bodySmall(textColor: kModalPrimary),
-                ),
-                SizedBox(
-                  height: 4,
-                ),
-                Row(
-                  children: [
-                    alcValue == 1
-                        ? Container(
-                            decoration: BoxDecoration(
-                                color: Color(0xffFF4D6D),
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                  color: Color(0xffF0EFF5),
-                                  width: 1,
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Color(0xffFF4D6D).withOpacity(0.24),
-                                    blurRadius: 14.0,
-                                    spreadRadius: 0.0,
-                                    offset: Offset(0.0, 4.0),
-                                  )
-                                ]),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () {},
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: 50,
-                                  width: 130,
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 12,
-                                      ),
-                                      SvgPicture.asset(
-                                        'images/alco holic.svg',
-                                        color: Color(0xffFCFCFD),
-                                        fit: BoxFit.cover,
-                                      ),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Text(
-                                        'Alcoholic',
-                                        textAlign: TextAlign.center,
-                                        textScaleFactor: 1.0,
-                                        style: MmmTextStyles.bodyRegular(
-                                            textColor: gray7),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                        : Container(
-                            decoration: BoxDecoration(
-                              color: Color(0xffF0EFF5),
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: Color(0xffF0EFF5),
-                                width: 1,
-                              ),
-                            ),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    alcValue = 1;
-                                  });
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: 50,
-                                  width: 130,
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 12,
-                                      ),
-                                      SvgPicture.asset(
-                                        'images/alcoholic.svg',
-                                        color: Color(0xff121619),
-                                        fit: BoxFit.cover,
-                                      ),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Text(
-                                        'Alcoholic',
-                                        textScaleFactor: 1.0,
-                                        textAlign: TextAlign.center,
-                                        style: MmmTextStyles.bodyRegular(
-                                            textColor: kDark5),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    alcValue == 2
-                        ? Container(
-                            decoration: BoxDecoration(
-                                color: Color(0xffFF4D6D),
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                  color: Color(0xffF0EFF5),
-                                  width: 1,
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Color(0xffFF4D6D).withOpacity(0.24),
-                                    blurRadius: 14.0,
-                                    spreadRadius: 0.0,
-                                    offset: Offset(0.0, 4.0),
-                                  )
-                                ]),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () {},
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: 50,
-                                  width: 165,
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 12,
-                                      ),
-                                      SvgPicture.asset(
-                                        'images/non_alcoholic.svg',
-                                        color: Color(0xffFCFCFD),
-                                        fit: BoxFit.cover,
-                                      ),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Text(
-                                        'Non-Alcoholic',
-                                        textAlign: TextAlign.center,
-                                        textScaleFactor: 1.0,
-                                        style: MmmTextStyles.bodyRegular(
-                                            textColor: gray7),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                        : Container(
-                            decoration: BoxDecoration(
-                              color: Color(0xffF0EFF5),
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: Color(0xffF0EFF5),
-                                width: 1,
-                              ),
-                            ),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    alcValue = 2;
-                                  });
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: 50,
-                                  width: 165,
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 12,
-                                      ),
-                                      SvgPicture.asset(
-                                        'images/non_alcoholic.svg',
-                                        color: Color(0xff121619),
-                                        fit: BoxFit.cover,
-                                      ),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Text(
-                                        'Non-Alcoholic',
-                                        textScaleFactor: 1.0,
-                                        textAlign: TextAlign.center,
-                                        style: MmmTextStyles.bodyRegular(
-                                            textColor: kDark5),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                  ],
-                ),
-                SizedBox(
-                  height: 8,
-                ),
-                alcValue == 3
-                    ? Container(
-                        decoration: BoxDecoration(
-                            color: Color(0xffFF4D6D),
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              color: Color(0xffF0EFF5),
-                              width: 1,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color(0xffFF4D6D).withOpacity(0.24),
-                                blurRadius: 14.0,
-                                spreadRadius: 0.0,
-                                offset: Offset(0.0, 4.0),
-                              )
-                            ]),
-                        child: Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: () {},
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 50,
-                              width: 160,
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    width: 12,
-                                  ),
-                                  SvgPicture.asset(
-                                    'images/occasionally.svg',
-                                    color: Color(0xffFCFCFD),
-                                    fit: BoxFit.cover,
-                                  ),
-                                  SizedBox(
-                                    width: 8,
-                                  ),
-                                  Text(
-                                    'Occasionally',
-                                    textAlign: TextAlign.center,
-                                    textScaleFactor: 1.0,
-                                    style: MmmTextStyles.bodyRegular(
-                                        textColor: gray7),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    : Container(
-                        decoration: BoxDecoration(
-                          color: Color(0xffF0EFF5),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: Color(0xffF0EFF5),
-                            width: 1,
-                          ),
-                        ),
-                        child: Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: () {
-                              setState(() {
-                                alcValue = 3;
-                              });
-                            },
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 50,
-                              width: 160,
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    width: 12,
-                                  ),
-                                  SvgPicture.asset(
-                                    'images/occasionally.svg',
-                                    color: Color(0xff121619),
-                                    fit: BoxFit.cover,
-                                  ),
-                                  SizedBox(
-                                    width: 8,
-                                  ),
-                                  Text(
-                                    'Occasionally',
-                                    textScaleFactor: 1.0,
-                                    textAlign: TextAlign.center,
-                                    style: MmmTextStyles.bodyRegular(
-                                        textColor: kDark5),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-              ],
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
 
-  void navigateToReligion() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => Religion()));
+  void vegOptionSelected() {
+    BlocProvider.of<HabitBloc>(context)
+        .add(EatingHabitSelected(EatingHabit.Vegetarrian));
+  }
+
+  void eggOptionSelected() {
+    BlocProvider.of<HabitBloc>(context)
+        .add(EatingHabitSelected(EatingHabit.Eggitarrian));
+  }
+
+  void nonvegOptionSelected() {
+    BlocProvider.of<HabitBloc>(context)
+        .add(EatingHabitSelected(EatingHabit.Nonvegetarrian));
+  }
+
+  void smokingOptionSelected() {
+    BlocProvider.of<HabitBloc>(context)
+        .add(SmokingHabitSelected(SmokingHabit.Smoker));
+  }
+
+  void nonSmokingOptionSelected() {
+    BlocProvider.of<HabitBloc>(context)
+        .add(SmokingHabitSelected(SmokingHabit.NonSmoker));
+  }
+
+  void alchoholicOptionSelected() {
+    BlocProvider.of<HabitBloc>(context)
+        .add(DrinkingHabitSelected(DrinkingHabit.Alcoholic));
+  }
+
+  void nonalchoholicOptionSelected() {
+    BlocProvider.of<HabitBloc>(context)
+        .add(DrinkingHabitSelected(DrinkingHabit.Nonalcoholic));
+  }
+
+  void occasionalOptionSelected() {
+    BlocProvider.of<HabitBloc>(context)
+        .add(DrinkingHabitSelected(DrinkingHabit.Occasionally));
+  }
+
+  void navigateToReligion(EatingHabit eatingHabit, SmokingHabit smokingHabit,
+      DrinkingHabit drinkingHabit) {
+    BlocProvider.of<HabitBloc>(context)
+        .add(OnNavigateToReligion(eatingHabit, smokingHabit, drinkingHabit));
+  }
+
+  void initData() {
+    this.eatingHabit = BlocProvider.of<HabitBloc>(context).eatingHabit;
+    this.drinkingHabit = BlocProvider.of<HabitBloc>(context).drinkingHabit;
+    this.smokingHabit = BlocProvider.of<HabitBloc>(context).smokingHabit;
   }
 }

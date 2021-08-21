@@ -3,7 +3,6 @@ import 'package:dio_logger/dio_logger.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/utils/app_constants.dart';
-import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 
 class ApiClient {
@@ -67,7 +66,7 @@ class ApiClient {
       String? name,String userId) async {
     try {
       Response response =
-          await this.dio.post(AppConstants.ENDPOINT + "users/about", data: {
+      await this.dio.post(AppConstants.ENDPOINT + "users/about", data: {
         "userBasicId": userId,
         "name": name,
         "dateOfBirth": dob,
