@@ -15,7 +15,7 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
     if (event is GetUserState) {
       var result = await this.userRepository.getMasterData();
       if (result.status == AppConstants.SUCCESS) {
-        this.userRepository.masterData = result.data;
+        this.userRepository.masterData = result.data!;
         var isFirstTimeLogin = await this.userRepository.getHasOpenedBefore();
         if (isFirstTimeLogin == null) {
           //TODO: Update Firsts time
