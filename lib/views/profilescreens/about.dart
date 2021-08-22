@@ -79,33 +79,55 @@ class _AboutScreenState extends State<AboutScreen> {
           if (state is OnError) {
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text(state.message),
-              backgroundColor: kError,
+              backgroundColor: kError,duration: Duration(seconds: 4),
             ));
           }
           if (state is OnNavigationToHabits) {
             navigateToHabits();
           }
+          // if (state is OnLoading) {
+          //   showDialog(
+          //       context: context,
+          //       builder: (context) {
+          //         return Container(
+          //             child: Center(
+          //           child: Image.asset(
+          //             "images/app_loader2.gif",
+          //             width: 62,
+          //             height: 62,
+          //           ),
+          //         ));
+          //       });
+          // }
         },
         builder: (context, state) {
           initData();
-          return Stack(
-            children: [
-              SingleChildScrollView(
-                child: Container(
-                  padding: kMargin16,
-                  child: buildForm(),
+          return Container(
+            child: Stack(
+              children: [
+                SingleChildScrollView(
+                  child: Container(
+                    padding: kMargin16,
+                    child: buildForm(),
+                  ),
                 ),
-              ),
-              state is OnLoading
-                  ? Center(
-                child: Image.asset(
-                  "images/app_loader2.gif",
-                  width: 96,
-                  height: 96,
-                ),
-              )
-                  : Container()
-            ],
+                state is OnLoading
+                    ? Container(
+                        child: Center(
+                          child: Image.asset(
+                            "images/app_loader2.gif",
+                            width: 62,
+                            height: 62,
+                          ),
+                        ),
+                        height: MediaQuery.of(context).size.height,
+                        width: MediaQuery.of(context).size.width,
+                        color: Colors.black.withOpacity(0.55),
+                      )
+                    : Container()
+              ],
+            ),
+            // color: state is OnLoading ? Colors.black26 : Colors.white,
           );
         },
       ),

@@ -7,6 +7,7 @@ class AppHelper {
 
   static List<int> getHeights() {
     List<int> heights = [];
+    //convert to ft in change
     for (int i = 167; i <= 243; i++) {
       heights.add(i);
     }

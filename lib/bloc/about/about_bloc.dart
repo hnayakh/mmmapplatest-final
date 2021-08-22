@@ -37,6 +37,7 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
     }
     if (event is OnDOBSelected) {
       this.dob = event.dob;
+      yield AboutInitialState();
     }
     if (event is OnAboutDone) {
       this.name = event.name;
@@ -46,7 +47,7 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
         yield OnError('Select marital status.');
       } else if (this.heightStatus == null) {
         yield OnError('Select your height.');
-      } else if (this.dob == '') {
+      } else if (this.dob == null) {
         yield OnError('Select date of birth.');
       } else if (this.childrenStatus == null) {
         yield OnError('Specify if you have children.');

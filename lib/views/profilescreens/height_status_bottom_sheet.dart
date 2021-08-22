@@ -50,7 +50,8 @@ class HeightStatusBottomSheet extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text('${AppHelper.getHeights()[index]} cm',
+                          Text(
+                              '${(AppHelper.getHeights()[index] * 0.0328084)}ft ${AppHelper.getHeights()[index]} cm',
                               style: MmmTextStyles.bodyMediumSmall(
                                   textColor: index == this.selectedHeightStatus
                                       ? kPrimary
