@@ -190,21 +190,19 @@ class ApiClient {
 
   Future<SigninResponse> updateReligion(
       SimpleMasterData religion,
-      String cast,
       subCaste,
       SimpleMasterData motherTongue,
       gothra,
-      bool isManglik,
+      Manglik isManglik,
       String id) async {
     try {
       Response response =
           await this.dio.post(AppConstants.ENDPOINT + "users/religion", data: {
         "userBasicId": id,
         "religion": religion.id,
-        "cast": cast,
         "subCast": subCaste,
         "motherTongue": motherTongue.id,
-        "isManglik": isManglik
+        "isManglik": isManglik.index
       });
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SigninResponse.fromJson(response.data);

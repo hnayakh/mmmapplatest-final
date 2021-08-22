@@ -1,16 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 
-class HeightStatusBottomSheet extends StatelessWidget {
-  final int? selectedHeightStatus;
+class NoOfChildrenBottomSheet extends StatelessWidget {
+  final NoOfChildren? noOfChildren;
 
-  const HeightStatusBottomSheet({Key? key, this.selectedHeightStatus})
+  const NoOfChildrenBottomSheet({Key? key, this.noOfChildren})
       : super(key: key);
 
   @override
@@ -26,7 +25,7 @@ class HeightStatusBottomSheet extends StatelessWidget {
               height: 24,
             ),
             Text(
-              'Select Height:',
+              'Select no of children:',
               style: MmmTextStyles.bodyMedium(textColor: kDark5),
             ),
             SizedBox(
@@ -50,10 +49,10 @@ class HeightStatusBottomSheet extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(
-                              '${(AppHelper.getHeights()[index] * 0.0328084)}ft ${AppHelper.getHeights()[index]} cm',
+                          Text(describeEnum(NoOfChildren.values[index]),
                               style: MmmTextStyles.bodyMediumSmall(
-                                  textColor: index == this.selectedHeightStatus
+                                  textColor: NoOfChildren.values[index] ==
+                                          this.noOfChildren
                                       ? kPrimary
                                       : kModalPrimary)),
                           SizedBox(
@@ -66,11 +65,11 @@ class HeightStatusBottomSheet extends StatelessWidget {
                       ),
                     ),
                     onTap: () {
-                      Navigator.of(context).pop(index);
+                      Navigator.of(context).pop(NoOfChildren.values[index]);
                     },
                   );
                 },
-                itemCount: AppHelper.getHeights().length,
+                itemCount: NoOfChildren.values.length,
                 // separatorBuilder: (context, index) {
                 //   return Divider(
                 //     color: kLight4,

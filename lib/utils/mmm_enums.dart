@@ -17,7 +17,7 @@ enum AbilityStatus {
   Normal,
   PhysicallyChallenged,
 }
-
+enum NoOfChildren { One, Two, ThreeOrMore }
 enum ChildrenStatus { No, YesLivingTogether, YesNotLivingTogether }
 
 enum EatingHabit {
@@ -94,3 +94,4 @@ enum OtpType {
   Login,
   ForgotPassword,
 }
+enum Manglik { Yes, No, NotApplicable }

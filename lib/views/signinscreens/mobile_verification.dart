@@ -5,7 +5,7 @@ import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/text_styles.dart';
-import 'package:makemymarry/views/profilescreens/about.dart';
+import 'package:makemymarry/views/profilescreens/about/about.dart';
 import 'package:makemymarry/views/signinscreens/mobile_verification_event.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 

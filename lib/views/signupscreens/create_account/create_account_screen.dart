@@ -11,7 +11,7 @@ import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
-import 'package:makemymarry/views/profilescreens/about.dart';
+import 'package:makemymarry/views/profilescreens/about/about.dart';
 import 'package:makemymarry/views/signupscreens/create_account/create_account_bloc.dart';
 import 'package:makemymarry/views/signupscreens/create_account/create_account_event.dart';
 import 'package:makemymarry/views/signupscreens/create_account/profile_create_for_bottom_sheet.dart';

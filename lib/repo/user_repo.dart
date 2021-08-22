@@ -77,9 +77,9 @@ class UserRepository {
         education, country, stateName, city, useDetails!.id);
   }
 
-  Future<SigninResponse> updateReligion(SimpleMasterData religion, String cast,
-      subCaste, SimpleMasterData motherTongue, gothra, bool isManglik) async {
-    return apiClient.updateReligion(religion, cast, subCaste, motherTongue,
+  Future<SigninResponse> updateReligion(SimpleMasterData religion,
+      subCaste, SimpleMasterData motherTongue, gothra, Manglik isManglik) async {
+    return apiClient.updateReligion(religion,  subCaste, motherTongue,
         gothra, isManglik, useDetails!.id);
   }
 }

@@ -5,12 +5,13 @@ class AppHelper {
     return String.fromCharCode(firstLetter) + String.fromCharCode(secondLetter);
   }
 
-  static List<int> getHeights() {
-    List<int> heights = [];
+  static List<double> getHeights() {
+    List<double> heights = [];
     //convert to ft in change
-    for (int i = 167; i <= 243; i++) {
+    for (double i = 4.5; i <= 8.5; i += 0.1) {
       heights.add(i);
     }
     return heights;
   }
 }
+

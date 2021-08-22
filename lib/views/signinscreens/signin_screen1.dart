@@ -13,7 +13,7 @@ import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 
 import 'package:makemymarry/views/forgotpasswordscreens/forgot_password.dart';
-import 'package:makemymarry/views/profilescreens/about.dart';
+import 'package:makemymarry/views/profilescreens/about/about.dart';
 import 'package:makemymarry/views/profilescreens/religion/religion.dart';
 import 'package:makemymarry/views/signinscreens/phone_screen.dart';
 import 'package:makemymarry/views/signupscreens/create_account/create_account_screen.dart';

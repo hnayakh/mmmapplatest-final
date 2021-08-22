@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/utils/dimens.dart';
 
 import 'package:makemymarry/utils/text_styles.dart';
-import 'package:makemymarry/views/profilescreens/about.dart';
+import 'package:makemymarry/views/profilescreens/about/about.dart';
 import 'package:makemymarry/views/profilescreens/bio.dart';
 import 'package:makemymarry/views/profilescreens/family.dart';
 import 'package:makemymarry/views/profilescreens/family_background.dart';
