@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/text_styles.dart';
-import 'package:makemymarry/views/profilescreens/about.dart';
+import 'package:makemymarry/views/forgotpasswordscreens/reset_password.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class OtpScreen extends StatefulWidget {
-  OtpScreen({Key? key}) : super(key: key);
+  const OtpScreen({Key? key}) : super(key: key);
 
   @override
   _OtpScreenState createState() => _OtpScreenState();
@@ -55,7 +55,7 @@ class _OtpScreenState extends State<OtpScreen> {
             Container(
               margin: EdgeInsets.only(left: 15.5),
               child: Text(
-                'Mobile Verification',
+                'OTP Verification',
                 style: MmmTextStyles.heading2(textColor: kDark5),
               ),
             ),
@@ -146,12 +146,12 @@ class _OtpScreenState extends State<OtpScreen> {
             currentText.length < 4
                 ? Container(
                     margin: EdgeInsets.only(left: 17, right: 16),
-                    child: MmmButtons.disabledGreyButton(50, 'Sign in'))
+                    child: MmmButtons.disabledGreyButton(50, 'Confirm'))
                 : Container(
                     margin: EdgeInsets.only(left: 17, right: 16),
-                    child: MmmButtons.enabledRedButton50bodyMedium('Sign in',
+                    child: MmmButtons.enabledRedButton50bodyMedium('Confirm',
                         action: () {
-                      navigateToProfileSetup();
+                      navigateToResetPassword();
                     }))
           ],
         ),
@@ -159,8 +159,8 @@ class _OtpScreenState extends State<OtpScreen> {
     );
   }
 
-  void navigateToProfileSetup() {
+  void navigateToResetPassword() {
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => AboutScreen()));
+        .push(MaterialPageRoute(builder: (context) => ResetPassword()));
   }
 }

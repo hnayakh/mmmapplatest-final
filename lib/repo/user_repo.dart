@@ -52,9 +52,9 @@ class UserRepository {
     this.storageService.saveUserDetails(this.useDetails!);
   }
 
-  sendOtp(String email, String dialCode, String mobile,
-      OtpType registration) async {
-    this.apiClient.sendOtp(email, dialCode, mobile, registration);
+  sendOtp(String email, String dialCode, String mobile, OtpType registration,
+      String otp) async {
+    this.apiClient.sendOtp(email, dialCode, mobile, registration, otp);
   }
 
   Future<SigninResponse> habit(EatingHabit eatingHabit,

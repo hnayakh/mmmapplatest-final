@@ -167,6 +167,27 @@ class ApiClient {
     }
   }
 
-  void sendOtp(String email, String dialCode, String mobile,
-      OtpType registration) async {}
+  Future<SigninResponse> sendOtp(String email, String dialCode, String mobile,
+      OtpType registration, String otp) async {
+    try {
+      Response response =
+          await this.dio.post(AppConstants.ENDPOINT + "auth/verifyOtp", data: {
+        "countryCode": dialCode,
+        "phoneNumber": mobile,
+        "type": registration,
+        "email": email,
+        "otp": otp
+      });
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return SigninResponse.fromJson(response.data);
+      } else {
+        return SigninResponse.fromError("Error Occurred. Please try againa.");
+      }
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      return SigninResponse.fromError("Error Occurred. Please try againa.");
+    }
+  }
 }
