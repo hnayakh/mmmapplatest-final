@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
-import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/text_styles.dart';
+<<<<<<< HEAD
 
+=======
+>>>>>>> a3ccf6a24fc068b2e6fea886faa3ea7f92ecbf55
 import 'package:makemymarry/views/profilescreens/religion/religion_bloc.dart';
 import 'package:makemymarry/views/profilescreens/religion/religion_bottom_sheet.dart';
 import 'package:makemymarry/views/profilescreens/religion/religion_event.dart';
+import 'package:makemymarry/views/profilescreens/religion/subcast_bottom_sheet.dart';
 
+import '../occupation.dart';
 import 'cast_bottom_sheet.dart';
+import 'gothra_bottom_sheet.dart';
+import 'mother_tongue_bottom_sheet.dart';
 import 'religion_state.dart';
 
 class Religion extends StatelessWidget {
@@ -50,7 +55,7 @@ class ReligionScreenState extends State<ReligionScreen> {
   String gothratext = 'Select your gothra';
 
   SimpleMasterData? religion;
-  SimpleMasterData? subCaste;
+  dynamic subCaste;
   CastSubCast? cast;
   SimpleMasterData? motherTongue;
   dynamic gothra;
@@ -63,7 +68,7 @@ class ReligionScreenState extends State<ReligionScreen> {
       floatingActionButton: FloatingActionButton(
         child: MmmIcons.rightArrowDisabled(),
         onPressed: () {
-          navigateToCarrer();
+          BlocProvider.of<ReligionBloc>(context).add(UpdateReligion());
         },
         backgroundColor: gray5,
       ),
@@ -101,21 +106,50 @@ class ReligionScreenState extends State<ReligionScreen> {
                       SizedBox(
                         height: 24,
                       ),
-                      MmmButtons.categoryButton('Sub-Caste',
-                          'Select your sub-caste', 'images/rightArrow.svg'),
+                      MmmButtons.categoryButtons(
+                          'Sub-Caste',
+                          subCaste != null
+                              ? '${subCaste}'
+                              : 'Select your sub-caste',
+                          'images/rightArrow.svg', action: () {
+                        if (cast != null) selectSubCast(context);
+                      }),
                       SizedBox(
                         height: 24,
                       ),
-                      MmmButtons.categoryButton('Mother Tongue',
-                          'Select your mother tongue', 'images/rightArrow.svg'),
-                      SizedBox(
-                        height: 24,
-                      ),
-                      MmmButtons.categoryButton('Gothra', 'Select your gothra',
-                          'images/rightArrow.svg'),
-                      SizedBox(
-                        height: 24,
-                      ),
+                      MmmButtons.categoryButtons(
+                          'Mother Tongue',
+                          motherTongue != null
+                              ? '${motherTongue!.title}'
+                              : 'Select your mother tongue',
+                          'images/rightArrow.svg', action: () {
+                        selectMotherToungue(context);
+                      }),
+                      this.religion != null &&
+                              this
+                                  .religion!
+                                  .title
+                                  .toLowerCase()
+                                  .contains("hindu")
+                          ? Column(
+                              children: [
+                                SizedBox(
+                                  height: 24,
+                                ),
+                                MmmButtons.categoryButtons(
+                                    'Gothra',
+                                    this.gothra != null
+                                        ? gothra
+                                        : 'Select your gothra',
+                                    'images/rightArrow.svg', action: () {
+                                  selectGothra(context);
+                                }),
+                                SizedBox(
+                                  height: 24,
+                                ),
+                              ],
+                            )
+                          : Container(),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -137,7 +171,10 @@ class ReligionScreenState extends State<ReligionScreen> {
                                       activeColor: Colors.pinkAccent,
                                       value: 1,
                                       groupValue: isManglik,
-                                      onChanged: (val) {}),
+                                      onChanged: (val) {
+                                        BlocProvider.of<ReligionBloc>(context)
+                                            .add(OnMaglikChanged(1));
+                                      }),
                                 ),
                                 SizedBox(
                                   width: 8,
@@ -156,7 +193,10 @@ class ReligionScreenState extends State<ReligionScreen> {
                                       activeColor: Colors.pinkAccent,
                                       value: 0,
                                       groupValue: isManglik,
-                                      onChanged: (val) {}),
+                                      onChanged: (val) {
+                                        BlocProvider.of<ReligionBloc>(context)
+                                            .add(OnMaglikChanged(0));
+                                      }),
                                 ),
                                 SizedBox(
                                   width: 8,
@@ -187,14 +227,27 @@ class ReligionScreenState extends State<ReligionScreen> {
             ],
           );
         },
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is OnError) {
+            Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text(state.message),
+              backgroundColor: kError,
+            ));
+          }
+          if (state is MoveToCarrer) {
+            navigateToCarrer();
+          }
+        },
       ),
     );
   }
 
   void navigateToCarrer() {
-    // Navigator.of(context)
-    //     .push(MaterialPageRoute(builder: (context) => Occupation()));
+    var userRepo = BlocProvider.of<ReligionBloc>(context).userRepository;
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => Carrer(
+              userRepository: userRepo,
+            )));
   }
 
   void initData() {
@@ -236,6 +289,58 @@ class ReligionScreenState extends State<ReligionScreen> {
             ));
     if (result != null && result is CastSubCast) {
       BlocProvider.of<ReligionBloc>(context).add(OnCastSelected(result));
+    }
+  }
+
+  void selectSubCast(BuildContext context) async {
+    var list = this.cast!.subCasts;
+    var result = await showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (context) => SubCastBottomSheet(
+              list: list,
+              selected: this.subCaste,
+            ));
+    if (result != null) {
+      BlocProvider.of<ReligionBloc>(context).add(OnSubCastSelected(result));
+    }
+  }
+
+  void selectMotherToungue(BuildContext context) async {
+    var list = BlocProvider.of<ReligionBloc>(context)
+        .userRepository
+        .masterData
+        .listMotherTongue;
+    var result = await showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (context) => MotherTongueBottomSheet(
+              list: list,
+              selected: this.motherTongue,
+            ));
+    if (result != null && result is SimpleMasterData) {
+      BlocProvider.of<ReligionBloc>(context)
+          .add(OnMotherTongueSelected(result));
+    }
+  }
+
+  void selectGothra(BuildContext context) async {
+    var list = BlocProvider.of<ReligionBloc>(context)
+        .userRepository
+        .masterData
+        .listGothra;
+    var result = await showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (context) => GothraBottomSheet(
+              list: list,
+              selected: this.gothra,
+            ));
+    if (result != null) {
+      BlocProvider.of<ReligionBloc>(context).add(OnGothraSelected(result));
     }
   }
 }

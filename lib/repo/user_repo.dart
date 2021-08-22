@@ -3,6 +3,7 @@ import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/utils/api_client.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/storage_service.dart';
+import 'package:makemymarry/views/profilescreens/religion/religion_bloc.dart';
 
 class UserRepository {
   late StorageService storageService;
@@ -33,15 +34,20 @@ class UserRepository {
     return this.apiClient.signinUser(email, password);
   }
 
-  Future<SigninResponse> about(
-      MaritalStatus? maritalStatus,
+  Future<SigninResponse> about(MaritalStatus? maritalStatus,
       AbilityStatus? abilityStatus,
       ChildrenStatus? childrenStatus,
       int? heightStatus,
       String? dob,
       String? name) async {
-    return this.apiClient.aboutVerification(maritalStatus, abilityStatus,
-        childrenStatus, heightStatus, dob, name, this.useDetails!.id);
+    return this.apiClient.aboutVerification(
+        maritalStatus,
+        abilityStatus,
+        childrenStatus,
+        heightStatus,
+        dob,
+        name,
+        this.useDetails!.id);
   }
 
   Future<MasterDataResponse> getMasterData() async {
@@ -63,6 +69,7 @@ class UserRepository {
         eatingHabit, smokingHabit, drinkingHabit, useDetails!.id);
   }
 
+<<<<<<< HEAD
   Future<SigninResponse> career(
     String nameOfOrg,
     Occupation? occupation,
@@ -74,5 +81,16 @@ class UserRepository {
   ) async {
     return apiClient.careerVerification(nameOfOrg, occupation, income,
         education, country, stateName, city, useDetails!.id);
+=======
+  Future<SigninResponse> updateReligion(SimpleMasterData religion,
+      String cast,
+      subCaste,
+      SimpleMasterData motherTongue,
+      gothra,
+      bool isManglik) async {
+    return apiClient.updateReligion(
+        religion, cast, subCaste, motherTongue, gothra, isManglik, useDetails!.
+        id);
+>>>>>>> a3ccf6a24fc068b2e6fea886faa3ea7f92ecbf55
   }
 }

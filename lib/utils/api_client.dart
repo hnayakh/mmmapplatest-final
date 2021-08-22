@@ -133,6 +133,7 @@ class ApiClient {
     }
   }
 
+<<<<<<< HEAD
   Future<SigninResponse> careerVerification(
       String nameOfOrg,
       Occupation? occupation,
@@ -177,6 +178,28 @@ class ApiClient {
         "type": registration,
         "email": email,
         "otp": otp
+=======
+  void sendOtp(String email, String dialCode, String mobile,
+      OtpType registration) async {}
+
+  Future<SigninResponse> updateReligion(
+      SimpleMasterData religion,
+      String cast,
+      subCaste,
+      SimpleMasterData motherTongue,
+      gothra,
+      bool isManglik,
+      String id) async {
+    try {
+      Response response =
+          await this.dio.post(AppConstants.ENDPOINT + "users/religion", data: {
+        "userBasicId": id,
+        "religion": religion.id,
+        "cast": cast,
+        "subCast": subCaste,
+        "motherTongue": motherTongue.id,
+        "isManglik": isManglik
+>>>>>>> a3ccf6a24fc068b2e6fea886faa3ea7f92ecbf55
       });
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SigninResponse.fromJson(response.data);

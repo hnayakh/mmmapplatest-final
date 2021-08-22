@@ -6,21 +6,21 @@ import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 
-class CastBottomSheet extends StatefulWidget {
-  final CastSubCast? selected;
-  final List<CastSubCast> list;
+class GothraBottomSheet extends StatefulWidget {
+  final dynamic selected;
+  final List<dynamic> list;
 
-  const CastBottomSheet({Key? key, this.selected, required this.list})
+  const GothraBottomSheet({Key? key, this.selected, required this.list})
       : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return CastBottomSheetState();
+    return GothraBottomSheetState();
   }
 }
 
-class CastBottomSheetState extends State<CastBottomSheet> {
-  List<CastSubCast> filtered = [];
+class GothraBottomSheetState extends State<GothraBottomSheet> {
+  List<dynamic> filtered = [];
 
   @override
   void initState() {
@@ -41,7 +41,7 @@ class CastBottomSheetState extends State<CastBottomSheet> {
               height: 24,
             ),
             Text(
-              'Select Caste:',
+              'Select Sub-cast:',
               style: MmmTextStyles.bodyMedium(textColor: kDark5),
             ),
             SizedBox(
@@ -53,7 +53,7 @@ class CastBottomSheetState extends State<CastBottomSheet> {
               onChanged: (value) {
                 setState(() {
                   this.filtered = widget.list
-                      .where((element) => element.cast
+                      .where((element) => element
                       .toLowerCase()
                       .contains(value.toLowerCase()))
                       .toList();
@@ -68,7 +68,7 @@ class CastBottomSheetState extends State<CastBottomSheet> {
                       borderSide: BorderSide(color: kInputBorder, width: 1)),
                   contentPadding:
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                  hintText: "Search Cast",
+                  hintText: "Search Religion",
                   isDense: true,
                   filled: true,
                   fillColor: kLight4,
@@ -89,7 +89,7 @@ class CastBottomSheetState extends State<CastBottomSheet> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(filtered[index].cast,
+                          Text(filtered[index],
                               style: MmmTextStyles.bodyMediumSmall(
                                   textColor: widget.selected == filtered[index]
                                       ? kPrimary
