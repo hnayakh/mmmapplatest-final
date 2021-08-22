@@ -285,9 +285,12 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                   ],
                 )),
                 state is OnLoading
-                    ? Container(
-                        height: 50,
-                        child: CircularProgressIndicator(),
+                    ? Center(
+                        child: Container(
+                          height: 50,
+                          width: 50,
+                          child: CircularProgressIndicator(),
+                        ),
                       )
                     : acceptTerms
                         ? MmmButtons.enabledRedButtonbodyMedium(50, 'Sign up',
@@ -306,12 +309,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
         },
         listener: (context, state) {
           if (state is OnSignUp) {
-            var userRepo =
-                BlocProvider.of<CreateAccountBloc>(context).userRepository;
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => About(
-                      userRepository: userRepo,
-                    )));
+            navigateToAbout();
           }
         },
       ),
@@ -458,5 +456,11 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
     this.selectedCountry =
         BlocProvider.of<CreateAccountBloc>(context).selectedCountry;
     this.acceptTerms = BlocProvider.of<CreateAccountBloc>(context).acceptTerms;
+  }
+
+  void navigateToAbout() {
+    var userRepo = BlocProvider.of<CreateAccountBloc>(context).userRepository;
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => About(userRepository: userRepo)));
   }
 }

@@ -9,7 +9,7 @@ class SplashScreenInitialState extends SplashState{
 class OnLoading extends SplashState{
 
 }
-class OnResult extends SplashState{
+class   OnResult extends SplashState{
   final String status,message;
 
   OnResult(this.status, this.message);

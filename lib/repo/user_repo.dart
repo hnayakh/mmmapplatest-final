@@ -34,21 +34,14 @@ class UserRepository {
   }
 
   Future<SigninResponse> about(
-      MaritalStatus maritalStatus,
-      AbilityStatus abilityStatus,
-      ChildrenStatus childrenStatus,
-      HeightStatus heightStatus,
-      String dob,
-      String name) async {
-    return this.apiClient.aboutVerification(
-        maritalStatus, abilityStatus, childrenStatus, heightStatus, dob, name);
-  }
-
-  Future<SigninResponse> habit(EatingHabit eatingHabit,
-      SmokingHabit smokingHabit, DrinkingHabit drinkingHabit) async {
-    return this
-        .apiClient
-        .habitVerification(eatingHabit, smokingHabit, drinkingHabit);
+      MaritalStatus? maritalStatus,
+      AbilityStatus? abilityStatus,
+      ChildrenStatus? childrenStatus,
+      int? heightStatus,
+      String? dob,
+      String? name) async {
+    return this.apiClient.aboutVerification(maritalStatus, abilityStatus,
+        childrenStatus, heightStatus, dob, name, this.useDetails!.id);
   }
 
   Future<MasterDataResponse> getMasterData() async {
@@ -62,5 +55,24 @@ class UserRepository {
   sendOtp(String email, String dialCode, String mobile,
       OtpType registration) async {
     this.apiClient.sendOtp(email, dialCode, mobile, registration);
+  }
+
+  Future<SigninResponse> habit(EatingHabit eatingHabit,
+      SmokingHabit smokingHabit, DrinkingHabit drinkingHabit) async {
+    return apiClient.habitVerification(
+        eatingHabit, smokingHabit, drinkingHabit, useDetails!.id);
+  }
+
+  Future<SigninResponse> career(
+    String nameOfOrg,
+    Occupation? occupation,
+    String income,
+    Education? education,
+    String country,
+    String stateName,
+    String city,
+  ) async {
+    return apiClient.careerVerification(nameOfOrg, occupation, income,
+        education, country, stateName, city, useDetails!.id);
   }
 }

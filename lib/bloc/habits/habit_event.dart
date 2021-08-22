@@ -24,3 +24,6 @@ class OnNavigateToReligion extends HabitEvent {
   late final DrinkingHabit drinkingHabit;
   OnNavigateToReligion(this.eatingHabit, this.smokingHabit, this.drinkingHabit);
 }
+class UpdateHabit extends HabitEvent{
+
+}

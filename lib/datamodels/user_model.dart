@@ -1,9 +1,11 @@
 import 'package:makemymarry/utils/app_constants.dart';
+import 'package:makemymarry/utils/mmm_enums.dart';
 
 class UserDetails {
   late String id, email, mobile, dialCode;
   late bool isActive;
   late int gender, registrationStep, lifecycleStatus, activationStatus;
+  late Relationship relationship;
 
   UserDetails.fromJson(json) {
     this.id = json["id"];
@@ -15,6 +17,7 @@ class UserDetails {
     this.registrationStep = json["registrationStep"];
     this.lifecycleStatus = json["lifecycleStatus"];
     this.activationStatus = json["activationStatus"];
+    this.relationship = Relationship.values[json["relationship"]];
   }
 
   UserDetails.fromStorage(
@@ -55,7 +58,7 @@ class SigninResponse {
     this.status = json["type"];
     this.message = json["message"];
     if (this.status == AppConstants.SUCCESS) {
-      this.userDetails = UserDetails.fromJson(json["data"]);
+      this.userDetails = UserDetails.fromJson(json["data"]["userBasic"]);
     }
   }
 

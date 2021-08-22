@@ -30,8 +30,9 @@ class SignInBloc extends Bloc<SignInEvent, SigninState> {
           yield OnValidationFail('Entered email and password is incorrect.');
         } else if (result.status == AppConstants.SUCCESS) {
           this.userRepository.useDetails = result.userDetails;
-          await this.userRepository.saveUserDetails();
-          yield OnSignIn();
+          // await this.userRepository.saveUserDetails();
+
+          yield OnSignIn(this.userRepository.useDetails!);
         } else {
           yield OnError(result.message);
         }

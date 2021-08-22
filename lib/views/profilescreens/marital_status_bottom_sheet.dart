@@ -24,7 +24,7 @@ class MaritalStatusBottomSheet extends StatelessWidget {
               height: 24,
             ),
             Text(
-              'Select profile created for:',
+              'Select marital status:',
               style: MmmTextStyles.bodyMedium(textColor: kDark5),
             ),
             SizedBox(

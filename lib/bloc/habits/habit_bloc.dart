@@ -9,10 +9,12 @@ import 'habit_state.dart';
 
 class HabitBloc extends Bloc<HabitEvent, HabitState> {
   late final UserRepository userRepository;
+
   HabitBloc(this.userRepository) : super(HabitInitialState());
-  late EatingHabit eatingHabit;
-  late DrinkingHabit drinkingHabit;
-  late SmokingHabit smokingHabit;
+  EatingHabit? eatingHabit;
+  DrinkingHabit? drinkingHabit;
+  SmokingHabit? smokingHabit;
+
   @override
   Stream<HabitState> mapEventToState(HabitEvent event) async* {
     yield OnLoading();
@@ -28,26 +30,23 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
       this.smokingHabit = event.smokingHabit;
       yield HabitInitialState();
     }
-    if (event is OnNavigateToReligion) {
-      this.eatingHabit = event.eatingHabit;
-      this.drinkingHabit = event.drinkingHabit;
-      this.smokingHabit = event.smokingHabit;
-      if (this.eatingHabit == 0) {
+    if (event is UpdateHabit) {
+      if (this.eatingHabit == null) {
         yield OnError('Select eating habit.');
-      } else if (this.drinkingHabit == 0) {
+      } else if (this.drinkingHabit == null) {
         yield OnError('Select drinking habit.');
-      } else if (this.smokingHabit == 0) {
+      } else if (this.smokingHabit == null) {
         yield OnError('Select smoking habit.');
       } else {
         var result = await this.userRepository.habit(
-              this.eatingHabit,
-              this.smokingHabit,
-              this.drinkingHabit,
+              this.eatingHabit!,
+              this.smokingHabit!,
+              this.drinkingHabit!,
             );
 
         if (result.status == AppConstants.SUCCESS) {
-          this.userRepository.useDetails = result.userDetails;
-          await this.userRepository.saveUserDetails();
+          // this.userRepository.useDetails = result.userDetails;
+          // await this.userRepository.saveUserDetails();
           yield NavigationToReligion();
         } else {
           yield OnError(result.message);

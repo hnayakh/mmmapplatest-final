@@ -5,6 +5,8 @@ import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 
+import 'app_helper.dart';
+
 class ApiClient {
   final Dio dio = Dio();
 
@@ -58,45 +60,23 @@ class ApiClient {
   }
 
   Future<SigninResponse> aboutVerification(
-      MaritalStatus maritalStatus,
-      AbilityStatus abilityStatus,
-      ChildrenStatus childrenStatus,
-      HeightStatus heightStatus,
-      String dob,
-      String name) async {
+      MaritalStatus? maritalStatus,
+      AbilityStatus? abilityStatus,
+      ChildrenStatus? childrenStatus,
+      int? heightStatus,
+      String? dob,
+      String? name,
+      String userId) async {
     try {
       Response response =
           await this.dio.post(AppConstants.ENDPOINT + "users/about", data: {
-        "userBasicId": "c6feebb2-f5db-4958-b719-1edfca0d603e",
+        "userBasicId": userId,
         "name": name,
         "dateOfBirth": dob,
-        "maritalStatus": maritalStatus,
-        "childrenStatus": childrenStatus,
-        "abilityStatus": abilityStatus,
-        "height": heightStatus
-      });
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        return SigninResponse.fromJson(response.data);
-      } else {
-        return SigninResponse.fromError("Error Occurred. Please try againa.");
-      }
-    } catch (error) {
-      if (error is DioError) {
-        print(error.message);
-      }
-      return SigninResponse.fromError("Error Occurred. Please try againa.");
-    }
-  }
-
-  Future<SigninResponse> habitVerification(EatingHabit eatingHabit,
-      SmokingHabit smokingHabit, DrinkingHabit drinkingHabit) async {
-    try {
-      Response response =
-          await this.dio.post(AppConstants.ENDPOINT + "users/about", data: {
-        "userBasicId": "c6feebb2-f5db-4958-b719-1edfca0d603e",
-        "eatingHabit": eatingHabit,
-        "smokingHabit": smokingHabit,
-        "drinkingHabit": drinkingHabit
+        "maritalStatus": maritalStatus!.index,
+        "childrenStatus": childrenStatus!.index,
+        "abilityStatus": abilityStatus!.index,
+        "height": AppHelper.getHeights()[heightStatus!]
       });
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SigninResponse.fromJson(response.data);
@@ -127,6 +107,63 @@ class ApiClient {
         print(error.message);
       }
       return MasterDataResponse.fromError("Error Occurred. Please try againa.");
+    }
+  }
+
+  Future<SigninResponse> habitVerification(EatingHabit eatingHabit,
+      SmokingHabit smokingHabit, DrinkingHabit drinkingHabit, String id) async {
+    try {
+      Response response =
+          await this.dio.post(AppConstants.ENDPOINT + "users/habit", data: {
+        "userBasicId": id,
+        "eatingHabit": eatingHabit.index,
+        "smokingHabit": smokingHabit.index,
+        "drinkingHabit": drinkingHabit.index
+      });
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return SigninResponse.fromJson(response.data);
+      } else {
+        return SigninResponse.fromError("Error Occurred. Please try againa.");
+      }
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      return SigninResponse.fromError("Error Occurred. Please try againa.");
+    }
+  }
+
+  Future<SigninResponse> careerVerification(
+      String nameOfOrg,
+      Occupation? occupation,
+      String income,
+      Education? education,
+      String country,
+      String stateName,
+      String city,
+      String id) async {
+    try {
+      Response response =
+          await this.dio.post(AppConstants.ENDPOINT + "users/career", data: {
+        "userBasicId": id,
+        "employedIn": nameOfOrg,
+        "occupation": occupation!.category,
+        "annualIncome": income,
+        "highestEducation": education!.title,
+        "country": country,
+        "state": stateName,
+        "city": city
+      });
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return SigninResponse.fromJson(response.data);
+      } else {
+        return SigninResponse.fromError("Error Occurred. Please try againa.");
+      }
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      return SigninResponse.fromError("Error Occurred. Please try againa.");
     }
   }
 

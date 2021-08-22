@@ -7,13 +7,14 @@ import 'package:makemymarry/utils/mmm_enums.dart';
 
 class AboutBloc extends Bloc<AboutEvent, AboutState> {
   late final UserRepository userRepository;
+
   AboutBloc(this.userRepository) : super(AboutInitialState());
-  late MaritalStatus maritalStatus;
-  late AbilityStatus abilityStatus;
-  late ChildrenStatus childrenStatus;
-  late HeightStatus heightStatus;
-  late String dob;
-  late String name;
+  MaritalStatus? maritalStatus;
+  AbilityStatus? abilityStatus;
+  ChildrenStatus? childrenStatus;
+  int? heightStatus;
+  String? dob;
+  String? name;
 
   @override
   Stream<AboutState> mapEventToState(AboutEvent event) async* {
@@ -37,24 +38,19 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
     if (event is OnDOBSelected) {
       this.dob = event.dob;
     }
-    if (event is OnNavigationButtonClicked) {
+    if (event is OnAboutDone) {
       this.name = event.name;
-      this.maritalStatus = event.ms;
-      this.heightStatus = event.height;
-      this.dob = event.dob;
-      this.childrenStatus = event.childrenStatus;
-      this.abilityStatus = event.abilityStatus;
       if (this.name == '') {
         yield OnError('Enter valid username.');
-      } else if (this.maritalStatus == 0) {
+      } else if (this.maritalStatus == null) {
         yield OnError('Select marital status.');
-      } else if (this.heightStatus == 0) {
+      } else if (this.heightStatus == null) {
         yield OnError('Select your height.');
       } else if (this.dob == '') {
         yield OnError('Select date of birth.');
-      } else if (this.childrenStatus == 0) {
+      } else if (this.childrenStatus == null) {
         yield OnError('Specify if you have children.');
-      } else if (this.abilityStatus == 0) {
+      } else if (this.abilityStatus == null) {
         yield OnError('Specify disability if any.');
       } else {
         var result = await this.userRepository.about(
@@ -67,7 +63,6 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
 
         if (result.status == AppConstants.SUCCESS) {
           this.userRepository.useDetails = result.userDetails;
-          await this.userRepository.saveUserDetails();
           yield OnNavigationToHabits();
         } else {
           yield OnError(result.message);
