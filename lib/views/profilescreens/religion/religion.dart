@@ -7,10 +7,7 @@ import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/text_styles.dart';
-<<<<<<< HEAD
 
-=======
->>>>>>> a3ccf6a24fc068b2e6fea886faa3ea7f92ecbf55
 import 'package:makemymarry/views/profilescreens/religion/religion_bloc.dart';
 import 'package:makemymarry/views/profilescreens/religion/religion_bottom_sheet.dart';
 import 'package:makemymarry/views/profilescreens/religion/religion_event.dart';
