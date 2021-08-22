@@ -133,6 +133,52 @@ class ApiClient {
     }
   }
 
+<<<<<<< HEAD
+  Future<SigninResponse> careerVerification(
+      String nameOfOrg,
+      Occupation? occupation,
+      String income,
+      Education? education,
+      String country,
+      String stateName,
+      String city,
+      String id) async {
+    try {
+      Response response =
+          await this.dio.post(AppConstants.ENDPOINT + "users/career", data: {
+        "userBasicId": id,
+        "employedIn": nameOfOrg,
+        "occupation": occupation!.category,
+        "annualIncome": income,
+        "highestEducation": education!.title,
+        "country": country,
+        "state": stateName,
+        "city": city
+      });
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return SigninResponse.fromJson(response.data);
+      } else {
+        return SigninResponse.fromError("Error Occurred. Please try againa.");
+      }
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      return SigninResponse.fromError("Error Occurred. Please try againa.");
+    }
+  }
+
+  Future<SigninResponse> sendOtp(String email, String dialCode, String mobile,
+      OtpType registration, String otp) async {
+    try {
+      Response response =
+          await this.dio.post(AppConstants.ENDPOINT + "auth/verifyOtp", data: {
+        "countryCode": dialCode,
+        "phoneNumber": mobile,
+        "type": registration,
+        "email": email,
+        "otp": otp
+=======
   void sendOtp(String email, String dialCode, String mobile,
       OtpType registration) async {}
 
@@ -153,6 +199,7 @@ class ApiClient {
         "subCast": subCaste,
         "motherTongue": motherTongue.id,
         "isManglik": isManglik
+>>>>>>> a3ccf6a24fc068b2e6fea886faa3ea7f92ecbf55
       });
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SigninResponse.fromJson(response.data);

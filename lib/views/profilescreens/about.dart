@@ -79,55 +79,33 @@ class _AboutScreenState extends State<AboutScreen> {
           if (state is OnError) {
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text(state.message),
-              backgroundColor: kError,duration: Duration(seconds: 4),
+              backgroundColor: kError,
             ));
           }
           if (state is OnNavigationToHabits) {
             navigateToHabits();
           }
-          // if (state is OnLoading) {
-          //   showDialog(
-          //       context: context,
-          //       builder: (context) {
-          //         return Container(
-          //             child: Center(
-          //           child: Image.asset(
-          //             "images/app_loader2.gif",
-          //             width: 62,
-          //             height: 62,
-          //           ),
-          //         ));
-          //       });
-          // }
         },
         builder: (context, state) {
           initData();
-          return Container(
-            child: Stack(
-              children: [
-                SingleChildScrollView(
-                  child: Container(
-                    padding: kMargin16,
-                    child: buildForm(),
-                  ),
+          return Stack(
+            children: [
+              SingleChildScrollView(
+                child: Container(
+                  padding: kMargin16,
+                  child: buildForm(),
                 ),
-                state is OnLoading
-                    ? Container(
-                        child: Center(
-                          child: Image.asset(
-                            "images/app_loader2.gif",
-                            width: 62,
-                            height: 62,
-                          ),
-                        ),
-                        height: MediaQuery.of(context).size.height,
-                        width: MediaQuery.of(context).size.width,
-                        color: Colors.black.withOpacity(0.55),
-                      )
-                    : Container()
-              ],
-            ),
-            // color: state is OnLoading ? Colors.black26 : Colors.white,
+              ),
+              state is OnLoading
+                  ? Center(
+                      child: Image.asset(
+                        "images/app_loader2.gif",
+                        width: 96,
+                        height: 96,
+                      ),
+                    )
+                  : Container()
+            ],
           );
         },
       ),
@@ -369,6 +347,6 @@ class _AboutScreenState extends State<AboutScreen> {
     this.heightStatus = BlocProvider.of<AboutBloc>(context).heightStatus;
     this.childrenStatus = BlocProvider.of<AboutBloc>(context).childrenStatus;
     this.abilityStatus = BlocProvider.of<AboutBloc>(context).abilityStatus;
-    //this.dobHintText = BlocProvider.of<AboutBloc>(context).dob;
+    this.dobHintText = BlocProvider.of<AboutBloc>(context).dob!;
   }
 }

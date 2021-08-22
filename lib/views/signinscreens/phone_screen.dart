@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
-import 'package:makemymarry/utils/elevations.dart';
+
 import 'package:makemymarry/utils/text_styles.dart';
-import 'package:makemymarry/utils/view_decorations.dart';
-import 'package:makemymarry/views/signinscreens/otp_screen.dart';
-import 'package:makemymarry/views/signupscreens/create_account/create_account_screen.dart';
+
+import 'package:makemymarry/views/signinscreens/mobile_verification.dart';
+
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class SinginWithPhone extends StatelessWidget {
@@ -24,7 +26,7 @@ class SigninWithPhoneScreen extends StatefulWidget {
 
 class _SigninWithPhoneScreenState extends State<SigninWithPhoneScreen> {
   final phoneController = TextEditingController();
-
+  String dialCode = '+91';
   String currentText = '';
 
   @override
@@ -214,7 +216,9 @@ class _SigninWithPhoneScreenState extends State<SigninWithPhoneScreen> {
   }
 
   void navigateToOtp() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => OtpScreen()));
+    // Navigator.of(context).push(MaterialPageRoute(
+    // builder: (context) => MobileVerificationScreen(
+    //      dialCode: dialCode,phone: phoneController.text.trim(),,
+    //       )));
   }
 }

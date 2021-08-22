@@ -58,9 +58,9 @@ class UserRepository {
     this.storageService.saveUserDetails(this.useDetails!);
   }
 
-  sendOtp(String email, String dialCode, String mobile,
-      OtpType registration) async {
-    this.apiClient.sendOtp(email, dialCode, mobile, registration);
+  sendOtp(String email, String dialCode, String mobile, OtpType registration,
+      String otp) async {
+    this.apiClient.sendOtp(email, dialCode, mobile, registration, otp);
   }
 
   Future<SigninResponse> habit(EatingHabit eatingHabit,
@@ -69,6 +69,19 @@ class UserRepository {
         eatingHabit, smokingHabit, drinkingHabit, useDetails!.id);
   }
 
+<<<<<<< HEAD
+  Future<SigninResponse> career(
+    String nameOfOrg,
+    Occupation? occupation,
+    String income,
+    Education? education,
+    String country,
+    String stateName,
+    String city,
+  ) async {
+    return apiClient.careerVerification(nameOfOrg, occupation, income,
+        education, country, stateName, city, useDetails!.id);
+=======
   Future<SigninResponse> updateReligion(SimpleMasterData religion,
       String cast,
       subCaste,
@@ -78,5 +91,6 @@ class UserRepository {
     return apiClient.updateReligion(
         religion, cast, subCaste, motherTongue, gothra, isManglik, useDetails!.
         id);
+>>>>>>> a3ccf6a24fc068b2e6fea886faa3ea7f92ecbf55
   }
 }

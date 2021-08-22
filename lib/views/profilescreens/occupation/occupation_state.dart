@@ -1,0 +1,15 @@
+import 'package:makemymarry/bloc/base_event_state.dart';
+
+class OccupationState extends BaseEventState {}
+
+class OnOccupationLoading extends OccupationState {}
+
+class OnError extends OccupationState {
+  final String message;
+
+  OnError(this.message);
+}
+
+class OccupationInitialState extends OccupationState {}
+
+class MoveToFamily extends OccupationState {}
