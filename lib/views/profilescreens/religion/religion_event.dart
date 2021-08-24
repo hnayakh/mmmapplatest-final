@@ -1,5 +1,6 @@
 import 'package:makemymarry/bloc/base_event_state.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
+import 'package:makemymarry/utils/mmm_enums.dart';
 
 class ReligionEvent extends BaseEventState {}
 
@@ -32,11 +33,11 @@ class OnGothraSelected extends ReligionEvent {
 
   OnGothraSelected(this.gothra);
 }
-class OnMaglikChanged extends ReligionEvent{
-  final int value;
+
+class OnMaglikChanged extends ReligionEvent {
+  final Manglik value;
 
   OnMaglikChanged(this.value);
 }
-class UpdateReligion extends ReligionEvent{
 
-}
+class UpdateReligion extends ReligionEvent {}

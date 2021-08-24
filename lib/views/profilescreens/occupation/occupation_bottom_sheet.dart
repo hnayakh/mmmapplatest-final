@@ -21,7 +21,7 @@ class OccupationBottomSheet extends StatefulWidget {
 
 class OccupationBottomSheetState extends State<OccupationBottomSheet> {
   List<Occupation> filtered = [];
-
+  Color occClr = kDark5;
   @override
   void initState() {
     filtered = widget.list;
@@ -117,19 +117,19 @@ class OccupationBottomSheetState extends State<OccupationBottomSheet> {
                                                     .title,
                                                 style: MmmTextStyles
                                                     .bodyMediumSmall(
-                                                        textColor: widget
-                                                                    .selected ==
-                                                                filtered[
-                                                                    indexCategory]
-                                                            ? kPrimary
-                                                            : kDark5))
+                                                        textColor: occClr))
                                           ],
                                         ),
                                       ),
                                       onTap: () {
+                                        setState(() {
+                                          occClr = kPrimary;
+                                        });
+
                                         Navigator.of(context).pop(
                                             filtered[indexCategory]
                                                 .subCategory[indexSubcategory]);
+                                        occClr = kDark5;
                                       },
                                     );
                                   })

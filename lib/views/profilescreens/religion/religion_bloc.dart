@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
+import 'package:makemymarry/utils/mmm_enums.dart';
 
 import 'religion_event.dart';
 import 'religion_state.dart';
@@ -14,7 +15,7 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
   CastSubCast? cast;
   SimpleMasterData? motherTongue;
   dynamic gothra;
-  bool isManglik = false;
+  Manglik isManglik = Manglik.NotApplicable;
 
   ReligionBloc(this.userRepository) : super(ReligionInitialState());
 
@@ -43,16 +44,14 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
       yield ReligionInitialState();
     }
     if (event is OnMaglikChanged) {
-      this.isManglik = event.value == 1;
+      this.isManglik = event.value;
       yield ReligionInitialState();
     }
     if (event is UpdateReligion) {
       if (this.religion == null) {
         yield OnError("Please select religion");
-      } else if (this.cast == null) {
-        yield OnError("Please select caste");
-      } else if (this.subCaste == null) {
-        yield OnError("Please select sub-caste");
+      } else if (!casteNotAvailable() && this.subCaste == null) {
+        yield OnError("Please select ub-caste");
       } else if (this.motherTongue == null) {
         yield OnError("Please select mother tongue");
       } else if (this.religion!.title.toLowerCase().contains("hindu") &&
@@ -61,7 +60,7 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
       } else {
         var result = await this.userRepository.updateReligion(
             this.religion!,
-            this.cast!.cast,
+            this.cast!,
             this.subCaste,
             this.motherTongue!,
             this.gothra,
@@ -76,5 +75,25 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
         }
       }
     }
+  }
+
+  bool checkCaste() {
+    if (this.religion != null) {
+      if (casteNotAvailable()) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+    return true;
+  }
+
+  bool casteNotAvailable() {
+    return this.religion!.title.toLowerCase().contains("budhhist") ||
+        this.religion!.title.toLowerCase().contains("parsi") ||
+        this.religion!.title.toLowerCase().contains("jewish") ||
+        this.religion!.title.toLowerCase().contains("other") ||
+        this.religion!.title.toLowerCase().contains("no religion") ||
+        this.religion!.title.toLowerCase().contains("spiritual");
   }
 }

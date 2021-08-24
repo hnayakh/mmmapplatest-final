@@ -181,21 +181,21 @@ class ApiClient {
 
   Future<SigninResponse> updateReligion(
       SimpleMasterData religion,
-      String cast,
-      subCaste,
+      CastSubCast caste,
+      String subCaste,
       SimpleMasterData motherTongue,
       gothra,
-      bool isManglik,
+      Manglik isManglik,
       String id) async {
     try {
       Response response =
           await this.dio.post(AppConstants.ENDPOINT + "users/religion", data: {
         "userBasicId": id,
         "religion": religion.id,
-        "cast": cast,
+        "cast": caste.cast,
         "subCast": subCaste,
         "motherTongue": motherTongue.id,
-        "isManglik": isManglik ? 1 : 0
+        "isManglik": isManglik.index
       });
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SigninResponse.fromJson(response.data);
@@ -212,7 +212,7 @@ class ApiClient {
 
   Future<SigninResponse> careerVerification(
       String nameOfOrg,
-      Occupation? occupation,
+      String? occupation,
       String income,
       Education? education,
       String country,

@@ -27,6 +27,12 @@ class OnDisabilitySelected extends AboutEvent {
   OnDisabilitySelected(this.abilityStatus);
 }
 
+class OnChangeNoOfChildren extends AboutEvent {
+  late final NoOfChildren abilityStatus;
+
+  OnChangeNoOfChildren(this.abilityStatus);
+}
+
 class OnDOBSelected extends AboutEvent {
   late final String dob;
 

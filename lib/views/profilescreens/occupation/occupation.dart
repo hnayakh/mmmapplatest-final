@@ -40,7 +40,7 @@ class OccupationScreen extends StatelessWidget {
   final TextEditingController countryController = TextEditingController();
   final TextEditingController stateController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
-  Occupation? occupation;
+  String? occupation;
   Education? education;
 
   @override
@@ -81,7 +81,7 @@ class OccupationScreen extends StatelessWidget {
                     MmmButtons.categoryButtons(
                         'Occupation',
                         occupation != null
-                            ? '${occupation!.subCategory[0].title}'
+                            ? '${occupation!}'
                             : 'Select your occupation',
                         'images/rightArrow.svg', action: () {
                       selectOccupation(context);
@@ -162,9 +162,9 @@ class OccupationScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
         builder: (context) => OccupationBottomSheet(list: list));
-    if (result != null && result is Occupation) {
+    if (result != null && result is SimpleMasterData) {
       BlocProvider.of<OccupationBloc>(context)
-          .add(OnOccupationSelected(result));
+          .add(OnOccupationSelected(result.title));
     }
   }
 

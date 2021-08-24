@@ -68,15 +68,20 @@ class UserRepository {
         eatingHabit, smokingHabit, drinkingHabit, useDetails!.id);
   }
 
-  Future<SigninResponse> updateReligion(SimpleMasterData religion, String cast,
-      subCaste, SimpleMasterData motherTongue, gothra, bool isManglik) async {
+  Future<SigninResponse> updateReligion(
+      SimpleMasterData religion,
+      CastSubCast cast,
+      dynamic subCaste,
+      SimpleMasterData motherTongue,
+      gothra,
+      Manglik isManglik) async {
     return apiClient.updateReligion(religion, cast, subCaste, motherTongue,
         gothra, isManglik, useDetails!.id);
   }
 
   Future<SigninResponse> career(
       String nameOfOrg,
-      Occupation? occupation,
+      String? occupation,
       String income,
       Education? education,
       String country,

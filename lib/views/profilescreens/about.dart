@@ -18,9 +18,9 @@ import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
-import 'package:makemymarry/views/profilescreens/height_status_bottom_sheet.dart';
-import 'package:makemymarry/views/profilescreens/marital_status_bottom_sheet.dart';
 
+import 'about/height_status_bottom_sheet.dart';
+import 'about/marital_status_bottom_sheet.dart';
 import 'habbit/habits.dart';
 
 class About extends StatelessWidget {

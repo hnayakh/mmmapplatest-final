@@ -8,6 +8,20 @@ import 'package:makemymarry/utils/view_decorations.dart';
 import 'colors.dart';
 
 class MmmWidgets {
+  static Container buildLoader(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      color: Colors.black.withOpacity(0.55),
+      child: Center(
+        child: Image.asset(
+          "images/app_loader2.gif",
+          width: 96,
+          height: 96,
+        ),
+      ),
+    );
+  }
   static Container resetPasswordWidget() {
     return Container(
       width: 328,

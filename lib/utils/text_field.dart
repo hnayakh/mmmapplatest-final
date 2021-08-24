@@ -52,7 +52,9 @@ class MmmTextFileds {
 
   static Widget textFiledWithLabelStar(
       String label, String hintText, TextEditingController controller,
-      {TextInputType inputType: TextInputType.text, bool isPassword: false}) {
+      {TextInputType inputType: TextInputType.text,
+      bool isPassword: false,
+      TextCapitalization textCapitalization: TextCapitalization.characters}) {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -84,6 +86,7 @@ class MmmTextFileds {
             child: TextField(
               controller: controller,
               keyboardType: inputType,
+              textCapitalization: textCapitalization,
               style: MmmTextStyles.bodyRegular(textColor: kDark5),
               cursorColor: kDark5,
               obscureText: isPassword,

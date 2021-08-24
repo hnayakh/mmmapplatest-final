@@ -12,6 +12,7 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
   MaritalStatus? maritalStatus;
   AbilityStatus? abilityStatus;
   ChildrenStatus? childrenStatus;
+  NoOfChildren? noOfChildren;
   int? heightStatus;
   String dob = 'dd MMM yyyy';
   String? name;
@@ -21,6 +22,10 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
     yield OnLoading();
     if (event is OnMaritalStatusSelected) {
       this.maritalStatus = event.ms;
+      yield AboutInitialState();
+    }
+    if (event is OnChangeNoOfChildren) {
+      this.noOfChildren = event.abilityStatus;
       yield AboutInitialState();
     }
     if (event is OnHeightStatusSelected) {
