@@ -11,7 +11,7 @@ import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
-import 'package:makemymarry/views/profilescreens/family.dart';
+import 'package:makemymarry/views/profilescreens/family/family.dart';
 
 import 'education_bottom_sheet.dart';
 import 'occupation_bloc.dart';
@@ -179,7 +179,10 @@ class OccupationScreen extends StatelessWidget {
   }
 
   void navigateToFamily(BuildContext context) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => FamilyScreen()));
+    var userRepo = BlocProvider.of<OccupationBloc>(context).userRepository;
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => FamilyScreen(
+              userRepository: userRepo,
+            )));
   }
 }

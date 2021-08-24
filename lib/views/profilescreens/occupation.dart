@@ -7,7 +7,7 @@ import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/text_styles.dart';
-import 'package:makemymarry/views/profilescreens/family.dart';
+import 'package:makemymarry/views/profilescreens/family/family.dart';
 
 class Carrer extends StatelessWidget {
   final UserRepository userRepository;
@@ -105,7 +105,7 @@ class OccupationScreenState extends State<OccupationScreen> {
   }
 
   void navigateToFamily(BuildContext context) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => FamilyScreen()));
+    // Navigator.of(context)
+    //     .push(MaterialPageRoute(builder: (context) => FamilyScreen()));
   }
 }

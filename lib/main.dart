@@ -1,21 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:makemymarry/utils/dimens.dart';
-
 import 'package:makemymarry/utils/text_styles.dart';
-import 'package:makemymarry/views/profilescreens/about/about.dart';
-import 'package:makemymarry/views/profilescreens/bio.dart';
-import 'package:makemymarry/views/profilescreens/family.dart';
-import 'package:makemymarry/views/profilescreens/family_background.dart';
-import 'package:makemymarry/views/profilescreens/family_details.dart';
-import 'package:makemymarry/views/profilescreens/occupation/occupation.dart';
-import 'package:makemymarry/views/profilescreens/religion/religion.dart';
-
-import 'package:makemymarry/views/signinscreens/phone_screen.dart';
-import 'package:makemymarry/views/signinscreens/signin_screen1.dart';
-import 'package:makemymarry/views/signupscreens/create_account/create_account_screen.dart';
 
 import 'package:makemymarry/views/splash_screen.dart';
 import 'package:makemymarry/views/widget_views.dart';

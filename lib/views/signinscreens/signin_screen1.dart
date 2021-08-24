@@ -14,6 +14,7 @@ import 'package:makemymarry/utils/text_styles.dart';
 
 import 'package:makemymarry/views/forgotpasswordscreens/forgot_password.dart';
 import 'package:makemymarry/views/profilescreens/about/about.dart';
+import 'package:makemymarry/views/profilescreens/family/family.dart';
 import 'package:makemymarry/views/profilescreens/religion/religion.dart';
 import 'package:makemymarry/views/signinscreens/phone_screen.dart';
 import 'package:makemymarry/views/signupscreens/create_account/create_account_screen.dart';
@@ -266,7 +267,7 @@ class SignInScreenState extends State<SignInScreen> {
   void navigateToProfileSetup() {
     var userRepo = BlocProvider.of<SignInBloc>(context).userRepository;
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => About(
+        builder: (context) => FamilyScreen(
               userRepository: userRepo,
             )));
   }
