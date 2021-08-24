@@ -12,7 +12,7 @@ class MobileVerificationBloc
 
   MobileVerificationBloc(this.userRepository)
       : super(MobileVerificationInitialState());
-  String? otp;
+  late String otp;
   late String email;
   late String dialCode;
   late String mobile;
@@ -23,15 +23,18 @@ class MobileVerificationBloc
     yield OnLoading();
 
     if (event is OnOtpverification) {
-      if (this.otp == null) {
-        yield OnError('Enter 4-digit otp');
+      this.dialCode = event.dialCode;
+      this.otp = event.otp;
+      this.mobile = event.mobile;
+      if (event.otp.length != 6) {
+        yield OnError('Enter 6-digit otp');
       } else {
         var result = await this
             .userRepository
-            .sendOtp(email, dialCode, mobile, OtpType.Registration, otp!);
+            .verifyOtp(this.dialCode, this.mobile, OtpType.Login, this.otp);
 
         if (result.status == AppConstants.SUCCESS) {
-          this.userRepository.useDetails = result.userDetails;
+          // this.userRepository.useDetails = result.userDetails;
           // await this.userRepository.saveUserDetails();
           yield OnSignIn();
         } else {

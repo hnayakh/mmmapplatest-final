@@ -133,26 +133,16 @@ class ApiClient {
     }
   }
 
-  Future<SigninResponse> careerVerification(
-      String nameOfOrg,
-      Occupation? occupation,
-      String income,
-      Education? education,
-      String country,
-      String stateName,
-      String city,
-      String id) async {
+  Future<SigninResponse> verifyOtp(
+      String dialCode, String mobile, OtpType otpType, String otp) async {
     try {
       Response response =
-          await this.dio.post(AppConstants.ENDPOINT + "users/career", data: {
-        "userBasicId": id,
-        "employedIn": nameOfOrg,
-        "occupation": occupation!.category,
-        "annualIncome": income,
-        "highestEducation": education!.title,
-        "country": country,
-        "state": stateName,
-        "city": city
+          await this.dio.post(AppConstants.ENDPOINT + "auth/verifyOtp", data: {
+        "countryCode": dialCode,
+        "phoneNumber": mobile,
+        "type": otpType.index,
+        "email": "rutuparna.rout@gmail.com",
+        "otp": "123456"
       });
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SigninResponse.fromJson(response.data);
@@ -167,24 +157,25 @@ class ApiClient {
     }
   }
 
-//TODO: Change return type. create OtpResponse class
-  Future<SigninResponse> sendOtp(String email, String dialCode, String mobile,
-      OtpType registration, String otp) async {
+  Future<SendOtpResponse> sendOtp(String dialCode, String mobile) async {
     try {
       Response response =
-          await this.dio.post(AppConstants.ENDPOINT + "auth/verifyOtp", data: {
+          await this.dio.post(AppConstants.ENDPOINT + "auth/sendOtp", data: {
         "countryCode": dialCode,
         "phoneNumber": mobile,
-        "type": registration,
-        "email": email,
-        "otp": otp
+        "type": OtpType.Login.index,
+        "email": "rutuparna.rout@gmail.com",
       });
       if (response.statusCode == 200 || response.statusCode == 201) {
-        return SigninResponse.fromJson(response.data);
+        return SendOtpResponse.fromJson(response.data);
+      } else {
+        return SendOtpResponse.fromError("Error Occurred. Please try againa.");
       }
-      return SigninResponse.fromError("Error Occurred. Please try againa.");
     } catch (error) {
-      return SigninResponse.fromError("Error Occurred. Please try againa.");
+      if (error is DioError) {
+        print(error.message);
+      }
+      return SendOtpResponse.fromError("Error Occurred. Please try againa.");
     }
   }
 
@@ -204,7 +195,41 @@ class ApiClient {
         "cast": cast,
         "subCast": subCaste,
         "motherTongue": motherTongue.id,
-        "isManglik": isManglik
+        "isManglik": isManglik ? 1 : 0
+      });
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return SigninResponse.fromJson(response.data);
+      } else {
+        return SigninResponse.fromError("Error Occurred. Please try againa.");
+      }
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      return SigninResponse.fromError("Error Occurred. Please try againaa.");
+    }
+  }
+
+  Future<SigninResponse> careerVerification(
+      String nameOfOrg,
+      Occupation? occupation,
+      String income,
+      Education? education,
+      String country,
+      String stateName,
+      String city,
+      String id) async {
+    try {
+      Response response =
+          await this.dio.post(AppConstants.ENDPOINT + "users/career", data: {
+        "userBasicId": id,
+        "employedIn": nameOfOrg,
+        "occupation": occupation,
+        "annualIncome": income,
+        "highestEducation": education,
+        "country": country,
+        "state": stateName,
+        "city": city
       });
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SigninResponse.fromJson(response.data);

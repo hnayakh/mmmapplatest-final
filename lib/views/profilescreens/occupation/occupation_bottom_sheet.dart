@@ -41,7 +41,7 @@ class OccupationBottomSheetState extends State<OccupationBottomSheet> {
               height: 24,
             ),
             Text(
-              'Select Religion:',
+              'Select Occupation:',
               style: MmmTextStyles.bodyMedium(textColor: kDark5),
             ),
             SizedBox(
@@ -68,7 +68,7 @@ class OccupationBottomSheetState extends State<OccupationBottomSheet> {
                       borderSide: BorderSide(color: kInputBorder, width: 1)),
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                  hintText: "Search Religion",
+                  hintText: "Search Occupation",
                   isDense: true,
                   filled: true,
                   fillColor: kLight4,
@@ -81,7 +81,7 @@ class OccupationBottomSheetState extends State<OccupationBottomSheet> {
               //height: 210,
               child: ListView.builder(
                 padding: EdgeInsets.zero,
-                itemBuilder: (context, index) {
+                itemBuilder: (context, indexCategory) {
                   return ListTile(
                     dense: true,
                     contentPadding: const EdgeInsets.only(top: 8),
@@ -89,11 +89,52 @@ class OccupationBottomSheetState extends State<OccupationBottomSheet> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(filtered[index].category,
-                              style: MmmTextStyles.bodyMediumSmall(
-                                  textColor: widget.selected == filtered[index]
-                                      ? kPrimary
-                                      : kModalPrimary)),
+                          Column(
+                            children: [
+                              Text(filtered[indexCategory].category,
+                                  style: MmmTextStyles.bodyMediumSmall(
+                                      textColor:
+                                          // widget.selected == filtered[indexCategory]
+                                          //    ? kPrimary:
+                                          kModalPrimary)),
+                              ListView.builder(
+                                  itemCount: filtered[indexCategory]
+                                      .subCategory
+                                      .length,
+                                  shrinkWrap: true,
+                                  physics: ClampingScrollPhysics(),
+                                  itemBuilder: (context, indexSubcategory) {
+                                    return ListTile(
+                                      title: Container(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
+                                          children: [
+                                            Text(
+                                                filtered[indexCategory]
+                                                    .subCategory[
+                                                        indexSubcategory]
+                                                    .title,
+                                                style: MmmTextStyles
+                                                    .bodyMediumSmall(
+                                                        textColor: widget
+                                                                    .selected ==
+                                                                filtered[
+                                                                    indexCategory]
+                                                            ? kPrimary
+                                                            : kDark5))
+                                          ],
+                                        ),
+                                      ),
+                                      onTap: () {
+                                        Navigator.of(context).pop(
+                                            filtered[indexCategory]
+                                                .subCategory[indexSubcategory]);
+                                      },
+                                    );
+                                  })
+                            ],
+                          ),
                           SizedBox(
                             height: 8,
                           ),
@@ -103,9 +144,9 @@ class OccupationBottomSheetState extends State<OccupationBottomSheet> {
                         ],
                       ),
                     ),
-                    onTap: () {
-                      Navigator.of(context).pop(filtered[index]);
-                    },
+                    // onTap: () {
+                    //   Navigator.of(context).pop(filtered[index]);
+                    //  },
                   );
                 },
                 itemCount: filtered.length,

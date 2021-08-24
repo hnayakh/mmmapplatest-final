@@ -66,6 +66,7 @@ class OccupationScreen extends StatelessWidget {
           }
         },
         builder: (context, state) {
+          initData(context);
           return SingleChildScrollView(
             padding: kMargin16,
             child: Column(
@@ -77,15 +78,10 @@ class OccupationScreen extends StatelessWidget {
                     SizedBox(
                       height: 24,
                     ),
-                    MmmTextFileds.textFiledWithLabelStar('Employeed in',
-                        'Select your organisation', orgNameController),
-                    SizedBox(
-                      height: 24,
-                    ),
                     MmmButtons.categoryButtons(
                         'Occupation',
                         occupation != null
-                            ? '${occupation!.category}'
+                            ? '${occupation!.subCategory[0].title}'
                             : 'Select your occupation',
                         'images/rightArrow.svg', action: () {
                       selectOccupation(context);
@@ -94,7 +90,12 @@ class OccupationScreen extends StatelessWidget {
                       height: 24,
                     ),
                     MmmTextFileds.textFiledWithLabelStar('Annual Income',
-                        'Select your annual income', annIncomeController),
+                        'Enter your annual income', annIncomeController),
+                    SizedBox(
+                      height: 24,
+                    ),
+                    MmmTextFileds.textFiledWithLabelStar('Employeed in',
+                        'Enter name of your organisation', orgNameController),
                     SizedBox(
                       height: 24,
                     ),
@@ -146,6 +147,11 @@ class OccupationScreen extends StatelessWidget {
     );
   }
 
+  void initData(BuildContext context) {
+    this.education = BlocProvider.of<OccupationBloc>(context).education;
+    this.occupation = BlocProvider.of<OccupationBloc>(context).occupation;
+  }
+
   void selectOccupation(BuildContext context) async {
     var list = BlocProvider.of<OccupationBloc>(context)
         .userRepository
@@ -172,9 +178,8 @@ class OccupationScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
         builder: (context) => EducationBottomSheet(list: list));
-    if (result != null && result is Occupation) {
-      BlocProvider.of<OccupationBloc>(context)
-          .add(OnOccupationSelected(result));
+    if (result != null && result is Education) {
+      BlocProvider.of<OccupationBloc>(context).add(OnEducationSelected(result));
     }
   }
 

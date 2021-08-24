@@ -7,13 +7,12 @@ import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/text_styles.dart';
-
+import 'package:makemymarry/views/profilescreens/occupation/occupation.dart';
 import 'package:makemymarry/views/profilescreens/religion/religion_bloc.dart';
 import 'package:makemymarry/views/profilescreens/religion/religion_bottom_sheet.dart';
 import 'package:makemymarry/views/profilescreens/religion/religion_event.dart';
 import 'package:makemymarry/views/profilescreens/religion/subcast_bottom_sheet.dart';
 
-import '../occupation.dart';
 import 'cast_bottom_sheet.dart';
 import 'gothra_bottom_sheet.dart';
 import 'mother_tongue_bottom_sheet.dart';
@@ -242,7 +241,7 @@ class ReligionScreenState extends State<ReligionScreen> {
   void navigateToCarrer() {
     var userRepo = BlocProvider.of<ReligionBloc>(context).userRepository;
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => Carrer(
+        builder: (context) => Occupations(
               userRepository: userRepo,
             )));
   }

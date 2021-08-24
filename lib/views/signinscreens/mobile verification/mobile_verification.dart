@@ -6,16 +6,17 @@ import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/profilescreens/about.dart';
-import 'package:makemymarry/views/signinscreens/mobile_verification_event.dart';
+
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import 'mobile_verification_bloc.dart';
+import 'mobile_verification_event.dart';
 import 'mobile_verification_state.dart';
 
 class MobileVerification extends StatelessWidget {
   final UserRepository userRepository;
-  final String? phone;
-  final String? dialCode;
+  final String phone;
+  final String dialCode;
 
   const MobileVerification(
       {Key? key,
@@ -28,14 +29,21 @@ class MobileVerification extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => MobileVerificationBloc(userRepository),
-      child: MobileVerificationScreen(),
+      child: MobileVerificationScreen(
+        dialCode: dialCode,
+        phone: phone,
+      ),
     );
   }
 }
 
 class MobileVerificationScreen extends StatefulWidget {
+  final String phone;
+  final String dialCode;
   MobileVerificationScreen({
     Key? key,
+    required this.dialCode,
+    required this.phone,
   }) : super(key: key);
 
   @override
@@ -46,6 +54,9 @@ class MobileVerificationScreen extends StatefulWidget {
 class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
   String currentText = '';
 
+  _MobileVerificationScreenState({
+    Key? key,
+  }) : super();
   final TextEditingController pincodeController = TextEditingController();
 
   @override
@@ -54,7 +65,9 @@ class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
       appBar: MmmButtons.appbarThin(),
       body: BlocConsumer<MobileVerificationBloc, MobileVerificationState>(
         listener: (context, state) {
-          if (state is OnSignIn) {}
+          if (state is OnSignIn) {
+            navigateToProfileSetup();
+          }
         },
         builder: (context, state) {
           return SingleChildScrollView(
@@ -100,7 +113,7 @@ class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
                 Container(
                   margin: EdgeInsets.only(left: 16),
                   child: Text(
-                    'We have sent a 4 digit verification code on your \nregistered number +91-9856423565',
+                    'We have sent a 6 digit verification code on your \nregistered number +91-${widget.phone}',
                     style: MmmTextStyles.bodySmall(textColor: gray3),
                   ),
                 ),
@@ -112,7 +125,7 @@ class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
                   textStyle:
                       MmmTextStyles.heading3(textColor: Colors.pinkAccent),
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  length: 4,
+                  length: 6,
                   obscureText: false,
                   pinTheme: PinTheme(
                     activeFillColor: kWhite,
@@ -179,7 +192,7 @@ class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
                     //     ],
                     //   ),
                     ),
-                currentText.length < 4
+                currentText.length < 6
                     ? Container(
                         margin: EdgeInsets.only(left: 17, right: 16),
                         child: MmmButtons.disabledGreyButton(50, 'Sign in'))
@@ -187,7 +200,9 @@ class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
                         margin: EdgeInsets.only(left: 17, right: 16),
                         child: MmmButtons.enabledRedButton50bodyMedium(
                             'Sign in', action: () {
-                          // BlocProvider.of<MobileVerificationBloc>(context).add(OnOtpverification(currentText,dialCode,phone));
+                          BlocProvider.of<MobileVerificationBloc>(context).add(
+                              OnOtpverification(
+                                  currentText, widget.dialCode, widget.phone));
                         }))
               ],
             ),
@@ -198,7 +213,11 @@ class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
   }
 
   void navigateToProfileSetup() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => AboutScreen()));
+    var userRepo =
+        BlocProvider.of<MobileVerificationBloc>(context).userRepository;
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => About(
+              userRepository: userRepo,
+            )));
   }
 }

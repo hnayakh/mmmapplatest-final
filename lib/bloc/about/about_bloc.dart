@@ -13,7 +13,7 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
   AbilityStatus? abilityStatus;
   ChildrenStatus? childrenStatus;
   int? heightStatus;
-  String? dob;
+  String dob = 'dd MMM yyyy';
   String? name;
 
   @override
@@ -47,7 +47,7 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
         yield OnError('Select marital status.');
       } else if (this.heightStatus == null) {
         yield OnError('Select your height.');
-      } else if (this.dob == null) {
+      } else if (this.dob == 'dd MMM yyyy') {
         yield OnError('Select date of birth.');
       } else if (this.childrenStatus == null) {
         yield OnError('Specify if you have children.');
@@ -64,6 +64,7 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
 
         if (result.status == AppConstants.SUCCESS) {
           this.userRepository.useDetails = result.userDetails;
+          // await this.userRepository.saveUserDetails();
           yield OnNavigationToHabits();
         } else {
           yield OnError(result.message);

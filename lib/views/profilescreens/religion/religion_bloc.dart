@@ -52,7 +52,7 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
       } else if (this.cast == null) {
         yield OnError("Please select caste");
       } else if (this.subCaste == null) {
-        yield OnError("Please select ub-caste");
+        yield OnError("Please select sub-caste");
       } else if (this.motherTongue == null) {
         yield OnError("Please select mother tongue");
       } else if (this.religion!.title.toLowerCase().contains("hindu") &&

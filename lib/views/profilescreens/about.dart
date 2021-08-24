@@ -46,14 +46,14 @@ class AboutScreen extends StatefulWidget {
 
 class _AboutScreenState extends State<AboutScreen> {
   TextEditingController namecontroller = TextEditingController();
-  ChildrenStatus? childrenStatus;
-  AbilityStatus? abilityStatus;
+  late ChildrenStatus? childrenStatus;
+  late AbilityStatus? abilityStatus;
 
   String maritalStatusHintText = 'Select your maritial status';
-  MaritalStatus? maritalStatus;
+  late MaritalStatus? maritalStatus;
 
   String heightStatusHintText = 'Select your height';
-  String dobHintText = 'dd MMM yyyy';
+  late String dobHintText;
 
   int? heightStatus;
   final dateFormat = DateFormat('dd MMM yyyy');
@@ -187,7 +187,7 @@ class _AboutScreenState extends State<AboutScreen> {
                     }),
               ),
               Text(
-                'Yes Not Living Together',
+                'Yes Not Living \n Together',
                 style: MmmTextStyles.bodySmall(textColor: kDark5),
               ),
             ],
@@ -347,6 +347,6 @@ class _AboutScreenState extends State<AboutScreen> {
     this.heightStatus = BlocProvider.of<AboutBloc>(context).heightStatus;
     this.childrenStatus = BlocProvider.of<AboutBloc>(context).childrenStatus;
     this.abilityStatus = BlocProvider.of<AboutBloc>(context).abilityStatus;
-    this.dobHintText = BlocProvider.of<AboutBloc>(context).dob!;
+    this.dobHintText = BlocProvider.of<AboutBloc>(context).dob;
   }
 }

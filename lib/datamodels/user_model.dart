@@ -67,3 +67,18 @@ class SigninResponse {
     this.status = AppConstants.FAILURE;
   }
 }
+
+class SendOtpResponse {
+  late String message, status;
+  UserDetails? userDetails;
+
+  SendOtpResponse.fromJson(json) {
+    this.status = json["type"];
+    this.message = json["message"];
+  }
+
+  SendOtpResponse.fromError(String error) {
+    this.message = error;
+    this.status = AppConstants.FAILURE;
+  }
+}
