@@ -4,7 +4,7 @@ import 'package:makemymarry/datamodels/master_data.dart';
 class OccupationEvent extends BaseEventState {}
 
 class OnOccupationSelected extends OccupationEvent {
-  final Occupation occupation;
+  final String occupation;
 
   OnOccupationSelected(this.occupation);
 }

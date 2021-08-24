@@ -101,9 +101,9 @@ class _AboutScreenState extends State<AboutScreen> {
                   bottom: 24,
                   right: 24,
                   child: InkWell(
-                    onTap: (){
+                    onTap: () {
                       BlocProvider.of<AboutBloc>(context).add(OnAboutDone(
-                                namecontroller.text.trim(),
+                        namecontroller.text.trim(),
                       ));
                     },
                     child: MmmIcons.rightArrowDisabled(),
@@ -136,7 +136,8 @@ class _AboutScreenState extends State<AboutScreen> {
                   userDetails.relationship == Relationship.Self
                       ? "Enter Name"
                       : 'Enter Name of ${describeEnum(userDetails.relationship)}',
-                  namecontroller,textCapitalization: TextCapitalization.words),
+                  namecontroller,
+                  textCapitalization: TextCapitalization.words),
               SizedBox(
                 height: 24,
               ),
@@ -198,7 +199,7 @@ class _AboutScreenState extends State<AboutScreen> {
                           }),
                     ),
                     Text(
-                      'Yes Not Living Together',
+                      'Yes Not Living \n Together',
                       style: MmmTextStyles.bodySmall(textColor: kDark5),
                     ),
                   ],

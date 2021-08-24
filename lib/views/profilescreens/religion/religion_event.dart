@@ -33,11 +33,11 @@ class OnGothraSelected extends ReligionEvent {
 
   OnGothraSelected(this.gothra);
 }
-class OnMaglikChanged extends ReligionEvent{
+
+class OnMaglikChanged extends ReligionEvent {
   final Manglik value;
 
   OnMaglikChanged(this.value);
 }
-class UpdateReligion extends ReligionEvent{
 
-}
+class UpdateReligion extends ReligionEvent {}

@@ -10,7 +10,7 @@ import 'occupation_state.dart';
 class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
   final UserRepository userRepository;
 
-  Occupation? occupation;
+  String? occupation;
   Education? education;
   late String nameOfOrg;
   late String income;

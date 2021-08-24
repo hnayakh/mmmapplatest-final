@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/bloc/sign_in/signin_bloc.dart';
 import 'package:makemymarry/bloc/sign_in/signin_event.dart';
 import 'package:makemymarry/bloc/sign_in/signin_state.dart';
+import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 
@@ -14,9 +15,10 @@ import 'package:makemymarry/utils/text_styles.dart';
 
 import 'package:makemymarry/views/forgotpasswordscreens/forgot_password.dart';
 import 'package:makemymarry/views/profilescreens/about/about.dart';
-import 'package:makemymarry/views/profilescreens/family/family.dart';
+import 'package:makemymarry/views/profilescreens/occupation/occupation.dart';
 import 'package:makemymarry/views/profilescreens/religion/religion.dart';
-import 'package:makemymarry/views/signinscreens/phone_screen.dart';
+import 'package:makemymarry/views/signinscreens/phone%20signin/phone_screen.dart';
+
 import 'package:makemymarry/views/signupscreens/create_account/create_account_screen.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
@@ -252,8 +254,11 @@ class SignInScreenState extends State<SignInScreen> {
   }
 
   void navigateToSigninWithMobile() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => SinginWithPhone()));
+    var userRepo = BlocProvider.of<SignInBloc>(context).userRepository;
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => SigninWithPhone(
+              userRepository: userRepo,
+            )));
   }
 
   navigateToRegister() {
@@ -267,7 +272,7 @@ class SignInScreenState extends State<SignInScreen> {
   void navigateToProfileSetup() {
     var userRepo = BlocProvider.of<SignInBloc>(context).userRepository;
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => FamilyScreen(
+        builder: (context) => Occupations(
               userRepository: userRepo,
             )));
   }

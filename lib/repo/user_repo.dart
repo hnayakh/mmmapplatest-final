@@ -53,9 +53,13 @@ class UserRepository {
     this.storageService.saveUserDetails(this.useDetails!);
   }
 
-  sendOtp(String email, String dialCode, String mobile, OtpType registration,
-      String otp) async {
-    this.apiClient.sendOtp(email, dialCode, mobile, registration, otp);
+  Future<SigninResponse> verifyOtp(
+      String dialCode, String mobile, OtpType otpType, String otp) async {
+    return this.apiClient.verifyOtp(dialCode, mobile, otpType, otp);
+  }
+
+  Future<SendOtpResponse> sendOtp(String dialCode, String mobile) async {
+    return this.apiClient.sendOtp(dialCode, mobile);
   }
 
   Future<SigninResponse> habit(EatingHabit eatingHabit,
@@ -64,22 +68,26 @@ class UserRepository {
         eatingHabit, smokingHabit, drinkingHabit, useDetails!.id);
   }
 
-  Future<SigninResponse> career(
-    String nameOfOrg,
-    Occupation? occupation,
-    String income,
-    Education? education,
-    String country,
-    String stateName,
-    String city,
-  ) async {
-    return apiClient.careerVerification(nameOfOrg, occupation, income,
-        education, country, stateName, city, useDetails!.id);
+  Future<SigninResponse> updateReligion(
+      SimpleMasterData religion,
+      CastSubCast cast,
+      dynamic subCaste,
+      SimpleMasterData motherTongue,
+      gothra,
+      Manglik isManglik) async {
+    return apiClient.updateReligion(religion, cast, subCaste, motherTongue,
+        gothra, isManglik, useDetails!.id);
   }
 
-  Future<SigninResponse> updateReligion(SimpleMasterData religion,
-      subCaste, SimpleMasterData motherTongue, gothra, Manglik isManglik) async {
-    return apiClient.updateReligion(religion,  subCaste, motherTongue,
-        gothra, isManglik, useDetails!.id);
+  Future<SigninResponse> career(
+      String nameOfOrg,
+      String? occupation,
+      String income,
+      Education? education,
+      String country,
+      String stateName,
+      String city) async {
+    return apiClient.careerVerification(nameOfOrg, occupation, income,
+        education, country, stateName, city, useDetails!.id);
   }
 }
