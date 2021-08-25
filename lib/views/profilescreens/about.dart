@@ -130,16 +130,15 @@ class _AboutScreenState extends State<AboutScreen> {
         SizedBox(
           height: 24,
         ),
-        MmmButtons.categoryButtons(
-            'Date of birth', dobHintText, 'images/Calendar.svg', action: () {
+        MmmButtons.categoryButtons('Date of birth', dobHintText,
+            'Select your date of birth', 'images/Calendar.svg', action: () {
           showDate(context);
         }),
         SizedBox(
           height: 24,
         ),
-        MmmButtons.categoryButtons(
-            'Marital Status', maritalStatusHintText, 'images/rightArrow.svg',
-            action: () {
+        MmmButtons.categoryButtons('Marital Status', maritalStatusHintText,
+            'Select your marital status', 'images/rightArrow.svg', action: () {
           showMaritalStatusBottomSheet();
         }),
         SizedBox(
@@ -221,7 +220,8 @@ class _AboutScreenState extends State<AboutScreen> {
             "Height",
             this.heightStatus != null
                 ? '${AppHelper.getHeights()[heightStatus!]} cm'
-                : '',
+                : 'Select your height',
+            'Select your height',
             'images/rightArrow.svg', action: () {
           showHeightStatusBottomSheet();
         }),

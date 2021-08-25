@@ -141,26 +141,31 @@ class SignInScreenState extends State<SignInScreen> {
                               Row(
                                 children: [
                                   Expanded(
+                                      flex: 4,
                                       child: Container(
-                                    height: 1,
-                                    color: gray5,
-                                  )),
-                                  Container(
-                                    width: 27,
-                                    height: 22,
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      'OR',
-                                      textAlign: TextAlign.center,
-                                      style: MmmTextStyles.bodyMediumSmall(
-                                          textColor: kDark2),
+                                        height: 1,
+                                        color: gray5,
+                                      )),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Container(
+                                      // width: 27,
+                                      height: 22,
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        'OR',
+                                        textAlign: TextAlign.center,
+                                        style: MmmTextStyles.bodyMediumSmall(
+                                            textColor: kDark2),
+                                      ),
                                     ),
                                   ),
                                   Expanded(
+                                      flex: 4,
                                       child: Container(
-                                    height: 1,
-                                    color: gray5,
-                                  )),
+                                        height: 1,
+                                        color: gray5,
+                                      )),
                                 ],
                               ),
                               SizedBox(
@@ -169,11 +174,16 @@ class SignInScreenState extends State<SignInScreen> {
                               Row(
                                 children: [
                                   Expanded(
+                                      flex: 12,
                                       child: MmmButtons.facebookSigninButton()),
-                                  SizedBox(
-                                    width: 16,
+                                  Expanded(
+                                    flex: 1,
+                                    child: SizedBox(
+                                        // width: 16,
+                                        ),
                                   ),
                                   Expanded(
+                                      flex: 12,
                                       child: MmmButtons.googleSigninButton())
                                 ],
                               ),

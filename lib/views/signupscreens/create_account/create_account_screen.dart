@@ -92,14 +92,14 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                           child: Row(
                             children: [
                               Text(
-                                'Profile created for',
+                                'Profile created for ',
                                 textScaleFactor: 1.0,
                                 style:
                                     MmmTextStyles.bodySmall(textColor: kDark5),
                               ),
-                              SizedBox(
-                                width: 2,
-                              ),
+                              //SizedBox(
+                              //   width: 2,
+                              // ),
                               Text(
                                 '*',
                                 style: MmmTextStyles.bodySmall(
@@ -132,7 +132,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                         ),
                         Container(
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Transform.scale(
                                 scale: 1.2,
@@ -146,17 +146,17 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                                           .add(OnGenderSelected(Gender.Male));
                                     }),
                               ),
-                              SizedBox(
-                                width: 8,
-                              ),
+                              //SizedBox(
+                              //  width: 8,
+                              // ),
                               Text(
                                 'Male',
                                 style:
                                     MmmTextStyles.bodySmall(textColor: kDark5),
                               ),
-                              SizedBox(
-                                width: 22,
-                              ),
+                              //SizedBox(
+                              //  width: 22,
+                              // ),
                               Transform.scale(
                                 scale: 1.2,
                                 child: Radio(
@@ -169,17 +169,17 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                                           .add(OnGenderSelected(Gender.Female));
                                     }),
                               ),
-                              SizedBox(
-                                width: 8,
-                              ),
+                              //SizedBox(
+                              //  width: 8,
+                              // ),
                               Text(
                                 'Female',
                                 style:
                                     MmmTextStyles.bodySmall(textColor: kDark5),
                               ),
-                              SizedBox(
-                                width: 22,
-                              ),
+                              //SizedBox(
+                              //  width: 22,
+                              // ),
                               Transform.scale(
                                 scale: 1.2,
                                 child: Radio(
@@ -192,9 +192,9 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                                           .add(OnGenderSelected(Gender.Other));
                                     }),
                               ),
-                              SizedBox(
-                                width: 8,
-                              ),
+                              //SizedBox(
+                              //  width: 8,
+                              // ),
                               Text(
                                 'Others',
                                 style:
@@ -265,9 +265,9 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                             },
                           ),
                         ),
-                        SizedBox(
-                          width: 4,
-                        ),
+                        //SizedBox(
+                        //  width: 4,
+                        // ),
                         Text(
                           'By signing up, i agree to the',
                           style: MmmTextStyles.caption(textColor: kDark5),
@@ -450,9 +450,9 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
   }
 
   void intiData() {
-    this.gender = BlocProvider.of<CreateAccountBloc>(context).gender;
+    this.gender = BlocProvider.of<CreateAccountBloc>(context).gender!;
     this.profileCreatedFor =
-        BlocProvider.of<CreateAccountBloc>(context).profileCreatedFor;
+        BlocProvider.of<CreateAccountBloc>(context).profileCreatedFor!;
     this.selectedCountry =
         BlocProvider.of<CreateAccountBloc>(context).selectedCountry;
     this.acceptTerms = BlocProvider.of<CreateAccountBloc>(context).acceptTerms;

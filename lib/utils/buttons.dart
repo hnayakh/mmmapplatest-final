@@ -7,9 +7,9 @@ import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
 
 class MmmButtons {
-  static Widget categoryButtons(String labelText, String hintText, String icon,
+  static Widget categoryButtons(
+      String labelText, String hintText, String newhintText, String icon,
       {Function()? action}) {
-    String newhintText = hintText;
     return Column(
       children: [
         Row(
@@ -19,11 +19,11 @@ class MmmButtons {
               textScaleFactor: 1.0,
               style: MmmTextStyles.bodySmall(textColor: kDark5),
             ),
-            SizedBox(
-              width: 2,
-            ),
+            //SizedBox(
+            //  width: 2,
+            // ),
             Text(
-              '*',
+              ' *',
               style: MmmTextStyles.bodySmall(textColor: kredStar),
             )
           ],
@@ -53,7 +53,7 @@ class MmmButtons {
                     Container(
                       //width: 216,
                       child: Text(
-                        newhintText,
+                        hintText,
                         textScaleFactor: 1.0,
                         textAlign: TextAlign.start,
                         style: newhintText == hintText
@@ -871,20 +871,21 @@ class MmmButtons {
           child: Container(
             alignment: Alignment.center,
             height: containerheight,
-            width: containerwidth,
+            //width: containerwidth,
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                SizedBox(
-                  width: 12,
-                ),
+                //SizedBox(
+                //   width: 12,
+                // ),
                 SvgPicture.asset(
                   icon,
                   color: Color(0xffFCFCFD),
                   fit: BoxFit.cover,
                 ),
-                SizedBox(
-                  width: 8,
-                ),
+                // SizedBox(
+                //   width: 8,
+                // ),
                 Text(
                   text,
                   textAlign: TextAlign.center,
@@ -918,20 +919,21 @@ class MmmButtons {
           child: Container(
             alignment: Alignment.center,
             height: containerheight,
-            width: containerwidth,
+            // width: containerwidth,
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                SizedBox(
-                  width: 12,
-                ),
+                //SizedBox(
+                //   width: 12,
+                //  ),
                 SvgPicture.asset(
                   icon,
                   color: Color(0xff121619),
                   fit: BoxFit.cover,
                 ),
-                SizedBox(
-                  width: 8,
-                ),
+                // SizedBox(
+                //   width: 8,
+                // ),
                 Text(
                   text,
                   textScaleFactor: 1.0,

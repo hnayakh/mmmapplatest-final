@@ -68,11 +68,11 @@ class MmmTextFileds {
                   textScaleFactor: 1.0,
                   style: MmmTextStyles.bodySmall(textColor: kDark5),
                 ),
-                SizedBox(
-                  width: 2,
-                ),
+                //SizedBox(
+                // width: 2,
+                // ),
                 Text(
-                  '*',
+                  ' *',
                   style: MmmTextStyles.bodySmall(textColor: kredStar),
                 )
               ],

@@ -130,19 +130,19 @@ class _SigninWithPhoneScreenState extends State<SigninWithPhoneScreen> {
                                   SvgPicture.asset(
                                     'images/flags/in.svg',
                                     height: 16,
-                                    width: 22,
+                                    //width: 22,
                                   ),
                                   SizedBox(
-                                    width: 4,
-                                  ),
+                                      //width: 4,
+                                      ),
                                   Text(
                                     '+91',
                                     style: MmmTextStyles.bodyRegular(
                                         textColor: kDark5),
                                   ),
                                   SizedBox(
-                                    width: 4,
-                                  ),
+                                      // width: 4,
+                                      ),
                                   Material(
                                     child: InkWell(
                                       // onTap: () => showModalBottomSheet(
@@ -153,7 +153,7 @@ class _SigninWithPhoneScreenState extends State<SigninWithPhoneScreen> {
                                       //     builder: (context) => buildSheet()),
                                       child: Container(
                                           height: 16,
-                                          width: 16,
+                                          //width: 16,
                                           color: kLight4,
                                           child: SvgPicture.asset(
                                             'images/Chevron_Down.svg',
@@ -181,26 +181,31 @@ class _SigninWithPhoneScreenState extends State<SigninWithPhoneScreen> {
                   Row(
                     children: [
                       Expanded(
+                          flex: 4,
                           child: Container(
-                        height: 1,
-                        color: gray5,
-                      )),
-                      Container(
-                        width: 27,
-                        height: 22,
-                        alignment: Alignment.center,
-                        child: Text(
-                          'OR',
-                          textAlign: TextAlign.center,
-                          style:
-                              MmmTextStyles.bodyMediumSmall(textColor: kDark2),
+                            height: 1,
+                            color: gray5,
+                          )),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          // width: 27,
+                          height: 22,
+                          alignment: Alignment.center,
+                          child: Text(
+                            'OR',
+                            textAlign: TextAlign.center,
+                            style: MmmTextStyles.bodyMediumSmall(
+                                textColor: kDark2),
+                          ),
                         ),
                       ),
                       Expanded(
+                          flex: 4,
                           child: Container(
-                        height: 1,
-                        color: gray5,
-                      )),
+                            height: 1,
+                            color: gray5,
+                          )),
                     ],
                   ),
                   SizedBox(
@@ -208,11 +213,15 @@ class _SigninWithPhoneScreenState extends State<SigninWithPhoneScreen> {
                   ),
                   Row(
                     children: [
-                      Expanded(child: MmmButtons.facebookSigninButton()),
-                      SizedBox(
-                        width: 16,
+                      Expanded(
+                          flex: 12, child: MmmButtons.facebookSigninButton()),
+                      Expanded(
+                        flex: 1,
+                        child: SizedBox(
+                            // width: 16,
+                            ),
                       ),
-                      Expanded(child: MmmButtons.googleSigninButton())
+                      Expanded(flex: 12, child: MmmButtons.googleSigninButton())
                     ],
                   ),
                   SizedBox(
