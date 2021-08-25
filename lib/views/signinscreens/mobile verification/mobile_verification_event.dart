@@ -5,7 +5,8 @@ class MobileVerificationEvent extends BaseEventState {}
 class OnOtpverification extends MobileVerificationEvent {
   final String otp;
 
-  final String dialCode;
-  final String mobile;
-  OnOtpverification(this.otp, this.dialCode, this.mobile);
+  OnOtpverification(this.otp,);
+}
+class GenerateOtp extends MobileVerificationEvent{
+
 }

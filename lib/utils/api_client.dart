@@ -143,11 +143,11 @@ class ApiClient {
     try {
       Response response =
           await this.dio.post(AppConstants.ENDPOINT + "auth/verifyOtp", data: {
-        "countryCode": dialCode,
+        "countryCode": "+$dialCode",
         "phoneNumber": mobile,
         "type": otpType.index,
-        "email": "rutuparna.rout@gmail.com",
-        "otp": "123456"
+        "email": "",
+        "otp": otp
       });
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SigninResponse.fromJson(response.data);
@@ -162,14 +162,15 @@ class ApiClient {
     }
   }
 
-  Future<SendOtpResponse> sendOtp(String dialCode, String mobile) async {
+  Future<SendOtpResponse> sendOtp(
+      String dialCode, String mobile, OtpType login) async {
     try {
       Response response =
           await this.dio.post(AppConstants.ENDPOINT + "auth/sendOtp", data: {
-        "countryCode": dialCode,
+        "countryCode": "+$dialCode",
         "phoneNumber": mobile,
-        "type": OtpType.Login.index,
-        "email": "rutuparna.rout@gmail.com",
+        "type": login.index,
+        "email": "",
       });
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SendOtpResponse.fromJson(response.data);

@@ -58,8 +58,8 @@ class UserRepository {
     return this.apiClient.verifyOtp(dialCode, mobile, otpType, otp);
   }
 
-  Future<SendOtpResponse> sendOtp(String dialCode, String mobile) async {
-    return this.apiClient.sendOtp(dialCode, mobile);
+  Future<SendOtpResponse> sendOtp(String dialCode, String mobile, OtpType login) async {
+    return this.apiClient.sendOtp(dialCode, mobile,login);
   }
 
   Future<SigninResponse> habit(EatingHabit eatingHabit,

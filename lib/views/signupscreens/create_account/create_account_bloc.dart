@@ -43,7 +43,7 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
       this.confirmPassword = event.confirmPassword;
       this.mobile = event.mobile;
 
-      if (profileCreatedFor == 0) {
+      if (profileCreatedFor == null) {
         yield OnError("Select Profile Created For");
       } else if (!RegExp(AppConstants.EMAILREGEXP).hasMatch(this.email)) {
         yield OnError("Enter Valid Email");

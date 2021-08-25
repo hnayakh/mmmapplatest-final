@@ -8,24 +8,31 @@ import 'mobile_verification_state.dart';
 
 class MobileVerificationBloc
     extends Bloc<MobileVerificationEvent, MobileVerificationState> {
-  late final UserRepository userRepository;
+  final UserRepository userRepository;
+  final String dialCode;
+  final String mobile;
 
-  MobileVerificationBloc(this.userRepository)
+  MobileVerificationBloc(this.userRepository, this.dialCode, this.mobile)
       : super(MobileVerificationInitialState());
   late String otp;
-  late String email;
-  late String dialCode;
-  late String mobile;
+  String email = '';
 
   @override
   Stream<MobileVerificationState> mapEventToState(
       MobileVerificationEvent event) async* {
     yield OnLoading();
-
+    if (event is GenerateOtp) {
+      var result = await this
+          .userRepository
+          .sendOtp(this.dialCode, this.mobile, OtpType.Login);
+      if (result.status == AppConstants.SUCCESS) {
+        yield OnOtpGenerated();
+      } else {
+        yield OnError(result.message);
+      }
+    }
     if (event is OnOtpverification) {
-      this.dialCode = event.dialCode;
       this.otp = event.otp;
-      this.mobile = event.mobile;
       if (event.otp.length != 6) {
         yield OnError('Enter 6-digit otp');
       } else {
@@ -34,7 +41,7 @@ class MobileVerificationBloc
             .verifyOtp(this.dialCode, this.mobile, OtpType.Login, this.otp);
 
         if (result.status == AppConstants.SUCCESS) {
-          // this.userRepository.useDetails = result.userDetails;
+          this.userRepository.useDetails = result.userDetails;
           // await this.userRepository.saveUserDetails();
           yield OnSignIn();
         } else {

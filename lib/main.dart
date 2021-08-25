@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 
@@ -40,6 +42,12 @@ class SimpleObserver extends BlocObserver {
 
 void main() {
   Bloc.observer = SimpleObserver();
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: kSecondary,
+      // navigation bar color
+      statusBarColor: kSecondary,
+      statusBarBrightness: Brightness.dark // status bar color
+      ));
   runApp(MyApp());
 }
 

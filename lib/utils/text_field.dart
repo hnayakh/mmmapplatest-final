@@ -38,7 +38,7 @@ class MmmTextFileds {
                     borderRadius: BorderRadius.all(Radius.circular(8)),
                     borderSide: BorderSide(color: kInputBorder, width: 1)),
                 contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                    const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                 hintText: hintText,
                 isDense: true,
                 filled: true,

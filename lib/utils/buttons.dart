@@ -481,7 +481,7 @@ class MmmButtons {
           child: Container(
             padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
             alignment: Alignment.center,
-            height: 50,
+            height: 44,
             child: Text(
               text,
               textAlign: TextAlign.center,
@@ -499,7 +499,7 @@ class MmmButtons {
     return Container(
       decoration: MmmDecorations.primaryButtonDecoration(),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(6),
         child: Material(
           color: Colors.transparent,
           child: InkWell(
@@ -574,7 +574,7 @@ class MmmButtons {
 
   static Container facebookSigninButton() {
     return Container(
-      height: 50,
+      height: 44,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         color: kLight2,
@@ -616,7 +616,7 @@ class MmmButtons {
 
   static Container googleSigninButton() {
     return Container(
-      height: 50,
+      height: 44,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         color: Color(0xffFCFCFD),

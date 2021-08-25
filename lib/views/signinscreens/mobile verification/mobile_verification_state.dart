@@ -12,3 +12,6 @@ class OnError extends MobileVerificationState {
 class MobileVerificationInitialState extends MobileVerificationState {}
 
 class OnLoading extends MobileVerificationState {}
+class OnOtpGenerated extends MobileVerificationState{
+
+}

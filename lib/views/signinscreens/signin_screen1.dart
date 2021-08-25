@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -52,10 +53,6 @@ class SignInScreenState extends State<SignInScreen> {
 
   @override
   void initState() {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: kSecondary, // navigation bar color
-      statusBarColor: kSecondary, // status bar color
-    ));
     super.initState();
   }
 
@@ -70,162 +67,171 @@ class SignInScreenState extends State<SignInScreen> {
         appBar: MmmButtons.appbarThin(),
         body: BlocConsumer<SignInBloc, SigninState>(
           builder: (context, state) {
-            return Stack(
+            return SafeArea(
+                child: Stack(
               children: [
                 Container(
                   padding: kMargin16,
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Container(
-                          margin: const EdgeInsets.only(top: 4),
-                          child: Text(
-                            'Sign in to find your\nperfect partner',
-                            style: MmmTextStyles.heading2(textColor: kDark5),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 16,
-                        ),
-                        Container(
+                        Expanded(
+                            child: Container(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              MmmTextFileds.textFiledWithLabel(
-                                "Email",
-                                _hint,
-                                emailController,
-                                inputType: TextInputType.emailAddress,
+                              Container(
+                                margin: const EdgeInsets.only(top: 4),
+                                child: Text(
+                                  'Sign in to find your\nperfect partner',
+                                  style:
+                                      MmmTextStyles.heading2(textColor: kDark5),
+                                ),
                               ),
                               SizedBox(
                                 height: 16,
                               ),
-                              MmmTextFileds.textFiledWithLabel(
-                                  "Password", _hint2, passwordController,
-                                  inputType: TextInputType.emailAddress,
-                                  isPassword: true),
-                              SizedBox(
-                                height: 24,
-                              ),
                               Container(
-                                  //padding: kMargin4,
-                                  child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      navigateToForgotPassword();
-                                    },
-                                    child: GradientText(
-                                      'Forgot password?',
-                                      style: MmmTextStyles.bodySmall(),
-                                      colors: [kPrimary, kSecondary],
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    MmmTextFileds.textFiledWithLabel(
+                                      "Email",
+                                      _hint,
+                                      emailController,
+                                      inputType: TextInputType.emailAddress,
                                     ),
-                                  )
-                                ],
-                              )),
-                              SizedBox(
-                                height: 24,
-                              ),
-                              Container(
-                                  child: MmmButtons.enabledRedButtonbodyMedium(
-                                      50, 'Sign In', action: () {
-                                BlocProvider.of<SignInBloc>(context)
-                                    .add(ValidateAndSignin(
-                                  emailController.text.trim(),
-                                  passwordController.text.trim(),
-                                ));
-                              })),
-                              SizedBox(
-                                height: 24,
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                      flex: 4,
-                                      child: Container(
-                                        height: 1,
-                                        color: gray5,
-                                      )),
-                                  Expanded(
-                                    flex: 1,
-                                    child: Container(
-                                      // width: 27,
-                                      height: 22,
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        'OR',
-                                        textAlign: TextAlign.center,
-                                        style: MmmTextStyles.bodyMediumSmall(
-                                            textColor: kDark2),
-                                      ),
+                                    SizedBox(
+                                      height: 16,
                                     ),
-                                  ),
-                                  Expanded(
-                                      flex: 4,
-                                      child: Container(
-                                        height: 1,
-                                        color: gray5,
-                                      )),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 24,
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                      flex: 12,
-                                      child: MmmButtons.facebookSigninButton()),
-                                  Expanded(
-                                    flex: 1,
-                                    child: SizedBox(
-                                        // width: 16,
+                                    MmmTextFileds.textFiledWithLabel(
+                                        "Password", _hint2, passwordController,
+                                        inputType: TextInputType.emailAddress,
+                                        isPassword: true),
+                                    SizedBox(
+                                      height: 24,
+                                    ),
+                                    Container(
+                                        //padding: kMargin4,
+                                        child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            navigateToForgotPassword();
+                                          },
+                                          child: GradientText(
+                                            'Forgot password?',
+                                            style: MmmTextStyles.bodySmall(),
+                                            colors: [kPrimary, kSecondary],
+                                          ),
+                                        )
+                                      ],
+                                    )),
+                                    SizedBox(
+                                      height: 24,
+                                    ),
+                                    Container(
+                                        child: MmmButtons
+                                            .enabledRedButtonbodyMedium(
+                                                44, 'Sign In', action: () {
+                                      BlocProvider.of<SignInBloc>(context)
+                                          .add(ValidateAndSignin(
+                                        emailController.text.trim(),
+                                        passwordController.text.trim(),
+                                      ));
+                                    })),
+                                    SizedBox(
+                                      height: 24,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 4,
+                                            child: Container(
+                                              height: 1,
+                                              color: gray5,
+                                            )),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Container(
+                                            // width: 27,
+                                            height: 22,
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              'OR',
+                                              textAlign: TextAlign.center,
+                                              style:
+                                                  MmmTextStyles.bodyMediumSmall(
+                                                      textColor: kDark2),
+                                            ),
+                                          ),
                                         ),
-                                  ),
-                                  Expanded(
-                                      flex: 12,
-                                      child: MmmButtons.googleSigninButton())
-                                ],
+                                        Expanded(
+                                            flex: 4,
+                                            child: Container(
+                                              height: 1,
+                                              color: gray5,
+                                            )),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 24,
+                                    ),
+                                    Container(
+                                      child: MmmButtons
+                                          .enabledRedButton50bodyMedium(
+                                              'Connect via OTP', action: () {
+                                        navigateToSigninWithMobile();
+                                      }),
+                                    ),
+                                    SizedBox(
+                                      height: 24,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 12,
+                                            child: MmmButtons
+                                                .facebookSigninButton()),
+                                        Expanded(
+                                          flex: 1,
+                                          child: SizedBox(
+                                              // width: 16,
+                                              ),
+                                        ),
+                                        Expanded(
+                                            flex: 12,
+                                            child:
+                                                MmmButtons.googleSigninButton())
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                              SizedBox(
-                                height: 8,
-                              ),
-                              Container(
-                                child: MmmButtons.enabledRedButton50bodyMedium(
-                                    'Connect via OTP', action: () {
-                                  navigateToSigninWithMobile();
-                                }),
-                              ),
-                              SizedBox(
-                                height: 19,
-                              )
                             ],
                           ),
-                        ),
+                        )),
                         Container(
-                          //margin: const EdgeInsets.only(bottom: 44, top: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                //padding: const EdgeInsets.only(top: 2),
-                                child: Text('Dont have an account?',
-                                    textScaleFactor: 1.0,
-                                    style: MmmTextStyles.bodySmall(
-                                        textColor: kDark5)),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  navigateToRegister();
-                                },
-                                child: GradientText(
-                                  ' Signup',
-                                  style: MmmTextStyles.bodyMedium(),
-                                  colors: [kPrimary, kSecondary],
-                                ),
-                              )
-                            ],
+                          child: RichText(
+                            text: TextSpan(children: [
+                              TextSpan(
+                                  text: "Don't have an account? ",
+                                  style: MmmTextStyles.bodySmall(
+                                      textColor: kDark5)),
+                              TextSpan(
+                                  text: "Signup",
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                    print("tap");
+                                      navigateToRegister();
+                                    },
+                                  style: MmmTextStyles.bodyMedium(
+                                      textColor: kPrimary))
+                            ]),
+                            textScaleFactor: 1.0,
+                            textAlign: TextAlign.center,
                           ),
                         ),
                       ]),
@@ -240,7 +246,7 @@ class SignInScreenState extends State<SignInScreen> {
                       )
                     : Container()
               ],
-            );
+            ));
           },
           listener: (context, state) {
             if (state is OnSignIn) {

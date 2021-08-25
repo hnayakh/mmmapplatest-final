@@ -212,7 +212,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                         height: 50,
                         child: TextField(
                           controller: phoneController,
-                          keyboardType: TextInputType.number,
+                          keyboardType: TextInputType.phone,
                           style: MmmTextStyles.bodyRegular(textColor: kDark5),
                           cursorColor: kDark5,
                           obscureText: false,
