@@ -11,10 +11,10 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
   final UserRepository userRepository;
 
   String email = '', password = '', confirmPassword = '', mobile = '';
-  Gender gender = Gender.Male;
+  Gender? gender = Gender.Male;
   Country selectedCountry = Country.parse("india");
   bool acceptTerms = false;
-  Relationship profileCreatedFor = Relationship.Self;
+  Relationship? profileCreatedFor = Relationship.Self;
 
   CreateAccountBloc(this.userRepository) : super(CreateAccountInitialState());
 
@@ -60,7 +60,7 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
         yield OnError("Accept terms and conditions.");
       } else {
         var result = await this.userRepository.register(
-            this.profileCreatedFor.index,
+            this.profileCreatedFor!.index,
             this.email,
             this.selectedCountry.phoneCode,
             this.mobile,

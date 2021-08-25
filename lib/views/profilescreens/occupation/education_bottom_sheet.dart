@@ -9,8 +9,10 @@ import 'package:makemymarry/utils/text_styles.dart';
 class EducationBottomSheet extends StatefulWidget {
   final Education? selected;
   final List<Education> list;
+  final String titleRed;
 
-  const EducationBottomSheet({Key? key, this.selected, required this.list})
+  const EducationBottomSheet(
+      {Key? key, this.selected, required this.list, required this.titleRed})
       : super(key: key);
 
   @override
@@ -91,9 +93,10 @@ class EducationBottomSheetState extends State<EducationBottomSheet> {
                         children: [
                           Text(filtered[index].title,
                               style: MmmTextStyles.bodyMediumSmall(
-                                  textColor: widget.selected == filtered[index]
-                                      ? kPrimary
-                                      : kModalPrimary)),
+                                  textColor:
+                                      filtered[index].title == widget.titleRed
+                                          ? kPrimary
+                                          : kModalPrimary)),
                           SizedBox(
                             height: 8,
                           ),

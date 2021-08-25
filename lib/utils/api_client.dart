@@ -14,13 +14,18 @@ class ApiClient {
     dio.interceptors.add(dioLoggerInterceptor);
   }
 
-  Future<RegistrationResponse> registerUser(int profileCreatedFor, String email,
-      String phoneCode, String mobile, Gender gender, String password) async {
+  Future<RegistrationResponse> registerUser(
+      int? profileCreatedFor,
+      String email,
+      String phoneCode,
+      String mobile,
+      Gender? gender,
+      String password) async {
     try {
       Response response =
           await this.dio.post(AppConstants.ENDPOINT + "users/basic", data: {
         "email": email,
-        "gender": gender.index,
+        "gender": gender!.index,
         "countryCode": phoneCode,
         "phoneNumber": mobile,
         "password": password,

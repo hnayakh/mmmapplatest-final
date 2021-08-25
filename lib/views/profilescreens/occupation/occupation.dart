@@ -34,6 +34,9 @@ class Occupations extends StatelessWidget {
 }
 
 class OccupationScreen extends StatelessWidget {
+  var titleRedOcc = '';
+  var titleRedEdu = '';
+
   OccupationScreen({Key? key}) : super(key: key);
   final TextEditingController orgNameController = TextEditingController();
   final TextEditingController annIncomeController = TextEditingController();
@@ -83,6 +86,7 @@ class OccupationScreen extends StatelessWidget {
                         occupation != null
                             ? '${occupation!}'
                             : 'Select your occupation',
+                        'Select your occupation',
                         'images/rightArrow.svg', action: () {
                       selectOccupation(context);
                     }),
@@ -104,6 +108,7 @@ class OccupationScreen extends StatelessWidget {
                         education != null
                             ? '${education!.title}'
                             : 'Select your highest education',
+                        'Select your highest education',
                         'images/rightArrow.svg', action: () {
                       selectEducation(context);
                     }),
@@ -161,10 +166,15 @@ class OccupationScreen extends StatelessWidget {
         context: context,
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
-        builder: (context) => OccupationBottomSheet(list: list));
+        builder: (context) => OccupationBottomSheet(
+              list: list,
+              titleRed: titleRedOcc,
+            ));
+
     if (result != null && result is SimpleMasterData) {
       BlocProvider.of<OccupationBloc>(context)
           .add(OnOccupationSelected(result.title));
+      titleRedOcc = result.title;
     }
   }
 
@@ -177,9 +187,13 @@ class OccupationScreen extends StatelessWidget {
         context: context,
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
-        builder: (context) => EducationBottomSheet(list: list));
+        builder: (context) => EducationBottomSheet(
+              list: list,
+              titleRed: titleRedEdu,
+            ));
     if (result != null && result is Education) {
       BlocProvider.of<OccupationBloc>(context).add(OnEducationSelected(result));
+      titleRedEdu = result.title;
     }
   }
 

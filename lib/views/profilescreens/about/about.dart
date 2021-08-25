@@ -141,16 +141,18 @@ class _AboutScreenState extends State<AboutScreen> {
               SizedBox(
                 height: 24,
               ),
-              MmmButtons.categoryButtons(
-                  'Date of birth', dobHintText, 'images/Calendar.svg',
-                  action: () {
+              MmmButtons.categoryButtons('Date of birth', dobHintText,
+                  'dd MMM yyyy', 'images/Calendar.svg', action: () {
                 showDate(context);
               }),
               SizedBox(
                 height: 24,
               ),
-              MmmButtons.categoryButtons('Marital Status',
-                  maritalStatusHintText, 'images/rightArrow.svg', action: () {
+              MmmButtons.categoryButtons(
+                  'Marital Status',
+                  maritalStatusHintText,
+                  'Select your maritial status',
+                  'images/rightArrow.svg', action: () {
                 showMaritalStatusBottomSheet();
               }),
               SizedBox(
@@ -183,8 +185,11 @@ class _AboutScreenState extends State<AboutScreen> {
                       'Yes Living Together',
                       style: MmmTextStyles.bodySmall(textColor: kDark5),
                     ),
-                    SizedBox(
-                      width: 8,
+                    Expanded(
+                      flex: 1,
+                      child: SizedBox(
+                          // width: 8,
+                          ),
                     ),
                     Transform.scale(
                       scale: 1.2,
@@ -237,7 +242,8 @@ class _AboutScreenState extends State<AboutScreen> {
                             "No of children",
                             this.noOfChildren != null
                                 ? '${describeEnum(this.noOfChildren!)}'
-                                : '',
+                                : 'Select number of children',
+                            'Select number of children',
                             'images/rightArrow.svg', action: () {
                           showChildrenBottomSheet(context);
                         })
@@ -251,7 +257,8 @@ class _AboutScreenState extends State<AboutScreen> {
                   "Height",
                   this.heightStatus != null
                       ? '${AppHelper.getHeights()[heightStatus!].toStringAsFixed(1)} ft'
-                      : '',
+                      : 'Select your height',
+                  'Select your height',
                   'images/rightArrow.svg', action: () {
                 showHeightStatusBottomSheet();
               }),
@@ -270,7 +277,7 @@ class _AboutScreenState extends State<AboutScreen> {
                   ),
                   Container(
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Transform.scale(
                           scale: 1.2,
@@ -283,16 +290,14 @@ class _AboutScreenState extends State<AboutScreen> {
                                     OnDisabilitySelected(AbilityStatus.Normal));
                               }),
                         ),
-                        SizedBox(
-                          width: 8,
-                        ),
+                        //SizedBox(
+                        // width: 8,
+                        //  ),
                         Text(
-                          'Normal',
+                          'Normal    ',
                           style: MmmTextStyles.bodySmall(textColor: kDark5),
                         ),
-                        SizedBox(
-                          width: 22,
-                        ),
+
                         Transform.scale(
                           scale: 1.2,
                           child: Radio(
@@ -305,12 +310,18 @@ class _AboutScreenState extends State<AboutScreen> {
                                         AbilityStatus.PhysicallyChallenged));
                               }),
                         ),
-                        SizedBox(
-                          width: 8,
-                        ),
+                        // SizedBox(
+                        //   width: 8,
+                        // ),
                         Text(
                           'Physically Challenged',
                           style: MmmTextStyles.bodySmall(textColor: kDark5),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: SizedBox(
+                              // width: 22,
+                              ),
                         ),
                       ],
                     ),
@@ -381,9 +392,11 @@ class _AboutScreenState extends State<AboutScreen> {
     this.childrenStatus = BlocProvider.of<AboutBloc>(context).childrenStatus;
     this.abilityStatus = BlocProvider.of<AboutBloc>(context).abilityStatus;
     this.noOfChildren = BlocProvider.of<AboutBloc>(context).noOfChildren;
-    this.dobHintText = BlocProvider.of<AboutBloc>(context).dob != null
-        ? BlocProvider.of<AboutBloc>(context).dob!
-        : '';
+    this.dobHintText = BlocProvider.of<AboutBloc>(context).dob;
+
+    //this.dobHintText = BlocProvider.of<AboutBloc>(context).dob != null
+    //    ? BlocProvider.of<AboutBloc>(context).dob!
+    //   : '';
   }
 
   void showChildrenBottomSheet(context) async {

@@ -9,8 +9,10 @@ import 'package:makemymarry/utils/text_styles.dart';
 class OccupationBottomSheet extends StatefulWidget {
   final Occupation? selected;
   final List<Occupation> list;
+  final String titleRed;
 
-  const OccupationBottomSheet({Key? key, this.selected, required this.list})
+  const OccupationBottomSheet(
+      {Key? key, this.selected, required this.list, required this.titleRed})
       : super(key: key);
 
   @override
@@ -21,7 +23,9 @@ class OccupationBottomSheet extends StatefulWidget {
 
 class OccupationBottomSheetState extends State<OccupationBottomSheet> {
   List<Occupation> filtered = [];
-  Color occClr = kDark5;
+
+  //String titleRednew = '';
+
   @override
   void initState() {
     filtered = widget.list;
@@ -115,21 +119,28 @@ class OccupationBottomSheetState extends State<OccupationBottomSheet> {
                                                     .subCategory[
                                                         indexSubcategory]
                                                     .title,
-                                                style: MmmTextStyles
-                                                    .bodyMediumSmall(
-                                                        textColor: occClr))
+                                                style: MmmTextStyles.bodyMediumSmall(
+                                                    textColor: filtered[
+                                                                    indexCategory]
+                                                                .subCategory[
+                                                                    indexSubcategory]
+                                                                .title ==
+                                                            widget.titleRed
+                                                        ? kPrimary
+                                                        : kDark5))
                                           ],
                                         ),
                                       ),
                                       onTap: () {
                                         setState(() {
-                                          occClr = kPrimary;
+                                          //titleRednew =
+                                          //     filtered[indexCategory]
+                                          //       .subCategory[indexSubcategory]
+                                          //       .title;
+                                          Navigator.of(context).pop(filtered[
+                                                  indexCategory]
+                                              .subCategory[indexSubcategory]);
                                         });
-
-                                        Navigator.of(context).pop(
-                                            filtered[indexCategory]
-                                                .subCategory[indexSubcategory]);
-                                        occClr = kDark5;
                                       },
                                     );
                                   })

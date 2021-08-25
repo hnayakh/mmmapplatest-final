@@ -24,8 +24,8 @@ class UserRepository {
     return this.storageService.getUserDetails();
   }
 
-  Future<RegistrationResponse> register(int profileCreatedFor, String email,
-      String phoneCode, String mobile, Gender gender, String password) async {
+  Future<RegistrationResponse> register(int? profileCreatedFor, String email,
+      String phoneCode, String mobile, Gender? gender, String password) async {
     return this.apiClient.registerUser(
         profileCreatedFor, email, phoneCode, mobile, gender, password);
   }

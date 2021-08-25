@@ -123,6 +123,7 @@ class ReligionScreenState extends State<ReligionScreen> {
                     religion != null
                         ? '${religion!.title}'
                         : 'Select your religion',
+                    'Select your religion',
                     'images/rightArrow.svg', action: () {
                   selectReligion(context);
                 }),
@@ -147,6 +148,7 @@ class ReligionScreenState extends State<ReligionScreen> {
                                 subCaste != null
                                     ? '${subCaste}'
                                     : 'Select your sub-caste',
+                                'Select your sub-caste',
                                 'images/rightArrow.svg', action: () {
                               if (religion != null) selectSubCast(context);
                             })
@@ -162,6 +164,7 @@ class ReligionScreenState extends State<ReligionScreen> {
                     motherTongue != null
                         ? '${motherTongue!.title}'
                         : 'Select your mother tongue',
+                    'Select your mother tongue',
                     'images/rightArrow.svg', action: () {
                   selectMotherToungue(context);
                 }),
@@ -177,6 +180,7 @@ class ReligionScreenState extends State<ReligionScreen> {
                               this.gothra != null
                                   ? gothra
                                   : 'Select your gothra',
+                              'Select your gothra',
                               'images/rightArrow.svg', action: () {
                             selectGothra(context);
                           }),
