@@ -162,6 +162,29 @@ class ApiClient {
     }
   }
 
+  Future<SigninResponse> verifyOtpEmail(String email, String otp) async {
+    try {
+      Response response =
+          await this.dio.post(AppConstants.ENDPOINT + "auth/verifyOtp", data: {
+        "countryCode": "",
+        "phoneNumber": "",
+        "type": OtpType.ForgotPassword.index,
+        "email": email,
+        "otp": otp
+      });
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return SigninResponse.fromJson(response.data);
+      } else {
+        return SigninResponse.fromError("Error Occurred. Please try againa.");
+      }
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      return SigninResponse.fromError("Error Occurred. Please try againa.");
+    }
+  }
+
   Future<SendOtpResponse> sendOtp(
       String dialCode, String mobile, OtpType login) async {
     try {
@@ -171,6 +194,28 @@ class ApiClient {
         "phoneNumber": mobile,
         "type": login.index,
         "email": "",
+      });
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return SendOtpResponse.fromJson(response.data);
+      } else {
+        return SendOtpResponse.fromError("Error Occurred. Please try againa.");
+      }
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      return SendOtpResponse.fromError("Error Occurred. Please try againa.");
+    }
+  }
+
+  Future<SendOtpResponse> sendOtpEmail(String email) async {
+    try {
+      Response response =
+          await this.dio.post(AppConstants.ENDPOINT + "auth/sendOtp", data: {
+        "countryCode": "",
+        "phoneNumber": "",
+        "type": OtpType.ForgotPassword.index,
+        "email": email,
       });
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SendOtpResponse.fromJson(response.data);
@@ -220,7 +265,7 @@ class ApiClient {
       String nameOfOrg,
       String? occupation,
       String income,
-      Education? education,
+      String? education,
       String country,
       String stateName,
       String city,

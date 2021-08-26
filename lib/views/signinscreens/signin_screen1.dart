@@ -224,7 +224,7 @@ class SignInScreenState extends State<SignInScreen> {
                                   text: "Signup",
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                    print("tap");
+                                      print("tap");
                                       navigateToRegister();
                                     },
                                   style: MmmTextStyles.bodyMedium(
@@ -266,8 +266,11 @@ class SignInScreenState extends State<SignInScreen> {
   }
 
   void navigateToForgotPassword() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => ForgotPassword()));
+    var userRepo = BlocProvider.of<SignInBloc>(context).userRepository;
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => ForgotPassword(
+              userRepository: userRepo,
+            )));
   }
 
   void navigateToSigninWithMobile() {
@@ -289,7 +292,7 @@ class SignInScreenState extends State<SignInScreen> {
   void navigateToProfileSetup() {
     var userRepo = BlocProvider.of<SignInBloc>(context).userRepository;
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => FamilyScreen(
+        builder: (context) => Occupations(
               userRepository: userRepo,
             )));
   }

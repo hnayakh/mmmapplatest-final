@@ -58,8 +58,17 @@ class UserRepository {
     return this.apiClient.verifyOtp(dialCode, mobile, otpType, otp);
   }
 
-  Future<SendOtpResponse> sendOtp(String dialCode, String mobile, OtpType login) async {
-    return this.apiClient.sendOtp(dialCode, mobile,login);
+  Future<SendOtpResponse> sendOtp(
+      String dialCode, String mobile, OtpType login) async {
+    return this.apiClient.sendOtp(dialCode, mobile, login);
+  }
+
+  Future<SendOtpResponse> sendOtpEmail(String email) async {
+    return this.apiClient.sendOtpEmail(email);
+  }
+
+  Future<SigninResponse> verifyOtpEmail(String email, String otp) async {
+    return this.apiClient.verifyOtpEmail(email, otp);
   }
 
   Future<SigninResponse> habit(EatingHabit eatingHabit,
@@ -83,7 +92,7 @@ class UserRepository {
       String nameOfOrg,
       String? occupation,
       String income,
-      Education? education,
+      String? education,
       String country,
       String stateName,
       String city) async {

@@ -11,6 +11,7 @@ import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
+import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/profilescreens/family/family.dart';
 
 import 'education_bottom_sheet.dart';
@@ -33,35 +34,48 @@ class Occupations extends StatelessWidget {
   }
 }
 
-class OccupationScreen extends StatelessWidget {
+class OccupationScreen extends StatefulWidget {
+  OccupationScreen({Key? key}) : super(key: key);
+
+  @override
+  _OccupationScreenState createState() => _OccupationScreenState();
+}
+
+class _OccupationScreenState extends State<OccupationScreen> {
   var titleRedOcc = '';
+
   var titleRedEdu = '';
 
-  OccupationScreen({Key? key}) : super(key: key);
   final TextEditingController orgNameController = TextEditingController();
+
   final TextEditingController annIncomeController = TextEditingController();
+
   final TextEditingController countryController = TextEditingController();
+
   final TextEditingController stateController = TextEditingController();
+
   final TextEditingController cityController = TextEditingController();
+
   String? occupation;
-  Education? education;
+
+  String? education;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MmmButtons.appBarCurved('Career'),
-      floatingActionButton: FloatingActionButton(
-        child: MmmIcons.rightArrowEnabled(),
-        onPressed: () {
-          BlocProvider.of<OccupationBloc>(context).add(UpdateCareer(
-              orgNameController.text.trim(),
-              annIncomeController.text.trim(),
-              countryController.text.trim(),
-              stateController.text.trim(),
-              cityController.text.trim()));
-        },
-        backgroundColor: gray5,
-      ),
+      //  floatingActionButton: FloatingActionButton(
+      //    child: MmmIcons.rightArrowEnabled(),
+      //   onPressed: () {
+      //      BlocProvider.of<OccupationBloc>(context).add(UpdateCareer(
+      //         orgNameController.text.trim(),
+      //         annIncomeController.text.trim(),
+      //          countryController.text.trim(),
+      //         stateController.text.trim(),
+      //         cityController.text.trim()));
+      //   },
+      //    backgroundColor: gray5,
+      //  ),
       body: BlocConsumer<OccupationBloc, OccupationState>(
         listener: (context, state) {
           if (state is MoveToFamily) {
@@ -70,82 +84,105 @@ class OccupationScreen extends StatelessWidget {
         },
         builder: (context, state) {
           initData(context);
-          return SingleChildScrollView(
-            padding: kMargin16,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+          return Stack(
+            children: [
+              SingleChildScrollView(
+                padding: kMargin16,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    SizedBox(
-                      height: 24,
-                    ),
-                    MmmButtons.categoryButtons(
-                        'Occupation',
-                        occupation != null
-                            ? '${occupation!}'
-                            : 'Select your occupation',
-                        'Select your occupation',
-                        'images/rightArrow.svg', action: () {
-                      selectOccupation(context);
-                    }),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    MmmTextFileds.textFiledWithLabelStar('Annual Income',
-                        'Enter your annual income', annIncomeController),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    MmmTextFileds.textFiledWithLabelStar('Employeed in',
-                        'Enter name of your organisation', orgNameController),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    MmmButtons.categoryButtons(
-                        'Highest Education',
-                        education != null
-                            ? '${education!.title}'
-                            : 'Select your highest education',
-                        'Select your highest education',
-                        'images/rightArrow.svg', action: () {
-                      selectEducation(context);
-                    }),
-                  ],
-                ),
-                SizedBox(
-                  height: 48,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text(
-                          'Current location of groom’s',
-                          style: MmmTextStyles.bodyMedium(
-                              textColor: kModalPrimary),
+                        SizedBox(
+                          height: 24,
                         ),
+                        MmmButtons.categoryButtons(
+                            'Occupation',
+                            occupation != null
+                                ? '${occupation!}'
+                                : 'Select your occupation',
+                            'Select your occupation',
+                            'images/rightArrow.svg', action: () {
+                          selectOccupation(context);
+                        }),
+                        SizedBox(
+                          height: 24,
+                        ),
+                        MmmTextFileds.textFiledWithLabelStar('Annual Income',
+                            'Enter your annual income', annIncomeController),
+                        SizedBox(
+                          height: 24,
+                        ),
+                        MmmTextFileds.textFiledWithLabelStar(
+                            'Employeed in',
+                            'Enter name of your organisation',
+                            orgNameController),
+                        SizedBox(
+                          height: 24,
+                        ),
+                        MmmButtons.categoryButtons(
+                            'Highest Education',
+                            education != null
+                                ? '${education!}'
+                                : 'Select your highest education',
+                            'Select your highest education',
+                            'images/rightArrow.svg', action: () {
+                          selectEducation(context);
+                        }),
                       ],
                     ),
-                    MmmTextFileds.textFiledWithLabelStar(
-                        'Country', 'Select your country', countryController),
                     SizedBox(
-                      height: 24,
+                      height: 48,
                     ),
-                    MmmTextFileds.textFiledWithLabelStar(
-                        'State', 'Select your state', stateController),
-                    SizedBox(
-                      height: 24,
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Current location of groom’s',
+                              style: MmmTextStyles.bodyMedium(
+                                  textColor: kModalPrimary),
+                            ),
+                          ],
+                        ),
+                        MmmTextFileds.textFiledWithLabelStar('Country',
+                            'Select your country', countryController),
+                        SizedBox(
+                          height: 24,
+                        ),
+                        MmmTextFileds.textFiledWithLabelStar(
+                            'State', 'Select your state', stateController),
+                        SizedBox(
+                          height: 24,
+                        ),
+                        MmmTextFileds.textFiledWithLabelStar(
+                            'City', 'Select your city', cityController),
+                      ],
                     ),
-                    MmmTextFileds.textFiledWithLabelStar(
-                        'City', 'Select your city', cityController),
                   ],
                 ),
-              ],
-            ),
+              ),
+              Positioned(
+                  bottom: 24,
+                  right: 24,
+                  child: InkWell(
+                    onTap: () {
+                      BlocProvider.of<OccupationBloc>(context).add(UpdateCareer(
+                          orgNameController.text.trim(),
+                          annIncomeController.text.trim(),
+                          countryController.text.trim(),
+                          stateController.text.trim(),
+                          cityController.text.trim()));
+                    },
+                    child: MmmIcons.rightArrowDisabled(),
+                  )),
+              state is OnLoading
+                  ? MmmWidgets.buildLoader(context)
+                  : Container(),
+            ],
           );
         },
       ),
@@ -192,7 +229,8 @@ class OccupationScreen extends StatelessWidget {
               titleRed: titleRedEdu,
             ));
     if (result != null && result is Education) {
-      BlocProvider.of<OccupationBloc>(context).add(OnEducationSelected(result));
+      BlocProvider.of<OccupationBloc>(context)
+          .add(OnEducationSelected(result.title));
       titleRedEdu = result.title;
     }
   }

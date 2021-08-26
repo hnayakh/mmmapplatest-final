@@ -10,7 +10,7 @@ class OnOccupationSelected extends OccupationEvent {
 }
 
 class OnEducationSelected extends OccupationEvent {
-  final Education education;
+  final String education;
 
   OnEducationSelected(this.education);
 }

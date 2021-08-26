@@ -11,7 +11,7 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
   final UserRepository userRepository;
 
   String? occupation;
-  Education? education;
+  String? education;
   late String nameOfOrg;
   late String income;
   late String country;
@@ -22,7 +22,7 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
 
   @override
   Stream<OccupationState> mapEventToState(OccupationEvent event) async* {
-    yield OnOccupationLoading();
+    yield OnLoading();
 
     if (event is OnOccupationSelected) {
       this.occupation = event.occupation;
