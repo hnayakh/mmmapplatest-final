@@ -7,6 +7,97 @@ import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
 
 class MmmButtons {
+  static Widget showphotoButton(String photo, BuildContext context,
+      {Function()? action}) {
+    return Container(
+      alignment: Alignment.center,
+      height: 100,
+      //width: 180,
+      decoration: BoxDecoration(
+          border: Border.all(color: kBio),
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [MmmShadow.elevation3(shadowColor: kShadowColorForWhite)]),
+      child: Stack(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.asset(
+              photo,
+              fit: BoxFit.cover,
+              width: MediaQuery.of(context).size.width,
+
+              // width: 180,
+              //height: 100,
+            ),
+          ),
+          Positioned(
+            right: 8,
+            top: 8,
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [kPrimary, kSecondary],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight),
+                shape: BoxShape.circle,
+              ),
+              child: ClipOval(
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: action,
+                    child: Container(
+                      height: 20,
+                      // width: 18,
+                      //padding: EdgeInsets.fromLTRB(14, 13, 12, 13),
+                      child: SvgPicture.asset(
+                        "images/Cross.svg",
+                        color: gray7,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  static Widget uploadPhotoButton({Function()? action}) {
+    return Container(
+      height: 100,
+      // width: 180,
+      decoration: BoxDecoration(
+          color: kWhite,
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [MmmShadow.elevation3(shadowColor: kShadowColorForWhite)]),
+      child: Center(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Material(
+            child: InkWell(
+              onTap: action,
+              child: Container(
+                decoration: BoxDecoration(
+                    color: kWhite,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(width: 1.5, color: kBioSecondary)),
+                child: SvgPicture.asset(
+                  'images/plus.svg',
+                  color: kBioSecondary,
+                  height: 24,
+                  // width: 22.88,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   static Widget categoryButtons(
       String labelText, String hintText, String newhintText, String icon,
       {Function()? action}) {
