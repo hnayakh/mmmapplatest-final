@@ -1,4 +1,5 @@
 import 'package:makemymarry/bloc/base_event_state.dart';
+import 'package:makemymarry/datamodels/master_data.dart';
 
 class OccupationState extends BaseEventState {}
 
@@ -13,3 +14,18 @@ class OnError extends OccupationState {
 class OccupationInitialState extends OccupationState {}
 
 class MoveToFamily extends OccupationState {}
+class OnGotCounties extends OccupationState{
+  final List<CountryModel> list;
+
+  OnGotCounties(this.list);
+}
+class OnGotCities extends OccupationState{
+  final List<StateModel> list;
+
+  OnGotCities(this.list);
+}
+class OnGotStates extends OccupationState{
+  final List<StateModel> list;
+
+  OnGotStates(this.list);
+}

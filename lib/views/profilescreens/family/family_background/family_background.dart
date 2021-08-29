@@ -4,13 +4,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/repo/user_repo.dart';
+import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
+import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
+import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/profilescreens/family/family_background/family_background_event.dart';
 import 'package:makemymarry/views/profilescreens/family/family_background/family_background_state.dart';
 
+import '../../select_city_state.dart';
+import '../../select_country_bottom_sheet.dart';
 import 'family_background_bloc.dart';
 import 'family_status_bottom_sheet.dart';
 import 'family_values_sheet.dart';
@@ -27,11 +32,18 @@ class FamilyBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
         create: (context) => FamilyBackgroundBloc(userRepository),
-        child: FamilyBackgroundScreen());
+        child: FamilyBackgroundScreen(
+          onComplete: onComplete,
+        ));
   }
 }
 
 class FamilyBackgroundScreen extends StatefulWidget {
+  final Function onComplete;
+
+  const FamilyBackgroundScreen({Key? key, required this.onComplete})
+      : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return FamilyBackgroundScreenState();
@@ -59,10 +71,42 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
         initData();
         return Container(
             child: Stack(
-          children: [buildUi(context)],
+          children: [
+            buildUi(context),
+            Positioned(
+                bottom: 24,
+                right: 24,
+                child: InkWell(
+                  onTap: () {
+                    BlocProvider.of<FamilyBackgroundBloc>(context)
+                        .add(UpdateFamilyBackground());
+                  },
+                  child: MmmIcons.rightArrowEnabled(),
+                )),
+            state is OnLoading ? MmmWidgets.buildLoader(context) : Container(),
+          ],
         ));
       },
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is OnGotCounties) {
+          selectCountry(context, state.list);
+        }
+        if (state is OnGotStates) {
+          selectStateCity(context, state.list, this.myState, "State");
+        }
+        if (state is OnGotCities) {
+          selectStateCity(context, state.list, this.city, "City");
+        }
+        if (state is OnError) {
+          Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text(state.message),
+            backgroundColor: kError,
+          ));
+        }
+        if (state is OnUpdate) {
+          widget.onComplete();
+        }
+      },
     );
   }
 
@@ -269,29 +313,34 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                             'Joint Family',
                             style: MmmTextStyles.bodySmall(textColor: kDark5),
                           ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Transform.scale(
-                            scale: 1.2,
-                            child: Radio(
-                                activeColor: Colors.pinkAccent,
-                                value: this.type!,
-                                groupValue: FamilyType.Other,
-                                onChanged: (val) {
-                                  BlocProvider.of<FamilyBackgroundBloc>(context)
-                                      .add(OnFamilyTypeChanges(
-                                          FamilyType.Other));
-                                }),
-                          ),
-                          Text(
-                            'Other',
-                            style: MmmTextStyles.bodySmall(textColor: kDark5),
-                          ),
                         ],
                       ),
                     ),
                   ],
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Container(
+                  child: Row(
+                    children: [
+                      Transform.scale(
+                        scale: 1.2,
+                        child: Radio(
+                            activeColor: Colors.pinkAccent,
+                            value: this.type!,
+                            groupValue: FamilyType.Other,
+                            onChanged: (val) {
+                              BlocProvider.of<FamilyBackgroundBloc>(context)
+                                  .add(OnFamilyTypeChanges(FamilyType.Other));
+                            }),
+                      ),
+                      Text(
+                        'Other',
+                        style: MmmTextStyles.bodySmall(textColor: kDark5),
+                      ),
+                    ],
+                  ),
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width - 96,
@@ -315,232 +364,44 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                     ),
                   ],
                 ),
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          'Country',
-                          textScaleFactor: 1.0,
-                          style: MmmTextStyles.bodySmall(textColor: kDark5),
-                        ),
-                        SizedBox(
-                          width: 2,
-                        ),
-                        Text(
-                          '*',
-                          style: MmmTextStyles.bodySmall(textColor: kredStar),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 4,
-                    ),
-                    Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: kLight4,
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(width: 1, color: kDark2),
-                      ),
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () {
-                            BlocProvider.of<FamilyBackgroundBloc>(context)
-                                .add(GetAllCountries());
-                          },
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 16,
-                              ),
-                              Container(
-                                width: 205,
-                                child: Text(
-                                  this.countryModel != null
-                                      ? this.countryModel!.name
-                                      : countrytext,
-                                  textScaleFactor: 1.0,
-                                  textAlign: TextAlign.start,
-                                  style: this.values != null
-                                      ? MmmTextStyles.bodyRegular(
-                                          textColor: kDark5)
-                                      : MmmTextStyles.bodyRegular(
-                                          textColor: kDark2),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 120,
-                              ),
-                              SvgPicture.asset(
-                                "images/rightArrow.svg",
-                                width: 24,
-                                height: 24,
-                                color: Color(0xff878D96),
-                                fit: BoxFit.cover,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                MmmButtons.categoryButtons(
+                    'Country',
+                    countryModel != null
+                        ? '${countryModel!.name}'
+                        : 'Select Country',
+                    'Select Country',
+                    'images/rightArrow.svg', action: () {
+                  FocusScope.of(context).requestFocus(FocusNode());
+
+                  BlocProvider.of<FamilyBackgroundBloc>(context)
+                      .add(GetAllCountries());
+                }),
                 SizedBox(
                   height: 24,
                 ),
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          'State',
-                          textScaleFactor: 1.0,
-                          style: MmmTextStyles.bodySmall(textColor: kDark5),
-                        ),
-                        SizedBox(
-                          width: 2,
-                        ),
-                        Text(
-                          '*',
-                          style: MmmTextStyles.bodySmall(textColor: kredStar),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 4,
-                    ),
-                    Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: kLight4,
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(width: 1, color: kDark2),
-                      ),
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () {
-                            if (this.countryModel != null) {
-                              BlocProvider.of<FamilyBackgroundBloc>(context)
-                                  .add(GetAllStates());
-                            }
-                          },
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 16,
-                              ),
-                              Container(
-                                width: 205,
-                                child: Text(
-                                  this.myState != null
-                                      ? this.myState!.name
-                                      : statetext,
-                                  textScaleFactor: 1.0,
-                                  textAlign: TextAlign.start,
-                                  style: this.values != null
-                                      ? MmmTextStyles.bodyRegular(
-                                          textColor: kDark5)
-                                      : MmmTextStyles.bodyRegular(
-                                          textColor: kDark2),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 120,
-                              ),
-                              SvgPicture.asset(
-                                "images/rightArrow.svg",
-                                width: 24,
-                                height: 24,
-                                color: Color(0xff878D96),
-                                fit: BoxFit.cover,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                MmmButtons.categoryButtons(
+                    'State',
+                    myState != null ? '${myState!.name}' : 'Select State',
+                    'Select State',
+                    'images/rightArrow.svg', action: () {
+                  FocusScope.of(context).requestFocus(FocusNode());
+
+                  BlocProvider.of<FamilyBackgroundBloc>(context)
+                      .add(GetAllStates());
+                }),
                 SizedBox(
                   height: 24,
                 ),
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          'City',
-                          textScaleFactor: 1.0,
-                          style: MmmTextStyles.bodySmall(textColor: kDark5),
-                        ),
-                        SizedBox(
-                          width: 2,
-                        ),
-                        Text(
-                          '*',
-                          style: MmmTextStyles.bodySmall(textColor: kredStar),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 4,
-                    ),
-                    Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: kLight4,
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(width: 1, color: kDark2),
-                      ),
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () {
-                            if (this.myState != null) {
-                              BlocProvider.of<FamilyBackgroundBloc>(context)
-                                  .add(GetAllCities());
-                            }
-                          },
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 16,
-                              ),
-                              Container(
-                                width: 205,
-                                child: Text(
-                                  this.city != null
-                                      ? this.city!.name
-                                      : citytext,
-                                  textScaleFactor: 1.0,
-                                  textAlign: TextAlign.start,
-                                  style: this.values != null
-                                      ? MmmTextStyles.bodyRegular(
-                                          textColor: kDark5)
-                                      : MmmTextStyles.bodyRegular(
-                                          textColor: kDark2),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 120,
-                              ),
-                              SvgPicture.asset(
-                                "images/rightArrow.svg",
-                                width: 24,
-                                height: 24,
-                                color: Color(0xff878D96),
-                                fit: BoxFit.cover,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                MmmButtons.categoryButtons(
+                    'City',
+                    city != null ? '${city!.name}' : 'Select City',
+                    'Select City',
+                    'images/rightArrow.svg', action: () {
+                  FocusScope.of(context).requestFocus(FocusNode());
+
+                  BlocProvider.of<FamilyBackgroundBloc>(context)
+                      .add(GetAllCities());
+                }),
                 SizedBox(
                   height: 20,
                 ),
@@ -571,6 +432,42 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
     if (result != null && result is FamilyAfluenceLevel) {
       BlocProvider.of<FamilyBackgroundBloc>(context)
           .add(OnFamilyStatusSelected(result));
+    }
+  }
+
+  void selectCountry(BuildContext context, List<CountryModel> list) async {
+    var result = await showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (context) => SelectCountryBottomSheet(
+              list: list,
+              countryModel: this.countryModel,
+            ));
+    if (result != null && result is CountryModel) {
+      BlocProvider.of<FamilyBackgroundBloc>(context)
+          .add(OnCountrySelected(result));
+    }
+  }
+
+  void selectStateCity(BuildContext context, List<StateModel> list,
+      StateModel? data, String title) async {
+    var result = await showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (context) => SelectStateCityBottomSheet(
+              list: list,
+              stateModel: data,
+              title: '',
+            ));
+    if (result != null && result is StateModel) {
+      if (title == "State")
+        BlocProvider.of<FamilyBackgroundBloc>(context)
+            .add(OnStateSelected(result));
+      else
+        BlocProvider.of<FamilyBackgroundBloc>(context)
+            .add(OnCitySelected(result));
     }
   }
 

@@ -58,8 +58,8 @@ class UserRepository {
     return this.apiClient.verifyOtp(dialCode, mobile, otpType, otp);
   }
 
-  Future<SendOtpResponse> sendOtp(
-      String dialCode, String mobile, OtpType login, {String email = ""}) async {
+  Future<SendOtpResponse> sendOtp(String dialCode, String mobile, OtpType login,
+      {String email = ""}) async {
     return this.apiClient.sendOtp(dialCode, mobile, login);
   }
 
@@ -83,8 +83,8 @@ class UserRepository {
       SimpleMasterData motherTongue,
       gothra,
       Manglik isManglik) async {
-    return apiClient.updateReligion(religion,  subCaste, motherTongue,
-        gothra, isManglik, useDetails!.id);
+    return apiClient.updateReligion(
+        religion, subCaste, motherTongue, gothra, isManglik, useDetails!.id);
   }
 
   Future<SigninResponse> updateBio(String aboutMe, String imageUrl1,
@@ -98,9 +98,9 @@ class UserRepository {
       String? occupation,
       String income,
       String? education,
-      String country,
-      String stateName,
-      String city) async {
+      CountryModel country,
+      StateModel stateName,
+      StateModel city) async {
     return apiClient.careerVerification(nameOfOrg, occupation, income,
         education, country, stateName, city, useDetails!.id);
   }
@@ -115,5 +115,27 @@ class UserRepository {
 
   Future<StateCityResponse> getCities(int id) async {
     return apiClient.getCity(id);
+  }
+
+  Future<SigninResponse> updateFamilyBackground(
+      FamilyAfluenceLevel familyAfluenceLevel,
+      FamilyValues familyValues,
+      FamilyType type,
+      CountryModel countryModel,
+      StateModel state,
+      StateModel city) async {
+    return apiClient.updateFamilyBackground(familyAfluenceLevel, familyValues,
+        type, countryModel, state, city, useDetails!.id);
+  }
+
+  Future<SigninResponse> updateFamilyDetails(
+      FatherOccupation fatherOccupation,
+      MotherOccupation motherOccupation,
+      int noOfBrothers,
+      int noOfSister,
+      int brotherMarried,
+      int sistersMarried) async {
+    return apiClient.updateFamilyDetails(fatherOccupation, motherOccupation,
+        noOfBrothers, noOfSister, brotherMarried, sistersMarried,useDetails!.id);
   }
 }

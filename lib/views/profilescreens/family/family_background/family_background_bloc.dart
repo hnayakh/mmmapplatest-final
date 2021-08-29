@@ -39,6 +39,14 @@ class FamilyBackgroundBloc
       this.countryModel = event.countryModel;
       yield FamilyBackgroundState();
     }
+    if (event is OnStateSelected) {
+      this.myState = event.stateModel;
+      yield FamilyBackgroundState();
+    }
+    if (event is OnCitySelected) {
+      this.city = event.stateModel;
+      yield FamilyBackgroundState();
+    }
     if (event is GetAllCountries) {
       var result = await this.userRepository.getCountries();
       if (result.status == AppConstants.SUCCESS) {
@@ -61,6 +69,32 @@ class FamilyBackgroundBloc
         yield OnGotCities(result.list);
       } else {
         yield OnError(result.message);
+      }
+    }
+    if (event is UpdateFamilyBackground) {
+      if (this.level == null) {
+        yield OnError("Select Family Status");
+      } else if (this.values == null) {
+        yield OnError("Select Family Values");
+      } else if (this.countryModel == null) {
+        yield OnError("Select Country");
+      } else if (myState == null) {
+        yield OnError("Select State");
+      } else if (city == null) {
+        yield OnError("Select City");
+      } else {
+        var result = await this.userRepository.updateFamilyBackground(
+            this.level!,
+            this.values!,
+            this.type,
+            this.countryModel!,
+            this.myState!,
+            this.city!);
+        if (result.status == AppConstants.SUCCESS) {
+          yield OnUpdate();
+        } else {
+          yield OnError(result.message);
+        }
       }
     }
   }

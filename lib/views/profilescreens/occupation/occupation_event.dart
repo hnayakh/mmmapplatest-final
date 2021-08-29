@@ -30,3 +30,27 @@ class UpdateCareer extends OccupationEvent {
     this.city,
   );
 }
+
+class GetAllCountries extends OccupationEvent {}
+
+class OnCountrySelected extends OccupationEvent {
+  final CountryModel countryModel;
+
+  OnCountrySelected(this.countryModel);
+}
+
+class GetAllStates extends OccupationEvent {}
+
+class OnStateSelected extends OccupationEvent {
+  final StateModel stateModel;
+
+  OnStateSelected(this.stateModel);
+}
+
+class GetAllCities extends OccupationEvent {}
+
+class OnCitySelected extends OccupationEvent {
+  final StateModel stateModel;
+
+  OnCitySelected(this.stateModel);
+}

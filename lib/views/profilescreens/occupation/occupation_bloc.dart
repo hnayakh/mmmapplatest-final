@@ -14,9 +14,8 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
   String? education;
   late String nameOfOrg;
   late String income;
-  late String country;
-  late String stateName;
-  late String city;
+  CountryModel? countryModel;
+  StateModel? myState, city;
 
   OccupationBloc(this.userRepository) : super(OccupationInitialState());
 
@@ -32,21 +31,55 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
       this.education = event.education;
       yield OccupationInitialState();
     }
+    if (event is OnCountrySelected) {
+      this.countryModel = event.countryModel;
+      yield OccupationInitialState();
+    }
+    if (event is OnStateSelected) {
+      this.myState = event.stateModel;
+      yield OccupationInitialState();
+    }
+    if (event is OnCitySelected) {
+      this.city = event.stateModel;
+      yield OccupationInitialState();
+    }
+    if (event is GetAllCountries) {
+      var result = await this.userRepository.getCountries();
+      if (result.status == AppConstants.SUCCESS) {
+        yield OnGotCounties(result.list);
+      } else {
+        yield OnError(result.message);
+      }
+    }
+    if (event is GetAllStates) {
+      var result = await this.userRepository.getStates(this.countryModel!.id);
+      if (result.status == AppConstants.SUCCESS) {
+        yield OnGotStates(result.list);
+      } else {
+        yield OnError(result.message);
+      }
+    }
+    if (event is GetAllCities) {
+      var result = await this.userRepository.getCities(this.myState!.id);
+      if (result.status == AppConstants.SUCCESS) {
+        yield OnGotCities(result.list);
+      } else {
+        yield OnError(result.message);
+      }
+    }
     if (event is UpdateCareer) {
       this.nameOfOrg = event.name;
       this.income = event.income;
-      this.country = event.country;
-      this.stateName = event.stateName;
-      this.city = event.city;
+
       if (this.nameOfOrg == '') {
         yield OnError('Enter name of organisation employeed in.');
       } else if (this.income == '') {
         yield OnError('Enter annual income.');
-      } else if (this.country == '') {
+      } else if (this.countryModel == null) {
         yield OnError('Enter name of country belonging to.');
-      } else if (this.stateName == '') {
+      } else if (this.myState == null) {
         yield OnError('Enter name of state belonging to.');
-      } else if (this.city == '') {
+      } else if (this.city == null) {
         yield OnError('Enter name of city belonging to.');
       } else if (this.occupation == null) {
         yield OnError('select your occupation.');
@@ -58,9 +91,9 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
               this.occupation,
               this.income,
               this.education,
-              this.country,
-              this.stateName,
-              this.city,
+              this.countryModel!,
+              this.myState!,
+              this.city!,
             );
 
         if (result.status == AppConstants.SUCCESS) {

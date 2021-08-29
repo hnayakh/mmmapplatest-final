@@ -22,10 +22,7 @@ class OnFamilyTypeChanges extends FamilyBackgroundEvent {
   OnFamilyTypeChanges(this.familyType);
 }
 
-class OnUpdate extends FamilyBackgroundEvent {
-  final String country, state, city;
-
-  OnUpdate(this.country, this.state, this.city);
+class UpdateFamilyBackground extends FamilyBackgroundEvent {
 }
 
 class GetAllCountries extends FamilyBackgroundEvent {}

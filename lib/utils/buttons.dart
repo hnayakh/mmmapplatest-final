@@ -141,10 +141,12 @@ class MmmButtons {
                     //SizedBox(
                     //  width: 16,
                     // ),
-                    Container(
+                    Expanded(
                       //width: 216,
                       child: Text(
                         hintText,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         textScaleFactor: 1.0,
                         textAlign: TextAlign.start,
                         style: newhintText == hintText

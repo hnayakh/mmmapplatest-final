@@ -1,44 +1,102 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
+import 'package:makemymarry/utils/icons.dart';
+import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
+import 'package:makemymarry/utils/widgets_large.dart';
+import 'package:makemymarry/views/profilescreens/family/family_details/family_details_bloc.dart';
+import 'package:makemymarry/views/profilescreens/family/family_details/family_details_events.dart';
+import 'package:makemymarry/views/profilescreens/family/family_details/family_details_state.dart';
+import 'package:makemymarry/views/profilescreens/family/family_details/mother_occupation.dart';
 
-class FamilyDetails extends StatefulWidget {
+import 'father_occupation.dart';
+
+class FamilyDetails extends StatelessWidget {
+  final UserRepository userRepository;
+  final Function onComplete;
+
+  const FamilyDetails(
+      {Key? key, required this.userRepository, required this.onComplete})
+      : super(key: key);
+
   @override
-  State<StatefulWidget> createState() {
-    return FamilyDetailsState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => FamilyDetailsBloc(userRepository),
+      child: FamilyDetailsScreen(
+        onComplete: onComplete,
+      ),
+    );
   }
 }
 
-class FamilyDetailsState extends State<FamilyDetails> {
+class FamilyDetailsScreen extends StatefulWidget {
+  final Function onComplete;
 
-  String familyStatustext = 'Select your family status';
-  String familyValuestext = 'Select your family values';
+  const FamilyDetailsScreen({Key? key, required this.onComplete})
+      : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return FamilyDetailsScreenState();
+  }
+}
+
+class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
   int brothers = 0;
   int marriedBrothers = 0;
   int sisters = 0;
   int marriedSisters = 0;
+  FatherOccupation? fatherOccupation;
+  MotherOccupation? motherOccupation;
 
-  int value1 = 1;
+  late int noOfBrothers, noOfSister, brotherMarried, sistersMarried;
+  String fatherOcctext = 'Select father’s occupation';
 
-  int group = 0;
-
-  int value2 = 2;
-
-  String countrytext = 'Select your country';
-
-  String statetext = 'Select your state';
-
-  String citytext = 'Select your city';
-
-  String fatherOcctext = 'Select your father’s occupation';
-
-  String motherOcctext = 'Select your mother’s occupation';
+  String motherOcctext = 'Select mother’s occupation';
 
   @override
   Widget build(BuildContext context) {
+    return BlocConsumer<FamilyDetailsBloc, FamilyDetailState>(
+        builder: (context, state) {
+      initData();
+      return Container(
+          child: Stack(
+        children: [
+          buildUi(context),
+          Positioned(
+              bottom: 24,
+              right: 24,
+              child: InkWell(
+                onTap: () {
+                  BlocProvider.of<FamilyDetailsBloc>(context)
+                      .add(UpdateFamilyDetails());
+                },
+                child: MmmIcons.rightArrowEnabled(),
+              )),
+          state is OnLoading ? MmmWidgets.buildLoader(context) : Container(),
+        ],
+      ));
+    }, listener: (context, state) {
+      if (state is OnError) {
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text(state.message),
+          backgroundColor: kError,
+        ));
+      }
+      if (state is OnFamilyDetailsUpdated) {
+        widget.onComplete();
+      }
+    });
+  }
+
+  Container buildUi(BuildContext context) {
     return Container(
       padding: kMargin16,
       child: Column(
@@ -48,7 +106,7 @@ class FamilyDetailsState extends State<FamilyDetails> {
               Row(
                 children: [
                   Text(
-                    'Father’s Occupation',
+                    "Father's Occpation",
                     textScaleFactor: 1.0,
                     style: MmmTextStyles.bodySmall(textColor: kDark5),
                   ),
@@ -65,7 +123,7 @@ class FamilyDetailsState extends State<FamilyDetails> {
                 height: 4,
               ),
               Container(
-                height: 40,
+                height: 44,
                 decoration: BoxDecoration(
                   color: kLight4,
                   borderRadius: BorderRadius.circular(8),
@@ -74,26 +132,28 @@ class FamilyDetailsState extends State<FamilyDetails> {
                 child: Material(
                   color: Colors.transparent,
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      showFatherOccupationStatusSheet();
+                    },
                     child: Row(
                       children: [
                         SizedBox(
-                          width: 16,
+                          width: 8,
                         ),
-                        Container(
-                          width: 250,
+                        Expanded(
                           child: Text(
-                            fatherOcctext,
+                            fatherOccupation != null
+                                ? describeEnum(fatherOccupation!)
+                                : fatherOcctext,
                             textScaleFactor: 1.0,
                             textAlign: TextAlign.start,
-                            style: fatherOcctext ==
-                                    'Select your father’s occupation'
-                                ? MmmTextStyles.bodyRegular(textColor: kDark2)
-                                : MmmTextStyles.bodyRegular(textColor: kDark5),
+                            style: fatherOccupation != null
+                                ? MmmTextStyles.bodyRegular(textColor: kDark5)
+                                : MmmTextStyles.bodyRegular(textColor: kDark2),
                           ),
                         ),
                         SizedBox(
-                          width: 75,
+                          width: 8,
                         ),
                         SvgPicture.asset(
                           "images/rightArrow.svg",
@@ -117,7 +177,7 @@ class FamilyDetailsState extends State<FamilyDetails> {
               Row(
                 children: [
                   Text(
-                    'Mother’s Occupation',
+                    "Mother's Occpation",
                     textScaleFactor: 1.0,
                     style: MmmTextStyles.bodySmall(textColor: kDark5),
                   ),
@@ -134,7 +194,7 @@ class FamilyDetailsState extends State<FamilyDetails> {
                 height: 4,
               ),
               Container(
-                height: 40,
+                height: 44,
                 decoration: BoxDecoration(
                   color: kLight4,
                   borderRadius: BorderRadius.circular(8),
@@ -143,26 +203,28 @@ class FamilyDetailsState extends State<FamilyDetails> {
                 child: Material(
                   color: Colors.transparent,
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      showMotherOccupationStatusSheet();
+                    },
                     child: Row(
                       children: [
                         SizedBox(
-                          width: 16,
+                          width: 8,
                         ),
-                        Container(
-                          width: 260,
+                        Expanded(
                           child: Text(
-                            motherOcctext,
+                            motherOccupation != null
+                                ? describeEnum(motherOccupation!)
+                                : motherOcctext,
                             textScaleFactor: 1.0,
                             textAlign: TextAlign.start,
-                            style: motherOcctext ==
-                                    'Select your mother’s occupation'
-                                ? MmmTextStyles.bodyRegular(textColor: kDark2)
-                                : MmmTextStyles.bodyRegular(textColor: kDark5),
+                            style: motherOccupation != null
+                                ? MmmTextStyles.bodyRegular(textColor: kDark5)
+                                : MmmTextStyles.bodyRegular(textColor: kDark2),
                           ),
                         ),
                         SizedBox(
-                          width: 65,
+                          width: 8,
                         ),
                         SvgPicture.asset(
                           "images/rightArrow.svg",
@@ -195,7 +257,7 @@ class FamilyDetailsState extends State<FamilyDetails> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    '   Brother’s details of groom’s',
+                    'Brother’s details of groom’s',
                     style: MmmTextStyles.bodyMedium(textColor: kDark5),
                   ),
                 ],
@@ -205,7 +267,8 @@ class FamilyDetailsState extends State<FamilyDetails> {
               ),
               Row(
                 children: [
-                  Row(
+                  Expanded(
+                      child: Row(
                     children: [
                       Text(
                         'No of Brother’s',
@@ -220,11 +283,12 @@ class FamilyDetailsState extends State<FamilyDetails> {
                         style: MmmTextStyles.bodySmall(textColor: kredStar),
                       )
                     ],
-                  ),
+                  )),
                   SizedBox(
-                    width: 88,
+                    width: 8,
                   ),
-                  Row(
+                  Expanded(
+                      child: Row(
                     children: [
                       Text(
                         'Married',
@@ -239,18 +303,18 @@ class FamilyDetailsState extends State<FamilyDetails> {
                         style: MmmTextStyles.bodySmall(textColor: kredStar),
                       )
                     ],
-                  ),
+                  )),
                 ],
               ),
               SizedBox(
-                height: 4,
+                height: 8,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Container(
-                    height: 42,
-                    width: (MediaQuery.of(context).size.width /2) - 48,
+                  Expanded(
+                      child: Container(
+                    height: 44,
                     padding: EdgeInsets.fromLTRB(12, 8, 12, 8),
                     decoration: BoxDecoration(
                         color: kLight4,
@@ -262,13 +326,8 @@ class FamilyDetailsState extends State<FamilyDetails> {
                           color: Colors.transparent,
                           child: InkWell(
                             onTap: () {
-                              setState(() {
-                                if (brothers == -1) {
-                                  brothers = 0;
-                                } else {
-                                  brothers--;
-                                }
-                              });
+                              BlocProvider.of<FamilyDetailsBloc>(context)
+                                  .add(ChangeNoOfBrothers(-1));
                             },
                             child: SvgPicture.asset(
                               'images/minus.svg',
@@ -281,12 +340,11 @@ class FamilyDetailsState extends State<FamilyDetails> {
                         SizedBox(
                           width: 20,
                         ),
-                        Container(
-                          alignment: Alignment.center,
-                          width: 40,
-                          height: 26,
+                        Expanded(
                           child: Text(
-                            brothers > -1 ? '$brothers' : '0',
+                            "$noOfBrothers",
+                            textScaleFactor: 1.0,
+                            textAlign: TextAlign.center,
                             style: MmmTextStyles.bodyRegular(textColor: kDark5),
                           ),
                         ),
@@ -297,9 +355,8 @@ class FamilyDetailsState extends State<FamilyDetails> {
                           color: Colors.transparent,
                           child: InkWell(
                             onTap: () {
-                              setState(() {
-                                brothers++;
-                              });
+                              BlocProvider.of<FamilyDetailsBloc>(context)
+                                  .add(ChangeNoOfBrothers(1));
                             },
                             child: SvgPicture.asset(
                               'images/plus.svg',
@@ -311,13 +368,14 @@ class FamilyDetailsState extends State<FamilyDetails> {
                         ),
                       ],
                     ),
-                  ),
+                  )),
                   SizedBox(
-                    width: 42,
+                    width: 16,
                   ),
-                  Container(
-                    height: 42,
-                    width: (MediaQuery.of(context).size.width /2) - 48,
+                  Expanded(
+                      child: Container(
+                    height: 44,
+                    width: (MediaQuery.of(context).size.width / 2) - 48,
                     padding: EdgeInsets.fromLTRB(12, 8, 12, 8),
                     decoration: BoxDecoration(
                         color: kLight4,
@@ -329,13 +387,8 @@ class FamilyDetailsState extends State<FamilyDetails> {
                           color: Colors.transparent,
                           child: InkWell(
                             onTap: () {
-                              setState(() {
-                                if (marriedBrothers == -1) {
-                                  marriedBrothers = 0;
-                                } else {
-                                  marriedBrothers--;
-                                }
-                              });
+                              BlocProvider.of<FamilyDetailsBloc>(context)
+                                  .add(ChangeNoOfBrothersMarried(-1));
                             },
                             child: SvgPicture.asset(
                               'images/minus.svg',
@@ -348,12 +401,11 @@ class FamilyDetailsState extends State<FamilyDetails> {
                         SizedBox(
                           width: 20,
                         ),
-                        Container(
-                          alignment: Alignment.center,
-                          width: 40,
-                          height: 26,
+                        Expanded(
                           child: Text(
-                            marriedBrothers > -1 ? '$marriedBrothers' : '0',
+                            "$brotherMarried",
+                            textScaleFactor: 1.0,
+                            textAlign: TextAlign.center,
                             style: MmmTextStyles.bodyRegular(textColor: kDark5),
                           ),
                         ),
@@ -364,9 +416,8 @@ class FamilyDetailsState extends State<FamilyDetails> {
                           color: Colors.transparent,
                           child: InkWell(
                             onTap: () {
-                              setState(() {
-                                marriedBrothers++;
-                              });
+                              BlocProvider.of<FamilyDetailsBloc>(context)
+                                  .add(ChangeNoOfBrothersMarried(1));
                             },
                             child: SvgPicture.asset(
                               'images/plus.svg',
@@ -378,7 +429,7 @@ class FamilyDetailsState extends State<FamilyDetails> {
                         ),
                       ],
                     ),
-                  )
+                  ))
                 ],
               )
             ],
@@ -400,7 +451,7 @@ class FamilyDetailsState extends State<FamilyDetails> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    '   Sister’s details of groom’s',
+                    'Sister’s details of groom’s',
                     style: MmmTextStyles.bodyMedium(textColor: kDark5),
                   ),
                 ],
@@ -453,9 +504,9 @@ class FamilyDetailsState extends State<FamilyDetails> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Container(
-                    height: 42,
-                    width: (MediaQuery.of(context).size.width /2) - 48,
+                  Expanded(
+                      child: Container(
+                    height: 44,
                     padding: EdgeInsets.fromLTRB(12, 8, 12, 8),
                     decoration: BoxDecoration(
                         color: kLight4,
@@ -467,13 +518,8 @@ class FamilyDetailsState extends State<FamilyDetails> {
                           color: Colors.transparent,
                           child: InkWell(
                             onTap: () {
-                              setState(() {
-                                if (sisters == -1) {
-                                  sisters = 0;
-                                } else {
-                                  sisters--;
-                                }
-                              });
+                              BlocProvider.of<FamilyDetailsBloc>(context)
+                                  .add(ChangeNoOfSisters(-1));
                             },
                             child: SvgPicture.asset(
                               'images/minus.svg',
@@ -486,12 +532,11 @@ class FamilyDetailsState extends State<FamilyDetails> {
                         SizedBox(
                           width: 20,
                         ),
-                        Container(
-                          alignment: Alignment.center,
-                          width: 40,
-                          height: 26,
+                        Expanded(
                           child: Text(
-                            sisters > -1 ? '$sisters' : '0',
+                            "$noOfSister",
+                            textScaleFactor: 1.0,
+                            textAlign: TextAlign.center,
                             style: MmmTextStyles.bodyRegular(textColor: kDark5),
                           ),
                         ),
@@ -502,9 +547,8 @@ class FamilyDetailsState extends State<FamilyDetails> {
                           color: Colors.transparent,
                           child: InkWell(
                             onTap: () {
-                              setState(() {
-                                sisters++;
-                              });
+                              BlocProvider.of<FamilyDetailsBloc>(context)
+                                  .add(ChangeNoOfSisters(1));
                             },
                             child: SvgPicture.asset(
                               'images/plus.svg',
@@ -516,13 +560,13 @@ class FamilyDetailsState extends State<FamilyDetails> {
                         ),
                       ],
                     ),
-                  ),
+                  )),
                   SizedBox(
-                    width: 42,
+                    width: 16,
                   ),
-                  Container(
-                    height: 42,
-                    width: (MediaQuery.of(context).size.width /2) - 48,
+                  Expanded(
+                      child: Container(
+                    height: 44,
                     padding: EdgeInsets.fromLTRB(12, 8, 12, 8),
                     decoration: BoxDecoration(
                         color: kLight4,
@@ -534,13 +578,8 @@ class FamilyDetailsState extends State<FamilyDetails> {
                           color: Colors.transparent,
                           child: InkWell(
                             onTap: () {
-                              setState(() {
-                                if (marriedSisters == -1) {
-                                  marriedSisters = 0;
-                                } else {
-                                  marriedSisters--;
-                                }
-                              });
+                              BlocProvider.of<FamilyDetailsBloc>(context)
+                                  .add(ChangeNoOfSistersMarried(-1));
                             },
                             child: SvgPicture.asset(
                               'images/minus.svg',
@@ -553,12 +592,11 @@ class FamilyDetailsState extends State<FamilyDetails> {
                         SizedBox(
                           width: 20,
                         ),
-                        Container(
-                          alignment: Alignment.center,
-                          width: 40,
-                          height: 26,
+                        Expanded(
                           child: Text(
-                            marriedSisters > -1 ? '$marriedSisters' : '0',
+                            "$sistersMarried",
+                            textScaleFactor: 1.0,
+                            textAlign: TextAlign.center,
                             style: MmmTextStyles.bodyRegular(textColor: kDark5),
                           ),
                         ),
@@ -569,9 +607,8 @@ class FamilyDetailsState extends State<FamilyDetails> {
                           color: Colors.transparent,
                           child: InkWell(
                             onTap: () {
-                              setState(() {
-                                marriedSisters++;
-                              });
+                              BlocProvider.of<FamilyDetailsBloc>(context)
+                                  .add(ChangeNoOfSistersMarried(1));
                             },
                             child: SvgPicture.asset(
                               'images/plus.svg',
@@ -583,7 +620,7 @@ class FamilyDetailsState extends State<FamilyDetails> {
                         ),
                       ],
                     ),
-                  )
+                  ))
                 ],
               )
             ],
@@ -592,5 +629,43 @@ class FamilyDetailsState extends State<FamilyDetails> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
       ),
     );
+  }
+
+  void showFatherOccupationStatusSheet() async {
+    var result = await showModalBottomSheet(
+        context: context,
+        builder: (context) => FatherOccupationBottomSheet(
+              occupation: fatherOccupation,
+            ));
+    if (result != null && result is FatherOccupation) {
+      BlocProvider.of<FamilyDetailsBloc>(context)
+          .add(OnFathersOccupationSelected(result));
+    }
+  }
+
+  void showMotherOccupationStatusSheet() async {
+    var result = await showModalBottomSheet(
+        context: context,
+        builder: (context) => MotherOccupationBottomSheet(
+              occupation: motherOccupation,
+            ));
+    if (result != null && result is MotherOccupation) {
+      BlocProvider.of<FamilyDetailsBloc>(context)
+          .add(OnMothersOccupationSelected(result));
+    }
+  }
+
+  void initData() {
+    this.fatherOccupation =
+        BlocProvider.of<FamilyDetailsBloc>(context).fatherOccupation;
+    this.motherOccupation =
+        BlocProvider.of<FamilyDetailsBloc>(context).motherOccupation;
+    this.noOfBrothers =
+        BlocProvider.of<FamilyDetailsBloc>(context).noOfBrothers;
+    this.noOfSister = BlocProvider.of<FamilyDetailsBloc>(context).noOfSister;
+    this.brotherMarried =
+        BlocProvider.of<FamilyDetailsBloc>(context).brotherMarried;
+    this.sistersMarried =
+        BlocProvider.of<FamilyDetailsBloc>(context).sistersMarried;
   }
 }
