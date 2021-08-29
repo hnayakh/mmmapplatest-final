@@ -32,7 +32,7 @@ class MmmButtons {
           height: 4,
         ),
         Container(
-          height: 50,
+          height: 44,
           decoration: BoxDecoration(
             color: kLight4,
             borderRadius: BorderRadius.circular(8),
@@ -43,7 +43,7 @@ class MmmButtons {
             child: InkWell(
               onTap: action,
               child: Container(
-                padding: EdgeInsets.only(left: 16, right: 10),
+                padding: EdgeInsets.only(left: 12, right: 12),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -154,7 +154,7 @@ class MmmButtons {
     );
   }
 
-  static PreferredSize appBarCurved(String title) {
+  static PreferredSize appBarCurved(String title, {BuildContext? context}) {
     return PreferredSize(
       preferredSize: Size.fromHeight(74.0),
       child: Container(
@@ -173,7 +173,11 @@ class MmmButtons {
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    if(context != null){
+                      Navigator.of(context).pop();
+                    }
+                  },
                   child: Container(
                       height: 32,
                       width: 32,

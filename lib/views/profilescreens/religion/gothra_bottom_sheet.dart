@@ -41,7 +41,7 @@ class GothraBottomSheetState extends State<GothraBottomSheet> {
               height: 24,
             ),
             Text(
-              'Select Sub-cast:',
+              'Select Gothra:',
               style: MmmTextStyles.bodyMedium(textColor: kDark5),
             ),
             SizedBox(
@@ -68,7 +68,7 @@ class GothraBottomSheetState extends State<GothraBottomSheet> {
                       borderSide: BorderSide(color: kInputBorder, width: 1)),
                   contentPadding:
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                  hintText: "Search Religion",
+                  hintText: "Search Gothra",
                   isDense: true,
                   filled: true,
                   fillColor: kLight4,

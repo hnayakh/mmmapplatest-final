@@ -7,6 +7,7 @@ import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
+import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/profilescreens/about/about.dart';
@@ -21,19 +22,21 @@ class MobileVerification extends StatelessWidget {
   final UserRepository userRepository;
   final String phone;
   final String dialCode;
+  final OtpType otpType;
 
   const MobileVerification(
       {Key? key,
       required this.dialCode,
       required this.phone,
-      required this.userRepository})
+      required this.userRepository,
+      required this.otpType})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          MobileVerificationBloc(userRepository, this.dialCode, this.phone),
+      create: (context) => MobileVerificationBloc(
+          userRepository, this.dialCode, this.phone, this.otpType),
       child: MobileVerificationScreen(),
     );
   }
@@ -58,8 +61,15 @@ class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
       appBar: MmmButtons.appbarThin(),
       body: BlocConsumer<MobileVerificationBloc, MobileVerificationState>(
         listener: (context, state) {
-          if (state is OnSignIn) {
+          if (state is OnSignIn) {}
+          if (state is OnRegister) {
             navigateToProfileSetup();
+          }
+          if (state is OnError) {
+            Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text(state.message),
+              backgroundColor: kError,
+            ));
           }
           if (state is OnOtpGenerated) {
             this.canResend = false;
@@ -88,18 +98,22 @@ class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
                           onTap: () {
                             Navigator.of(context).pop();
                           },
-                          child: ShaderMask(
-                            shaderCallback: (bounds) => RadialGradient(
-                              center: Alignment.center,
-                              radius: 0.5,
-                              colors: [kPrimary, kSecondary],
-                              tileMode: TileMode.mirror,
-                            ).createShader(bounds),
-                            child: SvgPicture.asset(
-                              'images/leftArrow.svg',
-                              color: Colors.white,
-                              height: 24,
-                              width: 24,
+                          child: Container(
+                            height: 32,
+                            width: 32,
+                            child: ShaderMask(
+                              shaderCallback: (bounds) => RadialGradient(
+                                center: Alignment.center,
+                                radius: 0.5,
+                                colors: [kPrimary, kSecondary],
+                                tileMode: TileMode.mirror,
+                              ).createShader(bounds),
+                              child: SvgPicture.asset(
+                                'images/leftArrow.svg',
+                                color: Colors.white,
+                                height: 24,
+                                width: 24,
+                              ),
                             ),
                           )),
                     ),

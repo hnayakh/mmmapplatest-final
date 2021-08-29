@@ -59,7 +59,7 @@ class UserRepository {
   }
 
   Future<SendOtpResponse> sendOtp(
-      String dialCode, String mobile, OtpType login) async {
+      String dialCode, String mobile, OtpType login, {String email = ""}) async {
     return this.apiClient.sendOtp(dialCode, mobile, login);
   }
 
@@ -79,12 +79,11 @@ class UserRepository {
 
   Future<SigninResponse> updateReligion(
       SimpleMasterData religion,
-      CastSubCast cast,
       dynamic subCaste,
       SimpleMasterData motherTongue,
       gothra,
       Manglik isManglik) async {
-    return apiClient.updateReligion(religion, cast, subCaste, motherTongue,
+    return apiClient.updateReligion(religion,  subCaste, motherTongue,
         gothra, isManglik, useDetails!.id);
   }
 
@@ -98,5 +97,17 @@ class UserRepository {
       String city) async {
     return apiClient.careerVerification(nameOfOrg, occupation, income,
         education, country, stateName, city, useDetails!.id);
+  }
+
+  Future<CountryResponse> getCountries() async {
+    return apiClient.getCountryList();
+  }
+
+  Future<StateCityResponse> getStates(int id) async {
+    return apiClient.getState(id);
+  }
+
+  Future<StateCityResponse> getCities(int id) async {
+    return apiClient.getCity(id);
   }
 }

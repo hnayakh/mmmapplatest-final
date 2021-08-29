@@ -1,5 +1,6 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 
 import 'package:makemymarry/utils/app_constants.dart';
@@ -35,6 +36,12 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
     }
     if (event is OnProfileCreatedForSelected) {
       this.profileCreatedFor = event.pos;
+      if (event.pos == Relationship.Brother || event.pos == Relationship.Son) {
+        this.gender = Gender.Male;
+      } else if (event.pos == Relationship.Daughter ||
+          event.pos == Relationship.Daughter) {
+        this.gender = Gender.Female;
+      }
       yield CreateAccountInitialState();
     }
     if (event is OnSignupClicked) {
@@ -59,25 +66,26 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
       } else if (!this.acceptTerms) {
         yield OnError("Accept terms and conditions.");
       } else {
-        var result = await this.userRepository.register(
-            this.profileCreatedFor!.index,
-            this.email,
-            this.selectedCountry.phoneCode,
-            this.mobile,
-            this.gender,
-            this.password);
-
-        if (result.status == AppConstants.SUCCESS) {
-          this.userRepository.useDetails = result.userDetails;
-          // await this.userRepository.saveUserDetails();
-          // var otpResponse = await this.userRepository.sendOtp(
-          //     userRepository.useDetails.email,
-          //     userRepository.useDetails.dialCode,
-          //     userRepository.useDetails.mobile,
-          //     OtpType.Registration);
-          yield OnSignUp();
+        this.userRepository.useDetails = UserDetails.fromStorage(
+          "",
+          mobile,
+          selectedCountry.phoneCode,
+          email,
+          this.gender!.index,
+          true,
+          0,
+          0,
+          0,
+        );
+        this.userRepository.useDetails!.relationship = this.profileCreatedFor!;
+        this.userRepository.useDetails!.password = this.password;
+        var otpResponse = await this.userRepository.sendOtp(
+            this.selectedCountry.phoneCode, mobile, OtpType.Registration,
+            email: this.email);
+        if (otpResponse.status == AppConstants.SUCCESS) {
+          yield OnOtpGenerated();
         } else {
-          yield OnError(result.message);
+          yield OnError(otpResponse.message);
         }
       }
     }

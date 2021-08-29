@@ -60,7 +60,6 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
       } else {
         var result = await this.userRepository.updateReligion(
             this.religion!,
-            this.cast!,
             this.subCaste,
             this.motherTongue!,
             this.gothra,

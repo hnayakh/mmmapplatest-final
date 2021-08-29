@@ -53,7 +53,7 @@ class MotherTongueBottomSheetState extends State<MotherTongueBottomSheet> {
               onChanged: (value) {
                 setState(() {
                   this.filtered = widget.list
-                      .where((element) => element.toString()
+                      .where((element) => element.title.toString()
                       .toLowerCase()
                       .contains(value.toLowerCase()))
                       .toList();
@@ -68,7 +68,7 @@ class MotherTongueBottomSheetState extends State<MotherTongueBottomSheet> {
                       borderSide: BorderSide(color: kInputBorder, width: 1)),
                   contentPadding:
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                  hintText: "Search Religion",
+                  hintText: "Search Mother Tongue",
                   isDense: true,
                   filled: true,
                   fillColor: kLight4,

@@ -41,7 +41,7 @@ class SubCastBottomSheetState extends State<SubCastBottomSheet> {
               height: 24,
             ),
             Text(
-              'Select Sub-caste:',
+              'Select Caste:',
               style: MmmTextStyles.bodyMedium(textColor: kDark5),
             ),
             SizedBox(

@@ -33,7 +33,7 @@ dependencies:
   flutter_typeahead: ^3.2.0
   flutter_svg:
   google_sign_in: ^5.0.5
-  flutter_facebook_auth: ^3.5.0
+  flutter_facebook_login: ^3.0.0
   firebase_auth: ^3.0.1
   introduction_screen: ^2.1.0
   shared_preferences:

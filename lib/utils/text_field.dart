@@ -54,7 +54,7 @@ class MmmTextFileds {
       String label, String hintText, TextEditingController controller,
       {TextInputType inputType: TextInputType.text,
       bool isPassword: false,
-      TextCapitalization textCapitalization: TextCapitalization.characters}) {
+      TextCapitalization textCapitalization: TextCapitalization.none}) {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -82,7 +82,7 @@ class MmmTextFileds {
             height: 4,
           ),
           Container(
-            height: 50,
+            height: 44,
             child: TextField(
               controller: controller,
               keyboardType: inputType,
