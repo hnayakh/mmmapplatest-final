@@ -145,8 +145,8 @@ class ReligionScreenState extends State<ReligionScreen> {
                                 'Caste',
                                 subCaste != null
                                     ? '${subCaste}'
-                                    : 'Select your sub-caste',
-                                'Select your sub-caste',
+                                    : 'Select your caste',
+                                'Select your caste',
                                 'images/rightArrow.svg', action: () {
                               if (religion != null) selectSubCast(context);
                             })

@@ -43,7 +43,7 @@ class EducationBottomSheetState extends State<EducationBottomSheet> {
               height: 24,
             ),
             Text(
-              'Select Religion:',
+              'Select Education:',
               style: MmmTextStyles.bodyMedium(textColor: kDark5),
             ),
             SizedBox(
@@ -70,7 +70,7 @@ class EducationBottomSheetState extends State<EducationBottomSheet> {
                       borderSide: BorderSide(color: kInputBorder, width: 1)),
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                  hintText: "Search Religion",
+                  hintText: "Search Education",
                   isDense: true,
                   filled: true,
                   fillColor: kLight4,
