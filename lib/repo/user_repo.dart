@@ -87,6 +87,12 @@ class UserRepository {
         gothra, isManglik, useDetails!.id);
   }
 
+  Future<SigninResponse> updateBio(String aboutMe, String imageUrl1,
+      String imageUrl2, String imageUrl3, String imageUrl4) async {
+    return apiClient.updateBio(
+        aboutMe, imageUrl1, imageUrl2, imageUrl3, imageUrl4, useDetails!.id);
+  }
+
   Future<SigninResponse> career(
       String nameOfOrg,
       String? occupation,

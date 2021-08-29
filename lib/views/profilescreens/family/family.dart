@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/colors.dart';
@@ -7,6 +8,7 @@ import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/profilescreens/bio.dart';
 
 import 'family_background/family_background.dart';
+import 'family_background/family_background_bloc.dart';
 import 'family_details.dart';
 
 class FamilyScreen extends StatefulWidget {
@@ -147,8 +149,12 @@ class _FamilyScreenState extends State<FamilyScreen>
         this.tabController.index = 1;
       });
     } else {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => Bio()));
+      var userRepo =
+          BlocProvider.of<FamilyBackgroundBloc>(context).userRepository;
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => Bio(
+                userRepository: userRepo,
+              )));
     }
   }
 }

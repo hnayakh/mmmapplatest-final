@@ -260,6 +260,33 @@ class ApiClient {
     }
   }
 
+  Future<SigninResponse> updateBio(String aboutMe, String imageUrl1,
+      String imageUrl2, String imageUrl3, String imageUrl4, String id) async {
+    try {
+      Response response =
+          await this.dio.post(AppConstants.ENDPOINT + "users/bio", data: {
+        "userBasicId": id,
+        "aboutMe": aboutMe,
+        "userImages": [
+          {"imageUrl": imageUrl1, "isDefault": true},
+          {"imageUrl": imageUrl2, "isDefault": false},
+          {"imageUrl": imageUrl3, "isDefault": false},
+          {"imageUrl": imageUrl4, "isDefault": false}
+        ]
+      });
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return SigninResponse.fromJson(response.data);
+      } else {
+        return SigninResponse.fromError("Error Occurred. Please try againa.");
+      }
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      return SigninResponse.fromError("Error Occurred. Please try againaa.");
+    }
+  }
+
   Future<SigninResponse> careerVerification(
       String nameOfOrg,
       String? occupation,

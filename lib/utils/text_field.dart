@@ -24,26 +24,29 @@ class MmmTextFileds {
           SizedBox(
             height: 4,
           ),
-          TextField(
-            controller: controller,
-            keyboardType: inputType,
-            style: MmmTextStyles.bodyRegular(textColor: kDark5),
-            cursorColor: kDark5,
-            obscureText: isPassword,
-            decoration: InputDecoration(
-                border: OutlineInputBorder(
-                    borderSide: BorderSide(color: kDark2, width: 1),
-                    borderRadius: BorderRadius.circular(8)),
-                focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    borderSide: BorderSide(color: kInputBorder, width: 1)),
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-                hintText: hintText,
-                isDense: true,
-                filled: true,
-                fillColor: kLight4,
-                hintStyle: MmmTextStyles.bodyRegular(textColor: kDark2)),
+          Container(
+            height: 50,
+            child: TextField(
+              controller: controller,
+              keyboardType: inputType,
+              style: MmmTextStyles.bodyRegular(textColor: kDark5),
+              cursorColor: kDark5,
+              obscureText: isPassword,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(color: kDark2, width: 1),
+                      borderRadius: BorderRadius.circular(8)),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                      borderSide: BorderSide(color: kInputBorder, width: 1)),
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                  hintText: hintText,
+                  isDense: true,
+                  filled: true,
+                  fillColor: kLight4,
+                  hintStyle: MmmTextStyles.bodyRegular(textColor: kDark2)),
+            ),
           )
         ],
       ),
