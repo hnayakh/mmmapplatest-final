@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:makemymarry/utils/colors.dart';
@@ -317,7 +319,7 @@ class MmmButtons {
     );
   }
 
-  static Widget cameraimportButton() {
+  static Widget cameraimportButton({Function()? action}) {
     return Container(
       height: 50,
       child: Container(
@@ -325,7 +327,7 @@ class MmmButtons {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () {},
+            onTap: action,
             child: Center(
               child: Row(
                 children: [
@@ -356,7 +358,7 @@ class MmmButtons {
     );
   }
 
-  static Widget facebookImportbutton() {
+  static Widget facebookImportbutton({Function()? action}) {
     return Container(
       height: 50,
       decoration: BoxDecoration(
@@ -370,7 +372,7 @@ class MmmButtons {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {},
+          onTap: action,
           child: Row(
             children: [
               SizedBox(
@@ -403,7 +405,7 @@ class MmmButtons {
     );
   }
 
-  static Widget importGalleryButton() {
+  static Widget importGalleryButton({Function()? action}) {
     return Container(
       height: 50,
       decoration: BoxDecoration(
@@ -417,7 +419,7 @@ class MmmButtons {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {},
+          onTap: action,
           child: Row(
             children: [
               SizedBox(

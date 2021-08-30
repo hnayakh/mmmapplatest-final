@@ -1,7 +1,10 @@
+import 'dart:io';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
@@ -37,10 +40,10 @@ class BioScreen extends StatefulWidget {
 }
 
 class _BioScreenState extends State<BioScreen> {
-  String showWidget1 = 'showPhoto';
-  String showWidget2 = 'uploadPhoto';
-  String showWidget3 = 'uploadPhoto';
-  String showWidget4 = 'uploadPhoto';
+  // String showWidget1 = 'showPhoto';
+  // String showWidget2 = 'uploadPhoto';
+  // String showWidget3 = 'uploadPhoto';
+  // String showWidget4 = 'uploadPhoto';
   String photo1 = 'images/bio.jpg';
   String photo2 = '';
   String photo3 = '';
@@ -125,12 +128,16 @@ class _BioScreenState extends State<BioScreen> {
                                 Row(children: [
                                   Expanded(
                                     flex: 10,
-                                    child: showWidget1 == 'showPhoto'
-                                        ? MmmButtons.showphotoButton(
-                                            photo1, context, action: () {})
-                                        : MmmButtons.uploadPhotoButton(
+                                    child: photo1 == ''
+                                        ? MmmButtons.uploadPhotoButton(
                                             action: () {
-                                            uploadPhotos();
+                                            uploadPhotos(photo1);
+                                          })
+                                        : MmmButtons.showphotoButton(
+                                            photo1, context, action: () {
+                                            setState(() {
+                                              photo1 = '';
+                                            });
                                           }),
                                   ),
                                   Expanded(
@@ -141,12 +148,16 @@ class _BioScreenState extends State<BioScreen> {
                                   ),
                                   Expanded(
                                     flex: 10,
-                                    child: showWidget2 == 'showPhoto'
-                                        ? MmmButtons.showphotoButton(
-                                            photo2, context, action: () {})
-                                        : MmmButtons.uploadPhotoButton(
+                                    child: photo2 == ''
+                                        ? MmmButtons.uploadPhotoButton(
                                             action: () {
-                                            uploadPhotos();
+                                            uploadPhotos(photo2);
+                                          })
+                                        : MmmButtons.showphotoButton(
+                                            photo2, context, action: () {
+                                            setState(() {
+                                              photo2 = '';
+                                            });
                                           }),
                                   ),
                                 ]),
@@ -157,12 +168,16 @@ class _BioScreenState extends State<BioScreen> {
                                   children: [
                                     Expanded(
                                       flex: 10,
-                                      child: showWidget3 == 'showPhoto'
-                                          ? MmmButtons.showphotoButton(
-                                              photo3, context, action: () {})
-                                          : MmmButtons.uploadPhotoButton(
+                                      child: photo3 == ''
+                                          ? MmmButtons.uploadPhotoButton(
                                               action: () {
-                                              uploadPhotos();
+                                              uploadPhotos(photo3);
+                                            })
+                                          : MmmButtons.showphotoButton(
+                                              photo3, context, action: () {
+                                              setState(() {
+                                                photo3 = '';
+                                              });
                                             }),
                                     ),
                                     Expanded(
@@ -173,12 +188,16 @@ class _BioScreenState extends State<BioScreen> {
                                     ),
                                     Expanded(
                                       flex: 10,
-                                      child: showWidget4 == 'showPhoto'
-                                          ? MmmButtons.showphotoButton(
-                                              photo4, context, action: () {})
-                                          : MmmButtons.uploadPhotoButton(
+                                      child: photo4 == ''
+                                          ? MmmButtons.uploadPhotoButton(
                                               action: () {
-                                              uploadPhotos();
+                                              uploadPhotos(photo4);
+                                            })
+                                          : MmmButtons.showphotoButton(
+                                              photo4, context, action: () {
+                                              setState(() {
+                                                photo4 = '';
+                                              });
                                             }),
                                     ),
                                   ],
@@ -198,29 +217,44 @@ class _BioScreenState extends State<BioScreen> {
         ));
   }
 
-  void uploadPhotos() {
+  void uploadPhotos(String photoPos) {
     showModalBottomSheet(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(16))),
         context: context,
         builder: (context) => Container(
-              padding: kMargin16,
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 60,
-                  ),
-                  MmmButtons.facebookImportbutton(),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  MmmButtons.importGalleryButton(),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  MmmButtons.cameraimportButton()
-                ],
+            padding: kMargin16,
+            child: Column(children: [
+              SizedBox(
+                height: 60,
               ),
-            ));
+              MmmButtons.facebookImportbutton(),
+              SizedBox(
+                height: 16,
+              ),
+              MmmButtons.importGalleryButton(action: () {
+                pickImages(ImageSource.gallery, photoPos);
+              }),
+              SizedBox(
+                height: 16,
+              ),
+              MmmButtons.cameraimportButton(action: () {
+                pickImages(ImageSource.camera, photoPos);
+              }),
+            ])));
+  }
+
+  final ImagePicker _picker = ImagePicker();
+  Future pickImages(ImageSource source, String photoPos) async {
+    try {
+      final PickedFile? image = await _picker.getImage(source: source);
+      if (image == null) return;
+      final imageTemp = image.path;
+      setState(() {
+        photoPos = imageTemp;
+      });
+    } on PlatformException catch (e) {
+      print('Failed to pick image:$e');
+    }
   }
 }
