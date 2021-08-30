@@ -115,3 +115,68 @@ class CastSubCast {
     this.subCasts = json["subCaste"];
   }
 }
+
+class StateCityResponse {
+  late String status, message;
+  List<StateModel> list = [];
+
+  StateCityResponse.fromJson(json) {
+    this.status = json["type"];
+    this.message = json["message"];
+    this.list = createList(json["data"]);
+  }
+  StateCityResponse.fromError(String message){
+    this.status = AppConstants.FAILURE;
+    this.message = message;
+  }
+  List<StateModel> createList(json) {
+    List<StateModel> list = [];
+    for (var item in json) {
+      list.add(StateModel.fromJson(item));
+    }
+    return list;
+  }
+}
+
+class CountryResponse {
+  late String status, message;
+  List<CountryModel> list = [];
+
+  CountryResponse.fromJson(json) {
+    this.status = json["type"];
+    this.message = json["message"];
+    this.list = createList(json["data"]);
+  }
+  CountryResponse.fromError(String message){
+    this.status = AppConstants.FAILURE;
+    this.message = message;
+  }
+  List<CountryModel> createList(json) {
+    List<CountryModel> list = [];
+    for (var item in json) {
+      list.add(CountryModel.fromJson(item));
+    }
+    return list;
+  }
+}
+
+class CountryModel {
+  late String name, shortName;
+  late int id;
+
+  CountryModel.fromJson(json) {
+    this.name = json["name"];
+    this.shortName = json["shortName"];
+    this.id = json["id"];
+  }
+}
+
+class StateModel {
+  late String name;
+  late int id;
+
+  StateModel.fromJson(json) {
+    this.name = json["name"];
+    this.id = json["id"];
+  }
+}

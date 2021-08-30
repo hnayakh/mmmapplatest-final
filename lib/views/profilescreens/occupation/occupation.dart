@@ -14,6 +14,8 @@ import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/profilescreens/family/family.dart';
 
+import '../select_city_state.dart';
+import '../select_country_bottom_sheet.dart';
 import 'education_bottom_sheet.dart';
 import 'occupation_bloc.dart';
 import 'occupation_bottom_sheet.dart';
@@ -59,6 +61,8 @@ class _OccupationScreenState extends State<OccupationScreen> {
   String? occupation;
 
   String? education;
+  CountryModel? countryModel;
+  StateModel? myState, city;
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +84,21 @@ class _OccupationScreenState extends State<OccupationScreen> {
         listener: (context, state) {
           if (state is MoveToFamily) {
             navigateToFamily(context);
+          }
+          if (state is OnGotCounties) {
+            selectCountry(context, state.list);
+          }
+          if (state is OnGotStates) {
+            selectStateCity(context, state.list, this.myState, "State");
+          }
+          if (state is OnGotCities) {
+            selectStateCity(context, state.list, this.city, "City");
+          }
+          if (state is OnError) {
+            Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text(state.message),
+              backgroundColor: kError,
+            ));
           }
         },
         builder: (context, state) {
@@ -110,7 +129,7 @@ class _OccupationScreenState extends State<OccupationScreen> {
                           height: 24,
                         ),
                         MmmTextFileds.textFiledWithLabelStar('Annual Income',
-                            'Enter your annual income', annIncomeController),
+                            'Enter your annual income', annIncomeController,inputType: TextInputType.number),
                         SizedBox(
                           height: 24,
                         ),
@@ -133,7 +152,7 @@ class _OccupationScreenState extends State<OccupationScreen> {
                       ],
                     ),
                     SizedBox(
-                      height: 48,
+                      height: 32,
                     ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -148,18 +167,49 @@ class _OccupationScreenState extends State<OccupationScreen> {
                             ),
                           ],
                         ),
-                        MmmTextFileds.textFiledWithLabelStar('Country',
-                            'Select your country', countryController),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        MmmButtons.categoryButtons(
+                            'Country',
+                            countryModel != null
+                                ? '${countryModel!.name}'
+                                : 'Select Country',
+                            'Select Country',
+                            'images/rightArrow.svg', action: () {
+                          FocusScope.of(context).requestFocus(FocusNode());
+
+                          BlocProvider.of<OccupationBloc>(context)
+                              .add(GetAllCountries());
+                        }),
                         SizedBox(
                           height: 24,
                         ),
-                        MmmTextFileds.textFiledWithLabelStar(
-                            'State', 'Select your state', stateController),
+                        MmmButtons.categoryButtons(
+                            'State',
+                            myState != null
+                                ? '${myState!.name}'
+                                : 'Select State',
+                            'Select State',
+                            'images/rightArrow.svg', action: () {
+                          FocusScope.of(context).requestFocus(FocusNode());
+
+                          BlocProvider.of<OccupationBloc>(context)
+                              .add(GetAllStates());
+                        }),
                         SizedBox(
                           height: 24,
                         ),
-                        MmmTextFileds.textFiledWithLabelStar(
-                            'City', 'Select your city', cityController),
+                        MmmButtons.categoryButtons(
+                            'City',
+                            city != null ? '${city!.name}' : 'Select City',
+                            'Select City',
+                            'images/rightArrow.svg', action: () {
+                          FocusScope.of(context).requestFocus(FocusNode());
+
+                          BlocProvider.of<OccupationBloc>(context)
+                              .add(GetAllCities());
+                        }),
                       ],
                     ),
                   ],
@@ -177,7 +227,7 @@ class _OccupationScreenState extends State<OccupationScreen> {
                           stateController.text.trim(),
                           cityController.text.trim()));
                     },
-                    child: MmmIcons.rightArrowDisabled(),
+                    child: MmmIcons.rightArrowEnabled(),
                   )),
               state is OnLoading
                   ? MmmWidgets.buildLoader(context)
@@ -192,6 +242,9 @@ class _OccupationScreenState extends State<OccupationScreen> {
   void initData(BuildContext context) {
     this.education = BlocProvider.of<OccupationBloc>(context).education;
     this.occupation = BlocProvider.of<OccupationBloc>(context).occupation;
+    this.countryModel = BlocProvider.of<OccupationBloc>(context).countryModel;
+    this.myState = BlocProvider.of<OccupationBloc>(context).myState;
+    this.city = BlocProvider.of<OccupationBloc>(context).city;
   }
 
   void selectOccupation(BuildContext context) async {
@@ -232,6 +285,39 @@ class _OccupationScreenState extends State<OccupationScreen> {
       BlocProvider.of<OccupationBloc>(context)
           .add(OnEducationSelected(result.title));
       titleRedEdu = result.title;
+    }
+  }
+
+  void selectCountry(BuildContext context, List<CountryModel> list) async {
+    var result = await showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (context) => SelectCountryBottomSheet(
+              list: list,
+              countryModel: this.countryModel,
+            ));
+    if (result != null && result is CountryModel) {
+      BlocProvider.of<OccupationBloc>(context).add(OnCountrySelected(result));
+    }
+  }
+
+  void selectStateCity(BuildContext context, List<StateModel> list,
+      StateModel? data, String title) async {
+    var result = await showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (context) => SelectStateCityBottomSheet(
+              list: list,
+              stateModel: data,
+              title: '',
+            ));
+    if (result != null && result is StateModel) {
+      if (title == "State")
+        BlocProvider.of<OccupationBloc>(context).add(OnStateSelected(result));
+      else
+        BlocProvider.of<OccupationBloc>(context).add(OnCitySelected(result));
     }
   }
 

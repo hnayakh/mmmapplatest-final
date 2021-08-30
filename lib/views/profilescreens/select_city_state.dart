@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/utils/buttons.dart';
@@ -6,25 +5,28 @@ import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 
-class SubCastBottomSheet extends StatefulWidget {
-  final dynamic selected;
-  final List<dynamic> list;
+class SelectStateCityBottomSheet extends StatefulWidget {
+  final List<StateModel> list;
+  final StateModel? stateModel;
+  final String title;
 
-  const SubCastBottomSheet({Key? key, this.selected, required this.list})
+  const SelectStateCityBottomSheet(
+      {Key? key, required this.list, this.stateModel, required this.title})
       : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return SubCastBottomSheetState();
+    return SelectStateCityBottomSheetState();
   }
 }
 
-class SubCastBottomSheetState extends State<SubCastBottomSheet> {
-  List<dynamic> filtered = [];
+class SelectStateCityBottomSheetState
+    extends State<SelectStateCityBottomSheet> {
+  List<StateModel> filtered = [];
 
   @override
   void initState() {
-    filtered = widget.list;
+    this.filtered = List.of(widget.list, growable: true);
     super.initState();
   }
 
@@ -41,7 +43,7 @@ class SubCastBottomSheetState extends State<SubCastBottomSheet> {
               height: 24,
             ),
             Text(
-              'Select Caste:',
+              'Select ${widget.title}:',
               style: MmmTextStyles.bodyMedium(textColor: kDark5),
             ),
             SizedBox(
@@ -53,9 +55,9 @@ class SubCastBottomSheetState extends State<SubCastBottomSheet> {
               onChanged: (value) {
                 setState(() {
                   this.filtered = widget.list
-                      .where((element) => element
-                      .toLowerCase()
-                      .contains(value.toLowerCase()))
+                      .where((element) => element.name
+                          .toLowerCase()
+                          .contains(value.toLowerCase()))
                       .toList();
                 });
               },
@@ -67,8 +69,8 @@ class SubCastBottomSheetState extends State<SubCastBottomSheet> {
                       borderRadius: BorderRadius.all(Radius.circular(8)),
                       borderSide: BorderSide(color: kInputBorder, width: 1)),
                   contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                  hintText: "Search Religion",
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                  hintText: "Search ${widget.title}",
                   isDense: true,
                   filled: true,
                   fillColor: kLight4,
@@ -89,11 +91,12 @@ class SubCastBottomSheetState extends State<SubCastBottomSheet> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(filtered[index],
+                          Text(filtered[index].name,
                               style: MmmTextStyles.bodyMediumSmall(
-                                  textColor: widget.selected == filtered[index]
-                                      ? kPrimary
-                                      : kModalPrimary)),
+                                  textColor:
+                                      widget.stateModel == filtered[index]
+                                          ? kPrimary
+                                          : kModalPrimary)),
                           SizedBox(
                             height: 8,
                           ),

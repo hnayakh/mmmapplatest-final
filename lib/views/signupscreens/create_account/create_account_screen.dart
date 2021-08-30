@@ -12,6 +12,7 @@ import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/profilescreens/about/about.dart';
+import 'package:makemymarry/views/signinscreens/mobile%20verification/mobile_verification.dart';
 import 'package:makemymarry/views/signupscreens/create_account/create_account_bloc.dart';
 import 'package:makemymarry/views/signupscreens/create_account/create_account_event.dart';
 import 'package:makemymarry/views/signupscreens/create_account/profile_create_for_bottom_sheet.dart';
@@ -132,7 +133,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                         ),
                         Container(
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Transform.scale(
                                 scale: 1.2,
@@ -154,9 +155,9 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                                 style:
                                     MmmTextStyles.bodySmall(textColor: kDark5),
                               ),
-                              //SizedBox(
-                              //  width: 22,
-                              // ),
+                              SizedBox(
+                                width: 24,
+                              ),
                               Transform.scale(
                                 scale: 1.2,
                                 child: Radio(
@@ -169,9 +170,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                                           .add(OnGenderSelected(Gender.Female));
                                     }),
                               ),
-                              //SizedBox(
-                              //  width: 8,
-                              // ),
+
                               Text(
                                 'Female',
                                 style:
@@ -180,26 +179,6 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                               //SizedBox(
                               //  width: 22,
                               // ),
-                              Transform.scale(
-                                scale: 1.2,
-                                child: Radio(
-                                    activeColor: kPrimary,
-                                    value: Gender.Other,
-                                    groupValue: gender,
-                                    onChanged: (val) {
-                                      BlocProvider.of<CreateAccountBloc>(
-                                              context)
-                                          .add(OnGenderSelected(Gender.Other));
-                                    }),
-                              ),
-                              //SizedBox(
-                              //  width: 8,
-                              // ),
-                              Text(
-                                'Others',
-                                style:
-                                    MmmTextStyles.bodySmall(textColor: kDark5),
-                              ),
                             ],
                           ),
                         )
@@ -209,7 +188,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                       height: 24,
                     ),
                     Container(
-                        height: 50,
+                        height: 44,
                         child: TextField(
                           controller: phoneController,
                           keyboardType: TextInputType.phone,
@@ -227,7 +206,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                                   borderSide: BorderSide(
                                       color: kInputBorder, width: 1)),
                               contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 14),
+                                  horizontal: 12, vertical: 8),
                               hintText: '   Phone Number',
                               isDense: true,
                               filled: true,
@@ -293,8 +272,9 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                         ),
                       )
                     : acceptTerms
-                        ? MmmButtons.enabledRedButtonbodyMedium(50, 'Sign up',
+                        ? MmmButtons.enabledRedButtonbodyMedium(44, 'Sign up',
                             action: () {
+                            FocusScope.of(context).requestFocus(FocusNode());
                             BlocProvider.of<CreateAccountBloc>(context).add(
                                 OnSignupClicked(
                                     emailController.text.trim(),
@@ -310,6 +290,9 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
         listener: (context, state) {
           if (state is OnSignUp) {
             navigateToAbout();
+          }
+          if (state is OnOtpGenerated) {
+            navigateToOtpScreen();
           }
         },
       ),
@@ -340,7 +323,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
               width: 4,
             ),
             Text(
-              selectedCountry.phoneCode,
+              "+${selectedCountry.phoneCode}",
               style: MmmTextStyles.bodyRegular(textColor: kDark5),
             ),
             SizedBox(
@@ -363,7 +346,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
 
   Container selectProfileFor(BuildContext context) {
     return Container(
-      height: 50,
+      height: 44,
       decoration: BoxDecoration(
         color: kLight4,
         borderRadius: BorderRadius.circular(8),
@@ -380,8 +363,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
               SizedBox(
                 width: 16,
               ),
-              Container(
-                width: 205,
+              Expanded(
                 child: Text(
                   hintText,
                   textScaleFactor: 1.0,
@@ -392,7 +374,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                 ),
               ),
               SizedBox(
-                width: 120,
+                width: 8,
               ),
               SvgPicture.asset(
                 "images/rightArrow.svg",
@@ -462,5 +444,15 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
     var userRepo = BlocProvider.of<CreateAccountBloc>(context).userRepository;
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => About(userRepository: userRepo)));
+  }
+
+  void navigateToOtpScreen() {
+    var userRepo = BlocProvider.of<CreateAccountBloc>(context).userRepository;
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => MobileVerification(
+            userRepository: userRepo,
+            otpType: OtpType.Registration,
+            dialCode: this.selectedCountry.phoneCode,
+            phone: this.phoneController.text)));
   }
 }

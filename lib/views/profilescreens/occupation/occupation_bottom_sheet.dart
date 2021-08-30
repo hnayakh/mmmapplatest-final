@@ -56,11 +56,11 @@ class OccupationBottomSheetState extends State<OccupationBottomSheet> {
               cursorColor: kDark5,
               onChanged: (value) {
                 setState(() {
-                  this.filtered = widget.list
-                      .where((element) => element.category
-                          .toLowerCase()
-                          .contains(value.toLowerCase()))
-                      .toList();
+                  this.filtered = widget.list.where((element) {
+                    return element.category
+                        .toLowerCase()
+                        .contains(value.toLowerCase());
+                  }).toList();
                 });
               },
               decoration: InputDecoration(
@@ -71,7 +71,7 @@ class OccupationBottomSheetState extends State<OccupationBottomSheet> {
                       borderRadius: BorderRadius.all(Radius.circular(8)),
                       borderSide: BorderSide(color: kInputBorder, width: 1)),
                   contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   hintText: "Search Occupation",
                   isDense: true,
                   filled: true,
@@ -96,11 +96,11 @@ class OccupationBottomSheetState extends State<OccupationBottomSheet> {
                           Column(
                             children: [
                               Text(filtered[indexCategory].category,
-                                  style: MmmTextStyles.bodyMediumSmall(
+                                  style: MmmTextStyles.bodyMedium(
                                       textColor:
                                           // widget.selected == filtered[indexCategory]
                                           //    ? kPrimary:
-                                          kModalPrimary)),
+                                          kPrimary)),
                               ListView.builder(
                                   itemCount: filtered[indexCategory]
                                       .subCategory

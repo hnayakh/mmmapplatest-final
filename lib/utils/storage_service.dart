@@ -57,7 +57,6 @@ class StorageService {
           this.sharedPreferences.getInt(AppConstants.ACTIVATIONSTATUS);
       var registrationStep =
           this.sharedPreferences.getInt(AppConstants.REGISTRATIONSTEP);
-
       return UserDetails.fromStorage(id, mobile!, dialCode!, email!, gender!,
           isActive!, lifeCycleStep!, activatonStateus!, registrationStep!);
     }

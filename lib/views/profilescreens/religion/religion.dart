@@ -75,7 +75,7 @@ class ReligionScreenState extends State<ReligionScreen> {
               ),
               Positioned(
                 child: InkWell(
-                  child: MmmIcons.rightArrowDisabled(),
+                  child: MmmIcons.rightArrowEnabled(),
                   onTap: () {
                     BlocProvider.of<ReligionBloc>(context)
                         .add(UpdateReligion());
@@ -115,9 +115,7 @@ class ReligionScreenState extends State<ReligionScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                SizedBox(
-                  height: 24,
-                ),
+
                 MmmButtons.categoryButtons(
                     'Religion',
                     religion != null
@@ -147,8 +145,8 @@ class ReligionScreenState extends State<ReligionScreen> {
                                 'Caste',
                                 subCaste != null
                                     ? '${subCaste}'
-                                    : 'Select your sub-caste',
-                                'Select your sub-caste',
+                                    : 'Select your caste',
+                                'Select your caste',
                                 'images/rightArrow.svg', action: () {
                               if (religion != null) selectSubCast(context);
                             })

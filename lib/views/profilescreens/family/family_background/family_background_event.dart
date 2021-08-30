@@ -1,4 +1,5 @@
 import 'package:makemymarry/bloc/base_event_state.dart';
+import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 
 class FamilyBackgroundEvent extends BaseEventState {}
@@ -21,8 +22,29 @@ class OnFamilyTypeChanges extends FamilyBackgroundEvent {
   OnFamilyTypeChanges(this.familyType);
 }
 
-class OnUpdate extends FamilyBackgroundEvent {
-  final String country, state, city;
+class UpdateFamilyBackground extends FamilyBackgroundEvent {
+}
 
-  OnUpdate(this.country, this.state, this.city);
+class GetAllCountries extends FamilyBackgroundEvent {}
+
+class OnCountrySelected extends FamilyBackgroundEvent {
+  final CountryModel countryModel;
+
+  OnCountrySelected(this.countryModel);
+}
+
+class GetAllStates extends FamilyBackgroundEvent {}
+
+class OnStateSelected extends FamilyBackgroundEvent {
+  final StateModel stateModel;
+
+  OnStateSelected(this.stateModel);
+}
+
+class GetAllCities extends FamilyBackgroundEvent {}
+
+class OnCitySelected extends FamilyBackgroundEvent {
+  final StateModel stateModel;
+
+  OnCitySelected(this.stateModel);
 }

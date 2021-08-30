@@ -311,16 +311,13 @@ class MmmIcons {
       child: ClipOval(
         child: Material(
           color: Colors.transparent,
-          child: InkWell(
-            onTap: () {},
-            child: Container(
-              height: 45,
-              width: 45,
-              padding: EdgeInsets.fromLTRB(14, 13, 12, 13),
-              child: SvgPicture.asset(
-                "images/rightArrow.svg",
-                color: gray7,
-              ),
+          child: Container(
+            height: 54,
+            width: 54,
+            padding: EdgeInsets.fromLTRB(14, 13, 12, 13),
+            child: SvgPicture.asset(
+              "images/rightArrow.svg",
+              color: gray7,
             ),
           ),
         ),

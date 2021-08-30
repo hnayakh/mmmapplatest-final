@@ -9,7 +9,7 @@ import 'package:makemymarry/views/profilescreens/bio.dart';
 
 import 'family_background/family_background.dart';
 import 'family_background/family_background_bloc.dart';
-import 'family_details.dart';
+import 'family_details/family_details.dart';
 
 class FamilyScreen extends StatefulWidget {
   final UserRepository userRepository;
@@ -134,7 +134,10 @@ class _FamilyScreenState extends State<FamilyScreen>
                   userRepository: widget.userRepository,
                   onComplete: onComplete,
                 ),
-                FamilyDetails(),
+                FamilyDetails(
+                  userRepository: widget.userRepository,
+                  onComplete: onComplete,
+                ),
               ],
             ))
           ],
@@ -149,11 +152,9 @@ class _FamilyScreenState extends State<FamilyScreen>
         this.tabController.index = 1;
       });
     } else {
-      var userRepo =
-          BlocProvider.of<FamilyBackgroundBloc>(context).userRepository;
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => Bio(
-                userRepository: userRepo,
+                userRepository: widget.userRepository,
               )));
     }
   }

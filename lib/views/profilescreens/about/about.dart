@@ -106,7 +106,7 @@ class _AboutScreenState extends State<AboutScreen> {
                         namecontroller.text.trim(),
                       ));
                     },
-                    child: MmmIcons.rightArrowDisabled(),
+                    child: MmmIcons.rightArrowEnabled(),
                   )),
               state is OnLoading ? MmmWidgets.buildLoader(context) : Container()
             ],
@@ -143,8 +143,8 @@ class _AboutScreenState extends State<AboutScreen> {
               ),
               MmmButtons.categoryButtons('Date of birth', dobHintText,
                   'dd MMM yyyy', 'images/Calendar.svg', action: () {
-                showDate(context);
-              }),
+                    showDate(context);
+                  }),
               SizedBox(
                 height: 24,
               ),
@@ -185,11 +185,8 @@ class _AboutScreenState extends State<AboutScreen> {
                       'Yes Living Together',
                       style: MmmTextStyles.bodySmall(textColor: kDark5),
                     ),
-                    Expanded(
-                      flex: 1,
-                      child: SizedBox(
-                          // width: 8,
-                          ),
+                    SizedBox(
+                      width: 16,
                     ),
                     Transform.scale(
                       scale: 1.2,
@@ -232,23 +229,23 @@ class _AboutScreenState extends State<AboutScreen> {
                 ),
               ),
               this.childrenStatus == ChildrenStatus.YesNotLivingTogether ||
-                      this.childrenStatus == ChildrenStatus.YesLivingTogether
+                  this.childrenStatus == ChildrenStatus.YesLivingTogether
                   ? Column(
-                      children: [
-                        SizedBox(
-                          height: 24,
-                        ),
-                        MmmButtons.categoryButtons(
-                            "No of children",
-                            this.noOfChildren != null
-                                ? '${describeEnum(this.noOfChildren!)}'
-                                : 'Select number of children',
-                            'Select number of children',
-                            'images/rightArrow.svg', action: () {
-                          showChildrenBottomSheet(context);
-                        })
-                      ],
-                    )
+                children: [
+                  SizedBox(
+                    height: 24,
+                  ),
+                  MmmButtons.categoryButtons(
+                      "No of children",
+                      this.noOfChildren != null
+                          ? '${describeEnum(this.noOfChildren!)}'
+                          : 'Select number of children',
+                      'Select number of children',
+                      'images/rightArrow.svg', action: () {
+                    showChildrenBottomSheet(context);
+                  })
+                ],
+              )
                   : Container(),
               SizedBox(
                 height: 24,
@@ -320,8 +317,8 @@ class _AboutScreenState extends State<AboutScreen> {
                         Expanded(
                           flex: 1,
                           child: SizedBox(
-                              // width: 22,
-                              ),
+                            // width: 22,
+                          ),
                         ),
                       ],
                     ),

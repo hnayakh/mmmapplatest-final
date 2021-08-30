@@ -6,6 +6,7 @@ class UserDetails {
   late bool isActive;
   late int gender, registrationStep, lifecycleStatus, activationStatus;
   late Relationship relationship;
+  late String password;
 
   UserDetails.fromJson(json) {
     this.id = json["id"];
@@ -54,11 +55,12 @@ class SigninResponse {
   late String message, status;
   UserDetails? userDetails;
 
-  SigninResponse.fromJson(json) {
+  SigninResponse.fromJson(json, {OtpType? otpType}) {
     this.status = json["type"];
     this.message = json["message"];
     if (this.status == AppConstants.SUCCESS) {
-      this.userDetails = UserDetails.fromJson(json["data"]["userBasic"]);
+      if (otpType != OtpType.Registration)
+        this.userDetails = UserDetails.fromJson(json["data"]["userBasic"]);
     }
   }
 

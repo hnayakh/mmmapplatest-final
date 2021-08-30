@@ -150,7 +150,7 @@ class ApiClient {
         "otp": otp
       });
       if (response.statusCode == 200 || response.statusCode == 201) {
-        return SigninResponse.fromJson(response.data);
+        return SigninResponse.fromJson(response.data, otpType: otpType);
       } else {
         return SigninResponse.fromError("Error Occurred. Please try againa.");
       }
@@ -232,7 +232,6 @@ class ApiClient {
 
   Future<SigninResponse> updateReligion(
       SimpleMasterData religion,
-      CastSubCast caste,
       String subCaste,
       SimpleMasterData motherTongue,
       gothra,
@@ -243,9 +242,9 @@ class ApiClient {
           await this.dio.post(AppConstants.ENDPOINT + "users/religion", data: {
         "userBasicId": id,
         "religion": religion.id,
-        "cast": caste.cast,
-        "subCast": subCaste,
+        "cast": subCaste,
         "motherTongue": motherTongue.id,
+        "gothra": gothra,
         "isManglik": isManglik.index
       });
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -293,9 +292,9 @@ class ApiClient {
       String? occupation,
       String income,
       String? education,
-      String country,
-      String stateName,
-      String city,
+      CountryModel country,
+      StateModel stateName,
+      StateModel city,
       String id) async {
     try {
       Response response =
@@ -305,9 +304,125 @@ class ApiClient {
         "occupation": occupation,
         "annualIncome": income,
         "highestEducation": education,
-        "country": country,
-        "state": stateName,
-        "city": city
+        "country": country.id,
+        "state": stateName.id,
+        "city": city.id
+      });
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return SigninResponse.fromJson(response.data);
+      } else {
+        return SigninResponse.fromError("Error Occurred. Please try againa.");
+      }
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      return SigninResponse.fromError("Error Occurred. Please try againa.");
+    }
+  }
+
+  Future<CountryResponse> getCountryList() async {
+    try {
+      Response response = await this.dio.get(
+            AppConstants.ENDPOINT + "masters/countries",
+          );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return CountryResponse.fromJson(response.data);
+      }
+      return CountryResponse.fromError("Error Occurred. Please try againa.");
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      return CountryResponse.fromError("Error Occurred. Please try againa.");
+    }
+  }
+
+  Future<StateCityResponse> getState(int id) async {
+    try {
+      Response response = await this.dio.get(
+            AppConstants.ENDPOINT + "masters/states/$id",
+          );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return StateCityResponse.fromJson(response.data);
+      }
+      return StateCityResponse.fromError("Error Occurred. Please try againa.");
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      return StateCityResponse.fromError("Error Occurred. Please try againa.");
+    }
+  }
+
+  Future<StateCityResponse> getCity(int id) async {
+    try {
+      Response response = await this.dio.get(
+            AppConstants.ENDPOINT + "masters/cities/$id",
+          );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return StateCityResponse.fromJson(response.data);
+      }
+      return StateCityResponse.fromError("Error Occurred. Please try againa.");
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      return StateCityResponse.fromError("Error Occurred. Please try againa.");
+    }
+  }
+
+  Future<SigninResponse> updateFamilyBackground(
+      FamilyAfluenceLevel familyAfluenceLevel,
+      FamilyValues familyValues,
+      FamilyType type,
+      CountryModel countryModel,
+      StateModel state,
+      StateModel city,
+      String id) async {
+    try {
+      Response response = await this
+          .dio
+          .post(AppConstants.ENDPOINT + "users/familyBackground", data: {
+        "userBasicId": id,
+        "familyStatus": familyValues.index,
+        "familyValues": familyValues.index,
+        "familyType": type.index,
+        "country": countryModel.id,
+        "state": state.id,
+        "city": city.id
+      });
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return SigninResponse.fromJson(response.data);
+      } else {
+        return SigninResponse.fromError("Error Occurred. Please try againa.");
+      }
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      return SigninResponse.fromError("Error Occurred. Please try againa.");
+    }
+  }
+
+  Future<SigninResponse> updateFamilyDetails(
+      FatherOccupation fatherOccupation,
+      MotherOccupation motherOccupation,
+      int noOfBrothers,
+      int noOfSister,
+      int brotherMarried,
+      int sistersMarried, String id) async {
+    try {
+      Response response = await this
+          .dio
+          .post(AppConstants.ENDPOINT + "users/familyDetail", data: {
+        "fatherOccupation": fatherOccupation.index,
+        "motherOccupation": motherOccupation.index,
+        "numberOfBrothers": noOfBrothers,
+        "marriedNumberOfBrothers": brotherMarried,
+        "numberOfSisters": noOfSister,
+        "marriedNumberOfSisters": sistersMarried,
+        "userBasicId":id
       });
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SigninResponse.fromJson(response.data);

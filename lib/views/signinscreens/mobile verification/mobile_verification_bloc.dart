@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
+import 'package:makemymarry/views/forgotpasswordscreens/otp_screen.dart';
 
 import 'mobile_verification_event.dart';
 import 'mobile_verification_state.dart';
@@ -11,8 +13,10 @@ class MobileVerificationBloc
   final UserRepository userRepository;
   final String dialCode;
   final String mobile;
+  final OtpType otpType;
 
-  MobileVerificationBloc(this.userRepository, this.dialCode, this.mobile)
+  MobileVerificationBloc(
+      this.userRepository, this.dialCode, this.mobile, this.otpType)
       : super(MobileVerificationInitialState());
   late String otp;
   String email = '';
@@ -38,12 +42,29 @@ class MobileVerificationBloc
       } else {
         var result = await this
             .userRepository
-            .verifyOtp(this.dialCode, this.mobile, OtpType.Login, this.otp);
+            .verifyOtp(this.dialCode, this.mobile, this.otpType, this.otp);
 
         if (result.status == AppConstants.SUCCESS) {
-          this.userRepository.useDetails = result.userDetails;
+          if (otpType != OtpType.Registration)
+            this.userRepository.useDetails = result.userDetails;
           // await this.userRepository.saveUserDetails();
-          yield OnSignIn();
+          if (this.otpType == OtpType.Registration) {
+            UserDetails userDetails = this.userRepository.useDetails!;
+            var result = await this.userRepository.register(
+                userDetails.relationship.index,
+                userDetails.email,
+                userDetails.dialCode,
+                userDetails.mobile,
+                Gender.values[userDetails.gender],
+                userDetails.password);
+            if (result.status == AppConstants.SUCCESS) {
+              this.userRepository.useDetails = result.userDetails;
+              this.userRepository.saveUserDetails();
+              yield OnRegister();
+            }
+          } else {
+            yield OnSignIn();
+          }
         } else {
           yield OnError(result.message);
         }

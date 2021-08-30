@@ -12,6 +12,7 @@ import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
+import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/profilescreens/religion/religion.dart';
 
 class Habit extends StatelessWidget {
@@ -43,14 +44,6 @@ class _HabitScreenState extends State<HabitScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MmmButtons.appBarCurved('Habits'),
-      floatingActionButton: FloatingActionButton(
-        child: MmmIcons.rightArrowDisabled(),
-        onPressed: () {
-          BlocProvider.of<HabitBloc>(context).add(UpdateHabit());
-        },
-        backgroundColor: gray5,
-      ),
       body: BlocConsumer<HabitBloc, HabitState>(
         listener: (context, state) {
           if (state is NavigationToReligion) {
@@ -59,229 +52,230 @@ class _HabitScreenState extends State<HabitScreen> {
         },
         builder: (context, state) {
           initData();
-          return Container(
-              margin: kMargin16,
-              child: Stack(children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Eating',
-                          style:
-                              MmmTextStyles.bodySmall(textColor: kModalPrimary),
-                        ),
-                        SizedBox(
-                          height: 4,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              flex: 8,
-                              child: eatingHabit == EatingHabit.Vegetarrian
-                                  ? MmmButtons.habitsEnabled(
-                                      50, 152, 'images/Veg2.svg', 'Vegetarrian')
-                                  : MmmButtons.habitsDisabled(
-                                      50, 152, 'images/Veg2.svg', 'Vegetarrian',
-                                      action: () {
-                                      vegOptionSelected();
-                                    }),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: SizedBox(),
-                            ),
-                            Expanded(
-                              flex: 8,
-                              child: eatingHabit == EatingHabit.Eggitarrian
-                                  ? MmmButtons.habitsEnabled(
-                                      50, 144, 'images/egg.svg', 'eggetarian')
-                                  : MmmButtons.habitsDisabled(
-                                      50, 144, 'images/egg.svg', 'eggetarian',
-                                      action: () {
-                                      eggOptionSelected();
-                                    }),
-                            ),
-                            Expanded(flex: 3, child: SizedBox())
-                          ],
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: eatingHabit == EatingHabit.Nonvegetarrian
-                                  ? MmmButtons.habitsEnabled(50, 193,
-                                      'images/non veg.svg', 'Non-Vegetarrian')
-                                  : MmmButtons.habitsDisabled(
-                                      50,
-                                      193,
-                                      'images/non veg.svg',
-                                      'Non-Vegetarrian', action: () {
-                                      nonvegOptionSelected();
-                                    }),
-                            ),
-                            Expanded(flex: 1, child: SizedBox())
-                          ],
-                        ),
-                        SizedBox(
-                          height: 24,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Smoking',
-                              style: MmmTextStyles.bodySmall(
-                                  textColor: kModalPrimary),
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  flex: 5,
-                                  child: smokingHabit == SmokingHabit.Smoker
-                                      ? MmmButtons.habitsEnabled(
-                                          50, 116, 'images/smoke.svg', 'Smoker')
-                                      : MmmButtons.habitsDisabled(
-                                          50, 116, 'images/smoke.svg', 'Smoker',
-                                          action: () {
-                                          smokingOptionSelected();
-                                        }),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: SizedBox(),
-                                ),
-                                Expanded(
-                                  flex: 7,
-                                  child: smokingHabit == SmokingHabit.NonSmoker
-                                      ? MmmButtons.habitsEnabled(50, 161,
-                                          'images/noSmoke.svg', 'Never Smoke')
-                                      : MmmButtons.habitsDisabled(
-                                          50,
-                                          161,
-                                          'images/noSmoke.svg',
-                                          'Never Smoke', action: () {
-                                          nonSmokingOptionSelected();
-                                        }),
-                                ),
-                                Expanded(
-                                  flex: 3,
-                                  child: SizedBox(),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 24,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Alcoholic',
-                              style: MmmTextStyles.bodySmall(
-                                  textColor: kModalPrimary),
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  flex: 6,
-                                  child:
-                                      drinkingHabit == DrinkingHabit.Alcoholic
-                                          ? MmmButtons.habitsEnabled(
-                                              50,
-                                              130,
-                                              'images/alcoholic.svg',
-                                              'Alcoholic')
-                                          : MmmButtons.habitsDisabled(
-                                              50,
-                                              130,
-                                              'images/alcoholic.svg',
-                                              'Alcoholic', action: () {
-                                              alchoholicOptionSelected();
-                                            }),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: SizedBox(),
-                                ),
-                                Expanded(
-                                  flex: 7,
-                                  child: drinkingHabit ==
-                                          DrinkingHabit.Nonalcoholic
-                                      ? MmmButtons.habitsEnabled(
-                                          50,
-                                          165,
-                                          'images/non_alcoholic.svg',
-                                          'Non-Alcoholic')
-                                      : MmmButtons.habitsDisabled(
-                                          50,
-                                          165,
-                                          'images/non_alcoholic.svg',
-                                          'Non-Alcoholic', action: () {
-                                          nonalchoholicOptionSelected();
-                                        }),
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: SizedBox(),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: drinkingHabit ==
-                                          DrinkingHabit.Occasionally
-                                      ? MmmButtons.habitsEnabled(
-                                          50,
-                                          160,
-                                          'images/occasionally.svg',
-                                          'Occasionally')
-                                      : MmmButtons.habitsDisabled(
-                                          50,
-                                          160,
-                                          'images/occasionally.svg',
-                                          'Occasionally', action: () {
-                                          occasionalOptionSelected();
-                                        }),
-                                ),
-                                Expanded(flex: 1, child: SizedBox())
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    state is OnLoading
-                        ? Center(
-                            child: Image.asset(
-                              "images/app_loader2.gif",
-                              width: 96,
-                              height: 96,
-                            ),
-                          )
-                        : Container()
-                  ],
+          return SafeArea(
+              child: Expanded(
+                  child: Stack(children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                MmmButtons.appBarCurved('Habits', context: context),
+                Container(
+                  padding: kMargin16,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Eating',
+                        style:
+                            MmmTextStyles.bodySmall(textColor: kModalPrimary),
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 8,
+                            child: eatingHabit == EatingHabit.Vegetarrian
+                                ? MmmButtons.habitsEnabled(
+                                    50, 152, 'images/Veg2.svg', 'Vegetarrian')
+                                : MmmButtons.habitsDisabled(
+                                    50, 152, 'images/Veg2.svg', 'Vegetarrian',
+                                    action: () {
+                                    vegOptionSelected();
+                                  }),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: SizedBox(),
+                          ),
+                          Expanded(
+                            flex: 8,
+                            child: eatingHabit == EatingHabit.Eggitarrian
+                                ? MmmButtons.habitsEnabled(
+                                    50, 144, 'images/egg.svg', 'eggetarian')
+                                : MmmButtons.habitsDisabled(
+                                    50, 144, 'images/egg.svg', 'eggetarian',
+                                    action: () {
+                                    eggOptionSelected();
+                                  }),
+                          ),
+                          Expanded(flex: 3, child: SizedBox())
+                        ],
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: eatingHabit == EatingHabit.Nonvegetarrian
+                                ? MmmButtons.habitsEnabled(50, 193,
+                                    'images/non veg.svg', 'Non-Vegetarrian')
+                                : MmmButtons.habitsDisabled(
+                                    50,
+                                    193,
+                                    'images/non veg.svg',
+                                    'Non-Vegetarrian', action: () {
+                                    nonvegOptionSelected();
+                                  }),
+                          ),
+                          Expanded(flex: 1, child: SizedBox())
+                        ],
+                      ),
+                      SizedBox(
+                        height: 24,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Smoking',
+                            style: MmmTextStyles.bodySmall(
+                                textColor: kModalPrimary),
+                          ),
+                          SizedBox(
+                            height: 4,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 5,
+                                child: smokingHabit == SmokingHabit.Smoker
+                                    ? MmmButtons.habitsEnabled(
+                                        50, 116, 'images/smoke.svg', 'Smoker')
+                                    : MmmButtons.habitsDisabled(
+                                        50, 116, 'images/smoke.svg', 'Smoker',
+                                        action: () {
+                                        smokingOptionSelected();
+                                      }),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: SizedBox(),
+                              ),
+                              Expanded(
+                                flex: 7,
+                                child: smokingHabit == SmokingHabit.NonSmoker
+                                    ? MmmButtons.habitsEnabled(50, 161,
+                                        'images/noSmoke.svg', 'Never Smoke')
+                                    : MmmButtons.habitsDisabled(
+                                        50,
+                                        161,
+                                        'images/noSmoke.svg',
+                                        'Never Smoke', action: () {
+                                        nonSmokingOptionSelected();
+                                      }),
+                              ),
+                              Expanded(
+                                flex: 3,
+                                child: SizedBox(),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 24,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Alcoholic',
+                            style: MmmTextStyles.bodySmall(
+                                textColor: kModalPrimary),
+                          ),
+                          SizedBox(
+                            height: 4,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 6,
+                                child: drinkingHabit == DrinkingHabit.Alcoholic
+                                    ? MmmButtons.habitsEnabled(50, 130,
+                                        'images/alcoholic.svg', 'Alcoholic')
+                                    : MmmButtons.habitsDisabled(
+                                        50,
+                                        130,
+                                        'images/alcoholic.svg',
+                                        'Alcoholic', action: () {
+                                        alchoholicOptionSelected();
+                                      }),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: SizedBox(),
+                              ),
+                              Expanded(
+                                flex: 7,
+                                child:
+                                    drinkingHabit == DrinkingHabit.Nonalcoholic
+                                        ? MmmButtons.habitsEnabled(
+                                            50,
+                                            165,
+                                            'images/non_alcoholic.svg',
+                                            'Non-Alcoholic')
+                                        : MmmButtons.habitsDisabled(
+                                            50,
+                                            165,
+                                            'images/non_alcoholic.svg',
+                                            'Non-Alcoholic', action: () {
+                                            nonalchoholicOptionSelected();
+                                          }),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: SizedBox(),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child:
+                                    drinkingHabit == DrinkingHabit.Occasionally
+                                        ? MmmButtons.habitsEnabled(
+                                            50,
+                                            160,
+                                            'images/occasionally.svg',
+                                            'Occasionally')
+                                        : MmmButtons.habitsDisabled(
+                                            50,
+                                            160,
+                                            'images/occasionally.svg',
+                                            'Occasionally', action: () {
+                                            occasionalOptionSelected();
+                                          }),
+                              ),
+                              Expanded(flex: 1, child: SizedBox())
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ]));
+              ],
+            ),
+            Positioned(
+                bottom: 24,
+                right: 24,
+                child: InkWell(
+                  onTap: () {
+                    BlocProvider.of<HabitBloc>(context).add(UpdateHabit());
+                  },
+                  child: MmmIcons.rightArrowEnabled(),
+                )),
+            state is OnLoading ? MmmWidgets.buildLoader(context) : Container()
+          ])));
         },
       ),
     );

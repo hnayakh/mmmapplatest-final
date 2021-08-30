@@ -44,10 +44,10 @@ class _BioScreenState extends State<BioScreen> {
   // String showWidget2 = 'uploadPhoto';
   // String showWidget3 = 'uploadPhoto';
   // String showWidget4 = 'uploadPhoto';
-  String photo1 = 'images/bio.jpg';
-  String photo2 = '';
-  String photo3 = '';
-  String photo4 = '';
+  String pathPhoto1 = '';
+  String pathPhoto2 = '';
+  String pathPhoto3 = '';
+  String pathPhoto4 = '';
 
   var bioController = TextEditingController();
   @override
@@ -128,15 +128,15 @@ class _BioScreenState extends State<BioScreen> {
                                 Row(children: [
                                   Expanded(
                                     flex: 10,
-                                    child: photo1 == ''
+                                    child: pathPhoto1 == ''
                                         ? MmmButtons.uploadPhotoButton(
                                             action: () {
-                                            uploadPhotos(photo1);
+                                            uploadPhotos('pathPhoto1');
                                           })
                                         : MmmButtons.showphotoButton(
-                                            photo1, context, action: () {
+                                            pathPhoto1, context, action: () {
                                             setState(() {
-                                              photo1 = '';
+                                              pathPhoto1 = '';
                                             });
                                           }),
                                   ),
@@ -148,15 +148,15 @@ class _BioScreenState extends State<BioScreen> {
                                   ),
                                   Expanded(
                                     flex: 10,
-                                    child: photo2 == ''
+                                    child: pathPhoto2 == ''
                                         ? MmmButtons.uploadPhotoButton(
                                             action: () {
-                                            uploadPhotos(photo2);
+                                            uploadPhotos('pathPhoto2');
                                           })
                                         : MmmButtons.showphotoButton(
-                                            photo2, context, action: () {
+                                            pathPhoto2, context, action: () {
                                             setState(() {
-                                              photo2 = '';
+                                              pathPhoto2 = '';
                                             });
                                           }),
                                   ),
@@ -168,15 +168,15 @@ class _BioScreenState extends State<BioScreen> {
                                   children: [
                                     Expanded(
                                       flex: 10,
-                                      child: photo3 == ''
+                                      child: pathPhoto3 == ''
                                           ? MmmButtons.uploadPhotoButton(
                                               action: () {
-                                              uploadPhotos(photo3);
+                                              uploadPhotos('pathPhoto3');
                                             })
                                           : MmmButtons.showphotoButton(
-                                              photo3, context, action: () {
+                                              pathPhoto3, context, action: () {
                                               setState(() {
-                                                photo3 = '';
+                                                pathPhoto3 = '';
                                               });
                                             }),
                                     ),
@@ -188,15 +188,15 @@ class _BioScreenState extends State<BioScreen> {
                                     ),
                                     Expanded(
                                       flex: 10,
-                                      child: photo4 == ''
+                                      child: pathPhoto4 == ''
                                           ? MmmButtons.uploadPhotoButton(
                                               action: () {
-                                              uploadPhotos(photo4);
+                                              uploadPhotos('pathPhoto4');
                                             })
                                           : MmmButtons.showphotoButton(
-                                              photo4, context, action: () {
+                                              pathPhoto4, context, action: () {
                                               setState(() {
-                                                photo4 = '';
+                                                pathPhoto4 = '';
                                               });
                                             }),
                                     ),
@@ -208,8 +208,12 @@ class _BioScreenState extends State<BioScreen> {
                                 MmmButtons.enabledRedButtonbodyMedium(
                                     50, 'Submit your details', action: () {
                                   BlocProvider.of<BioBloc>(context).add(
-                                      UpdateBioEvent(bioController.text, photo1,
-                                          photo2, photo3, photo4));
+                                      UpdateBioEvent(
+                                          bioController.text,
+                                          pathPhoto1,
+                                          pathPhoto2,
+                                          pathPhoto3,
+                                          pathPhoto4));
                                 })
                               ]),
                         ])));
@@ -247,12 +251,21 @@ class _BioScreenState extends State<BioScreen> {
   final ImagePicker _picker = ImagePicker();
   Future pickImages(ImageSource source, String photoPos) async {
     try {
-      final PickedFile? image = await _picker.getImage(source: source);
+      final XFile? image = await _picker.pickImage(source: source);
       if (image == null) return;
       final imageTemp = image.path;
       setState(() {
-        photoPos = imageTemp;
+        if (photoPos == 'pathPhoto1') {
+          pathPhoto1 = imageTemp;
+        } else if (photoPos == 'pathPhoto2') {
+          pathPhoto2 = imageTemp;
+        } else if (photoPos == 'pathPhoto3') {
+          pathPhoto3 = imageTemp;
+        } else {
+          pathPhoto4 = imageTemp;
+        }
       });
+      Navigator.of(context).pop();
     } on PlatformException catch (e) {
       print('Failed to pick image:$e');
     }

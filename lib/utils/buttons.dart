@@ -9,7 +9,7 @@ import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
 
 class MmmButtons {
-  static Widget showphotoButton(String photo, BuildContext context,
+  static Widget showphotoButton(String pathPhoto, BuildContext context,
       {Function()? action}) {
     return Container(
       alignment: Alignment.center,
@@ -23,8 +23,8 @@ class MmmButtons {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: Image.asset(
-              photo,
+            child: Image.file(
+              File(pathPhoto),
               fit: BoxFit.cover,
               width: MediaQuery.of(context).size.width,
 
@@ -125,7 +125,7 @@ class MmmButtons {
           height: 4,
         ),
         Container(
-          height: 50,
+          height: 44,
           decoration: BoxDecoration(
             color: kLight4,
             borderRadius: BorderRadius.circular(8),
@@ -136,17 +136,19 @@ class MmmButtons {
             child: InkWell(
               onTap: action,
               child: Container(
-                padding: EdgeInsets.only(left: 16, right: 10),
+                padding: EdgeInsets.only(left: 12, right: 12),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     //SizedBox(
                     //  width: 16,
                     // ),
-                    Container(
+                    Expanded(
                       //width: 216,
                       child: Text(
                         hintText,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         textScaleFactor: 1.0,
                         textAlign: TextAlign.start,
                         style: newhintText == hintText
@@ -247,7 +249,7 @@ class MmmButtons {
     );
   }
 
-  static PreferredSize appBarCurved(String title) {
+  static PreferredSize appBarCurved(String title, {BuildContext? context}) {
     return PreferredSize(
       preferredSize: Size.fromHeight(74.0),
       child: Container(
@@ -266,7 +268,11 @@ class MmmButtons {
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    if (context != null) {
+                      Navigator.of(context).pop();
+                    }
+                  },
                   child: Container(
                       height: 32,
                       width: 32,

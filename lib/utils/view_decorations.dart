@@ -42,7 +42,7 @@ class MmmDecorations {
             borderRadius: BorderRadius.all(Radius.circular(8)),
             borderSide: BorderSide(color: kInputBorder, width: 1)),
         contentPadding:
-            const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+            const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         hintText: hintText,
         isDense: true,
         filled: true,

@@ -10,6 +10,7 @@ import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
+import 'package:makemymarry/utils/mmm_enums.dart';
 
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
@@ -78,9 +79,7 @@ class _SigninWithPhoneScreenState extends State<SigninWithPhoneScreen> {
         },
         builder: (context, state) {
           this.selectedCountry =
-              BlocProvider
-                  .of<PhoneSigninBloc>(context)
-                  .selectedCountry;
+              BlocProvider.of<PhoneSigninBloc>(context).selectedCountry;
           return Stack(
             children: [
               Container(
@@ -100,47 +99,46 @@ class _SigninWithPhoneScreenState extends State<SigninWithPhoneScreen> {
                     ),
                     Container(
                         child: TextField(
-                          onChanged: (value) {
-                            print(value);
-                            setState(() {
-                              currentText = value;
-                            });
-                          },
-                          controller: phoneController,
-                          keyboardType: TextInputType.number,
-                          style: MmmTextStyles.bodyRegular(textColor: kDark5),
-                          cursorColor: kDark5,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: kDark2, width: 1),
-                                  borderRadius: BorderRadius.circular(8)),
-                              focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(8)),
-                                  borderSide:
+                      onChanged: (value) {
+                        print(value);
+                        setState(() {
+                          currentText = value;
+                        });
+                      },
+                      controller: phoneController,
+                      keyboardType: TextInputType.number,
+                      style: MmmTextStyles.bodyRegular(textColor: kDark5),
+                      cursorColor: kDark5,
+                      obscureText: false,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: kDark2, width: 1),
+                              borderRadius: BorderRadius.circular(8)),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8)),
+                              borderSide:
                                   BorderSide(color: kInputBorder, width: 1)),
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 14, vertical: 10),
-                              hintText: 'Phone Number',
-                              isDense: true,
-                              filled: true,
-                              fillColor: kLight4,
-                              hintStyle: MmmTextStyles.bodyRegular(
-                                  textColor: kDark2),
-                              prefixIcon: countrySelector()),
-                        )),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 14, vertical: 10),
+                          hintText: 'Phone Number',
+                          isDense: true,
+                          filled: true,
+                          fillColor: kLight4,
+                          hintStyle:
+                              MmmTextStyles.bodyRegular(textColor: kDark2),
+                          prefixIcon: countrySelector()),
+                    )),
                     SizedBox(
                       height: 24,
                     ),
                     currentText.length < 10
                         ? MmmButtons.disabledGreyButton(44, 'Send OTP')
                         : MmmButtons.enabledRedButton50bodyMedium('Send OTP',
-                        action: () {
-                          BlocProvider.of<PhoneSigninBloc>(context)
-                              .add(GenerateOtp(phoneController.text.trim()));
-                        }),
+                            action: () {
+                            BlocProvider.of<PhoneSigninBloc>(context)
+                                .add(GenerateOtp(phoneController.text.trim()));
+                          }),
                     SizedBox(
                       height: 24,
                     ),
@@ -184,8 +182,8 @@ class _SigninWithPhoneScreenState extends State<SigninWithPhoneScreen> {
                         Expanded(
                           flex: 1,
                           child: SizedBox(
-                            // width: 16,
-                          ),
+                              // width: 16,
+                              ),
                         ),
                         Expanded(
                             flex: 12, child: MmmButtons.googleSigninButton())
@@ -195,10 +193,10 @@ class _SigninWithPhoneScreenState extends State<SigninWithPhoneScreen> {
                       height: 8,
                     ),
                     Container(
-                      child: MmmButtons.enabledRedButtonbodyMedium(44,
-                          'Connect via Email', action: () {
-                            Navigator.of(context).pop();
-                          }),
+                      child: MmmButtons.enabledRedButtonbodyMedium(
+                          44, 'Connect via Email', action: () {
+                        Navigator.of(context).pop();
+                      }),
                     ),
                     SizedBox(
                       height: 30,
@@ -208,8 +206,8 @@ class _SigninWithPhoneScreenState extends State<SigninWithPhoneScreen> {
                         text: TextSpan(children: [
                           TextSpan(
                               text: "Don't have an account? ",
-                              style: MmmTextStyles.bodySmall(
-                                  textColor: kDark5)),
+                              style:
+                                  MmmTextStyles.bodySmall(textColor: kDark5)),
                           TextSpan(
                               text: "Signup",
                               recognizer: TapGestureRecognizer()
@@ -218,7 +216,7 @@ class _SigninWithPhoneScreenState extends State<SigninWithPhoneScreen> {
                                   navigateToRegister();
                                 },
                               style:
-                              MmmTextStyles.bodyMedium(textColor: kPrimary))
+                                  MmmTextStyles.bodyMedium(textColor: kPrimary))
                         ]),
                         textScaleFactor: 1.0,
                         textAlign: TextAlign.center,
@@ -227,8 +225,7 @@ class _SigninWithPhoneScreenState extends State<SigninWithPhoneScreen> {
                   ],
                 ),
               ),
-              state is OnLoading ?
-              MmmWidgets.buildLoader(context) : Container()
+              state is OnLoading ? MmmWidgets.buildLoader(context) : Container()
             ],
           );
         },
@@ -282,23 +279,19 @@ class _SigninWithPhoneScreenState extends State<SigninWithPhoneScreen> {
   }
 
   navigateToRegister() {
-    var userRepo = BlocProvider
-        .of<PhoneSigninBloc>(context)
-        .userRepository;
+    var userRepo = BlocProvider.of<PhoneSigninBloc>(context).userRepository;
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => CreateAccount(userRepository: userRepo)));
   }
 
   void navigateToOtp() {
-    var userRepo = BlocProvider
-        .of<PhoneSigninBloc>(context)
-        .userRepository;
+    var userRepo = BlocProvider.of<PhoneSigninBloc>(context).userRepository;
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) =>
-            MobileVerification(
+        builder: (context) => MobileVerification(
               dialCode: selectedCountry.phoneCode,
               phone: phoneController.text.trim(),
               userRepository: userRepo,
+              otpType: OtpType.Login,
             )));
   }
 }

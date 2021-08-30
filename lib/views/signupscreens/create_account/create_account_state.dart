@@ -13,3 +13,4 @@ class OnError extends CreateAccountState {
 }
 
 class OnSignUp extends CreateAccountState {}
+class OnOtpGenerated extends CreateAccountState {}

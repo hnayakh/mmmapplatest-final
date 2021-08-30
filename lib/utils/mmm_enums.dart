@@ -3,13 +3,7 @@ enum Gender {
   Female,
   Other,
 }
-enum Relationship {
-  Self,
-  Son,
-  Daughter,
-  Sister,
-  Brother,
-}
+enum Relationship { Self, Son, Daughter, Sister, Brother, Friend, Relative }
 
 enum MaritalStatus { NeverMarried, Divorced, Widowed, AwaitingDivorce }
 
