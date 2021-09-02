@@ -7,7 +7,7 @@ class MmmIcons {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-            colors: [kPrimary, kSecondary],
+            colors: [kPrimaryHeart, kSecondary],
             begin: Alignment.centerLeft,
             end: Alignment.centerRight),
         border: Border.all(
@@ -285,15 +285,15 @@ class MmmIcons {
       child: ClipOval(
         child: Material(
           color: Colors.transparent,
-          child:  Container(
-              height: 48,
-              width: 48,
-              padding: EdgeInsets.fromLTRB(14, 13, 12, 13),
-              child: SvgPicture.asset(
-                "images/rightArrow.svg",
-                color: gray7,
-              ),
+          child: Container(
+            height: 48,
+            width: 48,
+            padding: EdgeInsets.fromLTRB(14, 13, 12, 13),
+            child: SvgPicture.asset(
+              "images/rightArrow.svg",
+              color: gray7,
             ),
+          ),
         ),
       ),
     );

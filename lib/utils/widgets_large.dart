@@ -22,6 +22,7 @@ class MmmWidgets {
       ),
     );
   }
+
   static Container resetPasswordWidget() {
     return Container(
       width: 328,
@@ -669,99 +670,112 @@ class MmmWidgets {
     );
   }
 
-  static Container stackUserprofileWidget() {
+  static Widget stackUserprofileWidget(BuildContext context) {
     return Container(
       child: Stack(
         children: [
           Container(
-            height: 192,
-            width: 163,
             decoration: BoxDecoration(
                 color: Color(0xffC5C1D7),
                 borderRadius: BorderRadius.circular(8)),
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.asset(
-                  'assets/images/pic5.jpg',
+                  'images/bio.jpg',
                   fit: BoxFit.fill,
                 )),
           ),
           Positioned(
-            bottom: 161.97,
-            left: 134.25,
-            right: 11.25,
-            top: 9.52,
-            child: Container(
-              width: 17.5,
-              height: 20.51,
-              child: SvgPicture.asset(
-                "images/Verified.svg",
-                color: Color(0xffC9184A),
-                fit: BoxFit.cover,
+            top: 10,
+            right: 8,
+            child: Row(
+              children: [
+                Container(
+                  child: SvgPicture.asset(
+                    "images/Verified.svg",
+                    color: Color(0xffC9184A),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Column(
+            children: [
+              Expanded(child: SizedBox()),
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                        height: MediaQuery.of(context).size.height * 0.1,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(8),
+                                bottomRight: Radius.circular(8)),
+                            color: Color(0xff21272A).withOpacity(0.50),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color(0xff0F0D15).withAlpha(8),
+                                blurRadius: 30.0,
+                                spreadRadius: 0.0,
+                                offset: Offset(0.0, 15.0),
+                              )
+                            ]),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(flex: 1, child: SizedBox()),
+                                Expanded(
+                                  flex: 9,
+                                  child: Container(
+                                    child: Text('Cody Fisher,24',
+                                        style: MmmTextStyles.heading6(
+                                            textColor: gray7)),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.height * 0.02,
+                                ),
+                                Container(
+                                  child: SvgPicture.asset(
+                                    "images/location.svg",
+                                    color: Color(0xffFCFCFD),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                Container(
+                                  child: Text(
+                                    'Pune,India',
+                                    style:
+                                        MmmTextStyles.caption(textColor: gray7),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        )),
+                  ),
+                ],
               ),
-            ),
+            ],
           ),
-          Positioned(
-            top: 142,
-            child: Container(
-              width: 163,
-              height: 50,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(8),
-                      bottomRight: Radius.circular(8)),
-                  color: Color(0xff21272A).withOpacity(0.50),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color(0xff0F0D15).withOpacity(0.80),
-                      blurRadius: 14.0,
-                      spreadRadius: 0.0,
-                      offset: Offset(0.0, 4.0),
-                    )
-                  ]),
-            ),
-          ),
-          Positioned(
-            left: 8,
-            top: 146,
-            right: 12,
-            bottom: 24,
-            child: Container(
-              width: 143,
-              height: 22,
-              child: Text('Abhishek Kumar,24',
-                  style: MmmTextStyles.heading6(textColor: gray7)),
-            ),
-          ),
-          Positioned(
-            left: 10.17,
-            top: 170.83,
-            right: 141.17,
-            bottom: 7.47,
-            child: Container(
-              width: 11.67,
-              height: 13.69,
-              child: SvgPicture.asset(
-                "images/location.svg",
-                color: Color(0xffFCFCFD),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Positioned(
-            left: 28,
-            top: 168,
-            right: 70,
-            bottom: 4,
-            child: Container(
-              width: 65,
-              height: 20,
-              child: Text(
-                'Pune,India',
-                style: MmmTextStyles.caption(textColor: gray7),
-              ),
-            ),
-          )
+          ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                      onTap: () {},
+                      child: Container(
+                        height: double.infinity,
+                      ))))
         ],
       ),
     );
@@ -770,26 +784,26 @@ class MmmWidgets {
   static Container bottomNavigatiomBar() {
     return Container(
       height: 68,
-      width: 360,
+      //width: 360,
       padding: EdgeInsets.only(top: 8, bottom: 8),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Container(
-            width: 68.8,
+            //width: 68.8,
             height: 52,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: double.infinity,
+                  //width: double.infinity,
                   height: 4,
                 ),
                 SvgPicture.asset(
                   'images/Search.svg',
                   color: gray3,
                   height: 24,
-                  width: 24,
+                  // width: 24,
                   fit: BoxFit.cover,
                 ),
                 SizedBox(
@@ -797,7 +811,7 @@ class MmmWidgets {
                 ),
                 Container(
                   height: 16,
-                  width: 36,
+                  //width: 36,
                   child: Text(
                     'Search',
                     textAlign: TextAlign.start,
@@ -814,24 +828,24 @@ class MmmWidgets {
               ],
             ),
           ),
-          SizedBox(
-            width: 4,
-          ),
+          //SizedBox(
+          //   width: 4,
+          // ),
           Container(
-            width: 68.8,
+            //width: 68.8,
             height: 52,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: double.infinity,
+                  // width: double.infinity,
                   height: 4,
                 ),
                 SvgPicture.asset(
                   'images/filter2.svg',
                   color: gray3,
                   height: 24,
-                  width: 24,
+                  //  width: 24,
                   fit: BoxFit.cover,
                 ),
                 SizedBox(
@@ -839,7 +853,7 @@ class MmmWidgets {
                 ),
                 Container(
                   height: 16,
-                  width: 25,
+                  //width: 25,
                   child: Text(
                     'Filter',
                     textAlign: TextAlign.start,
@@ -856,24 +870,24 @@ class MmmWidgets {
               ],
             ),
           ),
-          SizedBox(
-            width: 4,
-          ),
+          // SizedBox(
+          //   width: 4,
+          // ),
           Container(
-            width: 68.8,
+            //width: 68.8,
             height: 52,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: double.infinity,
+                  //width: double.infinity,
                   height: 4,
                 ),
                 SvgPicture.asset(
                   'images/connect.svg',
                   color: gray3,
                   height: 24,
-                  width: 24,
+                  //width: 24,
                   fit: BoxFit.cover,
                 ),
                 SizedBox(
@@ -881,7 +895,7 @@ class MmmWidgets {
                 ),
                 Container(
                   height: 16,
-                  width: 44,
+                  // width: 44,
                   child: Text(
                     'Connect',
                     textAlign: TextAlign.start,
@@ -898,32 +912,39 @@ class MmmWidgets {
               ],
             ),
           ),
-          SizedBox(
-            width: 4,
-          ),
+          //SizedBox(
+          //   width: 4,
+          // ),
           Container(
-            width: 68.8,
+            // width: 68.8,
             height: 52,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: double.infinity,
+                  // width: double.infinity,
                   height: 4,
                 ),
-                SvgPicture.asset(
-                  'images/connect.svg',
-                  color: gray3,
+                Container(
                   height: 24,
-                  width: 24,
-                  fit: BoxFit.cover,
+                  child: Icon(
+                    Icons.notifications,
+                    color: gray3,
+                  ),
                 ),
+                // SvgPicture.asset(
+                //   'images/connect.svg',
+                //   color: gray3,
+                //   height: 24,
+                //   width: 24,
+                //   fit: BoxFit.cover,
+                //  ),
                 SizedBox(
                   height: 4,
                 ),
                 Container(
                   height: 16,
-                  width: 64,
+                  // width: 64,
                   child: Text(
                     'Notifications',
                     textAlign: TextAlign.start,
@@ -940,24 +961,24 @@ class MmmWidgets {
               ],
             ),
           ),
-          SizedBox(
-            width: 4,
-          ),
+          // SizedBox(
+          //   width: 4,
+          // ),
           Container(
-            width: 68.8,
+            // width: 68.8,
             height: 52,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: double.infinity,
+                  // width: double.infinity,
                   height: 4,
                 ),
                 SvgPicture.asset(
                   'images/menu.svg',
                   color: gray3,
                   height: 24,
-                  width: 24,
+                  // width: 24,
                   fit: BoxFit.cover,
                 ),
                 SizedBox(
@@ -965,7 +986,7 @@ class MmmWidgets {
                 ),
                 Container(
                   height: 16,
-                  width: 26,
+                  // width: 26,
                   child: Text(
                     'More',
                     textAlign: TextAlign.start,
@@ -983,6 +1004,52 @@ class MmmWidgets {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  static Widget bottomBarUnits(String icon, String label, Color iconColor,
+      {Function()? action}) {
+    return GestureDetector(
+      onTap: action,
+      child: Container(
+        //width: 68.8,
+        height: 52,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              //width: double.infinity,
+              height: 4,
+            ),
+            SvgPicture.asset(
+              icon,
+              color: iconColor,
+              height: 24,
+              // width: 24,
+              fit: BoxFit.cover,
+            ),
+            SizedBox(
+              height: 4,
+            ),
+            Container(
+              height: 16,
+              //width: 36,
+              child: Text(
+                label,
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                    fontFamily: 'MakeMyMarryMedium',
+                    fontSize: 10,
+                    height: 1.60,
+                    color: iconColor),
+              ),
+            ),
+            SizedBox(
+              height: 4,
+            )
+          ],
+        ),
       ),
     );
   }

@@ -118,149 +118,25 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
           children: [
             Column(
               children: [
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          'Family Status',
-                          textScaleFactor: 1.0,
-                          style: MmmTextStyles.bodySmall(textColor: kDark5),
-                        ),
-                        SizedBox(
-                          width: 2,
-                        ),
-                        Text(
-                          '*',
-                          style: MmmTextStyles.bodySmall(textColor: kredStar),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 4,
-                    ),
-                    Container(
-                      height: 44,
-                      decoration: BoxDecoration(
-                        color: kLight4,
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(width: 1, color: kDark2),
-                      ),
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () {
-                            showFamilyStatusSheet();
-                          },
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 8,
-                              ),
-                              Expanded(
-                                child: Text(
-                                  level != null
-                                      ? describeEnum(level!)
-                                      : familyStatustext,
-                                  textScaleFactor: 1.0,
-                                  textAlign: TextAlign.start,
-                                  style: level != null
-                                      ? MmmTextStyles.bodyRegular(
-                                          textColor: kDark5)
-                                      : MmmTextStyles.bodyRegular(
-                                          textColor: kDark2),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 8,
-                              ),
-                              SvgPicture.asset(
-                                "images/rightArrow.svg",
-                                width: 24,
-                                height: 24,
-                                color: Color(0xff878D96),
-                                fit: BoxFit.cover,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                MmmButtons.categoryButtons(
+                    'Family Status',
+                    level != null ? describeEnum(level!) : familyStatustext,
+                    familyStatustext,
+                    "images/rightArrow.svg", action: () {
+                  showFamilyStatusSheet();
+                }),
                 SizedBox(
                   height: 24,
                 ),
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          'Family Values',
-                          textScaleFactor: 1.0,
-                          style: MmmTextStyles.bodySmall(textColor: kDark5),
-                        ),
-                        SizedBox(
-                          width: 2,
-                        ),
-                        Text(
-                          '*',
-                          style: MmmTextStyles.bodySmall(textColor: kredStar),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 4,
-                    ),
-                    Container(
-                      height: 44,
-                      decoration: BoxDecoration(
-                        color: kLight4,
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(width: 1, color: kDark2),
-                      ),
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () {
-                            showFamilyValuesSheet();
-                          },
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 8,
-                              ),
-                              Expanded(
-                                child: Text(
-                                  this.values != null
-                                      ? describeEnum(this.values!)
-                                      : familyValuestext,
-                                  textScaleFactor: 1.0,
-                                  textAlign: TextAlign.start,
-                                  style: this.values != null
-                                      ? MmmTextStyles.bodyRegular(
-                                          textColor: kDark5)
-                                      : MmmTextStyles.bodyRegular(
-                                          textColor: kDark2),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 8,
-                              ),
-                              SvgPicture.asset(
-                                "images/rightArrow.svg",
-                                width: 24,
-                                height: 24,
-                                color: Color(0xff878D96),
-                                fit: BoxFit.cover,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                MmmButtons.categoryButtons(
+                    'Family Values',
+                    this.values != null
+                        ? describeEnum(this.values!)
+                        : familyValuestext,
+                    familyValuestext,
+                    "images/rightArrow.svg", action: () {
+                  showFamilyValuesSheet();
+                }),
                 SizedBox(
                   height: 24,
                 ),

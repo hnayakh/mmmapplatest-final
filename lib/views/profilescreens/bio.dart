@@ -12,6 +12,7 @@ import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/profilescreens/bio_event.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'bio_bloc.dart';
 import 'bio_state.dart';
@@ -250,6 +251,16 @@ class _BioScreenState extends State<BioScreen> {
 
   final ImagePicker _picker = ImagePicker();
   Future pickImages(ImageSource source, String photoPos) async {
+    //  bool userHasAccess = false;
+    //  await Permission.camera.request();
+    //  var status = await Permission.camera.status;
+
+    //  if (status.isGranted) {
+    //    userHasAccess = true;
+    //  } else {
+    //     print('access to camera denied by user');
+    //  }
+    //   if (userHasAccess == true) {
     try {
       final XFile? image = await _picker.pickImage(source: source);
       if (image == null) return;
@@ -269,5 +280,6 @@ class _BioScreenState extends State<BioScreen> {
     } on PlatformException catch (e) {
       print('Failed to pick image:$e');
     }
+    //   }
   }
 }

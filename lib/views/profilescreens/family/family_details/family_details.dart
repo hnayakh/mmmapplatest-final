@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:makemymarry/repo/user_repo.dart';
+import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/icons.dart';
@@ -101,145 +102,27 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
       padding: kMargin16,
       child: Column(
         children: [
-          Column(
-            children: [
-              Row(
-                children: [
-                  Text(
-                    "Father's Occpation",
-                    textScaleFactor: 1.0,
-                    style: MmmTextStyles.bodySmall(textColor: kDark5),
-                  ),
-                  SizedBox(
-                    width: 2,
-                  ),
-                  Text(
-                    '*',
-                    style: MmmTextStyles.bodySmall(textColor: kredStar),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              Container(
-                height: 44,
-                decoration: BoxDecoration(
-                  color: kLight4,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(width: 1, color: kDark2),
-                ),
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: () {
-                      showFatherOccupationStatusSheet();
-                    },
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Expanded(
-                          child: Text(
-                            fatherOccupation != null
-                                ? describeEnum(fatherOccupation!)
-                                : fatherOcctext,
-                            textScaleFactor: 1.0,
-                            textAlign: TextAlign.start,
-                            style: fatherOccupation != null
-                                ? MmmTextStyles.bodyRegular(textColor: kDark5)
-                                : MmmTextStyles.bodyRegular(textColor: kDark2),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        SvgPicture.asset(
-                          "images/rightArrow.svg",
-                          width: 24,
-                          height: 24,
-                          color: Color(0xff878D96),
-                          fit: BoxFit.cover,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+          MmmButtons.categoryButtons(
+              "Father's Occpation",
+              fatherOccupation != null
+                  ? describeEnum(fatherOccupation!)
+                  : fatherOcctext,
+              fatherOcctext,
+              "images/rightArrow.svg", action: () {
+            showFatherOccupationStatusSheet();
+          }),
           SizedBox(
             height: 24,
           ),
-          Column(
-            children: [
-              Row(
-                children: [
-                  Text(
-                    "Mother's Occpation",
-                    textScaleFactor: 1.0,
-                    style: MmmTextStyles.bodySmall(textColor: kDark5),
-                  ),
-                  SizedBox(
-                    width: 2,
-                  ),
-                  Text(
-                    '*',
-                    style: MmmTextStyles.bodySmall(textColor: kredStar),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              Container(
-                height: 44,
-                decoration: BoxDecoration(
-                  color: kLight4,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(width: 1, color: kDark2),
-                ),
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: () {
-                      showMotherOccupationStatusSheet();
-                    },
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Expanded(
-                          child: Text(
-                            motherOccupation != null
-                                ? describeEnum(motherOccupation!)
-                                : motherOcctext,
-                            textScaleFactor: 1.0,
-                            textAlign: TextAlign.start,
-                            style: motherOccupation != null
-                                ? MmmTextStyles.bodyRegular(textColor: kDark5)
-                                : MmmTextStyles.bodyRegular(textColor: kDark2),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        SvgPicture.asset(
-                          "images/rightArrow.svg",
-                          width: 24,
-                          height: 24,
-                          color: Color(0xff878D96),
-                          fit: BoxFit.cover,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+          MmmButtons.categoryButtons(
+              "Mother's Occpation",
+              motherOccupation != null
+                  ? describeEnum(motherOccupation!)
+                  : motherOcctext,
+              motherOcctext,
+              "images/rightArrow.svg", action: () {
+            showMotherOccupationStatusSheet();
+          }),
           SizedBox(
             height: 24,
           ),

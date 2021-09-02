@@ -9,6 +9,53 @@ import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
 
 class MmmButtons {
+  static Widget swapViewButton(BuildContext context, String icon) {
+    return Column(
+      children: [
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.1,
+        ),
+        Row(
+          //mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.85,
+            ),
+            ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                        onTap: () {},
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: MediaQuery.of(context).size.height * 0.07,
+                          width: MediaQuery.of(context).size.height * 0.07,
+                          decoration: BoxDecoration(
+                            boxShadow: [MmmShadow.gridViewButton()],
+                            color: gray5.withOpacity(0.4),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(8),
+                            ),
+                          ),
+                          child: Container(
+                            // height: 21,
+                            // width: 15,
+                            child: SvgPicture.asset(
+                              icon,
+                              color: kDark5,
+                              height: MediaQuery.of(context).size.height *
+                                  0.07 *
+                                  0.5,
+                            ),
+                          ),
+                        ))))
+          ],
+        )
+      ],
+    );
+  }
+
   static Widget showphotoButton(String pathPhoto, BuildContext context,
       {Function()? action}) {
     return Container(
