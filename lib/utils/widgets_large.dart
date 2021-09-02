@@ -670,7 +670,7 @@ class MmmWidgets {
     );
   }
 
-  static Widget stackUserprofileWidget(BuildContext context) {
+  static Widget stackUserprofileWidget(BuildContext context, String image) {
     return Container(
       child: Stack(
         children: [
@@ -681,8 +681,9 @@ class MmmWidgets {
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.asset(
-                  'images/bio.jpg',
-                  fit: BoxFit.fill,
+                  image,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
                 )),
           ),
           Positioned(
