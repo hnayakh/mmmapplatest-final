@@ -9,7 +9,8 @@ import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
 
 class MmmButtons {
-  static Widget swapViewButton(BuildContext context, String icon) {
+  static Widget swapViewButton(BuildContext context, String icon,
+      {Function()? action}) {
     return Column(
       children: [
         SizedBox(
@@ -26,7 +27,7 @@ class MmmButtons {
                 child: Material(
                     color: Colors.transparent,
                     child: InkWell(
-                        onTap: () {},
+                        onTap: action,
                         child: Container(
                           alignment: Alignment.center,
                           height: MediaQuery.of(context).size.height * 0.07,

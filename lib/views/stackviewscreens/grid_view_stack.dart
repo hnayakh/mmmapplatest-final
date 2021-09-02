@@ -5,6 +5,7 @@ import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
+import 'package:makemymarry/views/stackviewscreens/stack_view.dart';
 
 class GridViewofStack extends StatefulWidget {
   const GridViewofStack({Key? key}) : super(key: key);
@@ -93,12 +94,18 @@ class _GridViewofStackState extends State<GridViewofStack> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.03,
               ),
-              MmmButtons.swapViewButton(context, 'images/stack view.svg'),
+              MmmButtons.swapViewButton(context, 'images/stack view.svg',
+                  action: navigateToStackView),
             ],
           ),
         ],
       ),
     );
+  }
+
+  void navigateToStackView() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => StackView()));
   }
 
   void setColor(int indexCode) {

@@ -9,6 +9,7 @@ import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
+import 'package:makemymarry/views/stackviewscreens/grid_view_stack.dart';
 
 class StackView extends StatefulWidget {
   const StackView({Key? key}) : super(key: key);
@@ -173,11 +174,17 @@ class _StackViewState extends State<StackView> {
                 )
               ],
             ),
-            MmmButtons.swapViewButton(context, 'images/GridView.svg')
+            MmmButtons.swapViewButton(context, 'images/GridView.svg',
+                action: navigateToGridView)
           ],
         ),
       ),
     );
+  }
+
+  void navigateToGridView() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => GridViewofStack()));
   }
 
   void setColor(int indexCode) {
