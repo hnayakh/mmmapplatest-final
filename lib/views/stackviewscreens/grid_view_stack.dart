@@ -39,7 +39,7 @@ class _GridViewofStackState extends State<GridViewofStack> {
                             mainAxisSpacing: 20),
                         itemBuilder: (BuildContext context, int index) {
                           return MmmWidgets.stackUserprofileWidget(
-                              context, 'images/bio.jpg');
+                              context, 'images/stackviewImage.jpg');
                         },
                       )),
                 ),

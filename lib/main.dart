@@ -7,6 +7,7 @@ import 'package:makemymarry/utils/text_styles.dart';
 
 import 'package:makemymarry/views/splash_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/grid_view_stack.dart';
+import 'package:makemymarry/views/stackviewscreens/notification.dart';
 import 'package:makemymarry/views/stackviewscreens/stack_view.dart';
 import 'package:makemymarry/views/widget_views.dart';
 
@@ -65,7 +66,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.pink,
       ),
-      home: GridViewofStack(),
+      home: Notifications(),
     );
   }
 }
