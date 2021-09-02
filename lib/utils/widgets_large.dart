@@ -702,68 +702,71 @@ class MmmWidgets {
           ),
           Column(
             children: [
-              Expanded(child: SizedBox()),
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                        height: MediaQuery.of(context).size.height * 0.1,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(8),
-                                bottomRight: Radius.circular(8)),
-                            color: Color(0xff21272A).withOpacity(0.50),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color(0xff0F0D15).withAlpha(8),
-                                blurRadius: 30.0,
-                                spreadRadius: 0.0,
-                                offset: Offset(0.0, 15.0),
-                              )
-                            ]),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(flex: 1, child: SizedBox()),
-                                Expanded(
-                                  flex: 9,
-                                  child: Container(
-                                    child: Text('Cody Fisher,24',
-                                        style: MmmTextStyles.heading6(
-                                            textColor: gray7)),
+              Expanded(flex: 2, child: SizedBox()),
+              Expanded(
+                flex: 1,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                          height: MediaQuery.of(context).size.height * 0.1,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(8),
+                                  bottomRight: Radius.circular(8)),
+                              color: Color(0xff21272A).withOpacity(0.50),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Color(0xff0F0D15).withAlpha(8),
+                                  blurRadius: 30.0,
+                                  spreadRadius: 0.0,
+                                  offset: Offset(0.0, 15.0),
+                                )
+                              ]),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(flex: 1, child: SizedBox()),
+                                  Expanded(
+                                    flex: 9,
+                                    child: Container(
+                                      child: Text('Cody Fisher,24',
+                                          style: MmmTextStyles.heading6(
+                                              textColor: gray7)),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.height * 0.02,
-                                ),
-                                Container(
-                                  child: SvgPicture.asset(
-                                    "images/location.svg",
-                                    color: Color(0xffFCFCFD),
-                                    fit: BoxFit.cover,
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.height *
+                                        0.02,
                                   ),
-                                ),
-                                Container(
-                                  child: Text(
-                                    'Pune,India',
-                                    style:
-                                        MmmTextStyles.caption(textColor: gray7),
+                                  Container(
+                                    child: SvgPicture.asset(
+                                      "images/location.svg",
+                                      color: Color(0xffFCFCFD),
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        )),
-                  ),
-                ],
+                                  Container(
+                                    child: Text(
+                                      'Pune,India',
+                                      style: MmmTextStyles.caption(
+                                          textColor: gray7),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
