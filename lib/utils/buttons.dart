@@ -5,10 +5,84 @@ import 'package:flutter_svg/svg.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/elevations.dart';
+import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
 
 class MmmButtons {
+  static Widget smallprofilePicButton(String image) {
+    return Container(
+      width: 40,
+      height: 40,
+      padding: EdgeInsets.all(2),
+      decoration: BoxDecoration(
+          color: kWhite, borderRadius: BorderRadius.all(Radius.circular(5.85))),
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(5.85)),
+        child: Image.asset(
+          image,
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+
+  static Container profileViewButtons(String icon, String label) {
+    return Container(
+      decoration: BoxDecoration(
+        color: kWhite,
+        boxShadow: [MmmShadow.elevation1()],
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: Color(0xffF0EFF5),
+          width: 1,
+        ),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {},
+          child: Container(
+            alignment: Alignment.center,
+            height: 60,
+            padding: EdgeInsets.all(8),
+            // width: 342,
+            child: Row(
+              children: [
+                SvgPicture.asset(
+                  icon,
+                  color: Color(0xff121619),
+                  fit: BoxFit.cover,
+                ),
+                Expanded(
+                  flex: 1,
+                  child: SizedBox(),
+                ),
+                Text(
+                  label,
+                  textScaleFactor: 1.0,
+                  //textAlign: TextAlign.start,
+                  style: MmmTextStyles.heading5(textColor: kDark6),
+                ),
+                Expanded(
+                  flex: 20,
+                  child: SizedBox(),
+                ),
+                Container(
+                  child: SvgPicture.asset(
+                    "images/rightArrow.svg",
+                    color: Color(0xff878D96),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   static Widget swapViewButton(BuildContext context, String icon,
       {Function()? action}) {
     return Column(
@@ -294,6 +368,142 @@ class MmmButtons {
           ),
         ),
       ],
+    );
+  }
+
+  static PreferredSize appBarCurvedProfile(String title, BuildContext context) {
+    return PreferredSize(
+      // preferredSize: Size.fromHeight(120),
+      preferredSize: Size.fromHeight(MediaQuery.of(context).size.height * 0.17),
+      child: Stack(
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height * 0.175,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(bottomRight: Radius.circular(32)),
+              gradient: LinearGradient(
+                  colors: [kPrimary, kSecondary],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight),
+            ),
+          ),
+          AppBar(
+            toolbarOpacity: 0,
+            bottomOpacity: 0,
+            leading: Row(
+              children: [
+                Container(
+                  width: 35,
+                  margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
+                  decoration: BoxDecoration(
+                      color: kLight2.withOpacity(0.60),
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                      boxShadow: [
+                        MmmShadow.elevationbBackButton(
+                            shadowColor: kShadowColorForWhite)
+                      ]),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () {
+                          //if (context != null) {
+                          Navigator.of(context).pop();
+                          // }
+                        },
+                        child: Container(
+                            height: 32,
+                            width: 24,
+                            alignment: Alignment.center,
+                            child: SvgPicture.asset(
+                              'images/arrowLeft.svg',
+                              height: 17.45,
+                              color: gray3,
+                            )),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            toolbarHeight: 74.0,
+            title: Row(
+              children: [
+                Stack(
+                  children: [
+                    Container(
+                      height: 48,
+                      width: 48,
+                      color: Colors.transparent,
+                    ),
+                    CircleAvatar(
+                      radius: 24,
+                      child: ClipOval(
+                        child: Image.asset(
+                          'images/stackviewImage.jpg',
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      right: 0,
+                      child: Stack(
+                        children: [
+                          Container(
+                            width: 12,
+                            height: 12,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: kWhite,
+                            ),
+                          ),
+                          Positioned(
+                            top: 2,
+                            bottom: 2,
+                            right: 2,
+                            left: 2,
+                            child: Container(
+                                width: 8,
+                                height: 8,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: kGreen,
+                                )),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.02,
+                ),
+                Text(
+                  title,
+                  style: MmmTextStyles.heading4(textColor: kLight2),
+                ),
+              ],
+            ),
+            backgroundColor: Colors.transparent,
+            foregroundColor: Colors.transparent,
+            shadowColor: Colors.transparent,
+            elevation: 0.0,
+          ),
+          Positioned(
+              bottom: 0,
+              //right: 80,
+              right: MediaQuery.of(context).size.width * 0.2,
+              child: Transform.scale(scale: 0.9, child: MmmIcons.cancel())),
+          Positioned(
+              bottom: 0,
+              right: MediaQuery.of(context).size.width * 0.06,
+              child: Transform.scale(scale: 0.9, child: MmmIcons.meet()))
+        ],
+      ),
+
+      //preferredSize: Size(MediaQuery.of(context).size.width, 0.0),
     );
   }
 
@@ -660,6 +870,33 @@ class MmmButtons {
                 textScaleFactor: 1.0,
                 textAlign: TextAlign.center,
                 style: MmmTextStyles.bodyMedium(textColor: gray7),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  static Container checkMatchButton(double height, String text,
+      {Function()? action}) {
+    return Container(
+      decoration: MmmDecorations.primaryButtonDecoration(),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(6),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: action,
+            child: Container(
+              padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+              alignment: Alignment.center,
+              height: height,
+              child: Text(
+                text,
+                textScaleFactor: 1.0,
+                textAlign: TextAlign.center,
+                style: MmmTextStyles.heading4(textColor: gray7),
               ),
             ),
           ),
@@ -1112,7 +1349,7 @@ class MmmButtons {
           child: Container(
             alignment: Alignment.center,
             height: 58,
-            width: 342,
+            // width: 342,
             child: Row(
               children: [
                 SizedBox(

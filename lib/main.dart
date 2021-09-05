@@ -4,8 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_styles.dart';
+import 'package:makemymarry/views/profileviewscreens/profile_view.dart';
 
 import 'package:makemymarry/views/splash_screen.dart';
+import 'package:makemymarry/views/stackviewscreens/connect.dart';
 import 'package:makemymarry/views/stackviewscreens/grid_view_stack.dart';
 import 'package:makemymarry/views/stackviewscreens/notification.dart';
 import 'package:makemymarry/views/stackviewscreens/stack_view.dart';
@@ -66,7 +68,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.pink,
       ),
-      home: Notifications(),
+      home: ProfileView(),
     );
   }
 }

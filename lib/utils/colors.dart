@@ -35,3 +35,6 @@ const kBioSecondary = Color(0xff8B83AF);
 const kWhite = Color(0xffFFFFFF);
 const kBlack = Color(0xff000000);
 const kShadowColorForGrid = Color(0xff0F0D15);
+const kGreen = Color(0xff24A148);
+const kDark6 = Color(0xff2C283E);
+const kViolet = Color(0xff58507C);

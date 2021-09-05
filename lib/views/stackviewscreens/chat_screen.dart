@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 
-class Notifications extends StatefulWidget {
-  const Notifications({Key? key}) : super(key: key);
+class ChatScreen extends StatefulWidget {
+  const ChatScreen({Key? key}) : super(key: key);
 
   @override
-  _NotificationsState createState() => _NotificationsState();
+  _ChatScreenState createState() => _ChatScreenState();
 }
 
-class _NotificationsState extends State<Notifications> {
+class _ChatScreenState extends State<ChatScreen> {
   var index;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MmmButtons.appBarCurved('Notifications'),
       body: Container(
         child: Column(
           children: [
@@ -26,27 +24,49 @@ class _NotificationsState extends State<Notifications> {
               child: ListView.separated(
                 itemBuilder: (context, index) {
                   return ListTile(
-                    leading: Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(8),
-                            bottomRight: Radius.circular(8)),
+                    leading:
+                        //Container(
+                        //   height: 50,
+                        //   width: 50,
+                        //   decoration: BoxDecoration(
+                        //    borderRadius: BorderRadius.only(
+                        //        topRight: Radius.circular(8),
+                        //       bottomRight: Radius.circular(8)),
+                        //       ),
+                        //      child:
+                        //ClipRRect(
+                        // borderRadius: BorderRadius.only(
+                        //    topRight: Radius.circular(8),
+                        //     bottomRight: Radius.circular(8)),
+                        // child:
+                        CircleAvatar(
+                      radius: 25,
+                      child: ClipOval(
+                        child: Image.asset(
+                          'images/stackviewImage.jpg',
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(8),
-                              bottomRight: Radius.circular(8)),
-                          child: Image.asset(
-                            'images/bio.jpg',
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                          )),
-                    ),
-                    trailing: Text(
-                      '8m ago',
-                      style: MmmTextStyles.caption(textColor: gray1),
+                    )
+                    //),
+                    ,
+                    trailing: Column(
+                      children: [
+                        CircleAvatar(
+                          radius: 8,
+                          backgroundColor: kPrimary,
+                          child: Text(
+                            '1',
+                            textAlign: TextAlign.center,
+                            style: MmmTextStyles.caption(textColor: kWhite),
+                          ),
+                        ),
+                        Text(
+                          '8m ago',
+                          style: MmmTextStyles.caption(textColor: gray1),
+                        ),
+                      ],
                     ),
                     title: Text(
                       'Header',

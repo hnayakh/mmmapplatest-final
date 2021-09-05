@@ -8,6 +8,23 @@ import 'package:makemymarry/utils/view_decorations.dart';
 import 'colors.dart';
 
 class MmmWidgets {
+  static Widget rowWidget(String icon, String info) {
+    return Row(
+      children: [
+        SvgPicture.asset(
+          icon,
+          color: kDark5,
+        ),
+        Expanded(flex: 1, child: SizedBox()),
+        Text(
+          info,
+          style: MmmTextStyles.bodyRegular(textColor: kDark5),
+        ),
+        Expanded(flex: 12, child: SizedBox()),
+      ],
+    );
+  }
+
   static Container buildLoader(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height,

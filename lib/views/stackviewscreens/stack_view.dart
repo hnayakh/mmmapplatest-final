@@ -40,7 +40,7 @@ class _StackViewState extends State<StackView> {
                   children: [
                     Expanded(
                         child: (Container(
-                      height: MediaQuery.of(context).size.height * 0.1,
+                      height: 68,
                       decoration: BoxDecoration(boxShadow: [
                         MmmShadow.elevationStack(),
                       ]),
