@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_styles.dart';
+
 import 'package:makemymarry/views/profileviewscreens/profile_view.dart';
 
 import 'package:makemymarry/views/splash_screen.dart';
