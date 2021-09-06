@@ -265,8 +265,11 @@ class _ProfileViewState extends State<ProfileView>
                               sizeFactor: _aboutAnimation,
                               axis: Axis.vertical,
                               axisAlignment: -1,
-                              child: MmmButtons.dataProfileViewButtons(
-                                  "images/Users1.svg", 'About', action: () {
+                              child: MmmButtons.aboutProfileViewButtons(
+                                  "images/Users1.svg",
+                                  'About',
+                                  'I come from an upper middle class family. The most important thing in my life is religious beliefs, moral values and respect for elders. I’m modern thinker.',
+                                  action: () {
                                 showAboutData();
                               })),
                     ],
@@ -288,8 +291,10 @@ class _ProfileViewState extends State<ProfileView>
                               sizeFactor: _careerAnimation,
                               axis: Axis.vertical,
                               axisAlignment: -1,
-                              child: MmmButtons.dataProfileViewButtons(
-                                  "images/education.svg", 'Career & Education',
+                              child: MmmButtons.aboutProfileViewButtons(
+                                  "images/education.svg",
+                                  'Career & Education',
+                                  'I come from an upper middle class family. The most important thing in my life is religious beliefs, moral values and respect for elders. I’m modern thinker.',
                                   action: () {
                                 showCareerData();
                               })),
@@ -311,8 +316,12 @@ class _ProfileViewState extends State<ProfileView>
                               sizeFactor: _interestAnimation,
                               axis: Axis.vertical,
                               axisAlignment: -1,
-                              child: MmmButtons.dataProfileViewButtons(
-                                  "images/heart.svg", 'Interests', action: () {
+                              child: MmmButtons.interestsProfileViewButtons(
+                                  context,
+                                  "images/heart.svg",
+                                  'Interests',
+                                  'I come from an upper middle class family. The most important thing in my life is religious beliefs, moral values and respect for elders. I’m modern thinker.',
+                                  action: () {
                                 showInterestData();
                               })),
                     ],
@@ -334,8 +343,10 @@ class _ProfileViewState extends State<ProfileView>
                               sizeFactor: _religionAnimation,
                               axis: Axis.vertical,
                               axisAlignment: -1,
-                              child: MmmButtons.dataProfileViewButtons(
-                                  "images/religion.svg", 'Religion Information',
+                              child: MmmButtons.aboutProfileViewButtons(
+                                  "images/religion.svg",
+                                  'Religion Information',
+                                  'I come from an upper middle class family. The most important thing in my life is religious beliefs, moral values and respect for elders. I’m modern thinker.',
                                   action: () {
                                 showReligionData();
                               })),
@@ -358,8 +369,11 @@ class _ProfileViewState extends State<ProfileView>
                               sizeFactor: _lifestyleAnimation,
                               axis: Axis.vertical,
                               axisAlignment: -1,
-                              child: MmmButtons.dataProfileViewButtons(
-                                  "images/occasionally.svg", 'Lifestyle',
+                              child: MmmButtons.interestsProfileViewButtons(
+                                  context,
+                                  "images/occasionally.svg",
+                                  'Lifestyle',
+                                  'I come from an upper middle class family. The most important thing in my life is religious beliefs, moral values and respect for elders. I’m modern thinker.',
                                   action: () {
                                 showLifestyleData();
                               })),
@@ -381,8 +395,11 @@ class _ProfileViewState extends State<ProfileView>
                               sizeFactor: _familyAnimation,
                               axis: Axis.vertical,
                               axisAlignment: -1,
-                              child: MmmButtons.dataProfileViewButtons(
-                                  "images/family.svg", 'Family', action: () {
+                              child: MmmButtons.familyProfileViewButtons(
+                                  "images/family.svg",
+                                  'Family',
+                                  'I come from an upper middle class family. The most important thing in my life is religious beliefs, moral values and respect for elders. I’m modern thinker.',
+                                  action: () {
                                 showFamilyData();
                               })),
                     ],

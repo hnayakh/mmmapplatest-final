@@ -27,7 +27,175 @@ class MmmButtons {
     );
   }
 
-  static Container dataProfileViewButtons(String icon, String label,
+  static Container familyProfileViewButtons(
+      String icon, String label, String about,
+      {Function()? action}) {
+    return Container(
+        decoration: BoxDecoration(
+          color: kWhite,
+          boxShadow: [MmmShadow.elevation1()],
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: Color(0xffF0EFF5),
+            width: 1,
+          ),
+        ),
+        child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: action,
+              child: Container(
+                alignment: Alignment.center,
+                // height: 264,
+                padding: EdgeInsets.all(9),
+
+                child: Column(children: [
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Row(
+                    children: [
+                      SvgPicture.asset(
+                        icon,
+                        color: Color(0xff121619),
+                        fit: BoxFit.cover,
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: SizedBox(),
+                      ),
+                      Text(
+                        label,
+                        textScaleFactor: 1.0,
+                        //textAlign: TextAlign.start,
+                        style: MmmTextStyles.heading5(textColor: kDark6),
+                      ),
+                      Expanded(
+                        flex: 20,
+                        child: SizedBox(),
+                      ),
+                      Container(
+                        child: SvgPicture.asset(
+                          "images/arrowUp.svg",
+                          color: Color(0xff878D96),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Container(
+                    margin: kMargin16,
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              'Status: ',
+                              style: MmmTextStyles.heading6(textColor: kDark5),
+                            ),
+                            Text(
+                              'Kuruskhetra',
+                              style: MmmTextStyles.bodySmall(textColor: kDark5),
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              'Type: ',
+                              style: MmmTextStyles.heading6(textColor: kDark5),
+                            ),
+                            Text(
+                              'Kuruskhetra University',
+                              style: MmmTextStyles.bodySmall(textColor: kDark5),
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              'Values: ',
+                              style: MmmTextStyles.heading6(textColor: kDark5),
+                            ),
+                            Text(
+                              'Kuruskhetra',
+                              style: MmmTextStyles.bodySmall(textColor: kDark5),
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              'Location: ',
+                              style: MmmTextStyles.heading6(textColor: kDark5),
+                            ),
+                            Text(
+                              'Kuruskhetra University',
+                              style: MmmTextStyles.bodySmall(textColor: kDark5),
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              'Father’s Occupation: ',
+                              style: MmmTextStyles.heading6(textColor: kDark5),
+                            ),
+                            Text(
+                              'Kuruskhetra',
+                              style: MmmTextStyles.bodySmall(textColor: kDark5),
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              'Mother’s Occupation: ',
+                              style: MmmTextStyles.heading6(textColor: kDark5),
+                            ),
+                            Text(
+                              'Kuruskhetra',
+                              style: MmmTextStyles.bodySmall(textColor: kDark5),
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              'No. of brothers: ',
+                              style: MmmTextStyles.heading6(textColor: kDark5),
+                            ),
+                            Text(
+                              '2',
+                              style: MmmTextStyles.bodySmall(textColor: kDark5),
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              'No. of sisters: ',
+                              style: MmmTextStyles.heading6(textColor: kDark5),
+                            ),
+                            Text(
+                              '2',
+                              style: MmmTextStyles.bodySmall(textColor: kDark5),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ]),
+              ),
+            )));
+  }
+
+  static Container aboutProfileViewButtons(
+      String icon, String label, String about,
       {Function()? action}) {
     return Container(
       decoration: BoxDecoration(
@@ -45,9 +213,9 @@ class MmmButtons {
           onTap: action,
           child: Container(
             alignment: Alignment.center,
-            height: 264,
+            // height: 264,
             padding: EdgeInsets.all(9),
-            // width: 326,
+
             child: Column(
               children: [
                 SizedBox(
@@ -91,7 +259,7 @@ class MmmButtons {
                   child: Column(
                     children: [
                       Text(
-                        'I come from an upper middle class family. The most important thing in my life is religious beliefs, moral values and respect for elders. I’m modern thinker.',
+                        about,
                         style: MmmTextStyles.bodySmall(),
                       ),
                       SizedBox(
@@ -122,7 +290,8 @@ class MmmButtons {
     );
   }
 
-  static Container noBorderProfileViewButtons(String icon, String label,
+  static Container interestsProfileViewButtons(
+      BuildContext context, String icon, String label, String about,
       {Function()? action}) {
     return Container(
       decoration: BoxDecoration(
@@ -130,7 +299,7 @@ class MmmButtons {
         boxShadow: [MmmShadow.elevation1()],
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: Colors.transparent,
+          color: Color(0xffF0EFF5),
           width: 1,
         ),
       ),
@@ -140,37 +309,127 @@ class MmmButtons {
           onTap: action,
           child: Container(
             alignment: Alignment.center,
-            height: 60,
-            padding: EdgeInsets.all(8),
-            // width: 342,
-            child: Row(
+            //height: 264,
+            padding: EdgeInsets.all(9),
+            child: Column(
               children: [
-                SvgPicture.asset(
-                  icon,
-                  color: Color(0xff121619),
-                  fit: BoxFit.cover,
+                SizedBox(
+                  height: 8,
                 ),
-                Expanded(
-                  flex: 1,
-                  child: SizedBox(),
+                Row(
+                  children: [
+                    SvgPicture.asset(
+                      icon,
+                      color: Color(0xff121619),
+                      fit: BoxFit.cover,
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: SizedBox(),
+                    ),
+                    Text(
+                      label,
+                      textScaleFactor: 1.0,
+                      //textAlign: TextAlign.start,
+                      style: MmmTextStyles.heading5(textColor: kDark6),
+                    ),
+                    Expanded(
+                      flex: 20,
+                      child: SizedBox(),
+                    ),
+                    Container(
+                      child: SvgPicture.asset(
+                        "images/arrowUp.svg",
+                        color: Color(0xff878D96),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ],
                 ),
-                Text(
-                  label,
-                  textScaleFactor: 1.0,
-                  //textAlign: TextAlign.start,
-                  style: MmmTextStyles.heading5(textColor: kDark6),
-                ),
-                Expanded(
-                  flex: 20,
-                  child: SizedBox(),
+                SizedBox(
+                  height: 8,
                 ),
                 Container(
-                  child: SvgPicture.asset(
-                    "images/rightArrow.svg",
-                    color: Color(0xff878D96),
-                    fit: BoxFit.cover,
+                  margin: kMargin16,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            height: 50,
+                            width: MediaQuery.of(context).size.width * 0.37,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                color: kLight2,
+                                border:
+                                    Border.all(width: 1, color: kInputBorder),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12))),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('🍳'),
+                                Text(
+                                  '  Food',
+                                  style: MmmTextStyles.bodyMedium(
+                                      textColor: kBlack),
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            height: 50,
+                            width: MediaQuery.of(context).size.width * 0.37,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                color: kLight2,
+                                border:
+                                    Border.all(width: 1, color: kInputBorder),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12))),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('🍳'),
+                                Text(
+                                  '  Food',
+                                  style: MmmTextStyles.bodyMedium(
+                                      textColor: kBlack),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Container(
+                        height: 50,
+                        width: MediaQuery.of(context).size.width * 0.37,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: kLight2,
+                            border: Border.all(width: 1, color: kInputBorder),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(12))),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('🍳'),
+                            Text(
+                              '  Food',
+                              style:
+                                  MmmTextStyles.bodyMedium(textColor: kBlack),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
                   ),
-                ),
+                )
               ],
             ),
           ),
