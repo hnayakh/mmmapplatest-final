@@ -16,7 +16,7 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView>
     with TickerProviderStateMixin {
-  bool showAppBar = false;
+  bool showAppBar = true;
   ScrollController _controller = ScrollController();
   int aboutState = 0;
   int careerState = 0;
@@ -24,6 +24,15 @@ class _ProfileViewState extends State<ProfileView>
   int religionState = 0;
   int familyState = 0;
   int lifestyleState = 0;
+
+  late final AnimationController _appBarController = AnimationController(
+    duration: Duration(milliseconds: 500),
+    vsync: this,
+  );
+  late final Animation<double> _appBarAnimation = CurvedAnimation(
+    parent: _appBarController,
+    curve: Curves.easeInCubic,
+  );
   late final AnimationController _aboutController = AnimationController(
     duration: Duration(milliseconds: 500),
     vsync: this,
@@ -41,7 +50,7 @@ class _ProfileViewState extends State<ProfileView>
   late final AnimationController _careerController = AnimationController(
     duration: Duration(milliseconds: 500),
     vsync: this,
-  )..forward();
+  );
   late final Animation<double> _careerAnimation = CurvedAnimation(
     parent: _careerController,
     curve: Curves.fastOutSlowIn,
@@ -108,6 +117,8 @@ class _ProfileViewState extends State<ProfileView>
         });
     });
 
+  static var appBarState = 0;
+
   @override
   void dispose() {
     super.dispose();
@@ -123,14 +134,22 @@ class _ProfileViewState extends State<ProfileView>
   void initState() {
     super.initState();
     _controller.addListener(() {
-      if (_controller.position.pixels >= 460) {
+      if (_controller.position.pixels >=
+          MediaQuery.of(context).size.height * 0.66) {
         setState(() {
-          showAppBar = true;
+          //showAppBar = true;
+          if (_appBarController.isAnimating == false) {
+            _appBarController..forward();
+          }
         });
       }
-      if (_controller.position.pixels < 460) {
+      if (_controller.position.pixels <
+          MediaQuery.of(context).size.height * 0.66) {
         setState(() {
-          showAppBar = false;
+          //showAppBar = false;
+          if (_appBarController.isAnimating == false) {
+            _appBarController..reverse();
+          }
         });
       }
     });
@@ -141,7 +160,16 @@ class _ProfileViewState extends State<ProfileView>
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: showAppBar
-          ? MmmButtons.appBarCurvedProfile('Kristen Stewart', context)
+          ? PreferredSize(
+              preferredSize:
+                  Size.fromHeight(MediaQuery.of(context).size.height * 0.17),
+              child: SizeTransition(
+                  sizeFactor: _appBarAnimation,
+                  axis: Axis.vertical,
+                  //axisAlignment: -1,
+                  child: MmmButtons.appBarCurvedProfile(
+                      'Kristen Stewart', context)),
+            )
           : null,
       body: SingleChildScrollView(
         controller: _controller,
@@ -149,7 +177,8 @@ class _ProfileViewState extends State<ProfileView>
           children: [
             Container(
               width: double.infinity,
-              height: 475,
+              // height: 475,
+              height: MediaQuery.of(context).size.height * 0.7,
               child: Stack(
                 children: [
                   ClipRRect(
@@ -157,7 +186,8 @@ class _ProfileViewState extends State<ProfileView>
                         bottomRight: Radius.circular(23.3813)),
                     child: Image.asset(
                       'images/stackviewImage.jpg',
-                      height: 453.01,
+                      // height: 453.01,
+                      height: MediaQuery.of(context).size.height * 0.665,
                       width: double.infinity,
                       fit: BoxFit.cover,
                     ),

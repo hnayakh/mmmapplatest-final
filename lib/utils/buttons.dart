@@ -783,9 +783,9 @@ class MmmButtons {
     );
   }
 
-  static PreferredSize appBarCurvedProfile(String title, BuildContext context) {
+  static Widget appBarCurvedProfile(String title, BuildContext context) {
     return PreferredSize(
-      // preferredSize: Size.fromHeight(120),
+      //preferredSize: Size.fromHeight(120),
       preferredSize: Size.fromHeight(MediaQuery.of(context).size.height * 0.17),
       child: Stack(
         children: [
@@ -914,8 +914,6 @@ class MmmButtons {
               child: Transform.scale(scale: 0.9, child: MmmIcons.meet()))
         ],
       ),
-
-      //preferredSize: Size(MediaQuery.of(context).size.width, 0.0),
     );
   }
 

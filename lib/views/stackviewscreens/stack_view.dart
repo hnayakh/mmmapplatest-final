@@ -32,15 +32,15 @@ class _StackViewState extends State<StackView> {
               children: [
                 Expanded(
                   child: Container(
-                    width: double.infinity,
-                    color: gray6,
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.amber,
                   ),
                 ),
                 Row(
                   children: [
                     Expanded(
                         child: (Container(
-                      height: 68,
+                      height: MediaQuery.of(context).size.height * 0.1,
                       decoration: BoxDecoration(boxShadow: [
                         MmmShadow.elevationStack(),
                       ]),
@@ -82,42 +82,43 @@ class _StackViewState extends State<StackView> {
                 )
               ],
             ),
-            Container(
-              alignment: Alignment.center,
-              height: MediaQuery.of(context).size.height * 0.85,
-              decoration: BoxDecoration(
-                //border: Border.all(color: kBio),
-                borderRadius: BorderRadius.circular(16),
-                //boxShadow: [
-                //   MmmShadow.elevation3(shadowColor: kShadowColorForWhite)
-                // ]
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(16),
-                    bottomRight: Radius.circular(16)),
-                child: Image.asset(
-                  'images/stackviewImage.jpg',
-                  height: MediaQuery.of(context).size.height * 0.85,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                  //height: 548,
+            Positioned(
+              top: 0,
+              child: Container(
+                alignment: Alignment.center,
+                //height: MediaQuery.of(context).size.height * 0.85,
+                decoration: BoxDecoration(
+                  //border: Border.all(color: kBio),
+                  borderRadius: BorderRadius.circular(16),
+                  //boxShadow: [
+                  //   MmmShadow.elevation3(shadowColor: kShadowColorForWhite)
+                  // ]
+                ),
+                child: ClipRRect(
+                  //borderRadius: BorderRadius.only(
+                  //     bottomLeft: Radius.circular(16),
+                  //     bottomRight: Radius.circular(16)),
+                  child: Image.asset(
+                    'images/stackviewImage.jpg',
+                    height: MediaQuery.of(context).size.height * 0.9,
+                    width: MediaQuery.of(context).size.width,
+                    fit: BoxFit.cover,
+                    //height: 548,
+                  ),
                 ),
               ),
             ),
             Column(
               children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.7,
-                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.75),
                 Container(
                   height: MediaQuery.of(context).size.height * 0.15,
                   decoration: BoxDecoration(
                     //border: Border.,
                     color: kBlack.withOpacity(0.5),
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(16),
-                        bottomRight: Radius.circular(16)),
+                    //borderRadius: BorderRadius.only(
+                    //    bottomLeft: Radius.circular(16),
+                    //    bottomRight: Radius.circular(16)),
                   ),
                 )
               ],
@@ -125,7 +126,7 @@ class _StackViewState extends State<StackView> {
             Column(
               children: [
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.72,
+                  height: MediaQuery.of(context).size.height * 0.78,
                 ),
                 Row(
                   children: [
@@ -183,8 +184,8 @@ class _StackViewState extends State<StackView> {
   }
 
   void navigateToGridView() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => GridViewofStack()));
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => GridViewofStack()));
   }
 
   void setColor(int indexCode) {

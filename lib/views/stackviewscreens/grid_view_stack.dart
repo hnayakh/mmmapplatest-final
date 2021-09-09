@@ -106,7 +106,7 @@ class _GridViewofStackState extends State<GridViewofStack> {
 
   void navigateToStackView() {
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => StackView()));
+        .pushReplacement(MaterialPageRoute(builder: (context) => StackView()));
   }
 
   void setColor(int indexCode) {
