@@ -38,6 +38,15 @@ class BioBloc extends Bloc<BioEvent, BioState> {
 
         if (result.status == AppConstants.SUCCESS) {
           this.userRepository.useDetails = result.userDetails;
+          this.userRepository.listProfileDetails = [];
+          var profiles = await this.userRepository.getAllUsersProfileData();
+          if (profiles.status == AppConstants.SUCCESS) {
+            this.userRepository.listProfileDetails =
+                profiles.listProfileDetails;
+          } else {
+            print(profiles.status);
+          }
+
           // await this.userRepository.saveUserDetails();
           yield OnProfileSetupCompletion();
         } else {

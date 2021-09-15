@@ -1,6 +1,26 @@
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 
+
+class SigninResponse {
+  late String message, status;
+  UserDetails? userDetails;
+
+  SigninResponse.fromJson(json, {OtpType? otpType}) {
+    this.status = json["type"];
+    this.message = json["message"];
+    if (this.status == AppConstants.SUCCESS) {
+      if (otpType != OtpType.Registration)
+        this.userDetails = UserDetails.fromJson(json["data"]["userBasic"]);
+    }
+  }
+
+  SigninResponse.fromError(String error) {
+    this.message = error;
+    this.status = AppConstants.FAILURE;
+  }
+}
+
 class UserDetails {
   late String id, email, mobile, dialCode;
   late bool isActive;
@@ -51,24 +71,7 @@ class RegistrationResponse {
   }
 }
 
-class SigninResponse {
-  late String message, status;
-  UserDetails? userDetails;
 
-  SigninResponse.fromJson(json, {OtpType? otpType}) {
-    this.status = json["type"];
-    this.message = json["message"];
-    if (this.status == AppConstants.SUCCESS) {
-      if (otpType != OtpType.Registration)
-        this.userDetails = UserDetails.fromJson(json["data"]["userBasic"]);
-    }
-  }
-
-  SigninResponse.fromError(String error) {
-    this.message = error;
-    this.status = AppConstants.FAILURE;
-  }
-}
 
 class SendOtpResponse {
   late String message, status;

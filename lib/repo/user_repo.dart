@@ -1,4 +1,5 @@
 import 'package:makemymarry/datamodels/master_data.dart';
+import 'package:makemymarry/datamodels/profile_data.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/utils/api_client.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
@@ -11,6 +12,7 @@ class UserRepository {
 
   UserDetails? useDetails;
   late MasterData masterData;
+  late List<ProfileDetails> listProfileDetails;
 
   UserRepository() {
     this.storageService = StorageService();
@@ -35,18 +37,30 @@ class UserRepository {
   }
 
   Future<SigninResponse> about(
+      NoOfChildren? noOfChildren,
       MaritalStatus? maritalStatus,
       AbilityStatus? abilityStatus,
       ChildrenStatus? childrenStatus,
       int? heightStatus,
       String? dob,
       String? name) async {
-    return this.apiClient.aboutVerification(maritalStatus, abilityStatus,
-        childrenStatus, heightStatus, dob, name, this.useDetails!.id);
+    return this.apiClient.aboutVerification(
+        noOfChildren,
+        maritalStatus,
+        abilityStatus,
+        childrenStatus,
+        heightStatus,
+        dob,
+        name,
+        this.useDetails!.id);
   }
 
   Future<MasterDataResponse> getMasterData() async {
     return apiClient.getMasterData(null);
+  }
+
+  Future<ProfileDataResponse> getAllUsersProfileData() async {
+    return apiClient.getAllUsersProfileData();
   }
 
   saveUserDetails() async {
@@ -135,7 +149,13 @@ class UserRepository {
       int noOfSister,
       int brotherMarried,
       int sistersMarried) async {
-    return apiClient.updateFamilyDetails(fatherOccupation, motherOccupation,
-        noOfBrothers, noOfSister, brotherMarried, sistersMarried,useDetails!.id);
+    return apiClient.updateFamilyDetails(
+        fatherOccupation,
+        motherOccupation,
+        noOfBrothers,
+        noOfSister,
+        brotherMarried,
+        sistersMarried,
+        useDetails!.id);
   }
 }

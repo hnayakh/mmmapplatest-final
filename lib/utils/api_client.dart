@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:dio_logger/dio_logger.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
+import 'package:makemymarry/datamodels/profile_data.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
@@ -65,6 +66,7 @@ class ApiClient {
   }
 
   Future<SigninResponse> aboutVerification(
+      NoOfChildren? noOfChildren,
       MaritalStatus? maritalStatus,
       AbilityStatus? abilityStatus,
       ChildrenStatus? childrenStatus,
@@ -81,7 +83,8 @@ class ApiClient {
         "maritalStatus": maritalStatus!.index,
         "childrenStatus": childrenStatus!.index,
         "abilityStatus": abilityStatus!.index,
-        "height": AppHelper.getHeights()[heightStatus!]
+        "height": AppHelper.getHeights()[heightStatus!],
+        "numberOfChildren": noOfChildren == null ? null : noOfChildren.index
       });
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SigninResponse.fromJson(response.data);
@@ -112,6 +115,30 @@ class ApiClient {
         print(error.message);
       }
       return MasterDataResponse.fromError("Error Occurred. Please try againa.");
+    }
+  }
+
+  Future<ProfileDataResponse> getAllUsersProfileData() async {
+    try {
+      Response response = await this.dio.get(AppConstants.ENDPOINT + "users"
+
+          //,queryParameters: userId != null ? {"userBasicId": userId} : {}
+          );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print('its here..');
+        return ProfileDataResponse.fromJson(response.data);
+      } else {
+        return ProfileDataResponse.fromError(
+            "Error Occurred. Please try again.");
+      }
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      print('the error is..');
+      print(error);
+      return ProfileDataResponse.fromError(
+          "Error Occurred. Please try againx.");
     }
   }
 
@@ -411,7 +438,8 @@ class ApiClient {
       int noOfBrothers,
       int noOfSister,
       int brotherMarried,
-      int sistersMarried, String id) async {
+      int sistersMarried,
+      String id) async {
     try {
       Response response = await this
           .dio
@@ -422,7 +450,7 @@ class ApiClient {
         "marriedNumberOfBrothers": brotherMarried,
         "numberOfSisters": noOfSister,
         "marriedNumberOfSisters": sistersMarried,
-        "userBasicId":id
+        "userBasicId": id
       });
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SigninResponse.fromJson(response.data);

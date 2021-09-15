@@ -1,11 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
-import 'package:makemymarry/views/stackviewscreens/stack_view.dart';
+import 'package:makemymarry/views/stackviewscreens/stackview/stack_view.dart';
+import 'package:makemymarry/views/stackviewscreens/stackview/stack_view_bloc.dart';
 
 class GridViewofStack extends StatefulWidget {
   const GridViewofStack({Key? key}) : super(key: key);
@@ -16,6 +20,10 @@ class GridViewofStack extends StatefulWidget {
 
 class _GridViewofStackState extends State<GridViewofStack> {
   int? index;
+
+  late StateCityResponse states;
+
+  late StateCityResponse city;
 
   @override
   Widget build(BuildContext context) {
@@ -31,15 +39,45 @@ class _GridViewofStackState extends State<GridViewofStack> {
                       padding: kMargin16,
                       child: GridView.builder(
                         shrinkWrap: false,
-                        itemCount: 8,
+                        itemCount: BlocProvider.of<StackViewBloc>(context)
+                            .userRepository
+                            .listProfileDetails
+                            .length,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                             childAspectRatio: 1,
                             crossAxisCount: 2,
                             crossAxisSpacing: 20,
                             mainAxisSpacing: 20),
                         itemBuilder: (BuildContext context, int index) {
-                          return MmmWidgets.stackUserprofileWidget(
-                              context, 'images/stackviewImage.jpg');
+                          initData(index);
+                          return Container();
+
+                          // var userState = states.list[
+                          //     BlocProvider.of<StackViewBloc>(context)
+                          //         .userRepository
+                          //         .listProfileDetails[index]
+                          //        .state];
+
+                          //  var userCity = city.list[
+                          //      BlocProvider.of<StackViewBloc>(context)
+                          //         .userRepository
+                          //         .listProfileDetails[index]
+                          //        .city];
+                          //   var name = BlocProvider.of<StackViewBloc>(context)
+                          //      .userRepository
+                          //       .listProfileDetails[index]
+                          //       .name;
+                          //   var imageUrl = BlocProvider.of<StackViewBloc>(context)
+                          //       .userRepository
+                          //       .listProfileDetails[index]
+                          //        .imageUrl;
+                          //   return MmmWidgets.stackUserprofileWidget(
+                          //       context: context,
+                          //       age: calculateAge(index),
+                          //       imageUrl: imageUrl,
+                          //       name: name,
+                          //       userCity: userCity.name,
+                          //       userState: userState.name);
                         },
                       )),
                 ),
@@ -105,13 +143,53 @@ class _GridViewofStackState extends State<GridViewofStack> {
   }
 
   void navigateToStackView() {
-    Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: (context) => StackView()));
+    var userRepo = BlocProvider.of<StackViewBloc>(context).userRepository;
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (context) => StackView(
+              userRepository: userRepo,
+            )));
   }
 
   void setColor(int indexCode) {
     setState(() {
       index = indexCode;
     });
+  }
+
+  int calculateAge(int index) {
+    DateTime currentDate = DateTime.now();
+    var dob = BlocProvider.of<StackViewBloc>(context)
+        .userRepository
+        .listProfileDetails[index]
+        .dateOfBirth;
+    DateTime birthDate = DateTime.parse(dob);
+    int age = currentDate.year - birthDate.year;
+    int month1 = currentDate.month;
+    int month2 = birthDate.month;
+    if (month2 > month1) {
+      age--;
+    } else if (month1 == month2) {
+      int day1 = currentDate.day;
+      int day2 = birthDate.day;
+      if (day2 > day1) {
+        age--;
+      }
+    }
+    return age;
+  }
+
+  Future<void> initData(int index) async {
+    // states = await BlocProvider.of<StackViewBloc>(context)
+    //     .userRepository
+    //    .getStates(BlocProvider.of<StackViewBloc>(context)
+    //        .userRepository
+    //       .listProfileDetails[index]
+    //       .country);
+    //  city = await BlocProvider.of<StackViewBloc>(context)
+    //     .userRepository
+    //     .getCities(BlocProvider.of<StackViewBloc>(context)
+    //        .userRepository
+    //        .listProfileDetails[index]
+    //       .state);
   }
 }

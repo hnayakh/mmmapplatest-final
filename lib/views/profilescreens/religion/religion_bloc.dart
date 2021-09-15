@@ -58,15 +58,11 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
           this.gothra == null) {
         yield OnError("Please select Gothra");
       } else {
-        var result = await this.userRepository.updateReligion(
-            this.religion!,
-            this.subCaste,
-            this.motherTongue!,
-            this.gothra,
-            this.isManglik);
+        var result = await this.userRepository.updateReligion(this.religion!,
+            this.subCaste, this.motherTongue!, this.gothra, this.isManglik);
 
         if (result.status == AppConstants.SUCCESS) {
-          // this.userRepository.useDetails = result.userDetails;
+          this.userRepository.useDetails = result.userDetails;
           // await this.userRepository.saveUserDetails();
           yield MoveToCarrer();
         } else {

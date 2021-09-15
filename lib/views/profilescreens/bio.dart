@@ -1,18 +1,17 @@
-import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
-import 'package:makemymarry/utils/elevations.dart';
+
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/profilescreens/bio_event.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:makemymarry/views/stackviewscreens/stackview/stack_view.dart';
 
 import 'bio_bloc.dart';
 import 'bio_state.dart';
@@ -58,8 +57,9 @@ class _BioScreenState extends State<BioScreen> {
         body: BlocConsumer<BioBloc, BioState>(
           listener: (context, state) {
             if (state is OnProfileSetupCompletion) {
-              //navigate to profile screen
+              // navigateToStackView();
               print('profile setup completed');
+              navigateToStackView();
             }
           },
           builder: (context, state) {
@@ -220,6 +220,14 @@ class _BioScreenState extends State<BioScreen> {
                         ])));
           },
         ));
+  }
+
+  void navigateToStackView() {
+    var userRepo = BlocProvider.of<BioBloc>(context).userRepository;
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (context) => StackView(
+              userRepository: userRepo,
+            )));
   }
 
   void uploadPhotos(String photoPos) {

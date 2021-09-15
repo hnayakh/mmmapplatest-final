@@ -25,7 +25,7 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
       yield AboutInitialState();
     }
     if (event is OnChangeNoOfChildren) {
-      this.noOfChildren = event.abilityStatus;
+      this.noOfChildren = event.noOfChildren;
       yield AboutInitialState();
     }
     if (event is OnHeightStatusSelected) {
@@ -60,6 +60,7 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
         yield OnError('Specify disability if any.');
       } else {
         var result = await this.userRepository.about(
+            this.noOfChildren,
             this.maritalStatus,
             this.abilityStatus,
             this.childrenStatus,

@@ -125,7 +125,7 @@ class StateCityResponse {
     this.message = json["message"];
     this.list = createList(json["data"]);
   }
-  StateCityResponse.fromError(String message){
+  StateCityResponse.fromError(String message) {
     this.status = AppConstants.FAILURE;
     this.message = message;
   }
@@ -147,7 +147,7 @@ class CountryResponse {
     this.message = json["message"];
     this.list = createList(json["data"]);
   }
-  CountryResponse.fromError(String message){
+  CountryResponse.fromError(String message) {
     this.status = AppConstants.FAILURE;
     this.message = message;
   }
