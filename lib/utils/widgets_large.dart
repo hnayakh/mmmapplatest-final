@@ -703,7 +703,7 @@ class MmmWidgets {
                 borderRadius: BorderRadius.circular(8)),
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: Image.network(
+                child: Image.asset(
                   imageUrl,
                   width: double.infinity,
                   fit: BoxFit.cover,

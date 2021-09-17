@@ -10,7 +10,9 @@ class ProfileDataResponse {
     if (this.status == AppConstants.SUCCESS) {
       this.listProfileDetails = [];
       for (var item in json["data"]) {
-        listProfileDetails.add(ProfileDetails.fromJson(item));
+        if (item["userBios"].length != 0 && item["userAbouts"].length != 0) {
+          listProfileDetails.add(ProfileDetails.fromJson(item));
+        }
       }
 
       //data is a list of  user information maps.
@@ -24,14 +26,14 @@ class ProfileDataResponse {
 }
 
 class ProfileDetails {
-  String aboutMe = 'data not available';
-  String name = 'data not available';
-  String height = 'data not available';
-  String dateOfBirth = 'data not available';
+  late String aboutMe;
+  late String name;
+  late String height;
+  late String dateOfBirth;
   int numberOfChildren = -1;
-  int maritalStatus = -1;
-  int childrenStatus = -1;
-  int abilityStatus = -1;
+  late int maritalStatus;
+  late int childrenStatus;
+  late int abilityStatus;
   late String religion,
       cast,
       motherTongue,
@@ -65,44 +67,24 @@ class ProfileDetails {
 
 //receives single item from list of json['data']
   ProfileDetails.fromJson(json) {
-    if (json["userBios"] != []) {
-      for (var item in json["userBios"]) {
-        if (item["profileUpdationStatus"] == 1) {
-          this.aboutMe = item["aboutMe"];
+    for (var item in json["userBios"]) {
+      if (item["profileUpdationStatus"] == 1) {
+        this.aboutMe = item["aboutMe"];
+      }
+    }
+
+    for (var item in json["userAbouts"]) {
+      if (item["profileUpdationStatus"] == 1) {
+        this.name = item["name"];
+        this.dateOfBirth = item["dateOfBirth"];
+        this.height = item["height"];
+        this.maritalStatus = item["maritalStatus"];
+        this.childrenStatus = item["childrenStatus"];
+        this.abilityStatus = item["abilityStatus"];
+        if (item["numberOfChildren"] != null) {
+          this.numberOfChildren = item["numberOfChildren"];
         }
       }
     }
-    ////else {
-    // this.aboutMe = 'not available';
-    //   }
-
-    if (json["userAbouts"] != []) {
-      for (var item in json["userAbouts"]) {
-        if (item["profileUpdationStatus"] == 1) {
-          this.name = item["name"];
-          this.dateOfBirth = item["dateOfBirth"];
-          this.height = item["height"];
-          this.maritalStatus = item["maritalStatus"];
-          this.childrenStatus = item["childrenStatus"];
-          this.abilityStatus = item["abilityStatus"];
-          if (item["numberOfChildren"] != null) {
-            this.numberOfChildren = item["numberOfChildren"];
-          }
-
-          //else {
-          //   this.numberOfChildren = -1;
-          //  }
-        }
-      }
-    }
-    // else {
-    //  this.name = 'not available';
-    //  this.dateOfBirth = 'not available';
-    //  this.height = 'not available';
-    //  this.maritalStatus = -1;
-    //  this.childrenStatus = -1;
-    //  this.abilityStatus = -1;
-    //this.numberOfChildren = 0;
-    // }
   }
 }

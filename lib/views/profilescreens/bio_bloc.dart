@@ -14,6 +14,7 @@ class BioBloc extends Bloc<BioEvent, BioState> {
   String imageUrl2 = '';
   String imageUrl3 = '';
   String imageUrl4 = '';
+  List<int> likeInfoList = [];
 
   @override
   Stream<BioState> mapEventToState(BioEvent event) async* {
@@ -43,6 +44,8 @@ class BioBloc extends Bloc<BioEvent, BioState> {
           if (profiles.status == AppConstants.SUCCESS) {
             this.userRepository.listProfileDetails =
                 profiles.listProfileDetails;
+            this.likeInfoList =
+                List.filled(userRepository.listProfileDetails.length, 0);
           } else {
             print(profiles.status);
           }

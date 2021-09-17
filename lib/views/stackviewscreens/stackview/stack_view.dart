@@ -14,22 +14,23 @@ import 'package:makemymarry/utils/text_styles.dart';
 
 import 'package:makemymarry/utils/widgets_large.dart';
 
-import 'package:makemymarry/views/stackviewscreens/grid_view_stack.dart';
 import 'package:makemymarry/views/stackviewscreens/stackview/stack_view_bloc.dart';
 import 'package:makemymarry/views/stackviewscreens/stackview/stack_view_event.dart';
 import 'package:makemymarry/views/stackviewscreens/stackview/stack_view_state.dart';
 
+import '../grid_view_stack.dart';
+
 class StackView extends StatelessWidget {
   final UserRepository userRepository;
-
-  const StackView({Key? key, required this.userRepository}) : super(key: key);
+  final List<int> likeInfoList;
+  const StackView(
+      {Key? key, required this.userRepository, required this.likeInfoList})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => StackViewBloc(
-        userRepository,
-      ),
+      create: (context) => StackViewBloc(userRepository, likeInfoList),
       child: StackViewScreen(),
     );
   }
@@ -46,12 +47,10 @@ class _StackViewScreenState extends State<StackViewScreen> {
   var index = 5;
   late var dob;
   late var profileIndex;
+  bool firstTime = true;
+  late List<int> likeInfoList;
 
-  late var likeInfoList;
-  late var likeInfo;
   late List<ProfileDetails> profiledetails;
-
-  // var userRepo;
 
   late StateCityResponse states;
 
@@ -247,15 +246,12 @@ class _StackViewScreenState extends State<StackViewScreen> {
                               )
                             ],
                           ),
-                          //likeInfoList[profileIndex]
-                          index == 0
-                              ? MmmIcons.heart(gray7, action: () {
-                                  BlocProvider.of<StackViewBloc>(context)
-                                      .add(LikeOrUnlikeEvent(1));
+                          likeInfoList[profileIndex] == 0
+                              ? MmmIcons.cancel(action: () {
+                                  heartEvent(1);
                                 })
-                              : MmmIcons.heart(kPrimary, action: () {
-                                  BlocProvider.of<StackViewBloc>(context)
-                                      .add(LikeOrUnlikeEvent(0));
+                              : MmmIcons.heart(gray7, action: () {
+                                  heartEvent(0);
                                 }),
                         ],
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -271,6 +267,12 @@ class _StackViewScreenState extends State<StackViewScreen> {
         },
       ),
     );
+  }
+
+  void heartEvent(int likeInfo) {
+    this.profileIndex = BlocProvider.of<StackViewBloc>(context).profileIndex;
+
+    BlocProvider.of<StackViewBloc>(context).add(LikeOrUnlikeEvent(likeInfo));
   }
 
   int calculateAge() {
@@ -297,8 +299,13 @@ class _StackViewScreenState extends State<StackViewScreen> {
   }
 
   void navigateToGridView() {
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => GridViewofStack()));
+    var userRepo = BlocProvider.of<StackViewBloc>(context).userRepository;
+    var likeInfoList = BlocProvider.of<StackViewBloc>(context).likeInfoList;
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (context) => GridViewofStack(
+              userRepository: userRepo,
+              likeInfoList: likeInfoList,
+            )));
   }
 
   void setColor(int indexCode) {
@@ -308,13 +315,16 @@ class _StackViewScreenState extends State<StackViewScreen> {
   }
 
   void initData() {
+    var userRepo = BlocProvider.of<StackViewBloc>(context).userRepository;
+
     this.profileIndex = BlocProvider.of<StackViewBloc>(context).profileIndex;
     this.likeInfoList = BlocProvider.of<StackViewBloc>(context).likeInfoList;
     this.profiledetails = BlocProvider.of<StackViewBloc>(context)
         .userRepository
         .listProfileDetails;
     print('data is here?heyyyyy');
-    var i = 1;
+    print(likeInfoList[0]);
+    var i = profileIndex;
     print(profiledetails.length);
     print(profiledetails[i].name);
     print(profiledetails[i].dateOfBirth);
@@ -325,8 +335,6 @@ class _StackViewScreenState extends State<StackViewScreen> {
     print(profiledetails[i].abilityStatus);
     print(profiledetails[i].numberOfChildren);
     print(profiledetails[i].aboutMe);
-
-    var userRepo = BlocProvider.of<StackViewBloc>(context).userRepository;
 
     //   states = await BlocProvider.of<StackViewBloc>(context)
     //       .userRepository

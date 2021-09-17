@@ -224,9 +224,11 @@ class _BioScreenState extends State<BioScreen> {
 
   void navigateToStackView() {
     var userRepo = BlocProvider.of<BioBloc>(context).userRepository;
+    var likeInfoList = BlocProvider.of<BioBloc>(context).likeInfoList;
     Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (context) => StackView(
               userRepository: userRepo,
+              likeInfoList: likeInfoList,
             )));
   }
 

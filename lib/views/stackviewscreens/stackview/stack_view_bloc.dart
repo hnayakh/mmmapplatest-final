@@ -5,16 +5,15 @@ import 'package:makemymarry/views/stackviewscreens/stackview/stack_view_state.da
 
 class StackViewBloc extends Bloc<StackViewEvent, StackViewState> {
   final UserRepository userRepository;
-  var likeInfoList;
+  final List<int> likeInfoList;
 
   int profileIndex = 0;
 
-  StackViewBloc(this.userRepository) : super(StackViewInitialState());
+  StackViewBloc(this.userRepository, this.likeInfoList)
+      : super(StackViewInitialState());
 
   @override
   Stream<StackViewState> mapEventToState(StackViewEvent event) async* {
-    this.likeInfoList = List.filled(userRepository.listProfileDetails.length, 0,
-        growable: false);
     yield OnLoading();
 
     if (event is SwipeUpEvent) {
@@ -32,7 +31,11 @@ class StackViewBloc extends Bloc<StackViewEvent, StackViewState> {
       }
       yield StackViewInitialState();
     } else if (event is LikeOrUnlikeEvent) {
+      //this.likeInfoList = List.filled(
+      // userRepository.listProfileDetails.length, 0,
+      //  growable: false);
       likeInfoList[profileIndex] = event.likeInfo;
+
       //call the api to post like info.
       yield StackViewInitialState();
     } else {

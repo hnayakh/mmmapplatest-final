@@ -1,8 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
+
 import 'package:makemymarry/datamodels/master_data.dart';
+import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
@@ -11,14 +12,32 @@ import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/stackviewscreens/stackview/stack_view.dart';
 import 'package:makemymarry/views/stackviewscreens/stackview/stack_view_bloc.dart';
 
-class GridViewofStack extends StatefulWidget {
-  const GridViewofStack({Key? key}) : super(key: key);
+import 'stackview/stack_view_state.dart';
+
+class GridViewofStack extends StatelessWidget {
+  final UserRepository userRepository;
+  final List<int> likeInfoList;
+  const GridViewofStack(
+      {Key? key, required this.userRepository, required this.likeInfoList})
+      : super(key: key);
 
   @override
-  _GridViewofStackState createState() => _GridViewofStackState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => StackViewBloc(userRepository, likeInfoList),
+      child: GridViewofStackScreen(),
+    );
+  }
 }
 
-class _GridViewofStackState extends State<GridViewofStack> {
+class GridViewofStackScreen extends StatefulWidget {
+  const GridViewofStackScreen({Key? key}) : super(key: key);
+
+  @override
+  _GridViewofStackScreenState createState() => _GridViewofStackScreenState();
+}
+
+class _GridViewofStackScreenState extends State<GridViewofStackScreen> {
   int? index;
 
   late StateCityResponse states;
@@ -28,125 +47,139 @@ class _GridViewofStackState extends State<GridViewofStack> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            child: Column(
-              // mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Expanded(
-                  child: Container(
-                      padding: kMargin16,
-                      child: GridView.builder(
-                        shrinkWrap: false,
-                        itemCount: BlocProvider.of<StackViewBloc>(context)
-                            .userRepository
-                            .listProfileDetails
-                            .length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio: 1,
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 20,
-                            mainAxisSpacing: 20),
-                        itemBuilder: (BuildContext context, int index) {
-                          initData(index);
-                          return Container();
-
-                          // var userState = states.list[
-                          //     BlocProvider.of<StackViewBloc>(context)
-                          //         .userRepository
-                          //         .listProfileDetails[index]
-                          //        .state];
-
-                          //  var userCity = city.list[
-                          //      BlocProvider.of<StackViewBloc>(context)
-                          //         .userRepository
-                          //         .listProfileDetails[index]
-                          //        .city];
-                          //   var name = BlocProvider.of<StackViewBloc>(context)
-                          //      .userRepository
-                          //       .listProfileDetails[index]
-                          //       .name;
-                          //   var imageUrl = BlocProvider.of<StackViewBloc>(context)
-                          //       .userRepository
-                          //       .listProfileDetails[index]
-                          //        .imageUrl;
-                          //   return MmmWidgets.stackUserprofileWidget(
-                          //       context: context,
-                          //       age: calculateAge(index),
-                          //       imageUrl: imageUrl,
-                          //       name: name,
-                          //       userCity: userCity.name,
-                          //       userState: userState.name);
-                        },
-                      )),
-                ),
-                Row(
+      body: BlocConsumer<StackViewBloc, StackViewState>(
+        listener: (context, state) {
+          // TODO: implement listener
+        },
+        builder: (context, state) {
+          return Stack(
+            children: [
+              Container(
+                child: Column(
+                  // mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Expanded(
-                        child: (Container(
-                      height: 68,
-                      decoration: BoxDecoration(boxShadow: [
-                        MmmShadow.elevationStack(),
-                      ]),
-                      padding: EdgeInsets.only(top: 8, bottom: 8),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            MmmWidgets.bottomBarUnits(
-                                'images/Search.svg',
-                                'Search',
-                                index == 0 ? kPrimary : gray3, action: () {
-                              setColor(0);
-                            }),
-                            MmmWidgets.bottomBarUnits(
-                                'images/filter2.svg',
-                                'Filter',
-                                index == 1 ? kPrimary : gray3, action: () {
-                              setColor(1);
-                            }),
-                            MmmWidgets.bottomBarUnits(
-                                'images/connect.svg',
-                                'Connect',
-                                index == 2 ? kPrimary : gray3, action: () {
-                              setColor(2);
-                            }),
-                            MmmWidgets.bottomBarUnits(
-                                'images/Search.svg',
-                                'Notifications',
-                                index == 3 ? kPrimary : gray3, action: () {
-                              setColor(3);
-                            }),
-                            MmmWidgets.bottomBarUnits('images/menu.svg', 'More',
-                                index == 4 ? kPrimary : gray3, action: () {
-                              setColor(4);
-                            })
+                      child: Container(
+                          padding: kMargin16,
+                          child: GridView.builder(
+                            shrinkWrap: false,
+                            itemCount: BlocProvider.of<StackViewBloc>(context)
+                                .userRepository
+                                .listProfileDetails
+                                .length,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    childAspectRatio: 1,
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing: 20,
+                                    mainAxisSpacing: 20),
+                            itemBuilder: (BuildContext context, int index) {
+                              initData(index);
+
+                              // var userState = states.list[
+                              //     BlocProvider.of<StackViewBloc>(context)
+                              //         .userRepository
+                              //         .listProfileDetails[index]
+                              //        .state];
+
+                              //  var userCity = city.list[
+                              //      BlocProvider.of<StackViewBloc>(context)
+                              //         .userRepository
+                              //         .listProfileDetails[index]
+                              //        .city];
+                              //   var name = BlocProvider.of<StackViewBloc>(context)
+                              //      .userRepository
+                              //       .listProfileDetails[index]
+                              //       .name;
+                              //   var imageUrl = BlocProvider.of<StackViewBloc>(context)
+                              //       .userRepository
+                              //       .listProfileDetails[index]
+                              //        .imageUrl;
+                              return MmmWidgets.stackUserprofileWidget(
+                                  context: context,
+                                  age: calculateAge(index),
+                                  imageUrl: 'images/stackviewImage.jpg',
+                                  name: BlocProvider.of<StackViewBloc>(context)
+                                      .userRepository
+                                      .listProfileDetails[index]
+                                      .name,
+                                  userCity: 'pune',
+                                  userState: 'Maharashtra');
+                            },
+                          )),
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                            child: (Container(
+                          height: 68,
+                          decoration: BoxDecoration(boxShadow: [
+                            MmmShadow.elevationStack(),
                           ]),
-                    ))),
+                          padding: EdgeInsets.only(top: 8, bottom: 8),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                MmmWidgets.bottomBarUnits(
+                                    'images/Search.svg',
+                                    'Search',
+                                    index == 0 ? kPrimary : gray3, action: () {
+                                  setColor(0);
+                                }),
+                                MmmWidgets.bottomBarUnits(
+                                    'images/filter2.svg',
+                                    'Filter',
+                                    index == 1 ? kPrimary : gray3, action: () {
+                                  setColor(1);
+                                }),
+                                MmmWidgets.bottomBarUnits(
+                                    'images/connect.svg',
+                                    'Connect',
+                                    index == 2 ? kPrimary : gray3, action: () {
+                                  setColor(2);
+                                }),
+                                MmmWidgets.bottomBarUnits(
+                                    'images/Search.svg',
+                                    'Notifications',
+                                    index == 3 ? kPrimary : gray3, action: () {
+                                  setColor(3);
+                                }),
+                                MmmWidgets.bottomBarUnits(
+                                    'images/menu.svg',
+                                    'More',
+                                    index == 4 ? kPrimary : gray3, action: () {
+                                  setColor(4);
+                                })
+                              ]),
+                        ))),
+                      ],
+                    )
                   ],
-                )
-              ],
-            ),
-          ),
-          Column(
-            children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.03,
+                ),
               ),
-              MmmButtons.swapViewButton(context, 'images/stack view.svg',
-                  action: navigateToStackView),
+              Column(
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.03,
+                  ),
+                  MmmButtons.swapViewButton(context, 'images/stack view.svg',
+                      action: navigateToStackView),
+                ],
+              ),
             ],
-          ),
-        ],
+          );
+        },
       ),
     );
   }
 
   void navigateToStackView() {
     var userRepo = BlocProvider.of<StackViewBloc>(context).userRepository;
+    var likeInfoList = BlocProvider.of<StackViewBloc>(context).likeInfoList;
     Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (context) => StackView(
               userRepository: userRepo,
+              likeInfoList: likeInfoList,
             )));
   }
 
@@ -162,7 +195,7 @@ class _GridViewofStackState extends State<GridViewofStack> {
         .userRepository
         .listProfileDetails[index]
         .dateOfBirth;
-    DateTime birthDate = DateTime.parse(dob);
+    DateTime birthDate = DateFormat('dd MMM yyyy').parse(dob);
     int age = currentDate.year - birthDate.year;
     int month1 = currentDate.month;
     int month2 = birthDate.month;
