@@ -121,7 +121,7 @@ class ApiClient {
   Future<ProfileDataResponse> getAllUsersProfileData(String userId) async {
     try {
       Response response = await this.dio.get(
-            AppConstants.ENDPOINT + "users​/profiles​/$userId",
+            AppConstants.ENDPOINT + "users/profiles/$userId",
           );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
