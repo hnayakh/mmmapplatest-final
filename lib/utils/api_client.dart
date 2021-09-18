@@ -118,14 +118,13 @@ class ApiClient {
     }
   }
 
-  Future<ProfileDataResponse> getAllUsersProfileData() async {
+  Future<ProfileDataResponse> getAllUsersProfileData(String userId) async {
     try {
-      Response response = await this.dio.get(AppConstants.ENDPOINT + "users"
-
-          //,queryParameters: userId != null ? {"userBasicId": userId} : {}
+      Response response = await this.dio.get(
+            AppConstants.ENDPOINT + "users​/profiles​/$userId",
           );
+
       if (response.statusCode == 200 || response.statusCode == 201) {
-        print('its here..');
         return ProfileDataResponse.fromJson(response.data);
       } else {
         return ProfileDataResponse.fromError(
@@ -137,8 +136,7 @@ class ApiClient {
       }
       print('the error is..');
       print(error);
-      return ProfileDataResponse.fromError(
-          "Error Occurred. Please try againx.");
+      return ProfileDataResponse.fromError("Error Occurred. Please try again.");
     }
   }
 

@@ -40,7 +40,8 @@ class BioBloc extends Bloc<BioEvent, BioState> {
         if (result.status == AppConstants.SUCCESS) {
           this.userRepository.useDetails = result.userDetails;
           this.userRepository.listProfileDetails = [];
-          var profiles = await this.userRepository.getAllUsersProfileData();
+          String id = userRepository.useDetails!.id;
+          var profiles = await this.userRepository.getAllUsersProfileData(id);
           if (profiles.status == AppConstants.SUCCESS) {
             this.userRepository.listProfileDetails =
                 profiles.listProfileDetails;

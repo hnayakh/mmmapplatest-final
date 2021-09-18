@@ -227,9 +227,9 @@ class _BioScreenState extends State<BioScreen> {
     var likeInfoList = BlocProvider.of<BioBloc>(context).likeInfoList;
     Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (context) => StackView(
-              userRepository: userRepo,
-              likeInfoList: likeInfoList,
-            )));
+            userRepository: userRepo,
+            likeInfoList: likeInfoList,
+            profileIndex: 0)));
   }
 
   void uploadPhotos(String photoPos) {

@@ -17,14 +17,19 @@ import 'stackview/stack_view_state.dart';
 class GridViewofStack extends StatelessWidget {
   final UserRepository userRepository;
   final List<int> likeInfoList;
+  final int profileIndex;
   const GridViewofStack(
-      {Key? key, required this.userRepository, required this.likeInfoList})
+      {Key? key,
+      required this.userRepository,
+      required this.likeInfoList,
+      required this.profileIndex})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => StackViewBloc(userRepository, likeInfoList),
+      create: (context) =>
+          StackViewBloc(userRepository, likeInfoList, profileIndex),
       child: GridViewofStackScreen(),
     );
   }
@@ -176,10 +181,12 @@ class _GridViewofStackScreenState extends State<GridViewofStackScreen> {
   void navigateToStackView() {
     var userRepo = BlocProvider.of<StackViewBloc>(context).userRepository;
     var likeInfoList = BlocProvider.of<StackViewBloc>(context).likeInfoList;
+    var profileIndex = BlocProvider.of<StackViewBloc>(context).profileIndex;
     Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (context) => StackView(
               userRepository: userRepo,
               likeInfoList: likeInfoList,
+              profileIndex: profileIndex,
             )));
   }
 

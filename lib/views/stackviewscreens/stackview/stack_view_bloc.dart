@@ -7,9 +7,9 @@ class StackViewBloc extends Bloc<StackViewEvent, StackViewState> {
   final UserRepository userRepository;
   final List<int> likeInfoList;
 
-  int profileIndex = 0;
+  int profileIndex;
 
-  StackViewBloc(this.userRepository, this.likeInfoList)
+  StackViewBloc(this.userRepository, this.likeInfoList, this.profileIndex)
       : super(StackViewInitialState());
 
   @override
@@ -18,6 +18,8 @@ class StackViewBloc extends Bloc<StackViewEvent, StackViewState> {
 
     if (event is SwipeUpEvent) {
       if (profileIndex == userRepository.listProfileDetails.length - 1) {
+        //userRepository.listProfileDetails[profileIndex + 1].id == userRepository.useDetails.id
+
         return;
       } else {
         profileIndex = profileIndex + 1;
@@ -31,9 +33,6 @@ class StackViewBloc extends Bloc<StackViewEvent, StackViewState> {
       }
       yield StackViewInitialState();
     } else if (event is LikeOrUnlikeEvent) {
-      //this.likeInfoList = List.filled(
-      // userRepository.listProfileDetails.length, 0,
-      //  growable: false);
       likeInfoList[profileIndex] = event.likeInfo;
 
       //call the api to post like info.

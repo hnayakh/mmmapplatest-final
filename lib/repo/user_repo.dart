@@ -59,8 +59,8 @@ class UserRepository {
     return apiClient.getMasterData(null);
   }
 
-  Future<ProfileDataResponse> getAllUsersProfileData() async {
-    return apiClient.getAllUsersProfileData();
+  Future<ProfileDataResponse> getAllUsersProfileData(String id) async {
+    return apiClient.getAllUsersProfileData(id);
   }
 
   saveUserDetails() async {

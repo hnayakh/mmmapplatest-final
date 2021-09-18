@@ -23,14 +23,19 @@ import '../grid_view_stack.dart';
 class StackView extends StatelessWidget {
   final UserRepository userRepository;
   final List<int> likeInfoList;
+  final int profileIndex;
   const StackView(
-      {Key? key, required this.userRepository, required this.likeInfoList})
+      {Key? key,
+      required this.userRepository,
+      required this.likeInfoList,
+      required this.profileIndex})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => StackViewBloc(userRepository, likeInfoList),
+      create: (context) =>
+          StackViewBloc(userRepository, likeInfoList, profileIndex),
       child: StackViewScreen(),
     );
   }
@@ -208,10 +213,13 @@ class _StackViewScreenState extends State<StackViewScreen> {
                                   Container(
                                     //height: 26,
                                     child: Text(
-                                      profiledetails[profileIndex].name ==
-                                              'data not available'
-                                          ? 'Kristen Stewart,24   '
-                                          : '${profiledetails[profileIndex].name},${calculateAge()}  ',
+                                      //  profiledetails[profileIndex].name ==
+                                      //      'data not available'
+                                      //  ?
+                                      'Kristen Stewart,24   '
+                                      //  :
+                                      // '${profiledetails[profileIndex].name},${calculateAge()}  ',
+                                      ,
                                       style: MmmTextStyles.heading5(
                                           textColor: gray6),
                                     ),
@@ -301,10 +309,12 @@ class _StackViewScreenState extends State<StackViewScreen> {
   void navigateToGridView() {
     var userRepo = BlocProvider.of<StackViewBloc>(context).userRepository;
     var likeInfoList = BlocProvider.of<StackViewBloc>(context).likeInfoList;
+    var profileIndex = BlocProvider.of<StackViewBloc>(context).profileIndex;
     Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (context) => GridViewofStack(
               userRepository: userRepo,
               likeInfoList: likeInfoList,
+              profileIndex: profileIndex,
             )));
   }
 
@@ -314,7 +324,7 @@ class _StackViewScreenState extends State<StackViewScreen> {
     });
   }
 
-  void initData() {
+  Future<void> initData() async {
     var userRepo = BlocProvider.of<StackViewBloc>(context).userRepository;
 
     this.profileIndex = BlocProvider.of<StackViewBloc>(context).profileIndex;
@@ -323,38 +333,22 @@ class _StackViewScreenState extends State<StackViewScreen> {
         .userRepository
         .listProfileDetails;
     print('data is here?heyyyyy');
-    print(likeInfoList[0]);
-    var i = profileIndex;
     print(profiledetails.length);
-    print(profiledetails[i].name);
-    print(profiledetails[i].dateOfBirth);
-    print(profiledetails[i].height);
 
-    print(profiledetails[i].maritalStatus);
-    print(profiledetails[i].childrenStatus);
-    print(profiledetails[i].abilityStatus);
-    print(profiledetails[i].numberOfChildren);
-    print(profiledetails[i].aboutMe);
+    var i = profileIndex;
+    print(profiledetails[i].id);
 
-    //   states = await BlocProvider.of<StackViewBloc>(context)
-    //       .userRepository
-//        .getStates(BlocProvider.of<StackViewBloc>(context)
-//            .userRepository
-//            .listProfileDetails[profileIndex]
-//            .country);
-//    userState = states.list[BlocProvider.of<StackViewBloc>(context)
-    //       .userRepository
-    //       .listProfileDetails[profileIndex]
-    //       .state];
-    //   city = await BlocProvider.of<StackViewBloc>(context)
-    //       .userRepository
-    //       .getCities(BlocProvider.of<StackViewBloc>(context)
-    //           .userRepository
-    //           .listProfileDetails[profileIndex]
-    //          .state);
-    //  userCity = city.list[BlocProvider.of<StackViewBloc>(context)
-    //       .userRepository
-//        .listProfileDetails[profileIndex]
-//        .city];
+    print(profiledetails[i].email);
+    print(profiledetails[i].phoneNumber);
+    print(profiledetails[i].countryCode);
+
+    print(profiledetails[i].relationship);
+
+    //  states = await userRepo
+    //      .getStates(userRepo.listProfileDetails[profileIndex].country);
+    //  userState = states.list[userRepo.listProfileDetails[profileIndex].state];
+    //  city = await userRepo
+    //      .getCities(userRepo.listProfileDetails[profileIndex].state);
+    // userCity = city.list[userRepo.listProfileDetails[profileIndex].city];
   }
 }

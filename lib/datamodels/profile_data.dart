@@ -7,12 +7,13 @@ class ProfileDataResponse {
   ProfileDataResponse.fromJson(json) {
     this.status = json["type"];
     this.message = json["message"];
+
     if (this.status == AppConstants.SUCCESS) {
       this.listProfileDetails = [];
       for (var item in json["data"]) {
-        if (item["userBios"].length != 0 && item["userAbouts"].length != 0) {
-          listProfileDetails.add(ProfileDetails.fromJson(item));
-        }
+        //  if (item["registrationStep"] == 9) {
+        listProfileDetails.add(ProfileDetails.fromJson(item));
+        // }
       }
 
       //data is a list of  user information maps.
@@ -27,28 +28,33 @@ class ProfileDataResponse {
 
 class ProfileDetails {
   late String aboutMe;
-  late String name;
+  String name = 'data not available';
   late String height;
   late String dateOfBirth;
-  int numberOfChildren = -1;
+  //int numberOfChildren = -1;
+  int gothra = -1;
+  int isManglik = -1;
   late int maritalStatus;
   late int childrenStatus;
   late int abilityStatus;
   late String religion,
+      gender,
+      email,
+      countryCode,
+      phoneNumber,
+      id,
       cast,
       motherTongue,
       employedIn,
       occupation,
       annualIncome,
       highestEducation,
-      imageUrl;
+      imageURL,
+      thumbnailURL;
 
-  late int eatingHabit,
-      smokingHabit,
-      drinkingHabit,
-      country,
-      state,
-      city,
+  late int careerCountry,
+      careerState,
+      careerCity,
       familyStatus,
       familyValues,
       familyType,
@@ -60,31 +66,72 @@ class ProfileDetails {
       numberOfBrothers,
       marriedNumberOfBrothers,
       numberOfSisters,
-      marriedNumberOfSisters;
+      marriedNumberOfSisters,
+      eatingHabit,
+      relationship,
+      smokingHabit,
+      drinkingHabit,
+      country,
+      state,
+      city;
 
   //when childrenStatus==0,cast=="hindu"
-  var gothra, isManglik;
+  // var gothra, isManglik;
 
 //receives single item from list of json['data']
   ProfileDetails.fromJson(json) {
-    for (var item in json["userBios"]) {
-      if (item["profileUpdationStatus"] == 1) {
-        this.aboutMe = item["aboutMe"];
-      }
-    }
+    //this.aboutMe = json["aboutMe"];
 
-    for (var item in json["userAbouts"]) {
-      if (item["profileUpdationStatus"] == 1) {
-        this.name = item["name"];
-        this.dateOfBirth = item["dateOfBirth"];
-        this.height = item["height"];
-        this.maritalStatus = item["maritalStatus"];
-        this.childrenStatus = item["childrenStatus"];
-        this.abilityStatus = item["abilityStatus"];
-        if (item["numberOfChildren"] != null) {
-          this.numberOfChildren = item["numberOfChildren"];
-        }
-      }
-    }
+    this.id = json["id"];
+    this.email = json["email"];
+    this.gender = json["gender"];
+    this.countryCode = json["countryCode"];
+    this.phoneNumber = json["phoneNumber"];
+    this.relationship = json["relationship"];
+    // this.eatingHabit = json["eatingHabit"];
+    //  this.smokingHabit = json["smokingHabit"];
+    // this.drinkingHabit = json["drinkingHabit"];
+    // this.religion = json["religion"];
+    /// this.cast = json["cast"];
+    //  if (json["gothra"] != null) {
+    //    this.gothra = json["gothra"];
+    //  }
+//
+    //  if (json["isManglik"] != null) {
+    //   this.isManglik = json["isManglik"];
+    //  }
+
+    //  this.motherTongue = json["motherTongue"];
+
+    // this.employedIn = json["employedIn"];
+    // this.occupation = json["occupation"];
+    // this.annualIncome = json["annualIncome"];
+    // this.highestEducation = json["highestEducation"];
+    // this.careerCountry = json["careerCountry"];
+    //this.careerState = json["careerState"];
+    // this.careerCity = json["careerCity"];
+    // this.familyStatus = json["familyStatus"];
+    // this.familyValues = json["familyValues"];
+    //  this.familyType = json["familyType"];
+    //  this.familyCountry = json["familyCountry"];
+    //  this.familyState = json["familyState"];
+    //  this.familyCity = json["familyCity"];
+    //  this.fatherOccupation = json["fatherOccupation"];
+    // this.motherOccupation = json["motherOccupation"];
+    // this.numberOfBrothers = json["numberOfBrothers"];
+    //  this.marriedNumberOfBrothers = json["marriedNumberOfBrothers"];
+    //  this.numberOfSisters = json["numberOfSisters"];
+    //  this.marriedNumberOfSisters = json["marriedNumberOfSisters"];
+
+    //  this.imageURL = json["imageURL"];
+    //  this.thumbnailURL = json["thumbnailURL"];
+    //  this.name = json["name"];
+    //  this.dateOfBirth = json["dateOfBirth"];
+    //   this.height = json["height"];
+    // this.maritalStatus = json["maritalStatus"];
+    //  this.childrenStatus = json["childrenStatus"];
+    // this.abilityStatus = json["abilityStatus"];
+
+    // this.numberOfChildren = json["numberOfChildren"];
   }
 }
