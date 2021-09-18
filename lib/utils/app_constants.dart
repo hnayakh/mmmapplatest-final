@@ -1,5 +1,5 @@
 class AppConstants {
-  static const ENDPOINT = "http://13.233.190.102:3000//api/";
+  static const ENDPOINT = "http://13.233.190.102:3000/api/";
 
   static const HASOPENEDBEFORE = "ISFIRSTTIME";
 
