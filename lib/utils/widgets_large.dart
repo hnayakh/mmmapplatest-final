@@ -687,7 +687,13 @@ class MmmWidgets {
     );
   }
 
-  static Widget stackUserprofileWidget(BuildContext context, String image) {
+  static Widget stackUserprofileWidget(
+      {required BuildContext context,
+      required String imageUrl,
+      required String userCity,
+      required String userState,
+      required String name,
+      required int age}) {
     return Container(
       child: Stack(
         children: [
@@ -698,7 +704,7 @@ class MmmWidgets {
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.asset(
-                  image,
+                  imageUrl,
                   width: double.infinity,
                   fit: BoxFit.cover,
                 )),
@@ -750,7 +756,7 @@ class MmmWidgets {
                                   Expanded(
                                     flex: 9,
                                     child: Container(
-                                      child: Text('Cody Fisher,24',
+                                      child: Text('$name,$age',
                                           style: MmmTextStyles.heading6(
                                               textColor: gray7)),
                                     ),
@@ -773,7 +779,7 @@ class MmmWidgets {
                                   ),
                                   Container(
                                     child: Text(
-                                      'Pune,India',
+                                      '$userCity,$userState',
                                       style: MmmTextStyles.caption(
                                           textColor: gray7),
                                     ),

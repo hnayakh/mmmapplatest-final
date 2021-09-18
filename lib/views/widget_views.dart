@@ -1,13 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:makemymarry/utils/buttons.dart';
+import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/icons.dart';
 
 class WidgetView extends StatefulWidget {
   final int pos;
   final String title;
 
-  const WidgetView({Key? key, required this.pos, required this.title}) : super(key: key);
+  const WidgetView({Key? key, required this.pos, required this.title})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -124,7 +126,7 @@ class WidgetViewState extends State<WidgetView> {
         return MmmButtons.interestSelected();
         break;
       case 31:
-        return MmmIcons.heart();
+        return MmmIcons.heart(gray7);
         break;
       case 32:
         return MmmIcons.meet();

@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:makemymarry/utils/colors.dart';
 
 class MmmIcons {
-  static Container heart() {
+  static Container heart(Color color, {Function()? action}) {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -28,12 +28,12 @@ class MmmIcons {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () {},
+            onTap: action,
             child: Container(
               padding: EdgeInsets.all(12),
               child: SvgPicture.asset(
                 "images/heart.svg",
-                color: gray7,
+                color: color,
               ),
             ),
           ),
@@ -84,7 +84,7 @@ class MmmIcons {
     );
   }
 
-  static Container cancel() {
+  static Container cancel({Function()? action}) {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -109,7 +109,7 @@ class MmmIcons {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () {},
+            onTap: action,
             child: Container(
               padding: EdgeInsets.all(12),
               child: SvgPicture.asset(
