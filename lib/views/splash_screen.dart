@@ -9,6 +9,7 @@ import 'package:makemymarry/bloc/splash/splash_event.dart';
 import 'package:makemymarry/bloc/splash/splash_state.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/text_styles.dart';
+import 'package:makemymarry/views/profilescreens/bio/bio.dart';
 import 'package:makemymarry/views/signinscreens/signin_screen1.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
@@ -86,7 +87,7 @@ class SplashScreenState extends State<SplashScreen> {
     Timer(Duration(seconds: 3), () {
       var userRepo = BlocProvider.of<SplashBloc>(context).userRepository;
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => SignIn(
+          builder: (context) => Bio(
                 userRepository: userRepo,
               )));
 

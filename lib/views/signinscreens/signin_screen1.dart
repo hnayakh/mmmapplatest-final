@@ -16,7 +16,7 @@ import 'package:makemymarry/utils/text_styles.dart';
 
 import 'package:makemymarry/views/forgotpasswordscreens/forgot_password.dart';
 import 'package:makemymarry/views/profilescreens/about/about.dart';
-import 'package:makemymarry/views/profilescreens/bio.dart';
+import 'package:makemymarry/views/profilescreens/bio/bio.dart';
 import 'package:makemymarry/views/profilescreens/family/family.dart';
 import 'package:makemymarry/views/profilescreens/family/family_details/family_details.dart';
 import 'package:makemymarry/views/profilescreens/occupation/occupation.dart';

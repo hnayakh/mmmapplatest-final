@@ -1002,21 +1002,19 @@ class MmmButtons {
           color: Colors.transparent,
           child: InkWell(
             onTap: action,
-            child: Center(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Row(
                 children: [
-                  SizedBox(
-                    width: 16,
-                  ),
                   SvgPicture.asset(
                     "images/camera.svg",
+                    height: 24,
+                    width: 24,
                     color: Color(0xffFCFCFD),
                     fit: BoxFit.cover,
                   ),
                   SizedBox(width: 10),
-                  Container(
-                    height: 26,
-                    width: 260,
+                  Expanded(
                     child: Text(
                       'Click via camera',
                       textAlign: TextAlign.center,
@@ -1360,6 +1358,49 @@ class MmmButtons {
               textAlign: TextAlign.center,
               style: MmmTextStyles.bodyMedium(textColor: gray4),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  static Container expandedButtonWithIcon(String title, String icon) {
+    return Container(
+      height: 50,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: kLight2,
+        border: Border.all(
+          color: gray6,
+          width: 1,
+        ),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                height: 24,
+                width: 24,
+                child: SvgPicture.asset(
+                  icon,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                  child: Text(
+                title,
+                textScaleFactor: 1.0,
+                textAlign: TextAlign.center,
+                style: MmmTextStyles.bodyMedium(textColor: kDark5),
+              )),
+            ],
           ),
         ),
       ),

@@ -38,3 +38,4 @@ const kShadowColorForGrid = Color(0xff0F0D15);
 const kGreen = Color(0xff24A148);
 const kDark6 = Color(0xff2C283E);
 const kViolet = Color(0xff58507C);
+const kShadow = Color(0xff3D4B5C1F);

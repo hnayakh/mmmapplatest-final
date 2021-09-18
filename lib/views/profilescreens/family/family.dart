@@ -5,7 +5,7 @@ import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
-import 'package:makemymarry/views/profilescreens/bio.dart';
+import 'package:makemymarry/views/profilescreens/bio/bio.dart';
 
 import 'family_background/family_background.dart';
 import 'family_background/family_background_bloc.dart';
