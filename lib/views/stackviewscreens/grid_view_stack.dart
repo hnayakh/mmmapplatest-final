@@ -102,12 +102,13 @@ class _GridViewofStackScreenState extends State<GridViewofStackScreen> {
                               //        .imageUrl;
                               return MmmWidgets.stackUserprofileWidget(
                                   context: context,
-                                  age: calculateAge(index),
+                                  age: 25,
+                                  //calculateAge(index),
                                   imageUrl: 'images/stackviewImage.jpg',
                                   name: BlocProvider.of<StackViewBloc>(context)
                                       .userRepository
                                       .listProfileDetails[index]
-                                      .name,
+                                      .phoneNumber,
                                   userCity: 'pune',
                                   userState: 'Maharashtra');
                             },

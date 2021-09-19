@@ -1,19 +1,21 @@
+import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 
 class ProfileDataResponse {
   late String message, status;
   late List<ProfileDetails> listProfileDetails;
-
-  ProfileDataResponse.fromJson(json) {
+  late String id;
+  ProfileDataResponse.fromJson(json, userId) {
     this.status = json["type"];
     this.message = json["message"];
+    this.id = userId;
 
     if (this.status == AppConstants.SUCCESS) {
       this.listProfileDetails = [];
       for (var item in json["data"]) {
-        //  if (item["registrationStep"] == 9) {
-        listProfileDetails.add(ProfileDetails.fromJson(item));
-        // }
+        if (item["registrationStep"] == 9 && item["id"] != userId) {
+          listProfileDetails.add(ProfileDetails.fromJson(item));
+        }
       }
 
       //data is a list of  user information maps.
@@ -34,11 +36,10 @@ class ProfileDetails {
   //int numberOfChildren = -1;
   int gothra = -1;
   int isManglik = -1;
-  late int maritalStatus;
+  late int maritalStatus, gender;
   late int childrenStatus;
   late int abilityStatus;
   late String religion,
-      gender,
       email,
       countryCode,
       phoneNumber,

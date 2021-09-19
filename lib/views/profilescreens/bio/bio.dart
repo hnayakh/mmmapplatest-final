@@ -15,6 +15,7 @@ import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/profilescreens/bio/image_picker_dialog.dart';
+import 'package:makemymarry/views/stackviewscreens/stackview/stack_view.dart';
 
 import 'bio_bloc.dart';
 import 'bio_event.dart';
@@ -55,6 +56,7 @@ class _BioScreenState extends State<BioScreen> {
         if (state is OnProfileSetupCompletion) {
           //navigate to profile screen
           print('profile setup completed');
+          navigateToStackView();
         }
       },
       builder: (context, state) {
@@ -172,6 +174,18 @@ class _BioScreenState extends State<BioScreen> {
     ));
   }
 
+  void navigateToStackView() {
+    var userRepo = BlocProvider.of<BioBloc>(context).userRepository;
+    var profileIndex = 0;
+    var likeInfoList = List.filled(userRepo.listProfileDetails.length, 0);
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => StackView(
+              userRepository: userRepo,
+              likeInfoList: likeInfoList,
+              profileIndex: profileIndex,
+            )));
+  }
+
   InkWell addImageButton() {
     return InkWell(
       onTap: () {
@@ -241,14 +255,13 @@ class _BioScreenState extends State<BioScreen> {
   Future pickImages(
     ImageSource source,
   ) async {
-      var file = await _picker.pickImage(
-        source: source,
-        imageQuality: 60,
-      );
-      if (file != null) {
-        BlocProvider.of<BioBloc>(context).add(AddImage(file.path));
-      }
-
+    var file = await _picker.pickImage(
+      source: source,
+      imageQuality: 60,
+    );
+    if (file != null) {
+      BlocProvider.of<BioBloc>(context).add(AddImage(file.path));
+    }
   }
 
   void showImagePickerDialog() async {

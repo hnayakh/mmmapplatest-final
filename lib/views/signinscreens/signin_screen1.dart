@@ -18,14 +18,17 @@ import 'package:makemymarry/views/forgotpasswordscreens/forgot_password.dart';
 import 'package:makemymarry/views/profilescreens/about/about.dart';
 import 'package:makemymarry/views/profilescreens/bio/bio.dart';
 import 'package:makemymarry/views/profilescreens/family/family.dart';
+import 'package:makemymarry/views/profilescreens/family/family_background/family_background.dart';
 import 'package:makemymarry/views/profilescreens/family/family_details/family_details.dart';
+import 'package:makemymarry/views/profilescreens/habbit/habits.dart';
 import 'package:makemymarry/views/profilescreens/occupation/occupation.dart';
 import 'package:makemymarry/views/profilescreens/religion/religion.dart';
 import 'package:makemymarry/views/signinscreens/phone%20signin/phone_screen.dart';
 
 import 'package:makemymarry/views/signupscreens/create_account/create_account_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/grid_view_stack.dart';
-import 'package:makemymarry/views/stackviewscreens/stack_view.dart';
+import 'package:makemymarry/views/stackviewscreens/stackview/stack_view.dart';
+
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class SignIn extends StatelessWidget {
@@ -295,9 +298,47 @@ class SignInScreenState extends State<SignInScreen> {
 
   void navigateToProfileSetup() {
     var userRepo = BlocProvider.of<SignInBloc>(context).userRepository;
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => StackView(
-            //userRepository: userRepo,
-            )));
+    var regStep = userRepo.useDetails!.registrationStep;
+    if (regStep == 2) {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => About(
+                userRepository: userRepo,
+              )));
+    } else if (regStep == 3) {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => Habit(
+                userRepository: userRepo,
+              )));
+    } else if (regStep == 4) {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => Religion(
+                userRepository: userRepo,
+              )));
+    } else if (regStep == 5) {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => Occupations(
+                userRepository: userRepo,
+              )));
+    } else if (regStep == 6) {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => FamilyScreen(userRepository: userRepo)));
+    } else if (regStep == 7) {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => FamilyScreen(userRepository: userRepo)));
+    } else if (regStep == 8) {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => Bio(
+                userRepository: userRepo,
+              )));
+    } else if (regStep == 9) {
+      var profileIndex = 0;
+      var likeInfoList = List.filled(userRepo.listProfileDetails.length, 0);
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => StackView(
+                userRepository: userRepo,
+                likeInfoList: likeInfoList,
+                profileIndex: profileIndex,
+              )));
+    }
   }
 }

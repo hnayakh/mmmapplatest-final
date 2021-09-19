@@ -31,7 +31,12 @@ class SignInBloc extends Bloc<SignInEvent, SigninState> {
         } else if (result.status == AppConstants.SUCCESS) {
           this.userRepository.useDetails = result.userDetails;
           // await this.userRepository.saveUserDetails();
-
+          var id = result.userDetails!.id;
+          var profiles = await this.userRepository.getAllUsersProfileData(id);
+          if (profiles.status == AppConstants.SUCCESS) {
+            this.userRepository.listProfileDetails =
+                profiles.listProfileDetails;
+          }
           yield OnSignIn(this.userRepository.useDetails!);
         } else {
           yield OnError(result.message);
