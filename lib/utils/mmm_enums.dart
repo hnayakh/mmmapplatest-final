@@ -6,6 +6,13 @@ enum Gender {
 enum Relationship { Self, Son, Daughter, Sister, Brother, Friend, Relative }
 
 enum MaritalStatus { NeverMarried, Divorced, Widowed, AwaitingDivorce }
+enum MaritalStatusFilter {
+  DoesnotMatter,
+  NeverMarried,
+  Divorced,
+  Widowed,
+  AwaitingDivorce
+}
 
 enum AbilityStatus {
   Normal,
@@ -19,14 +26,32 @@ enum EatingHabit {
   Eggitarrian,
   Nonvegetarrian,
 }
+enum EatingHabitFilter {
+  DoesnotMatter,
+  Vegetarrian,
+  Eggitarrian,
+  Nonvegetarrian,
+}
 
 enum SmokingHabit {
   Smoker,
   NonSmoker,
   Occasionally,
 }
+enum SmokingHabitFilter {
+  DoesnotMatter,
+  Smoker,
+  NonSmoker,
+  Occasionally,
+}
 
 enum DrinkingHabit {
+  Alcoholic,
+  Nonalcoholic,
+  Occasionally,
+}
+enum DrinkingHabitFilter {
+  DoesnotMatter,
   Alcoholic,
   Nonalcoholic,
   Occasionally,
@@ -89,3 +114,29 @@ enum OtpType {
   ForgotPassword,
 }
 enum Manglik { Yes, No, NotApplicable }
+enum ManglikFilter { DoesnotMatter, Yes, No, NotApplicable }
+enum EmployeedInFilter {
+  DoesnotMatter,
+  PrivateJob,
+  BusinessOrSelfEmployeed,
+  GovernmentJob
+}
+enum InterestFilter {
+  DoesnotMatter,
+  Sports,
+  Travel,
+  Photography,
+  Gaming,
+  Singing,
+  Dance,
+  Food,
+  Music,
+  Art,
+  Cooking,
+  Fashion,
+  vblogging,
+  Animals,
+  Nature,
+  Tech,
+  Social
+}

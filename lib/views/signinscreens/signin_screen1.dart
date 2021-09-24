@@ -13,6 +13,7 @@ import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
+import 'package:makemymarry/views/filterscreen/fliter_screen.dart';
 
 import 'package:makemymarry/views/forgotpasswordscreens/forgot_password.dart';
 import 'package:makemymarry/views/profilescreens/about/about.dart';
@@ -333,11 +334,15 @@ class SignInScreenState extends State<SignInScreen> {
     } else if (regStep == 9) {
       var profileIndex = 0;
       var likeInfoList = List.filled(userRepo.listProfileDetails.length, 0);
+      //Navigator.of(context).push(MaterialPageRoute(
+      //    builder: (context) => StackView(
+      //          userRepository: userRepo,
+      //         likeInfoList: likeInfoList,
+      //        profileIndex: profileIndex,
+      //     )));
       Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => StackView(
+          builder: (context) => Filter(
                 userRepository: userRepo,
-                likeInfoList: likeInfoList,
-                profileIndex: profileIndex,
               )));
     }
   }

@@ -634,6 +634,58 @@ class MmmButtons {
     );
   }
 
+  static Widget filterButtons(String hintText, {Function()? action}) {
+    return Column(
+      children: [
+        Container(
+          height: 48,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(width: 1, color: kLight4),
+          ),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: action,
+              child: Container(
+                padding: EdgeInsets.only(left: 12, right: 12),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    //SizedBox(
+                    //  width: 16,
+                    // ),
+                    Expanded(
+                      //width: 216,
+                      child: Text(
+                        hintText,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        textScaleFactor: 1.0,
+                        textAlign: TextAlign.start,
+                        style: MmmTextStyles.bodyRegular(textColor: kDark5),
+                      ),
+                    ),
+                    // SizedBox(
+                    //width: 110,
+                    //  ),
+                    SvgPicture.asset(
+                      'images/rightArrow.svg',
+                      width: 24,
+                      height: 24,
+                      color: Color(0xff878D96),
+                      fit: BoxFit.cover,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   static Widget categoryButtons(
       String labelText, String hintText, String newhintText, String icon,
       {Function()? action}) {
@@ -914,6 +966,80 @@ class MmmButtons {
               child: Transform.scale(scale: 0.9, child: MmmIcons.meet()))
         ],
       ),
+    );
+  }
+
+  static PreferredSize appBarCurvedFilter(String title,
+      {BuildContext? context}) {
+    return PreferredSize(
+      preferredSize: Size.fromHeight(74.0),
+      child: Container(
+        child: AppBar(
+          leading: Container(
+            margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
+            decoration: BoxDecoration(
+                color: kLight2.withOpacity(0.60),
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+                boxShadow: [
+                  MmmShadow.elevationbBackButton(
+                      shadowColor: kShadowColorForWhite)
+                ]),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {
+                    if (context != null) {
+                      Navigator.of(context).pop();
+                    }
+                  },
+                  child: Container(
+                      height: 32,
+                      width: 32,
+                      alignment: Alignment.center,
+                      child: SvgPicture.asset(
+                        'images/arrowLeft.svg',
+                        height: 17.45,
+                        width: 17.45,
+                        color: gray3,
+                      )),
+                ),
+              ),
+            ),
+          ),
+          toolbarHeight: 74.0,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                title,
+                style: MmmTextStyles.heading4(textColor: kLight2),
+              ),
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {},
+                  child: Text(
+                    'Reset',
+                    style: MmmTextStyles.bodyMedium(textColor: kLight2),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(bottomRight: Radius.circular(32)),
+          gradient: LinearGradient(
+              colors: [kPrimary, kSecondary],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight),
+        ),
+      ),
+      //preferredSize: Size(MediaQuery.of(context).size.width, 0.0),
     );
   }
 
