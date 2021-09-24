@@ -87,7 +87,7 @@ class SplashScreenState extends State<SplashScreen> {
     Timer(Duration(seconds: 3), () {
       var userRepo = BlocProvider.of<SplashBloc>(context).userRepository;
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => Bio(
+          builder: (context) => SignIn(
                 userRepository: userRepo,
               )));
 

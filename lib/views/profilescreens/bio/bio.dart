@@ -15,6 +15,7 @@ import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/profilescreens/bio/image_picker_dialog.dart';
+import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference.dart';
 
 import 'bio_bloc.dart';
 import 'bio_event.dart';
@@ -55,6 +56,15 @@ class _BioScreenState extends State<BioScreen> {
         if (state is OnProfileSetupCompletion) {
           //navigate to profile screen
           print('profile setup completed');
+        }
+        if (state is OnError) {
+          Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text(state.message),
+            backgroundColor: Colors.red,
+          ));
+        }
+        if (state is OnUpdate) {
+          navigateToProfilePreference();
         }
       },
       builder: (context, state) {
@@ -105,8 +115,8 @@ class _BioScreenState extends State<BioScreen> {
                                     child: Stack(
                                       children: [
                                         ClipRRect(
-                                          child: Image.file(
-                                            File(this.localImagePaths[index]),
+                                          child: Image.network(
+                                            this.localImagePaths[index],
                                             fit: BoxFit.fill,
                                             width: (MediaQuery.of(context)
                                                     .size
@@ -162,8 +172,11 @@ class _BioScreenState extends State<BioScreen> {
                       height: 20,
                     ),
                     MmmButtons.enabledRedButtonbodyMedium(
-                        50, 'Submit your details',
-                        action: () {})
+                        50, 'Submit your details', action: () {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      BlocProvider.of<BioBloc>(context)
+                          .add(UpdateBio(this.bioController.text));
+                    })
                   ],
                 ),
               ))
@@ -241,14 +254,13 @@ class _BioScreenState extends State<BioScreen> {
   Future pickImages(
     ImageSource source,
   ) async {
-      var file = await _picker.pickImage(
-        source: source,
-        imageQuality: 60,
-      );
-      if (file != null) {
-        BlocProvider.of<BioBloc>(context).add(AddImage(file.path));
-      }
-
+    var file = await _picker.pickImage(
+      source: source,
+      imageQuality: 60,
+    );
+    if (file != null) {
+      BlocProvider.of<BioBloc>(context).add(AddImage(file.path));
+    }
   }
 
   void showImagePickerDialog() async {
@@ -268,5 +280,11 @@ class _BioScreenState extends State<BioScreen> {
           pickImages(ImageSource.camera);
       }
     }
+  }
+
+  void navigateToProfilePreference() {
+    var userRepo = BlocProvider.of<BioBloc>(context).userRepository;
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => ProfilePreference(userRepository: userRepo)));
   }
 }

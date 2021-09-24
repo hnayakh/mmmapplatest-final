@@ -19,4 +19,7 @@ class AppConstants {
 
   static final SUCCESS = "SUCCESS";
   static final FAILURE = "FAILURE";
+  static final DATEFORMAT = 'dd MMM yyyy';
+
+  static final PUBLICIMAGEBASEURL = "https://mmm-user-image.s3.ap-south-1.amazonaws.com/";
 }

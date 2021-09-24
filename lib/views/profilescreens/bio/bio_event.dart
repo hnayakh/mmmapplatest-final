@@ -12,3 +12,8 @@ class RemoveImage extends BioEvent{
 
   RemoveImage(this.pos);
 }
+class UpdateBio extends BioEvent{
+  final String bio;
+
+  UpdateBio(this.bio);
+}

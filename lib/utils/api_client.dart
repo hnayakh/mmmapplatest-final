@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:dio_logger/dio_logger.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
@@ -285,20 +287,11 @@ class ApiClient {
     }
   }
 
-  Future<SigninResponse> updateBio(String aboutMe, String imageUrl1,
-      String imageUrl2, String imageUrl3, String imageUrl4, String id) async {
+  Future<SigninResponse> updateBio(String aboutMe, List<String> images, String id) async {
     try {
-      Response response =
-          await this.dio.post(AppConstants.ENDPOINT + "users/bio", data: {
-        "userBasicId": id,
-        "aboutMe": aboutMe,
-        "userImages": [
-          {"imageUrl": imageUrl1, "isDefault": true},
-          {"imageUrl": imageUrl2, "isDefault": false},
-          {"imageUrl": imageUrl3, "isDefault": false},
-          {"imageUrl": imageUrl4, "isDefault": false}
-        ]
-      });
+      Response response = await this.dio.post(
+          AppConstants.ENDPOINT + "users/bio",
+          data: {"userBasicId": id, "aboutMe": aboutMe, "userImages": images});
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SigninResponse.fromJson(response.data);
       } else {
@@ -420,13 +413,13 @@ class ApiClient {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SigninResponse.fromJson(response.data);
       } else {
-        return SigninResponse.fromError("Error Occurred. Please try againa.");
+        return SigninResponse.fromError("Error Occurred. Please try again.");
       }
     } catch (error) {
       if (error is DioError) {
         print(error.message);
       }
-      return SigninResponse.fromError("Error Occurred. Please try againa.");
+      return SigninResponse.fromError("Error Occurred. Please try again.");
     }
   }
 
@@ -453,13 +446,53 @@ class ApiClient {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SigninResponse.fromJson(response.data);
       } else {
-        return SigninResponse.fromError("Error Occurred. Please try againa.");
+        return SigninResponse.fromError("Error Occurred. Please try again.");
       }
     } catch (error) {
       if (error is DioError) {
         print(error.message);
       }
-      return SigninResponse.fromError("Error Occurred. Please try againa.");
+      return SigninResponse.fromError("Error Occurred. Please try again.");
     }
+  }
+
+  Future<PreSignUrlResponse> getPreSignedUrl(
+      String imageName, String id) async {
+    try {
+      Response response = await this.dio.get(
+          "${AppConstants.ENDPOINT}users/presignedUrl/${id}",
+          queryParameters: {"fileKey": imageName, "contentType": "jpg"});
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return PreSignUrlResponse.fromJson(response.data);
+      } else {
+        return PreSignUrlResponse.fromError(
+            "Error Occurred. Please try again.");
+      }
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      return PreSignUrlResponse.fromError("Error Occurred. Please try again.");
+    }
+  }
+
+  Future<Response> uploadFile(String url, String name, String path) async {
+    Dio dio = Dio();
+    // dio.interceptors.add(dioLoggerInterceptor);
+    // dio.interceptors.add(InterceptorsWrapper(
+    //     onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
+    //   options.headers["Content-Type"] = "image/jpg";
+    //   options.receiveTimeout = 1000 * 30;
+    //   options.onReceiveProgress = (val1, val2) {
+    //     print("${val1} ---- ${val2}");
+    //   };
+    // },));
+    FormData formData = FormData.fromMap({
+      "name": await MultipartFile.fromFile(path, filename: name),
+    });
+
+    var result = await dio.put(url, data: formData);
+    print(result.statusCode);
+    return result;
   }
 }

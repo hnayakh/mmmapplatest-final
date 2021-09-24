@@ -12,3 +12,6 @@ class OnError extends BioState {
 class BioInitialState extends BioState {}
 
 class OnLoading extends BioState {}
+class OnUpdate extends BioState{
+
+}

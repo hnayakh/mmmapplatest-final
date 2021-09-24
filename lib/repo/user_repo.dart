@@ -1,10 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/datamodels/profile_data.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/utils/api_client.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/storage_service.dart';
-import 'package:makemymarry/views/profilescreens/religion/religion_bloc.dart';
 
 class UserRepository {
   late StorageService storageService;
@@ -101,10 +101,8 @@ class UserRepository {
         religion, subCaste, motherTongue, gothra, isManglik, useDetails!.id);
   }
 
-  Future<SigninResponse> updateBio(String aboutMe, String imageUrl1,
-      String imageUrl2, String imageUrl3, String imageUrl4) async {
-    return apiClient.updateBio(
-        aboutMe, imageUrl1, imageUrl2, imageUrl3, imageUrl4, useDetails!.id);
+  Future<SigninResponse> updateBio(String aboutMe, List<String> images) async {
+    return apiClient.updateBio(aboutMe, images, useDetails!.id);
   }
 
   Future<SigninResponse> career(
@@ -157,5 +155,13 @@ class UserRepository {
         brotherMarried,
         sistersMarried,
         useDetails!.id);
+  }
+
+  Future<PreSignUrlResponse> getImagePreSignedUrl(String imageName) async {
+    return apiClient.getPreSignedUrl(imageName, this.useDetails!.id);
+  }
+
+  Future<Response?> uploadFile(String url, String name, String path) {
+    return apiClient.uploadFile(url, name, path);
   }
 }
