@@ -89,7 +89,7 @@ class Occupation {
 
 class SimpleMasterData {
   late String id, title;
-
+  SimpleMasterData();
   SimpleMasterData.fromJson(json) {
     this.id = json["id"];
     this.title = json["text"];
@@ -98,7 +98,7 @@ class SimpleMasterData {
 
 class Education {
   late String id, text, title;
-
+  Education();
   Education.fromJson(json) {
     this.id = json["id"];
     this.text = json["text"];
@@ -109,7 +109,7 @@ class Education {
 class CastSubCast {
   late String cast;
   late List<dynamic> subCasts;
-
+  CastSubCast();
   CastSubCast.fromJson(dynamic json) {
     this.cast = json["cast"];
     this.subCasts = json["subCaste"];

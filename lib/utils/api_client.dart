@@ -127,7 +127,7 @@ class ApiClient {
           );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        return ProfileDataResponse.fromJson(response.data);
+        return ProfileDataResponse.fromJson(response.data, userId);
       } else {
         return ProfileDataResponse.fromError(
             "Error Occurred. Please try again.");

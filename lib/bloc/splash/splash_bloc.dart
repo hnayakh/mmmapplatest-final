@@ -26,6 +26,12 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
           if (userDetails == null) {
             yield MoveToLogin();
           } else {
+            var id = userDetails.id;
+            var profiles = await this.userRepository.getAllUsersProfileData(id);
+            if (profiles.status == AppConstants.SUCCESS) {
+              this.userRepository.listProfileDetails =
+                  profiles.listProfileDetails;
+            }
             yield MoveToHome();
           }
         }

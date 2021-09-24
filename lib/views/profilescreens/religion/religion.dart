@@ -115,7 +115,6 @@ class ReligionScreenState extends State<ReligionScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-
                 MmmButtons.categoryButtons(
                     'Religion',
                     religion != null

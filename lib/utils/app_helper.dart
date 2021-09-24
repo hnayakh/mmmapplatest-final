@@ -13,5 +13,14 @@ class AppHelper {
     }
     return heights;
   }
-}
 
+  static List<dynamic> getHeightsFilter() {
+    List<dynamic> heights = [];
+    //convert to ft in change
+    for (double i = 4.5; i <= 8.5; i += 0.1) {
+      heights.add(i);
+    }
+    heights.insert(0, 'Doesnot Matter');
+    return heights;
+  }
+}

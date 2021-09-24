@@ -23,15 +23,15 @@ class StackViewBloc extends Bloc<StackViewEvent, StackViewState> {
         return;
       } else {
         profileIndex = profileIndex + 1;
+        yield StackViewInitialState();
       }
-      yield StackViewInitialState();
     } else if (event is SwipeDownEvent) {
       if (profileIndex == 0) {
         return;
       } else {
         profileIndex = profileIndex - 1;
+        yield StackViewInitialState();
       }
-      yield StackViewInitialState();
     } else if (event is LikeOrUnlikeEvent) {
       likeInfoList[profileIndex] = event.likeInfo;
 
