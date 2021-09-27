@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/datamodels/profile_data.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
@@ -59,9 +60,9 @@ class UserRepository {
     return apiClient.getMasterData(null);
   }
 
-  Future<ProfileDataResponse> getAllUsersProfileData(String id) async {
-    return apiClient.getAllUsersProfileData(id);
-  }
+  // Future<ProfileDataResponse> getAllUsersProfileData(String id) async {
+  //   return apiClient.getAllUsersProfileData(id);
+  // }
 
   saveUserDetails() async {
     this.storageService.saveUserDetails(this.useDetails!);
@@ -163,5 +164,13 @@ class UserRepository {
 
   Future<Response?> uploadFile(String url, String name, String path) {
     return apiClient.uploadFile(url, name, path);
+  }
+
+  Future<MatchingProfileResponse> getMyMatchingProfile() async {
+    return this.apiClient.getMyMatchingProfile(this.useDetails!.id);
+  }
+
+  Future<ProfileDetailsResponse> getOtheruserDetails(String id) async {
+    return apiClient.getOtherUserDetails(id);
   }
 }

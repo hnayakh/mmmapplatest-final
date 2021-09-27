@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:dio_logger/dio_logger.dart';
+import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/datamodels/profile_data.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
@@ -119,28 +120,28 @@ class ApiClient {
       return MasterDataResponse.fromError("Error Occurred. Please try againa.");
     }
   }
-
-  Future<ProfileDataResponse> getAllUsersProfileData(String userId) async {
-    try {
-      Response response = await this.dio.get(
-            AppConstants.ENDPOINT + "users/profiles/$userId",
-          );
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        return ProfileDataResponse.fromJson(response.data, userId);
-      } else {
-        return ProfileDataResponse.fromError(
-            "Error Occurred. Please try again.");
-      }
-    } catch (error) {
-      if (error is DioError) {
-        print(error.message);
-      }
-      print('the error is..');
-      print(error);
-      return ProfileDataResponse.fromError("Error Occurred. Please try again.");
-    }
-  }
+  //
+  // Future<ProfileDataResponse> getAllUsersProfileData(String userId) async {
+  //   try {
+  //     Response response = await this.dio.get(
+  //           AppConstants.ENDPOINT + "users/profiles/$userId",
+  //         );
+  //
+  //     if (response.statusCode == 200 || response.statusCode == 201) {
+  //       return ProfileDataResponse.fromJson(response.data, userId);
+  //     } else {
+  //       return ProfileDataResponse.fromError(
+  //           "Error Occurred. Please try again.");
+  //     }
+  //   } catch (error) {
+  //     if (error is DioError) {
+  //       print(error.message);
+  //     }
+  //     print('the error is..');
+  //     print(error);
+  //     return ProfileDataResponse.fromError("Error Occurred. Please try again.");
+  //   }
+  // }
 
   Future<SigninResponse> habitVerification(EatingHabit eatingHabit,
       SmokingHabit smokingHabit, DrinkingHabit drinkingHabit, String id) async {
@@ -287,7 +288,8 @@ class ApiClient {
     }
   }
 
-  Future<SigninResponse> updateBio(String aboutMe, List<String> images, String id) async {
+  Future<SigninResponse> updateBio(
+      String aboutMe, List<String> images, String id) async {
     try {
       Response response = await this.dio.post(
           AppConstants.ENDPOINT + "users/bio",
@@ -494,5 +496,41 @@ class ApiClient {
     var result = await dio.put(url, data: formData);
     print(result.statusCode);
     return result;
+  }
+
+  Future<MatchingProfileResponse> getMyMatchingProfile(String id) async {
+    try {
+      var response =
+          await this.dio.get("${AppConstants.ENDPOINT}users/profiles/$id");
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return MatchingProfileResponse.fromJson(response.data);
+      }
+      return MatchingProfileResponse.fromError(
+          "Error Occurred. Please try again.");
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      return MatchingProfileResponse.fromError(
+          "Error Occurred. Please try again.");
+    }
+  }
+
+  Future<ProfileDetailsResponse> getOtherUserDetails(String id) async {
+    try {
+      var response =
+          await this.dio.get("${AppConstants.ENDPOINT}users/basic/$id");
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return ProfileDetailsResponse.fromJson(response.data);
+      }
+      return ProfileDetailsResponse.fromError(
+          "Error Occurred. Please try again.");
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      return ProfileDetailsResponse.fromError(
+          "Error Occurred. Please try again.");
+    }
   }
 }

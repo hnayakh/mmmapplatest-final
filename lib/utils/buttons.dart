@@ -10,20 +10,22 @@ import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
 
 class MmmButtons {
-  static Widget smallprofilePicButton(String image) {
-    return Container(
-      width: 40,
-      height: 40,
-      padding: EdgeInsets.all(2),
-      decoration: BoxDecoration(
-          color: kWhite, borderRadius: BorderRadius.all(Radius.circular(5.85))),
-      child: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(5.85)),
-        child: Image.asset(
-          image,
-          fit: BoxFit.cover,
+  static Widget smallprofilePicButton(String image,Function() action) {
+    return  InkWell(
+      child: Container(
+        width: 40,
+        height: 40,
+        padding: EdgeInsets.all(2),
+        decoration: BoxDecoration(
+            color: kWhite, borderRadius: BorderRadius.all(Radius.circular(5.85))),
+        child: ClipRRect(
+          borderRadius: BorderRadius.all(Radius.circular(5.85)),
+          child: Image.network(
+            image,
+            fit: BoxFit.cover,
+          ),
         ),
-      ),
+      ),onTap: action,
     );
   }
 
@@ -835,7 +837,7 @@ class MmmButtons {
     );
   }
 
-  static Widget appBarCurvedProfile(String title, BuildContext context) {
+  static Widget appBarCurvedProfile(String title, BuildContext context, String image) {
     return PreferredSize(
       //preferredSize: Size.fromHeight(120),
       preferredSize: Size.fromHeight(MediaQuery.of(context).size.height * 0.17),
@@ -904,8 +906,8 @@ class MmmButtons {
                     CircleAvatar(
                       radius: 24,
                       child: ClipOval(
-                        child: Image.asset(
-                          'images/stackviewImage.jpg',
+                        child: Image.network(
+                          image,
                           width: double.infinity,
                           fit: BoxFit.cover,
                         ),

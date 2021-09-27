@@ -1,3 +1,6 @@
+import 'package:intl/intl.dart';
+import 'package:makemymarry/utils/app_constants.dart';
+
 class AppHelper {
   static String countryCodeToEmoji(String countryCode) {
     final int firstLetter = countryCode.codeUnitAt(0) - 0x41 + 0x1F1E6;
@@ -22,5 +25,18 @@ class AppHelper {
     }
     heights.insert(0, 'Doesnot Matter');
     return heights;
+  }
+
+  static String getAgeFromDob(String dateOfBirth) {
+    DateFormat dateFormat = DateFormat(AppConstants.SERVERDATEFORMAT);
+    var date = dateFormat.parse(dateOfBirth);
+    return (DateTime.now().difference(date).inDays / 365).round().toString();
+  }
+
+  static getReadableDob(String dateOfBirth) {
+    DateFormat dateFormat1 = DateFormat(AppConstants.SERVERDATEFORMAT);
+    var date = dateFormat1.parse(dateOfBirth);
+    DateFormat dateFormat2 = DateFormat("dd MMM,yyyy");
+    return dateFormat2.format(date);
   }
 }
