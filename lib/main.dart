@@ -11,6 +11,7 @@ import 'package:makemymarry/views/profileviewscreens/profile_view.dart';
 import 'package:makemymarry/views/splash_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/connect.dart';
 import 'package:makemymarry/views/stackviewscreens/grid_view_stack.dart';
+import 'package:makemymarry/views/stackviewscreens/message_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/notification.dart';
 import 'package:makemymarry/views/stackviewscreens/stackview/stack_view.dart';
 import 'package:makemymarry/views/widget_views.dart';
@@ -70,7 +71,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.pink,
       ),
-      home: Splash(),
+      home: ProfileView(),
     );
   }
 }

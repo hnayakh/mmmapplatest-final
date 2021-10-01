@@ -36,7 +36,8 @@ class _ConnectMainScreenState extends State<ConnectMainScreen>
           children: [
             Container(
               child: PreferredSize(
-                  preferredSize: Size.fromHeight(120.0),
+                  preferredSize:
+                      Size.fromHeight(MediaQuery.of(context).size.height * 0.1),
                   child: Container(
                       child: AppBar(
                     leading: Container(
@@ -70,7 +71,7 @@ class _ConnectMainScreenState extends State<ConnectMainScreen>
                         ),
                       ),
                     ),
-                    toolbarHeight: 74.0,
+                    toolbarHeight: MediaQuery.of(context).size.height * 0.108,
                     title: Text(
                       "Connects",
                       style: MmmTextStyles.heading4(textColor: kLight2),
@@ -79,19 +80,14 @@ class _ConnectMainScreenState extends State<ConnectMainScreen>
                     elevation: 0.0,
                   ))),
               decoration: BoxDecoration(
-                // borderRadius: BorderRadius.only(bottomRight: Radius.circular(32)),
                 gradient: LinearGradient(
                     colors: [kPrimary, kSecondary],
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight),
               ),
             ),
-            IgnorePointer(
-                child: TabBar(
+            TabBar(
               controller: tabController,
-              onTap: (pos) {
-                setState(() {});
-              },
               indicator: UnderlineTabIndicator(
                   borderSide: BorderSide(
                     width: 4.0,
@@ -121,7 +117,7 @@ class _ConnectMainScreenState extends State<ConnectMainScreen>
                   ),
                 )
               ],
-            )),
+            ),
             Expanded(
                 child: TabBarView(
               controller: tabController,

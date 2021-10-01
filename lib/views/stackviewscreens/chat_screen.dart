@@ -24,22 +24,7 @@ class _ChatScreenState extends State<ChatScreen> {
               child: ListView.separated(
                 itemBuilder: (context, index) {
                   return ListTile(
-                    leading:
-                        //Container(
-                        //   height: 50,
-                        //   width: 50,
-                        //   decoration: BoxDecoration(
-                        //    borderRadius: BorderRadius.only(
-                        //        topRight: Radius.circular(8),
-                        //       bottomRight: Radius.circular(8)),
-                        //       ),
-                        //      child:
-                        //ClipRRect(
-                        // borderRadius: BorderRadius.only(
-                        //    topRight: Radius.circular(8),
-                        //     bottomRight: Radius.circular(8)),
-                        // child:
-                        CircleAvatar(
+                    leading: CircleAvatar(
                       radius: 25,
                       child: ClipOval(
                         child: Image.asset(
@@ -48,9 +33,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           fit: BoxFit.cover,
                         ),
                       ),
-                    )
-                    //),
-                    ,
+                    ),
                     trailing: Column(
                       children: [
                         CircleAvatar(

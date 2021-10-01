@@ -49,4 +49,13 @@ class MmmShadow {
         blurRadius: 30,
         spreadRadius: 8);
   }
+
+  static BoxShadow textFieldMessaging(
+      {Color shadowColor: kShadowColorForGrid}) {
+    return BoxShadow(
+        color: kShadowColorForWhite.withOpacity(0.08),
+        offset: Offset(0, 20),
+        blurRadius: 40,
+        spreadRadius: 0);
+  }
 }
