@@ -30,6 +30,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   simple_gradient_text: ^1.2.2
   pin_code_fields: ^7.3.0
+  pin_code_text_field: ^1.8.0
   flutter_typeahead: ^3.2.0
   flutter_svg:
   google_sign_in: ^5.0.5
@@ -46,6 +47,8 @@ dependencies:
   intl: ^0.17.0
   image_picker: ^0.8.3+3
   permission_handler: ^8.1.4+2
+  flutter_tindercard: ^0.2.0
+  swipe_cards: ^0.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

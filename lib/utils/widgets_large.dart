@@ -8,6 +8,80 @@ import 'package:makemymarry/utils/view_decorations.dart';
 import 'colors.dart';
 
 class MmmWidgets {
+  static Widget messageReceived(String msg, String time) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                  maxWidth: 253, maxHeight: double.infinity, minHeight: 58),
+              child: Container(
+                padding: EdgeInsets.fromLTRB(20, 16, 20, 16),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(16),
+                        topRight: Radius.circular(16),
+                        bottomRight: Radius.circular(16)),
+                    color: kMessage),
+                child: Text(
+                  msg,
+                  style: MmmTextStyles.bodyRegular(textColor: kDark5),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 4,
+            ),
+            Text(
+              time,
+              style: MmmTextStyles.caption(textColor: gray4),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  static Widget messageSent(String msg, String time) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                  maxWidth: 253, maxHeight: double.infinity, minHeight: 58),
+              child: Container(
+                padding: EdgeInsets.fromLTRB(20, 16, 20, 16),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(16),
+                        topRight: Radius.circular(16),
+                        bottomLeft: Radius.circular(16)),
+                    color: kLight4),
+                child: Text(
+                  msg,
+                  style: MmmTextStyles.bodyRegular(textColor: kDark5),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 4,
+            ),
+            Text(
+              time,
+              style: MmmTextStyles.caption(textColor: gray4),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
   static Widget rowWidget(String icon, String info) {
     return Row(
       children: [
@@ -35,6 +109,26 @@ class MmmWidgets {
           "images/app_loader2.gif",
           width: 96,
           height: 96,
+        ),
+      ),
+    );
+  }
+
+  static Container buildLoader2(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      color: Colors.black.withOpacity(0.55),
+      child: Center(
+        child: Card(
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 64),
+            child: Image.asset(
+              "images/app_loader4.gif",
+              width: 128,
+              height: 96,
+            ),
+          ),
         ),
       ),
     );

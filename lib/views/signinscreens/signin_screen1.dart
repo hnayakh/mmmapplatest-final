@@ -5,31 +5,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/bloc/sign_in/signin_bloc.dart';
 import 'package:makemymarry/bloc/sign_in/signin_event.dart';
 import 'package:makemymarry/bloc/sign_in/signin_state.dart';
-import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
-
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
-import 'package:makemymarry/views/filterscreen/fliter_screen.dart';
-
+import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/forgotpasswordscreens/forgot_password.dart';
+import 'package:makemymarry/views/profile_loader/profile_loader.dart';
 import 'package:makemymarry/views/profilescreens/about/about.dart';
 import 'package:makemymarry/views/profilescreens/bio/bio.dart';
-import 'package:makemymarry/views/profilescreens/family/family.dart';
-import 'package:makemymarry/views/profilescreens/family/family_background/family_background.dart';
-import 'package:makemymarry/views/profilescreens/family/family_details/family_details.dart';
-import 'package:makemymarry/views/profilescreens/habbit/habits.dart';
-import 'package:makemymarry/views/profilescreens/occupation/occupation.dart';
-import 'package:makemymarry/views/profilescreens/religion/religion.dart';
+import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference.dart';
 import 'package:makemymarry/views/signinscreens/phone%20signin/phone_screen.dart';
-
 import 'package:makemymarry/views/signupscreens/create_account/create_account_screen.dart';
-import 'package:makemymarry/views/stackviewscreens/grid_view_stack.dart';
-import 'package:makemymarry/views/stackviewscreens/stackview/stack_view.dart';
-
+import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/profile%20screens/verify%20account%20screens/verify_account.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class SignIn extends StatelessWidget {
@@ -127,6 +117,8 @@ class SignInScreenState extends State<SignInScreen> {
                                       children: [
                                         InkWell(
                                           onTap: () {
+                                            FocusScope.of(context)
+                                                .requestFocus(FocusNode());
                                             navigateToForgotPassword();
                                           },
                                           child: GradientText(
@@ -144,6 +136,8 @@ class SignInScreenState extends State<SignInScreen> {
                                         child: MmmButtons
                                             .enabledRedButtonbodyMedium(
                                                 44, 'Sign In', action: () {
+                                      FocusScope.of(context)
+                                          .requestFocus(FocusNode());
                                       BlocProvider.of<SignInBloc>(context)
                                           .add(ValidateAndSignin(
                                         emailController.text.trim(),
@@ -245,13 +239,7 @@ class SignInScreenState extends State<SignInScreen> {
                       ]),
                 ),
                 state is OnLoading
-                    ? Center(
-                        child: Image.asset(
-                          "images/app_loader2.gif",
-                          width: 96,
-                          height: 96,
-                        ),
-                      )
+                    ? MmmWidgets.buildLoader2(context)
                     : Container()
               ],
             ));
@@ -299,51 +287,9 @@ class SignInScreenState extends State<SignInScreen> {
 
   void navigateToProfileSetup() {
     var userRepo = BlocProvider.of<SignInBloc>(context).userRepository;
-    var regStep = userRepo.useDetails!.registrationStep;
-    if (regStep == 2) {
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => About(
-                userRepository: userRepo,
-              )));
-    } else if (regStep == 3) {
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => Habit(
-                userRepository: userRepo,
-              )));
-    } else if (regStep == 4) {
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => Religion(
-                userRepository: userRepo,
-              )));
-    } else if (regStep == 5) {
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => Occupations(
-                userRepository: userRepo,
-              )));
-    } else if (regStep == 6) {
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => FamilyScreen(userRepository: userRepo)));
-    } else if (regStep == 7) {
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => FamilyScreen(userRepository: userRepo)));
-    } else if (regStep == 8) {
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => Bio(
-                userRepository: userRepo,
-              )));
-    } else if (regStep == 9) {
-      var profileIndex = 0;
-      var likeInfoList = List.filled(userRepo.listProfileDetails.length, 0);
-      //Navigator.of(context).push(MaterialPageRoute(
-      //    builder: (context) => StackView(
-      //          userRepository: userRepo,
-      //         likeInfoList: likeInfoList,
-      //        profileIndex: profileIndex,
-      //     )));
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => Filter(
-                userRepository: userRepo,
-              )));
-    }
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => VerifyAccount(
+              userRepository: userRepo,
+            )));
   }
 }

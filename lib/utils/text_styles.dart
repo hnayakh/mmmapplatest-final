@@ -18,6 +18,7 @@ class MmmTextStyles {
   static TextStyle heading2({Color textColor: kTextColor}) {
     return TextStyle(
       fontFamily: "MakeMyMarrySemiBold",
+      color: kTextColor,
       fontSize: 28,
       height: 1.571,
     );
@@ -61,6 +62,15 @@ class MmmTextStyles {
         fontFamily: "MakeMyMarryMedium",
         fontSize: 16,
         height: 1.625,
+        color: textColor);
+  }
+
+  static TextStyle cardNumber({Color textColor: kTextColor}) {
+    return TextStyle(
+        fontFamily: "MakeMyMarryMedium",
+        fontSize: 16,
+        height: 1.625,
+        //letterSpacing: -1,
         color: textColor);
   }
 

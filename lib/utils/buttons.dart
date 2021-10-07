@@ -10,20 +10,114 @@ import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
 
 class MmmButtons {
-  static Widget smallprofilePicButton(String image) {
-    return Container(
-      width: 40,
-      height: 40,
-      padding: EdgeInsets.all(2),
-      decoration: BoxDecoration(
-          color: kWhite, borderRadius: BorderRadius.all(Radius.circular(5.85))),
-      child: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(5.85)),
-        child: Image.asset(
-          image,
-          fit: BoxFit.cover,
+  static Widget walletApps(String title, String icon) {
+    return ListTile(
+      dense: true,
+      contentPadding: const EdgeInsets.only(top: 8),
+      title: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(title, style: MmmTextStyles.heading6(textColor: kDark5)),
+                SvgPicture.asset(icon)
+              ],
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            Divider(
+              color: kLight4,
+            ),
+          ],
         ),
       ),
+      onTap: () {
+        print(title);
+      },
+    );
+  }
+
+  static Widget plusMinusButton(BuildContext context, String icon,
+      {Function()? action}) {
+    return Container(
+      decoration: BoxDecoration(
+        color: kLight2,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: action,
+            child: Container(
+              height: MediaQuery.of(context).size.width * 0.12,
+              width: MediaQuery.of(context).size.width * 0.12,
+              alignment: Alignment.center,
+              child: SvgPicture.asset(
+                icon,
+                color: kPrimary,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  static Widget searchScreenButton(String title, {Function()? action}) {
+    return Material(
+        color: Colors.transparent,
+        child: InkWell(
+            onTap: action,
+            child: Container(
+              height: 62,
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+              decoration: BoxDecoration(
+                border: Border.symmetric(
+                    horizontal: BorderSide(color: kBorder),
+                    vertical: BorderSide.none),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    title,
+                    style: MmmTextStyles.bodyMedium(textColor: kDark5),
+                  ),
+                  Container(
+                    child: SvgPicture.asset(
+                      "images/rightArrow.svg",
+                      color: Color(0xff878D96),
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                ],
+              ),
+            )));
+  }
+
+  static Widget smallprofilePicButton(String image, Function() action) {
+    return InkWell(
+      child: Container(
+        width: 40,
+        height: 40,
+        padding: EdgeInsets.all(2),
+        decoration: BoxDecoration(
+            color: kWhite,
+            borderRadius: BorderRadius.all(Radius.circular(5.85))),
+        child: ClipRRect(
+          borderRadius: BorderRadius.all(Radius.circular(5.85)),
+          child: Image.network(
+            image,
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+      onTap: action,
     );
   }
 
@@ -495,6 +589,66 @@ class MmmButtons {
     );
   }
 
+  static Container searchButtons(String icon, String label,
+      {Function()? action}) {
+    return Container(
+      decoration: BoxDecoration(
+        color: kWhite,
+        boxShadow: [MmmShadow.elevation1()],
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: Color(0xffF0EFF5),
+          width: 1,
+        ),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: action,
+            child: Container(
+              padding: EdgeInsets.fromLTRB(20, 8, 20, 8),
+              alignment: Alignment.center,
+              height: 60,
+              //padding: EdgeInsets.all(8),
+              child: Row(
+                children: [
+                  SvgPicture.asset(
+                    icon,
+                    color: Color(0xff121619),
+                    fit: BoxFit.cover,
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: SizedBox(),
+                  ),
+                  Text(
+                    label,
+                    textScaleFactor: 1.0,
+                    //textAlign: TextAlign.start,
+                    style: MmmTextStyles.bodyRegular(textColor: kDark5),
+                  ),
+                  Expanded(
+                    flex: 20,
+                    child: SizedBox(),
+                  ),
+                  Container(
+                    child: SvgPicture.asset(
+                      "images/rightArrow.svg",
+                      color: Color(0xff878D96),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   static Widget swapViewButton(BuildContext context, String icon,
       {Function()? action}) {
     return Column(
@@ -652,11 +806,7 @@ class MmmButtons {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    //SizedBox(
-                    //  width: 16,
-                    // ),
                     Expanded(
-                      //width: 216,
                       child: Text(
                         hintText,
                         maxLines: 1,
@@ -666,9 +816,6 @@ class MmmButtons {
                         style: MmmTextStyles.bodyRegular(textColor: kDark5),
                       ),
                     ),
-                    // SizedBox(
-                    //width: 110,
-                    //  ),
                     SvgPicture.asset(
                       'images/rightArrow.svg',
                       width: 24,
@@ -677,6 +824,141 @@ class MmmButtons {
                       fit: BoxFit.cover,
                     ),
                   ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  static Widget myProfileButtons(String hintText, {Function()? action}) {
+    return Column(
+      children: [
+        Container(
+          height: 58,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(width: 1, color: kLight4),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: action,
+                child: Container(
+                  padding: EdgeInsets.only(left: 22, right: 12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        hintText,
+                        textScaleFactor: 1.0,
+                        style: MmmTextStyles.bodyMedium(textColor: kDark5),
+                      ),
+                      SvgPicture.asset(
+                        'images/rightArrow.svg',
+                        width: 24,
+                        height: 24,
+                        color: Color(0xff878D96),
+                        fit: BoxFit.cover,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  static Widget walletButtons(String hintText, {Function()? action}) {
+    return Column(
+      children: [
+        Container(
+          height: 66,
+          decoration: BoxDecoration(
+            color: kWhite,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              MmmShadow.filterButton(),
+            ],
+            //border: Border.all(width: 1, color: kLight4),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: action,
+                child: Container(
+                  padding: EdgeInsets.only(left: 22, right: 12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        hintText,
+                        textScaleFactor: 1.0,
+                        style: MmmTextStyles.bodyMedium(textColor: kDark5),
+                      ),
+                      SvgPicture.asset(
+                        'images/rightArrow.svg',
+                        width: 24,
+                        height: 24,
+                        color: gray3,
+                        fit: BoxFit.cover,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  static Widget buyConnectsButton(String title, String amount,
+      {Function()? action}) {
+    return Column(
+      children: [
+        Container(
+          height: 66,
+          decoration: BoxDecoration(
+            color: kWhite,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              MmmShadow.filterButton(),
+            ],
+            //border: Border.all(width: 1, color: kLight4),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: action,
+                child: Container(
+                  padding: EdgeInsets.only(left: 22, right: 12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        title,
+                        textScaleFactor: 1.0,
+                        style: MmmTextStyles.bodyMedium(textColor: kDark5),
+                      ),
+                      Text(
+                        amount,
+                        style: MmmTextStyles.captionBold(textColor: kPrimary),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -698,9 +980,6 @@ class MmmButtons {
               textScaleFactor: 1.0,
               style: MmmTextStyles.bodySmall(textColor: kDark5),
             ),
-            //SizedBox(
-            //  width: 2,
-            // ),
             Text(
               ' *',
               style: MmmTextStyles.bodySmall(textColor: kredStar),
@@ -717,48 +996,92 @@ class MmmButtons {
             borderRadius: BorderRadius.circular(8),
             border: Border.all(width: 1, color: kDark2),
           ),
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: action,
-              child: Container(
-                padding: EdgeInsets.only(left: 12, right: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    //SizedBox(
-                    //  width: 16,
-                    // ),
-                    Expanded(
-                      //width: 216,
-                      child: Text(
-                        hintText,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        textScaleFactor: 1.0,
-                        textAlign: TextAlign.start,
-                        style: newhintText == hintText
-                            ? MmmTextStyles.bodyRegular(textColor: kDark2)
-                            : MmmTextStyles.bodyRegular(textColor: kDark5),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: action,
+                child: Container(
+                  padding: EdgeInsets.only(left: 12, right: 12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          hintText,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textScaleFactor: 1.0,
+                          textAlign: TextAlign.start,
+                          style: newhintText == hintText
+                              ? MmmTextStyles.bodyRegular(textColor: kDark2)
+                              : MmmTextStyles.bodyRegular(textColor: kDark5),
+                        ),
                       ),
-                    ),
-                    // SizedBox(
-                    //width: 110,
-                    //  ),
-                    SvgPicture.asset(
-                      icon,
-                      width: 24,
-                      height: 24,
-                      color: Color(0xff878D96),
-                      fit: BoxFit.cover,
-                    ),
-                  ],
+                      SvgPicture.asset(
+                        icon,
+                        width: 24,
+                        height: 24,
+                        color: Color(0xff878D96),
+                        fit: BoxFit.cover,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
         ),
       ],
+    );
+  }
+
+  static Widget idproofButton(
+      String labelText, String hintText, String newhintText, String icon,
+      {Function()? action}) {
+    return Container(
+      height: 48,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(width: 1, color: kLight4),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: action,
+            child: Container(
+              padding: EdgeInsets.only(left: 12, right: 12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      hintText,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textScaleFactor: 1.0,
+                      textAlign: TextAlign.start,
+                      style: newhintText == hintText
+                          ? MmmTextStyles.bodyMedium(textColor: kDark2)
+                          : MmmTextStyles.bodyMedium(textColor: kDark5),
+                    ),
+                  ),
+                  SvgPicture.asset(
+                    icon,
+                    width: 24,
+                    height: 24,
+                    color: Color(0xff878D96),
+                    fit: BoxFit.cover,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -835,7 +1158,8 @@ class MmmButtons {
     );
   }
 
-  static Widget appBarCurvedProfile(String title, BuildContext context) {
+  static Widget appBarCurvedProfile(
+      String title, BuildContext context, String image) {
     return PreferredSize(
       //preferredSize: Size.fromHeight(120),
       preferredSize: Size.fromHeight(MediaQuery.of(context).size.height * 0.17),
@@ -904,8 +1228,8 @@ class MmmButtons {
                     CircleAvatar(
                       radius: 24,
                       child: ClipOval(
-                        child: Image.asset(
-                          'images/stackviewImage.jpg',
+                        child: Image.network(
+                          image,
                           width: double.infinity,
                           fit: BoxFit.cover,
                         ),
@@ -1666,6 +1990,53 @@ class MmmButtons {
     );
   }
 
+  static Container instagramButton() {
+    return Container(
+      height: 50,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: Color(0xffFCFCFD),
+        border: Border.all(
+          color: Color(0xff878D96),
+          width: 1,
+        ),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {},
+          child: Row(
+            children: [
+              SizedBox(
+                width: 16,
+              ),
+              Container(
+                height: 24,
+                width: 24,
+                child: SvgPicture.asset(
+                  "images/social/instagram.svg",
+                  fit: BoxFit.cover,
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Container(
+                height: 26,
+                width: 260,
+                child: Text(
+                  'Instagram',
+                  textAlign: TextAlign.center,
+                  style: MmmTextStyles.heading5(textColor: kDark5),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   static Container googleSignupButton() {
     return Container(
       height: 50,
@@ -2271,36 +2642,80 @@ class MmmButtons {
       width: 127,
       child: Container(
         decoration: MmmDecorations.primaryButtonDecoration(),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {},
+              child: Center(
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 16,
+                    ),
+                    Container(
+                      width: 16,
+                      height: 16,
+                      child: SvgPicture.asset(
+                        "images/Calendar.svg",
+                        color: Color(0xffFCFCFD),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    Container(
+                      alignment: Alignment.center,
+                      height: 20,
+                      width: 71,
+                      child: Text(
+                        'Reschedule',
+                        textScaleFactor: 1.0,
+                        textAlign: TextAlign.center,
+                        style: MmmTextStyles.captionBold(textColor: gray7),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  //interests screen=============================================================
+
+  static Container connectButton(String text, {Function()? action}) {
+    return Container(
+      decoration: MmmDecorations.primaryButtonDecoration(),
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(8)),
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () {},
-            child: Center(
+            onTap: action,
+            child: Container(
+              padding: EdgeInsets.fromLTRB(12, 4, 12, 4),
+              //alignment: Alignment.center,
+              height: 28,
+              width: 129,
               child: Row(
                 children: [
-                  SizedBox(
-                    width: 16,
-                  ),
-                  Container(
-                    width: 16,
+                  SvgPicture.asset(
+                    'images/connect.svg',
                     height: 16,
-                    child: SvgPicture.asset(
-                      "images/Calendar.svg",
-                      color: Color(0xffFCFCFD),
-                      fit: BoxFit.cover,
-                    ),
+                    color: gray7,
                   ),
-                  SizedBox(width: 8),
-                  Container(
-                    alignment: Alignment.center,
-                    height: 20,
-                    width: 71,
-                    child: Text(
-                      'Reschedule',
-                      textScaleFactor: 1.0,
-                      textAlign: TextAlign.center,
-                      style: MmmTextStyles.captionBold(textColor: gray7),
-                    ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    text,
+                    textAlign: TextAlign.center,
+                    textScaleFactor: 1.0,
+                    style: MmmTextStyles.caption(textColor: gray7),
                   ),
                 ],
               ),
@@ -2311,7 +2726,6 @@ class MmmButtons {
     );
   }
 
-  //fliter screen=============================================================
   static Container preferenceFliterScreen(String text) {
     return Container(
       height: 48,
@@ -2402,25 +2816,102 @@ class MmmButtons {
     );
   }
 
+  static Container acceptMeetScreen() {
+    return Container(
+      height: 28,
+      width: 91,
+      child: Container(
+        decoration: MmmDecorations.primaryButtonDecoration(),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () {},
+            child: Center(
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 12,
+                  ),
+                  Container(
+                    width: 16,
+                    height: 16,
+                    child: SvgPicture.asset(
+                      "images/meet.svg",
+                      color: Color(0xffFCFCFD),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  SizedBox(width: 8),
+                  Container(
+                    alignment: Alignment.center,
+                    height: 20,
+                    width: 43,
+                    child: Text(
+                      'Accept',
+                      textScaleFactor: 1.0,
+                      textAlign: TextAlign.center,
+                      style: MmmTextStyles.caption(textColor: gray7),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   static Container cancelButtonInterestScreen() {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: Color(0xffF0EFF5),
+        color: kLight4,
       ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () {},
-          child: Container(
-            alignment: Alignment.center,
-            height: 28,
-            width: 67,
-            child: Text(
-              'Cancel',
-              textScaleFactor: 1.0,
-              textAlign: TextAlign.center,
-              style: MmmTextStyles.caption(textColor: kDark5),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () {},
+            child: Container(
+              alignment: Alignment.center,
+              height: 28,
+              width: 67,
+              child: Text(
+                'Cancel',
+                textScaleFactor: 1.0,
+                style: MmmTextStyles.caption(textColor: kDark5),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  static Container cancelButtonMeetScreen(String title, double width,
+      {Function()? action}) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: gray5,
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: action,
+            child: Container(
+              alignment: Alignment.center,
+              height: 28,
+              width: width,
+              child: Text(
+                title,
+                textScaleFactor: 1.0,
+                style: MmmTextStyles.captionBold(textColor: kDark5),
+              ),
             ),
           ),
         ),
@@ -2465,54 +2956,44 @@ class MmmButtons {
           width: 1,
         ),
       ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () {},
-          child: Container(
-            alignment: Alignment.center,
-            height: 87,
-            width: 343,
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 24,
-                ),
-                Container(
-                  height: 39,
-                  width: 41.1,
-                  child: SvgPicture.asset(
-                    "images/verifiedCheck.svg",
-                    fit: BoxFit.cover,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () {},
+            child: Container(
+              alignment: Alignment.center,
+              height: 87,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Container(
+                    height: 39,
+                    width: 41.1,
+                    child: SvgPicture.asset(
+                      "images/verifiedCheck.svg",
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
-                SizedBox(
-                  width: 12,
-                ),
-                Container(
-                  width: 190.9,
-                  height: 26,
-                  child: Text(
-                    'Verify your account',
-                    textScaleFactor: 1.0,
-                    textAlign: TextAlign.center,
-                    style: MmmTextStyles.heading5(textColor: kDark5),
+                  Container(
+                    child: Text(
+                      'Verify your account',
+                      textScaleFactor: 1.0,
+                      textAlign: TextAlign.center,
+                      style: MmmTextStyles.heading5(textColor: kDark5),
+                    ),
                   ),
-                ),
-                SizedBox(
-                  width: 12,
-                ),
-                Container(
-                  height: 24,
-                  width: 24,
-                  margin: EdgeInsets.only(left: 15),
-                  child: SvgPicture.asset(
-                    "assets/icons/rightArrow.svg",
-                    color: Color(0xff343A3F),
-                    fit: BoxFit.cover,
-                  ),
-                )
-              ],
+                  Container(
+                    margin: EdgeInsets.only(left: 15),
+                    child: SvgPicture.asset(
+                      "images/rightArrow.svg",
+                      color: gray3,
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),

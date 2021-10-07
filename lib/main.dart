@@ -4,16 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_styles.dart';
-import 'package:makemymarry/views/filterscreen/fliter_screen.dart';
-
-import 'package:makemymarry/views/profileviewscreens/profile_view.dart';
-
 import 'package:makemymarry/views/splash_screen.dart';
-import 'package:makemymarry/views/stackviewscreens/connect.dart';
-import 'package:makemymarry/views/stackviewscreens/grid_view_stack.dart';
-import 'package:makemymarry/views/stackviewscreens/message_screen.dart';
-import 'package:makemymarry/views/stackviewscreens/notification.dart';
-import 'package:makemymarry/views/stackviewscreens/stackview/stack_view.dart';
+import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/wallet%20screens/wallet_main.dart';
+
 import 'package:makemymarry/views/widget_views.dart';
 
 class SimpleObserver extends BlocObserver {
@@ -54,7 +47,7 @@ void main() {
       systemNavigationBarColor: kSecondary,
       // navigation bar color
       statusBarColor: kSecondary,
-      statusBarBrightness: Brightness.dark // status bar color
+      statusBarBrightness: Brightness.dark // status bar colorr
       ));
   runApp(MyApp());
 }
@@ -71,7 +64,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.pink,
       ),
-      home: ProfileView(),
+      home: WalletScreen(),
     );
   }
 }

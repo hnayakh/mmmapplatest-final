@@ -97,7 +97,7 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
             );
 
         if (result.status == AppConstants.SUCCESS) {
-          this.userRepository.useDetails = result.userDetails;
+          this.userRepository.useDetails!.countryModel = this.countryModel!;
           // await this.userRepository.saveUserDetails();
           yield MoveToFamily();
         } else {

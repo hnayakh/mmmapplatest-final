@@ -33,6 +33,13 @@ class MmmDecorations {
         end: Alignment.centerRight);
   }
 
+  static LinearGradient primaryGradientOpacity() {
+    return LinearGradient(
+        colors: [kPrimary.withOpacity(0.5), kSecondary.withOpacity(0.5)],
+        begin: Alignment.centerLeft,
+        end: Alignment.centerRight);
+  }
+
   static InputDecoration textfieldDecoration(String hintText) {
     return InputDecoration(
         border: OutlineInputBorder(
@@ -41,8 +48,7 @@ class MmmDecorations {
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(8)),
             borderSide: BorderSide(color: kInputBorder, width: 1)),
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         hintText: hintText,
         isDense: true,
         filled: true,

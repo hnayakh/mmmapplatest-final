@@ -3,6 +3,7 @@ import 'package:makemymarry/bloc/about/about_event.dart';
 import 'package:makemymarry/bloc/about/about_state.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
+import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 
 class AboutBloc extends Bloc<AboutEvent, AboutState> {
@@ -70,6 +71,10 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
 
         if (result.status == AppConstants.SUCCESS) {
           this.userRepository.useDetails = result.userDetails;
+          this.userRepository.useDetails!.dateOfBirth = this.dob;
+          this.userRepository.useDetails!.maritalStatus = this.maritalStatus!;
+          this.userRepository.useDetails!.height = AppHelper.getHeights()[this.heightStatus!];
+          this.userRepository.useDetails!.abilityStatus = this.abilityStatus!;
           // await this.userRepository.saveUserDetails();
           yield OnNavigationToHabits();
         } else {

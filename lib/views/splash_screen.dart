@@ -14,12 +14,6 @@ import 'package:makemymarry/views/signinscreens/signin_screen1.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 import 'intro.dart';
-import 'profilescreens/about/about.dart';
-import 'profilescreens/family/family.dart';
-import 'profilescreens/habbit/habits.dart';
-import 'profilescreens/occupation/occupation.dart';
-import 'profilescreens/religion/religion.dart';
-import 'stackviewscreens/stackview/stack_view.dart';
 
 class Splash extends StatelessWidget {
   @override
@@ -84,51 +78,6 @@ class SplashScreenState extends State<SplashScreen> {
           navigateToLogin();
         } else if (state is MoveToInstructionScreen) {
           navigateToIntroScreen();
-        } else if (state is MoveToHome) {
-          var userRepo = BlocProvider.of<SplashBloc>(context).userRepository;
-          var regStep = userRepo.useDetails!.registrationStep;
-          if (regStep == 2) {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => About(
-                      userRepository: userRepo,
-                    )));
-          } else if (regStep == 3) {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => Habit(
-                      userRepository: userRepo,
-                    )));
-          } else if (regStep == 4) {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => Religion(
-                      userRepository: userRepo,
-                    )));
-          } else if (regStep == 5) {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => Occupations(
-                      userRepository: userRepo,
-                    )));
-          } else if (regStep == 6) {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => FamilyScreen(userRepository: userRepo)));
-          } else if (regStep == 7) {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => FamilyScreen(userRepository: userRepo)));
-          } else if (regStep == 8) {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => Bio(
-                      userRepository: userRepo,
-                    )));
-          } else if (regStep == 9) {
-            var profileIndex = 0;
-            var likeInfoList =
-                List.filled(userRepo.listProfileDetails.length, 0);
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => StackView(
-                      userRepository: userRepo,
-                      likeInfoList: likeInfoList,
-                      profileIndex: profileIndex,
-                    )));
-          }
         }
       }),
     );
@@ -138,9 +87,10 @@ class SplashScreenState extends State<SplashScreen> {
     Timer(Duration(seconds: 3), () {
       var userRepo = BlocProvider.of<SplashBloc>(context).userRepository;
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => IntroScreen(
+          builder: (context) => SignIn(
                 userRepository: userRepo,
               )));
+
     });
   }
 

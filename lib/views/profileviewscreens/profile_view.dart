@@ -1,21 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:makemymarry/datamodels/martching_profile.dart';
+import 'package:makemymarry/repo/user_repo.dart';
+import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/icons.dart';
+import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 
-class ProfileView extends StatefulWidget {
-  const ProfileView({Key? key}) : super(key: key);
+class ProfileView extends StatelessWidget {
+  final UserRepository userRepository;
+  final ProfileDetails profileDetails;
+
+  const ProfileView(
+      {Key? key, required this.userRepository, required this.profileDetails})
+      : super(key: key);
 
   @override
-  _ProfileViewState createState() => _ProfileViewState();
+  Widget build(BuildContext context) {
+    return ProfileViewScreen(
+      profileDetails: profileDetails,
+    );
+  }
 }
 
-class _ProfileViewState extends State<ProfileView>
+class ProfileViewScreen extends StatefulWidget {
+  final ProfileDetails profileDetails;
+
+  const ProfileViewScreen({Key? key, required this.profileDetails})
+      : super(key: key);
+
+  @override
+  _ProfileViewScreenState createState() =>
+      _ProfileViewScreenState(profileDetails);
+}
+
+class _ProfileViewScreenState extends State<ProfileViewScreen>
     with TickerProviderStateMixin {
+  final ProfileDetails profileDetails;
   bool showAppBar = true;
   ScrollController _controller = ScrollController();
   int aboutState = 0;
@@ -119,6 +144,10 @@ class _ProfileViewState extends State<ProfileView>
 
   static var appBarState = 0;
 
+  int selectedImagePos = 0;
+
+  _ProfileViewScreenState(this.profileDetails);
+
   @override
   void dispose() {
     super.dispose();
@@ -167,8 +196,8 @@ class _ProfileViewState extends State<ProfileView>
                   sizeFactor: _appBarAnimation,
                   axis: Axis.vertical,
                   //axisAlignment: -1,
-                  child: MmmButtons.appBarCurvedProfile(
-                      'Kristen Stewart', context)),
+                  child: MmmButtons.appBarCurvedProfile(profileDetails.name,
+                      context, this.profileDetails.images[selectedImagePos])),
             )
           : null,
       body: SingleChildScrollView(
@@ -184,8 +213,8 @@ class _ProfileViewState extends State<ProfileView>
                   ClipRRect(
                     borderRadius: BorderRadius.only(
                         bottomRight: Radius.circular(23.3813)),
-                    child: Image.asset(
-                      'images/stackviewImage.jpg',
+                    child: Image.network(
+                      profileDetails.images[selectedImagePos],
                       // height: 453.01,
                       height: MediaQuery.of(context).size.height * 0.665,
                       width: double.infinity,
@@ -196,21 +225,7 @@ class _ProfileViewState extends State<ProfileView>
                     top: MediaQuery.of(context).size.height * 0.1,
                     right: MediaQuery.of(context).size.width * 0.05,
                     child: Column(
-                      children: [
-                        MmmButtons.smallprofilePicButton('images/bio.jpg'),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.012,
-                        ),
-                        MmmButtons.smallprofilePicButton('images/bio.jpg'),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.012,
-                        ),
-                        MmmButtons.smallprofilePicButton('images/bio.jpg'),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.012,
-                        ),
-                        MmmButtons.smallprofilePicButton('images/bio.jpg'),
-                      ],
+                      children: createImageThumbNails(),
                     ),
                   ),
                   Column(
@@ -243,7 +258,7 @@ class _ProfileViewState extends State<ProfileView>
                     child: Row(
                       children: [
                         Text(
-                          'Kristen Stewart ',
+                          profileDetails.name,
                           style: MmmTextStyles.heading5(textColor: kPrimary),
                         ),
                         Column(
@@ -272,13 +287,14 @@ class _ProfileViewState extends State<ProfileView>
                   SizedBox(
                     height: 7,
                   ),
+                  MmmWidgets.rowWidget("images/Users1.svg",
+                      ' Profile managed by ${getProfileManagedBy()}'),
+                  MmmWidgets.rowWidget("images/Calendar.svg",
+                      ' ${AppHelper.getAgeFromDob(profileDetails.dateOfBirth)}yrs, ${AppHelper.getReadableDob(profileDetails.dateOfBirth)}'),
                   MmmWidgets.rowWidget(
-                      "images/Users1.svg", ' Profile managed by Father'),
+                      "images/office.svg", profileDetails.occupation),
                   MmmWidgets.rowWidget(
-                      "images/Calendar.svg", ' 25yrs, 12th Nov,1996 June'),
-                  MmmWidgets.rowWidget(
-                      "images/office.svg", 'Software Engineer'),
-                  MmmWidgets.rowWidget("images/height.svg", '5’5’’ height'),
+                      "images/height.svg", '${profileDetails.height} height'),
                   SizedBox(
                     height: 33,
                   ),
@@ -298,8 +314,7 @@ class _ProfileViewState extends State<ProfileView>
                               child: MmmButtons.aboutProfileViewButtons(
                                   "images/Users1.svg",
                                   'About',
-                                  'I come from an upper middle class family. The most important thing in my life is religious beliefs, moral values and respect for elders. I’m modern thinker.',
-                                  action: () {
+                                  profileDetails.aboutMe, action: () {
                                 showAboutData();
                               })),
                     ],
@@ -525,5 +540,43 @@ class _ProfileViewState extends State<ProfileView>
         familyState = 2;
       }
     });
+  }
+
+  List<Widget> createImageThumbNails() {
+    List<Widget> list = [];
+    for (var image in profileDetails.images) {
+      list.add(Column(
+        children: [
+          MmmButtons.smallprofilePicButton(image, () {
+            setState(() {
+              this.selectedImagePos = profileDetails.images.indexOf(image);
+            });
+          }),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.012,
+          ),
+        ],
+      ));
+    }
+    return list;
+  }
+
+  String getProfileManagedBy() {
+    switch (profileDetails.relationship) {
+      case Relationship.Self:
+        return "Self";
+      case Relationship.Son:
+      case Relationship.Daughter:
+        return "Father";
+      case Relationship.Sister:
+
+      case Relationship.Brother:
+        return "Brother";
+
+      case Relationship.Friend:
+        return "Friend";
+      case Relationship.Relative:
+        return "Relative";
+    }
   }
 }

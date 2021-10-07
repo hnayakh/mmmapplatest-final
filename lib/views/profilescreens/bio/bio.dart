@@ -15,7 +15,7 @@ import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/profilescreens/bio/image_picker_dialog.dart';
-import 'package:makemymarry/views/stackviewscreens/stackview/stack_view.dart';
+import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference.dart';
 
 import 'bio_bloc.dart';
 import 'bio_event.dart';
@@ -56,134 +56,140 @@ class _BioScreenState extends State<BioScreen> {
         if (state is OnProfileSetupCompletion) {
           //navigate to profile screen
           print('profile setup completed');
-          navigateToStackView();
+        }
+        if (state is OnError) {
+          Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text(state.message),
+            backgroundColor: Colors.red,
+          ));
+        }
+        if (state is OnUpdate) {
+          navigateToProfilePreference();
         }
       },
       builder: (context, state) {
         this.localImagePaths =
             BlocProvider.of<BioBloc>(context).localImagePaths;
-        return Container(
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-              MmmButtons.appBarCurved('Bio', context: context),
-              Expanded(
-                  child: Container(
-                padding: kMargin16,
+        return Stack(
+          children: [
+            Container(
                 child: Column(
-                  children: [
-                    buildAboutMeWidget(),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Text(
-                              'Photo',
-                              style:
-                                  MmmTextStyles.bodyRegular(textColor: kDark5),
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Expanded(
-                                child: GridView.builder(
-                              gridDelegate:
-                                  SliverGridDelegateWithMaxCrossAxisExtent(
-                                      maxCrossAxisExtent:
-                                          (MediaQuery.of(context).size.width) /
-                                              2,
-                                      mainAxisExtent: 120,
-                                      crossAxisSpacing: 20,
-                                      mainAxisSpacing: 20),
-                              itemBuilder: (context, index) {
-                                if (index == this.localImagePaths.length) {
-                                  return addImageButton();
-                                } else
-                                  return Container(
-                                    child: Stack(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      MmmButtons.appBarCurved('Bio', context: context),
+                      Expanded(
+                          child: Container(
+                            padding: kMargin16,
+                            child: Column(
+                              children: [
+                                buildAboutMeWidget(),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.stretch,
                                       children: [
-                                        ClipRRect(
-                                          child: Image.file(
-                                            File(this.localImagePaths[index]),
-                                            fit: BoxFit.fill,
-                                            width: (MediaQuery.of(context)
-                                                    .size
-                                                    .width) /
-                                                2,
-                                            height: 120,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(8),
+                                        Text(
+                                          'Photo',
+                                          style:
+                                          MmmTextStyles.bodyRegular(textColor: kDark5),
                                         ),
-                                        Positioned(
-                                            top: 8,
-                                            right: 8,
-                                            child: InkWell(
-                                              onTap: () {
-                                                BlocProvider.of<BioBloc>(
-                                                        context)
-                                                    .add(RemoveImage(index));
+                                        SizedBox(
+                                          height: 4,
+                                        ),
+                                        Expanded(
+                                            child: GridView.builder(
+                                              gridDelegate:
+                                              SliverGridDelegateWithMaxCrossAxisExtent(
+                                                  maxCrossAxisExtent:
+                                                  (MediaQuery.of(context).size.width) /
+                                                      2,
+                                                  mainAxisExtent: 120,
+                                                  crossAxisSpacing: 20,
+                                                  mainAxisSpacing: 20),
+                                              itemBuilder: (context, index) {
+                                                if (index == this.localImagePaths.length) {
+                                                  return addImageButton();
+                                                } else
+                                                  return Container(
+                                                    child: Stack(
+                                                      children: [
+                                                        ClipRRect(
+                                                          child: Image.network(
+                                                            this.localImagePaths[index],
+                                                            fit: BoxFit.fill,
+                                                            width: (MediaQuery.of(context)
+                                                                .size
+                                                                .width) /
+                                                                2,
+                                                            height: 120,
+                                                          ),
+                                                          borderRadius:
+                                                          BorderRadius.circular(8),
+                                                        ),
+                                                        Positioned(
+                                                            top: 8,
+                                                            right: 8,
+                                                            child: InkWell(
+                                                              onTap: () {
+                                                                BlocProvider.of<BioBloc>(
+                                                                    context)
+                                                                    .add(RemoveImage(index));
+                                                              },
+                                                              child: Container(
+                                                                child: SvgPicture.asset(
+                                                                  "images/Cross.svg",
+                                                                  color: Colors.white,
+                                                                ),
+                                                                width: 18,
+                                                                height: 18,
+                                                                padding:
+                                                                const EdgeInsets.all(2),
+                                                                decoration: BoxDecoration(
+                                                                    gradient: MmmDecorations
+                                                                        .primaryGradient(),
+                                                                    borderRadius:
+                                                                    BorderRadius.circular(
+                                                                        9)),
+                                                              ),
+                                                            ))
+                                                      ],
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                        boxShadow: [
+                                                          MmmShadow.elevation3(
+                                                              shadowColor: kShadow)
+                                                        ],
+                                                        color: Colors.white,
+                                                        borderRadius: BorderRadius.circular(8)),
+                                                  );
                                               },
-                                              child: Container(
-                                                child: SvgPicture.asset(
-                                                  "images/Cross.svg",
-                                                  color: Colors.white,
-                                                ),
-                                                width: 18,
-                                                height: 18,
-                                                padding:
-                                                    const EdgeInsets.all(2),
-                                                decoration: BoxDecoration(
-                                                    gradient: MmmDecorations
-                                                        .primaryGradient(),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            9)),
-                                              ),
-                                            ))
-                                      ],
-                                    ),
-                                    decoration: BoxDecoration(
-                                        boxShadow: [
-                                          MmmShadow.elevation3(
-                                              shadowColor: kShadow)
-                                        ],
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(8)),
-                                  );
-                              },
-                              itemCount: this.localImagePaths.length + 1,
-                            )),
-                          ]),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    MmmButtons.enabledRedButtonbodyMedium(
-                        50, 'Submit your details',
-                        action: () {})
-                  ],
-                ),
-              ))
-            ]));
+                                              itemCount: this.localImagePaths.length + 1,
+                                            )),
+                                      ]),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                MmmButtons.enabledRedButtonbodyMedium(
+                                    50, 'Submit your details', action: () {
+                                  FocusScope.of(context).requestFocus(FocusNode());
+                                  BlocProvider.of<BioBloc>(context)
+                                      .add(UpdateBio(this.bioController.text));
+                                })
+                              ],
+                            ),
+                          ))
+                    ])),
+            state is OnLoading
+                ? MmmWidgets.buildLoader(context)
+                : Container()
+          ],
+        );
       },
     ));
-  }
-
-  void navigateToStackView() {
-    var userRepo = BlocProvider.of<BioBloc>(context).userRepository;
-    var profileIndex = 0;
-    var likeInfoList = List.filled(userRepo.listProfileDetails.length, 0);
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => StackView(
-              userRepository: userRepo,
-              likeInfoList: likeInfoList,
-              profileIndex: profileIndex,
-            )));
   }
 
   InkWell addImageButton() {
@@ -281,5 +287,11 @@ class _BioScreenState extends State<BioScreen> {
           pickImages(ImageSource.camera);
       }
     }
+  }
+
+  void navigateToProfilePreference() {
+    var userRepo = BlocProvider.of<BioBloc>(context).userRepository;
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => ProfilePreference(userRepository: userRepo)));
   }
 }

@@ -58,4 +58,12 @@ class MmmShadow {
         blurRadius: 40,
         spreadRadius: 0);
   }
+
+  static BoxShadow filterButton({Color shadowColor: kShadowColorForGrid}) {
+    return BoxShadow(
+        color: kShadowColorForWhite.withOpacity(0.08),
+        offset: Offset(0, 15),
+        blurRadius: 30,
+        spreadRadius: 0);
+  }
 }

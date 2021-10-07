@@ -14,11 +14,44 @@ class BioBloc extends Bloc<BioEvent, BioState> {
   @override
   Stream<BioState> mapEventToState(BioEvent event) async* {
     yield OnLoading();
-    if (event is AddImage) {
-      this.localImagePaths.add(event.images);
-      yield BioInitialState();
+
+    if (event is UpdateBio) {
+      if (event.bio.length == 0) {
+        yield OnError("Enter Bio");
+      } else if (this.localImagePaths.length == 0) {
+        yield OnError("Add Images");
+      } else {
+        var result = await this
+            .userRepository
+            .updateBio(event.bio, this.localImagePaths);
+        if (result.status == AppConstants.SUCCESS) {
+          yield OnUpdate();
+        } else {
+          yield OnError(result.message);
+        }
+      }
     }
-    if(event is RemoveImage){
+    if (event is AddImage) {
+      var imageName = this.userRepository.useDetails!.id +
+          "_" +
+          DateTime.now().microsecondsSinceEpoch.toString() +
+          ".png";
+      var result = await this.userRepository.getImagePreSignedUrl(imageName);
+      if (result.status == AppConstants.SUCCESS) {
+        var response = await this
+            .userRepository
+            .uploadFile(result.imageUrl!, imageName, event.images);
+        if (response != null) {
+          if (response.statusCode == 200 || response.statusCode == 201) {
+            this
+                .localImagePaths
+                .add(AppConstants.PUBLICIMAGEBASEURL + imageName);
+            yield BioInitialState();
+          }
+        }
+      }
+    }
+    if (event is RemoveImage) {
       this.localImagePaths.removeAt(event.pos);
       yield BioInitialState();
     }

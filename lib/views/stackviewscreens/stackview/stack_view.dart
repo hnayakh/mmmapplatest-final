@@ -22,20 +22,18 @@ import '../grid_view_stack.dart';
 
 class StackView extends StatelessWidget {
   final UserRepository userRepository;
-  final List<int> likeInfoList;
-  final int profileIndex;
+
   const StackView(
       {Key? key,
       required this.userRepository,
-      required this.likeInfoList,
-      required this.profileIndex})
+     })
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          StackViewBloc(userRepository, likeInfoList, profileIndex),
+          StackViewBloc(userRepository),
       child: StackViewScreen(),
     );
   }
@@ -49,21 +47,8 @@ class StackViewScreen extends StatefulWidget {
 }
 
 class _StackViewScreenState extends State<StackViewScreen> {
-  var index = 5;
-  late var dob;
-  late var profileIndex;
-  bool firstTime = true;
-  late List<int> likeInfoList;
+  var index = 0;
 
-  late List<ProfileDetails> profiledetails;
-
-  late StateCityResponse states;
-
-  late StateCityResponse city;
-
-  late StateModel userState;
-
-  late StateModel userCity;
 
   @override
   Widget build(BuildContext context) {
@@ -254,13 +239,13 @@ class _StackViewScreenState extends State<StackViewScreen> {
                               )
                             ],
                           ),
-                          likeInfoList[profileIndex] == 0
-                              ? MmmIcons.cancel(action: () {
-                                  heartEvent(1);
-                                })
-                              : MmmIcons.heart(gray7, action: () {
-                                  heartEvent(0);
-                                }),
+                          // likeInfoList[profileIndex] == 0
+                          //     ? MmmIcons.cancel(action: () {
+                          //         heartEvent(1);
+                          //       })
+                          //     : MmmIcons.heart(gray7, action: () {
+                          //         heartEvent(0);
+                          //       }),
                         ],
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                       )
@@ -278,44 +263,13 @@ class _StackViewScreenState extends State<StackViewScreen> {
   }
 
   void heartEvent(int likeInfo) {
-    this.profileIndex = BlocProvider.of<StackViewBloc>(context).profileIndex;
 
-    BlocProvider.of<StackViewBloc>(context).add(LikeOrUnlikeEvent(likeInfo));
   }
 
-  int calculateAge() {
-    this.profileIndex = BlocProvider.of<StackViewBloc>(context).profileIndex;
-    DateTime currentDate = DateTime.now();
-    this.dob = BlocProvider.of<StackViewBloc>(context)
-        .userRepository
-        .listProfileDetails[profileIndex]
-        .dateOfBirth;
-    DateTime birthDate = DateFormat('dd MMM yyyy').parse(dob);
-    int age = currentDate.year - birthDate.year;
-    int month1 = currentDate.month;
-    int month2 = birthDate.month;
-    if (month2 > month1) {
-      age--;
-    } else if (month1 == month2) {
-      int day1 = currentDate.day;
-      int day2 = birthDate.day;
-      if (day2 > day1) {
-        age--;
-      }
-    }
-    return age;
-  }
+
 
   void navigateToGridView() {
-    var userRepo = BlocProvider.of<StackViewBloc>(context).userRepository;
-    var likeInfoList = BlocProvider.of<StackViewBloc>(context).likeInfoList;
-    var profileIndex = BlocProvider.of<StackViewBloc>(context).profileIndex;
-    Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => GridViewofStack(
-              userRepository: userRepo,
-              likeInfoList: likeInfoList,
-              profileIndex: profileIndex,
-            )));
+
   }
 
   void setColor(int indexCode) {
@@ -325,30 +279,6 @@ class _StackViewScreenState extends State<StackViewScreen> {
   }
 
   Future<void> initData() async {
-    var userRepo = BlocProvider.of<StackViewBloc>(context).userRepository;
 
-    this.profileIndex = BlocProvider.of<StackViewBloc>(context).profileIndex;
-    this.likeInfoList = BlocProvider.of<StackViewBloc>(context).likeInfoList;
-    this.profiledetails = BlocProvider.of<StackViewBloc>(context)
-        .userRepository
-        .listProfileDetails;
-    print('data is here?heyyyyy');
-    print(profiledetails.length);
-
-    var i = profileIndex;
-    print(profiledetails[i].id);
-
-    print(profiledetails[i].email);
-    print(profiledetails[i].phoneNumber);
-    print(profiledetails[i].countryCode);
-
-    print(profiledetails[i].relationship);
-
-    //  states = await userRepo
-    //      .getStates(userRepo.listProfileDetails[profileIndex].country);
-    //  userState = states.list[userRepo.listProfileDetails[profileIndex].state];
-    //  city = await userRepo
-    //      .getCities(userRepo.listProfileDetails[profileIndex].state);
-    // userCity = city.list[userRepo.listProfileDetails[profileIndex].city];
   }
 }

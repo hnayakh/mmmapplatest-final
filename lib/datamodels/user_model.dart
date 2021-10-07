@@ -1,6 +1,6 @@
+import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
-
 
 class SigninResponse {
   late String message, status;
@@ -27,6 +27,12 @@ class UserDetails {
   late int gender, registrationStep, lifecycleStatus, activationStatus;
   late Relationship relationship;
   late String password;
+  late String dateOfBirth;
+  late double height;
+  late MaritalStatus maritalStatus;
+  late CountryModel countryModel;
+  late SimpleMasterData religion;
+  late AbilityStatus abilityStatus;
 
   UserDetails.fromJson(json) {
     this.id = json["id"];
@@ -71,8 +77,6 @@ class RegistrationResponse {
   }
 }
 
-
-
 class SendOtpResponse {
   late String message, status;
   UserDetails? userDetails;
@@ -85,5 +89,23 @@ class SendOtpResponse {
   SendOtpResponse.fromError(String error) {
     this.message = error;
     this.status = AppConstants.FAILURE;
+  }
+}
+
+class PreSignUrlResponse {
+  late String status, message;
+  String? imageUrl;
+
+  PreSignUrlResponse.fromJson(data) {
+    this.status = data["type"];
+    this.message = data["message"];
+    if (status == AppConstants.SUCCESS) {
+      this.imageUrl = data["data"];
+    }
+  }
+
+  PreSignUrlResponse.fromError(String message) {
+    this.status = AppConstants.FAILURE;
+    this.message = message;
   }
 }

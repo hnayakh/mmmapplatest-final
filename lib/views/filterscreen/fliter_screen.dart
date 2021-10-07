@@ -111,7 +111,7 @@ class _FilterScreenState extends State<FilterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MmmButtons.appBarCurvedFilter('Career'),
+      appBar: MmmButtons.appBarCurvedFilter('Filter'),
       body: BlocConsumer<FilterBloc, FilterState>(
         listener: (context, state) {
           // TODO: implement listener

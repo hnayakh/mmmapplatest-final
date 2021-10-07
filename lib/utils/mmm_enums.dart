@@ -56,6 +56,7 @@ enum DrinkingHabitFilter {
   Nonalcoholic,
   Occasionally,
 }
+enum IdProofType { Passport, VoterIdCard, AadharCard, DrivingLicence, PanCard }
 
 enum FamilyType { Nuclear, Joint, Other }
 
