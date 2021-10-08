@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_styles.dart';
+import 'package:makemymarry/views/dialog_test.dart';
 import 'package:makemymarry/views/splash_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/wallet%20screens/wallet_main.dart';
 
@@ -64,7 +65,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.pink,
       ),
-      home: WalletScreen(),
+      home: DialogScreen(),
     );
   }
 }

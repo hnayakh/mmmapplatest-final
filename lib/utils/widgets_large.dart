@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:makemymarry/utils/dimens.dart';
 
 import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
@@ -498,137 +499,142 @@ class MmmWidgets {
     );
   }
 
-  static Container acceptRequestWidget() {
-    return Container(
-      height: 368,
-      width: 328,
-      padding: EdgeInsets.only(top: 8),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          color: Color(0xffFFFFFF),
-          boxShadow: [MmmShadow.elevation3(shadowColor: kShadowColorForWhite)]),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: double.infinity,
-            height: 24,
-          ),
-          Row(
-            children: [
-              SizedBox(
-                width: 24,
+  static Widget acceptRequestWidget(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: Colors.transparent,
+      content: Container(
+        height: 368,
+        padding: kMargin12,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            color: Color(0xffFFFFFF),
+            boxShadow: [
+              MmmShadow.elevation3(shadowColor: kShadowColorForWhite)
+            ]),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: double.infinity,
+              height: 24,
+            ),
+            Row(
+              children: [
+                Container(
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.08,
+                      ),
+                      Text(
+                        'Abhisekh Sharma',
+                        style: MmmTextStyles.heading4(textColor: kDark5),
+                      ),
+                      SizedBox(
+                        width: 7,
+                      ),
+                      Container(
+                        child: SvgPicture.asset(
+                          "images/Verified.svg",
+                          height: 16,
+                          width: 16,
+                          color: Color(0xffC9184A),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            SizedBox(
+              height: 32,
+            ),
+            Container(
+              height: 80,
+              width: 80,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.asset(
+                  'assets/images/pic5.jpg',
+                  fit: BoxFit.cover,
+                ),
               ),
-              Container(
-                height: 32,
-                width: 280,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Abhisekh Sharma',
-                      style: MmmTextStyles.heading4(textColor: kDark5),
-                    ),
-                    SizedBox(
-                      width: 7,
-                    ),
-                    Container(
-                      child: SvgPicture.asset(
-                        "images/Verified.svg",
-                        height: 16,
-                        width: 16,
-                        color: Color(0xffC9184A),
-                        fit: BoxFit.cover,
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            Container(
+              width: 280,
+              height: 44,
+              child: Text(
+                'Please accept the request to \nread a message',
+                style: MmmTextStyles.bodySmall(textColor: kDark5),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            Container(
+              height: 0,
+              width: 309.02,
+              decoration: BoxDecoration(
+                  border: Border.all(
+                color: Color(0xffF0EFF5),
+                width: 0.5,
+              )),
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            Container(
+              height: 42,
+              child: Container(
+                decoration: MmmDecorations.primaryButtonDecoration(),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () {},
+                      child: Center(
+                        child: Text(
+                          'Confirm',
+                          style: MmmTextStyles.heading6(textColor: gray7),
+                        ),
                       ),
                     ),
-                  ],
+                  ),
                 ),
-              )
-            ],
-          ),
-          SizedBox(
-            height: 32,
-          ),
-          Container(
-            height: 80,
-            width: 80,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.asset(
-                'assets/images/pic5.jpg',
-                fit: BoxFit.cover,
               ),
             ),
-          ),
-          SizedBox(
-            height: 8,
-          ),
-          Container(
-            width: 280,
-            height: 44,
-            child: Text(
-              'Please accept the request to \nread a message',
-              style: MmmTextStyles.bodySmall(textColor: kDark5),
-              textAlign: TextAlign.center,
+            SizedBox(
+              height: 12,
             ),
-          ),
-          SizedBox(
-            height: 8,
-          ),
-          Container(
-            height: 0,
-            width: 309.02,
-            decoration: BoxDecoration(
-                border: Border.all(
-              color: Color(0xffF0EFF5),
-              width: 0.5,
-            )),
-          ),
-          SizedBox(
-            height: 16,
-          ),
-          Container(
-            height: 42,
-            width: 280,
-            child: Container(
-              decoration: MmmDecorations.primaryButtonDecoration(),
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: () {},
-                  child: Center(
-                    child: Text(
-                      'Confirm',
-                      style: MmmTextStyles.heading6(textColor: gray7),
+            Container(
+              height: 42,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Color(0xffDDE1E6))),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () {},
+                    child: Center(
+                      child: Text(
+                        'Decline',
+                        style: MmmTextStyles.heading6(textColor: gray4),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ),
-          SizedBox(
-            height: 12,
-          ),
-          Container(
-            height: 42,
-            width: 280,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Color(0xffDDE1E6))),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: () {},
-                child: Center(
-                  child: Text(
-                    'Decline',
-                    style: MmmTextStyles.heading6(textColor: gray4),
-                  ),
-                ),
-              ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
