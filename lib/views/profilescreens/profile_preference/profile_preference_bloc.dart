@@ -16,7 +16,7 @@ class ProfilePreferenceBloc
   late double maxAge;
   late double minHeight;
   late double maxHeight;
-  late MaritalStatus maritalStatus;
+  late List<MaritalStatus> maritalStatus =[];
   late CountryModel countryModel;
   StateModel? myState, city;
   late SimpleMasterData religion;
@@ -48,7 +48,7 @@ class ProfilePreferenceBloc
     }
     print("$minAge -- $maxAge");
     print("$minHeight -- $maxHeight");
-    this.maritalStatus = this.userRepository.useDetails!.maritalStatus;
+    this.maritalStatus.add(this.userRepository.useDetails!.maritalStatus);
     this.countryModel = this.userRepository.useDetails!.countryModel;
     this.religion = this.userRepository.useDetails!.religion;
   }
@@ -119,7 +119,7 @@ class ProfilePreferenceBloc
       this.occupation = event.title;
       yield ProfilePreferenceInitialState();
     }
-    if(event is OnEducationSelected){
+    if (event is OnEducationSelected) {
       this.education = event.title;
       yield ProfilePreferenceInitialState();
     }

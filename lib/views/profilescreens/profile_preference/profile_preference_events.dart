@@ -57,7 +57,7 @@ class SmokingSelected extends ProfilePreferenceEvent {}
 class ChallengedSelected extends ProfilePreferenceEvent {}
 
 class OnMaritalStatusSelected extends ProfilePreferenceEvent {
-  final MaritalStatus status;
+  final List<MaritalStatus> status;
 
   OnMaritalStatusSelected(this.status);
 }

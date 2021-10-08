@@ -140,3 +140,12 @@ enum InterestFilter {
   Tech,
   Social
 }
+enum AnualIncome {
+  LessThanOneLacs,
+  OneToThreeLacs,
+  ThreeToFiveLacs,
+  FiveToSevenLacs,
+  SevenToTenLacs,
+  TenToTwelveLacs,
+  MoreThanTwelveLacs
+}

@@ -34,7 +34,7 @@ class OnChangeNoOfChildren extends AboutEvent {
 }
 
 class OnDOBSelected extends AboutEvent {
-  late final String dob;
+  late final DateTime dob;
 
   OnDOBSelected(this.dob);
 }

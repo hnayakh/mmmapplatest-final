@@ -9,10 +9,12 @@ import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 
 import 'package:makemymarry/utils/icons.dart';
+import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/profilescreens/family/family.dart';
+import 'package:makemymarry/views/profilescreens/occupation/anual_income_bottom_sheet.dart';
 
 import '../select_city_state.dart';
 import '../select_country_bottom_sheet.dart';
@@ -59,7 +61,7 @@ class _OccupationScreenState extends State<OccupationScreen> {
   final TextEditingController cityController = TextEditingController();
 
   String? occupation;
-
+  AnualIncome? anualIncome;
   String? education;
   CountryModel? countryModel;
   StateModel? myState, city;
@@ -128,8 +130,15 @@ class _OccupationScreenState extends State<OccupationScreen> {
                         SizedBox(
                           height: 24,
                         ),
-                        MmmTextFileds.textFiledWithLabelStar('Annual Income',
-                            'Enter your annual income', annIncomeController,inputType: TextInputType.number),
+                        MmmButtons.categoryButtons(
+                            'Annual Income',
+                            anualIncome != null
+                                ? '${describeEnum(anualIncome!)}'
+                                : 'Select your occupation',
+                            'Select your occupation',
+                            'images/rightArrow.svg', action: () {
+                          selectAnualIncome(context);
+                        }),
                         SizedBox(
                           height: 24,
                         ),
@@ -245,6 +254,22 @@ class _OccupationScreenState extends State<OccupationScreen> {
     this.countryModel = BlocProvider.of<OccupationBloc>(context).countryModel;
     this.myState = BlocProvider.of<OccupationBloc>(context).myState;
     this.city = BlocProvider.of<OccupationBloc>(context).city;
+    this.anualIncome = BlocProvider.of<OccupationBloc>(context).anualIncome;
+  }
+
+  void selectAnualIncome(BuildContext context) async {
+    var result = await showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (context) => AnnualIncomeBottomSheet(
+              income: this.anualIncome,
+            ));
+
+    if (result != null && result is AnualIncome) {
+      BlocProvider.of<OccupationBloc>(context)
+          .add(OnAnnualIncomeSelected(result));
+    }
   }
 
   void selectOccupation(BuildContext context) async {

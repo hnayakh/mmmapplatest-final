@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:makemymarry/bloc/about/about_bloc.dart';
 import 'package:makemymarry/bloc/about/about_event.dart';
@@ -12,12 +11,10 @@ import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
-import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
-import 'package:makemymarry/utils/view_decorations.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/profilescreens/about/height_status_bottom_sheet.dart';
 import 'package:makemymarry/views/profilescreens/about/marital_status_bottom_sheet.dart';
@@ -55,7 +52,7 @@ class _AboutScreenState extends State<AboutScreen> {
   MaritalStatus? maritalStatus;
 
   String heightStatusHintText = 'Select your height';
-  String dobHintText = 'dd MMM yyyy';
+  DateTime? dobHintText;
   NoOfChildren? noOfChildren;
   int? heightStatus;
   final dateFormat = DateFormat('dd MMM yyyy');
@@ -141,10 +138,16 @@ class _AboutScreenState extends State<AboutScreen> {
               SizedBox(
                 height: 24,
               ),
-              MmmButtons.categoryButtons('Date of birth', dobHintText,
-                  'dd MMM yyyy', 'images/Calendar.svg', action: () {
-                    showDate(context);
-                  }),
+              MmmButtons.categoryButtons(
+                  'Date of birth',
+                  dobHintText != null
+                      ? AppHelper.getReadableDob(
+                          AppHelper.serverFormatDate(dobHintText!))
+                      : 'dd MMM yyyy',
+                  'dd MMM yyyy',
+                  'images/Calendar.svg', action: () {
+                showDate(context);
+              }),
               SizedBox(
                 height: 24,
               ),
@@ -229,23 +232,23 @@ class _AboutScreenState extends State<AboutScreen> {
                 ),
               ),
               this.childrenStatus == ChildrenStatus.YesNotLivingTogether ||
-                  this.childrenStatus == ChildrenStatus.YesLivingTogether
+                      this.childrenStatus == ChildrenStatus.YesLivingTogether
                   ? Column(
-                children: [
-                  SizedBox(
-                    height: 24,
-                  ),
-                  MmmButtons.categoryButtons(
-                      "No of children",
-                      this.noOfChildren != null
-                          ? '${describeEnum(this.noOfChildren!)}'
-                          : 'Select number of children',
-                      'Select number of children',
-                      'images/rightArrow.svg', action: () {
-                    showChildrenBottomSheet(context);
-                  })
-                ],
-              )
+                      children: [
+                        SizedBox(
+                          height: 24,
+                        ),
+                        MmmButtons.categoryButtons(
+                            "No of children",
+                            this.noOfChildren != null
+                                ? '${describeEnum(this.noOfChildren!)}'
+                                : 'Select number of children',
+                            'Select number of children',
+                            'images/rightArrow.svg', action: () {
+                          showChildrenBottomSheet(context);
+                        })
+                      ],
+                    )
                   : Container(),
               SizedBox(
                 height: 24,
@@ -317,8 +320,8 @@ class _AboutScreenState extends State<AboutScreen> {
                         Expanded(
                           flex: 1,
                           child: SizedBox(
-                            // width: 22,
-                          ),
+                              // width: 22,
+                              ),
                         ),
                       ],
                     ),
@@ -339,8 +342,8 @@ class _AboutScreenState extends State<AboutScreen> {
         firstDate: DateTime(1970),
         lastDate: DateTime(2001));
     if (newDate != null) {
-      this.dobHintText = dateFormat.format(newDate);
-      BlocProvider.of<AboutBloc>(context).add(OnDOBSelected(dobHintText));
+      this.dobHintText = newDate;
+      BlocProvider.of<AboutBloc>(context).add(OnDOBSelected(newDate));
     }
   }
 
@@ -389,7 +392,7 @@ class _AboutScreenState extends State<AboutScreen> {
     this.childrenStatus = BlocProvider.of<AboutBloc>(context).childrenStatus;
     this.abilityStatus = BlocProvider.of<AboutBloc>(context).abilityStatus;
     this.noOfChildren = BlocProvider.of<AboutBloc>(context).noOfChildren;
-    this.dobHintText = BlocProvider.of<AboutBloc>(context).dob;
+    this.dobHintText = BlocProvider.of<AboutBloc>(context).dateOfBirth;
 
     //this.dobHintText = BlocProvider.of<AboutBloc>(context).dob != null
     //    ? BlocProvider.of<AboutBloc>(context).dob!

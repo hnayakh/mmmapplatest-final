@@ -19,6 +19,7 @@ import 'package:makemymarry/views/profilescreens/religion/religion_bottom_sheet.
 import 'package:makemymarry/views/profilescreens/religion/subcast_bottom_sheet.dart';
 import '../select_city_state.dart';
 import '../select_country_bottom_sheet.dart';
+import 'marital_status_preference.dart';
 import 'profile_preference_events.dart';
 import 'profile_preference_state.dart';
 
@@ -47,7 +48,7 @@ class ProfilePreferenceScreen extends StatefulWidget {
 class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   late double minAge, maxAge,minSliderAge;
   late double minHeight, maxHeight;
-  late MaritalStatus maritalStatus;
+  late List<MaritalStatus> maritalStatus;
   late CountryModel countryModel;
   StateModel? myState, city;
   late SimpleMasterData religion;
@@ -66,8 +67,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
     this.maxHeight = BlocProvider.of<ProfilePreferenceBloc>(context).maxHeight;
     this.maritalStatus =
         BlocProvider.of<ProfilePreferenceBloc>(context).maritalStatus;
-    this.maritalStatus =
-        BlocProvider.of<ProfilePreferenceBloc>(context).maritalStatus;
+
     this.countryModel =
         BlocProvider.of<ProfilePreferenceBloc>(context).countryModel;
     this.myState = BlocProvider.of<ProfilePreferenceBloc>(context).myState;
@@ -280,7 +280,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   Widget buildMaritalStatus() {
     return MmmButtons.categoryButtons(
         'Marital Status',
-        describeEnum(this.maritalStatus),
+        getStringFrom(this.maritalStatus),
         'Select your maritial status',
         'images/rightArrow.svg', action: () {
       showMaritalStatusBottomSheet();
@@ -290,10 +290,10 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   void showMaritalStatusBottomSheet() async {
     var result = await showModalBottomSheet(
         context: context,
-        builder: (context) => MaritalStatusBottomSheet(
-              selectedMaritalStatus: this.maritalStatus,
+        builder: (context) => MaritalStatusPreference(
+              list: this.maritalStatus,
             ));
-    if (result != null && result is MaritalStatus) {
+    if (result != null && result is List<MaritalStatus>) {
       BlocProvider.of<ProfilePreferenceBloc>(context)
           .add(OnMaritalStatusSelected(result));
     }
@@ -516,5 +516,13 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
       BlocProvider.of<ProfilePreferenceBloc>(context)
           .add(OnEducationSelected(result.title));
     }
+  }
+
+  String getStringFrom(List<MaritalStatus> maritalStatus) {
+    String value = "";
+    for(var i =0;i<maritalStatus.length;i++){
+
+    }
+    return value;
   }
 }
