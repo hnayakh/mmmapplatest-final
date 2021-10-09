@@ -107,7 +107,7 @@ class MmmWidgets {
       color: Colors.black.withOpacity(0.55),
       child: Center(
         child: Image.asset(
-          "images/app_loader2.gif",
+          "images/app_loader4.gif",
           width: 96,
           height: 96,
         ),

@@ -48,3 +48,8 @@ class OnCitySelected extends FamilyBackgroundEvent {
 
   OnCitySelected(this.stateModel);
 }
+class OnStayingWithParentsChanged extends FamilyBackgroundEvent{
+  final bool isStayingWithParents;
+
+  OnStayingWithParentsChanged(this.isStayingWithParents);
+}

@@ -258,7 +258,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
               ),
               RangeSlider(
                 values: RangeValues(minHeight, maxHeight),
-                min: 4.4,
+                min: minHeight - 1.0,
                 max: 8.5,
                 inactiveColor: kGray,
                 activeColor: kPrimary,

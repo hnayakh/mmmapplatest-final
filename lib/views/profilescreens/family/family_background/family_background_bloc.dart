@@ -15,14 +15,23 @@ class FamilyBackgroundBloc
   FamilyType type = FamilyType.Nuclear;
   CountryModel? countryModel;
   StateModel? myState, city;
+  bool isStayingWithParents = false;
+  final CountryModel selectedCountry;
+  final StateModel selectedState;
+  final StateModel selectedCity;
 
-  FamilyBackgroundBloc(this.userRepository)
+  FamilyBackgroundBloc(this.userRepository, this.selectedCountry,
+      this.selectedState, this.selectedCity)
       : super(FamilyBackgroundInitialState());
 
   @override
   Stream<FamilyBackgroundState> mapEventToState(
       FamilyBackgroundEvent event) async* {
     yield OnLoading();
+    if (event is OnStayingWithParentsChanged) {
+      this.isStayingWithParents = event.isStayingWithParents;
+      yield FamilyBackgroundState();
+    }
     if (event is OnFamilyStatusSelected) {
       this.level = event.level;
       yield FamilyBackgroundState();
@@ -76,20 +85,22 @@ class FamilyBackgroundBloc
         yield OnError("Select Family Status");
       } else if (this.values == null) {
         yield OnError("Select Family Values");
-      } else if (this.countryModel == null) {
+      } else if (!this.isStayingWithParents && this.countryModel == null) {
         yield OnError("Select Country");
-      } else if (myState == null) {
+      } else if (!this.isStayingWithParents && myState == null) {
         yield OnError("Select State");
-      } else if (city == null) {
+      } else if (!this.isStayingWithParents && city == null) {
         yield OnError("Select City");
       } else {
         var result = await this.userRepository.updateFamilyBackground(
             this.level!,
             this.values!,
             this.type,
-            this.countryModel!,
-            this.myState!,
-            this.city!);
+            this.isStayingWithParents
+                ? this.selectedCountry
+                : this.countryModel!,
+            this.isStayingWithParents ? this.selectedState : this.myState!,
+            this.isStayingWithParents ? this.selectedCity : this.city!);
         if (result.status == AppConstants.SUCCESS) {
           yield OnUpdate();
         } else {

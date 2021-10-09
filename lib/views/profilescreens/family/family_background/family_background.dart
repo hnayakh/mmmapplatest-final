@@ -23,15 +23,24 @@ import 'family_values_sheet.dart';
 class FamilyBackground extends StatelessWidget {
   final UserRepository userRepository;
   final Function onComplete;
+  final CountryModel countryModel;
+  final StateModel stateModel;
+  final StateModel city;
 
   const FamilyBackground(
-      {Key? key, required this.userRepository, required this.onComplete})
+      {Key? key,
+      required this.userRepository,
+      required this.onComplete,
+      required this.countryModel,
+      required this.stateModel,
+      required this.city})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => FamilyBackgroundBloc(userRepository),
+        create: (context) => FamilyBackgroundBloc(
+            userRepository, countryModel, stateModel, city),
         child: FamilyBackgroundScreen(
           onComplete: onComplete,
         ));
@@ -63,6 +72,7 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
   String statetext = 'Select your state';
 
   String citytext = 'Select your city';
+  bool? isStayingWithParents;
 
   @override
   Widget build(BuildContext context) {
@@ -226,7 +236,7 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
               ],
             ),
             SizedBox(
-              height: 24,
+              height: 8,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -240,44 +250,73 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                     ),
                   ],
                 ),
-                MmmButtons.categoryButtons(
-                    'Country',
-                    countryModel != null
-                        ? '${countryModel!.name}'
-                        : 'Select Country',
-                    'Select Country',
-                    'images/rightArrow.svg', action: () {
-                  FocusScope.of(context).requestFocus(FocusNode());
-
-                  BlocProvider.of<FamilyBackgroundBloc>(context)
-                      .add(GetAllCountries());
-                }),
                 SizedBox(
-                  height: 24,
+                  height: 8,
                 ),
-                MmmButtons.categoryButtons(
-                    'State',
-                    myState != null ? '${myState!.name}' : 'Select State',
-                    'Select State',
-                    'images/rightArrow.svg', action: () {
-                  FocusScope.of(context).requestFocus(FocusNode());
-
-                  BlocProvider.of<FamilyBackgroundBloc>(context)
-                      .add(GetAllStates());
-                }),
-                SizedBox(
-                  height: 24,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Staying with parents?',
+                      style: MmmTextStyles.bodyRegular(textColor: kDark5),
+                    ),
+                    Checkbox(
+                        value: isStayingWithParents!,
+                        onChanged: (onChanged) {
+                          BlocProvider.of<FamilyBackgroundBloc>(context)
+                              .add(OnStayingWithParentsChanged(onChanged!));
+                        })
+                  ],
                 ),
-                MmmButtons.categoryButtons(
-                    'City',
-                    city != null ? '${city!.name}' : 'Select City',
-                    'Select City',
-                    'images/rightArrow.svg', action: () {
-                  FocusScope.of(context).requestFocus(FocusNode());
+                this.isStayingWithParents!
+                    ? Container()
+                    : Column(
+                        children: [
+                          SizedBox(
+                            height: 24,
+                          ),
+                          MmmButtons.categoryButtons(
+                              'Country',
+                              countryModel != null
+                                  ? '${countryModel!.name}'
+                                  : 'Select Country',
+                              'Select Country',
+                              'images/rightArrow.svg', action: () {
+                            FocusScope.of(context).requestFocus(FocusNode());
 
-                  BlocProvider.of<FamilyBackgroundBloc>(context)
-                      .add(GetAllCities());
-                }),
+                            BlocProvider.of<FamilyBackgroundBloc>(context)
+                                .add(GetAllCountries());
+                          }),
+                          SizedBox(
+                            height: 24,
+                          ),
+                          MmmButtons.categoryButtons(
+                              'State',
+                              myState != null
+                                  ? '${myState!.name}'
+                                  : 'Select State',
+                              'Select State',
+                              'images/rightArrow.svg', action: () {
+                            FocusScope.of(context).requestFocus(FocusNode());
+
+                            BlocProvider.of<FamilyBackgroundBloc>(context)
+                                .add(GetAllStates());
+                          }),
+                          SizedBox(
+                            height: 24,
+                          ),
+                          MmmButtons.categoryButtons(
+                              'City',
+                              city != null ? '${city!.name}' : 'Select City',
+                              'Select City',
+                              'images/rightArrow.svg', action: () {
+                            FocusScope.of(context).requestFocus(FocusNode());
+
+                            BlocProvider.of<FamilyBackgroundBloc>(context)
+                                .add(GetAllCities());
+                          }),
+                        ],
+                      ),
                 SizedBox(
                   height: 20,
                 ),
@@ -297,6 +336,8 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
         BlocProvider.of<FamilyBackgroundBloc>(context).countryModel;
     this.myState = BlocProvider.of<FamilyBackgroundBloc>(context).myState;
     this.city = BlocProvider.of<FamilyBackgroundBloc>(context).city;
+    this.isStayingWithParents =
+        BlocProvider.of<FamilyBackgroundBloc>(context).isStayingWithParents;
   }
 
   showFamilyStatusSheet() async {
