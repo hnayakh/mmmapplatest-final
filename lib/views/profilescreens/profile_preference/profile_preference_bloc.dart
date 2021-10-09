@@ -16,10 +16,11 @@ class ProfilePreferenceBloc
   late double maxAge;
   late double minHeight;
   late double maxHeight;
-  late MaritalStatus maritalStatus;
+  late List<MaritalStatus> maritalStatus = [];
   late CountryModel countryModel;
-  StateModel? myState, city;
-  late SimpleMasterData religion;
+  List<StateModel?> myState = [];
+  List<StateModel?> city = [];
+  List<SimpleMasterData> religion = [];
   dynamic subCaste;
   SimpleMasterData? motherTongue;
   String? occupation;
@@ -27,12 +28,14 @@ class ProfilePreferenceBloc
 
   ProfilePreferenceBloc(this.userRepository)
       : super(ProfilePreferenceInitialState()) {
+    print(this.userRepository.useDetails!.dateOfBirth);
     var myAge = DateTime.now()
-            .difference(DateFormat(AppConstants.DATEFORMAT)
+            .difference(DateFormat(AppConstants.SERVERDATEFORMAT)
                 .parse(this.userRepository.useDetails!.dateOfBirth))
             .inDays /
         365;
     print(myAge);
+
     if (this.userRepository.useDetails!.gender == Gender.Male.index) {
       this.minAge = myAge - 4;
       this.maxAge = myAge;
@@ -48,9 +51,9 @@ class ProfilePreferenceBloc
     }
     print("$minAge -- $maxAge");
     print("$minHeight -- $maxHeight");
-    this.maritalStatus = this.userRepository.useDetails!.maritalStatus;
+    this.maritalStatus.add(this.userRepository.useDetails!.maritalStatus);
     this.countryModel = this.userRepository.useDetails!.countryModel;
-    this.religion = this.userRepository.useDetails!.religion;
+    //this.religion = this.userRepository.useDetails!.religion;
   }
 
   @override
@@ -96,12 +99,21 @@ class ProfilePreferenceBloc
       yield ProfilePreferenceInitialState();
     }
     if (event is GetMyCities) {
-      var result = await this.userRepository.getCities(this.myState!.id);
-      if (result.status == AppConstants.SUCCESS) {
-        yield OnGotCities(result.list);
-      } else {
-        yield OnError(result.message);
+      List<List<StateModel>> listCities = [];
+      for (int i = 0; i < this.myState.length; i++) {
+        var result = await this.userRepository.getCities(this.myState[i]!.id);
+        if (result.status == AppConstants.SUCCESS) {
+          listCities.add(result.list);
+          //    yield OnGotCities(result.list);
+        } else {
+          yield OnError(result.message);
+        }
       }
+      yield OnGotCities(listCities);
+    }
+    if (event is OnCitySelected) {
+      this.city = event.cityModel;
+      yield ProfilePreferenceInitialState();
     }
     if (event is OnReligionSelected) {
       this.religion = event.data;
@@ -119,26 +131,26 @@ class ProfilePreferenceBloc
       this.occupation = event.title;
       yield ProfilePreferenceInitialState();
     }
-    if(event is OnEducationSelected){
+    if (event is OnEducationSelected) {
       this.education = event.title;
       yield ProfilePreferenceInitialState();
     }
   }
 
-  bool checkCaste() {
-    if (casteNotAvailable()) {
-      return false;
-    } else {
-      return true;
-    }
-  }
+  //bool checkCaste() {
+  // if (casteNotAvailable()) {
+  //    return false;
+  //  } else {
+  //    return true;
+  //  }
+  // }
 
-  bool casteNotAvailable() {
-    return this.religion.title.toLowerCase().contains("budhhist") ||
-        this.religion.title.toLowerCase().contains("parsi") ||
-        this.religion.title.toLowerCase().contains("jewish") ||
-        this.religion.title.toLowerCase().contains("other") ||
-        this.religion.title.toLowerCase().contains("no religion") ||
-        this.religion.title.toLowerCase().contains("spiritual");
-  }
+//  bool casteNotAvailable() {
+//    return this.religion.title.toLowerCase().contains("budhhist") ||
+//        this.religion.title.toLowerCase().contains("parsi") ||
+  //       this.religion.title.toLowerCase().contains("jewish") ||
+  //       this.religion.title.toLowerCase().contains("other") ||
+  //       this.religion.title.toLowerCase().contains("no religion") ||
+  //       this.religion.title.toLowerCase().contains("spiritual");
+  // }
 }

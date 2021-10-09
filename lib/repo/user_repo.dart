@@ -109,7 +109,7 @@ class UserRepository {
   Future<SigninResponse> career(
       String nameOfOrg,
       String? occupation,
-      String income,
+      AnualIncome income,
       String? education,
       CountryModel country,
       StateModel stateName,
@@ -172,5 +172,9 @@ class UserRepository {
 
   Future<ProfileDetailsResponse> getOtheruserDetails(String id) async {
     return apiClient.getOtherUserDetails(id);
+  }
+
+  Future<String?> uploadImage(String images) async{
+    return apiClient.uploadImage(useDetails!.id,images);
   }
 }

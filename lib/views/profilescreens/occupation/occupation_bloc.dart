@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
+import 'package:makemymarry/utils/mmm_enums.dart';
 
 import 'occupation_event.dart';
 import 'occupation_state.dart';
@@ -16,13 +17,17 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
   late String income;
   CountryModel? countryModel;
   StateModel? myState, city;
+  AnualIncome? anualIncome;
 
   OccupationBloc(this.userRepository) : super(OccupationInitialState());
 
   @override
   Stream<OccupationState> mapEventToState(OccupationEvent event) async* {
     yield OnLoading();
-
+    if (event is OnAnnualIncomeSelected) {
+      this.anualIncome = event.income;
+      yield OccupationInitialState();
+    }
     if (event is OnOccupationSelected) {
       this.occupation = event.occupation;
       yield OccupationInitialState();
@@ -73,7 +78,7 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
 
       if (this.nameOfOrg == '') {
         yield OnError('Enter name of organisation employeed in.');
-      } else if (this.income == '') {
+      } else if (this.anualIncome == null) {
         yield OnError('Enter annual income.');
       } else if (this.countryModel == null) {
         yield OnError('Enter name of country belonging to.');
@@ -89,7 +94,7 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
         var result = await this.userRepository.career(
               this.nameOfOrg,
               this.occupation,
-              this.income,
+              this.anualIncome!,
               this.education,
               this.countryModel!,
               this.myState!,

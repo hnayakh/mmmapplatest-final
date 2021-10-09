@@ -39,4 +39,9 @@ class AppHelper {
     DateFormat dateFormat2 = DateFormat("dd MMM,yyyy");
     return dateFormat2.format(date);
   }
+
+  static String serverFormatDate(DateTime dateOfBirth) {
+    DateFormat dateFormat1 = DateFormat(AppConstants.SERVERDATEFORMAT);
+    return dateFormat1.format(dateOfBirth);
+  }
 }

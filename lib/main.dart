@@ -10,6 +10,7 @@ import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/wallet%20sc
 
 import 'package:makemymarry/views/widget_views.dart';
 
+// @dart=2.9
 class SimpleObserver extends BlocObserver {
   @override
   void onCreate(BlocBase bloc) {
@@ -65,7 +66,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.pink,
       ),
-      home: DialogScreen(),
+      home: Splash(),
     );
   }
 }

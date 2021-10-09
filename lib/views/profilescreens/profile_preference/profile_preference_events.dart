@@ -11,13 +11,13 @@ class CountrySelected extends ProfilePreferenceEvent {
 }
 
 class OnStateSelected extends ProfilePreferenceEvent {
-  final StateModel stateModel;
+  final List<StateModel?> stateModel;
 
   OnStateSelected(this.stateModel);
 }
 
 class OnReligionSelected extends ProfilePreferenceEvent {
-  final SimpleMasterData data;
+  final List<SimpleMasterData> data;
 
   OnReligionSelected(this.data);
 }
@@ -57,7 +57,7 @@ class SmokingSelected extends ProfilePreferenceEvent {}
 class ChallengedSelected extends ProfilePreferenceEvent {}
 
 class OnMaritalStatusSelected extends ProfilePreferenceEvent {
-  final MaritalStatus status;
+  final List<MaritalStatus> status;
 
   OnMaritalStatusSelected(this.status);
 }
@@ -89,7 +89,6 @@ class GetAllStates extends ProfilePreferenceEvent {}
 class GetMyCities extends ProfilePreferenceEvent {}
 
 class OnCitySelected extends ProfilePreferenceEvent {
-  final StateModel stateModel;
-
-  OnCitySelected(this.stateModel);
+  final List<StateModel?> cityModel;
+  OnCitySelected(this.cityModel);
 }

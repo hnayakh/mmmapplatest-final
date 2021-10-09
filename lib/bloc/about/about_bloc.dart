@@ -15,7 +15,7 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
   ChildrenStatus? childrenStatus;
   NoOfChildren? noOfChildren;
   int? heightStatus;
-  String dob = 'dd MMM yyyy';
+  DateTime? dateOfBirth;
   String? name;
 
   @override
@@ -42,7 +42,7 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
       yield AboutInitialState();
     }
     if (event is OnDOBSelected) {
-      this.dob = event.dob;
+      this.dateOfBirth = event.dob;
       yield AboutInitialState();
     }
     if (event is OnAboutDone) {
@@ -53,7 +53,7 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
         yield OnError('Select marital status.');
       } else if (this.heightStatus == null) {
         yield OnError('Select your height.');
-      } else if (this.dob == 'dd MMM yyyy') {
+      } else if (this.dateOfBirth == null) {
         yield OnError('Select date of birth.');
       } else if (this.childrenStatus == null) {
         yield OnError('Specify if you have children.');
@@ -66,12 +66,12 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
             this.abilityStatus,
             this.childrenStatus,
             this.heightStatus,
-            this.dob,
+            AppHelper.serverFormatDate(this.dateOfBirth!),
             this.name);
 
         if (result.status == AppConstants.SUCCESS) {
           this.userRepository.useDetails = result.userDetails;
-          this.userRepository.useDetails!.dateOfBirth = this.dob;
+          this.userRepository.useDetails!.dateOfBirth = AppHelper.serverFormatDate(this.dateOfBirth!);
           this.userRepository.useDetails!.maritalStatus = this.maritalStatus!;
           this.userRepository.useDetails!.height = AppHelper.getHeights()[this.heightStatus!];
           this.userRepository.useDetails!.abilityStatus = this.abilityStatus!;

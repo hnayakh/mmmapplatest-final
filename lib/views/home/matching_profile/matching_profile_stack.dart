@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
 //import 'package:flutter_tindercard/flutter_tindercard.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
@@ -42,6 +43,7 @@ class MatchingProfileStackViewScreenState
     extends State<MatchingProfileStackViewScreen>
     with TickerProviderStateMixin {
   late List<MatchingProfile> list;
+
   //late CardController controller;
 
   @override
@@ -53,7 +55,7 @@ class MatchingProfileStackViewScreenState
           height: MediaQuery.of(context).size.height - 72,
           width: MediaQuery.of(context).size.width,
           color: gray5,
-          child: new Text('tinder card'),
+          child: new Text('TinderCard'),
         );
       },
       listener: (context, state) {},

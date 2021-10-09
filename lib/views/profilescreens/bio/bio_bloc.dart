@@ -32,24 +32,32 @@ class BioBloc extends Bloc<BioEvent, BioState> {
       }
     }
     if (event is AddImage) {
-      var imageName = this.userRepository.useDetails!.id +
-          "_" +
-          DateTime.now().microsecondsSinceEpoch.toString() +
-          ".png";
-      var result = await this.userRepository.getImagePreSignedUrl(imageName);
-      if (result.status == AppConstants.SUCCESS) {
-        var response = await this
-            .userRepository
-            .uploadFile(result.imageUrl!, imageName, event.images);
-        if (response != null) {
-          if (response.statusCode == 200 || response.statusCode == 201) {
-            this
-                .localImagePaths
-                .add(AppConstants.PUBLICIMAGEBASEURL + imageName);
-            yield BioInitialState();
-          }
-        }
+      var result = await this.userRepository.uploadImage(event.images);
+      if (result != null) {
+        this.localImagePaths.add(result);
+        yield BioInitialState();
+      } else {
+        yield OnError("Could Not Upload File.");
       }
+
+      // var imageName = this.userRepository.useDetails!.id +
+      //     "_" +
+      //     DateTime.now().microsecondsSinceEpoch.toString() +
+      //     ".png";
+      // var result = await this.userRepository.uploadImage(event.images);
+      // if (result.status == AppConstants.SUCCESS) {
+      //   var response = await this
+      //       .userRepository
+      //       .uploadFile(result.imageUrl!, imageName, event.images);
+      //   if (response != null) {
+      //     if (response.statusCode == 200 || response.statusCode == 201) {
+      //       this
+      //           .localImagePaths
+      //           .add(AppConstants.PUBLICIMAGEBASEURL + imageName);
+      //       yield BioInitialState();
+      //     }
+      //   }
+      // }
     }
     if (event is RemoveImage) {
       this.localImagePaths.removeAt(event.pos);

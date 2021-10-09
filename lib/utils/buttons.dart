@@ -1617,9 +1617,10 @@ class MmmButtons {
     );
   }
 
-  static Widget primaryButton(String title, Function onTap) {
+  static Widget primaryButton(String title, Function()? onTap) {
     return Container(
       child: InkWell(
+        onTap: onTap,
         child: Container(
           height: 40,
           alignment: Alignment.center,

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:dio_logger/dio_logger.dart';
@@ -10,6 +11,7 @@ import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 
 import 'app_helper.dart';
+import 'package:http/http.dart' as http;
 
 class ApiClient {
   final Dio dio = Dio();
@@ -120,6 +122,7 @@ class ApiClient {
       return MasterDataResponse.fromError("Error Occurred. Please try againa.");
     }
   }
+
   //
   // Future<ProfileDataResponse> getAllUsersProfileData(String userId) async {
   //   try {
@@ -310,7 +313,7 @@ class ApiClient {
   Future<SigninResponse> careerVerification(
       String nameOfOrg,
       String? occupation,
-      String income,
+      AnualIncome income,
       String? education,
       CountryModel country,
       StateModel stateName,
@@ -322,7 +325,7 @@ class ApiClient {
         "userBasicId": id,
         "employedIn": nameOfOrg,
         "occupation": occupation,
-        "annualIncome": income,
+        "annualIncome": income.index,
         "highestEducation": education,
         "country": country.id,
         "state": stateName.id,
@@ -478,24 +481,36 @@ class ApiClient {
     }
   }
 
-  Future<Response> uploadFile(String url, String name, String path) async {
-    Dio dio = Dio();
-    // dio.interceptors.add(dioLoggerInterceptor);
-    // dio.interceptors.add(InterceptorsWrapper(
-    //     onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
-    //   options.headers["Content-Type"] = "image/jpg";
-    //   options.receiveTimeout = 1000 * 30;
-    //   options.onReceiveProgress = (val1, val2) {
-    //     print("${val1} ---- ${val2}");
-    //   };
-    // },));
-    FormData formData = FormData.fromMap({
-      "name": await MultipartFile.fromFile(path, filename: name),
-    });
-
-    var result = await dio.put(url, data: formData);
-    print(result.statusCode);
-    return result;
+  Future<Response?> uploadFile(String url, String name, String path) async {
+    try {
+      Dio dio = Dio();
+      dio.interceptors.add(dioLoggerInterceptor);
+      // dio.interceptors.add(dioLoggerInterceptor);
+      // dio.interceptors.add(InterceptorsWrapper(
+      //     onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
+      //   options.headers["Content-Type"] = "image/jpg";
+      //   options.receiveTimeout = 1000 * 30;
+      //   options.onReceiveProgress = (val1, val2) {
+      //     print("${val1} ---- ${val2}");
+      //   };
+      // },));
+      Uint8List image = File(path).readAsBytesSync();
+      MultipartFile file = MultipartFile(File(path).openRead(), image.length);
+      var result = await dio.put(url,
+          data: FormData.fromMap({"file": file}),
+          options: Options(headers: {
+            'Transfer-Encoding': 'chunked',
+            'Accept-Encoding': 'gzip, deflate, br'
+          }, receiveTimeout: 5 * 50 * 1000, sendTimeout: 5 * 60 * 1000));
+      print(result);
+      return result;
+    } catch (error) {
+      print(error);
+      if (error is DioError) {
+        print(error.message);
+      }
+      return null;
+    }
   }
 
   Future<MatchingProfileResponse> getMyMatchingProfile(String id) async {
@@ -531,6 +546,27 @@ class ApiClient {
       }
       return ProfileDetailsResponse.fromError(
           "Error Occurred. Please try again.");
+    }
+  }
+
+  Future<String?> uploadImage(String id, String images) async {
+    try {
+      var length = await File(images).length();
+      var file =  MultipartFile(File(images).openRead(), length);
+      var resposne = await this.dio.post(
+          AppConstants.ENDPOINT + "users/images/$id",
+          data: FormData.fromMap({"files": await MultipartFile.fromFile(images)}));
+      print(resposne.data);
+      if(resposne.statusCode ==200 || resposne.statusCode ==201){
+        if(resposne.data["data"].length >0){
+          return resposne.data["data"][0];
+        }
+      }
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      return null;
     }
   }
 }
