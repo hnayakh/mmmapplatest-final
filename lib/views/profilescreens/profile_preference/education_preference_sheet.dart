@@ -1,30 +1,28 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 
-class SubCastBottomSheet extends StatefulWidget {
-  final dynamic selected;
-  final List<dynamic> list;
-
-  const SubCastBottomSheet({Key? key, this.selected, required this.list})
+class EducationPreferenceSheet extends StatefulWidget {
+  final List<Education> list;
+  final List<Education?> eduModel;
+  const EducationPreferenceSheet(
+      {Key? key, required this.list, required this.eduModel})
       : super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
-    return SubCastBottomSheetState();
-  }
+  _EducationPreferenceSheetState createState() =>
+      _EducationPreferenceSheetState();
 }
 
-class SubCastBottomSheetState extends State<SubCastBottomSheet> {
-  List<dynamic> filtered = [];
+class _EducationPreferenceSheetState extends State<EducationPreferenceSheet> {
+  List<Education> filtered = [];
 
   @override
   void initState() {
-    filtered = widget.list;
+    this.filtered = List.of(widget.list, growable: true);
     super.initState();
   }
 
@@ -41,7 +39,7 @@ class SubCastBottomSheetState extends State<SubCastBottomSheet> {
               height: 24,
             ),
             Text(
-              'Select Caste:',
+              'Select religion:',
               style: MmmTextStyles.bodyMedium(textColor: kDark5),
             ),
             SizedBox(
@@ -53,8 +51,9 @@ class SubCastBottomSheetState extends State<SubCastBottomSheet> {
               onChanged: (value) {
                 setState(() {
                   this.filtered = widget.list
-                      .where((element) =>
-                          element.toLowerCase().contains(value.toLowerCase()))
+                      .where((element) => element.title
+                          .toLowerCase()
+                          .contains(value.toLowerCase()))
                       .toList();
                 });
               },
@@ -67,7 +66,7 @@ class SubCastBottomSheetState extends State<SubCastBottomSheet> {
                       borderSide: BorderSide(color: kInputBorder, width: 1)),
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                  hintText: "Search Religion",
+                  hintText: "Search religion",
                   isDense: true,
                   filled: true,
                   fillColor: kLight4,
@@ -88,11 +87,25 @@ class SubCastBottomSheetState extends State<SubCastBottomSheet> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(filtered[index],
-                              style: MmmTextStyles.bodyMediumSmall(
-                                  textColor: widget.selected == filtered[index]
-                                      ? kPrimary
-                                      : kModalPrimary)),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(filtered[index].title,
+                                    style: MmmTextStyles.bodyMediumSmall(
+                                        textColor: isSelected(filtered[index])
+                                            ? kPrimary
+                                            : kModalPrimary)),
+                              ),
+                              isSelected(filtered[index])
+                                  ? Icon(
+                                      Icons.check,
+                                      color: kPrimary,
+                                    )
+                                  : Container(
+                                      height: 24,
+                                    )
+                            ],
+                          ),
                           SizedBox(
                             height: 8,
                           ),
@@ -103,7 +116,10 @@ class SubCastBottomSheetState extends State<SubCastBottomSheet> {
                       ),
                     ),
                     onTap: () {
-                      Navigator.of(context).pop(filtered[index]);
+                      // Navigator.of(context).pop(filtered[index]);
+                      setState(() {
+                        setSelected(filtered[index]);
+                      });
                     },
                   );
                 },
@@ -114,7 +130,10 @@ class SubCastBottomSheetState extends State<SubCastBottomSheet> {
                 //   );
                 // },
               ),
-            )
+            ),
+            MmmButtons.primaryButton("Done", () {
+              Navigator.of(context).pop(this.widget.eduModel);
+            })
           ],
         ),
         padding: kMargin16,
@@ -123,5 +142,30 @@ class SubCastBottomSheetState extends State<SubCastBottomSheet> {
           color: Colors.white,
           borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
         ));
+  }
+
+  bool isSelected(Education? value) {
+    for (var item in widget.eduModel) {
+      if (item!.title == value!.title) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  void setSelected(Education? value) {
+    bool isFound = false;
+    int index = 0;
+    for (var item in widget.eduModel) {
+      if (item!.title == value!.title) {
+        isFound = true;
+        index = widget.eduModel.indexOf(item);
+      }
+    }
+    if (!isFound) {
+      this.widget.eduModel.add(value);
+    } else {
+      this.widget.eduModel.removeAt(index);
+    }
   }
 }

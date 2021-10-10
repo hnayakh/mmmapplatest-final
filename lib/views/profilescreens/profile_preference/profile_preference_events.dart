@@ -23,25 +23,25 @@ class OnReligionSelected extends ProfilePreferenceEvent {
 }
 
 class OnSubCastSelected extends ProfilePreferenceEvent {
-  final dynamic caste;
+  final List<dynamic> caste;
 
   OnSubCastSelected(this.caste);
 }
 
 class OnMotherTongueSelected extends ProfilePreferenceEvent {
-  final SimpleMasterData motherTongue;
+  final List<SimpleMasterData> motherTongue;
 
   OnMotherTongueSelected(this.motherTongue);
 }
 
 class OnEducationSelected extends ProfilePreferenceEvent {
-  final String title;
+  final List<Education> title;
 
   OnEducationSelected(this.title);
 }
 
 class OnOccupationSelected extends ProfilePreferenceEvent {
-  final String title;
+  final List<String> title;
 
   OnOccupationSelected(this.title);
 }

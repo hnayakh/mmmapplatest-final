@@ -21,10 +21,10 @@ class ProfilePreferenceBloc
   List<StateModel?> myState = [];
   List<StateModel?> city = [];
   List<SimpleMasterData> religion = [];
-  dynamic subCaste;
-  SimpleMasterData? motherTongue;
-  String? occupation;
-  String? education;
+  List<dynamic> subCaste = [];
+  List<SimpleMasterData> motherTongue = [];
+  List<String?> occupation = [];
+  List<Education> education = [];
 
   ProfilePreferenceBloc(this.userRepository)
       : super(ProfilePreferenceInitialState()) {

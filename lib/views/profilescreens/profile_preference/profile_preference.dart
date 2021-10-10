@@ -15,12 +15,16 @@ import 'package:makemymarry/views/profilescreens/occupation/occupation_bottom_sh
 
 import 'package:makemymarry/views/profilescreens/profile_preference/city_preference_bottom_sheet.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/country_preference_sheet.dart';
+import 'package:makemymarry/views/profilescreens/profile_preference/education_preference_sheet.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/marital_status_preference.dart';
+import 'package:makemymarry/views/profilescreens/profile_preference/mother_tongue_preference_sheet.dart';
+import 'package:makemymarry/views/profilescreens/profile_preference/occupation_preference_sheet.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference_bloc.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference_events.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference_state.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/religion_preference_sheet.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/state_preference_sheet.dart';
+import 'package:makemymarry/views/profilescreens/profile_preference/subcast_preference_sheet.dart';
 import 'package:makemymarry/views/profilescreens/religion/mother_tongue_bottom_sheet.dart';
 
 class ProfilePreference extends StatelessWidget {
@@ -52,10 +56,10 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   late CountryModel countryModel;
   late List<StateModel?> myState, city;
   late List<SimpleMasterData> religion;
-  dynamic subCaste;
-  SimpleMasterData? motherTongue;
-  String? occupation;
-  String? education;
+  late List<dynamic> subCaste;
+  late List<SimpleMasterData> motherTongue;
+  late List<String?> occupation;
+  late List<Education> education;
   String titleRedOcc = '';
   TextEditingController annIncomeController = TextEditingController();
 
@@ -437,41 +441,48 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
         Container(
             child: MmmButtons.categoryButtons(
                 'Caste',
-                subCaste != null ? '${subCaste}' : 'Does not matter',
+                // subCaste != null ? '${subCaste}' :
+                'Does not matter',
                 'Select your caste',
                 'images/rightArrow.svg', action: () {
-      //selectSubCast(context);
+      selectSubCast(context);
     }));
     // : Container();
   }
 
-  //void selectSubCast(BuildContext context) async {
-  //   var cast = BlocProvider.of<ProfilePreferenceBloc>(context)
-  //       .userRepository
-  //       .masterData
-  //       .listCastSubCast
-  //      .firstWhere((element) =>
-  //           element.cast.toLowerCase() == this.religion.title.toLowerCase());
-  //   var result = await showModalBottomSheet(
-  //       context: context,
-  //       backgroundColor: Colors.transparent,
-  //       isScrollControlled: true,
-  //      builder: (context) => SubCastBottomSheet(
-  //             list: cast.subCasts,
-  //            selected: this.subCaste,
-  //           ));
-  //  if (result != null) {
-  //     BlocProvider.of<ProfilePreferenceBloc>(context)
-  //         .add(OnSubCastSelected(result));
-  //   }
-  // }
+  void selectSubCast(BuildContext context) async {
+    List<CastSubCast> castList = [];
+    for (int i = 0; i < this.religion.length; i++) {
+      var cast = BlocProvider.of<ProfilePreferenceBloc>(context)
+          .userRepository
+          .masterData
+          .listCastSubCast
+          .firstWhere((element) =>
+              element.cast.toLowerCase() ==
+              this.religion[i].title.toLowerCase());
+      castList.add(cast);
+    }
+
+    var result = await showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (context) => SubCastPreferenceSheet(
+              list: castList,
+              selected: this.subCaste,
+            ));
+    if (result != null) {
+      BlocProvider.of<ProfilePreferenceBloc>(context)
+          .add(OnSubCastSelected(result));
+    }
+  }
 
   Widget buildMotherTongue() {
     return MmmButtons.categoryButtons(
         'Mother Tongue',
-        motherTongue != null
-            ? '${motherTongue!.title}'
-            : 'Select your mother tongue',
+        // motherTongue != null
+        //   ? '${motherTongue!.title}':
+        'Select your mother tongue',
         'Select your mother tongue',
         'images/rightArrow.svg', action: () {
       selectMotherToungue(context);
@@ -487,11 +498,11 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
         context: context,
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
-        builder: (context) => MotherTongueBottomSheet(
+        builder: (context) => MotherTonguePreferenceSheet(
               list: list,
-              selected: this.motherTongue,
+              mtModel: this.motherTongue,
             ));
-    if (result != null && result is SimpleMasterData) {
+    if (result != null && result is List<SimpleMasterData>) {
       BlocProvider.of<ProfilePreferenceBloc>(context)
           .add(OnMotherTongueSelected(result));
     }
@@ -500,7 +511,8 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   Widget buildOccupation() {
     return MmmButtons.categoryButtons(
         'Occupation',
-        occupation != null ? '${occupation!}' : 'Does not matter',
+        // occupation != null ? '${occupation!}' :
+        'Does not matter',
         'Select your occupation',
         'images/rightArrow.svg', action: () {
       selectOccupation(context);
@@ -510,7 +522,8 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   Widget buildEducation() {
     return MmmButtons.categoryButtons(
         'Highest Education',
-        education != null ? '${education!}' : 'Does not matter',
+        //education != null ? '${education!}' :
+        'Does not matter',
         'Select your highest education',
         'images/rightArrow.svg', action: () {
       selectEducation(context);
@@ -526,14 +539,14 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
         context: context,
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
-        builder: (context) => OccupationBottomSheet(
+        builder: (context) => OccupationPreferenceSheet(
               list: list,
-              titleRed: "Select occupation",
+              selected: this.occupation,
             ));
 
-    if (result != null && result is SimpleMasterData) {
+    if (result != null && result is List<String>) {
       BlocProvider.of<ProfilePreferenceBloc>(context)
-          .add(OnOccupationSelected(result.title));
+          .add(OnOccupationSelected(result));
     }
   }
 
@@ -546,13 +559,13 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
         context: context,
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
-        builder: (context) => EducationBottomSheet(
+        builder: (context) => EducationPreferenceSheet(
               list: list,
-              titleRed: "Select Highiest Education",
+              eduModel: this.education,
             ));
-    if (result != null && result is Education) {
+    if (result != null && result is List<Education>) {
       BlocProvider.of<ProfilePreferenceBloc>(context)
-          .add(OnEducationSelected(result.title));
+          .add(OnEducationSelected(result));
     }
   }
 
