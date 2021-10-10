@@ -10,11 +10,14 @@ import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
+import 'package:makemymarry/views/profile_loader/profile_loader.dart';
 import 'package:makemymarry/views/profilescreens/occupation/education_bottom_sheet.dart';
 import 'package:makemymarry/views/profilescreens/occupation/occupation_bottom_sheet.dart';
+import 'package:makemymarry/views/profilescreens/profile_preference/annual_income_preference.dart';
 
 import 'package:makemymarry/views/profilescreens/profile_preference/city_preference_bottom_sheet.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/country_preference_sheet.dart';
+import 'package:makemymarry/views/profilescreens/profile_preference/drinking_habit.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/education_preference_sheet.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/marital_status_preference.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/mother_tongue_preference_sheet.dart';
@@ -26,6 +29,9 @@ import 'package:makemymarry/views/profilescreens/profile_preference/religion_pre
 import 'package:makemymarry/views/profilescreens/profile_preference/state_preference_sheet.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/subcast_preference_sheet.dart';
 import 'package:makemymarry/views/profilescreens/religion/mother_tongue_bottom_sheet.dart';
+
+import 'eating_prefs.dart';
+import 'smoking_prefs.dart';
 
 class ProfilePreference extends StatelessWidget {
   final UserRepository userRepository;
@@ -60,8 +66,13 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   late List<SimpleMasterData> motherTongue;
   late List<String?> occupation;
   late List<Education> education;
+  late List<AnualIncome> annualIncome;
   String titleRedOcc = '';
   TextEditingController annIncomeController = TextEditingController();
+  EatingHabit? eatingHabit;
+  SmokingHabit? smokingHabit;
+  DrinkingHabit? drinkingHabit;
+  late AbilityStatus abilityStatus;
 
   void initData(BuildContext context) {
     this.minAge = BlocProvider.of<ProfilePreferenceBloc>(context).minAge;
@@ -84,6 +95,16 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
     this.motherTongue =
         BlocProvider.of<ProfilePreferenceBloc>(context).motherTongue;
     this.city = BlocProvider.of<ProfilePreferenceBloc>(context).city;
+    this.drinkingHabit =
+        BlocProvider.of<ProfilePreferenceBloc>(context).drinkingHabit;
+    this.eatingHabit =
+        BlocProvider.of<ProfilePreferenceBloc>(context).eatingHabit;
+    this.smokingHabit =
+        BlocProvider.of<ProfilePreferenceBloc>(context).smokingHabit;
+    this.annualIncome =
+        BlocProvider.of<ProfilePreferenceBloc>(context).annualIncome;
+    this.abilityStatus =
+        BlocProvider.of<ProfilePreferenceBloc>(context).abilityStatus;
   }
 
   @override
@@ -151,14 +172,95 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
                             SizedBox(
                               height: 24,
                             ),
-                            MmmTextFileds.textFiledWithLabelStar(
-                                'Annual Income',
-                                'Enter your annual income',
-                                annIncomeController,
-                                inputType: TextInputType.number),
+                            buildAnnualIncome(),
                             SizedBox(
                               height: 24,
                             ),
+                            buildDietryHabiits(),
+                            SizedBox(
+                              height: 24,
+                            ),
+                            buildDrinkingHabits(),
+                            SizedBox(
+                              height: 24,
+                            ),
+                            buildSmokingHabit(),
+                            SizedBox(
+                              height: 24,
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(left: 8),
+                              child: Text(
+                                'Disability',
+                                style: MmmTextStyles.bodyRegular(
+                                    textColor: kDark5),
+                              ),
+                            ),
+                            Container(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Transform.scale(
+                                    scale: 1.2,
+                                    child: Radio(
+                                        activeColor: kPrimary,
+                                        value: AbilityStatus.Normal,
+                                        groupValue: abilityStatus,
+                                        onChanged: (val) {
+                                          BlocProvider.of<
+                                                      ProfilePreferenceBloc>(
+                                                  context)
+                                              .add(AbilityStatusChanged(
+                                                  AbilityStatus.Normal));
+                                        }),
+                                  ),
+                                  //SizedBox(
+                                  // width: 8,
+                                  //  ),
+                                  Text(
+                                    'Normal    ',
+                                    style: MmmTextStyles.bodySmall(
+                                        textColor: kDark5),
+                                  ),
+
+                                  Transform.scale(
+                                    scale: 1.2,
+                                    child: Radio(
+                                        activeColor: kPrimary,
+                                        value:
+                                            AbilityStatus.PhysicallyChallenged,
+                                        groupValue: abilityStatus,
+                                        onChanged: (val) {
+                                          BlocProvider.of<
+                                                      ProfilePreferenceBloc>(
+                                                  context)
+                                              .add(AbilityStatusChanged(
+                                                  AbilityStatus
+                                                      .PhysicallyChallenged));
+                                        }),
+                                  ),
+                                  // SizedBox(
+                                  //   width: 8,
+                                  // ),
+                                  Text(
+                                    'Physically Challenged',
+                                    style: MmmTextStyles.bodySmall(
+                                        textColor: kDark5),
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: SizedBox(
+                                        // width: 22,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            MmmButtons.primaryButton("Complete", () {
+                              BlocProvider.of<ProfilePreferenceBloc>(context)
+                                  .add(CompletePreference());
+                            }),
                           ],
                         ),
                       ),
@@ -180,8 +282,18 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
             selectState(context, state.list, "State");
           }
           if (state is OnGotCities) {
-            //
             selectCity(context, state.list, "City");
+          }
+          if (state is OnGotCasteList) {
+            selectSubCast(state.caste);
+          }
+          if (state is ProfilePreferenceComplete) {
+            navigateToFetchProfile();
+          }  if (state is OnError) {
+            Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text(state.message),
+              backgroundColor: kError,
+            ));
           }
         },
       ),
@@ -209,7 +321,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                ' ${minAge.round()} <---> ${maxAge.round()}',
+                ' ${minAge.round()} Yrs <---> ${maxAge.round()} Yrs',
                 style: MmmTextStyles.bodyRegular(textColor: kDark5),
               ),
               RangeSlider(
@@ -257,7 +369,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                ' ${minHeight.toStringAsFixed(1)} <---> ${maxHeight.toStringAsFixed(1)}',
+                ' ${minHeight.toStringAsFixed(1)}"" <---> ${maxHeight.toStringAsFixed(1)}""',
                 style: MmmTextStyles.bodyRegular(textColor: kDark5),
               ),
               RangeSlider(
@@ -289,8 +401,8 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
         'Marital Status',
         this.maritalStatus != []
             ? getStringFrom(this.maritalStatus)
-            : 'Select your maritial status',
-        'Select your maritial status',
+            : 'Select your marital status',
+        'Select your marital status',
         'images/rightArrow.svg', action: () {
       showMaritalStatusBottomSheet();
     });
@@ -340,14 +452,18 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   Widget buildSelectedState() {
     return MmmButtons.categoryButtons(
         'State',
-        // myState != null ? '${myState!.name}' :
-        'Does not matter',
+        myState.length > 0 ? getStateNames(this.myState) : 'Does not matter',
         'Select State',
-        'images/rightArrow.svg', action: () {
-      FocusScope.of(context).requestFocus(FocusNode());
+        'images/rightArrow.svg',
+        action: () {
+          FocusScope.of(context).requestFocus(FocusNode());
 
-      BlocProvider.of<ProfilePreferenceBloc>(context).add(GetAllStates());
-    });
+          BlocProvider.of<ProfilePreferenceBloc>(context).add(GetAllStates());
+        },
+        showCancel: this.myState.length > 0,
+        cancelAction: () {
+          BlocProvider.of<ProfilePreferenceBloc>(context).add(RemoveState());
+        });
   }
 
   void selectState(
@@ -396,21 +512,26 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   Widget buildSelectCity() {
     return MmmButtons.categoryButtons(
         'City',
-        //city != null ? '${city!.name}' :
-        'Does not matter',
+        this.city.length > 0 ? getStateNames(city) : 'Does not matter',
         'Select City',
-        'images/rightArrow.svg', action: () {
-      FocusScope.of(context).requestFocus(FocusNode());
+        'images/rightArrow.svg',
+        action: () {
+          FocusScope.of(context).requestFocus(FocusNode());
 
-      BlocProvider.of<ProfilePreferenceBloc>(context).add(GetMyCities());
-    });
+          BlocProvider.of<ProfilePreferenceBloc>(context).add(GetMyCities());
+        },
+        showCancel: this.city.length > 0,
+        cancelAction: () {
+          BlocProvider.of<ProfilePreferenceBloc>(context).add(RemoveCity());
+        });
   }
 
   Widget buildReligion() {
     return MmmButtons.categoryButtons(
         'Religion',
-        //'${religion.title}',
-        'Doesnot Matter',
+        this.religion.length > 0
+            ? getReligionText(this.religion)
+            : 'Does not Matter',
         'Select your religion',
         'images/rightArrow.svg', action: () {
       selectReligion(context);
@@ -441,28 +562,24 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
         Container(
             child: MmmButtons.categoryButtons(
                 'Caste',
-                // subCaste != null ? '${subCaste}' :
-                'Does not matter',
+                subCaste.length > 0
+                    ? getSubCasteText(subCaste)
+                    : 'Does not matter',
                 'Select your caste',
-                'images/rightArrow.svg', action: () {
-      selectSubCast(context);
-    }));
+                'images/rightArrow.svg',
+                action: () {
+                  BlocProvider.of<ProfilePreferenceBloc>(context)
+                      .add(GetCasteList());
+                },
+                showCancel: subCaste.length > 0,
+                cancelAction: () {
+                  BlocProvider.of<ProfilePreferenceBloc>(context)
+                      .add(RemoveCaste());
+                }));
     // : Container();
   }
 
-  void selectSubCast(BuildContext context) async {
-    List<CastSubCast> castList = [];
-    for (int i = 0; i < this.religion.length; i++) {
-      var cast = BlocProvider.of<ProfilePreferenceBloc>(context)
-          .userRepository
-          .masterData
-          .listCastSubCast
-          .firstWhere((element) =>
-              element.cast.toLowerCase() ==
-              this.religion[i].title.toLowerCase());
-      castList.add(cast);
-    }
-
+  void selectSubCast(List<CastSubCast> castList) async {
     var result = await showModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,
@@ -480,9 +597,9 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   Widget buildMotherTongue() {
     return MmmButtons.categoryButtons(
         'Mother Tongue',
-        // motherTongue != null
-        //   ? '${motherTongue!.title}':
-        'Select your mother tongue',
+        motherTongue.length > 0
+            ? getReligionText(motherTongue)
+            : 'Select your mother tongue',
         'Select your mother tongue',
         'images/rightArrow.svg', action: () {
       selectMotherToungue(context);
@@ -511,19 +628,19 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   Widget buildOccupation() {
     return MmmButtons.categoryButtons(
         'Occupation',
-        // occupation != null ? '${occupation!}' :
-        'Does not matter',
+        occupation.length > 0
+            ? getOccupationText(occupation)
+            : 'Does not matter',
         'Select your occupation',
         'images/rightArrow.svg', action: () {
       selectOccupation(context);
-    });
+    }, showCancel: occupation.length > 0, cancelAction: () {});
   }
 
   Widget buildEducation() {
     return MmmButtons.categoryButtons(
         'Highest Education',
-        //education != null ? '${education!}' :
-        'Does not matter',
+        education.length > 0 ? getEducationText(education) : 'Does not matter',
         'Select your highest education',
         'images/rightArrow.svg', action: () {
       selectEducation(context);
@@ -569,9 +686,203 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
     }
   }
 
-  String getStringFrom(List<MaritalStatus> maritalStatus) {
+  String getStringFrom(List<dynamic> maritalStatus) {
     String value = "";
-    for (var i = 0; i < maritalStatus.length; i++) {}
+    for (var i = 0; i < maritalStatus.length; i++) {
+      value = value + describeEnum(maritalStatus[i]);
+      if (i < maritalStatus.length - 1) {
+        value = value + ", ";
+      }
+    }
     return value;
+  }
+
+  String getStateNames(List<StateModel?> myState) {
+    String value = "";
+    for (var i = 0; i < myState.length; i++) {
+      value = value + myState[i]!.name;
+      if (i < maritalStatus.length) {
+        value = value + ", ";
+      }
+    }
+    return value;
+  }
+
+  String getReligionText(List<SimpleMasterData> religion) {
+    String value = "";
+    for (var i = 0; i < religion.length; i++) {
+      value = value + religion[i].title;
+      if (i < religion.length - 1) {
+        value = value + ", ";
+      }
+    }
+    return value;
+  }
+
+  String getSubCasteText(List<dynamic> subCaste) {
+    String value = "";
+    for (var i = 0; i < subCaste.length; i++) {
+      value = value + subCaste[i];
+      if (i < subCaste.length - 1) {
+        value = value + ", ";
+      }
+    }
+    return value;
+  }
+
+  String getOccupationText(List<String?> occupation) {
+    String value = "";
+    for (var i = 0; i < occupation.length; i++) {
+      value = value + occupation[i]!;
+      if (i < subCaste.length - 1) {
+        value = value + ", ";
+      }
+    }
+    return value;
+  }
+
+  String getEducationText(List<Education> education) {
+    String value = "";
+    for (var i = 0; i < education.length; i++) {
+      value = value + education[i].title;
+      if (i < education.length - 1) {
+        value = value + ", ";
+      }
+    }
+    return value;
+  }
+
+  Widget buildAnnualIncome() {
+    return MmmButtons.categoryButtons(
+        'Annual Income',
+        this.annualIncome.length > 0
+            ? getStringFrom(annualIncome)
+            : 'Does not matter',
+        'Select Annual Income',
+        'images/rightArrow.svg',
+        action: () {
+          selectAnnualIncome();
+        },
+        showCancel: this.annualIncome.length > 0,
+        cancelAction: () {
+          BlocProvider.of<ProfilePreferenceBloc>(context).add(RemoveIncome());
+        });
+  }
+
+  void selectAnnualIncome() async {
+    var result = await showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (context) => AnnualIncomePreference(
+              list: this.annualIncome,
+            ));
+    if (result != null && result is List<AnualIncome>) {
+      BlocProvider.of<ProfilePreferenceBloc>(context)
+          .add(IncomeSelected(result));
+    }
+  }
+
+  Widget buildDietryHabiits() {
+    return MmmButtons.categoryButtons(
+        'Dietary Habit',
+        this.eatingHabit != null
+            ? describeEnum(eatingHabit!)
+            : 'Does not matter',
+        'Dietary Habit',
+        'images/rightArrow.svg',
+        action: () {
+          selectEatingHabit();
+        },
+        showCancel: this.eatingHabit != null,
+        cancelAction: () {
+          BlocProvider.of<ProfilePreferenceBloc>(context).add(RemoveEating());
+        });
+  }
+
+  void selectEatingHabit() async {
+    var result = await showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (context) => EatingPrefs(
+              eatingHabit: eatingHabit,
+            ));
+    if (result != null && result is EatingHabit) {
+      BlocProvider.of<ProfilePreferenceBloc>(context)
+          .add(DietrySelected(result));
+    }
+  }
+
+  Widget buildDrinkingHabits() {
+    return MmmButtons.categoryButtons(
+        'Drinking Habit',
+        this.drinkingHabit != null
+            ? describeEnum(drinkingHabit!)
+            : 'Does not matter',
+        'Drinking Habit',
+        'images/rightArrow.svg',
+        action: () {
+          selectDrinkingHabit();
+        },
+        showCancel: this.drinkingHabit != null,
+        cancelAction: () {
+          BlocProvider.of<ProfilePreferenceBloc>(context).add(RemoveDrinking());
+        });
+  }
+
+  void selectDrinkingHabit() async {
+    var result = await showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (context) => DrinkingPrefs(
+              eatingHabit: drinkingHabit,
+            ));
+    if (result != null && result is DrinkingHabit) {
+      BlocProvider.of<ProfilePreferenceBloc>(context)
+          .add(DrinkingSelected(result));
+    }
+  }
+
+  Widget buildSmokingHabit() {
+    return MmmButtons.categoryButtons(
+        'Smoking Habit',
+        this.smokingHabit != null
+            ? describeEnum(smokingHabit!)
+            : 'Does not matter',
+        'Smoking Habit',
+        'images/rightArrow.svg',
+        action: () {
+          selectSmokingHabit();
+        },
+        showCancel: this.smokingHabit != null,
+        cancelAction: () {
+          BlocProvider.of<ProfilePreferenceBloc>(context).add(RemoveSmoking());
+        });
+  }
+
+  void selectSmokingHabit() async {
+    var result = await showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (context) => SmokingPrefs(
+              eatingHabit: smokingHabit,
+            ));
+    if (result != null && result is SmokingHabit) {
+      BlocProvider.of<ProfilePreferenceBloc>(context)
+          .add(SmokingSelected(result));
+    }
+  }
+
+  void navigateToFetchProfile() {
+    var userRepo =
+        BlocProvider.of<ProfilePreferenceBloc>(context).userRepository;
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => ProfileLoader(
+              userRepository: userRepo,
+            )));
+    // break;
   }
 }

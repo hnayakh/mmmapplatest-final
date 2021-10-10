@@ -63,6 +63,7 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
 
         if (result.status == AppConstants.SUCCESS) {
         this.userRepository.useDetails!.religion = this.religion!;
+        this.userRepository.useDetails!.motherTongue = this.motherTongue!;
           // await this.userRepository.saveUserDetails();
           yield MoveToCarrer();
         } else {

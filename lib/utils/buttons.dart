@@ -970,7 +970,7 @@ class MmmButtons {
 
   static Widget categoryButtons(
       String labelText, String hintText, String newhintText, String icon,
-      {Function()? action}) {
+      {Function()? action, bool showCancel = false, Function()? cancelAction}) {
     return Column(
       children: [
         Row(
@@ -1019,13 +1019,28 @@ class MmmButtons {
                               : MmmTextStyles.bodyRegular(textColor: kDark5),
                         ),
                       ),
-                      SvgPicture.asset(
-                        icon,
-                        width: 24,
-                        height: 24,
-                        color: Color(0xff878D96),
-                        fit: BoxFit.cover,
-                      ),
+                      showCancel
+                          ? InkWell(
+                        onTap: cancelAction,
+                              child: Container(
+                                width: 24,
+                                height: 24,
+                                child: SvgPicture.asset(
+                                  "images/Cross.svg",
+                                  width: 24,
+                                  height: 24,
+                                  color: kPrimary,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            )
+                          : SvgPicture.asset(
+                              icon,
+                              width: 24,
+                              height: 24,
+                              color: Color(0xff878D96),
+                              fit: BoxFit.cover,
+                            ),
                     ],
                   ),
                 ),

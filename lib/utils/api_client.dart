@@ -60,13 +60,14 @@ class ApiClient {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SigninResponse.fromJson(response.data);
       } else {
-        return SigninResponse.fromError("Error Occurred. Please try againa.");
+        return SigninResponse.fromError("Error Occurred. Please try again.");
       }
     } catch (error) {
       if (error is DioError) {
-        print(error.message);
+        // print(error.message);
+        return SigninResponse.fromError(error.response!.data["message"]);
       }
-      return SigninResponse.fromError("Error Occurred. Please try againa.");
+      return SigninResponse.fromError("Error Occurred. Please try again.");
     }
   }
 
@@ -227,7 +228,7 @@ class ApiClient {
         "email": "",
       });
       // if (response.statusCode == 200 || response.statusCode == 201) {
-        return SendOtpResponse.fromJson(response.data);
+      return SendOtpResponse.fromJson(response.data);
       // } else {
       //   return SendOtpResponse.fromError("Error Occurred. Please try againa.");
       // }
@@ -533,7 +534,7 @@ class ApiClient {
   }
 
   Future<ProfileDetailsResponse> getOtherUserDetails(String id) async {
-    try {
+    // try {
       var response =
           await this.dio.get("${AppConstants.ENDPOINT}users/basic/$id");
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -541,25 +542,26 @@ class ApiClient {
       }
       return ProfileDetailsResponse.fromError(
           "Error Occurred. Please try again.");
-    } catch (error) {
-      if (error is DioError) {
-        print(error.message);
-      }
-      return ProfileDetailsResponse.fromError(
-          "Error Occurred. Please try again.");
-    }
+    // } catch (error) {
+    //   if (error is DioError) {
+    //     print(error.message);
+    //   }
+    //   return ProfileDetailsResponse.fromError(
+    //       "Error Occurred. Please try again.");
+    // }
   }
 
   Future<String?> uploadImage(String id, String images) async {
     try {
       var length = await File(images).length();
-      var file =  MultipartFile(File(images).openRead(), length);
+      var file = MultipartFile(File(images).openRead(), length);
       var resposne = await this.dio.post(
           AppConstants.ENDPOINT + "users/images/$id",
-          data: FormData.fromMap({"files": await MultipartFile.fromFile(images)}));
+          data: FormData.fromMap(
+              {"files": await MultipartFile.fromFile(images)}));
       print(resposne.data);
-      if(resposne.statusCode ==200 || resposne.statusCode ==201){
-        if(resposne.data["data"].length >0){
+      if (resposne.statusCode == 200 || resposne.statusCode == 201) {
+        if (resposne.data["data"].length > 0) {
           return resposne.data["data"][0];
         }
       }
@@ -568,6 +570,61 @@ class ApiClient {
         print(error.message);
       }
       return null;
+    }
+  }
+
+  Future<SimpleResponse> completePreference(
+      double maxHeight,
+      double minHeight,
+      double maxAge,
+      double minAge,
+      List<MaritalStatus> maritalStatus,
+      CountryModel countryModel,
+      List<StateModel?> myState,
+      List<StateModel?> city,
+      List<SimpleMasterData> religion,
+      List<dynamic> subCaste,
+      List<SimpleMasterData> motherTongue,
+      List<String?> occupation,
+      List<Education> education,
+      List<AnualIncome> annualIncome,
+      EatingHabit? eatingHabit,
+      DrinkingHabit? drinkingHabit,
+      SmokingHabit? smokingHabit,
+      AbilityStatus abilityStatus,
+      String id) async {
+    try {
+      Response response = await this
+          .dio
+          .post(AppConstants.ENDPOINT + "users/preference", data: {
+        "userBasicId": id,
+        "minAge": minAge,
+        "maxAge": maxAge,
+        "minHeight": minHeight,
+        "maxHeight": maxHeight,
+        "maritalStatus": maritalStatus.map((e) => e.index).toList(),
+        "country": [countryModel.id],
+        "state": myState.map((e) => e!.id).toList(),
+        "city": city.map((e) => e!.id).toList(),
+        "religion": religion.map((e) => e.id).toList(),
+        "caste": subCaste,
+        "motherTongue": motherTongue.map((e) => e.id).toList(),
+        "highestEducation": education.map((e) => e.id).toList(),
+        "occupation": occupation.map((e) => e!).toList(),
+        "maxIncome": annualIncome.map((e) => e.index).toList(),
+        "minIncome": annualIncome.map((e) => e.index).toList(),
+        "dietaryHabits": eatingHabit != null ? eatingHabit.index : null,
+        "drinkingHabits": drinkingHabit != null ? drinkingHabit.index : null,
+        "smokingHabits": smokingHabit != null ? smokingHabit.index : null,
+        "challenged": abilityStatus.index
+      });
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return SimpleResponse.fromJson(response.data);
+      } else {
+        return SimpleResponse.fromError("Please Try Again");
+      }
+    } catch (error) {
+      return SimpleResponse.fromError("Please Try Again");
     }
   }
 }

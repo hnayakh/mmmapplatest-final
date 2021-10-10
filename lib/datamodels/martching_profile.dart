@@ -88,14 +88,8 @@ class ProfileDetails {
   late String religion, cast, gothra, motherTongue;
   late Manglik manglik;
 
-  late String occupation,
-      employedin,
-      city,
-      state,
-      country,
-      annualIncome,
-      highiestEducation;
-
+  late String occupation, employedin, city, state, country, highiestEducation;
+  late AnualIncome annualIncome;
   late FamilyAfluenceLevel familyAfluenceLevel;
   late FamilyType familyType;
   late FamilyValues familyValues;
@@ -140,7 +134,7 @@ class ProfileDetails {
 
     this.occupation = userCareer["occupation"];
     this.employedin = userCareer["employedIn"];
-    this.annualIncome = userCareer["annualIncome"];
+    this.annualIncome = AnualIncome.values[userCareer["annualIncome"]];
     this.highiestEducation = userCareer["highestEducation"];
 
     var userFamilyBackground = json["userFamilyBackgrounds"][0];

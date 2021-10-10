@@ -47,7 +47,7 @@ class _SubCastPreferenceSheetState extends State<SubCastPreferenceSheet> {
             height: 24,
           ),
           Text(
-            'Select SubCaste}:',
+            'Select Caste:',
             style: MmmTextStyles.bodyMedium(textColor: kDark5),
           ),
           SizedBox(
@@ -84,7 +84,7 @@ class _SubCastPreferenceSheetState extends State<SubCastPreferenceSheet> {
                     borderSide: BorderSide(color: kInputBorder, width: 1)),
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                hintText: "Search SubCaste}",
+                hintText: "Search Caste",
                 isDense: true,
                 filled: true,
                 fillColor: kLight4,
