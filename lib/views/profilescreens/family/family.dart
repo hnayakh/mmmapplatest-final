@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/elevations.dart';
@@ -13,8 +14,17 @@ import 'family_details/family_details.dart';
 
 class FamilyScreen extends StatefulWidget {
   final UserRepository userRepository;
+  final CountryModel countryModel;
+  final StateModel stateModel;
+  final StateModel city;
 
-  FamilyScreen({Key? key, required this.userRepository}) : super(key: key);
+  FamilyScreen(
+      {Key? key,
+      required this.userRepository,
+      required this.countryModel,
+      required this.stateModel,
+      required this.city})
+      : super(key: key);
 
   @override
   _FamilyScreenState createState() => _FamilyScreenState();
@@ -133,6 +143,9 @@ class _FamilyScreenState extends State<FamilyScreen>
                 FamilyBackground(
                   userRepository: widget.userRepository,
                   onComplete: onComplete,
+                  countryModel: widget.countryModel,
+                  stateModel: widget.stateModel,
+                  city: widget.city,
                 ),
                 FamilyDetails(
                   userRepository: widget.userRepository,

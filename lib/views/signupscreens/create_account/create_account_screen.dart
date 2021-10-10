@@ -63,229 +63,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
       body: BlocConsumer<CreateAccountBloc, CreateAccountState>(
         builder: (context, state) {
           intiData();
-          return SingleChildScrollView(
-              child: Container(
-            padding: EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                topBar(context),
-                Container(
-                    child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Text(
-                      "Let's create an \naccount for you",
-                      textAlign: TextAlign.start,
-                      style: MmmTextStyles.heading2(textColor: kDark5),
-                    ),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    Column(
-                      children: [
-                        Container(
-                          //padding: const EdgeInsets.only(top: 4, left: 4),
-                          child: Row(
-                            children: [
-                              Text(
-                                'Profile created for ',
-                                textScaleFactor: 1.0,
-                                style:
-                                    MmmTextStyles.bodySmall(textColor: kDark5),
-                              ),
-                              //SizedBox(
-                              //   width: 2,
-                              // ),
-                              Text(
-                                '*',
-                                style: MmmTextStyles.bodySmall(
-                                    textColor: kredStar),
-                              )
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 4,
-                        ),
-                        selectProfileFor(context)
-                      ],
-                    ),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    MmmTextFileds.textFiledWithLabelStar(
-                        'Email', 'Enter email id', emailController,
-                        inputType: TextInputType.emailAddress),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Gender',
-                          style: MmmTextStyles.bodyRegular(textColor: kDark5),
-                        ),
-                        Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Transform.scale(
-                                scale: 1.2,
-                                child: Radio(
-                                    activeColor: kPrimary,
-                                    value: Gender.Male,
-                                    groupValue: gender,
-                                    onChanged: (val) {
-                                      BlocProvider.of<CreateAccountBloc>(
-                                              context)
-                                          .add(OnGenderSelected(Gender.Male));
-                                    }),
-                              ),
-                              //SizedBox(
-                              //  width: 8,
-                              // ),
-                              Text(
-                                'Male',
-                                style:
-                                    MmmTextStyles.bodySmall(textColor: kDark5),
-                              ),
-                              SizedBox(
-                                width: 24,
-                              ),
-                              Transform.scale(
-                                scale: 1.2,
-                                child: Radio(
-                                    activeColor: kPrimary,
-                                    value: Gender.Female,
-                                    groupValue: gender,
-                                    onChanged: (val) {
-                                      BlocProvider.of<CreateAccountBloc>(
-                                              context)
-                                          .add(OnGenderSelected(Gender.Female));
-                                    }),
-                              ),
-
-                              Text(
-                                'Female',
-                                style:
-                                    MmmTextStyles.bodySmall(textColor: kDark5),
-                              ),
-                              //SizedBox(
-                              //  width: 22,
-                              // ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    Container(
-                        height: 44,
-                        child: TextField(
-                          controller: phoneController,
-                          keyboardType: TextInputType.phone,
-                          style: MmmTextStyles.bodyRegular(textColor: kDark5),
-                          cursorColor: kDark5,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: kDark2, width: 1),
-                                  borderRadius: BorderRadius.circular(8)),
-                              focusedBorder: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8)),
-                                  borderSide: BorderSide(
-                                      color: kInputBorder, width: 1)),
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 8),
-                              hintText: '   Phone Number',
-                              isDense: true,
-                              filled: true,
-                              fillColor: kLight4,
-                              hintStyle:
-                                  MmmTextStyles.bodyRegular(textColor: kDark2),
-                              prefixIcon: countrySelector()),
-                        )),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    MmmTextFileds.textFiledWithLabelStar(
-                        'Password', 'Enter password', passwordController,
-                        isPassword: true),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    MmmTextFileds.textFiledWithLabelStar('Confirm Password',
-                        'Enter confirm password', confirmpasswordController,
-                        isPassword: true),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Transform.scale(
-                          scale: 1.3,
-                          child: Checkbox(
-                            value: acceptTerms,
-                            activeColor: kPrimary,
-                            onChanged: (bool? value) {
-                              BlocProvider.of<CreateAccountBloc>(context)
-                                  .add(ChangeAcceptTerms(!acceptTerms));
-                            },
-                          ),
-                        ),
-                        //SizedBox(
-                        //  width: 4,
-                        // ),
-                        Text(
-                          'By signing up, i agree to the',
-                          style: MmmTextStyles.caption(textColor: kDark5),
-                        ),
-                        InkWell(
-                          onTap: () {},
-                          child: GradientText(
-                            ' terms & conditions',
-                            style: MmmTextStyles.captionBold(),
-                            colors: [kPrimary, kSecondary],
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                )),
-                state is OnLoading
-                    ? Center(
-                        child: Container(
-                          height: 50,
-                          width: 50,
-                          child: CircularProgressIndicator(),
-                        ),
-                      )
-                    : acceptTerms
-                        ? MmmButtons.enabledRedButtonbodyMedium(44, 'Sign up',
-                            action: () {
-                            FocusScope.of(context).requestFocus(FocusNode());
-                            BlocProvider.of<CreateAccountBloc>(context).add(
-                                OnSignupClicked(
-                                    emailController.text.trim(),
-                                    passwordController.text.trim(),
-                                    confirmpasswordController.text.trim(),
-                                    phoneController.text.trim()));
-                          })
-                        : MmmButtons.disabledGreyButton(50, 'Sign up'),
-              ],
-            ),
-          ));
+          return buildUi(context, state);
         },
         listener: (context, state) {
           if (state is OnSignUp) {
@@ -294,9 +72,233 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
           if (state is OnOtpGenerated) {
             navigateToOtpScreen();
           }
+          if (state is OnError) {
+            Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text(state.message),
+              backgroundColor: Colors.red,
+            ));
+          }
         },
       ),
     );
+  }
+
+  SingleChildScrollView buildUi(
+      BuildContext context, CreateAccountState state) {
+    return SingleChildScrollView(
+        child: Container(
+      padding: EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          topBar(context),
+          Container(
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(
+                height: 16,
+              ),
+              Text(
+                "Let's create an \naccount for you",
+                textAlign: TextAlign.start,
+                style: MmmTextStyles.heading2(textColor: kDark5),
+              ),
+              SizedBox(
+                height: 24,
+              ),
+              Column(
+                children: [
+                  Container(
+                    //padding: const EdgeInsets.only(top: 4, left: 4),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Profile created for ',
+                          textScaleFactor: 1.0,
+                          style: MmmTextStyles.bodySmall(textColor: kDark5),
+                        ),
+                        //SizedBox(
+                        //   width: 2,
+                        // ),
+                        Text(
+                          '*',
+                          style: MmmTextStyles.bodySmall(textColor: kredStar),
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  selectProfileFor(context)
+                ],
+              ),
+              SizedBox(
+                height: 24,
+              ),
+              MmmTextFileds.textFiledWithLabelStar(
+                  'Email', 'Enter email id', emailController,
+                  inputType: TextInputType.emailAddress),
+              SizedBox(
+                height: 24,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Gender',
+                    style: MmmTextStyles.bodyRegular(textColor: kDark5),
+                  ),
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Transform.scale(
+                          scale: 1.2,
+                          child: Radio(
+                              activeColor: kPrimary,
+                              value: Gender.Male,
+                              groupValue: gender,
+                              onChanged: (val) {
+                                BlocProvider.of<CreateAccountBloc>(context)
+                                    .add(OnGenderSelected(Gender.Male));
+                              }),
+                        ),
+                        //SizedBox(
+                        //  width: 8,
+                        // ),
+                        Text(
+                          'Male',
+                          style: MmmTextStyles.bodySmall(textColor: kDark5),
+                        ),
+                        SizedBox(
+                          width: 24,
+                        ),
+                        Transform.scale(
+                          scale: 1.2,
+                          child: Radio(
+                              activeColor: kPrimary,
+                              value: Gender.Female,
+                              groupValue: gender,
+                              onChanged: (val) {
+                                BlocProvider.of<CreateAccountBloc>(context)
+                                    .add(OnGenderSelected(Gender.Female));
+                              }),
+                        ),
+
+                        Text(
+                          'Female',
+                          style: MmmTextStyles.bodySmall(textColor: kDark5),
+                        ),
+                        //SizedBox(
+                        //  width: 22,
+                        // ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 24,
+              ),
+              Container(
+                  height: 44,
+                  child: TextField(
+                    controller: phoneController,
+                    keyboardType: TextInputType.phone,
+                    style: MmmTextStyles.bodyRegular(textColor: kDark5),
+                    cursorColor: kDark5,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(color: kDark2, width: 1),
+                            borderRadius: BorderRadius.circular(8)),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                            borderSide:
+                                BorderSide(color: kInputBorder, width: 1)),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 8),
+                        hintText: '   Phone Number',
+                        isDense: true,
+                        filled: true,
+                        fillColor: kLight4,
+                        hintStyle: MmmTextStyles.bodyRegular(textColor: kDark2),
+                        prefixIcon: countrySelector()),
+                  )),
+              SizedBox(
+                height: 24,
+              ),
+              MmmTextFileds.textFiledWithLabelStar(
+                  'Password', 'Enter password', passwordController,
+                  isPassword: true),
+              SizedBox(
+                height: 24,
+              ),
+              MmmTextFileds.textFiledWithLabelStar('Confirm Password',
+                  'Enter confirm password', confirmpasswordController,
+                  isPassword: true),
+              SizedBox(
+                height: 24,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Transform.scale(
+                    scale: 1.3,
+                    child: Checkbox(
+                      value: acceptTerms,
+                      activeColor: kPrimary,
+                      onChanged: (bool? value) {
+                        BlocProvider.of<CreateAccountBloc>(context)
+                            .add(ChangeAcceptTerms(!acceptTerms));
+                      },
+                    ),
+                  ),
+                  //SizedBox(
+                  //  width: 4,
+                  // ),
+                  Text(
+                    'By signing up, i agree to the',
+                    style: MmmTextStyles.caption(textColor: kDark5),
+                  ),
+                  InkWell(
+                    onTap: () {},
+                    child: GradientText(
+                      ' terms & conditions',
+                      style: MmmTextStyles.captionBold(),
+                      colors: [kPrimary, kSecondary],
+                    ),
+                  )
+                ],
+              ),
+            ],
+          )),
+          state is OnLoading
+              ? Center(
+                  child: Container(
+                    height: 50,
+                    width: 50,
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              : acceptTerms
+                  ? MmmButtons.enabledRedButtonbodyMedium(44, 'Sign up',
+                      action: () {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      BlocProvider.of<CreateAccountBloc>(context).add(
+                          OnSignupClicked(
+                              emailController.text.trim(),
+                              passwordController.text.trim(),
+                              confirmpasswordController.text.trim(),
+                              phoneController.text.trim()));
+                    })
+                  : MmmButtons.disabledGreyButton(50, 'Sign up'),
+        ],
+      ),
+    ));
   }
 
   Widget countrySelector() {

@@ -170,7 +170,7 @@ class _OccupationScreenState extends State<OccupationScreen> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Text(
-                              'Current location of groom’s',
+                              'Current location ',
                               style: MmmTextStyles.bodyMedium(
                                   textColor: kModalPrimary),
                             ),
@@ -348,9 +348,15 @@ class _OccupationScreenState extends State<OccupationScreen> {
 
   void navigateToFamily(BuildContext context) {
     var userRepo = BlocProvider.of<OccupationBloc>(context).userRepository;
+    var countryModel = BlocProvider.of<OccupationBloc>(context).countryModel!;
+    var stateModel = BlocProvider.of<OccupationBloc>(context).myState!;
+    var city = BlocProvider.of<OccupationBloc>(context).city!;
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => FamilyScreen(
               userRepository: userRepo,
+              countryModel: countryModel,
+              stateModel: stateModel,
+              city: city,
             )));
   }
 }
