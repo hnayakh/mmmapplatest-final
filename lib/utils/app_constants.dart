@@ -15,7 +15,7 @@ class AppConstants {
   static final EMAILREGEXP =
       r"^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
   static final PASSWORDREGEXP =
-      r"^[a-zA-Z0-9]+$";
+      r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&#]{8,16}$";
 
   static final SUCCESS = "SUCCESS";
   static final FAILURE = "FAILURE";
