@@ -204,255 +204,36 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
         controller: _controller,
         child: Column(
           children: [
-            Container(
-              width: double.infinity,
-              // height: 475,
-              height: MediaQuery.of(context).size.height * 0.7,
-              child: Stack(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.only(
-                        bottomRight: Radius.circular(23.3813)),
-                    child: Image.network(
-                      profileDetails.images[selectedImagePos],
-                      // height: 453.01,
-                      height: MediaQuery.of(context).size.height * 0.665,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Positioned(
-                    top: MediaQuery.of(context).size.height * 0.1,
-                    right: MediaQuery.of(context).size.width * 0.05,
-                    child: Column(
-                      children: createImageThumbNails(),
-                    ),
-                  ),
-                  Column(
-                    children: [
-                      Expanded(child: SizedBox()),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Expanded(flex: 20, child: SizedBox()),
-                          MmmIcons.cancel(),
-                          Expanded(
-                            flex: 1,
-                            child: SizedBox(),
-                          ),
-                          MmmIcons.meet(),
-                          Expanded(flex: 2, child: SizedBox()),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+            buildImages(context),
             Container(
               padding: kMargin16,
               child: Column(
                 children: [
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.03,
-                    child: Row(
-                      children: [
-                        Text(
-                          profileDetails.name,
-                          style: MmmTextStyles.heading5(textColor: kPrimary),
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            //Expanded(
-                            // child:
-                            Container(
-                              height: 8,
-                              width: 8,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle, color: kGreen),
-                            ),
-                            // ),
-                            Expanded(child: SizedBox())
-                          ],
-                        ),
-                        SvgPicture.asset(
-                          'images/Verified.svg',
-                          height: 20.51,
-                          color: kPrimary,
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 7,
-                  ),
-                  MmmWidgets.rowWidget("images/Users1.svg",
-                      ' Profile managed by ${getProfileManagedBy()}'),
-                  MmmWidgets.rowWidget("images/Calendar.svg",
-                      ' ${AppHelper.getAgeFromDob(profileDetails.dateOfBirth)}yrs, ${AppHelper.getReadableDob(profileDetails.dateOfBirth)}'),
-                  MmmWidgets.rowWidget(
-                      "images/office.svg", profileDetails.occupation),
-                  MmmWidgets.rowWidget(
-                      "images/height.svg", '${profileDetails.height} height'),
+                  buildBasicInfo(),
                   SizedBox(
                     height: 33,
                   ),
-                  Stack(
-                    children: [
-                      MmmButtons.profileViewButtons(
-                          "images/Users1.svg", 'About'),
-                      aboutState == 0
-                          ? MmmButtons.profileViewButtons(
-                              "images/Users1.svg", 'About', action: () {
-                              showAboutData();
-                            })
-                          : SizeTransition(
-                              sizeFactor: _aboutAnimation,
-                              axis: Axis.vertical,
-                              axisAlignment: -1,
-                              child: MmmButtons.aboutProfileViewButtons(
-                                  "images/Users1.svg",
-                                  'About',
-                                  profileDetails.aboutMe, action: () {
-                                showAboutData();
-                              })),
-                    ],
-                  ),
+                  buildAboutMe(),
                   SizedBox(
                     height: 16,
                   ),
-                  Stack(
-                    children: [
-                      MmmButtons.profileViewButtons(
-                          "images/education.svg", 'Career & Education'),
-                      careerState == 0
-                          ? MmmButtons.profileViewButtons(
-                              "images/education.svg", 'Career & Education',
-                              action: () {
-                              showCareerData();
-                            })
-                          : SizeTransition(
-                              sizeFactor: _careerAnimation,
-                              axis: Axis.vertical,
-                              axisAlignment: -1,
-                              child: MmmButtons.aboutProfileViewButtons(
-                                  "images/education.svg",
-                                  'Career & Education',
-                                  'I come from an upper middle class family. The most important thing in my life is religious beliefs, moral values and respect for elders. I’m modern thinker.',
-                                  action: () {
-                                showCareerData();
-                              })),
-                    ],
-                  ),
+                  buildHabits(context),
                   SizedBox(
                     height: 16,
                   ),
-                  Stack(
-                    children: [
-                      MmmButtons.profileViewButtons(
-                          "images/heart.svg", 'Interests'),
-                      interestState == 0
-                          ? MmmButtons.profileViewButtons(
-                              "images/heart.svg", 'Interests', action: () {
-                              showInterestData();
-                            })
-                          : SizeTransition(
-                              sizeFactor: _interestAnimation,
-                              axis: Axis.vertical,
-                              axisAlignment: -1,
-                              child: MmmButtons.interestsProfileViewButtons(
-                                  context,
-                                  "images/heart.svg",
-                                  'Interests',
-                                  'I come from an upper middle class family. The most important thing in my life is religious beliefs, moral values and respect for elders. I’m modern thinker.',
-                                  action: () {
-                                showInterestData();
-                              })),
-                    ],
-                  ),
+                  buildReligion(),
                   SizedBox(
                     height: 16,
                   ),
-                  Stack(
-                    children: [
-                      MmmButtons.profileViewButtons(
-                          "images/religion.svg", 'Religion Information'),
-                      religionState == 0
-                          ? MmmButtons.profileViewButtons(
-                              "images/religion.svg", 'Religion Information',
-                              action: () {
-                              showReligionData();
-                            })
-                          : SizeTransition(
-                              sizeFactor: _religionAnimation,
-                              axis: Axis.vertical,
-                              axisAlignment: -1,
-                              child: MmmButtons.aboutProfileViewButtons(
-                                  "images/religion.svg",
-                                  'Religion Information',
-                                  'I come from an upper middle class family. The most important thing in my life is religious beliefs, moral values and respect for elders. I’m modern thinker.',
-                                  action: () {
-                                showReligionData();
-                              })),
-                    ],
-                  ),
+                  buildCarrer(),
                   SizedBox(
                     height: 16,
                   ),
-                  Stack(
-                    children: [
-                      MmmButtons.profileViewButtons(
-                          "images/occasionally.svg", 'Lifestyle'),
-                      lifestyleState == 0
-                          ? MmmButtons.profileViewButtons(
-                              "images/occasionally.svg", 'Lifestyle',
-                              action: () {
-                              showLifestyleData();
-                            })
-                          : SizeTransition(
-                              sizeFactor: _lifestyleAnimation,
-                              axis: Axis.vertical,
-                              axisAlignment: -1,
-                              child: MmmButtons.interestsProfileViewButtons(
-                                  context,
-                                  "images/occasionally.svg",
-                                  'Lifestyle',
-                                  'I come from an upper middle class family. The most important thing in my life is religious beliefs, moral values and respect for elders. I’m modern thinker.',
-                                  action: () {
-                                showLifestyleData();
-                              })),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Stack(
-                    children: [
-                      MmmButtons.profileViewButtons(
-                          "images/family.svg", 'Family'),
-                      familyState == 0
-                          ? MmmButtons.profileViewButtons(
-                              "images/family.svg", 'Family', action: () {
-                              showFamilyData();
-                            })
-                          : SizeTransition(
-                              sizeFactor: _familyAnimation,
-                              axis: Axis.vertical,
-                              axisAlignment: -1,
-                              child: MmmButtons.familyProfileViewButtons(
-                                  "images/family.svg",
-                                  'Family',
-                                  'I come from an upper middle class family. The most important thing in my life is religious beliefs, moral values and respect for elders. I’m modern thinker.',
-                                  action: () {
-                                showFamilyData();
-                              })),
-                    ],
-                  ),
+                  buildFamilyButton(),
                   SizedBox(
                     height: 60,
                   ),
-                  MmmButtons.checkMatchButton(80, 'Check Match Percentage',
+                  MmmButtons.checkMatchButton(54, 'Check Match Percentage',
                       action: () {}),
                   SizedBox(
                     height: 16,
@@ -466,6 +247,188 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
             )
           ],
         ),
+      ),
+    );
+  }
+
+  Stack buildFamilyButton() {
+    return Stack(
+      children: [
+        MmmButtons.profileViewButtons("images/family.svg", 'Family'),
+        familyState == 0
+            ? MmmButtons.profileViewButtons("images/family.svg", 'Family',
+                action: () {
+                showFamilyData();
+              })
+            : SizeTransition(
+                sizeFactor: _familyAnimation,
+                axis: Axis.vertical,
+                axisAlignment: -1,
+                child: MmmButtons.familyProfileViewButtons(
+                    profileDetails.familyAfluenceLevel,
+                    profileDetails.familyValues,
+                    profileDetails.familyType,
+                    "city",
+                    "state",
+                    "Country",
+                    profileDetails.fatherOccupation,
+                    profileDetails.motherOccupation,
+                    profileDetails.noOfBrother,
+                    profileDetails.brothersMarried,
+                    profileDetails.noOfSister,
+                    profileDetails.sistersMarried, action: () {
+                  showFamilyData();
+                })),
+      ],
+    );
+  }
+
+  Stack buildCarrer() {
+    return Stack(
+      children: [
+        MmmButtons.profileViewButtons(
+            "images/education.svg", 'Career & Education'),
+        careerState == 0
+            ? MmmButtons.profileViewButtons(
+                "images/education.svg", 'Career & Education', action: () {
+                showCareerData();
+              })
+            : SizeTransition(
+                sizeFactor: _careerAnimation,
+                axis: Axis.vertical,
+                axisAlignment: -1,
+                child: MmmButtons.carrerProfileView(
+                    profileDetails.employedin,
+                    profileDetails.occupation,
+                    profileDetails.annualIncome,
+                    "city",
+                    "state",
+                    "country",
+                    profileDetails.highiestEducation, action: () {
+                  showCareerData();
+                })),
+      ],
+    );
+  }
+
+  Stack buildReligion() {
+    return Stack(
+      children: [
+        MmmButtons.profileViewButtons("images/religion.svg", 'Religion'),
+        religionState == 0
+            ? MmmButtons.profileViewButtons("images/religion.svg", 'Religion',
+                action: () {
+                showReligionData();
+              })
+            : SizeTransition(
+                sizeFactor: _religionAnimation,
+                axis: Axis.vertical,
+                axisAlignment: -1,
+                child: MmmButtons.religionProfileView(
+                    profileDetails.religion,
+                    profileDetails.cast,
+                    profileDetails.gothra,
+                    profileDetails.manglik,
+                    profileDetails.motherTongue, action: () {
+                  showReligionData();
+                })),
+      ],
+    );
+  }
+
+  Stack buildHabits(BuildContext context) {
+    return Stack(
+      children: [
+        MmmButtons.profileViewButtons("images/occasionally.svg", 'Lifestyle'),
+        lifestyleState == 0
+            ? MmmButtons.profileViewButtons(
+                "images/occasionally.svg", 'Lifestyle', action: () {
+                showLifestyleData();
+              })
+            : SizeTransition(
+                sizeFactor: _lifestyleAnimation,
+                axis: Axis.vertical,
+                axisAlignment: -1,
+                child: MmmButtons.interestsProfileViewButtons(
+                    context,
+                    profileDetails.eatingHabit,
+                    profileDetails.drinkingHabit,
+                    profileDetails.smokingHabit, action: () {
+                  showLifestyleData();
+                })),
+      ],
+    );
+  }
+
+  Stack buildAboutMe() {
+    return Stack(
+      children: [
+        MmmButtons.profileViewButtons("images/Users1.svg", 'About'),
+        aboutState == 0
+            ? MmmButtons.profileViewButtons("images/Users1.svg", 'About',
+                action: () {
+                showAboutData();
+              })
+            : SizeTransition(
+                sizeFactor: _aboutAnimation,
+                axis: Axis.vertical,
+                axisAlignment: -1,
+                child: MmmButtons.aboutProfileViewButtons(
+                    "images/Users1.svg",
+                    'About',
+                    profileDetails.aboutMe,
+                    profileDetails.maritalStatus,
+                    profileDetails.abilityStatus, action: () {
+                  showAboutData();
+                })),
+      ],
+    );
+  }
+
+  Container buildImages(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      // height: 475,
+      height: MediaQuery.of(context).size.height * 0.7,
+      child: Stack(
+        children: [
+          ClipRRect(
+            borderRadius:
+                BorderRadius.only(bottomRight: Radius.circular(23.3813)),
+            child: Image.network(
+              profileDetails.images[selectedImagePos],
+              // height: 453.01,
+              height: MediaQuery.of(context).size.height * 0.665,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
+          ),
+          Positioned(
+            top: MediaQuery.of(context).size.height * 0.1,
+            right: MediaQuery.of(context).size.width * 0.05,
+            child: Column(
+              children: createImageThumbNails(),
+            ),
+          ),
+          Column(
+            children: [
+              Expanded(child: SizedBox()),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Expanded(flex: 20, child: SizedBox()),
+                  MmmIcons.cancel(),
+                  Expanded(
+                    flex: 1,
+                    child: SizedBox(),
+                  ),
+                  MmmIcons.meet(),
+                  Expanded(flex: 2, child: SizedBox()),
+                ],
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -578,5 +541,55 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
       case Relationship.Relative:
         return "Relative";
     }
+  }
+
+  Widget buildBasicInfo() {
+    return Container(
+      child: Column(
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height * 0.03,
+            child: Row(
+              children: [
+                Text(
+                  profileDetails.name,
+                  style: MmmTextStyles.heading5(textColor: kPrimary),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    //Expanded(
+                    // child:
+                    Container(
+                      height: 8,
+                      width: 8,
+                      decoration:
+                          BoxDecoration(shape: BoxShape.circle, color: kGreen),
+                    ),
+                    // ),
+                    Expanded(child: SizedBox())
+                  ],
+                ),
+                SvgPicture.asset(
+                  'images/Verified.svg',
+                  height: 20.51,
+                  color: kPrimary,
+                )
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 7,
+          ),
+          MmmWidgets.rowWidget("images/Users1.svg",
+              ' Profile managed by ${getProfileManagedBy()}'),
+          MmmWidgets.rowWidget("images/Calendar.svg",
+              ' ${AppHelper.getAgeFromDob(profileDetails.dateOfBirth)}yrs, ${AppHelper.getReadableDob(profileDetails.dateOfBirth)}'),
+          MmmWidgets.rowWidget("images/office.svg", profileDetails.occupation),
+          MmmWidgets.rowWidget(
+              "images/height.svg", '${profileDetails.height}"" height'),
+        ],
+      ),
+    );
   }
 }

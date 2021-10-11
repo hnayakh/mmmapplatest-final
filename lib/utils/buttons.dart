@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/icons.dart';
+import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
 
@@ -122,7 +124,18 @@ class MmmButtons {
   }
 
   static Container familyProfileViewButtons(
-      String icon, String label, String about,
+      FamilyAfluenceLevel familyAfluenceLevel,
+      FamilyValues familyValues,
+      FamilyType familyType,
+      String city,
+      String state,
+      String country,
+      FatherOccupation fatherOccupation,
+      MotherOccupation motherOccupation,
+      int noOfBrother,
+      int brothersMarried,
+      int noOfSister,
+      int sistersMarried,
       {Function()? action}) {
     return Container(
         decoration: BoxDecoration(
@@ -150,7 +163,7 @@ class MmmButtons {
                   Row(
                     children: [
                       SvgPicture.asset(
-                        icon,
+                        "images/family.svg",
                         color: Color(0xff121619),
                         fit: BoxFit.cover,
                       ),
@@ -159,7 +172,7 @@ class MmmButtons {
                         child: SizedBox(),
                       ),
                       Text(
-                        label,
+                        "Family",
                         textScaleFactor: 1.0,
                         //textAlign: TextAlign.start,
                         style: MmmTextStyles.heading5(textColor: kDark6),
@@ -191,7 +204,7 @@ class MmmButtons {
                               style: MmmTextStyles.heading6(textColor: kDark5),
                             ),
                             Text(
-                              'Kuruskhetra',
+                              describeEnum(familyAfluenceLevel),
                               style: MmmTextStyles.bodySmall(textColor: kDark5),
                             )
                           ],
@@ -203,7 +216,7 @@ class MmmButtons {
                               style: MmmTextStyles.heading6(textColor: kDark5),
                             ),
                             Text(
-                              'Kuruskhetra University',
+                              describeEnum(familyType),
                               style: MmmTextStyles.bodySmall(textColor: kDark5),
                             )
                           ],
@@ -215,7 +228,7 @@ class MmmButtons {
                               style: MmmTextStyles.heading6(textColor: kDark5),
                             ),
                             Text(
-                              'Kuruskhetra',
+                              describeEnum(familyValues),
                               style: MmmTextStyles.bodySmall(textColor: kDark5),
                             )
                           ],
@@ -227,7 +240,7 @@ class MmmButtons {
                               style: MmmTextStyles.heading6(textColor: kDark5),
                             ),
                             Text(
-                              'Kuruskhetra University',
+                              '$city,$state,$country',
                               style: MmmTextStyles.bodySmall(textColor: kDark5),
                             )
                           ],
@@ -239,7 +252,7 @@ class MmmButtons {
                               style: MmmTextStyles.heading6(textColor: kDark5),
                             ),
                             Text(
-                              'Kuruskhetra',
+                              describeEnum(fatherOccupation),
                               style: MmmTextStyles.bodySmall(textColor: kDark5),
                             )
                           ],
@@ -251,35 +264,83 @@ class MmmButtons {
                               style: MmmTextStyles.heading6(textColor: kDark5),
                             ),
                             Text(
-                              'Kuruskhetra',
+                              describeEnum(motherOccupation),
                               style: MmmTextStyles.bodySmall(textColor: kDark5),
                             )
                           ],
                         ),
                         Row(
                           children: [
-                            Text(
-                              'No. of brothers: ',
-                              style: MmmTextStyles.heading6(textColor: kDark5),
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'No. of brothers: ',
+                                    style: MmmTextStyles.heading6(
+                                        textColor: kDark5),
+                                  ),
+                                  Text(
+                                    '$noOfBrother',
+                                    style: MmmTextStyles.bodySmall(
+                                        textColor: kDark5),
+                                  )
+                                ],
+                              ),
                             ),
-                            Text(
-                              '2',
-                              style: MmmTextStyles.bodySmall(textColor: kDark5),
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'Married: ',
+                                    style: MmmTextStyles.heading6(
+                                        textColor: kDark5),
+                                  ),
+                                  Text(
+                                    '$brothersMarried/$noOfBrother',
+                                    style: MmmTextStyles.bodySmall(
+                                        textColor: kDark5),
+                                  )
+                                ],
+                              ),
                             )
                           ],
                         ),
                         Row(
                           children: [
-                            Text(
-                              'No. of sisters: ',
-                              style: MmmTextStyles.heading6(textColor: kDark5),
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'No. of sisters: ',
+                                    style: MmmTextStyles.heading6(
+                                        textColor: kDark5),
+                                  ),
+                                  Text(
+                                    '$noOfSister',
+                                    style: MmmTextStyles.bodySmall(
+                                        textColor: kDark5),
+                                  )
+                                ],
+                              ),
                             ),
-                            Text(
-                              '2',
-                              style: MmmTextStyles.bodySmall(textColor: kDark5),
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'Married: ',
+                                    style: MmmTextStyles.heading6(
+                                        textColor: kDark5),
+                                  ),
+                                  Text(
+                                    '$sistersMarried/$noOfSister',
+                                    style: MmmTextStyles.bodySmall(
+                                        textColor: kDark5),
+                                  )
+                                ],
+                              ),
                             )
                           ],
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -288,8 +349,8 @@ class MmmButtons {
             )));
   }
 
-  static Container aboutProfileViewButtons(
-      String icon, String label, String about,
+  static Container aboutProfileViewButtons(String icon, String label,
+      String about, MaritalStatus maritalStatus, AbilityStatus abilityStatus,
       {Function()? action}) {
     return Container(
       decoration: BoxDecoration(
@@ -363,14 +424,15 @@ class MmmButtons {
                         children: [
                           Text('Marital Status: ',
                               style: MmmTextStyles.heading6()),
-                          Text('Never Married',
+                          Text(describeEnum(maritalStatus),
                               style: MmmTextStyles.bodySmall()),
                         ],
                       ),
                       Row(
                         children: [
                           Text('Disability: ', style: MmmTextStyles.heading6()),
-                          Text('Normal', style: MmmTextStyles.bodySmall()),
+                          Text(describeEnum(abilityStatus),
+                              style: MmmTextStyles.bodySmall()),
                         ],
                       )
                     ],
@@ -384,8 +446,242 @@ class MmmButtons {
     );
   }
 
+  static Container religionProfileView(String religion, String cast,
+      String gothra, Manglik manglik, String motherTongue,
+      {Function()? action}) {
+    return Container(
+      decoration: BoxDecoration(
+        color: kWhite,
+        boxShadow: [MmmShadow.elevation1()],
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: Color(0xffF0EFF5),
+          width: 1,
+        ),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: action,
+          child: Container(
+            alignment: Alignment.center,
+            // height: 264,
+            padding: EdgeInsets.all(9),
+
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 8,
+                ),
+                Row(
+                  children: [
+                    SvgPicture.asset(
+                      "images/religion.svg",
+                      color: Color(0xff121619),
+                      fit: BoxFit.cover,
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: SizedBox(),
+                    ),
+                    Text(
+                      "Religion",
+                      textScaleFactor: 1.0,
+                      //textAlign: TextAlign.start,
+                      style: MmmTextStyles.heading5(textColor: kDark6),
+                    ),
+                    Expanded(
+                      flex: 20,
+                      child: SizedBox(),
+                    ),
+                    Container(
+                      child: SvgPicture.asset(
+                        "images/arrowUp.svg",
+                        color: Color(0xff878D96),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Container(
+                  margin: kMargin16,
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Text('Religion: ', style: MmmTextStyles.heading6()),
+                          Text(religion, style: MmmTextStyles.bodySmall()),
+                        ],
+                      ),
+                      cast != "null" || cast.length == 0
+                          ? Row(
+                              children: [
+                                Text('Caste: ',
+                                    style: MmmTextStyles.heading6()),
+                                Text(cast, style: MmmTextStyles.bodySmall()),
+                              ],
+                            )
+                          : Container(),
+                      gothra != "null" || gothra.length == 0
+                          ? Row(
+                              children: [
+                                Text('Gothra: ',
+                                    style: MmmTextStyles.heading6()),
+                                Text(gothra, style: MmmTextStyles.bodySmall()),
+                              ],
+                            )
+                          : Container(),
+                      Row(
+                        children: [
+                          Text('Manglik: ', style: MmmTextStyles.heading6()),
+                          Text(describeEnum(manglik),
+                              style: MmmTextStyles.bodySmall()),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text('Mother Tongue: ',
+                              style: MmmTextStyles.heading6()),
+                          Text(motherTongue, style: MmmTextStyles.bodySmall()),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  static Container carrerProfileView(
+      String employedin,
+      String occupation,
+      AnualIncome annualIncome,
+      String city,
+      String state,
+      String country,
+      String highiestEducation,
+      {Function()? action}) {
+    return Container(
+      decoration: BoxDecoration(
+        color: kWhite,
+        boxShadow: [MmmShadow.elevation1()],
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: Color(0xffF0EFF5),
+          width: 1,
+        ),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: action,
+          child: Container(
+            alignment: Alignment.center,
+            // height: 264,
+            padding: EdgeInsets.all(9),
+
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 8,
+                ),
+                Row(
+                  children: [
+                    SvgPicture.asset(
+                      "images/religion.svg",
+                      color: Color(0xff121619),
+                      fit: BoxFit.cover,
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: SizedBox(),
+                    ),
+                    Text(
+                      "Religion",
+                      textScaleFactor: 1.0,
+                      //textAlign: TextAlign.start,
+                      style: MmmTextStyles.heading5(textColor: kDark6),
+                    ),
+                    Expanded(
+                      flex: 20,
+                      child: SizedBox(),
+                    ),
+                    Container(
+                      child: SvgPicture.asset(
+                        "images/arrowUp.svg",
+                        color: Color(0xff878D96),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Container(
+                  margin: kMargin16,
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Text('Employed In: ',
+                              style: MmmTextStyles.heading6()),
+                          Text(employedin, style: MmmTextStyles.bodySmall()),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text('Occupation: ', style: MmmTextStyles.heading6()),
+                          Text(occupation, style: MmmTextStyles.bodySmall()),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text('Annual Income: ',
+                              style: MmmTextStyles.heading6()),
+                          Text(describeEnum(annualIncome),
+                              style: MmmTextStyles.bodySmall()),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text('Job Location: ',
+                              style: MmmTextStyles.heading6()),
+                          Text("$city,$state,$country",
+                              style: MmmTextStyles.bodySmall()),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text('Highest Education: ',
+                              style: MmmTextStyles.heading6()),
+                          Text(highiestEducation,
+                              style: MmmTextStyles.bodySmall()),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   static Container interestsProfileViewButtons(
-      BuildContext context, String icon, String label, String about,
+      BuildContext context,
+      EatingHabit eatingHabit,
+      DrinkingHabit drinkingHabit,
+      SmokingHabit smokingHabit,
       {Function()? action}) {
     return Container(
       decoration: BoxDecoration(
@@ -413,7 +709,7 @@ class MmmButtons {
                 Row(
                   children: [
                     SvgPicture.asset(
-                      icon,
+                      "images/occasionally.svg",
                       color: Color(0xff121619),
                       fit: BoxFit.cover,
                     ),
@@ -422,7 +718,7 @@ class MmmButtons {
                       child: SizedBox(),
                     ),
                     Text(
-                      label,
+                      "Lifestyle",
                       textScaleFactor: 1.0,
                       //textAlign: TextAlign.start,
                       style: MmmTextStyles.heading5(textColor: kDark6),
@@ -464,9 +760,15 @@ class MmmButtons {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text('🍳'),
+                                SvgPicture.asset(
+                                  "images/Veg2.svg",
+                                  fit: BoxFit.cover,
+                                ),
+                                SizedBox(
+                                  width: 6,
+                                ),
                                 Text(
-                                  '  Food',
+                                  describeEnum(eatingHabit),
                                   style: MmmTextStyles.bodyMedium(
                                       textColor: kBlack),
                                 )
@@ -486,9 +788,15 @@ class MmmButtons {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text('🍳'),
+                                SvgPicture.asset(
+                                  "images/alcoholic.svg",
+                                  fit: BoxFit.cover,
+                                ),
+                                SizedBox(
+                                  width: 6,
+                                ),
                                 Text(
-                                  '  Food',
+                                  describeEnum(drinkingHabit),
                                   style: MmmTextStyles.bodyMedium(
                                       textColor: kBlack),
                                 )
@@ -512,9 +820,15 @@ class MmmButtons {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('🍳'),
+                            SvgPicture.asset(
+                              "images/smoke.svg",
+                              fit: BoxFit.cover,
+                            ),
+                            SizedBox(
+                              width: 6,
+                            ),
                             Text(
-                              '  Food',
+                              describeEnum(smokingHabit),
                               style:
                                   MmmTextStyles.bodyMedium(textColor: kBlack),
                             )
@@ -1021,7 +1335,7 @@ class MmmButtons {
                       ),
                       showCancel
                           ? InkWell(
-                        onTap: cancelAction,
+                              onTap: cancelAction,
                               child: Container(
                                 width: 24,
                                 height: 24,
@@ -1770,7 +2084,7 @@ class MmmButtons {
                 text,
                 textScaleFactor: 1.0,
                 textAlign: TextAlign.center,
-                style: MmmTextStyles.heading4(textColor: gray7),
+                style: MmmTextStyles.heading5(textColor: gray7),
               ),
             ),
           ),
@@ -2219,6 +2533,7 @@ class MmmButtons {
           child: Container(
             alignment: Alignment.center,
             height: containerheight,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             //width: containerwidth,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -2231,9 +2546,9 @@ class MmmButtons {
                   color: Color(0xffFCFCFD),
                   fit: BoxFit.cover,
                 ),
-                // SizedBox(
-                //   width: 8,
-                // ),
+                SizedBox(
+                  width: 8,
+                ),
                 Text(
                   text,
                   textAlign: TextAlign.center,
@@ -2267,6 +2582,8 @@ class MmmButtons {
           child: Container(
             alignment: Alignment.center,
             height: containerheight,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+
             // width: containerwidth,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -2279,9 +2596,9 @@ class MmmButtons {
                   color: Color(0xff121619),
                   fit: BoxFit.cover,
                 ),
-                // SizedBox(
-                //   width: 8,
-                // ),
+                SizedBox(
+                  width: 8,
+                ),
                 Text(
                   text,
                   textScaleFactor: 1.0,

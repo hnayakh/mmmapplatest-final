@@ -22,8 +22,7 @@ class SignInBloc extends Bloc<SignInEvent, SigninState> {
       if (!RegExp(AppConstants.EMAILREGEXP).hasMatch(this.email)) {
         yield OnError("Enter Valid Email");
       } else if (!RegExp(AppConstants.PASSWORDREGEXP).hasMatch(this.password)) {
-        yield OnError(
-            "Password must contain one uppercase and one special character.");
+        yield OnError("Password must be alphanumeric and of size 8 or more.");
       } else {
         var result = await this.userRepository.login(this.email, this.password);
         if (result.status == AppConstants.FAILURE) {
