@@ -67,6 +67,7 @@ class FamilyDetailsBloc extends Bloc<FamilyDetailsEvent, FamilyDetailState> {
             brotherMarried,
             sistersMarried);
         if (result.status == AppConstants.SUCCESS) {
+          this.userRepository.updateRegistrationStep(9);
           yield OnFamilyDetailsUpdated();
         } else {
           yield OnError(result.message);

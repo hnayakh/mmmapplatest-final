@@ -15,14 +15,21 @@ class FamilyBackgroundBloc
   FamilyType type = FamilyType.Nuclear;
   CountryModel? countryModel;
   StateModel? myState, city;
+  late bool canSelectStayingWithParent;
   bool isStayingWithParents = false;
-  final CountryModel selectedCountry;
-  final StateModel selectedState;
-  final StateModel selectedCity;
+  final CountryModel? selectedCountry;
+  final StateModel? selectedState;
+  final StateModel? selectedCity;
 
   FamilyBackgroundBloc(this.userRepository, this.selectedCountry,
       this.selectedState, this.selectedCity)
-      : super(FamilyBackgroundInitialState());
+      : super(FamilyBackgroundInitialState()) {
+    if (countryModel != null && myState != null && city != null) {
+      canSelectStayingWithParent = false;
+    } else {
+      canSelectStayingWithParent = true;
+    }
+  }
 
   @override
   Stream<FamilyBackgroundState> mapEventToState(
@@ -97,11 +104,12 @@ class FamilyBackgroundBloc
             this.values!,
             this.type,
             this.isStayingWithParents
-                ? this.selectedCountry
+                ? this.selectedCountry!
                 : this.countryModel!,
-            this.isStayingWithParents ? this.selectedState : this.myState!,
-            this.isStayingWithParents ? this.selectedCity : this.city!);
+            this.isStayingWithParents ? this.selectedState! : this.myState!,
+            this.isStayingWithParents ? this.selectedCity! : this.city!);
         if (result.status == AppConstants.SUCCESS) {
+          this.userRepository.updateRegistrationStep(8);
           yield OnUpdate();
         } else {
           yield OnError(result.message);

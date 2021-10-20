@@ -595,7 +595,7 @@ class MmmButtons {
                 Row(
                   children: [
                     SvgPicture.asset(
-                      "images/religion.svg",
+                      "images/education.svg",
                       color: Color(0xff121619),
                       fit: BoxFit.cover,
                     ),
@@ -604,7 +604,7 @@ class MmmButtons {
                       child: SizedBox(),
                     ),
                     Text(
-                      "Religion",
+                      "Career & Education",
                       textScaleFactor: 1.0,
                       //textAlign: TextAlign.start,
                       style: MmmTextStyles.heading5(textColor: kDark6),

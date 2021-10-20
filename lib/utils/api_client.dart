@@ -89,7 +89,7 @@ class ApiClient {
         "maritalStatus": maritalStatus!.index,
         "childrenStatus": childrenStatus!.index,
         "abilityStatus": abilityStatus!.index,
-        "height": AppHelper.getHeights()[heightStatus!],
+        "height": AppHelper.getHeights()[heightStatus!] * 30.48,
         "numberOfChildren": noOfChildren == null ? null : noOfChildren.index
       });
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -106,22 +106,22 @@ class ApiClient {
   }
 
   Future<MasterDataResponse> getMasterData(String? userId) async {
-    try {
+    // try {
       Response response = await this.dio.get(
           AppConstants.ENDPOINT + "masters/profile-raw-data",
-          queryParameters: userId != null ? {"userBasicId": userId} : {});
+          queryParameters: userId != null ? {"userBasicId": userId} : {},options: Options(receiveTimeout: 60000));
       if (response.statusCode == 200 || response.statusCode == 201) {
         return MasterDataResponse.fromJson(response.data);
       } else {
         return MasterDataResponse.fromError(
             "Error Occurred. Please try againa.");
       }
-    } catch (error) {
-      if (error is DioError) {
-        print(error.message);
-      }
-      return MasterDataResponse.fromError("Error Occurred. Please try againa.");
-    }
+    // } catch (error) {
+    //   if (error is DioError) {
+    //     print(error.message);
+    //   }
+    //   return MasterDataResponse.fromError("Error Occurred. Please try againa.");
+    // }
   }
 
   //
@@ -600,8 +600,8 @@ class ApiClient {
         "userBasicId": id,
         "minAge": minAge,
         "maxAge": maxAge,
-        "minHeight": minHeight,
-        "maxHeight": maxHeight,
+        "minHeight": minHeight * 30.48,
+        "maxHeight": maxHeight * 30.48,
         "maritalStatus": maritalStatus.map((e) => e.index).toList(),
         "country": [countryModel.id],
         "state": myState.map((e) => e!.id).toList(),

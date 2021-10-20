@@ -63,7 +63,7 @@ class MatchingProfileStackViewScreenState
                 swipeDown: true,
                 orientation: AmassOrientation.TOP,
                 totalNum: list.length,
-                stackNum: list.length,
+                // stackNum: list.length - 1,
                 allowVerticalMovement: true,
                 swipeEdge: 2.5,
                 maxWidth: MediaQuery.of(context).size.width,

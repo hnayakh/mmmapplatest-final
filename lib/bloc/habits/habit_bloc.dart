@@ -46,6 +46,7 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
 
         if (result.status == AppConstants.SUCCESS) {
           // await this.userRepository.saveUserDetails();
+          this.userRepository.updateRegistrationStep(5);
           yield NavigationToReligion();
         } else {
           yield OnError(result.message);

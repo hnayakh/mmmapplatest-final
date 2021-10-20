@@ -196,8 +196,8 @@ class UserRepository {
       EatingHabit? eatingHabit,
       DrinkingHabit? drinkingHabit,
       SmokingHabit? smokingHabit,
-      AbilityStatus abilityStatus) async{
-   return this.apiClient.completePreference(
+      AbilityStatus abilityStatus) async {
+    return this.apiClient.completePreference(
         maxHeight,
         minHeight,
         maxAge,
@@ -217,5 +217,9 @@ class UserRepository {
         smokingHabit,
         abilityStatus,
         useDetails!.id);
+  }
+
+  void updateRegistrationStep(int i) async {
+    await this.storageService.updateRegistrationStep(i);
   }
 }

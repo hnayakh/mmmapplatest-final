@@ -232,6 +232,7 @@ class ProfilePreferenceBloc
           this.smokingHabit,
           this.abilityStatus);
       if (response.status == AppConstants.SUCCESS) {
+        this.userRepository.updateRegistrationStep(11);
         yield ProfilePreferenceComplete();
       } else {
         yield OnError(response.message);

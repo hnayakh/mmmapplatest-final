@@ -16,11 +16,11 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
       var result = await this.userRepository.getMasterData();
       if (result.status == AppConstants.SUCCESS) {
         this.userRepository.masterData = result.data!;
-        var isFirstTimeLogin = await this.userRepository.getHasOpenedBefore();
-        if (isFirstTimeLogin == null) {
-          //TODO: Update Firsts time
-          yield MoveToInstructionScreen();
-        } else {
+        // var isFirstTimeLogin = await this.userRepository.getHasOpenedBefore();
+        // if (isFirstTimeLogin == null) {
+        //   //TODO: Update Firsts time
+        //   yield MoveToInstructionScreen();
+        // } else {
           var userDetails = await this.userRepository.getUserDetails();
           this.userRepository.useDetails = userDetails;
           if (userDetails == null) {
@@ -32,9 +32,9 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
             //   this.userRepository.listProfileDetails =
             //       profiles.listProfileDetails;
             // }
-            // yield MoveToHome();
+            yield MoveToHome();
           }
-        }
+        // }
       } else {
         yield OnResult(result.status, result.message);
       }

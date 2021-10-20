@@ -14,16 +14,16 @@ import 'family_details/family_details.dart';
 
 class FamilyScreen extends StatefulWidget {
   final UserRepository userRepository;
-  final CountryModel countryModel;
-  final StateModel stateModel;
-  final StateModel city;
+  final CountryModel? countryModel;
+  final StateModel? stateModel;
+  final StateModel? city;
 
   FamilyScreen(
       {Key? key,
       required this.userRepository,
-      required this.countryModel,
-      required this.stateModel,
-      required this.city})
+      this.countryModel,
+      this.stateModel,
+      this.city})
       : super(key: key);
 
   @override

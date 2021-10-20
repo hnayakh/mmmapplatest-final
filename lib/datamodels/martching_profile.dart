@@ -77,7 +77,7 @@ class ProfileDetails {
   late Relationship relationship;
   late MaritalStatus maritalStatus;
   late ChildrenStatus childrenStatus;
-  late NoOfChildren noOfChildren;
+  late NoOfChildren? noOfChildren;
   late AbilityStatus abilityStatus;
   late String height;
 
@@ -97,6 +97,8 @@ class ProfileDetails {
   late MotherOccupation motherOccupation;
   late int noOfBrother, brothersMarried;
   late int noOfSister, sistersMarried;
+
+  late String familyState, familyCity, familyCountry;
   List<String> images = [];
 
   ProfileDetails.fromJson(json) {
@@ -112,9 +114,14 @@ class ProfileDetails {
     this.dateOfBirth = aboutMe["dateOfBirth"];
     this.maritalStatus = MaritalStatus.values[aboutMe["maritalStatus"]];
     this.childrenStatus = ChildrenStatus.values[aboutMe["childrenStatus"]];
-    this.noOfChildren = NoOfChildren.values[aboutMe["numberOfChildren"]];
+    if (aboutMe["numberOfChildren"] != null) {
+      this.noOfChildren = NoOfChildren.values[aboutMe["numberOfChildren"]];
+    } else {
+      this.noOfChildren = null;
+    }
     this.abilityStatus = AbilityStatus.values[aboutMe["abilityStatus"]];
-    this.height = aboutMe["height"];
+    this.height =
+        (double.parse(aboutMe["height"]) / 30.48).toStringAsFixed(1);
 
     var habit = json["userHabits"][0];
 
@@ -135,6 +142,9 @@ class ProfileDetails {
     this.occupation = userCareer["occupation"];
     this.employedin = userCareer["employedIn"];
     this.annualIncome = AnualIncome.values[userCareer["annualIncome"]];
+    this.country = userCareer["countryName"];
+    this.state = userCareer["stateName"];
+    this.city = userCareer["cityName"];
     this.highiestEducation = userCareer["highestEducation"];
 
     var userFamilyBackground = json["userFamilyBackgrounds"][0];
@@ -144,6 +154,9 @@ class ProfileDetails {
     this.familyValues =
         FamilyValues.values[userFamilyBackground["familyValues"]];
     this.familyType = FamilyType.values[userFamilyBackground["familyType"]];
+    this.familyCountry = userFamilyBackground["countryName"];
+    this.familyState = userFamilyBackground["stateName"];
+    this.familyCity = userFamilyBackground["cityName"];
 
     var userFamilyDetail = json["userFamilyDetails"][0];
 

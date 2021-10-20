@@ -76,6 +76,7 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
           this.userRepository.useDetails!.height = AppHelper.getHeights()[this.heightStatus!];
           this.userRepository.useDetails!.abilityStatus = this.abilityStatus!;
           // await this.userRepository.saveUserDetails();
+          this.userRepository.updateRegistrationStep(4);
           yield OnNavigationToHabits();
         } else {
           yield OnError(result.message);
