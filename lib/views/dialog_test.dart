@@ -7,9 +7,7 @@ class DialogScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: MmmWidgets.acceptRequestWidget(context),
-      ),
+      body: Center(child: MmmWidgets.verificationStatusWidget(context)),
     );
   }
 }

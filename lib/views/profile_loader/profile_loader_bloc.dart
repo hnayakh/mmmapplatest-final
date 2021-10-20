@@ -18,6 +18,8 @@ class ProfileLoaderBloc extends Bloc<ProfileLoaderEvent, ProfileLoaderState> {
         yield OnGotProfiles(result.list);
       } else {
         yield OnError(result.message);
+        print(result.status);
+        print(result.message);
       }
     }
   }
