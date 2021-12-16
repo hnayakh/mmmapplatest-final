@@ -107,15 +107,15 @@ class ApiClient {
 
   Future<MasterDataResponse> getMasterData(String? userId) async {
     // try {
-      Response response = await this.dio.get(
-          AppConstants.ENDPOINT + "masters/profile-raw-data",
-          queryParameters: userId != null ? {"userBasicId": userId} : {},options: Options(receiveTimeout: 60000));
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        return MasterDataResponse.fromJson(response.data);
-      } else {
-        return MasterDataResponse.fromError(
-            "Error Occurred. Please try againa.");
-      }
+    Response response = await this.dio.get(
+        AppConstants.ENDPOINT + "masters/profile-raw-data",
+        queryParameters: userId != null ? {"userBasicId": userId} : {},
+        options: Options(receiveTimeout: 60000));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return MasterDataResponse.fromJson(response.data);
+    } else {
+      return MasterDataResponse.fromError("Error Occurred. Please try againa.");
+    }
     // } catch (error) {
     //   if (error is DioError) {
     //     print(error.message);
@@ -296,19 +296,27 @@ class ApiClient {
   Future<SigninResponse> updateBio(
       String aboutMe, List<String> images, String id) async {
     try {
-      Response response = await this.dio.post(
-          AppConstants.ENDPOINT + "users/bio",
-          data: {"userBasicId": id, "aboutMe": aboutMe, "userImages": images});
+      Response response =
+          await this.dio.post(AppConstants.ENDPOINT + "users/bio", data: {
+        "userBasicId": id,
+        "aboutMe": aboutMe,
+        "userImages": images
+            .map((e) => {
+                  "imageUrl": e,
+                  "isDefault": images.indexOf(e) == 0 ? true : false
+                })
+            .toList()
+      });
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SigninResponse.fromJson(response.data);
       } else {
-        return SigninResponse.fromError("Error Occurred. Please try againa.");
+        return SigninResponse.fromError("Error Occurred. Please try again.");
       }
     } catch (error) {
       if (error is DioError) {
         print(error.message);
       }
-      return SigninResponse.fromError("Error Occurred. Please try againaa.");
+      return SigninResponse.fromError("Error Occurred. Please try again.");
     }
   }
 
@@ -535,13 +543,13 @@ class ApiClient {
 
   Future<ProfileDetailsResponse> getOtherUserDetails(String id) async {
     // try {
-      var response =
-          await this.dio.get("${AppConstants.ENDPOINT}users/basic/$id");
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        return ProfileDetailsResponse.fromJson(response.data);
-      }
-      return ProfileDetailsResponse.fromError(
-          "Error Occurred. Please try again.");
+    var response =
+        await this.dio.get("${AppConstants.ENDPOINT}users/basic/$id");
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return ProfileDetailsResponse.fromJson(response.data);
+    }
+    return ProfileDetailsResponse.fromError(
+        "Error Occurred. Please try again.");
     // } catch (error) {
     //   if (error is DioError) {
     //     print(error.message);
