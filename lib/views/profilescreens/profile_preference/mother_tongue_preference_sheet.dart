@@ -40,7 +40,7 @@ class _MotherTonguePreferenceSheetState
               height: 24,
             ),
             Text(
-              'Select religion:',
+              'Select Mother Tongue:',
               style: MmmTextStyles.bodyMedium(textColor: kDark5),
             ),
             SizedBox(
@@ -67,7 +67,7 @@ class _MotherTonguePreferenceSheetState
                       borderSide: BorderSide(color: kInputBorder, width: 1)),
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                  hintText: "Search religion",
+                  hintText: "Search Mother Tongue",
                   isDense: true,
                   filled: true,
                   fillColor: kLight4,

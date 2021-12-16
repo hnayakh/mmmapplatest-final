@@ -53,7 +53,7 @@ class MatchingProfileGridViewScreenState
             padding: kMargin16,
             child: buildGridView(),
           ),
-          state is OnLoading ? MmmWidgets.buildLoader2(context) : Container()
+          state is OnLoading ? MmmWidgets.buildLoader(context) : Container()
         ],
       );
     }, listener: (context, state) {

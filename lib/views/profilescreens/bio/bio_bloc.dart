@@ -25,6 +25,7 @@ class BioBloc extends Bloc<BioEvent, BioState> {
             .userRepository
             .updateBio(event.bio, this.localImagePaths);
         if (result.status == AppConstants.SUCCESS) {
+          this.userRepository.updateRegistrationStep(10);
           yield OnUpdate();
         } else {
           yield OnError(result.message);

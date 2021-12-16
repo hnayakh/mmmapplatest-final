@@ -174,7 +174,52 @@ class UserRepository {
     return apiClient.getOtherUserDetails(id);
   }
 
-  Future<String?> uploadImage(String images) async{
-    return apiClient.uploadImage(useDetails!.id,images);
+  Future<String?> uploadImage(String images) async {
+    return apiClient.uploadImage(useDetails!.id, images);
+  }
+
+  Future<SimpleResponse> completePreference(
+      double maxHeight,
+      double minHeight,
+      double maxAge,
+      double minAge,
+      List<MaritalStatus> maritalStatus,
+      CountryModel countryModel,
+      List<StateModel?> myState,
+      List<StateModel?> city,
+      List<SimpleMasterData> religion,
+      List<dynamic> subCaste,
+      List<SimpleMasterData> motherTongue,
+      List<String?> occupation,
+      List<Education> education,
+      List<AnualIncome> annualIncome,
+      EatingHabit? eatingHabit,
+      DrinkingHabit? drinkingHabit,
+      SmokingHabit? smokingHabit,
+      AbilityStatus abilityStatus) async {
+    return this.apiClient.completePreference(
+        maxHeight,
+        minHeight,
+        maxAge,
+        minAge,
+        maritalStatus,
+        countryModel,
+        myState,
+        city,
+        religion,
+        subCaste,
+        motherTongue,
+        occupation,
+        education,
+        annualIncome,
+        eatingHabit,
+        drinkingHabit,
+        smokingHabit,
+        abilityStatus,
+        useDetails!.id);
+  }
+
+  void updateRegistrationStep(int i) async {
+    await this.storageService.updateRegistrationStep(i);
   }
 }

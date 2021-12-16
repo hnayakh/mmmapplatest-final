@@ -23,9 +23,9 @@ import 'family_values_sheet.dart';
 class FamilyBackground extends StatelessWidget {
   final UserRepository userRepository;
   final Function onComplete;
-  final CountryModel countryModel;
-  final StateModel stateModel;
-  final StateModel city;
+  final CountryModel? countryModel;
+  final StateModel? stateModel;
+  final StateModel? city;
 
   const FamilyBackground(
       {Key? key,
@@ -73,6 +73,7 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
 
   String citytext = 'Select your city';
   bool? isStayingWithParents;
+  late bool canSelectStayingWithParent;
 
   @override
   Widget build(BuildContext context) {
@@ -253,21 +254,24 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                 SizedBox(
                   height: 8,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Staying with parents?',
-                      style: MmmTextStyles.bodyRegular(textColor: kDark5),
-                    ),
-                    Checkbox(
-                        value: isStayingWithParents!,
-                        onChanged: (onChanged) {
-                          BlocProvider.of<FamilyBackgroundBloc>(context)
-                              .add(OnStayingWithParentsChanged(onChanged!));
-                        })
-                  ],
-                ),
+                this.canSelectStayingWithParent
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Staying with parents?',
+                            style: MmmTextStyles.bodyRegular(textColor: kDark5),
+                          ),
+                          Checkbox(
+                              value: isStayingWithParents!,
+                              onChanged: (onChanged) {
+                                BlocProvider.of<FamilyBackgroundBloc>(context)
+                                    .add(OnStayingWithParentsChanged(
+                                        onChanged!));
+                              })
+                        ],
+                      )
+                    : Container(),
                 this.isStayingWithParents!
                     ? Container()
                     : Column(
@@ -338,6 +342,9 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
     this.city = BlocProvider.of<FamilyBackgroundBloc>(context).city;
     this.isStayingWithParents =
         BlocProvider.of<FamilyBackgroundBloc>(context).isStayingWithParents;
+    this.canSelectStayingWithParent =
+        BlocProvider.of<FamilyBackgroundBloc>(context)
+            .canSelectStayingWithParent;
   }
 
   showFamilyStatusSheet() async {

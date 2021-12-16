@@ -16,24 +16,27 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
       var result = await this.userRepository.getMasterData();
       if (result.status == AppConstants.SUCCESS) {
         this.userRepository.masterData = result.data!;
-        var isFirstTimeLogin = await this.userRepository.getHasOpenedBefore();
-        if (isFirstTimeLogin == null) {
-          //TODO: Update Firsts time
-          yield MoveToInstructionScreen();
+        // var isFirstTimeLogin = await this.userRepository.getHasOpenedBefore();
+        // if (isFirstTimeLogin == null) {
+        //   //TODO: Update Firsts time
+        //   yield MoveToInstructionScreen();
+        // } else {
+        var userDetails = await this.userRepository.getUserDetails();
+
+        this.userRepository.useDetails = userDetails;
+        userDetails = null; //testing only
+
+        if (userDetails == null) {
+          yield MoveToLogin();
         } else {
-          var userDetails = await this.userRepository.getUserDetails();
-          this.userRepository.useDetails = userDetails;
-          if (userDetails == null) {
-            yield MoveToLogin();
-          } else {
-            // var id = userDetails.id;
-            // var profiles = await this.userRepository.getAllUsersProfileData(id);
-            // if (profiles.status == AppConstants.SUCCESS) {
-            //   this.userRepository.listProfileDetails =
-            //       profiles.listProfileDetails;
-            // }
-            // yield MoveToHome();
-          }
+          // var id = userDetails.id;
+          // var profiles = await this.userRepository.getAllUsersProfileData(id);
+          // if (profiles.status == AppConstants.SUCCESS) {
+          //   this.userRepository.listProfileDetails =
+          //       profiles.listProfileDetails;
+          // }
+          yield MoveToHome();
+          //   }
         }
       } else {
         yield OnResult(result.status, result.message);

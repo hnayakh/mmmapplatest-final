@@ -61,4 +61,10 @@ class StorageService {
           isActive!, lifeCycleStep!, activatonStateus!, registrationStep!);
     }
   }
+
+  updateRegistrationStep(int value) async {
+    await initPrefs();
+    var registrationStep =
+        this.sharedPreferences.setInt(AppConstants.REGISTRATIONSTEP, value);
+  }
 }

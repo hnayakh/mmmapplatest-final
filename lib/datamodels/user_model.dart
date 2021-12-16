@@ -12,6 +12,28 @@ class SigninResponse {
     if (this.status == AppConstants.SUCCESS) {
       if (otpType != OtpType.Registration)
         this.userDetails = UserDetails.fromJson(json["data"]["userBasic"]);
+      if ((json["data"] as Map).containsKey("requiredLoginDetails")) {
+        var extraData = json["data"]["requiredLoginDetails"];
+        if (extraData.length > 0) {
+          print(extraData);
+          userDetails!.motherTongue = SimpleMasterData()
+            ..id = extraData[0]["motherTongue"]
+            ..title = extraData[0]["motherTongue"];
+          userDetails!.dateOfBirth = extraData[0]["dateOfBirth"];
+          userDetails!.height = double.parse(extraData[0]["height"]);
+          userDetails!.maritalStatus =
+              MaritalStatus.values[extraData[0]["maritalStatus"]];
+          userDetails!.countryModel = CountryModel()
+            ..id = extraData[0]["careerCountryId"]
+            ..name = extraData[0]["careerCountry"]
+            ..shortName = extraData[0]["careerCountry"];
+          userDetails!.religion = SimpleMasterData()
+            ..id = extraData[0]["religion"]
+            ..title = extraData[0]["religion"];
+          userDetails!.abilityStatus =
+              AbilityStatus.values[extraData[0]["abilityStatus"]];
+        }
+      }
     }
   }
 
@@ -33,6 +55,8 @@ class UserDetails {
   late CountryModel countryModel;
   late SimpleMasterData religion;
   late AbilityStatus abilityStatus;
+
+  late SimpleMasterData motherTongue;
 
   UserDetails.fromJson(json) {
     this.id = json["id"];
@@ -107,5 +131,20 @@ class PreSignUrlResponse {
   PreSignUrlResponse.fromError(String message) {
     this.status = AppConstants.FAILURE;
     this.message = message;
+  }
+}
+
+class SimpleResponse {
+  late String status, message;
+
+  SimpleResponse.fromJson(json) {
+    print(json["message"]);
+    this.status = json["type"];
+    this.message = json["message"];
+  }
+
+  SimpleResponse.fromError(String error) {
+    this.status = AppConstants.FAILURE;
+    this.message = error;
   }
 }

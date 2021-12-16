@@ -13,13 +13,17 @@ import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/forgotpasswordscreens/forgot_password.dart';
+import 'package:makemymarry/views/home/home.dart';
 import 'package:makemymarry/views/profile_loader/profile_loader.dart';
 import 'package:makemymarry/views/profilescreens/about/about.dart';
 import 'package:makemymarry/views/profilescreens/bio/bio.dart';
+import 'package:makemymarry/views/profilescreens/family/family.dart';
+import 'package:makemymarry/views/profilescreens/habbit/habits.dart';
+import 'package:makemymarry/views/profilescreens/occupation/occupation.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference.dart';
+import 'package:makemymarry/views/profilescreens/religion/religion.dart';
 import 'package:makemymarry/views/signinscreens/phone%20signin/phone_screen.dart';
 import 'package:makemymarry/views/signupscreens/create_account/create_account_screen.dart';
-import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/profile%20screens/verify%20account%20screens/verify_account.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class SignIn extends StatelessWidget {
@@ -255,6 +259,12 @@ class SignInScreenState extends State<SignInScreen> {
                 backgroundColor: kError,
               ));
             }
+            if (state is OnValidationFail) {
+              Scaffold.of(context).showSnackBar(SnackBar(
+                content: Text(state.message),
+                backgroundColor: kError,
+              ));
+            }
           },
         ),
       ),
@@ -287,9 +297,64 @@ class SignInScreenState extends State<SignInScreen> {
 
   void navigateToProfileSetup() {
     var userRepo = BlocProvider.of<SignInBloc>(context).userRepository;
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => ProfileLoader(
-              userRepository: userRepo,
-            )));
+
+    switch (userRepo.useDetails!.registrationStep) {
+      case 11:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => ProfileLoader(userRepository: userRepo)),
+            (route) => false);
+        break;
+      case 10:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) =>
+                    ProfilePreference(userRepository: userRepo)),
+            (route) => false);
+        break;
+      case 9:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => Bio(userRepository: userRepo)),
+            (route) => false);
+        break;
+      case 7:
+      case 8:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => FamilyScreen(userRepository: userRepo)),
+            (route) => false);
+        break;
+      case 6:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => Occupations(userRepository: userRepo)),
+            (route) => false);
+        break;
+      case 5:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => Religion(userRepository: userRepo)),
+            (route) => false);
+        break;
+      case 4:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => Habit(userRepository: userRepo)),
+            (route) => false);
+        break;
+      case 3:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => About(userRepository: userRepo)),
+            (route) => false);
+        break;
+      default:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => SignIn(userRepository: userRepo)),
+            (route) => false);
+        break;
+    }
   }
 }

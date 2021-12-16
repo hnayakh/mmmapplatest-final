@@ -9,11 +9,18 @@ import 'package:makemymarry/bloc/splash/splash_event.dart';
 import 'package:makemymarry/bloc/splash/splash_state.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/text_styles.dart';
+import 'package:makemymarry/views/profile_loader/profile_loader.dart';
+import 'package:makemymarry/views/profilescreens/about/about.dart';
 import 'package:makemymarry/views/profilescreens/bio/bio.dart';
+import 'package:makemymarry/views/profilescreens/family/family.dart';
+import 'package:makemymarry/views/profilescreens/habbit/habits.dart';
+import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference.dart';
+import 'package:makemymarry/views/profilescreens/religion/religion.dart';
 import 'package:makemymarry/views/signinscreens/signin_screen1.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 import 'intro.dart';
+import 'profilescreens/occupation/occupation.dart';
 
 class Splash extends StatelessWidget {
   @override
@@ -79,6 +86,9 @@ class SplashScreenState extends State<SplashScreen> {
         } else if (state is MoveToInstructionScreen) {
           navigateToIntroScreen();
         }
+        if (state is MoveToHome) {
+          checkRegistrationStepAndNavigate();
+        }
       }),
     );
   }
@@ -90,7 +100,6 @@ class SplashScreenState extends State<SplashScreen> {
           builder: (context) => SignIn(
                 userRepository: userRepo,
               )));
-
     });
   }
 
@@ -100,5 +109,68 @@ class SplashScreenState extends State<SplashScreen> {
         builder: (context) => SignIn(
               userRepository: userRepo,
             )));
+  }
+
+  void checkRegistrationStepAndNavigate() {
+    var userRepo = BlocProvider.of<SplashBloc>(context).userRepository;
+
+    switch (userRepo.useDetails!.registrationStep) {
+      case 11:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => ProfileLoader(userRepository: userRepo)),
+            (route) => false);
+        break;
+      case 10:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) =>
+                    ProfilePreference(userRepository: userRepo)),
+            (route) => false);
+        break;
+      case 9:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => Bio(userRepository: userRepo)),
+            (route) => false);
+        break;
+      case 7:
+      case 8:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => FamilyScreen(userRepository: userRepo)),
+            (route) => false);
+        break;
+      case 6:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => Occupations(userRepository: userRepo)),
+            (route) => false);
+        break;
+      case 5:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => Religion(userRepository: userRepo)),
+            (route) => false);
+        break;
+      case 4:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => Habit(userRepository: userRepo)),
+            (route) => false);
+        break;
+      case 3:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => About(userRepository: userRepo)),
+            (route) => false);
+        break;
+      default:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => SignIn(userRepository: userRepo)),
+            (route) => false);
+        break;
+    }
   }
 }

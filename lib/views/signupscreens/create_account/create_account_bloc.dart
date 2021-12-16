@@ -58,8 +58,8 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
         yield OnError("Select Gender");
       } else if (mobile.length != 10) {
         yield OnError("Enter Valid Mobile Number");
-      } else if (this.password.length < 8) {
-        yield OnError("Password must of size 8 or more.");
+      } else if (!RegExp(AppConstants.PASSWORDREGEXP).hasMatch(this.password)) {
+        yield OnError("Password must be alphanumeric and of size 8 or more.");
       } else if (password != confirmPassword) {
         yield OnError("Password doesn't match");
       } else if (!this.acceptTerms) {

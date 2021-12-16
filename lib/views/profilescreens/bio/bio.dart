@@ -122,7 +122,7 @@ class _BioScreenState extends State<BioScreen> {
                                             ClipRRect(
                                               child: Image.network(
                                                 this.localImagePaths[index],
-                                                fit: BoxFit.fill,
+                                                // fit: BoxFit.fill,
                                                 width: (MediaQuery.of(context)
                                                         .size
                                                         .width) /

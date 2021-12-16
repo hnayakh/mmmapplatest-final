@@ -41,18 +41,36 @@ class OnEducationSelected extends ProfilePreferenceEvent {
 }
 
 class OnOccupationSelected extends ProfilePreferenceEvent {
-  final List<String> title;
+  final List<String?> title;
 
   OnOccupationSelected(this.title);
 }
 
-class ImcomeSelected extends ProfilePreferenceEvent {}
+class IncomeSelected extends ProfilePreferenceEvent {
+  final List<AnualIncome> list;
 
-class DietrySelected extends ProfilePreferenceEvent {}
+  IncomeSelected(this.list);
+}
 
-class DrinkingSelected extends ProfilePreferenceEvent {}
+class RemoveIncome extends ProfilePreferenceEvent {}
 
-class SmokingSelected extends ProfilePreferenceEvent {}
+class DietrySelected extends ProfilePreferenceEvent {
+  final EatingHabit eatingHabit;
+
+  DietrySelected(this.eatingHabit);
+}
+
+class DrinkingSelected extends ProfilePreferenceEvent {
+  final DrinkingHabit drinkingHabit;
+
+  DrinkingSelected(this.drinkingHabit);
+}
+
+class SmokingSelected extends ProfilePreferenceEvent {
+  final SmokingHabit smokingHabit;
+
+  SmokingSelected(this.smokingHabit);
+}
 
 class ChallengedSelected extends ProfilePreferenceEvent {}
 
@@ -90,5 +108,34 @@ class GetMyCities extends ProfilePreferenceEvent {}
 
 class OnCitySelected extends ProfilePreferenceEvent {
   final List<StateModel?> cityModel;
+
   OnCitySelected(this.cityModel);
+}
+
+class RemoveCountry extends ProfilePreferenceEvent {}
+
+class RemoveState extends ProfilePreferenceEvent {}
+
+class RemoveCity extends ProfilePreferenceEvent {}
+
+class RemoveSmoking extends ProfilePreferenceEvent {}
+
+class RemoveEating extends ProfilePreferenceEvent {}
+
+class RemoveDrinking extends ProfilePreferenceEvent {}
+
+class GetCasteList extends ProfilePreferenceEvent {}
+
+class RemoveCaste extends ProfilePreferenceEvent {}
+
+class RemoveEducation extends ProfilePreferenceEvent {}
+
+class RemoveOccupation extends ProfilePreferenceEvent {}
+class CompletePreference extends ProfilePreferenceEvent{
+
+}
+class AbilityStatusChanged extends ProfilePreferenceEvent{
+  final AbilityStatus abilityStatus;
+
+  AbilityStatusChanged(this.abilityStatus);
 }
