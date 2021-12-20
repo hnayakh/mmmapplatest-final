@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +8,8 @@ import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/dialog_test.dart';
 import 'package:makemymarry/views/profile_loader/profile_loader.dart';
 import 'package:makemymarry/views/splash_screen.dart';
+import 'package:makemymarry/views/stackviewscreens/connect/chat_screen.dart';
+import 'package:makemymarry/views/stackviewscreens/message_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/wallet%20screens/wallet_main.dart';
 
 import 'package:makemymarry/views/widget_views.dart';
@@ -44,7 +47,9 @@ class SimpleObserver extends BlocObserver {
   }
 }
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   Bloc.observer = SimpleObserver();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: kSecondary,
@@ -67,7 +72,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.pink,
       ),
-      home: Splash(),
+      home: MessageScreen(),
     );
   }
 }

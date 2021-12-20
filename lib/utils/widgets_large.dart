@@ -40,6 +40,9 @@ class MmmWidgets {
               time,
               style: MmmTextStyles.caption(textColor: gray4),
             ),
+            SizedBox(
+              height: 24,
+            ),
           ],
         ),
       ],
@@ -76,6 +79,9 @@ class MmmWidgets {
             Text(
               time,
               style: MmmTextStyles.caption(textColor: gray4),
+            ),
+            SizedBox(
+              height: 24,
             ),
           ],
         ),

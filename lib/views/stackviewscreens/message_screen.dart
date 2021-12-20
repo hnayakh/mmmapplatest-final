@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:makemymarry/utils/colors.dart';
+import 'package:intl/intl.dart';
 
 import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
@@ -16,15 +19,35 @@ class MessageScreen extends StatefulWidget {
 class _MessageScreenState extends State<MessageScreen> {
   int h = 2;
   TextEditingController cntrlr = TextEditingController();
-  List<String> sentList = [];
-  ScrollController _controller = ScrollController();
+  var chats = FirebaseFirestore.instance.collection('chats');
+  var chatDocId;
+  final user1id = '12';
+  final user2id = '45';
+  var conState = 0;
+
+  void findCollection() {
+    chats
+        .where('users', isEqualTo: {user1id: null, user2id: null})
+        .limit(1)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+          if (querySnapshot.docs.isNotEmpty) {
+            chatDocId = querySnapshot.docs.single.id;
+            print('Existsdocumentids=$chatDocId');
+          } else {
+            chats.add({
+              'users': {user1id: null, user2id: null}
+            }).then((value) {
+              chatDocId = value.id;
+              print('Createddocumentid=$chatDocId');
+            });
+          }
+        });
+  }
+
   @override
   void initState() {
-    _controller.addListener(() {
-      setState(() {
-        _controller.position.maxScrollExtent;
-      });
-    });
+    findCollection();
 
     super.initState();
   }
@@ -162,122 +185,125 @@ class _MessageScreenState extends State<MessageScreen> {
             ],
           ),
         ),
-        body: Container(
-          padding: EdgeInsets.fromLTRB(16, 0, 16, 20),
-          child: Column(
-            children: [
-              Expanded(
-                  child: SingleChildScrollView(
-                controller: _controller,
-                child: Container(
-                  child: Column(
-                    // crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 24,
+        body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+          stream: chats
+              .doc(chatDocId)
+              .collection('messages')
+              .orderBy('createdAt', descending: true)
+              .snapshots(),
+          builder: (BuildContext context,
+              AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting &&
+                conState == 0) {
+              conState = 1;
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (snapshot.hasData) {
+              return Container(
+                padding: EdgeInsets.fromLTRB(16, 0, 16, 20),
+                child: Column(
+                  children: [
+                    Expanded(
+                        child: ListView.builder(
+                            reverse: true,
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: (ctx, index) {
+                              Timestamp now = snapshot.data!.docs[index]
+                                  .data()['createdAt'];
+
+                              String formattedTime =
+                                  DateFormat.jm().format(now.toDate());
+                              print(formattedTime);
+                              // snapshot.data!.docs[index].data()['createdAt']
+                              if (snapshot.data!.docs[index].data()['id'] ==
+                                  user1id) {
+                                return MmmWidgets.messageSent(
+                                    snapshot.data!.docs[index].data()['text'],
+                                    formattedTime);
+                              } else {
+                                return MmmWidgets.messageReceived(
+                                    snapshot.data!.docs[index].data()['text'],
+                                    formattedTime);
+                              }
+                            })),
+                    ConstrainedBox(
+                      constraints:
+                          BoxConstraints(minHeight: 70, maxHeight: 210),
+                      child: Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.fromLTRB(25, 15, 0, 18),
+                        decoration: BoxDecoration(
+                            boxShadow: [MmmShadow.textFieldMessaging()],
+                            color: kWhite,
+                            borderRadius: BorderRadius.circular(36)),
+                        child: Stack(children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.6,
+                            child: TextField(
+                                controller: cntrlr,
+                                keyboardType: TextInputType.multiline,
+                                maxLines: null,
+                                decoration: InputDecoration(
+                                  counterText: '',
+                                  hintText: 'Type your message',
+                                  hintStyle:
+                                      MmmTextStyles.bodyMedium(textColor: kBio),
+                                  contentPadding: EdgeInsets.zero,
+                                  border: InputBorder.none,
+                                )),
+                          ),
+                          Positioned(
+                              top: 5,
+                              right: 60,
+                              child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: () {},
+                                    child: SvgPicture.asset(
+                                      "images/camera.svg",
+                                      color: gray5,
+                                      height: 30,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ))),
+                          Positioned(
+                              top: 5,
+                              right: 20,
+                              child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: () {
+                                      sendMsg();
+                                    },
+                                    child: SvgPicture.asset(
+                                      "images/send.svg",
+                                      color: gray5,
+                                      height: 30,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  )))
+                        ]),
                       ),
-                      Text(
-                        'Yesterday',
-                        style: MmmTextStyles.caption(textColor: kDark2),
-                      ),
-                      SizedBox(
-                        height: 24,
-                      ),
-                      MmmWidgets.messageReceived('Hey Alia, How’s u?', '17:04'),
-                      MmmWidgets.messageSent("I m good,What about u?", '17:05'),
-                      SizedBox(
-                        height: 24,
-                      ),
-                      Text(
-                        'Today',
-                        style: MmmTextStyles.caption(textColor: kDark2),
-                      ),
-                      SizedBox(
-                        height: 24,
-                      ),
-                      MmmWidgets.messageReceived(
-                          'Let’s meet for coffee, what do you say?', '17:06'),
-                      MmmWidgets.messageSent("Ok", '17:06'),
-                      MmmWidgets.messageReceived(
-                          'Let’s meet for coffee, what do you say?We can meet at CCD in Ashok Nagar at 8pm',
-                          '17:06'),
-                      MmmWidgets.messageSent("Ok.Just do it.", '17:06'),
-                      sentList.length != 0
-                          ? MmmWidgets.messageSent(
-                              sentList[sentList.length - 1],
-                              '17:06') // the list has to come from api , so the sequence of data is maintained and data is added to from users.
-                          : Container()
-                    ],
-                  ),
+                    )
+                  ],
                 ),
-              )),
-              ConstrainedBox(
-                constraints: BoxConstraints(minHeight: 70, maxHeight: 210),
-                child: Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.fromLTRB(25, 15, 0, 18),
-                  decoration: BoxDecoration(
-                      boxShadow: [MmmShadow.textFieldMessaging()],
-                      color: kWhite,
-                      borderRadius: BorderRadius.circular(36)),
-                  child: Stack(children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.6,
-                      child: TextField(
-                          controller: cntrlr,
-                          keyboardType: TextInputType.multiline,
-                          maxLines: null,
-                          decoration: InputDecoration(
-                            counterText: '',
-                            hintText: 'Type your message',
-                            hintStyle:
-                                MmmTextStyles.bodyMedium(textColor: kBio),
-                            contentPadding: EdgeInsets.zero,
-                            border: InputBorder.none,
-                          )),
-                    ),
-                    Positioned(
-                        top: 5,
-                        right: 60,
-                        child: Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () {},
-                              child: SvgPicture.asset(
-                                "images/camera.svg",
-                                color: gray5,
-                                height: 30,
-                                fit: BoxFit.cover,
-                              ),
-                            ))),
-                    Positioned(
-                        top: 5,
-                        right: 20,
-                        child: Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () {
-                                sendMsg();
-                              },
-                              child: SvgPicture.asset(
-                                "images/send.svg",
-                                color: gray5,
-                                height: 30,
-                                fit: BoxFit.cover,
-                              ),
-                            )))
-                  ]),
-                ),
-              )
-            ],
-          ),
+              );
+            } else {
+              return Container();
+            }
+          },
         ));
   }
 
   void sendMsg() {
-    sentList.add(cntrlr.text);
-    setState(() {
-      cntrlr.text = '';
-    });
+    chats.doc(chatDocId).collection('messages').add(
+        //id =senders id
+        {'text': cntrlr.text, 'createdAt': Timestamp.now(), 'id': user1id});
+    cntrlr.clear();
+    // setState(() {
+    //   cntrlr.text = '';
+    // });
   }
 }
