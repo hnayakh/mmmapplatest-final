@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/material.dart';
+
 import 'package:flutter_svg/svg.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:intl/intl.dart';
@@ -17,7 +18,6 @@ class MessageScreen extends StatefulWidget {
 }
 
 class _MessageScreenState extends State<MessageScreen> {
-  int h = 2;
   TextEditingController cntrlr = TextEditingController();
   var chats = FirebaseFirestore.instance.collection('chats');
   var chatDocId;
@@ -298,6 +298,9 @@ class _MessageScreenState extends State<MessageScreen> {
   }
 
   void sendMsg() {
+    if (cntrlr.text.trim().length == 0) {
+      return;
+    }
     chats.doc(chatDocId).collection('messages').add(
         //id =senders id
         {'text': cntrlr.text, 'createdAt': Timestamp.now(), 'id': user1id});
