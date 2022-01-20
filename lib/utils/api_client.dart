@@ -60,13 +60,15 @@ class ApiClient {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SigninResponse.fromJson(response.data);
       } else {
+        print('error1');
         return SigninResponse.fromError("Error Occurred. Please try again.");
       }
     } catch (error) {
       if (error is DioError) {
-        // print(error.message);
+        print('error2');
         return SigninResponse.fromError(error.response!.data["message"]);
       }
+      print(error);
       return SigninResponse.fromError("Error Occurred. Please try again.");
     }
   }
@@ -106,22 +108,26 @@ class ApiClient {
   }
 
   Future<MasterDataResponse> getMasterData(String? userId) async {
-    // try {
-    Response response = await this.dio.get(
-        AppConstants.ENDPOINT + "masters/profile-raw-data",
-        queryParameters: userId != null ? {"userBasicId": userId} : {},
-        options: Options(receiveTimeout: 60000));
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      return MasterDataResponse.fromJson(response.data);
-    } else {
+    try {
+      Response response = await this.dio.get(
+          AppConstants.ENDPOINT + "masters/profile-raw-data",
+          queryParameters: userId != null ? {"userBasicId": userId} : {},
+          options: Options(receiveTimeout: 0));
+      print('response.statusCode');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return MasterDataResponse.fromJson(response.data);
+      } else {
+        return MasterDataResponse.fromError(
+            "Error Occurred. Please try againa.");
+      }
+    } catch (error) {
+      if (error is DioError) {
+        print('error is');
+        print(error.message);
+      }
       return MasterDataResponse.fromError("Error Occurred. Please try againa.");
     }
-    // } catch (error) {
-    //   if (error is DioError) {
-    //     print(error.message);
-    //   }
-    //   return MasterDataResponse.fromError("Error Occurred. Please try againa.");
-    // }
   }
 
   //

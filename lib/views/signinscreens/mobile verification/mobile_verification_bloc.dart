@@ -59,7 +59,10 @@ class MobileVerificationBloc
                 userDetails.password);
             if (result.status == AppConstants.SUCCESS) {
               this.userRepository.useDetails = result.userDetails;
+              print(
+                  'inmobverbloc,relation=${this.userRepository.useDetails!.relationship}');
               this.userRepository.saveUserDetails();
+              this.userRepository.updateRegistrationStep(2);
               yield OnRegister();
             }
           } else {

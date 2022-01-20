@@ -25,7 +25,16 @@ class BioBloc extends Bloc<BioEvent, BioState> {
             .userRepository
             .updateBio(event.bio, this.localImagePaths);
         if (result.status == AppConstants.SUCCESS) {
-          this.userRepository.updateRegistrationStep(10);
+          this.userRepository.useDetails!.registrationStep = 9;
+          //await this.userRepository.saveUserDetails();
+          await this
+              .userRepository
+              .storageService
+              .saveUserDetails(this.userRepository.useDetails!);
+          this.userRepository.updateRegistrationStep(9);
+          print('in bio');
+          print('dobinbiobloc=${this.userRepository.useDetails!.dateOfBirth}');
+          print(this.userRepository.useDetails!.registrationStep);
           yield OnUpdate();
         } else {
           yield OnError(result.message);

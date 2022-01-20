@@ -71,12 +71,23 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
 
         if (result.status == AppConstants.SUCCESS) {
           this.userRepository.useDetails = result.userDetails;
-          this.userRepository.useDetails!.dateOfBirth = AppHelper.serverFormatDate(this.dateOfBirth!);
+          this.userRepository.useDetails!.dateOfBirth =
+              AppHelper.serverFormatDate(this.dateOfBirth!);
+          print(
+              'dobinaboutbloc=${this.userRepository.useDetails!.dateOfBirth}');
           this.userRepository.useDetails!.maritalStatus = this.maritalStatus!;
-          this.userRepository.useDetails!.height = AppHelper.getHeights()[this.heightStatus!];
+          this.userRepository.useDetails!.height =
+              AppHelper.getHeights()[this.heightStatus!];
           this.userRepository.useDetails!.abilityStatus = this.abilityStatus!;
+
           // await this.userRepository.saveUserDetails();
-          this.userRepository.updateRegistrationStep(4);
+          await this
+              .userRepository
+              .storageService
+              .saveUserDetails(this.userRepository.useDetails!);
+          this.userRepository.updateRegistrationStep(3);
+          print('in about');
+          print(this.userRepository.useDetails!.registrationStep);
           yield OnNavigationToHabits();
         } else {
           yield OnError(result.message);

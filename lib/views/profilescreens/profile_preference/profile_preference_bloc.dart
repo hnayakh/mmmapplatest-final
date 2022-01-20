@@ -34,7 +34,7 @@ class ProfilePreferenceBloc
 
   ProfilePreferenceBloc(this.userRepository)
       : super(ProfilePreferenceInitialState()) {
-    print(this.userRepository.useDetails!.dateOfBirth);
+    print('inprofileprefDOB=${this.userRepository.useDetails!.dateOfBirth}');
     var myAge = DateTime.now()
             .difference(DateFormat(AppConstants.SERVERDATEFORMAT)
                 .parse(this.userRepository.useDetails!.dateOfBirth))
@@ -212,7 +212,7 @@ class ProfilePreferenceBloc
     }
 
     if (event is CompletePreference) {
-      var response = await this.userRepository.completePreference(
+      var result = await this.userRepository.completePreference(
           this.maxHeight,
           this.minHeight,
           this.maxAge,
@@ -231,11 +231,20 @@ class ProfilePreferenceBloc
           this.drinkingHabit,
           this.smokingHabit,
           this.abilityStatus);
-      if (response.status == AppConstants.SUCCESS) {
-        this.userRepository.updateRegistrationStep(11);
+      if (result.status == AppConstants.SUCCESS) {
+        this.userRepository.updateRegistrationStep(10);
+        this.userRepository.useDetails!.registrationStep = 10;
+        // await this.userRepository.saveUserDetails();
+        // await this
+        //     .userRepository
+        //     .storageService
+        //     .saveUserDetails(this.userRepository.useDetails!);
+        print('in profilepreference');
+        print(this.userRepository.useDetails!.registrationStep);
+
         yield ProfilePreferenceComplete();
       } else {
-        yield OnError(response.message);
+        yield OnError(result.message);
       }
     }
   }

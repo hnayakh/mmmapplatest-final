@@ -109,7 +109,18 @@ class FamilyBackgroundBloc
             this.isStayingWithParents ? this.selectedState! : this.myState!,
             this.isStayingWithParents ? this.selectedCity! : this.city!);
         if (result.status == AppConstants.SUCCESS) {
+          this.userRepository.useDetails!.registrationStep =
+              result.userDetails!.registrationStep;
+          //await this.userRepository.saveUserDetails();
+          await this
+              .userRepository
+              .storageService
+              .saveUserDetails(this.userRepository.useDetails!);
           this.userRepository.updateRegistrationStep(8);
+          print('in familybackground');
+          print(
+              'dobinfambackbloc=${this.userRepository.useDetails!.dateOfBirth}');
+          print(this.userRepository.useDetails!.registrationStep);
           yield OnUpdate();
         } else {
           yield OnError(result.message);

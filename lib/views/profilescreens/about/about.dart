@@ -232,7 +232,8 @@ class _AboutScreenState extends State<AboutScreen> {
                 ),
               ),
               this.childrenStatus == ChildrenStatus.YesNotLivingTogether ||
-                      this.childrenStatus == ChildrenStatus.YesLivingTogether
+                      this.childrenStatus == ChildrenStatus.YesLivingTogether &&
+                          this.maritalStatus != MaritalStatus.NeverMarried
                   ? Column(
                       children: [
                         SizedBox(

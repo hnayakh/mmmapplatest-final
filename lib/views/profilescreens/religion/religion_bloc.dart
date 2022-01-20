@@ -17,6 +17,8 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
   dynamic gothra;
   Manglik isManglik = Manglik.NotApplicable;
 
+  SimpleMasterData? prevReligion;
+
   ReligionBloc(this.userRepository) : super(ReligionInitialState());
 
   @override
@@ -24,7 +26,18 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
     yield OnReligionLoading();
 
     if (event is OnReligionSelected) {
-      this.religion = event.religion;
+      if (this.religion == null) {
+        this.religion = event.religion;
+      } else {
+        prevReligion = this.religion;
+        this.religion = event.religion;
+        if (prevReligion != this.religion) {
+          this.subCaste = null;
+          this.cast = null;
+          this.motherTongue = null;
+          this.gothra = null;
+        }
+      }
       yield ReligionInitialState();
     }
     if (event is OnCastSelected) {
@@ -54,18 +67,30 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
         yield OnError("Please select ub-caste");
       } else if (this.motherTongue == null) {
         yield OnError("Please select mother tongue");
-      } else if (this.religion!.title.toLowerCase().contains("hindu") &&
-          this.gothra == null) {
-        yield OnError("Please select Gothra");
-      } else {
+      }
+      // else if (this.religion!.title.toLowerCase().contains("hindu") &&
+      //     this.gothra == null) {
+      //   yield OnError("Please select Gothra");
+      // }
+      else {
         var result = await this.userRepository.updateReligion(this.religion!,
             this.subCaste, this.motherTongue!, this.gothra, this.isManglik);
 
         if (result.status == AppConstants.SUCCESS) {
-          this.userRepository.updateRegistrationStep(6);
-        this.userRepository.useDetails!.religion = this.religion!;
-        this.userRepository.useDetails!.motherTongue = this.motherTongue!;
-          // await this.userRepository.saveUserDetails();
+          this.userRepository.useDetails!.religion = this.religion!;
+          this.userRepository.useDetails!.motherTongue = this.motherTongue!;
+          this.userRepository.useDetails!.registrationStep =
+              result.userDetails!.registrationStep;
+          //await this.userRepository.saveUserDetails();
+          await this
+              .userRepository
+              .storageService
+              .saveUserDetails(this.userRepository.useDetails!);
+          this.userRepository.updateRegistrationStep(5);
+          print('in religion');
+          print(
+              'dobinreligionbloc=${this.userRepository.useDetails!.dateOfBirth}');
+          print(this.userRepository.useDetails!.registrationStep);
           yield MoveToCarrer();
         } else {
           yield OnError(result.message);

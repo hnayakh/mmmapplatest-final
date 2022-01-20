@@ -122,7 +122,7 @@ class _BioScreenState extends State<BioScreen> {
                                             ClipRRect(
                                               child: Image.network(
                                                 this.localImagePaths[index],
-                                                // fit: BoxFit.fill,
+                                                fit: BoxFit.cover,
                                                 width: (MediaQuery.of(context)
                                                         .size
                                                         .width) /
@@ -238,7 +238,7 @@ class _BioScreenState extends State<BioScreen> {
                 borderRadius: BorderRadius.circular(8)),
             child: TextField(
                 controller: bioController,
-                maxLength: 200,
+                //maxLength: 200,
                 keyboardType: TextInputType.multiline,
                 maxLines: 6,
                 decoration: InputDecoration(

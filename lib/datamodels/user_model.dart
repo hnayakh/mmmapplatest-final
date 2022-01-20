@@ -9,35 +9,52 @@ class SigninResponse {
   SigninResponse.fromJson(json, {OtpType? otpType}) {
     this.status = json["type"];
     this.message = json["message"];
+    print(this.status);
     if (this.status == AppConstants.SUCCESS) {
       if (otpType != OtpType.Registration)
         this.userDetails = UserDetails.fromJson(json["data"]["userBasic"]);
       if ((json["data"] as Map).containsKey("requiredLoginDetails")) {
         var extraData = json["data"]["requiredLoginDetails"];
         if (extraData.length > 0) {
-          print(extraData);
-          userDetails!.motherTongue = SimpleMasterData()
-            ..id = extraData[0]["motherTongue"]
-            ..title = extraData[0]["motherTongue"];
-          userDetails!.dateOfBirth = extraData[0]["dateOfBirth"];
-          userDetails!.height = double.parse(extraData[0]["height"]);
-          userDetails!.maritalStatus =
-              MaritalStatus.values[extraData[0]["maritalStatus"]];
-          userDetails!.countryModel = CountryModel()
-            ..id = extraData[0]["careerCountryId"]
-            ..name = extraData[0]["careerCountry"]
-            ..shortName = extraData[0]["careerCountry"];
-          userDetails!.religion = SimpleMasterData()
-            ..id = extraData[0]["religion"]
-            ..title = extraData[0]["religion"];
-          userDetails!.abilityStatus =
-              AbilityStatus.values[extraData[0]["abilityStatus"]];
+          print('extradata=$extraData');
+          if (extraData[0]["motherTongue"] != null) {
+            userDetails!.motherTongue = SimpleMasterData()
+              ..id = extraData[0]["motherTongue"]
+              ..title = extraData[0]["motherTongue"];
+          }
+          if (extraData[0]["dateOfBirth"] != null) {
+            userDetails!.dateOfBirth = extraData[0]["dateOfBirth"];
+          }
+          if (extraData[0]["height"] != null) {
+            userDetails!.height = double.parse(extraData[0]["height"]);
+          }
+          if (extraData[0]["maritalStatus"] != null) {
+            userDetails!.maritalStatus =
+                MaritalStatus.values[extraData[0]["maritalStatus"]];
+          }
+
+          if (extraData[0]["careerCountryId"] != null) {
+            userDetails!.countryModel = CountryModel()
+              ..id = extraData[0]["careerCountryId"]
+              ..name = extraData[0]["careerCountry"]
+              ..shortName = extraData[0]["careerCountry"];
+          }
+          if (extraData[0]["religion"] != null) {
+            userDetails!.religion = SimpleMasterData()
+              ..id = extraData[0]["religion"]
+              ..title = extraData[0]["religion"];
+          }
+          if (extraData[0]["abilityStatus"] != null) {
+            userDetails!.abilityStatus =
+                AbilityStatus.values[extraData[0]["abilityStatus"]];
+          }
         }
       }
     }
   }
 
   SigninResponse.fromError(String error) {
+    print('we are in json error');
     this.message = error;
     this.status = AppConstants.FAILURE;
   }
@@ -66,21 +83,30 @@ class UserDetails {
     this.isActive = json["isActive"];
     this.gender = json["gender"];
     this.registrationStep = json["registrationStep"];
+    print('usermodel_regstpe=${this.registrationStep}');
     this.lifecycleStatus = json["lifecycleStatus"];
     this.activationStatus = json["activationStatus"];
     this.relationship = Relationship.values[json["relationship"]];
   }
 
   UserDetails.fromStorage(
-      this.id,
-      this.mobile,
-      this.dialCode,
-      this.email,
-      this.gender,
-      this.isActive,
-      this.lifecycleStatus,
-      this.activationStatus,
-      this.registrationStep);
+    this.id,
+    this.mobile,
+    this.dialCode,
+    this.email,
+    this.gender,
+    this.isActive,
+    this.lifecycleStatus,
+    this.activationStatus,
+    this.registrationStep,
+    this.dateOfBirth,
+    // this.height,
+    // this.maritalStatus,
+    // this.countryModel,
+    // this.religion,
+    // this.motherTongue,
+    // this.abilityStatus
+  );
 }
 
 class RegistrationResponse {

@@ -65,6 +65,15 @@ class _OccupationScreenState extends State<OccupationScreen> {
   String? education;
   CountryModel? countryModel;
   StateModel? myState, city;
+  List<String> incomes = [
+    'Less Than 1Lacs',
+    '1 to 3Lacs',
+    '3 to 5Lacs',
+    '5 to 7Lacs',
+    '7 to 10Lacs',
+    '10 to 12Lacs',
+    'More than 12Lacs'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +142,9 @@ class _OccupationScreenState extends State<OccupationScreen> {
                         MmmButtons.categoryButtons(
                             'Annual Income',
                             anualIncome != null
-                                ? '${describeEnum(anualIncome!)}'
+                                ?
+                                //'${describeEnum(anualIncome!)}'
+                                incomes[anualIncome!.index]
                                 : 'Select your occupation',
                             'Select your occupation',
                             'images/rightArrow.svg', action: () {

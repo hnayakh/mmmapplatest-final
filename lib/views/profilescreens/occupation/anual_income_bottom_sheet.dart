@@ -18,6 +18,15 @@ class AnnualIncomeBottomSheet extends StatefulWidget {
 }
 
 class AnnualIncomeBottomSheetState extends State<AnnualIncomeBottomSheet> {
+  List<String> incomes = [
+    'Less Than 1Lacs',
+    '1 to 3Lacs',
+    '3 to 5Lacs',
+    '5 to 7Lacs',
+    '7 to 10Lacs',
+    '10 to 12Lacs',
+    'More than 12Lacs'
+  ];
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -49,10 +58,12 @@ class AnnualIncomeBottomSheetState extends State<AnnualIncomeBottomSheet> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(describeEnum(AnualIncome.values[index]),
+                          Text(
+                              //describeEnum(AnualIncome.values[index])
+                              incomes[index],
                               style: MmmTextStyles.bodyMediumSmall(
                                   textColor:
-                                  AnualIncome.values[index] == widget.income
+                                      AnualIncome.values[index] == widget.income
                                           ? kPrimary
                                           : kModalPrimary)),
                           SizedBox(

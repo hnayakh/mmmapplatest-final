@@ -3,6 +3,7 @@ import 'package:makemymarry/bloc/splash/splash_event.dart';
 import 'package:makemymarry/bloc/splash/splash_state.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
+import 'package:makemymarry/utils/mmm_enums.dart';
 
 class SplashBloc extends Bloc<SplashEvent, SplashState> {
   final UserRepository userRepository = UserRepository();
@@ -24,11 +25,20 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
         var userDetails = await this.userRepository.getUserDetails();
 
         this.userRepository.useDetails = userDetails;
-        userDetails = null; //testing only
+        // this.userRepository.useDetails!.registrationStep = 2;
+        //userDetails = null; //testing only
 
         if (userDetails == null) {
+          print('values of relationship');
+          for (int i = 0; i < Relationship.values.length; i++) {
+            print('$i=${Relationship.values[i]}');
+          }
+
           yield MoveToLogin();
         } else {
+          print('movetohome from splash');
+          print(this.userRepository.useDetails!.registrationStep);
+
           // var id = userDetails.id;
           // var profiles = await this.userRepository.getAllUsersProfileData(id);
           // if (profiles.status == AppConstants.SUCCESS) {

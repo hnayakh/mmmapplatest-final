@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/gestures.dart';
 
 import 'package:flutter/material.dart';
 
@@ -191,110 +192,113 @@ class _MessageScreenState extends State<MessageScreen> {
               .collection('messages')
               .orderBy('createdAt', descending: true)
               .snapshots(),
-          builder: (BuildContext context,
-              AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting &&
-                conState == 0) {
-              conState = 1;
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (snapshot.hasData) {
-              return Container(
-                padding: EdgeInsets.fromLTRB(16, 0, 16, 20),
-                child: Column(
-                  children: [
-                    Expanded(
-                        child: ListView.builder(
-                            reverse: true,
-                            itemCount: snapshot.data!.docs.length,
-                            itemBuilder: (ctx, index) {
-                              Timestamp now = snapshot.data!.docs[index]
-                                  .data()['createdAt'];
-
-                              String formattedTime =
-                                  DateFormat.jm().format(now.toDate());
-                              print(formattedTime);
-                              // snapshot.data!.docs[index].data()['createdAt']
-                              if (snapshot.data!.docs[index].data()['id'] ==
-                                  user1id) {
-                                return MmmWidgets.messageSent(
-                                    snapshot.data!.docs[index].data()['text'],
-                                    formattedTime);
-                              } else {
-                                return MmmWidgets.messageReceived(
-                                    snapshot.data!.docs[index].data()['text'],
-                                    formattedTime);
-                              }
-                            })),
-                    ConstrainedBox(
-                      constraints:
-                          BoxConstraints(minHeight: 70, maxHeight: 210),
-                      child: Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.fromLTRB(25, 15, 0, 18),
-                        decoration: BoxDecoration(
-                            boxShadow: [MmmShadow.textFieldMessaging()],
-                            color: kWhite,
-                            borderRadius: BorderRadius.circular(36)),
-                        child: Stack(children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.6,
-                            child: TextField(
-                                controller: cntrlr,
-                                keyboardType: TextInputType.multiline,
-                                maxLines: null,
-                                decoration: InputDecoration(
-                                  counterText: '',
-                                  hintText: 'Type your message',
-                                  hintStyle:
-                                      MmmTextStyles.bodyMedium(textColor: kBio),
-                                  contentPadding: EdgeInsets.zero,
-                                  border: InputBorder.none,
-                                )),
-                          ),
-                          Positioned(
-                              top: 5,
-                              right: 60,
-                              child: Material(
-                                  color: Colors.transparent,
-                                  child: InkWell(
-                                    onTap: () {},
-                                    child: SvgPicture.asset(
-                                      "images/camera.svg",
-                                      color: gray5,
-                                      height: 30,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ))),
-                          Positioned(
-                              top: 5,
-                              right: 20,
-                              child: Material(
-                                  color: Colors.transparent,
-                                  child: InkWell(
-                                    onTap: () {
-                                      sendMsg();
-                                    },
-                                    child: SvgPicture.asset(
-                                      "images/send.svg",
-                                      color: gray5,
-                                      height: 30,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  )))
-                        ]),
-                      ),
-                    )
-                  ],
-                ),
-              );
-            } else {
-              return Container();
-            }
+          builder: (context, snapshot) {
+            return Container(
+              padding: EdgeInsets.fromLTRB(16, 0, 16, 20),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 10,
+                  ),
+                  chatBubbles(snapshot),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(minHeight: 70, maxHeight: 210),
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.fromLTRB(25, 15, 0, 18),
+                      decoration: BoxDecoration(
+                          boxShadow: [MmmShadow.textFieldMessaging()],
+                          color: kWhite,
+                          borderRadius: BorderRadius.circular(36)),
+                      child: Stack(children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.6,
+                          child: TextField(
+                              controller: cntrlr,
+                              keyboardType: TextInputType.multiline,
+                              maxLines: null,
+                              decoration: InputDecoration(
+                                counterText: '',
+                                hintText: 'Type your message',
+                                hintStyle:
+                                    MmmTextStyles.bodyMedium(textColor: kBio),
+                                contentPadding: EdgeInsets.zero,
+                                border: InputBorder.none,
+                              )),
+                        ),
+                        Positioned(
+                            top: 5,
+                            right: 60,
+                            child: Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  onTap: () {},
+                                  child: SvgPicture.asset(
+                                    "images/camera.svg",
+                                    color: gray5,
+                                    height: 30,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ))),
+                        Positioned(
+                            top: 5,
+                            right: 20,
+                            child: Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  onTap: () {
+                                    sendMsg();
+                                  },
+                                  child: SvgPicture.asset(
+                                    "images/send.svg",
+                                    color: gray5,
+                                    height: 30,
+                                    fit: BoxFit.cover,
+                                  ),
+                                )))
+                      ]),
+                    ),
+                  )
+                ],
+              ),
+            );
           },
         ));
+  }
+
+  Widget chatBubbles(
+      AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+    switch (snapshot.connectionState) {
+      case ConnectionState.none:
+        return Container();
+      case ConnectionState.waiting:
+        return Expanded(
+            child:
+                Container(child: Center(child: CircularProgressIndicator())));
+      case ConnectionState.active:
+      case ConnectionState.done:
+        return Expanded(
+            child: ListView.builder(
+                reverse: true,
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  Timestamp now =
+                      snapshot.data!.docs[index].data()['createdAt'];
+
+                  String formattedTime = DateFormat.jm().format(now.toDate());
+                  print(formattedTime);
+                  // snapshot.data!.docs[index].data()['createdAt']
+                  if (snapshot.data!.docs[index].data()['id'] == user1id) {
+                    return MmmWidgets.messageSent(
+                        snapshot.data!.docs[index].data()['text'],
+                        formattedTime);
+                  } else {
+                    return MmmWidgets.messageReceived(
+                        snapshot.data!.docs[index].data()['text'],
+                        formattedTime);
+                  }
+                }));
+    }
   }
 
   void sendMsg() {
@@ -303,7 +307,7 @@ class _MessageScreenState extends State<MessageScreen> {
     }
     chats.doc(chatDocId).collection('messages').add(
         //id =senders id
-        {'text': cntrlr.text, 'createdAt': Timestamp.now(), 'id': user1id});
+        {'text': cntrlr.text, 'createdAt': Timestamp.now(), 'id': user2id});
     cntrlr.clear();
     // setState(() {
     //   cntrlr.text = '';

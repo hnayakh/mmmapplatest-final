@@ -299,51 +299,51 @@ class SignInScreenState extends State<SignInScreen> {
     var userRepo = BlocProvider.of<SignInBloc>(context).userRepository;
 
     switch (userRepo.useDetails!.registrationStep) {
-      case 11:
+      case 10:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => ProfileLoader(userRepository: userRepo)),
             (route) => false);
         break;
-      case 10:
+      case 9:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) =>
                     ProfilePreference(userRepository: userRepo)),
             (route) => false);
         break;
-      case 9:
+      case 8:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => Bio(userRepository: userRepo)),
             (route) => false);
         break;
       case 7:
-      case 8:
+      case 6:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => FamilyScreen(userRepository: userRepo)),
             (route) => false);
         break;
-      case 6:
+      case 5:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => Occupations(userRepository: userRepo)),
             (route) => false);
         break;
-      case 5:
+      case 4:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => Religion(userRepository: userRepo)),
             (route) => false);
         break;
-      case 4:
+      case 3:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => Habit(userRepository: userRepo)),
             (route) => false);
         break;
-      case 3:
+      case 2:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => About(userRepository: userRepo)),

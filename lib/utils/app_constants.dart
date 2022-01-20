@@ -9,6 +9,18 @@ class AppConstants {
   static String DIALCODE = "DIALCODE";
   static String ISACTIVE = "ISACTIVE";
   static String REGISTRATIONSTEP = "REGISTRATIONSTEP";
+  static String DATEOFBIRTH = "DATEOFBIRTH";
+  static String HEIGHT = "HEIGHT";
+  static String MARITALSTATUS = "MARITALSTATUS";
+  static String COUNTRYMODELNAME = "COUNTRYMODELNAME";
+  static String COUNTRYMODELSHORTNAME = "COUNTRYMODELSHORTNAME";
+  static String COUNTRYMODELID = "COUNTRYMODELID";
+  static String RELIGIONID = "RELIGIONID";
+  static String RELIGIONTITLE = "RELIGIONTITLE";
+  static String MOTHERTONGUEID = "MOTHERTONGUEID";
+  static String MOTHERTONGUETITLE = "MOTHERTONGUETITLE";
+  static String ABILITYSTATUS = "ABILITYSTATUS";
+
   static String ACTIVATIONSTATUS = "ACTIVATIONSTATUS";
   static String LIFECYCLESTATUS = "LIFECYCLESTATUS";
   static String GENDER = "GENDER";
@@ -22,5 +34,6 @@ class AppConstants {
   static final DATEFORMAT = 'dd MMM yyyy';
   static final SERVERDATEFORMAT = 'yyyy-MM-dd';
 
-  static final PUBLICIMAGEBASEURL = "https://mmm-user-image.s3.ap-south-1.amazonaws.com/";
+  static final PUBLICIMAGEBASEURL =
+      "https://mmm-user-image.s3.ap-south-1.amazonaws.com/";
 }

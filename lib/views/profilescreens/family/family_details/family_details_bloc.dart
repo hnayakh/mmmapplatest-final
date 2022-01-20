@@ -67,7 +67,18 @@ class FamilyDetailsBloc extends Bloc<FamilyDetailsEvent, FamilyDetailState> {
             brotherMarried,
             sistersMarried);
         if (result.status == AppConstants.SUCCESS) {
-          this.userRepository.updateRegistrationStep(9);
+          this.userRepository.useDetails!.registrationStep =
+              result.userDetails!.registrationStep;
+          //await this.userRepository.saveUserDetails();
+          await this
+              .userRepository
+              .storageService
+              .saveUserDetails(this.userRepository.useDetails!);
+          this.userRepository.updateRegistrationStep(8);
+          print('in familydetails');
+          print(
+              'dobinfamDetailsbloc=${this.userRepository.useDetails!.dateOfBirth}');
+          print(this.userRepository.useDetails!.registrationStep);
           yield OnFamilyDetailsUpdated();
         } else {
           yield OnError(result.message);

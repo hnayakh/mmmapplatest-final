@@ -102,9 +102,18 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
             );
 
         if (result.status == AppConstants.SUCCESS) {
-          this.userRepository.updateRegistrationStep(7);
+          this.userRepository.useDetails!.registrationStep =
+              result.userDetails!.registrationStep;
           this.userRepository.useDetails!.countryModel = this.countryModel!;
-          // await this.userRepository.saveUserDetails();
+          //await this.userRepository.saveUserDetails();
+          await this
+              .userRepository
+              .storageService
+              .saveUserDetails(this.userRepository.useDetails!);
+          this.userRepository.updateRegistrationStep(6);
+          print('in occu');
+          print('dobinoccubloc=${this.userRepository.useDetails!.dateOfBirth}');
+          print(this.userRepository.useDetails!.registrationStep);
           yield MoveToFamily();
         } else {
           yield OnError(result.message);
