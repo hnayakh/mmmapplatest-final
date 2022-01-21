@@ -128,7 +128,10 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
             0,
             0,
             "",
-            Relationship.Self
+            Relationship.Self,
+            4.6,
+            MaritalStatus.NeverMarried,
+            AbilityStatus.Normal
             // 0,
             // MaritalStatus.NeverMarried,
             // countryModel,

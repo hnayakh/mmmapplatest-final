@@ -26,7 +26,7 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
 
         this.userRepository.useDetails = userDetails;
         // this.userRepository.useDetails!.registrationStep = 2;
-        //userDetails = null; //testing only
+        // userDetails = null; //testing only
 
         if (userDetails == null) {
           print('values of relationship');

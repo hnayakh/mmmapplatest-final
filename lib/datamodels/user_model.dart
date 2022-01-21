@@ -100,13 +100,14 @@ class UserDetails {
       this.activationStatus,
       this.registrationStep,
       this.dateOfBirth,
-      this.relationship
-      // this.height,
-      // this.maritalStatus,
+      this.relationship,
+      this.height,
+      this.maritalStatus,
+      this.abilityStatus
       // this.countryModel,
       // this.religion,
       // this.motherTongue,
-      // this.abilityStatus
+
       );
 }
 

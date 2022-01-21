@@ -32,13 +32,13 @@ class StorageService {
         .sharedPreferences
         .setInt(AppConstants.RELATIONSHIP, userDetails.relationship.index);
 
-    // this.sharedPreferences.setDouble(AppConstants.HEIGHT, userDetails.height);
-    // this
-    //     .sharedPreferences
-    //     .setInt(AppConstants.MARITALSTATUS, userDetails.maritalStatus.index);
-    // this
-    //     .sharedPreferences
-    //     .setInt(AppConstants.MARITALSTATUS, userDetails.abilityStatus.index);
+    this.sharedPreferences.setDouble(AppConstants.HEIGHT, userDetails.height);
+    this
+        .sharedPreferences
+        .setInt(AppConstants.MARITALSTATUS, userDetails.maritalStatus.index);
+    this
+        .sharedPreferences
+        .setInt(AppConstants.ABILITYSTATUS, userDetails.abilityStatus.index);
     // this.sharedPreferences.setString(
     //     AppConstants.COUNTRYMODELNAME, userDetails.countryModel.name);
     // this.sharedPreferences.setString(
@@ -99,8 +99,15 @@ class StorageService {
           this.sharedPreferences.getString(AppConstants.DATEOFBIRTH);
       var relationship = Relationship
           .values[this.sharedPreferences.getInt(AppConstants.RELATIONSHIP)!];
+      var height = this.sharedPreferences.getDouble(AppConstants.HEIGHT);
+      var maritalStatus = MaritalStatus
+          .values[this.sharedPreferences.getInt(AppConstants.MARITALSTATUS)!];
+      var abilityStatus = AbilityStatus
+          .values[this.sharedPreferences.getInt(AppConstants.ABILITYSTATUS)!];
       print('instorage');
-      print(relationship);
+      print(height);
+      print(maritalStatus);
+      print(abilityStatus);
       // var height = this.sharedPreferences.getDouble(AppConstants.HEIGHT);
       // var maritalindex =
       //     this.sharedPreferences.getInt(AppConstants.MARITALSTATUS);
@@ -137,13 +144,14 @@ class StorageService {
           activatonStateus!,
           registrationStep!,
           dateOfBirth!,
-          relationship
-          // height!,
-          // maritalStatus,
+          relationship,
+          height!,
+          maritalStatus,
+          abilityStatus
           // countryModel,
           // religion,
           // motherTongue,
-          // abilityStatus
+
           );
     }
   }

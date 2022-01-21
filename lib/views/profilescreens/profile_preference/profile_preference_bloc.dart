@@ -61,10 +61,11 @@ class ProfilePreferenceBloc
     print("$minAge -- $maxAge");
     print("$minHeight -- $maxHeight");
     this.maritalStatus.add(this.userRepository.useDetails!.maritalStatus);
+    this.abilityStatus = this.userRepository.useDetails!.abilityStatus;
+    ////////////////////////////////////////////////////////////////////
     this.countryModel = this.userRepository.useDetails!.countryModel;
     this.religion.add(this.userRepository.useDetails!.religion);
     this.motherTongue.add(this.userRepository.useDetails!.motherTongue);
-    this.abilityStatus = this.userRepository.useDetails!.abilityStatus;
   }
 
   @override
