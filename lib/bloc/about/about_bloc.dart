@@ -74,8 +74,9 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
               AppHelper.serverFormatDate(this.dateOfBirth!);
           print(
               'dobinaboutbloc=${this.userRepository.useDetails!.dateOfBirth}');
-          print('inaboutbloc,countrymodel');
-          print(this.userRepository.useDetails!.countryModel);
+          print('increatebloc,rel&mT');
+          print(this.userRepository.useDetails!.religion.id);
+          print(this.userRepository.useDetails!.motherTongue.id);
           this.userRepository.useDetails!.maritalStatus = this.maritalStatus!;
           this.userRepository.useDetails!.height =
               AppHelper.getHeights()[this.heightStatus!];

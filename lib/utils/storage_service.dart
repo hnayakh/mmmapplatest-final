@@ -46,17 +46,17 @@ class StorageService {
     this
         .sharedPreferences
         .setInt(AppConstants.COUNTRYMODELID, userDetails.countryModel.id);
-    // this
-    //     .sharedPreferences
-    //     .setString(AppConstants.RELIGIONID, userDetails.religion.id);
-    // this
-    //     .sharedPreferences
-    //     .setString(AppConstants.RELIGIONTITLE, userDetails.religion.title);
-    // this
-    //     .sharedPreferences
-    //     .setString(AppConstants.MOTHERTONGUEID, userDetails.motherTongue.id);
-    // this.sharedPreferences.setString(
-    //     AppConstants.MOTHERTONGUETITLE, userDetails.motherTongue.title);
+    this
+        .sharedPreferences
+        .setString(AppConstants.RELIGIONID, userDetails.religion.id);
+    this
+        .sharedPreferences
+        .setString(AppConstants.RELIGIONTITLE, userDetails.religion.title);
+    this
+        .sharedPreferences
+        .setString(AppConstants.MOTHERTONGUEID, userDetails.motherTongue.id);
+    this.sharedPreferences.setString(
+        AppConstants.MOTHERTONGUETITLE, userDetails.motherTongue.title);
 
     this.sharedPreferences.setString(AppConstants.MOBILE, userDetails.mobile);
     this.sharedPreferences.setString(AppConstants.EMAIL, userDetails.email);
@@ -104,7 +104,7 @@ class StorageService {
           .values[this.sharedPreferences.getInt(AppConstants.MARITALSTATUS)!];
       var abilityStatus = AbilityStatus
           .values[this.sharedPreferences.getInt(AppConstants.ABILITYSTATUS)!];
-      print('instorage countrymodel');
+      print('instorage');
 
       CountryModel countryModel = CountryModel();
       countryModel.id =
@@ -114,19 +114,18 @@ class StorageService {
       countryModel.shortName =
           this.sharedPreferences.getString(AppConstants.COUNTRYMODELSHORTNAME)!;
 
-      print(countryModel.id);
-      print(countryModel.name);
-      print(countryModel.shortName);
+      SimpleMasterData religion = SimpleMasterData();
+      SimpleMasterData motherTongue = SimpleMasterData();
+      religion.id = this.sharedPreferences.getString(AppConstants.RELIGIONID)!;
+      religion.title =
+          this.sharedPreferences.getString(AppConstants.RELIGIONTITLE)!;
+      motherTongue.id =
+          this.sharedPreferences.getString(AppConstants.MOTHERTONGUEID)!;
+      motherTongue.title =
+          this.sharedPreferences.getString(AppConstants.MOTHERTONGUETITLE)!;
 
-      // SimpleMasterData religion = SimpleMasterData();
-      // SimpleMasterData motherTongue = SimpleMasterData();
-      // religion.id = this.sharedPreferences.getString(AppConstants.RELIGIONID)!;
-      // religion.title =
-      //     this.sharedPreferences.getString(AppConstants.RELIGIONTITLE)!;
-      // motherTongue.id =
-      //     this.sharedPreferences.getString(AppConstants.MOTHERTONGUEID)!;
-      // motherTongue.title =
-      //     this.sharedPreferences.getString(AppConstants.MOTHERTONGUETITLE)!;
+      print(religion.id);
+      print(motherTongue.id);
 
       return UserDetails.fromStorage(
         id,
@@ -144,8 +143,8 @@ class StorageService {
         maritalStatus,
         abilityStatus,
         countryModel,
-        // religion,
-        // motherTongue,
+        religion,
+        motherTongue,
       );
     }
   }

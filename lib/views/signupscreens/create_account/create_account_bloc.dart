@@ -111,12 +111,12 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
         countryModel.id = 1;
         countryModel.name = 'India';
         countryModel.shortName = 'IND';
-        // SimpleMasterData religion = SimpleMasterData();
-        // religion.id = '';
-        // religion.title = '';
-        // SimpleMasterData motherTongue = SimpleMasterData();
-        // motherTongue.id = '';
-        // motherTongue.title = '';
+        SimpleMasterData religion = SimpleMasterData();
+        religion.id = 'unknown';
+        religion.title = 'UNK';
+        SimpleMasterData motherTongue = SimpleMasterData();
+        motherTongue.id = 'unknown';
+        motherTongue.title = 'UNK';
         this.userRepository.useDetails = UserDetails.fromStorage(
           "",
           mobile,
@@ -135,8 +135,8 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
           // 0,
           // MaritalStatus.NeverMarried,
           countryModel,
-          // religion,
-          // motherTongue,
+          religion,
+          motherTongue,
           // AbilityStatus.Normal
         );
         this.userRepository.useDetails!.relationship = this.profileCreatedFor!;
@@ -145,8 +145,9 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
             .userRepository
             .storageService
             .saveUserDetails(this.userRepository.useDetails!);
-        print('increatebloc,countrymodel');
-        print(this.userRepository.useDetails!.countryModel);
+        print('increatebloc,rel&mT');
+        print(this.userRepository.useDetails!.religion.id);
+        print(this.userRepository.useDetails!.motherTongue.id);
         var otpResponse = await this.userRepository.sendOtp(
             this.selectedCountry.phoneCode, mobile, OtpType.Registration,
             email: this.email);

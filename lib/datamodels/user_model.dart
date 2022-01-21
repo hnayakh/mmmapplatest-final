@@ -105,8 +105,8 @@ class UserDetails {
     this.maritalStatus,
     this.abilityStatus,
     this.countryModel,
-    // this.religion,
-    // this.motherTongue,
+    this.religion,
+    this.motherTongue,
   );
 }
 
