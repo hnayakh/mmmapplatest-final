@@ -77,13 +77,13 @@ class MobileVerificationBloc
                   result.userDetails!.lifecycleStatus;
               this.userRepository.useDetails!.activationStatus =
                   result.userDetails!.activationStatus;
-              this.userRepository.useDetails!.relationship =
-                  result.userDetails!.relationship;
+              // this.userRepository.useDetails!.relationship =
+              //     result.userDetails!.relationship;
               // print('inphonebloc,countrymodelId2');
               // print(this.userRepository.useDetails!.countryModel.id);
 
-              print(
-                  'inmobverbloc,relation=${this.userRepository.useDetails!.relationship}');
+              print('inmobilebloc,relationship');
+              print(this.userRepository.useDetails!.relationship);
               this
                   .userRepository
                   .storageService

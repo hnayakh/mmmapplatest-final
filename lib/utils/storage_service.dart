@@ -28,6 +28,10 @@ class StorageService {
     this
         .sharedPreferences
         .setString(AppConstants.DATEOFBIRTH, userDetails.dateOfBirth);
+    this
+        .sharedPreferences
+        .setInt(AppConstants.RELATIONSHIP, userDetails.relationship.index);
+
     // this.sharedPreferences.setDouble(AppConstants.HEIGHT, userDetails.height);
     // this
     //     .sharedPreferences
@@ -93,6 +97,10 @@ class StorageService {
           this.sharedPreferences.getInt(AppConstants.REGISTRATIONSTEP);
       var dateOfBirth =
           this.sharedPreferences.getString(AppConstants.DATEOFBIRTH);
+      var relationship = Relationship
+          .values[this.sharedPreferences.getInt(AppConstants.RELATIONSHIP)!];
+      print('instorage');
+      print(relationship);
       // var height = this.sharedPreferences.getDouble(AppConstants.HEIGHT);
       // var maritalindex =
       //     this.sharedPreferences.getInt(AppConstants.MARITALSTATUS);
@@ -119,23 +127,24 @@ class StorageService {
       //     this.sharedPreferences.getString(AppConstants.MOTHERTONGUETITLE)!;
 
       return UserDetails.fromStorage(
-        id,
-        mobile!,
-        dialCode!,
-        email!,
-        gender!,
-        isActive!,
-        lifeCycleStep!,
-        activatonStateus!,
-        registrationStep!,
-        dateOfBirth!,
-        // height!,
-        // maritalStatus,
-        // countryModel,
-        // religion,
-        // motherTongue,
-        // abilityStatus
-      );
+          id,
+          mobile!,
+          dialCode!,
+          email!,
+          gender!,
+          isActive!,
+          lifeCycleStep!,
+          activatonStateus!,
+          registrationStep!,
+          dateOfBirth!,
+          relationship
+          // height!,
+          // maritalStatus,
+          // countryModel,
+          // religion,
+          // motherTongue,
+          // abilityStatus
+          );
     }
   }
 

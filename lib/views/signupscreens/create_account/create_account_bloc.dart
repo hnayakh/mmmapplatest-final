@@ -118,31 +118,32 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
         // motherTongue.id = '';
         // motherTongue.title = '';
         this.userRepository.useDetails = UserDetails.fromStorage(
-          "",
-          mobile,
-          selectedCountry.phoneCode,
-          email,
-          this.gender!.index,
-          true,
-          0,
-          0,
-          0,
-          "",
-          // 0,
-          // MaritalStatus.NeverMarried,
-          // countryModel,
-          // religion,
-          // motherTongue,
-          // AbilityStatus.Normal
-        );
+            "",
+            mobile,
+            selectedCountry.phoneCode,
+            email,
+            this.gender!.index,
+            true,
+            0,
+            0,
+            0,
+            "",
+            Relationship.Self
+            // 0,
+            // MaritalStatus.NeverMarried,
+            // countryModel,
+            // religion,
+            // motherTongue,
+            // AbilityStatus.Normal
+            );
         this.userRepository.useDetails!.relationship = this.profileCreatedFor!;
         this.userRepository.useDetails!.password = this.password;
         await this
             .userRepository
             .storageService
             .saveUserDetails(this.userRepository.useDetails!);
-        // print('increatebloc,countrymodelId');
-        //print(this.userRepository.useDetails!.countryModel.id);
+        print('increatebloc,relationship');
+        print(this.userRepository.useDetails!.relationship);
         var otpResponse = await this.userRepository.sendOtp(
             this.selectedCountry.phoneCode, mobile, OtpType.Registration,
             email: this.email);
