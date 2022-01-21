@@ -90,25 +90,24 @@ class UserDetails {
   }
 
   UserDetails.fromStorage(
-      this.id,
-      this.mobile,
-      this.dialCode,
-      this.email,
-      this.gender,
-      this.isActive,
-      this.lifecycleStatus,
-      this.activationStatus,
-      this.registrationStep,
-      this.dateOfBirth,
-      this.relationship,
-      this.height,
-      this.maritalStatus,
-      this.abilityStatus
-      // this.countryModel,
-      // this.religion,
-      // this.motherTongue,
-
-      );
+    this.id,
+    this.mobile,
+    this.dialCode,
+    this.email,
+    this.gender,
+    this.isActive,
+    this.lifecycleStatus,
+    this.activationStatus,
+    this.registrationStep,
+    this.dateOfBirth,
+    this.relationship,
+    this.height,
+    this.maritalStatus,
+    this.abilityStatus,
+    this.countryModel,
+    // this.religion,
+    // this.motherTongue,
+  );
 }
 
 class RegistrationResponse {

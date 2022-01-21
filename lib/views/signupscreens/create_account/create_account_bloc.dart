@@ -107,10 +107,10 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
       } else if (!this.acceptTerms) {
         yield OnError("Accept terms and conditions.");
       } else {
-        // CountryModel countryModel = CountryModel();
-        // countryModel.id = 0;
-        // countryModel.name = '';
-        // countryModel.shortName = '';
+        CountryModel countryModel = CountryModel();
+        countryModel.id = 1;
+        countryModel.name = 'India';
+        countryModel.shortName = 'IND';
         // SimpleMasterData religion = SimpleMasterData();
         // religion.id = '';
         // religion.title = '';
@@ -118,35 +118,35 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
         // motherTongue.id = '';
         // motherTongue.title = '';
         this.userRepository.useDetails = UserDetails.fromStorage(
-            "",
-            mobile,
-            selectedCountry.phoneCode,
-            email,
-            this.gender!.index,
-            true,
-            0,
-            0,
-            0,
-            "",
-            Relationship.Self,
-            4.6,
-            MaritalStatus.NeverMarried,
-            AbilityStatus.Normal
-            // 0,
-            // MaritalStatus.NeverMarried,
-            // countryModel,
-            // religion,
-            // motherTongue,
-            // AbilityStatus.Normal
-            );
+          "",
+          mobile,
+          selectedCountry.phoneCode,
+          email,
+          this.gender!.index,
+          true,
+          0,
+          0,
+          0,
+          "",
+          Relationship.Self,
+          4.6,
+          MaritalStatus.NeverMarried,
+          AbilityStatus.Normal,
+          // 0,
+          // MaritalStatus.NeverMarried,
+          countryModel,
+          // religion,
+          // motherTongue,
+          // AbilityStatus.Normal
+        );
         this.userRepository.useDetails!.relationship = this.profileCreatedFor!;
         this.userRepository.useDetails!.password = this.password;
         await this
             .userRepository
             .storageService
             .saveUserDetails(this.userRepository.useDetails!);
-        print('increatebloc,relationship');
-        print(this.userRepository.useDetails!.relationship);
+        print('increatebloc,countrymodel');
+        print(this.userRepository.useDetails!.countryModel);
         var otpResponse = await this.userRepository.sendOtp(
             this.selectedCountry.phoneCode, mobile, OtpType.Registration,
             email: this.email);
