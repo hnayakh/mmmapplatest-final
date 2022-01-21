@@ -58,10 +58,39 @@ class MobileVerificationBloc
                 Gender.values[userDetails.gender],
                 userDetails.password);
             if (result.status == AppConstants.SUCCESS) {
-              this.userRepository.useDetails = result.userDetails;
+              // print('inphonebloc,countrymodelId1');
+              // print(this.userRepository.useDetails!.countryModel.id);
+
+              this.userRepository.useDetails!.id = result.userDetails!.id;
+              this.userRepository.useDetails!.email = result.userDetails!.email;
+              this.userRepository.useDetails!.mobile =
+                  result.userDetails!.mobile;
+              this.userRepository.useDetails!.dialCode =
+                  result.userDetails!.dialCode;
+              this.userRepository.useDetails!.isActive =
+                  result.userDetails!.isActive;
+              this.userRepository.useDetails!.gender =
+                  result.userDetails!.gender;
+              this.userRepository.useDetails!.registrationStep =
+                  result.userDetails!.registrationStep;
+              this.userRepository.useDetails!.lifecycleStatus =
+                  result.userDetails!.lifecycleStatus;
+              this.userRepository.useDetails!.activationStatus =
+                  result.userDetails!.activationStatus;
+              this.userRepository.useDetails!.relationship =
+                  result.userDetails!.relationship;
+              // print('inphonebloc,countrymodelId2');
+              // print(this.userRepository.useDetails!.countryModel.id);
+
               print(
                   'inmobverbloc,relation=${this.userRepository.useDetails!.relationship}');
-              this.userRepository.saveUserDetails();
+              this
+                  .userRepository
+                  .storageService
+                  .saveUserDetails(this.userRepository.useDetails!);
+
+              // print('inphonebloc,countrymodelId3');
+              // print(this.userRepository.useDetails!.countryModel.id);
               this.userRepository.updateRegistrationStep(2);
               yield OnRegister();
             }

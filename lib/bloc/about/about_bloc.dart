@@ -70,7 +70,9 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
             this.name);
 
         if (result.status == AppConstants.SUCCESS) {
-          this.userRepository.useDetails = result.userDetails;
+          // print('inaboutbloc,countrymodelId');
+          // print(this.userRepository.useDetails!.countryModel.id);
+          // this.userRepository.useDetails = result.userDetails;
           this.userRepository.useDetails!.dateOfBirth =
               AppHelper.serverFormatDate(this.dateOfBirth!);
           print(

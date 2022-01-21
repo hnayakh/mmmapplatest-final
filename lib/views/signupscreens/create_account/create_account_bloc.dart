@@ -107,16 +107,16 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
       } else if (!this.acceptTerms) {
         yield OnError("Accept terms and conditions.");
       } else {
-        CountryModel countryModel = CountryModel();
-        countryModel.id = 0;
-        countryModel.name = '';
-        countryModel.shortName = '';
-        SimpleMasterData religion = SimpleMasterData();
-        religion.id = '';
-        religion.title = '';
-        SimpleMasterData motherTongue = SimpleMasterData();
-        motherTongue.id = '';
-        motherTongue.title = '';
+        // CountryModel countryModel = CountryModel();
+        // countryModel.id = 0;
+        // countryModel.name = '';
+        // countryModel.shortName = '';
+        // SimpleMasterData religion = SimpleMasterData();
+        // religion.id = '';
+        // religion.title = '';
+        // SimpleMasterData motherTongue = SimpleMasterData();
+        // motherTongue.id = '';
+        // motherTongue.title = '';
         this.userRepository.useDetails = UserDetails.fromStorage(
           "",
           mobile,
@@ -141,6 +141,8 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
             .userRepository
             .storageService
             .saveUserDetails(this.userRepository.useDetails!);
+        // print('increatebloc,countrymodelId');
+        //print(this.userRepository.useDetails!.countryModel.id);
         var otpResponse = await this.userRepository.sendOtp(
             this.selectedCountry.phoneCode, mobile, OtpType.Registration,
             email: this.email);

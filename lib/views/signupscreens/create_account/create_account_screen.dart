@@ -471,6 +471,8 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
 
   void navigateToOtpScreen(OnOtpGenerated state) {
     var userRepo = BlocProvider.of<CreateAccountBloc>(context).userRepository;
+    // print('increatescreen,countrymodelId');
+    // print(userRepo.useDetails!.countryModel.id);
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => MobileVerification(
             userRepository: userRepo,

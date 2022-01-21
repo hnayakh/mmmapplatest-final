@@ -53,7 +53,7 @@ class StorageService {
     //     .setString(AppConstants.MOTHERTONGUEID, userDetails.motherTongue.id);
     // this.sharedPreferences.setString(
     //     AppConstants.MOTHERTONGUETITLE, userDetails.motherTongue.title);
-    //this.sharedPreferences.setInt(key, value)
+
     this.sharedPreferences.setString(AppConstants.MOBILE, userDetails.mobile);
     this.sharedPreferences.setString(AppConstants.EMAIL, userDetails.email);
     this
