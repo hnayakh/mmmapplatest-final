@@ -7,16 +7,21 @@ import 'package:makemymarry/views/profilescreens/family/family_details/family_de
 
 class FamilyDetailsBloc extends Bloc<FamilyDetailsEvent, FamilyDetailState> {
   final UserRepository userRepository;
-
-  FamilyDetailsBloc(this.userRepository) : super(FamilyDetailInitialState());
+  //late final String familyBackgroundSaved;
+  FamilyDetailsBloc(
+    this.userRepository,
+  ) : super(FamilyDetailInitialState());
   FatherOccupation? fatherOccupation;
   MotherOccupation? motherOccupation;
+  //String? familyBackgroundSaved;
 
   int noOfBrothers = 0, noOfSister = 0, brotherMarried = 0, sistersMarried = 0;
 
   @override
   Stream<FamilyDetailState> mapEventToState(FamilyDetailsEvent event) async* {
     yield OnLoading();
+    print('infamildetailsbloc');
+    //print(familyBackgroundSaved);
     if (event is OnFathersOccupationSelected) {
       this.fatherOccupation = event.occupation;
       yield FamilyDetailInitialState();
@@ -54,7 +59,25 @@ class FamilyDetailsBloc extends Bloc<FamilyDetailsEvent, FamilyDetailState> {
       yield FamilyDetailInitialState();
     }
     if (event is UpdateFamilyDetails) {
-      if (this.fatherOccupation == null) {
+      // print('inoncomplete3');
+      // // print(familyBackgroundSaved);
+      // if (familyBackgroundSaved == null) {
+      //   yield OnError("Please save Family Background null");
+      // } else
+      if (this.fatherOccupation == null &&
+          this.motherOccupation == null &&
+          this.noOfBrothers == 0 &&
+          this.noOfSister == 0 &&
+          this.brotherMarried == 0 &&
+          this.sistersMarried == 0) {
+        await this
+            .userRepository
+            .storageService
+            .saveUserDetails(this.userRepository.useDetails!);
+        this.userRepository.updateRegistrationStep(8);
+
+        yield OnFamilyDetailsUpdated();
+      } else if (this.fatherOccupation == null) {
         yield OnError("Select Father's Occupation");
       } else if (this.motherOccupation == null) {
         yield OnError("Select Mother's Occupation");

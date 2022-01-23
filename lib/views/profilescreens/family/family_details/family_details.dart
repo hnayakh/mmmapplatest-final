@@ -22,14 +22,18 @@ class FamilyDetails extends StatelessWidget {
   final UserRepository userRepository;
   final Function onComplete;
 
-  const FamilyDetails(
-      {Key? key, required this.userRepository, required this.onComplete})
-      : super(key: key);
+  const FamilyDetails({
+    Key? key,
+    required this.userRepository,
+    required this.onComplete,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => FamilyDetailsBloc(userRepository),
+      create: (context) => FamilyDetailsBloc(
+        userRepository,
+      ),
       child: FamilyDetailsScreen(
         onComplete: onComplete,
       ),
@@ -97,419 +101,429 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
     });
   }
 
-  Container buildUi(BuildContext context) {
-    return Container(
-      padding: kMargin16,
-      child: Column(
-        children: [
-          MmmButtons.categoryButtons(
-              "Father's Occpation",
-              fatherOccupation != null
-                  ? describeEnum(fatherOccupation!)
-                  : fatherOcctext,
-              fatherOcctext,
-              "images/rightArrow.svg", action: () {
-            showFatherOccupationStatusSheet();
-          }),
-          SizedBox(
-            height: 24,
-          ),
-          MmmButtons.categoryButtons(
-              "Mother's Occpation",
-              motherOccupation != null
-                  ? describeEnum(motherOccupation!)
-                  : motherOcctext,
-              motherOcctext,
-              "images/rightArrow.svg", action: () {
-            showMotherOccupationStatusSheet();
-          }),
-          SizedBox(
-            height: 24,
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            decoration:
-                BoxDecoration(border: Border.all(width: 1, color: kLight4)),
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    'Brother’s details of groom’s',
-                    style: MmmTextStyles.bodyMedium(textColor: kDark5),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              Row(
-                children: [
-                  Expanded(
+  Widget buildUi(BuildContext context) {
+    return SingleChildScrollView(
+      child: Container(
+        padding: kMargin16,
+        child: Column(
+          children: [
+            Text('(This section is optional)'),
+            SizedBox(
+              height: 24,
+            ),
+            MmmButtons.categoryButtons(
+                "Father's Occpation",
+                fatherOccupation != null
+                    ? describeEnum(fatherOccupation!)
+                    : fatherOcctext,
+                fatherOcctext,
+                "images/rightArrow.svg", action: () {
+              showFatherOccupationStatusSheet();
+            }),
+            SizedBox(
+              height: 24,
+            ),
+            MmmButtons.categoryButtons(
+                "Mother's Occpation",
+                motherOccupation != null
+                    ? describeEnum(motherOccupation!)
+                    : motherOcctext,
+                motherOcctext,
+                "images/rightArrow.svg", action: () {
+              showMotherOccupationStatusSheet();
+            }),
+            SizedBox(
+              height: 24,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              decoration:
+                  BoxDecoration(border: Border.all(width: 1, color: kLight4)),
+            ),
+            SizedBox(
+              height: 24,
+            ),
+            Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Brother’s details of groom’s',
+                      style: MmmTextStyles.bodyMedium(textColor: kDark5),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 16,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                        child: Row(
+                      children: [
+                        Text(
+                          'No of Brother’s',
+                          textScaleFactor: 1.0,
+                          style: MmmTextStyles.bodySmall(textColor: kDark5),
+                        ),
+                        SizedBox(
+                          width: 2,
+                        ),
+                        Text(
+                          '*',
+                          style: MmmTextStyles.bodySmall(textColor: kredStar),
+                        )
+                      ],
+                    )),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Expanded(
+                        child: Row(
+                      children: [
+                        Text(
+                          'Married',
+                          textScaleFactor: 1.0,
+                          style: MmmTextStyles.bodySmall(textColor: kDark5),
+                        ),
+                        SizedBox(
+                          width: 2,
+                        ),
+                        Text(
+                          '*',
+                          style: MmmTextStyles.bodySmall(textColor: kredStar),
+                        )
+                      ],
+                    )),
+                  ],
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                        child: Container(
+                      height: 44,
+                      padding: EdgeInsets.fromLTRB(12, 8, 12, 8),
+                      decoration: BoxDecoration(
+                          color: kLight4,
+                          border: Border.all(color: kBioSecondary, width: 1),
+                          borderRadius: BorderRadius.circular(8)),
                       child: Row(
-                    children: [
-                      Text(
-                        'No of Brother’s',
-                        textScaleFactor: 1.0,
-                        style: MmmTextStyles.bodySmall(textColor: kDark5),
+                        children: [
+                          Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                BlocProvider.of<FamilyDetailsBloc>(context)
+                                    .add(ChangeNoOfBrothers(-1));
+                              },
+                              child: SvgPicture.asset(
+                                'images/minus.svg',
+                                height: 24,
+                                width: 24,
+                                color: kDark2,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Expanded(
+                            child: Text(
+                              "$noOfBrothers",
+                              textScaleFactor: 1.0,
+                              textAlign: TextAlign.center,
+                              style:
+                                  MmmTextStyles.bodyRegular(textColor: kDark5),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                BlocProvider.of<FamilyDetailsBloc>(context)
+                                    .add(ChangeNoOfBrothers(1));
+                              },
+                              child: SvgPicture.asset(
+                                'images/plus.svg',
+                                height: 24,
+                                width: 24,
+                                color: kDark2,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      SizedBox(
-                        width: 2,
-                      ),
-                      Text(
-                        '*',
-                        style: MmmTextStyles.bodySmall(textColor: kredStar),
-                      )
-                    ],
-                  )),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Expanded(
+                    )),
+                    SizedBox(
+                      width: 16,
+                    ),
+                    Expanded(
+                        child: Container(
+                      height: 44,
+                      width: (MediaQuery.of(context).size.width / 2) - 48,
+                      padding: EdgeInsets.fromLTRB(12, 8, 12, 8),
+                      decoration: BoxDecoration(
+                          color: kLight4,
+                          border: Border.all(color: kBioSecondary, width: 1),
+                          borderRadius: BorderRadius.circular(8)),
                       child: Row(
-                    children: [
-                      Text(
-                        'Married',
-                        textScaleFactor: 1.0,
-                        style: MmmTextStyles.bodySmall(textColor: kDark5),
+                        children: [
+                          Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                BlocProvider.of<FamilyDetailsBloc>(context)
+                                    .add(ChangeNoOfBrothersMarried(-1));
+                              },
+                              child: SvgPicture.asset(
+                                'images/minus.svg',
+                                height: 24,
+                                width: 24,
+                                color: kDark2,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Expanded(
+                            child: Text(
+                              "$brotherMarried",
+                              textScaleFactor: 1.0,
+                              textAlign: TextAlign.center,
+                              style:
+                                  MmmTextStyles.bodyRegular(textColor: kDark5),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                BlocProvider.of<FamilyDetailsBloc>(context)
+                                    .add(ChangeNoOfBrothersMarried(1));
+                              },
+                              child: SvgPicture.asset(
+                                'images/plus.svg',
+                                height: 24,
+                                width: 24,
+                                color: kDark2,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      SizedBox(
-                        width: 2,
-                      ),
-                      Text(
-                        '*',
-                        style: MmmTextStyles.bodySmall(textColor: kredStar),
-                      )
-                    ],
-                  )),
-                ],
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                      child: Container(
-                    height: 44,
-                    padding: EdgeInsets.fromLTRB(12, 8, 12, 8),
-                    decoration: BoxDecoration(
-                        color: kLight4,
-                        border: Border.all(color: kBioSecondary, width: 1),
-                        borderRadius: BorderRadius.circular(8)),
-                    child: Row(
+                    ))
+                  ],
+                )
+              ],
+            ),
+            SizedBox(
+              height: 24,
+            ),
+            Container(
+              width: 360,
+              decoration:
+                  BoxDecoration(border: Border.all(width: 1, color: kLight4)),
+            ),
+            SizedBox(
+              height: 24,
+            ),
+            Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Sister’s details of groom’s',
+                      style: MmmTextStyles.bodyMedium(textColor: kDark5),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 16,
+                ),
+                Row(
+                  children: [
+                    Row(
                       children: [
-                        Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: () {
-                              BlocProvider.of<FamilyDetailsBloc>(context)
-                                  .add(ChangeNoOfBrothers(-1));
-                            },
-                            child: SvgPicture.asset(
-                              'images/minus.svg',
-                              height: 24,
-                              width: 24,
-                              color: kDark2,
-                            ),
-                          ),
+                        Text(
+                          'No of Sister’s',
+                          textScaleFactor: 1.0,
+                          style: MmmTextStyles.bodySmall(textColor: kDark5),
                         ),
                         SizedBox(
-                          width: 20,
+                          width: 2,
                         ),
-                        Expanded(
-                          child: Text(
-                            "$noOfBrothers",
-                            textScaleFactor: 1.0,
-                            textAlign: TextAlign.center,
-                            style: MmmTextStyles.bodyRegular(textColor: kDark5),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: () {
-                              BlocProvider.of<FamilyDetailsBloc>(context)
-                                  .add(ChangeNoOfBrothers(1));
-                            },
-                            child: SvgPicture.asset(
-                              'images/plus.svg',
-                              height: 24,
-                              width: 24,
-                              color: kDark2,
-                            ),
-                          ),
-                        ),
+                        Text(
+                          '*',
+                          style: MmmTextStyles.bodySmall(textColor: kredStar),
+                        )
                       ],
                     ),
-                  )),
-                  SizedBox(
-                    width: 16,
-                  ),
-                  Expanded(
-                      child: Container(
-                    height: 44,
-                    width: (MediaQuery.of(context).size.width / 2) - 48,
-                    padding: EdgeInsets.fromLTRB(12, 8, 12, 8),
-                    decoration: BoxDecoration(
-                        color: kLight4,
-                        border: Border.all(color: kBioSecondary, width: 1),
-                        borderRadius: BorderRadius.circular(8)),
-                    child: Row(
+                    SizedBox(
+                      width: 100,
+                    ),
+                    Row(
                       children: [
-                        Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: () {
-                              BlocProvider.of<FamilyDetailsBloc>(context)
-                                  .add(ChangeNoOfBrothersMarried(-1));
-                            },
-                            child: SvgPicture.asset(
-                              'images/minus.svg',
-                              height: 24,
-                              width: 24,
-                              color: kDark2,
-                            ),
-                          ),
+                        Text(
+                          'Married',
+                          textScaleFactor: 1.0,
+                          style: MmmTextStyles.bodySmall(textColor: kDark5),
                         ),
                         SizedBox(
-                          width: 20,
+                          width: 2,
                         ),
-                        Expanded(
-                          child: Text(
-                            "$brotherMarried",
-                            textScaleFactor: 1.0,
-                            textAlign: TextAlign.center,
-                            style: MmmTextStyles.bodyRegular(textColor: kDark5),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: () {
-                              BlocProvider.of<FamilyDetailsBloc>(context)
-                                  .add(ChangeNoOfBrothersMarried(1));
-                            },
-                            child: SvgPicture.asset(
-                              'images/plus.svg',
-                              height: 24,
-                              width: 24,
-                              color: kDark2,
-                            ),
-                          ),
-                        ),
+                        Text(
+                          '*',
+                          style: MmmTextStyles.bodySmall(textColor: kredStar),
+                        )
                       ],
                     ),
-                  ))
-                ],
-              )
-            ],
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          Container(
-            width: 360,
-            decoration:
-                BoxDecoration(border: Border.all(width: 1, color: kLight4)),
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    'Sister’s details of groom’s',
-                    style: MmmTextStyles.bodyMedium(textColor: kDark5),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              Row(
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        'No of Sister’s',
-                        textScaleFactor: 1.0,
-                        style: MmmTextStyles.bodySmall(textColor: kDark5),
-                      ),
-                      SizedBox(
-                        width: 2,
-                      ),
-                      Text(
-                        '*',
-                        style: MmmTextStyles.bodySmall(textColor: kredStar),
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    width: 100,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Married',
-                        textScaleFactor: 1.0,
-                        style: MmmTextStyles.bodySmall(textColor: kDark5),
-                      ),
-                      SizedBox(
-                        width: 2,
-                      ),
-                      Text(
-                        '*',
-                        style: MmmTextStyles.bodySmall(textColor: kredStar),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                      child: Container(
-                    height: 44,
-                    padding: EdgeInsets.fromLTRB(12, 8, 12, 8),
-                    decoration: BoxDecoration(
-                        color: kLight4,
-                        border: Border.all(color: kBioSecondary, width: 1),
-                        borderRadius: BorderRadius.circular(8)),
-                    child: Row(
-                      children: [
-                        Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: () {
-                              BlocProvider.of<FamilyDetailsBloc>(context)
-                                  .add(ChangeNoOfSisters(-1));
-                            },
-                            child: SvgPicture.asset(
-                              'images/minus.svg',
-                              height: 24,
-                              width: 24,
-                              color: kDark2,
+                  ],
+                ),
+                SizedBox(
+                  height: 4,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                        child: Container(
+                      height: 44,
+                      padding: EdgeInsets.fromLTRB(12, 8, 12, 8),
+                      decoration: BoxDecoration(
+                          color: kLight4,
+                          border: Border.all(color: kBioSecondary, width: 1),
+                          borderRadius: BorderRadius.circular(8)),
+                      child: Row(
+                        children: [
+                          Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                BlocProvider.of<FamilyDetailsBloc>(context)
+                                    .add(ChangeNoOfSisters(-1));
+                              },
+                              child: SvgPicture.asset(
+                                'images/minus.svg',
+                                height: 24,
+                                width: 24,
+                                color: kDark2,
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Expanded(
-                          child: Text(
-                            "$noOfSister",
-                            textScaleFactor: 1.0,
-                            textAlign: TextAlign.center,
-                            style: MmmTextStyles.bodyRegular(textColor: kDark5),
+                          SizedBox(
+                            width: 20,
                           ),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: () {
-                              BlocProvider.of<FamilyDetailsBloc>(context)
-                                  .add(ChangeNoOfSisters(1));
-                            },
-                            child: SvgPicture.asset(
-                              'images/plus.svg',
-                              height: 24,
-                              width: 24,
-                              color: kDark2,
+                          Expanded(
+                            child: Text(
+                              "$noOfSister",
+                              textScaleFactor: 1.0,
+                              textAlign: TextAlign.center,
+                              style:
+                                  MmmTextStyles.bodyRegular(textColor: kDark5),
                             ),
                           ),
-                        ),
-                      ],
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                BlocProvider.of<FamilyDetailsBloc>(context)
+                                    .add(ChangeNoOfSisters(1));
+                              },
+                              child: SvgPicture.asset(
+                                'images/plus.svg',
+                                height: 24,
+                                width: 24,
+                                color: kDark2,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )),
+                    SizedBox(
+                      width: 16,
                     ),
-                  )),
-                  SizedBox(
-                    width: 16,
-                  ),
-                  Expanded(
-                      child: Container(
-                    height: 44,
-                    padding: EdgeInsets.fromLTRB(12, 8, 12, 8),
-                    decoration: BoxDecoration(
-                        color: kLight4,
-                        border: Border.all(color: kBioSecondary, width: 1),
-                        borderRadius: BorderRadius.circular(8)),
-                    child: Row(
-                      children: [
-                        Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: () {
-                              BlocProvider.of<FamilyDetailsBloc>(context)
-                                  .add(ChangeNoOfSistersMarried(-1));
-                            },
-                            child: SvgPicture.asset(
-                              'images/minus.svg',
-                              height: 24,
-                              width: 24,
-                              color: kDark2,
+                    Expanded(
+                        child: Container(
+                      height: 44,
+                      padding: EdgeInsets.fromLTRB(12, 8, 12, 8),
+                      decoration: BoxDecoration(
+                          color: kLight4,
+                          border: Border.all(color: kBioSecondary, width: 1),
+                          borderRadius: BorderRadius.circular(8)),
+                      child: Row(
+                        children: [
+                          Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                BlocProvider.of<FamilyDetailsBloc>(context)
+                                    .add(ChangeNoOfSistersMarried(-1));
+                              },
+                              child: SvgPicture.asset(
+                                'images/minus.svg',
+                                height: 24,
+                                width: 24,
+                                color: kDark2,
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Expanded(
-                          child: Text(
-                            "$sistersMarried",
-                            textScaleFactor: 1.0,
-                            textAlign: TextAlign.center,
-                            style: MmmTextStyles.bodyRegular(textColor: kDark5),
+                          SizedBox(
+                            width: 20,
                           ),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: () {
-                              BlocProvider.of<FamilyDetailsBloc>(context)
-                                  .add(ChangeNoOfSistersMarried(1));
-                            },
-                            child: SvgPicture.asset(
-                              'images/plus.svg',
-                              height: 24,
-                              width: 24,
-                              color: kDark2,
+                          Expanded(
+                            child: Text(
+                              "$sistersMarried",
+                              textScaleFactor: 1.0,
+                              textAlign: TextAlign.center,
+                              style:
+                                  MmmTextStyles.bodyRegular(textColor: kDark5),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ))
-                ],
-              )
-            ],
-          ),
-        ],
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                BlocProvider.of<FamilyDetailsBloc>(context)
+                                    .add(ChangeNoOfSistersMarried(1));
+                              },
+                              child: SvgPicture.asset(
+                                'images/plus.svg',
+                                height: 24,
+                                width: 24,
+                                color: kDark2,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ))
+                  ],
+                )
+              ],
+            ),
+          ],
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+        ),
       ),
     );
   }
