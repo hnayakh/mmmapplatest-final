@@ -233,6 +233,9 @@ class ProfilePreferenceBloc
           this.smokingHabit,
           this.abilityStatus);
       if (result.status == AppConstants.SUCCESS) {
+        print('profilepreference');
+        print(minHeight);
+        print(maxHeight);
         this.userRepository.updateRegistrationStep(10);
         this.userRepository.useDetails!.registrationStep = 10;
         // await this.userRepository.saveUserDetails();

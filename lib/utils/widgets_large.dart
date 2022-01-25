@@ -239,79 +239,84 @@ class MmmWidgets {
     );
   }
 
-  static Widget profileCompletedWidget() {
-    return AlertDialog(
-      backgroundColor: Colors.transparent,
-      contentPadding: EdgeInsets.all(0),
-      content: Container(
-        //width: 328,
-        height: 393,
-        padding: kMargin12,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            color: Color(0xffFFFFFF),
-            boxShadow: [
-              MmmShadow.elevation3(shadowColor: kShadowColorForWhite)
-            ]),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: double.infinity,
-            ),
-            Container(
-              width: double.infinity,
-              height: 163,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.asset(
-                  'images/stackviewImage.jpg',
-                  fit: BoxFit.cover,
-                ),
+  static Widget profileCompletedWidget({Function()? action}) {
+    return Container(
+      height: double.infinity,
+      width: double.infinity,
+      color: Colors.white.withOpacity(0.5),
+      child: AlertDialog(
+        backgroundColor: Colors.transparent,
+        contentPadding: EdgeInsets.all(0),
+        content: Container(
+          //width: 328,
+          height: 393,
+          padding: kMargin12,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              color: Color(0xffFFFFFF),
+              boxShadow: [
+                MmmShadow.elevation3(shadowColor: kShadowColorForWhite)
+              ]),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: double.infinity,
               ),
-            ),
-            SizedBox(
-              height: 24,
-            ),
-            Container(
-              child: Text(
-                'Profile setup completed',
-                textAlign: TextAlign.center,
-                style: MmmTextStyles.heading4(textColor: kDark5),
-              ),
-            ),
-            SizedBox(
-              height: 24,
-            ),
-            Container(
-                height: 60,
-                child: Text(
-                  'your profile is created successfully on\n26-06-2021 with mmy12345 id',
-                  textAlign: TextAlign.center,
-                  style: MmmTextStyles.bodySmall(textColor: kDark5),
-                )),
-            Container(
-              height: 42,
-              child: Container(
-                decoration: MmmDecorations.primaryButtonDecoration(),
+              Container(
+                width: double.infinity,
+                height: 163,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () {},
-                      child: Center(
-                        child: Text(
-                          'Continue',
-                          style: MmmTextStyles.heading6(textColor: gray7),
+                  child: Image.asset(
+                    'images/stackviewImage.jpg',
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 24,
+              ),
+              Container(
+                child: Text(
+                  'Profile setup completed',
+                  textAlign: TextAlign.center,
+                  style: MmmTextStyles.heading4(textColor: kDark5),
+                ),
+              ),
+              SizedBox(
+                height: 24,
+              ),
+              Container(
+                  height: 60,
+                  child: Text(
+                    'your profile is created successfully on\n26-06-2021 with mmy12345 id',
+                    textAlign: TextAlign.center,
+                    style: MmmTextStyles.bodySmall(textColor: kDark5),
+                  )),
+              Container(
+                height: 42,
+                child: Container(
+                  decoration: MmmDecorations.primaryButtonDecoration(),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: action,
+                        child: Center(
+                          child: Text(
+                            'Continue',
+                            style: MmmTextStyles.heading6(textColor: gray7),
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

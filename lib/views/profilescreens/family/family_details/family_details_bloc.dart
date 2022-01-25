@@ -4,6 +4,8 @@ import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/views/profilescreens/family/family_details/family_details_events.dart';
 import 'package:makemymarry/views/profilescreens/family/family_details/family_details_state.dart';
+import 'package:makemymarry/views/profilescreens/family/globals.dart'
+    as globals;
 
 class FamilyDetailsBloc extends Bloc<FamilyDetailsEvent, FamilyDetailState> {
   final UserRepository userRepository;
@@ -61,10 +63,9 @@ class FamilyDetailsBloc extends Bloc<FamilyDetailsEvent, FamilyDetailState> {
     if (event is UpdateFamilyDetails) {
       // print('inoncomplete3');
       // // print(familyBackgroundSaved);
-      // if (familyBackgroundSaved == null) {
-      //   yield OnError("Please save Family Background null");
-      // } else
-      if (this.fatherOccupation == null &&
+      if (globals.familyBackgroundComplete == false) {
+        yield OnError("Please submit Family Background first");
+      } else if (this.fatherOccupation == null &&
           this.motherOccupation == null &&
           this.noOfBrothers == 0 &&
           this.noOfSister == 0 &&
@@ -75,7 +76,7 @@ class FamilyDetailsBloc extends Bloc<FamilyDetailsEvent, FamilyDetailState> {
             .storageService
             .saveUserDetails(this.userRepository.useDetails!);
         this.userRepository.updateRegistrationStep(8);
-
+        globals.familyBackgroundComplete = false;
         yield OnFamilyDetailsUpdated();
       } else if (this.fatherOccupation == null) {
         yield OnError("Select Father's Occupation");
@@ -98,6 +99,7 @@ class FamilyDetailsBloc extends Bloc<FamilyDetailsEvent, FamilyDetailState> {
               .storageService
               .saveUserDetails(this.userRepository.useDetails!);
           this.userRepository.updateRegistrationStep(8);
+          globals.familyBackgroundComplete = false;
           print('in familydetails');
           print(
               'dobinfamDetailsbloc=${this.userRepository.useDetails!.dateOfBirth}');

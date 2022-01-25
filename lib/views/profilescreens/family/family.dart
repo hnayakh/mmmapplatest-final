@@ -11,6 +11,7 @@ import 'package:makemymarry/views/profilescreens/bio/bio.dart';
 import 'family_background/family_background.dart';
 import 'family_background/family_background_bloc.dart';
 import 'family_details/family_details.dart';
+import 'globals.dart' as globals;
 
 class FamilyScreen extends StatefulWidget {
   final UserRepository userRepository;
@@ -99,8 +100,9 @@ class _FamilyScreenState extends State<FamilyScreen>
                     end: Alignment.centerRight),
               ),
             ),
-            IgnorePointer(
-                child: TabBar(
+            // IgnorePointer(
+            //     child:
+            TabBar(
               controller: tabController,
               onTap: (pos) {
                 setState(() {});
@@ -134,7 +136,8 @@ class _FamilyScreenState extends State<FamilyScreen>
                   ),
                 )
               ],
-            )),
+            ),
+            //),
             Expanded(
                 child: TabBarView(
               controller: tabController,
@@ -162,6 +165,7 @@ class _FamilyScreenState extends State<FamilyScreen>
   void onComplete() {
     if (this.tabController.index == 0) {
       setState(() {
+        globals.familyBackgroundComplete = true;
         this.tabController.index = 1;
       });
     } else {

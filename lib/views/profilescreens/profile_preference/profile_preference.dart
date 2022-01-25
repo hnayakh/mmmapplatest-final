@@ -271,6 +271,11 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
               state is OnLoading
                   ? MmmWidgets.buildLoader(context)
                   : Container(),
+              state is ProfilePreferenceComplete
+                  ? MmmWidgets.profileCompletedWidget(action: () {
+                      navigateToFetchProfile();
+                    })
+                  : Container(),
             ],
           );
         },
@@ -287,9 +292,10 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
           if (state is OnGotCasteList) {
             selectSubCast(state.caste);
           }
-          if (state is ProfilePreferenceComplete) {
-            navigateToFetchProfile();
-          }  if (state is OnError) {
+          // if (state is ProfilePreferenceComplete) {
+          //   navigateToFetchProfile();
+          // }
+          if (state is OnError) {
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text(state.message),
               backgroundColor: kError,
@@ -374,7 +380,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
               ),
               RangeSlider(
                 values: RangeValues(minHeight, maxHeight),
-                min: minHeight - 1.0,
+                min: 3.5,
                 max: 8.5,
                 inactiveColor: kGray,
                 activeColor: kPrimary,
@@ -543,6 +549,10 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
         .userRepository
         .masterData
         .listReligion;
+    SimpleMasterData doesntMatter = SimpleMasterData();
+    doesntMatter.id = 'Doesnot Matter';
+    doesntMatter.title = 'Doesnot Matter';
+    list.insert(0, doesntMatter);
     var result = await showModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,
@@ -551,6 +561,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
               list: list,
               religionModel: this.religion,
             ));
+    list.removeAt(0);
     if (result != null && result is List<SimpleMasterData>) {
       BlocProvider.of<ProfilePreferenceBloc>(context)
           .add(OnReligionSelected(result));
