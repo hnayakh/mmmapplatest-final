@@ -108,9 +108,24 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
         yield OnError("Accept terms and conditions.");
       } else {
         CountryModel countryModel = CountryModel();
-        countryModel.id = 1;
-        countryModel.name = 'India';
-        countryModel.shortName = 'IND';
+
+        countryModel.name = selectedCountry.name;
+        countryModel.shortName = selectedCountry.countryCode;
+
+        var result = await this.userRepository.getCountries();
+        if (result.status == AppConstants.SUCCESS) {
+          var countries = result.list;
+          for (var country in countries) {
+            if (country.name.toLowerCase().trim() ==
+                selectedCountry.name.toLowerCase().trim()) {
+              countryModel.id = country.id;
+            }
+          }
+        } else {
+          yield OnError(result.message);
+          return;
+        }
+
         SimpleMasterData religion = SimpleMasterData();
         religion.id = 'unknown';
         religion.title = 'UNK';
@@ -132,12 +147,9 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
           4.6,
           MaritalStatus.NeverMarried,
           AbilityStatus.Normal,
-          // 0,
-          // MaritalStatus.NeverMarried,
           countryModel,
           religion,
           motherTongue,
-          // AbilityStatus.Normal
         );
         this.userRepository.useDetails!.relationship = this.profileCreatedFor!;
         this.userRepository.useDetails!.password = this.password;
@@ -146,8 +158,9 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
             .storageService
             .saveUserDetails(this.userRepository.useDetails!);
         print('increatebloc,rel&mT');
-        print(this.userRepository.useDetails!.religion.id);
-        print(this.userRepository.useDetails!.motherTongue.id);
+
+        print(this.userRepository.useDetails!.countryModel.id);
+
         var otpResponse = await this.userRepository.sendOtp(
             this.selectedCountry.phoneCode, mobile, OtpType.Registration,
             email: this.email);

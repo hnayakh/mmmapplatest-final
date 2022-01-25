@@ -172,7 +172,7 @@ class CountryResponse {
 
 class CountryModel {
   late String name, shortName;
-  late int id;
+  late int id, phoneCode;
 
   CountryModel();
 

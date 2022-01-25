@@ -19,7 +19,9 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
   StateModel? myState, city;
   AnualIncome? anualIncome;
 
-  OccupationBloc(this.userRepository) : super(OccupationInitialState());
+  OccupationBloc(this.userRepository) : super(OccupationInitialState()) {
+    this.countryModel = userRepository.useDetails!.countryModel;
+  }
 
   @override
   Stream<OccupationState> mapEventToState(OccupationEvent event) async* {

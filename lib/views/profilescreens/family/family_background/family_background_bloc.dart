@@ -24,6 +24,7 @@ class FamilyBackgroundBloc
   FamilyBackgroundBloc(this.userRepository, this.selectedCountry,
       this.selectedState, this.selectedCity)
       : super(FamilyBackgroundInitialState()) {
+    this.countryModel = userRepository.useDetails!.countryModel;
     if (countryModel != null && myState != null && city != null) {
       canSelectStayingWithParent = false;
     } else {
