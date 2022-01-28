@@ -18,55 +18,22 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
   late bool acceptTerms = false;
   Relationship? profileCreatedFor = Relationship.Self;
 
-  CreateAccountBloc(this.userRepository)
-      : super(CreateAccountInitialState(
-            email: '',
-            password: '',
-            confirmPassword: '',
-            gender: Gender.Male,
-            selectedCountry: Country.parse("india"),
-            acceptTerms: false,
-            profileCreatedFor: Relationship.Self,
-            mobile: ''));
+  CreateAccountBloc(this.userRepository) : super(CreateAccountInitialState());
 
   @override
   Stream<CreateAccountState> mapEventToState(CreateAccountEvent event) async* {
     yield OnLoading();
     if (event is OnGenderSelected) {
       this.gender = event.gender;
-      yield CreateAccountInitialState(
-          email: this.email,
-          password: this.password,
-          confirmPassword: this.confirmPassword,
-          gender: this.gender,
-          selectedCountry: this.selectedCountry,
-          acceptTerms: this.acceptTerms,
-          profileCreatedFor: this.profileCreatedFor,
-          mobile: this.mobile);
+      yield CreateAccountInitialState();
     }
     if (event is OnCountrySelected) {
       this.selectedCountry = event.country;
-      yield CreateAccountInitialState(
-          email: this.email,
-          mobile: this.mobile,
-          password: this.password,
-          confirmPassword: this.confirmPassword,
-          gender: this.gender,
-          selectedCountry: this.selectedCountry,
-          acceptTerms: this.acceptTerms,
-          profileCreatedFor: this.profileCreatedFor);
+      yield CreateAccountInitialState();
     }
     if (event is ChangeAcceptTerms) {
       this.acceptTerms = event.isChecked;
-      yield CreateAccountInitialState(
-          email: this.email,
-          mobile: this.mobile,
-          password: this.password,
-          confirmPassword: this.confirmPassword,
-          gender: this.gender,
-          selectedCountry: this.selectedCountry,
-          acceptTerms: this.acceptTerms,
-          profileCreatedFor: this.profileCreatedFor);
+      yield CreateAccountInitialState();
     }
     if (event is OnProfileCreatedForSelected) {
       this.profileCreatedFor = event.pos;
@@ -76,15 +43,7 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
           event.pos == Relationship.Daughter) {
         this.gender = Gender.Female;
       }
-      yield CreateAccountInitialState(
-          email: this.email,
-          mobile: this.mobile,
-          password: this.password,
-          confirmPassword: this.confirmPassword,
-          gender: this.gender,
-          selectedCountry: this.selectedCountry,
-          acceptTerms: this.acceptTerms,
-          profileCreatedFor: this.profileCreatedFor);
+      yield CreateAccountInitialState();
     }
     if (event is OnSignupClicked) {
       this.email = event.email;
@@ -92,83 +51,100 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
       this.confirmPassword = event.confirmPassword;
       this.mobile = event.mobile;
 
-      if (profileCreatedFor == null) {
-        yield OnError("Select Profile Created For");
-      } else if (!RegExp(AppConstants.EMAILREGEXP).hasMatch(this.email)) {
-        yield OnError("Enter Valid Email");
-      } else if (gender == null) {
-        yield OnError("Select Gender");
-      } else if (mobile.length != 10) {
-        yield OnError("Enter Valid Mobile Number");
-      } else if (!RegExp(AppConstants.PASSWORDREGEXP).hasMatch(this.password)) {
-        yield OnError("Password must be alphanumeric and of size 8 or more.");
-      } else if (password != confirmPassword) {
-        yield OnError("Password doesn't match");
-      } else if (!this.acceptTerms) {
-        yield OnError("Accept terms and conditions.");
-      } else {
-        CountryModel countryModel = CountryModel();
+      var checkMail =
+          await this.userRepository.apiClient.checkEmail(this.email);
+      if (checkMail.status == AppConstants.SUCCESS) {
+        if (checkMail.message == 'Email already exist.') {
+          yield OnError(checkMail.message);
+        } else {
+          print('here1');
+          if (profileCreatedFor == null) {
+            yield OnError("Select Profile Created For");
+          } else if (!RegExp(AppConstants.EMAILREGEXP).hasMatch(this.email)) {
+            yield OnError("Enter Valid Email");
+          } else if (gender == null) {
+            yield OnError("Select Gender");
+          } else if (mobile.length != 10) {
+            yield OnError("Enter Valid Mobile Number");
+          } else if (!RegExp(AppConstants.PASSWORDREGEXP)
+              .hasMatch(this.password)) {
+            yield OnError(
+                "Password must be alphanumeric and of size 8 or more.");
+          } else if (password != confirmPassword) {
+            yield OnError("Password doesn't match");
+          } else if (!this.acceptTerms) {
+            yield OnError("Accept terms and conditions.");
+          } else {
+            // if (checkMail.status == AppConstants.FAILURE) {
+            //   yield OnError('Oops something went wrong');
 
-        countryModel.name = selectedCountry.name;
-        countryModel.shortName = selectedCountry.countryCode;
+            // }
+            CountryModel countryModel = CountryModel();
 
-        var result = await this.userRepository.getCountries();
-        if (result.status == AppConstants.SUCCESS) {
-          var countries = result.list;
-          for (var country in countries) {
-            if (country.name.toLowerCase().trim() ==
-                selectedCountry.name.toLowerCase().trim()) {
-              countryModel.id = country.id;
+            countryModel.name = selectedCountry.name;
+            countryModel.shortName = selectedCountry.countryCode;
+
+            var result = await this.userRepository.getCountries();
+            if (result.status == AppConstants.SUCCESS) {
+              var countries = result.list;
+              for (var country in countries) {
+                if (country.name.toLowerCase().trim() ==
+                    selectedCountry.name.toLowerCase().trim()) {
+                  countryModel.id = country.id;
+                }
+              }
+            } else {
+              yield OnError(result.message);
+            }
+
+            SimpleMasterData religion = SimpleMasterData();
+            religion.id = 'unknown';
+            religion.title = 'UNK';
+            SimpleMasterData motherTongue = SimpleMasterData();
+            motherTongue.id = 'unknown';
+            motherTongue.title = 'UNK';
+            this.userRepository.useDetails = UserDetails.fromStorage(
+              "",
+              mobile,
+              selectedCountry.phoneCode,
+              email,
+              this.gender!.index,
+              true,
+              0,
+              0,
+              0,
+              "",
+              Relationship.Self,
+              4.6,
+              MaritalStatus.NeverMarried,
+              AbilityStatus.Normal,
+              countryModel,
+              religion,
+              motherTongue,
+            );
+            this.userRepository.useDetails!.relationship =
+                this.profileCreatedFor!;
+            this.userRepository.useDetails!.password = this.password;
+            await this
+                .userRepository
+                .storageService
+                .saveUserDetails(this.userRepository.useDetails!);
+            print('increatebloc,rel&mT');
+
+            print(this.userRepository.useDetails!.countryModel.id);
+
+            var otpResponse = await this.userRepository.sendOtp(
+                this.selectedCountry.phoneCode, mobile, OtpType.Registration,
+                email: this.email);
+            if (otpResponse.status == AppConstants.SUCCESS) {
+              yield OnOtpGenerated(this.selectedCountry);
+            } else {
+              yield OnError(otpResponse.message);
             }
           }
-        } else {
-          yield OnError(result.message);
-          return;
         }
-
-        SimpleMasterData religion = SimpleMasterData();
-        religion.id = 'unknown';
-        religion.title = 'UNK';
-        SimpleMasterData motherTongue = SimpleMasterData();
-        motherTongue.id = 'unknown';
-        motherTongue.title = 'UNK';
-        this.userRepository.useDetails = UserDetails.fromStorage(
-          "",
-          mobile,
-          selectedCountry.phoneCode,
-          email,
-          this.gender!.index,
-          true,
-          0,
-          0,
-          0,
-          "",
-          Relationship.Self,
-          4.6,
-          MaritalStatus.NeverMarried,
-          AbilityStatus.Normal,
-          countryModel,
-          religion,
-          motherTongue,
-        );
-        this.userRepository.useDetails!.relationship = this.profileCreatedFor!;
-        this.userRepository.useDetails!.password = this.password;
-        await this
-            .userRepository
-            .storageService
-            .saveUserDetails(this.userRepository.useDetails!);
-        print('increatebloc,rel&mT');
-
-        print(this.userRepository.useDetails!.countryModel.id);
-
-        var otpResponse = await this.userRepository.sendOtp(
-            this.selectedCountry.phoneCode, mobile, OtpType.Registration,
-            email: this.email);
-        if (otpResponse.status == AppConstants.SUCCESS) {
-          yield OnOtpGenerated(this.selectedCountry);
-        } else {
-          yield OnError(otpResponse.message);
-        }
+      } else {
+        yield OnError('Oops something went wrong');
       }
     }
   }

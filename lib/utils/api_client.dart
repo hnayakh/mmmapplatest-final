@@ -233,17 +233,37 @@ class ApiClient {
         "type": login.index,
         "email": "",
       });
-      // if (response.statusCode == 200 || response.statusCode == 201) {
-      return SendOtpResponse.fromJson(response.data);
-      // } else {
-      //   return SendOtpResponse.fromError("Error Occurred. Please try againa.");
-      // }
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return SendOtpResponse.fromJson(response.data);
+      } else {
+        return SendOtpResponse.fromError("Error Occurred. Please try againa.");
+      }
     } catch (error) {
       if (error is DioError) {
         print(error.message);
         return SendOtpResponse.fromError(error.response!.data["message"]);
       }
       return SendOtpResponse.fromError("Error Occurred. Please try againa.");
+    }
+  }
+
+  Future<CheckEmailResponse> checkEmail(String email) async {
+    try {
+      Response response = await this
+          .dio
+          .get(AppConstants.ENDPOINT + "users/validate/email?email=$email");
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return CheckEmailResponse.fromJson(response.data);
+      } else {
+        return CheckEmailResponse.fromError(
+            "Error Occurred. Please try againa.");
+      }
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+        return CheckEmailResponse.fromError(error.response!.data["message"]);
+      }
+      return CheckEmailResponse.fromError("Error Occurred. Please try againa.");
     }
   }
 

@@ -4,23 +4,7 @@ import 'package:makemymarry/utils/mmm_enums.dart';
 
 class CreateAccountState extends BaseEventState {}
 
-class CreateAccountInitialState extends CreateAccountState {
-  String? email, password, confirmPassword, mobile;
-  Gender? gender;
-  Country? selectedCountry;
-  bool? acceptTerms;
-  Relationship? profileCreatedFor;
-  CreateAccountInitialState({
-    required this.email,
-    required this.password,
-    required this.confirmPassword,
-    required this.mobile,
-    required this.gender,
-    required this.selectedCountry,
-    required this.acceptTerms,
-    required this.profileCreatedFor,
-  });
-}
+class CreateAccountInitialState extends CreateAccountState {}
 
 class OnLoading extends CreateAccountState {}
 

@@ -143,6 +143,20 @@ class SendOtpResponse {
   }
 }
 
+class CheckEmailResponse {
+  late String message, status;
+
+  CheckEmailResponse.fromJson(json) {
+    this.status = json["type"];
+    this.message = json["message"];
+  }
+
+  CheckEmailResponse.fromError(String error) {
+    this.message = error;
+    this.status = AppConstants.FAILURE;
+  }
+}
+
 class PreSignUrlResponse {
   late String status, message;
   String? imageUrl;

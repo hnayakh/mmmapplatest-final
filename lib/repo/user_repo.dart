@@ -78,6 +78,10 @@ class UserRepository {
     return this.apiClient.sendOtp(dialCode, mobile, login);
   }
 
+  Future<CheckEmailResponse> checkEmail(String email) async {
+    return this.apiClient.checkEmail(email);
+  }
+
   Future<SendOtpResponse> sendOtpEmail(String email) async {
     return this.apiClient.sendOtpEmail(email);
   }

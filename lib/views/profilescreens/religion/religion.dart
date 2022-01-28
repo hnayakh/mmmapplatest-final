@@ -173,7 +173,7 @@ class ReligionScreenState extends State<ReligionScreen> {
                             height: 24,
                           ),
                           MmmButtons.categoryButtons(
-                              'Gothra',
+                              'Gothra (optional)',
                               this.gothra != null
                                   ? gothra
                                   : 'Select your gothra',
@@ -304,11 +304,18 @@ class ReligionScreenState extends State<ReligionScreen> {
         .userRepository
         .masterData
         .listReligion;
+    if (religion != null) {
+      list.remove(religion);
+      list.insert(0, religion!);
+    }
     var result = await showModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
-        builder: (context) => ReligionBottomSheet(list: list));
+        builder: (context) => ReligionBottomSheet(
+              list: list,
+              selected: religion,
+            ));
     if (result != null && result is SimpleMasterData) {
       BlocProvider.of<ReligionBloc>(context).add(OnReligionSelected(result));
     }
