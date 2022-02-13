@@ -142,11 +142,20 @@ enum InterestFilter {
   Social
 }
 enum AnualIncome {
+  NoIncome,
   LessThanOneLacs,
-  OneToThreeLacs,
-  ThreeToFiveLacs,
-  FiveToSevenLacs,
-  SevenToTenLacs,
-  TenToTwelveLacs,
-  MoreThanTwelveLacs
+  OneToTwoLacs,
+  TwoToThreeLacs,
+  ThreeToFourLacs,
+  FourToFiveLacs,
+  FiveToSevenPointFiveLacs,
+  SevenPointFiveToTenLacs,
+  TenToFifteenLacs,
+  FifteenToTwentyLacs,
+  TwentyToTwentyFivelacs,
+  TwentyFiveToThirtyFiveLacs,
+  ThirtyFiveToFiftyLacs,
+  FiftyToSeventyFiveLacs,
+  SeventyFivelacToOneCrore,
+  MoreThanOneCrore
 }

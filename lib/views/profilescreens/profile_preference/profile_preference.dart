@@ -69,12 +69,33 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   late List<AnualIncome> annualIncome;
   String titleRedOcc = '';
   TextEditingController annIncomeController = TextEditingController();
-  EatingHabit? eatingHabit;
-  SmokingHabit? smokingHabit;
-  DrinkingHabit? drinkingHabit;
+  late List<EatingHabit> eatingHabit;
+  late List<SmokingHabit> smokingHabit;
+  late List<DrinkingHabit> drinkingHabit;
   late AbilityStatus abilityStatus;
+  late Gender gender;
+  List<String> incomes = [
+    'No Income',
+    '1 lakh',
+    '2 lakh',
+    '3 lakh',
+    '4 lakh',
+    '5 lakh',
+    '7.5 lakh',
+    '10 lakh',
+    '15 lakh',
+    '20 lakh',
+    '25 lakh',
+    '35 lakh',
+    '50 lakh',
+    '75 lakh',
+    '1 crore',
+    '1 crore and above'
+  ];
+  List<String> currentIncomes = [];
 
   void initData(BuildContext context) {
+    this.gender = BlocProvider.of<ProfilePreferenceBloc>(context).gender;
     this.minAge = BlocProvider.of<ProfilePreferenceBloc>(context).minAge;
     this.minSliderAge =
         BlocProvider.of<ProfilePreferenceBloc>(context).minSliderAge;
@@ -326,26 +347,62 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                ' ${minAge.round()} Yrs <---> ${maxAge.round()} Yrs',
-                style: MmmTextStyles.bodyRegular(textColor: kDark5),
+              // Text(
+              //   ' ${minAge.round()} Yrs <---> ${maxAge.round()} Yrs',
+              //   style: MmmTextStyles.bodyRegular(textColor: kDark5),
+              // ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    height: MediaQuery.of(context).size.width * 0.1,
+                    width: MediaQuery.of(context).size.width * 0.1,
+                    decoration: BoxDecoration(
+                        color: kLight4, borderRadius: BorderRadius.circular(8)),
+                    child: FittedBox(
+                      child: Text(
+                        '${minAge.round()}',
+                        style: MmmTextStyles.bodyRegular(textColor: kDark5),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    height: MediaQuery.of(context).size.width * 0.1,
+                    width: MediaQuery.of(context).size.width * 0.1,
+                    decoration: BoxDecoration(
+                        color: kLight4, borderRadius: BorderRadius.circular(8)),
+                    child: FittedBox(
+                      child: Text(
+                        '${maxAge.round()}',
+                        style: MmmTextStyles.bodyRegular(textColor: kDark5),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              RangeSlider(
-                values: RangeValues(minAge, maxAge),
-                min: minSliderAge,
-                max: 70,
-                inactiveColor: kGray,
-                activeColor: kPrimary,
-                // divisions: 30,
-                labels: RangeLabels(
-                  minAge.round().toString(),
-                  maxAge.round().toString(),
+              SliderTheme(
+                data: SliderThemeData(
+                    showValueIndicator: ShowValueIndicator.always,
+                    valueIndicatorColor: kPrimary.withOpacity(0.7)),
+                child: RangeSlider(
+                  values: RangeValues(minAge, maxAge),
+                  min: this.gender == Gender.Female ? 18 : 21,
+                  max: 70,
+                  inactiveColor: kGray,
+                  activeColor: kPrimary,
+                  // divisions: 30,
+                  labels: RangeLabels(
+                    minAge.round().toString(),
+                    maxAge.round().toString(),
+                  ),
+                  onChanged: (RangeValues values) {
+                    print(values.end);
+                    BlocProvider.of<ProfilePreferenceBloc>(context)
+                        .add(OnAgeRangeChanged(values.start, values.end));
+                  },
                 ),
-                onChanged: (RangeValues values) {
-                  print(values.end);
-                  BlocProvider.of<ProfilePreferenceBloc>(context)
-                      .add(OnAgeRangeChanged(values.start, values.end));
-                },
               ),
             ],
           ),
@@ -374,26 +431,62 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                ' ${minHeight.toStringAsFixed(1)}"" <---> ${maxHeight.toStringAsFixed(1)}""',
-                style: MmmTextStyles.bodyRegular(textColor: kDark5),
+              // Text(
+              //   ' ${minHeight.toStringAsFixed(1)}"" <---> ${maxHeight.toStringAsFixed(1)}""',
+              //   style: MmmTextStyles.bodyRegular(textColor: kDark5),
+              // ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    height: MediaQuery.of(context).size.width * 0.1,
+                    width: MediaQuery.of(context).size.width * 0.1,
+                    decoration: BoxDecoration(
+                        color: kLight4, borderRadius: BorderRadius.circular(8)),
+                    child: FittedBox(
+                      child: Text(
+                        '${minHeight.toStringAsFixed(1)}',
+                        style: MmmTextStyles.bodyRegular(textColor: kDark5),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    height: MediaQuery.of(context).size.width * 0.1,
+                    width: MediaQuery.of(context).size.width * 0.1,
+                    decoration: BoxDecoration(
+                        color: kLight4, borderRadius: BorderRadius.circular(8)),
+                    child: FittedBox(
+                      child: Text(
+                        '${maxHeight.toStringAsFixed(1)}',
+                        style: MmmTextStyles.bodyRegular(textColor: kDark5),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              RangeSlider(
-                values: RangeValues(minHeight, maxHeight),
-                min: 3.5,
-                max: 8.5,
-                inactiveColor: kGray,
-                activeColor: kPrimary,
-                // divisions: 30,
-                labels: RangeLabels(
-                  minHeight.toStringAsFixed(1),
-                  maxHeight.toStringAsFixed(1),
+              SliderTheme(
+                data: SliderThemeData(
+                    showValueIndicator: ShowValueIndicator.always,
+                    valueIndicatorColor: kPrimary.withOpacity(0.7)),
+                child: RangeSlider(
+                  values: RangeValues(minHeight, maxHeight),
+                  min: 4,
+                  max: 7,
+                  inactiveColor: kGray,
+                  activeColor: kPrimary,
+                  // divisions: 30,
+                  labels: RangeLabels(
+                    minHeight.toStringAsFixed(1),
+                    maxHeight.toStringAsFixed(1),
+                  ),
+                  onChanged: (RangeValues values) {
+                    print(values.end);
+                    BlocProvider.of<ProfilePreferenceBloc>(context)
+                        .add(OnHeightRangeChanged(values.start, values.end));
+                  },
                 ),
-                onChanged: (RangeValues values) {
-                  print(values.end);
-                  BlocProvider.of<ProfilePreferenceBloc>(context)
-                      .add(OnHeightRangeChanged(values.start, values.end));
-                },
               ),
             ],
           ),
@@ -539,9 +632,14 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
             ? getReligionText(this.religion)
             : 'Does not Matter',
         'Select your religion',
-        'images/rightArrow.svg', action: () {
-      selectReligion(context);
-    });
+        'images/rightArrow.svg',
+        action: () {
+          selectReligion(context);
+        },
+        showCancel: this.religion.length > 0,
+        cancelAction: () {
+          BlocProvider.of<ProfilePreferenceBloc>(context).add(RemoveReligion());
+        });
   }
 
   void selectReligion(BuildContext context) async {
@@ -610,11 +708,17 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
         'Mother Tongue',
         motherTongue.length > 0
             ? getReligionText(motherTongue)
-            : 'Select your mother tongue',
+            : 'Does not matter',
         'Select your mother tongue',
-        'images/rightArrow.svg', action: () {
-      selectMotherToungue(context);
-    });
+        'images/rightArrow.svg',
+        action: () {
+          selectMotherToungue(context);
+        },
+        showCancel: this.motherTongue.length > 0,
+        cancelAction: () {
+          BlocProvider.of<ProfilePreferenceBloc>(context)
+              .add(RemoveMotherTongue());
+        });
   }
 
   void selectMotherToungue(BuildContext context) async {
@@ -643,9 +747,15 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
             ? getOccupationText(occupation)
             : 'Does not matter',
         'Select your occupation',
-        'images/rightArrow.svg', action: () {
-      selectOccupation(context);
-    }, showCancel: occupation.length > 0, cancelAction: () {});
+        'images/rightArrow.svg',
+        action: () {
+          selectOccupation(context);
+        },
+        showCancel: occupation.length > 0,
+        cancelAction: () {
+          BlocProvider.of<ProfilePreferenceBloc>(context)
+              .add(RemoveOccupation());
+        });
   }
 
   Widget buildEducation() {
@@ -653,9 +763,15 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
         'Highest Education',
         education.length > 0 ? getEducationText(education) : 'Does not matter',
         'Select your highest education',
-        'images/rightArrow.svg', action: () {
-      selectEducation(context);
-    });
+        'images/rightArrow.svg',
+        action: () {
+          selectEducation(context);
+        },
+        showCancel: education.length > 0,
+        cancelAction: () {
+          BlocProvider.of<ProfilePreferenceBloc>(context)
+              .add(RemoveEducation());
+        });
   }
 
   void selectOccupation(BuildContext context) async {
@@ -702,6 +818,17 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
     for (var i = 0; i < maritalStatus.length; i++) {
       value = value + describeEnum(maritalStatus[i]);
       if (i < maritalStatus.length - 1) {
+        value = value + ", ";
+      }
+    }
+    return value;
+  }
+
+  String getStringIncome(List<String> incomeList) {
+    String value = "";
+    for (var i = 0; i < incomeList.length; i++) {
+      value = value + incomeList[i];
+      if (i < incomeList.length - 1) {
         value = value + ", ";
       }
     }
@@ -767,7 +894,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
     return MmmButtons.categoryButtons(
         'Annual Income',
         this.annualIncome.length > 0
-            ? getStringFrom(annualIncome)
+            ? getStringIncome(currentIncomes)
             : 'Does not matter',
         'Select Annual Income',
         'images/rightArrow.svg',
@@ -776,6 +903,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
         },
         showCancel: this.annualIncome.length > 0,
         cancelAction: () {
+          this.currentIncomes = [];
           BlocProvider.of<ProfilePreferenceBloc>(context).add(RemoveIncome());
         });
   }
@@ -791,21 +919,24 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
     if (result != null && result is List<AnualIncome>) {
       BlocProvider.of<ProfilePreferenceBloc>(context)
           .add(IncomeSelected(result));
+      for (int i = 0; i < result.length; i++) {
+        currentIncomes.add(incomes[result[i].index]);
+      }
     }
   }
 
   Widget buildDietryHabiits() {
     return MmmButtons.categoryButtons(
         'Dietary Habit',
-        this.eatingHabit != null
-            ? describeEnum(eatingHabit!)
+        this.eatingHabit.length > 0
+            ? getStringFrom(eatingHabit)
             : 'Does not matter',
-        'Dietary Habit',
+        'Select Dietary Habit',
         'images/rightArrow.svg',
         action: () {
           selectEatingHabit();
         },
-        showCancel: this.eatingHabit != null,
+        showCancel: this.eatingHabit.length > 0,
         cancelAction: () {
           BlocProvider.of<ProfilePreferenceBloc>(context).add(RemoveEating());
         });
@@ -817,9 +948,9 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
         builder: (context) => EatingPrefs(
-              eatingHabit: eatingHabit,
+              list: this.eatingHabit,
             ));
-    if (result != null && result is EatingHabit) {
+    if (result != null && result is List<EatingHabit>) {
       BlocProvider.of<ProfilePreferenceBloc>(context)
           .add(DietrySelected(result));
     }
@@ -828,15 +959,15 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   Widget buildDrinkingHabits() {
     return MmmButtons.categoryButtons(
         'Drinking Habit',
-        this.drinkingHabit != null
-            ? describeEnum(drinkingHabit!)
+        this.drinkingHabit.length > 0
+            ? getStringFrom(drinkingHabit)
             : 'Does not matter',
-        'Drinking Habit',
+        'Select Drinking Habit',
         'images/rightArrow.svg',
         action: () {
           selectDrinkingHabit();
         },
-        showCancel: this.drinkingHabit != null,
+        showCancel: this.drinkingHabit.length > 0,
         cancelAction: () {
           BlocProvider.of<ProfilePreferenceBloc>(context).add(RemoveDrinking());
         });
@@ -848,9 +979,9 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
         builder: (context) => DrinkingPrefs(
-              eatingHabit: drinkingHabit,
+              list: this.drinkingHabit,
             ));
-    if (result != null && result is DrinkingHabit) {
+    if (result != null && result is List<DrinkingHabit>) {
       BlocProvider.of<ProfilePreferenceBloc>(context)
           .add(DrinkingSelected(result));
     }
@@ -859,15 +990,15 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   Widget buildSmokingHabit() {
     return MmmButtons.categoryButtons(
         'Smoking Habit',
-        this.smokingHabit != null
-            ? describeEnum(smokingHabit!)
+        this.smokingHabit.length > 0
+            ? getStringFrom(smokingHabit)
             : 'Does not matter',
-        'Smoking Habit',
+        'Select Smoking Habit',
         'images/rightArrow.svg',
         action: () {
           selectSmokingHabit();
         },
-        showCancel: this.smokingHabit != null,
+        showCancel: this.smokingHabit.length > 0,
         cancelAction: () {
           BlocProvider.of<ProfilePreferenceBloc>(context).add(RemoveSmoking());
         });
@@ -879,9 +1010,9 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
         builder: (context) => SmokingPrefs(
-              eatingHabit: smokingHabit,
+              list: this.smokingHabit,
             ));
-    if (result != null && result is SmokingHabit) {
+    if (result != null && result is List<SmokingHabit>) {
       BlocProvider.of<ProfilePreferenceBloc>(context)
           .add(SmokingSelected(result));
     }

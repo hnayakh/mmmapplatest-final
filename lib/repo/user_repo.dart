@@ -197,9 +197,9 @@ class UserRepository {
       List<String?> occupation,
       List<Education> education,
       List<AnualIncome> annualIncome,
-      EatingHabit? eatingHabit,
-      DrinkingHabit? drinkingHabit,
-      SmokingHabit? smokingHabit,
+      List<EatingHabit> eatingHabit,
+      List<DrinkingHabit> drinkingHabit,
+      List<SmokingHabit> smokingHabit,
       AbilityStatus abilityStatus) async {
     return this.apiClient.completePreference(
         maxHeight,

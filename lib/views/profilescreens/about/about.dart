@@ -257,7 +257,7 @@ class _AboutScreenState extends State<AboutScreen> {
               MmmButtons.categoryButtons(
                   "Height",
                   this.heightStatus != null
-                      ? '${AppHelper.getHeights()[heightStatus!].toStringAsFixed(1)} ft'
+                      ? getHeight(heightStatus)
                       : 'Select your height',
                   'Select your height',
                   'images/rightArrow.svg', action: () {
@@ -334,6 +334,20 @@ class _AboutScreenState extends State<AboutScreen> {
         )
       ],
     );
+  }
+
+  String getHeight(index) {
+    double heightCm = AppHelper.getHeights()[index] * 30.48;
+    heightCm.round();
+    print(heightCm);
+    String heightText =
+        '${AppHelper.getHeights()[index].toStringAsFixed(1)} ft';
+    return (heightText[0] +
+        "' " +
+        heightText[2] +
+        '"' +
+        " (${heightCm.round()}" +
+        " cm)");
   }
 
   Future showDate(BuildContext context) async {

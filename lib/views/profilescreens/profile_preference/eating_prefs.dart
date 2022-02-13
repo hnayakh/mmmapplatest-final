@@ -9,22 +9,25 @@ import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 
 class EatingPrefs extends StatefulWidget {
-  final EatingHabit? eatingHabit;
+  final List<EatingHabit> list;
 
-  const EatingPrefs({Key? key, this.eatingHabit}) : super(key: key);
+  const EatingPrefs({Key? key, required this.list}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return EatingPrefsScreen();
+    return EatingPrefsScreen(list);
   }
 }
 
 class EatingPrefsScreen extends State<EatingPrefs> {
+  List<EatingHabit> list;
+  EatingPrefsScreen(this.list);
+
   @override
   Widget build(BuildContext context) {
     return Container(
         padding: kMargin16,
-        height: 320,
+        height: MediaQuery.of(context).size.height * 0.65,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -57,12 +60,24 @@ class EatingPrefsScreen extends State<EatingPrefs> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(describeEnum(EatingHabit.values[index]),
-                              style: MmmTextStyles.bodyMediumSmall(
-                                  textColor: EatingHabit.values[index] ==
-                                          widget.eatingHabit
-                                      ? kPrimary
-                                      : kModalPrimary)),
+                          Row(
+                            children: [
+                              Text(describeEnum(EatingHabit.values[index]),
+                                  style: MmmTextStyles.bodyMediumSmall(
+                                      textColor:
+                                          isSelected(EatingHabit.values[index])
+                                              ? kPrimary
+                                              : kModalPrimary)),
+                              isSelected(EatingHabit.values[index])
+                                  ? Icon(
+                                      Icons.check,
+                                      color: kPrimary,
+                                    )
+                                  : Container(
+                                      height: 24,
+                                    ),
+                            ],
+                          ),
                           SizedBox(
                             height: 8,
                           ),
@@ -73,7 +88,9 @@ class EatingPrefsScreen extends State<EatingPrefs> {
                       ),
                     ),
                     onTap: () {
-                      Navigator.of(context).pop(EatingHabit.values[index]);
+                      setState(() {
+                        setSelected(EatingHabit.values[index]);
+                      });
                     },
                   );
                 },
@@ -84,12 +101,40 @@ class EatingPrefsScreen extends State<EatingPrefs> {
                 //   );
                 // },
               ),
-            )
+            ),
+            MmmButtons.primaryButton("Done", () {
+              Navigator.of(context).pop(this.list);
+            })
           ],
         ),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
         ));
+  }
+
+  bool isSelected(EatingHabit value) {
+    for (var item in list) {
+      if (item == value) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  void setSelected(EatingHabit value) {
+    bool isFound = false;
+    int index = 0;
+    for (var item in list) {
+      if (item == value) {
+        isFound = true;
+        index = list.indexOf(item);
+      }
+    }
+    if (!isFound) {
+      this.list.add(value);
+    } else {
+      this.list.removeAt(index);
+    }
   }
 }

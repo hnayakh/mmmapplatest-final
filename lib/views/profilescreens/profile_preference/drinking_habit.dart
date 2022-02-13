@@ -9,22 +9,25 @@ import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 
 class DrinkingPrefs extends StatefulWidget {
-  final DrinkingHabit? eatingHabit;
+  final List<DrinkingHabit> list;
 
-  const DrinkingPrefs({Key? key, this.eatingHabit}) : super(key: key);
+  const DrinkingPrefs({Key? key, required this.list}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return DrinkingPrefsScreen();
+    return DrinkingPrefsScreen(list);
   }
 }
 
 class DrinkingPrefsScreen extends State<DrinkingPrefs> {
+  List<DrinkingHabit> list;
+  DrinkingPrefsScreen(this.list);
+
   @override
   Widget build(BuildContext context) {
     return Container(
         padding: kMargin16,
-        height: 320,
+        height: MediaQuery.of(context).size.height * 0.65,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -57,12 +60,24 @@ class DrinkingPrefsScreen extends State<DrinkingPrefs> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(describeEnum(DrinkingHabit.values[index]),
-                              style: MmmTextStyles.bodyMediumSmall(
-                                  textColor: DrinkingHabit.values[index] ==
-                                      widget.eatingHabit
-                                      ? kPrimary
-                                      : kModalPrimary)),
+                          Row(
+                            children: [
+                              Text(describeEnum(DrinkingHabit.values[index]),
+                                  style: MmmTextStyles.bodyMediumSmall(
+                                      textColor: isSelected(
+                                              DrinkingHabit.values[index])
+                                          ? kPrimary
+                                          : kModalPrimary)),
+                              isSelected(DrinkingHabit.values[index])
+                                  ? Icon(
+                                      Icons.check,
+                                      color: kPrimary,
+                                    )
+                                  : Container(
+                                      height: 24,
+                                    ),
+                            ],
+                          ),
                           SizedBox(
                             height: 8,
                           ),
@@ -73,7 +88,9 @@ class DrinkingPrefsScreen extends State<DrinkingPrefs> {
                       ),
                     ),
                     onTap: () {
-                      Navigator.of(context).pop(DrinkingHabit.values[index]);
+                      setState(() {
+                        setSelected(DrinkingHabit.values[index]);
+                      });
                     },
                   );
                 },
@@ -84,12 +101,40 @@ class DrinkingPrefsScreen extends State<DrinkingPrefs> {
                 //   );
                 // },
               ),
-            )
+            ),
+            MmmButtons.primaryButton("Done", () {
+              Navigator.of(context).pop(this.list);
+            })
           ],
         ),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
         ));
+  }
+
+  bool isSelected(DrinkingHabit value) {
+    for (var item in list) {
+      if (item == value) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  void setSelected(DrinkingHabit value) {
+    bool isFound = false;
+    int index = 0;
+    for (var item in list) {
+      if (item == value) {
+        isFound = true;
+        index = list.indexOf(item);
+      }
+    }
+    if (!isFound) {
+      this.list.add(value);
+    } else {
+      this.list.removeAt(index);
+    }
   }
 }

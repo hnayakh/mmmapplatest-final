@@ -17,7 +17,7 @@ class HeightStatusBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         padding: kMargin16,
-        height: 440,
+        height: MediaQuery.of(context).size.height * 0.65,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -50,8 +50,7 @@ class HeightStatusBottomSheet extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(
-                              '${AppHelper.getHeights()[index].toStringAsFixed(1)} ft',
+                          Text(getHeight(index),
                               style: MmmTextStyles.bodyMediumSmall(
                                   textColor: index == this.selectedHeightStatus
                                       ? kPrimary
@@ -84,5 +83,19 @@ class HeightStatusBottomSheet extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
         ));
+  }
+
+  String getHeight(index) {
+    double heightCm = AppHelper.getHeights()[index] * 30.48;
+    heightCm.round();
+    print(heightCm);
+    String heightText =
+        '${AppHelper.getHeights()[index].toStringAsFixed(1)} ft';
+    return (heightText[0] +
+        "' " +
+        heightText[2] +
+        '"' +
+        " (${heightCm.round()}" +
+        " cm)");
   }
 }

@@ -27,14 +27,16 @@ class ProfilePreferenceBloc
   List<Education> education = [];
 
   List<AnualIncome> annualIncome = [];
-  EatingHabit? eatingHabit;
-  SmokingHabit? smokingHabit;
-  DrinkingHabit? drinkingHabit;
+  late List<EatingHabit> eatingHabit = [];
+  late List<SmokingHabit> smokingHabit = [];
+  late List<DrinkingHabit> drinkingHabit = [];
   late AbilityStatus abilityStatus;
+  late Gender gender;
 
   ProfilePreferenceBloc(this.userRepository)
       : super(ProfilePreferenceInitialState()) {
     print('inprofileprefDOB=${this.userRepository.useDetails!.dateOfBirth}');
+    this.gender = Gender.values[this.userRepository.useDetails!.gender];
     var myAge = DateTime.now()
             .difference(DateFormat(AppConstants.SERVERDATEFORMAT)
                 .parse(this.userRepository.useDetails!.dateOfBirth))
@@ -43,10 +45,14 @@ class ProfilePreferenceBloc
     print(myAge);
 
     if (this.userRepository.useDetails!.gender == Gender.Male.index) {
-      this.minAge = myAge - 4;
-      this.maxAge = myAge;
-      this.minHeight = this.userRepository.useDetails!.height - 0.6;
-      this.maxHeight = this.userRepository.useDetails!.height;
+      // this.minAge = myAge - 4;
+      // this.maxAge = myAge;
+      // this.minHeight = this.userRepository.useDetails!.height - 0.6;
+      // this.maxHeight = this.userRepository.useDetails!.height;
+      this.minAge = 35;
+      this.maxAge = 49;
+      this.minHeight = 5.0;
+      this.maxHeight = 6.0;
       this.minSliderAge = 18;
       if (minAge < minSliderAge) {
         this.minAge = 18;
@@ -171,8 +177,20 @@ class ProfilePreferenceBloc
       this.education = event.title;
       yield ProfilePreferenceInitialState();
     }
+    if (event is RemoveEducation) {
+      this.education = [];
+      yield ProfilePreferenceInitialState();
+    }
+    if (event is RemoveReligion) {
+      this.religion = [];
+      yield ProfilePreferenceInitialState();
+    }
     if (event is RemoveOccupation) {
       this.occupation = [];
+      yield ProfilePreferenceInitialState();
+    }
+    if (event is RemoveMotherTongue) {
+      this.motherTongue = [];
       yield ProfilePreferenceInitialState();
     }
     if (event is IncomeSelected) {
@@ -188,7 +206,7 @@ class ProfilePreferenceBloc
       yield ProfilePreferenceInitialState();
     }
     if (event is RemoveDrinking) {
-      this.drinkingHabit = null;
+      this.drinkingHabit = [];
       yield ProfilePreferenceInitialState();
     }
     if (event is DietrySelected) {
@@ -196,7 +214,7 @@ class ProfilePreferenceBloc
       yield ProfilePreferenceInitialState();
     }
     if (event is RemoveEating) {
-      this.eatingHabit = null;
+      this.eatingHabit = [];
       yield ProfilePreferenceInitialState();
     }
     if (event is SmokingSelected) {
@@ -204,7 +222,7 @@ class ProfilePreferenceBloc
       yield ProfilePreferenceInitialState();
     }
     if (event is RemoveSmoking) {
-      this.smokingHabit = null;
+      this.smokingHabit = [];
       yield ProfilePreferenceInitialState();
     }
     if (event is AbilityStatusChanged) {

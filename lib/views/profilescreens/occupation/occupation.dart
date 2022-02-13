@@ -66,13 +66,22 @@ class _OccupationScreenState extends State<OccupationScreen> {
   CountryModel? countryModel;
   StateModel? myState, city;
   List<String> incomes = [
-    'Less Than 1Lacs',
-    '1 to 3Lacs',
-    '3 to 5Lacs',
-    '5 to 7Lacs',
-    '7 to 10Lacs',
-    '10 to 12Lacs',
-    'More than 12Lacs'
+    'No Income',
+    '0-1 lakh',
+    '1-2 lakh',
+    '2-3 lakh',
+    '3-4 lakh',
+    '4-5 lakh',
+    '5-7.5 lakh',
+    '7.5-10 lakh',
+    '10-15 lakh',
+    '15-20 lakh',
+    '20-25 lakh',
+    '25-35 lakh',
+    '35-50 lakh',
+    '50-75 lakh',
+    '75 lakh- 1 crore',
+    '1 crore and above'
   ];
 
   @override

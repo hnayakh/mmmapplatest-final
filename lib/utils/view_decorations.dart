@@ -42,6 +42,7 @@ class MmmDecorations {
 
   static InputDecoration textfieldDecoration(String hintText) {
     return InputDecoration(
+        counterText: '',
         border: OutlineInputBorder(
             borderSide: BorderSide(color: kDark2, width: 1),
             borderRadius: BorderRadius.circular(8)),

@@ -27,12 +27,14 @@ class MmmTextFileds {
           Container(
             height: 50,
             child: TextField(
+              maxLength: 30,
               controller: controller,
               keyboardType: inputType,
               style: MmmTextStyles.bodyRegular(textColor: kDark5),
               cursorColor: kDark5,
               obscureText: isPassword,
               decoration: InputDecoration(
+                  counterText: '',
                   border: OutlineInputBorder(
                       borderSide: BorderSide(color: kDark2, width: 1),
                       borderRadius: BorderRadius.circular(8)),
@@ -87,6 +89,7 @@ class MmmTextFileds {
           Container(
             height: 44,
             child: TextField(
+              maxLength: 30,
               controller: controller,
               keyboardType: inputType,
               textCapitalization: textCapitalization,

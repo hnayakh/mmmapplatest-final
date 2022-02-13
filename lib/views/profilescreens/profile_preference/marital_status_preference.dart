@@ -27,7 +27,7 @@ class MaritalStatusPreferenceState extends State<MaritalStatusPreference> {
   Widget build(BuildContext context) {
     return Container(
         padding: kMargin16,
-        height: 490,
+        height: MediaQuery.of(context).size.height * 0.9,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

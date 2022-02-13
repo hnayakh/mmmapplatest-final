@@ -55,19 +55,19 @@ class IncomeSelected extends ProfilePreferenceEvent {
 class RemoveIncome extends ProfilePreferenceEvent {}
 
 class DietrySelected extends ProfilePreferenceEvent {
-  final EatingHabit eatingHabit;
+  final List<EatingHabit> eatingHabit;
 
   DietrySelected(this.eatingHabit);
 }
 
 class DrinkingSelected extends ProfilePreferenceEvent {
-  final DrinkingHabit drinkingHabit;
+  final List<DrinkingHabit> drinkingHabit;
 
   DrinkingSelected(this.drinkingHabit);
 }
 
 class SmokingSelected extends ProfilePreferenceEvent {
-  final SmokingHabit smokingHabit;
+  final List<SmokingHabit> smokingHabit;
 
   SmokingSelected(this.smokingHabit);
 }
@@ -131,10 +131,14 @@ class RemoveCaste extends ProfilePreferenceEvent {}
 class RemoveEducation extends ProfilePreferenceEvent {}
 
 class RemoveOccupation extends ProfilePreferenceEvent {}
-class CompletePreference extends ProfilePreferenceEvent{
 
-}
-class AbilityStatusChanged extends ProfilePreferenceEvent{
+class RemoveReligion extends ProfilePreferenceEvent {}
+
+class RemoveMotherTongue extends ProfilePreferenceEvent {}
+
+class CompletePreference extends ProfilePreferenceEvent {}
+
+class AbilityStatusChanged extends ProfilePreferenceEvent {
   final AbilityStatus abilityStatus;
 
   AbilityStatusChanged(this.abilityStatus);

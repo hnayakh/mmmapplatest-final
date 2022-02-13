@@ -622,9 +622,9 @@ class ApiClient {
       List<String?> occupation,
       List<Education> education,
       List<AnualIncome> annualIncome,
-      EatingHabit? eatingHabit,
-      DrinkingHabit? drinkingHabit,
-      SmokingHabit? smokingHabit,
+      List<EatingHabit> eatingHabit,
+      List<DrinkingHabit> drinkingHabit,
+      List<SmokingHabit> smokingHabit,
       AbilityStatus abilityStatus,
       String id) async {
     try {
@@ -647,9 +647,9 @@ class ApiClient {
         "occupation": occupation.map((e) => e!).toList(),
         "maxIncome": annualIncome.map((e) => e.index).toList(),
         "minIncome": annualIncome.map((e) => e.index).toList(),
-        "dietaryHabits": eatingHabit != null ? eatingHabit.index : null,
-        "drinkingHabits": drinkingHabit != null ? drinkingHabit.index : null,
-        "smokingHabits": smokingHabit != null ? smokingHabit.index : null,
+        "dietaryHabits": annualIncome.map((e) => e.index).toList(),
+        "drinkingHabits": annualIncome.map((e) => e.index).toList(),
+        "smokingHabits": annualIncome.map((e) => e.index).toList(),
         "challenged": abilityStatus.index
       });
       if (response.statusCode == 200 || response.statusCode == 201) {
