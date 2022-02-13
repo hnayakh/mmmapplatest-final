@@ -14,7 +14,7 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
   dynamic subCaste;
   CastSubCast? cast;
   SimpleMasterData? motherTongue;
-  dynamic gothra;
+  dynamic gothra ="";
   Manglik isManglik = Manglik.NotApplicable;
 
   SimpleMasterData? prevReligion;
@@ -35,7 +35,7 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
           this.subCaste = null;
           this.cast = null;
           this.motherTongue = null;
-          this.gothra = null;
+          this.gothra = "";
         }
       }
       yield ReligionInitialState();

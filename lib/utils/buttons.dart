@@ -525,7 +525,7 @@ class MmmButtons {
                               ],
                             )
                           : Container(),
-                      gothra != "null" || gothra.length == 0
+                      gothra != null && gothra.length == 0
                           ? Row(
                               children: [
                                 Text('Gothra: ',
@@ -1597,10 +1597,12 @@ class MmmButtons {
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.02,
                 ),
-                Text(
+                Expanded(
+                    child: Text(
                   title,
+                  maxLines: 1,
                   style: MmmTextStyles.heading4(textColor: kLight2),
-                ),
+                )),
               ],
             ),
             backgroundColor: Colors.transparent,

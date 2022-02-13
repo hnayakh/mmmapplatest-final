@@ -22,6 +22,7 @@ class SmokingPrefs extends StatefulWidget {
 
 class SmokingPrefsScreen extends State<SmokingPrefs> {
   List<SmokingHabit> list;
+
   SmokingPrefsScreen(this.list);
 
   @override
@@ -62,6 +63,7 @@ class SmokingPrefsScreen extends State<SmokingPrefs> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(describeEnum(SmokingHabit.values[index]),
                                   style: MmmTextStyles.bodyMediumSmall(

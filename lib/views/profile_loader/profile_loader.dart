@@ -45,8 +45,7 @@ class ProfileLoaderScreenState extends State<ProfileLoaderScreen> {
           if (state is ProfileLoaderInitialState) {
             BlocProvider.of<ProfileLoaderBloc>(context).add(GetProfiles());
           }
-          return Expanded(
-            child: Column(
+          return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -73,8 +72,7 @@ class ProfileLoaderScreenState extends State<ProfileLoaderScreen> {
                   padding: kMargin16,
                 )
               ],
-            ),
-          );
+            );
         },
         listener: (context, state) {
           if (state is OnGotProfiles) {

@@ -61,6 +61,7 @@ class DrinkingPrefsScreen extends State<DrinkingPrefs> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(describeEnum(DrinkingHabit.values[index]),
                                   style: MmmTextStyles.bodyMediumSmall(

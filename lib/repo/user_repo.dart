@@ -174,8 +174,8 @@ class UserRepository {
     return this.apiClient.getMyMatchingProfile(this.useDetails!.id);
   }
 
-  Future<ProfileDetailsResponse> getOtheruserDetails(String id) async {
-    return apiClient.getOtherUserDetails(id);
+  Future<ProfileDetailsResponse> getOtheruserDetails(String id, ProfileActivationStatus activationStatus) async {
+    return apiClient.getOtherUserDetails(id,activationStatus);
   }
 
   Future<String?> uploadImage(String images) async {
