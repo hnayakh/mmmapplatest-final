@@ -231,9 +231,9 @@ class _AboutScreenState extends State<AboutScreen> {
                   ],
                 ),
               ),
-              this.childrenStatus == ChildrenStatus.YesNotLivingTogether ||
-                      this.childrenStatus == ChildrenStatus.YesLivingTogether &&
-                          this.maritalStatus != MaritalStatus.NeverMarried
+              // this.childrenStatus == ChildrenStatus.YesNotLivingTogether ||
+              //         this.childrenStatus == ChildrenStatus.YesLivingTogether &&
+              this.maritalStatus != MaritalStatus.NeverMarried
                   ? Column(
                       children: [
                         SizedBox(
@@ -257,7 +257,7 @@ class _AboutScreenState extends State<AboutScreen> {
               MmmButtons.categoryButtons(
                   "Height",
                   this.heightStatus != null
-                      ? getHeight(heightStatus)
+                      ? AppHelper.getHeight(heightStatus)
                       : 'Select your height',
                   'Select your height',
                   'images/rightArrow.svg', action: () {
@@ -336,20 +336,6 @@ class _AboutScreenState extends State<AboutScreen> {
     );
   }
 
-  String getHeight(index) {
-    double heightCm = AppHelper.getHeights()[index] * 30.48;
-    heightCm.round();
-    print(heightCm);
-    String heightText =
-        '${AppHelper.getHeights()[index].toStringAsFixed(1)} ft';
-    return (heightText[0] +
-        "' " +
-        heightText[2] +
-        '"' +
-        " (${heightCm.round()}" +
-        " cm)");
-  }
-
   Future showDate(BuildContext context) async {
     var newDate = await showDatePicker(
         context: context,
@@ -372,7 +358,8 @@ class _AboutScreenState extends State<AboutScreen> {
             ));
 
     if (result != null && result is MaritalStatus) {
-      this.maritalStatusHintText = describeEnum(result);
+      // this.maritalStatusHintText = describeEnum(result);
+      this.maritalStatusHintText = AppHelper.getStringFromEnum(result);
       BlocProvider.of<AboutBloc>(context).add(OnMaritalStatusSelected(result));
     }
   }

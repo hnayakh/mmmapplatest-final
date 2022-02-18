@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/repo/user_repo.dart';
+import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
@@ -131,7 +132,9 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
               children: [
                 MmmButtons.categoryButtons(
                     'Family Status',
-                    level != null ? describeEnum(level!) : familyStatustext,
+                    level != null
+                        ? AppHelper.getStringFromEnum(level!)
+                        : familyStatustext,
                     familyStatustext,
                     "images/rightArrow.svg", action: () {
                   showFamilyStatusSheet();

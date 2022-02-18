@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
@@ -18,24 +19,6 @@ class AnnualIncomeBottomSheet extends StatefulWidget {
 }
 
 class AnnualIncomeBottomSheetState extends State<AnnualIncomeBottomSheet> {
-  List<String> incomes = [
-    'No Income',
-    '0-1 lakh',
-    '1-2 lakh',
-    '2-3 lakh',
-    '3-4 lakh',
-    '4-5 lakh',
-    '5-7.5 lakh',
-    '7.5-10 lakh',
-    '10-15 lakh',
-    '15-20 lakh',
-    '20-25 lakh',
-    '25-35 lakh',
-    '35-50 lakh',
-    '50-75 lakh',
-    '75 lakh- 1 crore',
-    '1 crore and above'
-  ];
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -69,7 +52,9 @@ class AnnualIncomeBottomSheetState extends State<AnnualIncomeBottomSheet> {
                         children: [
                           Text(
                               //describeEnum(AnualIncome.values[index])
-                              incomes[index],
+                              //incomes[index]
+                              AppHelper.getStringFromEnum(
+                                  AnualIncome.values[index]),
                               style: MmmTextStyles.bodyMediumSmall(
                                   textColor:
                                       AnualIncome.values[index] == widget.income
@@ -86,6 +71,7 @@ class AnnualIncomeBottomSheetState extends State<AnnualIncomeBottomSheet> {
                     ),
                     onTap: () {
                       Navigator.of(context).pop(AnualIncome.values[index]);
+                      print(AnualIncome.values[index]);
                     },
                   );
                 },

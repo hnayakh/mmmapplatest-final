@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:makemymarry/utils/app_constants.dart';
+import 'package:makemymarry/utils/mmm_enums.dart';
 
 class AppHelper {
   static String countryCodeToEmoji(String countryCode) {
@@ -43,5 +44,129 @@ class AppHelper {
   static String serverFormatDate(DateTime dateOfBirth) {
     DateFormat dateFormat1 = DateFormat(AppConstants.SERVERDATEFORMAT);
     return dateFormat1.format(dateOfBirth);
+  }
+
+  static String getHeight(index) {
+    double heightCm = AppHelper.getHeights()[index] * 30.48;
+    heightCm.round();
+    print(heightCm);
+    String heightText =
+        '${AppHelper.getHeights()[index].toStringAsFixed(1)} ft';
+    return (heightText[0] +
+        "' " +
+        heightText[2] +
+        '"' +
+        " (${heightCm.round()}" +
+        " cm)");
+  }
+
+  static String getStringFromEnum(enumEntry) {
+    var enumName = enumEntry.toString().split('.').first;
+    if (enumName == 'MaritalStatus') {
+      List<String> maritalStatuses = [
+        'Never Married',
+        'Divorced',
+        'Widowed',
+        'Awaiting Divorce'
+      ];
+      return maritalStatuses[enumEntry.index];
+    } else if (enumName == 'MaritalStatusFilter') {
+      List<String> maritalFilter = [
+        'Doesnot Matter',
+        'Never Married',
+        'Divorced',
+        'Widowed',
+        'Awaiting Divorce'
+      ];
+      return maritalFilter[enumEntry.index];
+    } else if (enumName == 'AbilityStatus') {
+      List<String> abilityStatus = [
+        'Normal',
+        'Physically Challenged',
+      ];
+      return abilityStatus[enumEntry.index];
+    } else if (enumName == 'ChildrenStatus') {
+      List<String> childrenStatus = [
+        'No',
+        'Yes,living together',
+        'Yes,not living together'
+      ];
+      return childrenStatus[enumEntry.index];
+    } else if (enumName == 'EatingHabit') {
+      List<String> eatingStatus = [
+        'Vegetarrian',
+        'Eggitarrian',
+        'Nonvegetarrian',
+      ];
+      return eatingStatus[enumEntry.index];
+    } else if (enumName == 'EatingHabitFilter') {
+      List<String> eatingFilterStatus = [
+        'Doesnot matter'
+            'Vegetarrian',
+        'Eggitarrian',
+        'Nonvegetarrian',
+      ];
+      return eatingFilterStatus[enumEntry.index];
+    } else if (enumName == 'SmokingHabit') {
+      List<String> smokingStatus = [
+        'Smoker',
+        'NonSmoker',
+        'Occasionally',
+      ];
+      return smokingStatus[enumEntry.index];
+    } else if (enumName == 'SmokingHabitFilter') {
+      List<String> smokingFilterStatus = [
+        'Doesnot matter'
+            'Smoker',
+        'NonSmoker',
+        'Occasionally',
+      ];
+      return smokingFilterStatus[enumEntry.index];
+    } else if (enumName == 'DrinkingHabit') {
+      List<String> drinkingStatus = [
+        'Alcoholic',
+        'Non alcoholic',
+        'Occasionally',
+      ];
+      return drinkingStatus[enumEntry.index];
+    } else if (enumName == 'DrinkingHabitFilter') {
+      List<String> drinkingFilterStatus = [
+        'Doesnot matter'
+            'Alcoholic',
+        'Non alcoholic',
+        'Occasionally',
+      ];
+      return drinkingFilterStatus[enumEntry.index];
+    } else if (enumName == 'AnualIncome') {
+      List<String> incomes = [
+        'No Income',
+        '0-1 lakh',
+        '1-2 lakh',
+        '2-3 lakh',
+        '3-4 lakh',
+        '4-5 lakh',
+        '5-7.5 lakh',
+        '7.5-10 lakh',
+        '10-15 lakh',
+        '15-20 lakh',
+        '20-25 lakh',
+        '25-35 lakh',
+        '35-50 lakh',
+        '50-75 lakh',
+        '75 lakh- 1 crore',
+        '1 crore and above'
+      ];
+      return incomes[enumEntry.index];
+    } else if (enumName == 'FamilyAfluenceLevel') {
+      List<String> familyLevel = [
+        'Rich',
+        'Upper MiddleClass',
+        'MiddleClass',
+        'Lower MiddleClass'
+      ];
+      return familyLevel[enumEntry.index];
+    } else {
+      return '';
+    }
   }
 }
