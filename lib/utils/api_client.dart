@@ -567,12 +567,12 @@ class ApiClient {
     }
   }
 
-  Future<ProfileDetailsResponse> getOtherUserDetails(String id) async {
+  Future<ProfileDetailsResponse> getOtherUserDetails(String id, ProfileActivationStatus activationStatus) async {
     // try {
     var response =
         await this.dio.get("${AppConstants.ENDPOINT}users/basic/$id");
     if (response.statusCode == 200 || response.statusCode == 201) {
-      return ProfileDetailsResponse.fromJson(response.data);
+      return ProfileDetailsResponse.fromJson(response.data,activationStatus);
     }
     return ProfileDetailsResponse.fromError(
         "Error Occurred. Please try again.");

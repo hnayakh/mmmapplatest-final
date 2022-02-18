@@ -87,6 +87,7 @@ class _AboutScreenState extends State<AboutScreen> {
         },
         builder: (context, state) {
           initData();
+          // FocusScope.of(context).unfocus();
           return Stack(
             children: [
               SingleChildScrollView(
@@ -158,81 +159,89 @@ class _AboutScreenState extends State<AboutScreen> {
                   'images/rightArrow.svg', action: () {
                 showMaritalStatusBottomSheet();
               }),
-              SizedBox(
-                height: 24,
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 8),
-                child: Text(
-                  'Children',
-                  style: MmmTextStyles.bodyRegular(textColor: kDark5),
-                ),
-              ),
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Transform.scale(
-                      scale: 1.2,
-                      child: Radio(
-                          activeColor: kPrimary,
-                          value: ChildrenStatus.YesLivingTogether,
-                          groupValue: childrenStatus,
-                          onChanged: (val) {
-                            BlocProvider.of<AboutBloc>(context).add(
-                                OnChildrenSelected(
-                                    ChildrenStatus.YesLivingTogether));
-                          }),
-                    ),
-                    Text(
-                      'Yes Living Together',
-                      style: MmmTextStyles.bodySmall(textColor: kDark5),
-                    ),
-                    SizedBox(
-                      width: 16,
-                    ),
-                    Transform.scale(
-                      scale: 1.2,
-                      child: Radio(
-                          activeColor: kPrimary,
-                          value: ChildrenStatus.YesNotLivingTogether,
-                          groupValue: childrenStatus,
-                          onChanged: (val) {
-                            BlocProvider.of<AboutBloc>(context).add(
-                                OnChildrenSelected(
-                                    ChildrenStatus.YesNotLivingTogether));
-                          }),
-                    ),
-                    Text(
-                      'Yes Not Living \n Together',
-                      style: MmmTextStyles.bodySmall(textColor: kDark5),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                child: Row(
-                  children: [
-                    Transform.scale(
-                      scale: 1.2,
-                      child: Radio(
-                          activeColor: kPrimary,
-                          value: ChildrenStatus.No,
-                          groupValue: childrenStatus,
-                          onChanged: (val) {
-                            BlocProvider.of<AboutBloc>(context)
-                                .add(OnChildrenSelected(ChildrenStatus.No));
-                          }),
-                    ),
-                    Text(
-                      'No',
-                      style: MmmTextStyles.bodySmall(textColor: kDark5),
-                    ),
-                  ],
-                ),
-              ),
-              // this.childrenStatus == ChildrenStatus.YesNotLivingTogether ||
-              //         this.childrenStatus == ChildrenStatus.YesLivingTogether &&
+              this.maritalStatus != MaritalStatus.NeverMarried
+                  ? Column(
+                      children: [
+                        SizedBox(
+                          height: 24,
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 8),
+                          child: Text(
+                            'Children',
+                            style: MmmTextStyles.bodyRegular(textColor: kDark5),
+                          ),
+                        ),
+                        Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Transform.scale(
+                                scale: 1.2,
+                                child: Radio(
+                                    activeColor: kPrimary,
+                                    value: ChildrenStatus.YesLivingTogether,
+                                    groupValue: childrenStatus,
+                                    onChanged: (val) {
+                                      BlocProvider.of<AboutBloc>(context).add(
+                                          OnChildrenSelected(ChildrenStatus
+                                              .YesLivingTogether));
+                                    }),
+                              ),
+                              Text(
+                                'Yes Living Together',
+                                style:
+                                    MmmTextStyles.bodySmall(textColor: kDark5),
+                              ),
+                              SizedBox(
+                                width: 16,
+                              ),
+                              Transform.scale(
+                                scale: 1.2,
+                                child: Radio(
+                                    activeColor: kPrimary,
+                                    value: ChildrenStatus.YesNotLivingTogether,
+                                    groupValue: childrenStatus,
+                                    onChanged: (val) {
+                                      BlocProvider.of<AboutBloc>(context).add(
+                                          OnChildrenSelected(ChildrenStatus
+                                              .YesNotLivingTogether));
+                                    }),
+                              ),
+                              Text(
+                                'Yes Not Living \n Together',
+                                style:
+                                    MmmTextStyles.bodySmall(textColor: kDark5),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          child: Row(
+                            children: [
+                              Transform.scale(
+                                scale: 1.2,
+                                child: Radio(
+                                    activeColor: kPrimary,
+                                    value: ChildrenStatus.No,
+                                    groupValue: childrenStatus,
+                                    onChanged: (val) {
+                                      BlocProvider.of<AboutBloc>(context).add(
+                                          OnChildrenSelected(
+                                              ChildrenStatus.No));
+                                    }),
+                              ),
+                              Text(
+                                'No',
+                                style:
+                                    MmmTextStyles.bodySmall(textColor: kDark5),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    )
+                  : Container(),
               this.maritalStatus != MaritalStatus.NeverMarried
                   ? Column(
                       children: [

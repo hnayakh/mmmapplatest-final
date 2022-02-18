@@ -7,6 +7,7 @@ import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
+import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/home/matching_profile/matching_profile_bloc.dart';
@@ -84,16 +85,18 @@ class MatchingProfileGridViewScreenState
                   ),
                   borderRadius: BorderRadius.circular(4),
                 ),
-                Positioned(
-                  child: Container(
-                    child: SvgPicture.asset(
-                      "images/Verified.svg",
-                      color: kSecondary,
-                    ),
-                  ),
-                  top: 2,
-                  right: 2,
-                ),
+                list[index].activationStatus == ProfileActivationStatus.Verified
+                    ? Positioned(
+                        child: Container(
+                          child: SvgPicture.asset(
+                            "images/Verified.svg",
+                            color: kSecondary,
+                          ),
+                        ),
+                        top: 2,
+                        right: 2,
+                      )
+                    : Container(),
                 Positioned(
                   child: Container(
                     child: Column(

@@ -13,7 +13,7 @@ enum MaritalStatusFilter {
   Widowed,
   AwaitingDivorce
 }
-
+enum ProfileActivationStatus { Pending, Verified }
 enum AbilityStatus {
   Normal,
   PhysicallyChallenged,

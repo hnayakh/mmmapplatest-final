@@ -23,6 +23,9 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
     yield OnLoading();
     if (event is OnMaritalStatusSelected) {
       this.maritalStatus = event.ms;
+      if (event.ms == MaritalStatus.NeverMarried) {
+        this.childrenStatus = ChildrenStatus.No;
+      }
       yield AboutInitialState();
     }
     if (event is OnChangeNoOfChildren) {

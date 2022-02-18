@@ -33,6 +33,7 @@ class MatchingProfile {
   late FamilyAfluenceLevel familyAfluenceLevel;
   late FamilyValues familyValues;
   late FamilyType familyType;
+  late ProfileActivationStatus activationStatus;
 
   MatchingProfile.fromJson(json) {
     this.id = json["id"];
@@ -44,6 +45,8 @@ class MatchingProfile {
     this.city = json["careerCity"];
     this.state = json["careerState"];
     this.country = json["careerCountry"];
+    this.activationStatus =
+        ProfileActivationStatus.values[json["activationStatus"]];
   }
 }
 
@@ -100,9 +103,11 @@ class ProfileDetails {
 
   late String familyState, familyCity, familyCountry;
   List<String> images = [];
+  late ProfileActivationStatus activationStatus;
 
-  ProfileDetails.fromJson(json) {
+  ProfileDetails.fromJson(json, ProfileActivationStatus activationStatus) {
     this.id = json["id"];
+    this.activationStatus = activationStatus;
     this.email = json["email"];
     this.countryCode = json["countryCode"];
     this.dialCode = json["phoneNumber"];
@@ -120,8 +125,7 @@ class ProfileDetails {
       this.noOfChildren = null;
     }
     this.abilityStatus = AbilityStatus.values[aboutMe["abilityStatus"]];
-    this.height =
-        (double.parse(aboutMe["height"]) / 30.48).toStringAsFixed(1);
+    this.height = (double.parse(aboutMe["height"]) / 30.48).toStringAsFixed(1);
 
     var habit = json["userHabits"][0];
 
@@ -179,10 +183,12 @@ class ProfileDetailsResponse {
   late String status, message;
   late ProfileDetails profileDetails;
 
-  ProfileDetailsResponse.fromJson(json) {
+  ProfileDetailsResponse.fromJson(
+      json, ProfileActivationStatus activationStatus) {
     this.status = json["type"];
     this.message = json["message"];
-    this.profileDetails = ProfileDetails.fromJson(json["data"]);
+    this.profileDetails =
+        ProfileDetails.fromJson(json["data"], activationStatus);
   }
 
   ProfileDetailsResponse.fromError(String message) {

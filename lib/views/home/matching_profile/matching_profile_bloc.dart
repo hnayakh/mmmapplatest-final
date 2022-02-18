@@ -22,7 +22,7 @@ class MatchingProfileBloc
     if (event is GetProfileDetails) {
       var result = await this
           .userRepository
-          .getOtheruserDetails(this.list[event.pos].id);
+          .getOtheruserDetails(this.list[event.pos].id,this.list[event.pos].activationStatus);
 
       if (result.status == AppConstants.SUCCESS) {
         yield OnGotProfileDetails(result.profileDetails);

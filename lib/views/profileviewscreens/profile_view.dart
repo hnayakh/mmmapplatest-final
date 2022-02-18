@@ -551,10 +551,12 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
             height: MediaQuery.of(context).size.height * 0.03,
             child: Row(
               children: [
-                Text(
+                Expanded(
+                    child: Text(
                   profileDetails.name,
+                  maxLines: 1,
                   style: MmmTextStyles.heading5(textColor: kPrimary),
-                ),
+                )),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -570,11 +572,14 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                     Expanded(child: SizedBox())
                   ],
                 ),
-                SvgPicture.asset(
-                  'images/Verified.svg',
-                  height: 20.51,
-                  color: kPrimary,
-                )
+                profileDetails.activationStatus ==
+                        ProfileActivationStatus.Verified
+                    ? SvgPicture.asset(
+                        'images/Verified.svg',
+                        height: 20.51,
+                        color: kPrimary,
+                      )
+                    : Container()
               ],
             ),
           ),

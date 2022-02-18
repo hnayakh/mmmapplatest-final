@@ -9,6 +9,7 @@ import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
+import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
@@ -111,29 +112,34 @@ class MatchingProfileStackViewScreenState
                                             SizedBox(
                                               width: 8,
                                             ),
-                                            Stack(
-                                              children: [
-                                                SvgPicture.asset(
-                                                  "images/Verified.svg",
-                                                  color: Colors.white,
-                                                  width: 24,
-                                                  height: 24,
-                                                ),
-                                                Container(
-                                                  height: 24,
-                                                  width: 24,
-                                                  decoration: BoxDecoration(
-                                                      color: kPrimary
-                                                          .withAlpha(50),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              6)),
-                                                ),
-                                                SizedBox(
-                                                  height: 8,
-                                                ),
-                                              ],
-                                            )
+                                            list[index].activationStatus ==
+                                                    ProfileActivationStatus
+                                                        .Verified
+                                                ? Stack(
+                                                    children: [
+                                                      SvgPicture.asset(
+                                                        "images/Verified.svg",
+                                                        color: Colors.white,
+                                                        width: 24,
+                                                        height: 24,
+                                                      ),
+                                                      Container(
+                                                        height: 24,
+                                                        width: 24,
+                                                        decoration: BoxDecoration(
+                                                            color: kPrimary
+                                                                .withAlpha(50),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        6)),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 8,
+                                                      ),
+                                                    ],
+                                                  )
+                                                : Container()
                                           ],
                                         ),
                                         Row(

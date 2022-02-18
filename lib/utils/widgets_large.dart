@@ -269,7 +269,7 @@ class MmmWidgets {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: Image.asset(
-                    'images/stackviewImage.jpg',
+                    'images/profile_completion.png',
                     fit: BoxFit.cover,
                   ),
                 ),
