@@ -173,14 +173,14 @@ class ReligionScreenState extends State<ReligionScreen> {
                             height: 24,
                           ),
                           MmmButtons.categoryButtons(
-                              'Gothra (optional)',
+                              'Gothra',
                               this.gothra != null
                                   ? gothra
                                   : 'Select your gothra',
                               'Select your gothra',
                               'images/rightArrow.svg', action: () {
                             selectGothra(context);
-                          }),
+                          }, required: false),
                           SizedBox(
                             height: 24,
                           ),

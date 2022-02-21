@@ -1284,7 +1284,10 @@ class MmmButtons {
 
   static Widget categoryButtons(
       String labelText, String hintText, String newhintText, String icon,
-      {Function()? action, bool showCancel = false, Function()? cancelAction}) {
+      {Function()? action,
+      bool showCancel = false,
+      Function()? cancelAction,
+      bool required = true}) {
     return Column(
       children: [
         Row(
@@ -1294,10 +1297,12 @@ class MmmButtons {
               textScaleFactor: 1.0,
               style: MmmTextStyles.bodySmall(textColor: kDark5),
             ),
-            Text(
-              ' *',
-              style: MmmTextStyles.bodySmall(textColor: kredStar),
-            )
+            required
+                ? Text(
+                    ' *',
+                    style: MmmTextStyles.bodySmall(textColor: kredStar),
+                  )
+                : Container()
           ],
         ),
         SizedBox(
