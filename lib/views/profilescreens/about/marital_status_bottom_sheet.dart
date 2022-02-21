@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
@@ -48,7 +49,10 @@ class MaritalStatusBottomSheet extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(describeEnum(MaritalStatus.values[index]),
+                          Text(
+                              // describeEnum(MaritalStatus.values[index])
+                              AppHelper.getStringFromEnum(
+                                  MaritalStatus.values[index]),
                               style: MmmTextStyles.bodyMediumSmall(
                                   textColor: MaritalStatus.values[index] ==
                                           this.selectedMaritalStatus

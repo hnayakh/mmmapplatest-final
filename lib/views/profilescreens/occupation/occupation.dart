@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/repo/user_repo.dart';
+import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
@@ -65,24 +66,6 @@ class _OccupationScreenState extends State<OccupationScreen> {
   String? education;
   CountryModel? countryModel;
   StateModel? myState, city;
-  List<String> incomes = [
-    'No Income',
-    '0-1 lakh',
-    '1-2 lakh',
-    '2-3 lakh',
-    '3-4 lakh',
-    '4-5 lakh',
-    '5-7.5 lakh',
-    '7.5-10 lakh',
-    '10-15 lakh',
-    '15-20 lakh',
-    '20-25 lakh',
-    '25-35 lakh',
-    '35-50 lakh',
-    '50-75 lakh',
-    '75 lakh- 1 crore',
-    '1 crore and above'
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -153,9 +136,11 @@ class _OccupationScreenState extends State<OccupationScreen> {
                             anualIncome != null
                                 ?
                                 //'${describeEnum(anualIncome!)}'
-                                incomes[anualIncome!.index]
-                                : 'Select your occupation',
-                            'Select your occupation',
+                                //incomes[anualIncome!.index]
+                                AppHelper.getStringFromEnum(
+                                    AnualIncome.values[anualIncome!.index])
+                                : 'Select your income',
+                            'Select your income',
                             'images/rightArrow.svg', action: () {
                           selectAnualIncome(context);
                         }),

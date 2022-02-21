@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
@@ -64,7 +65,9 @@ class MaritalStatusPreferenceState extends State<MaritalStatusPreference> {
                             children: [
                               Expanded(
                                   child: Text(
-                                      describeEnum(MaritalStatus.values[index]),
+                                      //describeEnum(MaritalStatus.values[index])
+                                      AppHelper.getStringFromEnum(
+                                          MaritalStatus.values[index]),
                                       style: MmmTextStyles.bodyMediumSmall(
                                           textColor: isSelected(
                                                   MaritalStatus.values[index])

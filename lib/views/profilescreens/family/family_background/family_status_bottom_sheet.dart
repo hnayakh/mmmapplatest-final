@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
@@ -55,9 +56,13 @@ class FamilyStatusBottomSheetState extends State<FamilyStatusBottomSheet> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(describeEnum(FamilyAfluenceLevel.values[index]),
+                          Text(
+                              //describeEnum(FamilyAfluenceLevel.values[index])
+                              AppHelper.getStringFromEnum(
+                                  FamilyAfluenceLevel.values[index]),
                               style: MmmTextStyles.bodyMediumSmall(
-                                  textColor: this.widget.level== FamilyAfluenceLevel.values[index]
+                                  textColor: this.widget.level ==
+                                          FamilyAfluenceLevel.values[index]
                                       ? kPrimary
                                       : kModalPrimary)),
                           SizedBox(
@@ -70,7 +75,8 @@ class FamilyStatusBottomSheetState extends State<FamilyStatusBottomSheet> {
                       ),
                     ),
                     onTap: () {
-                      Navigator.of(context).pop(FamilyAfluenceLevel.values[index]);
+                      Navigator.of(context)
+                          .pop(FamilyAfluenceLevel.values[index]);
                     },
                   );
                 },

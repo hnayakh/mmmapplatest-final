@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
-//import 'package:flutter_tindercard/flutter_tindercard.dart';
 
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
