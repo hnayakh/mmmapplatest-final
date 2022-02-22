@@ -50,8 +50,10 @@ class _HabitScreenState extends State<HabitScreen> {
             navigateToReligion();
           }
           if (state is OnError) {
-            Scaffold.of(context)
-                .showSnackBar(SnackBar(content: Text(state.message),backgroundColor: Colors.red,));
+            Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text(state.message),
+              backgroundColor: Colors.red,
+            ));
           }
         },
         builder: (context, state) {
@@ -80,9 +82,9 @@ class _HabitScreenState extends State<HabitScreen> {
                         children: [
                           eatingHabit == EatingHabit.Vegetarrian
                               ? MmmButtons.habitsEnabled(
-                                  50, 152, 'images/Veg2.svg', 'Vegetarrian')
+                                  50, 152, 'images/Veg2.svg', 'Vegetaerrian')
                               : MmmButtons.habitsDisabled(
-                                  50, 152, 'images/Veg2.svg', 'Vegetarrian',
+                                  50, 152, 'images/Veg2.svg', 'Vegetaerrian',
                                   action: () {
                                   vegOptionSelected();
                                 }),
@@ -91,9 +93,9 @@ class _HabitScreenState extends State<HabitScreen> {
                           ),
                           eatingHabit == EatingHabit.Eggitarrian
                               ? MmmButtons.habitsEnabled(
-                                  50, 144, 'images/egg.svg', 'eggetarian')
+                                  50, 144, 'images/egg.svg', 'Eggetarrian')
                               : MmmButtons.habitsDisabled(
-                                  50, 144, 'images/egg.svg', 'eggetarian',
+                                  50, 144, 'images/egg.svg', 'Eggetarrian',
                                   action: () {
                                   eggOptionSelected();
                                 }),
@@ -111,12 +113,12 @@ class _HabitScreenState extends State<HabitScreen> {
                           children: [
                             eatingHabit == EatingHabit.Nonvegetarrian
                                 ? MmmButtons.habitsEnabled(50, 193,
-                                    'images/non veg.svg', 'Non-Vegetarrian')
+                                    'images/non veg.svg', 'Non-Vegetaerrian')
                                 : MmmButtons.habitsDisabled(
                                     50,
                                     193,
                                     'images/non veg.svg',
-                                    'Non-Vegetarrian', action: () {
+                                    'Non-Vegetaerrian', action: () {
                                     nonvegOptionSelected();
                                   }),
                           ],

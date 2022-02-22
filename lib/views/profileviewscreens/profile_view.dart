@@ -551,7 +551,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
             height: MediaQuery.of(context).size.height * 0.03,
             child: Row(
               children: [
-                Expanded(
+                Container(
                     child: Text(
                   profileDetails.name,
                   maxLines: 1,

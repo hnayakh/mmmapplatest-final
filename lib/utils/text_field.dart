@@ -57,7 +57,7 @@ class MmmTextFileds {
 
   static Widget textFiledWithLabelStar(
       String label, String hintText, TextEditingController controller,
-      {TextInputType inputType: TextInputType.text,
+      {TextInputType inputType: TextInputType.name,
       bool isPassword: false,
       TextCapitalization textCapitalization: TextCapitalization.none}) {
     return Container(

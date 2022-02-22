@@ -50,6 +50,14 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
     }
     if (event is OnAboutDone) {
       this.name = event.name;
+      if (this.name == '' &&
+          this.maritalStatus == null &&
+          this.heightStatus == null &&
+          this.childrenStatus == null &&
+          this.dateOfBirth == null &&
+          this.abilityStatus == null) {
+        yield OnError('Please enter all mandatory details');
+      }
       if (this.name == '') {
         yield OnError('Enter valid username.');
       } else if (this.maritalStatus == null) {
@@ -75,11 +83,7 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
         if (result.status == AppConstants.SUCCESS) {
           this.userRepository.useDetails!.dateOfBirth =
               AppHelper.serverFormatDate(this.dateOfBirth!);
-          print(
-              'dobinaboutbloc=${this.userRepository.useDetails!.dateOfBirth}');
-          print('increatebloc,rel&mT');
-          print(this.userRepository.useDetails!.religion.id);
-          print(this.userRepository.useDetails!.motherTongue.id);
+
           this.userRepository.useDetails!.maritalStatus = this.maritalStatus!;
           this.userRepository.useDetails!.height =
               AppHelper.getHeights()[this.heightStatus!];
@@ -91,8 +95,7 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
               .storageService
               .saveUserDetails(this.userRepository.useDetails!);
           this.userRepository.updateRegistrationStep(3);
-          print('in about');
-          print(this.userRepository.useDetails!.registrationStep);
+
           yield OnNavigationToHabits();
         } else {
           yield OnError(result.message);

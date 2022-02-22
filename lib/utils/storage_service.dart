@@ -27,6 +27,9 @@ class StorageService {
     this.sharedPreferences.setString(AppConstants.USERID, userDetails.id);
     this
         .sharedPreferences
+        .setString(AppConstants.DISPLAYID, userDetails.displayId);
+    this
+        .sharedPreferences
         .setString(AppConstants.DATEOFBIRTH, userDetails.dateOfBirth);
     this
         .sharedPreferences
@@ -84,6 +87,7 @@ class StorageService {
       return null;
     } else {
       print('id not null');
+      var displayId = this.sharedPreferences.getString(AppConstants.DISPLAYID);
       var gender = this.sharedPreferences.getInt(AppConstants.GENDER);
       var isActive = this.sharedPreferences.getBool(AppConstants.ISACTIVE);
       var mobile = this.sharedPreferences.getString(AppConstants.MOBILE);
@@ -128,6 +132,7 @@ class StorageService {
       print(motherTongue.id);
 
       return UserDetails.fromStorage(
+        displayId!,
         id,
         mobile!,
         dialCode!,

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
@@ -9,7 +10,8 @@ import 'package:makemymarry/utils/text_styles.dart';
 class FatherOccupationBottomSheet extends StatefulWidget {
   final FatherOccupation? occupation;
 
-  const FatherOccupationBottomSheet({Key? key, this.occupation}) : super(key: key);
+  const FatherOccupationBottomSheet({Key? key, this.occupation})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -17,7 +19,8 @@ class FatherOccupationBottomSheet extends StatefulWidget {
   }
 }
 
-class FatherOccupationBottomSheetState extends State<FatherOccupationBottomSheet> {
+class FatherOccupationBottomSheetState
+    extends State<FatherOccupationBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -55,9 +58,12 @@ class FatherOccupationBottomSheetState extends State<FatherOccupationBottomSheet
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(describeEnum(FatherOccupation.values[index]),
+                          Text(
+                              AppHelper.getStringFromEnum(
+                                  FatherOccupation.values[index]),
                               style: MmmTextStyles.bodyMediumSmall(
-                                  textColor: this.widget.occupation== FatherOccupation.values[index]
+                                  textColor: this.widget.occupation ==
+                                          FatherOccupation.values[index]
                                       ? kPrimary
                                       : kModalPrimary)),
                           SizedBox(

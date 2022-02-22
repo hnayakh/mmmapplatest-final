@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/elevations.dart';
@@ -646,7 +647,7 @@ class MmmButtons {
                         children: [
                           Text('Annual Income: ',
                               style: MmmTextStyles.heading6()),
-                          Text(describeEnum(annualIncome),
+                          Text(AppHelper.getStringFromEnum(annualIncome),
                               style: MmmTextStyles.bodySmall()),
                         ],
                       ),

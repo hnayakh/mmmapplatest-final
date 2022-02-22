@@ -4,6 +4,7 @@ class AppConstants {
   static const HASOPENEDBEFORE = "ISFIRSTTIME";
 
   static String USERID = "USERID";
+  static String DISPLAYID = "DISPLAYID";
   static String MOBILE = "MOBILE";
   static String EMAIL = "EMAIL";
   static String DIALCODE = "DIALCODE";

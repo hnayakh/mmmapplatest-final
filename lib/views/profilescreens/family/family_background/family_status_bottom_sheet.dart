@@ -32,7 +32,7 @@ class FamilyStatusBottomSheetState extends State<FamilyStatusBottomSheet> {
               height: 24,
             ),
             Text(
-              'Select marital status:',
+              'Select family status:',
               style: MmmTextStyles.bodyMedium(textColor: kDark5),
             ),
             SizedBox(

@@ -89,6 +89,13 @@ class FamilyBackgroundBloc
       }
     }
     if (event is UpdateFamilyBackground) {
+      if (this.level == null &&
+          this.values == null &&
+          !this.isStayingWithParents &&
+          myState == null &&
+          city == null) {
+        yield OnError('Enter your family background');
+      }
       if (this.level == null) {
         yield OnError("Select Family Status");
       } else if (this.values == null) {

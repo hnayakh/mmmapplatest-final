@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
+import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
@@ -75,6 +76,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   late List<DrinkingHabit> drinkingHabit;
   late AbilityStatus abilityStatus;
   late Gender gender;
+  late UserDetails userData;
   List<String> incomes = [
     'No Income',
     '1 lakh',
@@ -96,6 +98,9 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   List<String> currentIncomes = [];
 
   void initData(BuildContext context) {
+    this.userData = BlocProvider.of<ProfilePreferenceBloc>(context)
+        .userRepository
+        .useDetails!;
     this.gender = BlocProvider.of<ProfilePreferenceBloc>(context).gender;
     this.minAge = BlocProvider.of<ProfilePreferenceBloc>(context).minAge;
     this.minSliderAge =
@@ -294,7 +299,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
                   ? MmmWidgets.buildLoader(context)
                   : Container(),
               state is ProfilePreferenceComplete
-                  ? MmmWidgets.profileCompletedWidget(action: () {
+                  ? MmmWidgets.profileCompletedWidget(userData, action: () {
                       navigateToFetchProfile();
                     })
                   : Container(),

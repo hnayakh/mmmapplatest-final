@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
@@ -9,7 +10,8 @@ import 'package:makemymarry/utils/text_styles.dart';
 class MotherOccupationBottomSheet extends StatefulWidget {
   final MotherOccupation? occupation;
 
-  const MotherOccupationBottomSheet({Key? key, this.occupation}) : super(key: key);
+  const MotherOccupationBottomSheet({Key? key, this.occupation})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -17,7 +19,8 @@ class MotherOccupationBottomSheet extends StatefulWidget {
   }
 }
 
-class MotherOccupationBottomSheetState extends State<MotherOccupationBottomSheet> {
+class MotherOccupationBottomSheetState
+    extends State<MotherOccupationBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,7 +34,7 @@ class MotherOccupationBottomSheetState extends State<MotherOccupationBottomSheet
               height: 24,
             ),
             Text(
-              "Select Father's Occupation:",
+              "Select Mother's Occupation:",
               style: MmmTextStyles.bodyMedium(textColor: kDark5),
             ),
             SizedBox(
@@ -55,9 +58,12 @@ class MotherOccupationBottomSheetState extends State<MotherOccupationBottomSheet
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(describeEnum(MotherOccupation.values[index]),
+                          Text(
+                              AppHelper.getStringFromEnum(
+                                  MotherOccupation.values[index]),
                               style: MmmTextStyles.bodyMediumSmall(
-                                  textColor: this.widget.occupation== MotherOccupation.values[index]
+                                  textColor: this.widget.occupation ==
+                                          MotherOccupation.values[index]
                                       ? kPrimary
                                       : kModalPrimary)),
                           SizedBox(

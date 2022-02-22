@@ -7,10 +7,10 @@ import 'package:makemymarry/utils/text_styles.dart';
 
 class SelectCountryBottomSheet extends StatefulWidget {
   final List<CountryModel> list;
-  final CountryModel? countryModel;
+  final dynamic countryModel;
 
   const SelectCountryBottomSheet(
-      {Key? key, required this.list, this.countryModel})
+      {Key? key, required this.list, required this.countryModel})
       : super(key: key);
 
   @override
@@ -25,6 +25,9 @@ class SelectCountryBottomSheetState extends State<SelectCountryBottomSheet> {
   @override
   void initState() {
     this.filtered = List.of(widget.list, growable: true);
+    if (widget.countryModel == null) {
+      widget.countryModel.name = '';
+    }
     super.initState();
   }
 
@@ -91,10 +94,10 @@ class SelectCountryBottomSheetState extends State<SelectCountryBottomSheet> {
                         children: [
                           Text(filtered[index].name,
                               style: MmmTextStyles.bodyMediumSmall(
-                                  textColor:
-                                      widget.countryModel == filtered[index]
-                                          ? kPrimary
-                                          : kModalPrimary)),
+                                  textColor: widget.countryModel.name ==
+                                          filtered[index].name
+                                      ? kPrimary
+                                      : kModalPrimary)),
                           SizedBox(
                             height: 8,
                           ),

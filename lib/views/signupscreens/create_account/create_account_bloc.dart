@@ -40,7 +40,7 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
       if (event.pos == Relationship.Brother || event.pos == Relationship.Son) {
         this.gender = Gender.Male;
       } else if (event.pos == Relationship.Daughter ||
-          event.pos == Relationship.Daughter) {
+          event.pos == Relationship.Sister) {
         this.gender = Gender.Female;
       }
       yield CreateAccountInitialState();
@@ -105,6 +105,7 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
             motherTongue.title = 'UNK';
             this.userRepository.useDetails = UserDetails.fromStorage(
               "",
+              "",
               mobile,
               selectedCountry.phoneCode,
               email,
@@ -129,9 +130,6 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
                 .userRepository
                 .storageService
                 .saveUserDetails(this.userRepository.useDetails!);
-            print('increatebloc,rel&mT');
-
-            print(this.userRepository.useDetails!.countryModel.id);
 
             var otpResponse = await this.userRepository.sendOtp(
                 this.selectedCountry.phoneCode, mobile, OtpType.Registration,

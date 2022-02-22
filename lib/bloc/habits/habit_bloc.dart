@@ -31,6 +31,11 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
       yield HabitInitialState();
     }
     if (event is UpdateHabit) {
+      if (this.eatingHabit == null &&
+          this.drinkingHabit == null &&
+          this.smokingHabit == null) {
+        yield OnError('Select all habits');
+      }
       if (this.eatingHabit == null) {
         yield OnError('Select eating habit.');
       } else if (this.drinkingHabit == null) {

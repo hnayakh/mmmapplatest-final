@@ -186,6 +186,7 @@ class CountryModel {
 class StateModel {
   late String name;
   late int id;
+  StateModel();
 
   StateModel.fromJson(json) {
     this.name = json["name"];

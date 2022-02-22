@@ -251,7 +251,8 @@ class _AboutScreenState extends State<AboutScreen> {
                         MmmButtons.categoryButtons(
                             "No of children",
                             this.noOfChildren != null
-                                ? '${describeEnum(this.noOfChildren!)}'
+                                ? //'${describeEnum(this.noOfChildren!)}'
+                                AppHelper.getStringFromEnum(this.noOfChildren)
                                 : 'Select number of children',
                             'Select number of children',
                             'images/rightArrow.svg', action: () {
@@ -278,12 +279,20 @@ class _AboutScreenState extends State<AboutScreen> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    margin: EdgeInsets.only(left: 8),
-                    child: Text(
-                      'Disability',
-                      style: MmmTextStyles.bodyRegular(textColor: kDark5),
-                    ),
+                  Row(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(left: 8),
+                        child: Text(
+                          'Disability',
+                          style: MmmTextStyles.bodyRegular(textColor: kDark5),
+                        ),
+                      ),
+                      Text(
+                        ' *',
+                        style: MmmTextStyles.bodySmall(textColor: kredStar),
+                      )
+                    ],
                   ),
                   Container(
                     child: Row(
@@ -323,10 +332,12 @@ class _AboutScreenState extends State<AboutScreen> {
                         // SizedBox(
                         //   width: 8,
                         // ),
+
                         Text(
                           'Physically Challenged',
                           style: MmmTextStyles.bodySmall(textColor: kDark5),
                         ),
+
                         Expanded(
                           flex: 1,
                           child: SizedBox(

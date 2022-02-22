@@ -353,6 +353,7 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
   showFamilyStatusSheet() async {
     var result = await showModalBottomSheet(
         context: context,
+        backgroundColor: Colors.transparent,
         builder: (context) => FamilyStatusBottomSheet(
               level: this.level,
             ));
@@ -401,6 +402,7 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
   void showFamilyValuesSheet() async {
     var result = await showModalBottomSheet(
         context: context,
+        backgroundColor: Colors.transparent,
         builder: (context) => FamilyValuesBottomSheet(
               level: values,
             ));

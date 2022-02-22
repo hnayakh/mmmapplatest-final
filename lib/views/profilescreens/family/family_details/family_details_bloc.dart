@@ -37,12 +37,24 @@ class FamilyDetailsBloc extends Bloc<FamilyDetailsEvent, FamilyDetailState> {
       if (noOfBrothers < 0) {
         this.noOfBrothers = 0;
       }
+      if (noOfBrothers > 10) {
+        this.noOfBrothers = 10;
+      }
+      if (noOfBrothers < brotherMarried) {
+        yield OnError('Please check number of married brothers');
+      }
       yield FamilyDetailInitialState();
     }
     if (event is ChangeNoOfSisters) {
       this.noOfSister += event.change;
       if (noOfSister < 0) {
         this.noOfSister = 0;
+      }
+      if (noOfSister > 10) {
+        this.noOfSister = 10;
+      }
+      if (noOfSister < sistersMarried) {
+        yield OnError('Please check number of married sisters');
       }
       yield FamilyDetailInitialState();
     }
@@ -51,6 +63,10 @@ class FamilyDetailsBloc extends Bloc<FamilyDetailsEvent, FamilyDetailState> {
       if (sistersMarried > noOfSister) {
         this.sistersMarried = noOfSister;
       }
+      if (sistersMarried < 0) {
+        this.sistersMarried = 0;
+      }
+
       yield FamilyDetailInitialState();
     }
     if (event is ChangeNoOfBrothersMarried) {
@@ -58,6 +74,10 @@ class FamilyDetailsBloc extends Bloc<FamilyDetailsEvent, FamilyDetailState> {
       if (brotherMarried > noOfBrothers) {
         this.brotherMarried = noOfBrothers;
       }
+      if (brotherMarried < 0) {
+        this.brotherMarried = 0;
+      }
+
       yield FamilyDetailInitialState();
     }
     if (event is UpdateFamilyDetails) {

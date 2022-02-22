@@ -61,7 +61,7 @@ class SigninResponse {
 }
 
 class UserDetails {
-  late String id, email, mobile, dialCode;
+  late String id, email, mobile, dialCode, displayId;
   late bool isActive;
   late int gender, registrationStep, lifecycleStatus, activationStatus;
   late Relationship relationship;
@@ -76,6 +76,7 @@ class UserDetails {
   late SimpleMasterData motherTongue;
 
   UserDetails.fromJson(json) {
+    this.displayId = json["displayId"];
     this.id = json["id"];
     this.email = json["email"];
     this.mobile = json["phoneNumber"];
@@ -90,6 +91,7 @@ class UserDetails {
   }
 
   UserDetails.fromStorage(
+    this.displayId,
     this.id,
     this.mobile,
     this.dialCode,

@@ -31,7 +31,7 @@ class FamilyValuesBottomSheetState extends State<FamilyValuesBottomSheet> {
               height: 24,
             ),
             Text(
-              'Select marital status:',
+              'Select family values:',
               style: MmmTextStyles.bodyMedium(textColor: kDark5),
             ),
             SizedBox(
@@ -57,7 +57,8 @@ class FamilyValuesBottomSheetState extends State<FamilyValuesBottomSheet> {
                         children: [
                           Text(describeEnum(FamilyValues.values[index]),
                               style: MmmTextStyles.bodyMediumSmall(
-                                  textColor: this.widget.level== FamilyValues.values[index]
+                                  textColor: this.widget.level ==
+                                          FamilyValues.values[index]
                                       ? kPrimary
                                       : kModalPrimary)),
                           SizedBox(

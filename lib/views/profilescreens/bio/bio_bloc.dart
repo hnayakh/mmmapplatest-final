@@ -32,9 +32,7 @@ class BioBloc extends Bloc<BioEvent, BioState> {
               .storageService
               .saveUserDetails(this.userRepository.useDetails!);
           this.userRepository.updateRegistrationStep(9);
-          print('in bio');
-          print('dobinbiobloc=${this.userRepository.useDetails!.dateOfBirth}');
-          print(this.userRepository.useDetails!.registrationStep);
+
           yield OnUpdate();
         } else {
           yield OnError(result.message);
@@ -47,7 +45,7 @@ class BioBloc extends Bloc<BioEvent, BioState> {
         this.localImagePaths.add(result);
         yield BioInitialState();
       } else {
-        yield OnError("Could Not Upload File.");
+        yield OnError('Couldnot upload image');
       }
 
       // var imageName = this.userRepository.useDetails!.id +

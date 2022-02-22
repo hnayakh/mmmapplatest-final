@@ -216,14 +216,16 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                 height: 24,
               ),
               Container(
-                  height: 44,
+                  height: 45,
                   child: TextField(
+                    maxLength: 10,
                     controller: phoneController,
                     keyboardType: TextInputType.phone,
                     style: MmmTextStyles.bodyRegular(textColor: kDark5),
                     cursorColor: kDark5,
                     obscureText: false,
                     decoration: InputDecoration(
+                        counterText: '',
                         border: OutlineInputBorder(
                             borderSide: BorderSide(color: kDark2, width: 1),
                             borderRadius: BorderRadius.circular(8)),

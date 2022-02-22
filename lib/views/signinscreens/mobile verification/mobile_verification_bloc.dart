@@ -58,9 +58,8 @@ class MobileVerificationBloc
                 Gender.values[userDetails.gender],
                 userDetails.password);
             if (result.status == AppConstants.SUCCESS) {
-              // print('inphonebloc,countrymodelId1');
-              // print(this.userRepository.useDetails!.countryModel.id);
-
+              this.userRepository.useDetails!.displayId =
+                  result.userDetails!.displayId;
               this.userRepository.useDetails!.id = result.userDetails!.id;
               this.userRepository.useDetails!.email = result.userDetails!.email;
               this.userRepository.useDetails!.mobile =
@@ -79,18 +78,12 @@ class MobileVerificationBloc
                   result.userDetails!.activationStatus;
               // this.userRepository.useDetails!.relationship =
               //     result.userDetails!.relationship;
-              // print('inphonebloc,countrymodelId2');
-              // print(this.userRepository.useDetails!.countryModel.id);
 
-              print('inmobilebloc,relationship');
-              print(this.userRepository.useDetails!.relationship);
               this
                   .userRepository
                   .storageService
                   .saveUserDetails(this.userRepository.useDetails!);
 
-              // print('inphonebloc,countrymodelId3');
-              // print(this.userRepository.useDetails!.countryModel.id);
               this.userRepository.updateRegistrationStep(2);
               yield OnRegister();
             }

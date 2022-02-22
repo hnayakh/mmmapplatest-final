@@ -66,6 +66,12 @@ class _OccupationScreenState extends State<OccupationScreen> {
   String? education;
   CountryModel? countryModel;
   StateModel? myState, city;
+  @override
+  void initState() {
+    myState = StateModel();
+    myState!.name = '';
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
+import 'package:makemymarry/datamodels/user_model.dart';
+import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/dimens.dart';
 
 import 'package:makemymarry/utils/elevations.dart';
@@ -239,7 +242,8 @@ class MmmWidgets {
     );
   }
 
-  static Widget profileCompletedWidget({Function()? action}) {
+  static Widget profileCompletedWidget(UserDetails user, {Function()? action}) {
+    var date = DateFormat("dd MMM,yyyy").format(DateTime.now());
     return Container(
       height: double.infinity,
       width: double.infinity,
@@ -290,7 +294,7 @@ class MmmWidgets {
               Container(
                   height: 60,
                   child: Text(
-                    'your profile is created successfully on\n26-06-2021 with mmy12345 id',
+                    'your profile is created successfully on $date with ${user.displayId} id',
                     textAlign: TextAlign.center,
                     style: MmmTextStyles.bodySmall(textColor: kDark5),
                   )),

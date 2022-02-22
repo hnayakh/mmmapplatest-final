@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:makemymarry/repo/user_repo.dart';
+import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
@@ -114,7 +115,7 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
             MmmButtons.categoryButtons(
                 "Father's Occpation",
                 fatherOccupation != null
-                    ? describeEnum(fatherOccupation!)
+                    ? AppHelper.getStringFromEnum(fatherOccupation!)
                     : fatherOcctext,
                 fatherOcctext,
                 "images/rightArrow.svg", action: () {
@@ -126,7 +127,7 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
             MmmButtons.categoryButtons(
                 "Mother's Occpation",
                 motherOccupation != null
-                    ? describeEnum(motherOccupation!)
+                    ? AppHelper.getStringFromEnum(motherOccupation!)
                     : motherOcctext,
                 motherOcctext,
                 "images/rightArrow.svg", action: () {
@@ -531,6 +532,7 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
   void showFatherOccupationStatusSheet() async {
     var result = await showModalBottomSheet(
         context: context,
+        backgroundColor: Colors.transparent,
         builder: (context) => FatherOccupationBottomSheet(
               occupation: fatherOccupation,
             ));
@@ -543,6 +545,7 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
   void showMotherOccupationStatusSheet() async {
     var result = await showModalBottomSheet(
         context: context,
+        backgroundColor: Colors.transparent,
         builder: (context) => MotherOccupationBottomSheet(
               occupation: motherOccupation,
             ));

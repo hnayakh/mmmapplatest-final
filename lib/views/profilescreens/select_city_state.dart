@@ -7,11 +7,14 @@ import 'package:makemymarry/utils/text_styles.dart';
 
 class SelectStateCityBottomSheet extends StatefulWidget {
   final List<StateModel> list;
-  final StateModel? stateModel;
+  final dynamic stateModel;
   final String title;
 
   const SelectStateCityBottomSheet(
-      {Key? key, required this.list, this.stateModel, required this.title})
+      {Key? key,
+      required this.list,
+      required this.stateModel,
+      required this.title})
       : super(key: key);
 
   @override
@@ -27,6 +30,7 @@ class SelectStateCityBottomSheetState
   @override
   void initState() {
     this.filtered = List.of(widget.list, growable: true);
+
     super.initState();
   }
 
@@ -93,10 +97,11 @@ class SelectStateCityBottomSheetState
                         children: [
                           Text(filtered[index].name,
                               style: MmmTextStyles.bodyMediumSmall(
-                                  textColor:
-                                      widget.stateModel == filtered[index]
-                                          ? kPrimary
-                                          : kModalPrimary)),
+                                  textColor: widget.stateModel != null &&
+                                          widget.stateModel.name ==
+                                              filtered[index].name
+                                      ? kPrimary
+                                      : kModalPrimary)),
                           SizedBox(
                             height: 8,
                           ),

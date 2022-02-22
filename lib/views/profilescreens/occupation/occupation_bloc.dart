@@ -16,7 +16,9 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
   late String nameOfOrg;
   late String income;
   CountryModel? countryModel;
-  StateModel? myState, city;
+  CountryModel? prevCountryModel;
+  StateModel? myState, city, prevState;
+
   AnualIncome? anualIncome;
 
   OccupationBloc(this.userRepository) : super(OccupationInitialState()) {
@@ -39,11 +41,29 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
       yield OccupationInitialState();
     }
     if (event is OnCountrySelected) {
-      this.countryModel = event.countryModel;
+      if (this.countryModel == null) {
+        this.countryModel = event.countryModel;
+      } else {
+        this.prevCountryModel = this.countryModel;
+        this.countryModel = event.countryModel;
+        if (this.prevCountryModel!.name != this.countryModel!.name) {
+          this.myState = null;
+          this.city = null;
+        }
+      }
+
       yield OccupationInitialState();
     }
     if (event is OnStateSelected) {
-      this.myState = event.stateModel;
+      if (this.myState == null) {
+        this.myState = event.stateModel;
+      } else {
+        this.prevState = this.myState;
+        this.myState = event.stateModel;
+        if (this.myState!.name != this.prevState!.name) {
+          this.city = null;
+        }
+      }
       yield OccupationInitialState();
     }
     if (event is OnCitySelected) {
@@ -77,6 +97,14 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
     if (event is UpdateCareer) {
       this.nameOfOrg = event.name;
       this.income = event.income;
+      if (this.nameOfOrg == '' &&
+          this.anualIncome == null &&
+          this.myState == null &&
+          this.city == null &&
+          this.occupation == null &&
+          this.education == null) {
+        yield OnError('Please enter all mandatory career details');
+      }
 
       if (this.nameOfOrg == '') {
         yield OnError('Enter name of organisation employeed in.');

@@ -160,11 +160,32 @@ class AppHelper {
     } else if (enumName == 'FamilyAfluenceLevel') {
       List<String> familyLevel = [
         'Rich',
-        'Upper MiddleClass',
-        'MiddleClass',
-        'Lower MiddleClass'
+        'Upper middle class',
+        'Middle class',
+        'Lower middle class'
       ];
       return familyLevel[enumEntry.index];
+    } else if (enumName == 'NoOfChildren') {
+      List<String> children = ['One', 'Two', 'Three or more'];
+      return children[enumEntry.index];
+    } else if (enumName == 'FatherOccupation') {
+      List<String> fatherOcc = [
+        'Employed',
+        'Business Man',
+        'Retired',
+        'Not employed',
+        'Passed away'
+      ];
+      return fatherOcc[enumEntry.index];
+    } else if (enumName == 'MotherOccupation') {
+      List<String> motherOcc = [
+        'Homemaker',
+        'Employed',
+        'Business woman',
+        'Retired',
+        'Passed away'
+      ];
+      return motherOcc[enumEntry.index];
     } else {
       return '';
     }
