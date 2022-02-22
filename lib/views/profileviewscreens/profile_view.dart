@@ -551,12 +551,16 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
             height: MediaQuery.of(context).size.height * 0.03,
             child: Row(
               children: [
-                Container(
-                    child: Text(
-                  profileDetails.name,
-                  maxLines: 1,
-                  style: MmmTextStyles.heading5(textColor: kPrimary),
-                )),
+                Flexible(
+                  child: RichText(
+                    overflow: TextOverflow.ellipsis,
+                    strutStyle: StrutStyle(fontSize: 12.0),
+                    text: TextSpan(
+                      style: MmmTextStyles.heading5(textColor: kPrimary),
+                      text: profileDetails.name,
+                    ),
+                  ),
+                ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
