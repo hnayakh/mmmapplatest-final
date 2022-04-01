@@ -22,28 +22,44 @@ class _MessageScreenState extends State<MessageScreen> {
   TextEditingController cntrlr = TextEditingController();
   var chats = FirebaseFirestore.instance.collection('chats');
   var chatDocId;
-  final user1id = '12';
-  final user2id = '45';
+  final user1id = '4';
+  final user2id = '2';
   var conState = 0;
 
-  void findCollection() {
-    chats
+  Future<void> findCollection() async {
+    //the problem is chatdocid takes too much time to generate and so initial data os blank screen
+    print('initstate');
+    QuerySnapshot querySnapshot = await chats
         .where('users', isEqualTo: {user1id: null, user2id: null})
         .limit(1)
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-          if (querySnapshot.docs.isNotEmpty) {
-            chatDocId = querySnapshot.docs.single.id;
-            print('Existsdocumentids=$chatDocId');
-          } else {
-            chats.add({
-              'users': {user1id: null, user2id: null}
-            }).then((value) {
-              chatDocId = value.id;
-              print('Createddocumentid=$chatDocId');
-            });
-          }
-        });
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      chatDocId = querySnapshot.docs.single.id;
+      print('Existsdocumentids=$chatDocId');
+    } else {
+      var value = await chats.add({
+        'users': {user1id: null, user2id: null}
+      });
+      chatDocId = value.id;
+      print('Createddocumentid=$chatDocId');
+    }
+
+    // .then((QuerySnapshot querySnapshot) {
+    //   if (querySnapshot.docs.isNotEmpty) {
+    //     chatDocId = querySnapshot.docs.single.id;
+    //     print('Existsdocumentids=$chatDocId');
+    //   } else {
+    //     chats.add({
+    //       'users': {user1id: null, user2id: null}
+    //     }).then((value) {
+    //       chatDocId = value.id;
+    //       print('Createddocumentid=$chatDocId');
+    //     });
+    //   }
+    // });
+    print('documentid');
+    print(chatDocId);
   }
 
   @override
@@ -186,119 +202,143 @@ class _MessageScreenState extends State<MessageScreen> {
             ],
           ),
         ),
-        body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-          stream: chats
-              .doc(chatDocId)
-              .collection('messages')
-              .orderBy('createdAt', descending: true)
-              .snapshots(),
-          builder: (context, snapshot) {
-            return Container(
-              padding: EdgeInsets.fromLTRB(16, 0, 16, 20),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 10,
-                  ),
-                  chatBubbles(snapshot),
-                  ConstrainedBox(
-                    constraints: BoxConstraints(minHeight: 70, maxHeight: 210),
-                    child: Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.fromLTRB(25, 15, 0, 18),
-                      decoration: BoxDecoration(
-                          boxShadow: [MmmShadow.textFieldMessaging()],
-                          color: kWhite,
-                          borderRadius: BorderRadius.circular(36)),
-                      child: Stack(children: [
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.6,
-                          child: TextField(
-                              controller: cntrlr,
-                              keyboardType: TextInputType.multiline,
-                              maxLines: null,
-                              decoration: InputDecoration(
-                                counterText: '',
-                                hintText: 'Type your message',
-                                hintStyle:
-                                    MmmTextStyles.bodyMedium(textColor: kBio),
-                                contentPadding: EdgeInsets.zero,
-                                border: InputBorder.none,
-                              )),
-                        ),
-                        Positioned(
-                            top: 5,
-                            right: 60,
-                            child: Material(
-                                color: Colors.transparent,
-                                child: InkWell(
-                                  onTap: () {},
-                                  child: SvgPicture.asset(
-                                    "images/camera.svg",
-                                    color: gray5,
-                                    height: 30,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ))),
-                        Positioned(
-                            top: 5,
-                            right: 20,
-                            child: Material(
-                                color: Colors.transparent,
-                                child: InkWell(
-                                  onTap: () {
-                                    sendMsg();
-                                  },
-                                  child: SvgPicture.asset(
-                                    "images/send.svg",
-                                    color: gray5,
-                                    height: 30,
-                                    fit: BoxFit.cover,
-                                  ),
-                                )))
-                      ]),
-                    ),
-                  )
-                ],
+        //messages collection doesnot exist for a new pair of users and is created only while sending a message.
+        body: Container(
+          padding: EdgeInsets.fromLTRB(16, 0, 16, 20),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 10,
               ),
-            );
-          },
+              StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                  stream: chats
+                      .doc('87hoQkLnMwR7py55YVJO')
+                      .collection('messages')
+                      .orderBy('createdAt', descending: true)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.data == null) {
+                      print('snapshot is nulls');
+                    }
+                    print(snapshot);
+                    if (!snapshot.hasData) {
+                      return Expanded(
+                          child: Center(
+                              child: CircularProgressIndicator.adaptive()));
+                    }
+                    return Expanded(
+                        child: ListView.builder(
+                            reverse: true,
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: (context, index) {
+                              Timestamp now = snapshot.data!.docs[index]
+                                  .data()['createdAt'];
+
+                              String formattedTime =
+                                  DateFormat.jm().format(now.toDate());
+                              print(formattedTime);
+                              // make sure this is senders id for correct ui
+                              if (snapshot.data!.docs[index].data()['id'] ==
+                                  user2id) {
+                                return MmmWidgets.messageSent(
+                                    snapshot.data!.docs[index].data()['text'],
+                                    formattedTime);
+                              } else {
+                                return MmmWidgets.messageReceived(
+                                    snapshot.data!.docs[index].data()['text'],
+                                    formattedTime);
+                              }
+                            }));
+                  }),
+              ConstrainedBox(
+                constraints: BoxConstraints(minHeight: 70, maxHeight: 210),
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.fromLTRB(25, 15, 0, 18),
+                  decoration: BoxDecoration(
+                      boxShadow: [MmmShadow.textFieldMessaging()],
+                      color: kWhite,
+                      borderRadius: BorderRadius.circular(36)),
+                  child: Stack(children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      child: TextField(
+                          controller: cntrlr,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          decoration: InputDecoration(
+                            counterText: '',
+                            hintText: 'Type your message',
+                            hintStyle:
+                                MmmTextStyles.bodyMedium(textColor: kBio),
+                            contentPadding: EdgeInsets.zero,
+                            border: InputBorder.none,
+                          )),
+                    ),
+                    Positioned(
+                        top: 5,
+                        right: 60,
+                        child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {},
+                              child: SvgPicture.asset(
+                                "images/camera.svg",
+                                color: gray5,
+                                height: 30,
+                                fit: BoxFit.cover,
+                              ),
+                            ))),
+                    Positioned(
+                        top: 5,
+                        right: 20,
+                        child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                sendMsg();
+                              },
+                              child: SvgPicture.asset(
+                                "images/send.svg",
+                                color: gray5,
+                                height: 30,
+                                fit: BoxFit.cover,
+                              ),
+                            )))
+                  ]),
+                ),
+              )
+            ],
+          ),
         ));
   }
 
   Widget chatBubbles(
       AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-    switch (snapshot.connectionState) {
-      case ConnectionState.none:
-        return Container();
-      case ConnectionState.waiting:
-        return Expanded(
-            child:
-                Container(child: Center(child: CircularProgressIndicator())));
-      case ConnectionState.active:
-      case ConnectionState.done:
-        return Expanded(
-            child: ListView.builder(
-                reverse: true,
-                itemCount: snapshot.data!.docs.length,
-                itemBuilder: (context, index) {
-                  Timestamp now =
-                      snapshot.data!.docs[index].data()['createdAt'];
-
-                  String formattedTime = DateFormat.jm().format(now.toDate());
-                  print(formattedTime);
-                  // snapshot.data!.docs[index].data()['createdAt']
-                  if (snapshot.data!.docs[index].data()['id'] == user1id) {
-                    return MmmWidgets.messageSent(
-                        snapshot.data!.docs[index].data()['text'],
-                        formattedTime);
-                  } else {
-                    return MmmWidgets.messageReceived(
-                        snapshot.data!.docs[index].data()['text'],
-                        formattedTime);
-                  }
-                }));
+    print('here');
+    print(snapshot);
+    if (snapshot.data == null) {
+      print('snapshot is null');
     }
+
+    return Expanded(
+        child: ListView.builder(
+            reverse: true,
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index) {
+              Timestamp now = snapshot.data!.docs[index].data()['createdAt'];
+
+              String formattedTime = DateFormat.jm().format(now.toDate());
+              print(formattedTime);
+              // make sure this is senders id for correct ui
+              if (snapshot.data!.docs[index].data()['id'] == user2id) {
+                return MmmWidgets.messageSent(
+                    snapshot.data!.docs[index].data()['text'], formattedTime);
+              } else {
+                return MmmWidgets.messageReceived(
+                    snapshot.data!.docs[index].data()['text'], formattedTime);
+              }
+            }));
   }
 
   void sendMsg() {

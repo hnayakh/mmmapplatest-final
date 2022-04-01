@@ -1762,6 +1762,71 @@ class MmmButtons {
     );
   }
 
+  static Widget appBarCurvedReset(Function()? action, String title,
+      {BuildContext? context}) {
+    return PreferredSize(
+      preferredSize: Size.fromHeight(74.0),
+      child: Container(
+        child: AppBar(
+          actions: [
+            GestureDetector(
+              onTap: action,
+              child: Text('Reset'),
+            )
+          ],
+          leading: Container(
+            margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
+            decoration: BoxDecoration(
+                color: kLight2.withOpacity(0.60),
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+                boxShadow: [
+                  MmmShadow.elevationbBackButton(
+                      shadowColor: kShadowColorForWhite)
+                ]),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {
+                    if (context != null) {
+                      Navigator.of(context).pop();
+                    }
+                  },
+                  child: Container(
+                      height: 32,
+                      width: 32,
+                      alignment: Alignment.center,
+                      child: SvgPicture.asset(
+                        'images/arrowLeft.svg',
+                        height: 17.45,
+                        width: 17.45,
+                        color: gray3,
+                      )),
+                ),
+              ),
+            ),
+          ),
+          toolbarHeight: 74.0,
+          title: Text(
+            title,
+            style: MmmTextStyles.heading4(textColor: kLight2),
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(bottomRight: Radius.circular(32)),
+          gradient: LinearGradient(
+              colors: [kPrimary, kSecondary],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight),
+        ),
+      ),
+      //preferredSize: Size(MediaQuery.of(context).size.width, 0.0),
+    );
+  }
+
   static PreferredSize appbarThin() {
     return PreferredSize(
       preferredSize: Size.fromHeight(0.0),

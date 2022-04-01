@@ -16,8 +16,10 @@ class ProfilePreferenceBloc
   late double maxAge;
   late double minHeight;
   late double maxHeight;
+  bool singleCountryInList = false;
   late List<MaritalStatus> maritalStatus = [];
   late CountryModel countryModel;
+  List<CountryModel> countryModelList = [];
   List<StateModel?> myState = [];
   List<StateModel?> city = [];
   List<SimpleMasterData> religion = [];
@@ -104,8 +106,25 @@ class ProfilePreferenceBloc
       this.countryModel = event.countryModel;
       yield ProfilePreferenceInitialState();
     }
+    if (event is OnCountryListSelected) {
+      this.singleCountryInList = false;
+      this.countryModelList = event.countryModelList;
+      if (this.countryModelList.length == 1) {
+        this.singleCountryInList = true;
+      }
+      yield ProfilePreferenceInitialState();
+    }
     if (event is GetAllStates) {
       var result = await this.userRepository.getStates(this.countryModel.id);
+      if (result.status == AppConstants.SUCCESS) {
+        yield OnGotStates(result.list);
+      } else {
+        yield OnError(result.message);
+      }
+    }
+    if (event is GetAllStatesFromCountryList) {
+      var result =
+          await this.userRepository.getStates(this.countryModelList[0].id);
       if (result.status == AppConstants.SUCCESS) {
         yield OnGotStates(result.list);
       } else {
@@ -183,6 +202,11 @@ class ProfilePreferenceBloc
     }
     if (event is RemoveReligion) {
       this.religion = [];
+      yield ProfilePreferenceInitialState();
+    }
+    if (event is RemoveCountryList) {
+      this.countryModelList = [];
+      this.singleCountryInList = false;
       yield ProfilePreferenceInitialState();
     }
     if (event is RemoveOccupation) {

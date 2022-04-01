@@ -52,6 +52,7 @@ class SimpleObserver extends BlocObserver {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
   Bloc.observer = SimpleObserver();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: kSecondary,

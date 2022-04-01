@@ -10,6 +10,12 @@ class CountrySelected extends ProfilePreferenceEvent {
   CountrySelected(this.countryModel);
 }
 
+class OnCountryListSelected extends ProfilePreferenceEvent {
+  final List<CountryModel> countryModelList;
+
+  OnCountryListSelected(this.countryModelList);
+}
+
 class OnStateSelected extends ProfilePreferenceEvent {
   final List<StateModel?> stateModel;
 
@@ -104,6 +110,8 @@ class OnCountrySelected extends ProfilePreferenceEvent {
 
 class GetAllStates extends ProfilePreferenceEvent {}
 
+class GetAllStatesFromCountryList extends ProfilePreferenceEvent {}
+
 class GetMyCities extends ProfilePreferenceEvent {}
 
 class OnCitySelected extends ProfilePreferenceEvent {
@@ -113,6 +121,8 @@ class OnCitySelected extends ProfilePreferenceEvent {
 }
 
 class RemoveCountry extends ProfilePreferenceEvent {}
+
+class RemoveCountryList extends ProfilePreferenceEvent {}
 
 class RemoveState extends ProfilePreferenceEvent {}
 

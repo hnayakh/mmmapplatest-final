@@ -4,6 +4,7 @@ import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 
+import 'filter_screens/filter_screen.dart';
 import 'matching_profile/matching_profile.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -20,7 +21,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  var index = 0;
+  var index = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -77,10 +78,14 @@ class HomeScreenState extends State<HomeScreen> {
 
   Widget getContent() {
     switch (index) {
-      case 0:
+      case -1:
         return MatchingProfileScreen(
           userRepository: widget.userRepository,
           list: widget.list,
+        );
+      case 1:
+        return Filter(
+          userRepository: widget.userRepository,
         );
     }
     return Container();
