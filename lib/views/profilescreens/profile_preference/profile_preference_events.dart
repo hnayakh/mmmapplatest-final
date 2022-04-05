@@ -153,3 +153,5 @@ class AbilityStatusChanged extends ProfilePreferenceEvent {
 
   AbilityStatusChanged(this.abilityStatus);
 }
+
+class CompleteFilter extends ProfilePreferenceEvent {}

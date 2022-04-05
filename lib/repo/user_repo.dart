@@ -174,8 +174,9 @@ class UserRepository {
     return this.apiClient.getMyMatchingProfile(this.useDetails!.id);
   }
 
-  Future<ProfileDetailsResponse> getOtheruserDetails(String id, ProfileActivationStatus activationStatus) async {
-    return apiClient.getOtherUserDetails(id,activationStatus);
+  Future<ProfileDetailsResponse> getOtheruserDetails(
+      String id, ProfileActivationStatus activationStatus) async {
+    return apiClient.getOtherUserDetails(id, activationStatus);
   }
 
   Future<String?> uploadImage(String images) async {
@@ -202,6 +203,47 @@ class UserRepository {
       List<SmokingHabit> smokingHabit,
       AbilityStatus abilityStatus) async {
     return this.apiClient.completePreference(
+        maxHeight,
+        minHeight,
+        maxAge,
+        minAge,
+        maritalStatus,
+        countryModel,
+        myState,
+        city,
+        religion,
+        subCaste,
+        motherTongue,
+        occupation,
+        education,
+        annualIncome,
+        eatingHabit,
+        drinkingHabit,
+        smokingHabit,
+        abilityStatus,
+        useDetails!.id);
+  }
+
+  Future<SimpleResponse> completeFilter(
+      double maxHeight,
+      double minHeight,
+      double maxAge,
+      double minAge,
+      List<MaritalStatus> maritalStatus,
+      List<CountryModel> countryModel,
+      List<StateModel?> myState,
+      List<StateModel?> city,
+      List<SimpleMasterData> religion,
+      List<dynamic> subCaste,
+      List<SimpleMasterData> motherTongue,
+      List<String?> occupation,
+      List<Education> education,
+      List<AnualIncome> annualIncome,
+      List<EatingHabit> eatingHabit,
+      List<DrinkingHabit> drinkingHabit,
+      List<SmokingHabit> smokingHabit,
+      AbilityStatus abilityStatus) async {
+    return this.apiClient.completeFilter(
         maxHeight,
         minHeight,
         maxAge,

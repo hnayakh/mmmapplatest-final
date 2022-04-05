@@ -567,12 +567,13 @@ class ApiClient {
     }
   }
 
-  Future<ProfileDetailsResponse> getOtherUserDetails(String id, ProfileActivationStatus activationStatus) async {
+  Future<ProfileDetailsResponse> getOtherUserDetails(
+      String id, ProfileActivationStatus activationStatus) async {
     // try {
     var response =
         await this.dio.get("${AppConstants.ENDPOINT}users/basic/$id");
     if (response.statusCode == 200 || response.statusCode == 201) {
-      return ProfileDetailsResponse.fromJson(response.data,activationStatus);
+      return ProfileDetailsResponse.fromJson(response.data, activationStatus);
     }
     return ProfileDetailsResponse.fromError(
         "Error Occurred. Please try again.");
@@ -638,6 +639,61 @@ class ApiClient {
         "maxHeight": maxHeight * 30.48,
         "maritalStatus": maritalStatus.map((e) => e.index).toList(),
         "country": [countryModel.id],
+        "state": myState.map((e) => e!.id).toList(),
+        "city": city.map((e) => e!.id).toList(),
+        "religion": religion.map((e) => e.id).toList(),
+        "caste": subCaste,
+        "motherTongue": motherTongue.map((e) => e.id).toList(),
+        "highestEducation": education.map((e) => e.id).toList(),
+        "occupation": occupation.map((e) => e!).toList(),
+        "maxIncome": annualIncome.map((e) => e.index).toList(),
+        "minIncome": annualIncome.map((e) => e.index).toList(),
+        "dietaryHabits": annualIncome.map((e) => e.index).toList(),
+        "drinkingHabits": annualIncome.map((e) => e.index).toList(),
+        "smokingHabits": annualIncome.map((e) => e.index).toList(),
+        "challenged": abilityStatus.index
+      });
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return SimpleResponse.fromJson(response.data);
+      } else {
+        return SimpleResponse.fromError("Please Try Again");
+      }
+    } catch (error) {
+      return SimpleResponse.fromError("Please Try Again");
+    }
+  }
+
+  Future<SimpleResponse> completeFilter(
+      double maxHeight,
+      double minHeight,
+      double maxAge,
+      double minAge,
+      List<MaritalStatus> maritalStatus,
+      List<CountryModel> countryModel,
+      List<StateModel?> myState,
+      List<StateModel?> city,
+      List<SimpleMasterData> religion,
+      List<dynamic> subCaste,
+      List<SimpleMasterData> motherTongue,
+      List<String?> occupation,
+      List<Education> education,
+      List<AnualIncome> annualIncome,
+      List<EatingHabit> eatingHabit,
+      List<DrinkingHabit> drinkingHabit,
+      List<SmokingHabit> smokingHabit,
+      AbilityStatus abilityStatus,
+      String id) async {
+    try {
+      Response response = await this
+          .dio
+          .post(AppConstants.ENDPOINT + "users/app/users/filter", data: {
+        "userBasicId": id,
+        "minAge": minAge,
+        "maxAge": maxAge,
+        "minHeight": minHeight * 30.48,
+        "maxHeight": maxHeight * 30.48,
+        "maritalStatus": maritalStatus.map((e) => e.index).toList(),
+        "country": countryModel.map((e) => e.id).toList(),
         "state": myState.map((e) => e!.id).toList(),
         "city": city.map((e) => e!.id).toList(),
         "religion": religion.map((e) => e.id).toList(),

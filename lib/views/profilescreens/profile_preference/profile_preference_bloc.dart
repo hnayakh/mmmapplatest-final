@@ -16,7 +16,7 @@ class ProfilePreferenceBloc
   late double maxAge;
   late double minHeight;
   late double maxHeight;
-  bool singleCountryInList = false;
+  bool singleCountryInList = true;
   late List<MaritalStatus> maritalStatus = [];
   late CountryModel countryModel;
   List<CountryModel> countryModelList = [];
@@ -74,6 +74,7 @@ class ProfilePreferenceBloc
     this.countryModel = this.userRepository.useDetails!.countryModel;
     this.religion.add(this.userRepository.useDetails!.religion);
     this.motherTongue.add(this.userRepository.useDetails!.motherTongue);
+    this.countryModelList.add(countryModel);
   }
 
   @override
@@ -289,6 +290,33 @@ class ProfilePreferenceBloc
         print(this.userRepository.useDetails!.registrationStep);
 
         yield ProfilePreferenceComplete();
+      } else {
+        yield OnError(result.message);
+      }
+    }
+
+    if (event is CompleteFilter) {
+      var result = await this.userRepository.completeFilter(
+          this.maxHeight,
+          this.minHeight,
+          this.maxAge,
+          this.minAge,
+          this.maritalStatus,
+          this.countryModelList,
+          this.myState,
+          this.city,
+          this.religion,
+          this.subCaste,
+          this.motherTongue,
+          this.occupation,
+          this.education,
+          this.annualIncome,
+          this.eatingHabit,
+          this.drinkingHabit,
+          this.smokingHabit,
+          this.abilityStatus);
+      if (result.status == AppConstants.SUCCESS) {
+        yield ProfileFilterComplete();
       } else {
         yield OnError(result.message);
       }

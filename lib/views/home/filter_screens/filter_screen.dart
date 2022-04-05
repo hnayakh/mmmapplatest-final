@@ -153,7 +153,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
                 child: SafeArea(
                     child: Column(
                   children: [
-                    MmmButtons.appBarCurvedReset(() {}, 'Profile Preference',
+                    MmmButtons.appBarCurved('Profile Preference',
                         context: context),
                     Expanded(
                         child: Container(
@@ -293,7 +293,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
                             ),
                             MmmButtons.primaryButton("Apply Filter", () {
                               BlocProvider.of<ProfilePreferenceBloc>(context)
-                                  .add(CompletePreference());
+                                  .add(CompleteFilter());
                             }),
                           ],
                         ),
@@ -332,6 +332,12 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
           if (state is OnError) {
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text(state.message),
+              backgroundColor: kError,
+            ));
+          }
+          if (state is ProfileFilterComplete) {
+            Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text('Filters added'),
               backgroundColor: kError,
             ));
           }

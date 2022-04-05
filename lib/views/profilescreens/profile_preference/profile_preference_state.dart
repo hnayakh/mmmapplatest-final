@@ -40,6 +40,7 @@ class OnGotCasteList extends ProfilePreferenceState {
 
   OnGotCasteList(this.caste);
 }
-class ProfilePreferenceComplete extends ProfilePreferenceState{
 
-}
+class ProfilePreferenceComplete extends ProfilePreferenceState {}
+
+class ProfileFilterComplete extends ProfilePreferenceState {}
