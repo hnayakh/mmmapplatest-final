@@ -224,7 +224,7 @@ class UserRepository {
         useDetails!.id);
   }
 
-  Future<SimpleResponse> completeFilter(
+  Future<MatchingProfileResponse> completeFilter(
       double maxHeight,
       double minHeight,
       double maxAge,

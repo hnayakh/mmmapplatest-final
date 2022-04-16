@@ -663,7 +663,7 @@ class ApiClient {
     }
   }
 
-  Future<SimpleResponse> completeFilter(
+  Future<MatchingProfileResponse> completeFilter(
       double maxHeight,
       double minHeight,
       double maxAge,
@@ -709,12 +709,13 @@ class ApiClient {
         "challenged": abilityStatus.index
       });
       if (response.statusCode == 200 || response.statusCode == 201) {
-        return SimpleResponse.fromJson(response.data);
+        print(response.data);
+        return MatchingProfileResponse.fromJson(response.data);
       } else {
-        return SimpleResponse.fromError("Please Try Again");
+        return MatchingProfileResponse.fromError("Please Try Again");
       }
     } catch (error) {
-      return SimpleResponse.fromError("Please Try Again");
+      return MatchingProfileResponse.fromError("Please Try Again");
     }
   }
 }

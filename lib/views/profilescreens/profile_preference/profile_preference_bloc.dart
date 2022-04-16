@@ -316,7 +316,7 @@ class ProfilePreferenceBloc
           this.smokingHabit,
           this.abilityStatus);
       if (result.status == AppConstants.SUCCESS) {
-        yield ProfileFilterComplete();
+        yield ProfileFilterComplete(result.list);
       } else {
         yield OnError(result.message);
       }

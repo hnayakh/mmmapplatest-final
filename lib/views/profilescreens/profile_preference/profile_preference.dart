@@ -822,7 +822,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   String getStringFrom(List<dynamic> maritalStatus) {
     String value = "";
     for (var i = 0; i < maritalStatus.length; i++) {
-      value = value + describeEnum(maritalStatus[i]);
+      value = value + AppHelper.getStringFromEnum(maritalStatus[i]);
       if (i < maritalStatus.length - 1) {
         value = value + ", ";
       }

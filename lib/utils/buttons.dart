@@ -663,8 +663,12 @@ class MmmButtons {
                         children: [
                           Text('Highest Education: ',
                               style: MmmTextStyles.heading6()),
-                          Text(highiestEducation,
-                              style: MmmTextStyles.bodySmall()),
+                          Expanded(
+                            child: Text(highiestEducation,
+                                overflow: TextOverflow.ellipsis,
+                                // maxLines: 2,
+                                style: MmmTextStyles.bodySmall()),
+                          )
                         ],
                       ),
                     ],
@@ -1752,10 +1756,11 @@ class MmmButtons {
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(bottomRight: Radius.circular(32)),
-          gradient: LinearGradient(
-              colors: [kPrimary, kSecondary],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight),
+          color: kSecondary
+          // gradient: LinearGradient(
+          //     colors: [kPrimary, kSecondary],
+          //     begin: Alignment.centerLeft,
+          //     end: Alignment.centerRight),
         ),
       ),
       //preferredSize: Size(MediaQuery.of(context).size.width, 0.0),

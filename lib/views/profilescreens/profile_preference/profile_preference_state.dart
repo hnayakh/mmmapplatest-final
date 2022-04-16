@@ -1,4 +1,5 @@
 import 'package:makemymarry/bloc/base_event_state.dart';
+import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 
 class ProfilePreferenceState extends BaseEventState {}
@@ -43,4 +44,8 @@ class OnGotCasteList extends ProfilePreferenceState {
 
 class ProfilePreferenceComplete extends ProfilePreferenceState {}
 
-class ProfileFilterComplete extends ProfilePreferenceState {}
+class ProfileFilterComplete extends ProfilePreferenceState {
+  final List<MatchingProfile> list;
+
+  ProfileFilterComplete(this.list);
+}

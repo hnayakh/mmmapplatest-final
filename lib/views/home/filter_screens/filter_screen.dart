@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/repo/user_repo.dart';
@@ -336,10 +337,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
             ));
           }
           if (state is ProfileFilterComplete) {
-            Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text('Filters added'),
-              backgroundColor: kError,
-            ));
+            navigateToFilter(state.list);
           }
         },
       ),
@@ -1066,5 +1064,14 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
               userRepository: userRepo,
             )));
     // break;
+  }
+
+  void navigateToFilter(List<MatchingProfile> list) {
+    var userRepo =
+        BlocProvider.of<ProfilePreferenceBloc>(context).userRepository;
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => ProfileLoader(
+          userRepository: userRepo,
+        )));
   }
 }

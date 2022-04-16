@@ -294,7 +294,7 @@ class MmmWidgets {
               Container(
                   height: 60,
                   child: Text(
-                    'your profile is created successfully on $date with ${user.displayId} id',
+                    'your profile is created successfully on $date with ${user.displayId.toUpperCase()} id',
                     textAlign: TextAlign.center,
                     style: MmmTextStyles.bodySmall(textColor: kDark5),
                   )),

@@ -55,9 +55,9 @@ void main() async {
 
   Bloc.observer = SimpleObserver();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: kSecondary,
+      systemNavigationBarColor:Colors.grey[400],
       // navigation bar color
-      statusBarColor: kSecondary,
+      statusBarColor: kSecondary ,
       statusBarBrightness: Brightness.dark // status bar colorr
       ));
   runApp(MyApp());
