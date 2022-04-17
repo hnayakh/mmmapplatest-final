@@ -38,70 +38,73 @@ class ApplyCouponScreenState extends State<ApplyCouponScreen> {
   Widget build(BuildContext context) {
     return BlocConsumer<ApplyCouponBloc, ApplyCouponState>(
         builder: (context, state) {
-          return Container(
-              padding: kMargin12,
-              height: 600,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-              ),
-              child: Column(
-                children: [
-                  Expanded(
+      return Container(
+          padding: kMargin12,
+          height: 600,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+          ),
+          child: Column(
+            children: [
+              Expanded(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                    MmmButtons.backButton(context),
+                    SizedBox(
+                      height: 24,
+                    ),
+                    Text(
+                      'Apply Promo Code',
+                      textScaleFactor: 1.0,
+                      style: MmmTextStyles.bodyMedium(textColor: kDark5),
+                    ),
+                    Divider(),
+                    Container(
                       child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                        MmmButtons.backButton(context),
-                        SizedBox(
-                          height: 24,
-                        ),
-                        Text(
-                          'Apply Promo Code',
-                          textScaleFactor: 1.0,
-                          style: MmmTextStyles.bodyMedium(textColor: kDark5),
-                        ),
-                        Divider(),
-                        Container(
-                          child: Column(
-                            children: [
-                              MmmTextFileds.textFiledWithLabel(
-                                  null, "Enter Code", promoController,
-                                  textCapitalization:
-                                      TextCapitalization.characters),
-                              SizedBox(
-                                height: 4,
-                              ),
-                              state is OnError
-                                  ? Text(
-                                      state.message,
-                                      textScaleFactor: 1.0,
-                                      style: MmmTextStyles.bodyRegular(
-                                          textColor: kPrimary),
-                                    )
-                                  : Container(),
-                            ],
+                        children: [
+                          MmmTextFileds.textFiledWithLabel(
+                              null, "Enter Code", promoController,
+                              textCapitalization:
+                                  TextCapitalization.characters),
+                          SizedBox(
+                            height: 4,
                           ),
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 16, horizontal: 16),
-                        ),
-                      ])),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  state is OnLoading
-                      ? Center(
-                          child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation(kPrimary),
-                          ),
-                        )
-                      : MmmButtons.enabledRedButtonbodyMedium(50, 'Apply',
-                          action: () {
-                          BlocProvider.of<ApplyCouponBloc>(context).add(
-                              ApplyCouponCode(promoController.text.trim()));
-                        })
-                ],
-              ));
-        },
-        listener: (context, state) {});
+                          state is OnError
+                              ? Text(
+                                  state.message,
+                                  textScaleFactor: 1.0,
+                                  style: MmmTextStyles.bodyRegular(
+                                      textColor: kPrimary),
+                                )
+                              : Container(),
+                        ],
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 16, horizontal: 16),
+                    ),
+                  ])),
+              SizedBox(
+                height: 24,
+              ),
+              state is OnLoading
+                  ? Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation(kPrimary),
+                      ),
+                    )
+                  : MmmButtons.enabledRedButtonbodyMedium(50, 'Apply',
+                      action: () {
+                      BlocProvider.of<ApplyCouponBloc>(context)
+                          .add(ApplyCouponCode(promoController.text.trim()));
+                    })
+            ],
+          ));
+    }, listener: (context, state) {
+      if (state is OnCouponApplied) {
+        Navigator.of(context).pop(state.couponDetails);
+      }
+    });
   }
 }

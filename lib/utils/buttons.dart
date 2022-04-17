@@ -1803,25 +1803,25 @@ class MmmButtons {
                       height: 6,
                     ),
                     status == ProfileActivationStatus.Verified
-                        ?
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SvgPicture.asset(
-                          'images/Verified.svg',
-                          height: 20.51,
-                          color: Colors.white,
-                        ),
-                        SizedBox(
-                          width: 4,
-                        ),
-                        Text(
-                          "Verified User",
-                          style: MmmTextStyles.bodyRegular(textColor: kLight2),
-                        ),
-                      ],
-                    )
-                    : Container()
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SvgPicture.asset(
+                                'images/Verified.svg',
+                                height: 20.51,
+                                color: Colors.white,
+                              ),
+                              SizedBox(
+                                width: 4,
+                              ),
+                              Text(
+                                "Verified User",
+                                style: MmmTextStyles.bodyRegular(
+                                    textColor: kLight2),
+                              ),
+                            ],
+                          )
+                        : Container()
                   ],
                 )
               ],
@@ -3257,7 +3257,7 @@ class MmmButtons {
     );
   }
 
-  static Container acceptInterestScreen() {
+  static Container acceptInterestScreen(Function()? action) {
     return Container(
       height: 28,
       width: 91,
@@ -3266,7 +3266,7 @@ class MmmButtons {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () {},
+            onTap: action,
             child: Center(
               child: Row(
                 children: [
@@ -3349,7 +3349,7 @@ class MmmButtons {
     );
   }
 
-  static Container cancelButtonInterestScreen() {
+  static Container cancelButtonInterestScreen(Function()? action) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
@@ -3360,7 +3360,7 @@ class MmmButtons {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () {},
+            onTap: action,
             child: Container(
               alignment: Alignment.center,
               height: 28,
@@ -3406,7 +3406,7 @@ class MmmButtons {
     );
   }
 
-  static Container rejectButtonInterestScreen() {
+  static Container rejectButtonInterestScreen(Function()? action) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
@@ -3415,7 +3415,7 @@ class MmmButtons {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {},
+          onTap: action,
           child: Container(
             alignment: Alignment.center,
             height: 28,
