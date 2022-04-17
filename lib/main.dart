@@ -16,6 +16,8 @@ import 'package:makemymarry/views/home/menu/wallet/wallet_main.dart';
 
 import 'package:makemymarry/views/widget_views.dart';
 
+import 'views/stackviewscreens/sidebar screens/interest status/interest_status_screen.dart';
+
 // @dart=2.9
 class SimpleObserver extends BlocObserver {
   @override
@@ -55,9 +57,9 @@ void main() async {
 
   Bloc.observer = SimpleObserver();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor:Colors.grey[400],
+      systemNavigationBarColor: Colors.grey[400],
       // navigation bar color
-      statusBarColor: kSecondary ,
+      statusBarColor: kSecondary,
       statusBarBrightness: Brightness.dark // status bar colorr
       ));
   runApp(MyApp());

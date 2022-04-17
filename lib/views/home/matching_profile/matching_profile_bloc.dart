@@ -11,21 +11,37 @@ class MatchingProfileBloc
   final UserRepository userRepository;
   List<MatchingProfile> list;
   int selectedPos = 0;
+  List<bool> isLikedList = [];
 
   MatchingProfileBloc(this.userRepository, this.list)
-      : super(MatchingProfileInitialState());
+      : super(MatchingProfileInitialState()) {
+    this.isLikedList = List.generate(list.length, (index) => false);
+  }
 
   @override
   Stream<MatchingProfileState> mapEventToState(
       MatchingProfileEvent event) async* {
     yield OnLoading();
     if (event is GetProfileDetails) {
-      var result = await this
-          .userRepository
-          .getOtheruserDetails(this.list[event.pos].id,this.list[event.pos].activationStatus);
+      var result = await this.userRepository.getOtheruserDetails(
+          this.list[event.pos].id, this.list[event.pos].activationStatus);
 
       if (result.status == AppConstants.SUCCESS) {
         yield OnGotProfileDetails(result.profileDetails);
+      } else {
+        yield OnError(result.message);
+      }
+    }
+
+    if (event is IsLikedAEvent) {
+      this.isLikedList[event.index] = !this.isLikedList[event.index];
+      var likedByUserId = this.userRepository.useDetails!.id;
+      var likedUserId = this.list[event.index].id;
+      var result =
+          await this.userRepository.setLikeStatus(likedUserId, likedByUserId);
+      if (result.status == AppConstants.SUCCESS) {
+        list.removeAt(event.index);
+        yield MatchingProfileInitialState();
       } else {
         yield OnError(result.message);
       }
