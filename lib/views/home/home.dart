@@ -3,6 +3,7 @@ import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
+import 'package:makemymarry/views/home/menu/sidebar_account_screen.dart';
 
 import 'filter_screens/filter_screen.dart';
 import 'matching_profile/matching_profile.dart';
@@ -85,6 +86,10 @@ class HomeScreenState extends State<HomeScreen> {
         );
       case 1:
         return Filter(
+          userRepository: widget.userRepository,
+        );
+      case 4:
+        return SidebarAccount(
           userRepository: widget.userRepository,
         );
     }

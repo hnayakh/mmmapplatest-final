@@ -12,7 +12,7 @@ import 'package:makemymarry/views/signinscreens/signin_screen1.dart';
 import 'package:makemymarry/views/splash_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/connect/chat_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/message_screen.dart';
-import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/wallet%20screens/wallet_main.dart';
+import 'package:makemymarry/views/home/menu/wallet/wallet_main.dart';
 
 import 'package:makemymarry/views/widget_views.dart';
 

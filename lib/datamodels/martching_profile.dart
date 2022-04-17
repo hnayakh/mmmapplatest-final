@@ -162,16 +162,18 @@ class ProfileDetails {
     this.familyState = userFamilyBackground["stateName"];
     this.familyCity = userFamilyBackground["cityName"];
 
-    var userFamilyDetail = json["userFamilyDetails"][0];
+    if (json["userFamilyDetails"].length > 0) {
+      var userFamilyDetail = json["userFamilyDetails"][0];
 
-    this.fatherOccupation =
-        FatherOccupation.values[userFamilyDetail["fatherOccupation"]];
-    this.motherOccupation =
-        MotherOccupation.values[userFamilyDetail["motherOccupation"]];
-    this.noOfBrother = userFamilyDetail["numberOfBrothers"];
-    this.brothersMarried = userFamilyDetail["marriedNumberOfBrothers"];
-    this.noOfSister = userFamilyDetail["numberOfSisters"];
-    this.sistersMarried = userFamilyDetail["marriedNumberOfSisters"];
+      this.fatherOccupation =
+          FatherOccupation.values[userFamilyDetail["fatherOccupation"]];
+      this.motherOccupation =
+          MotherOccupation.values[userFamilyDetail["motherOccupation"]];
+      this.noOfBrother = userFamilyDetail["numberOfBrothers"];
+      this.brothersMarried = userFamilyDetail["marriedNumberOfBrothers"];
+      this.noOfSister = userFamilyDetail["numberOfSisters"];
+      this.sistersMarried = userFamilyDetail["marriedNumberOfSisters"];
+    }
     var userImages = json["userImages"];
     for (var item in userImages) {
       this.images.add(item["imageURL"]);
