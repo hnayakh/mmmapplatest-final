@@ -29,13 +29,13 @@ apply plugin: 'com.google.gms.google-services'
 android {
     signingConfigs {
         debug {
-            storeFile file('F:\\Keys\\irongates\\makemymarry.jks')
+            storeFile file('E:\\Keys\\irongates\\makemymarry.jks')
             storePassword 'makemymarry'
             keyAlias 'makemymarry'
             keyPassword 'makemymarry'
         }
         release {
-            storeFile file('F:\\Keys\\irongates\\makemymarry.jks')
+            storeFile file('E:\\Keys\\irongates\\makemymarry.jks')
             storePassword 'makemymarry'
             keyAlias 'makemymarry'
             keyPassword 'makemymarry'

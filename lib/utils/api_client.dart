@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:dio_logger/dio_logger.dart';
+import 'package:makemymarry/datamodels/interests_model.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/datamodels/profile_data.dart';
@@ -716,6 +717,85 @@ class ApiClient {
       }
     } catch (error) {
       return MatchingProfileResponse.fromError("Please Try Again");
+    }
+  }
+
+  Future<LikeStatusResponse> setLikeStatus(
+      String likedUserId, String likedByUserId) async {
+    try {
+      var response = await this
+          .dio
+          .post(AppConstants.ENDPOINT + 'connects/user_request', data: {
+        "requestingUserBasicId": likedByUserId,
+        "requestedUserBasicId": likedUserId,
+        "userRequestId": "string",
+        "operation": 0
+      });
+      return LikeStatusResponse.fromJson(response.data);
+    } catch (error) {
+      return LikeStatusResponse.fromError("Please Try Again");
+    }
+  }
+
+  Future<InterestResponse> getInterestList(String id) async {
+    try {
+      var response = await this
+          .dio
+          .get(AppConstants.ENDPOINT + 'connects/user_request/$id');
+      return InterestResponse.fromJson(response.data);
+    } catch (error) {
+      return InterestResponse.fromError(error.toString());
+    }
+  }
+
+  Future<LikeStatusResponse> cancelSentInterest(
+      String currentUser, String otherUser, String requestId) async {
+    try {
+      var response = await this
+          .dio
+          .post(AppConstants.ENDPOINT + 'connects/user_request', data: {
+        "requestingUserBasicId": currentUser,
+        "requestedUserBasicId": otherUser,
+        "userRequestId": requestId,
+        "operation": 5
+      });
+      return LikeStatusResponse.fromJson(response.data);
+    } catch (error) {
+      return LikeStatusResponse.fromError(error.toString());
+    }
+  }
+
+  Future<LikeStatusResponse> rejectReceivedInterest(
+      String currentUser, String otherUser, String requestId) async {
+    try {
+      var response = await this
+          .dio
+          .post(AppConstants.ENDPOINT + 'connects/user_request', data: {
+        "requestingUserBasicId": currentUser,
+        "requestedUserBasicId": otherUser,
+        "userRequestId": requestId,
+        "operation": 2
+      });
+      return LikeStatusResponse.fromJson(response.data);
+    } catch (error) {
+      return LikeStatusResponse.fromError(error.toString());
+    }
+  }
+
+  Future<LikeStatusResponse> acceptReceivedInterest(
+      String currentUser, String otherUser, String requestId) async {
+    try {
+      var response = await this
+          .dio
+          .post(AppConstants.ENDPOINT + 'connects/user_request', data: {
+        "requestingUserBasicId": currentUser,
+        "requestedUserBasicId": otherUser,
+        "userRequestId": requestId,
+        "operation": 1
+      });
+      return LikeStatusResponse.fromJson(response.data);
+    } catch (error) {
+      return LikeStatusResponse.fromError(error.toString());
     }
   }
 }

@@ -111,13 +111,13 @@ class WidgetViewState extends State<WidgetView> {
         return MmmButtons.preferenceFliterScreen('Marital status');
         break;
       case 26:
-        return MmmButtons.acceptInterestScreen();
+        return MmmButtons.acceptInterestScreen(() {});
         break;
       case 27:
-        return MmmButtons.cancelButtonInterestScreen();
+        return MmmButtons.cancelButtonInterestScreen(() {});
         break;
       case 28:
-        return MmmButtons.rejectButtonInterestScreen();
+        return MmmButtons.rejectButtonInterestScreen(() {});
         break;
       case 29:
         return MmmButtons.verifyAccountFliterScreen();

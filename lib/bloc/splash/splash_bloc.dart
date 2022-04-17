@@ -25,6 +25,7 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
         var userDetails = await this.userRepository.getUserDetails();
 
         this.userRepository.useDetails = userDetails;
+        print(this.userRepository.useDetails!.id);
         //testing only
         // this.userRepository.useDetails!.registrationStep = 5;
         //userDetails = null;

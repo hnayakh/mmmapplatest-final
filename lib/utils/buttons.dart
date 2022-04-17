@@ -1755,13 +1755,13 @@ class MmmButtons {
           elevation: 0.0,
         ),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(bottomRight: Radius.circular(32)),
-          color: kSecondary
-          // gradient: LinearGradient(
-          //     colors: [kPrimary, kSecondary],
-          //     begin: Alignment.centerLeft,
-          //     end: Alignment.centerRight),
-        ),
+            borderRadius: BorderRadius.only(bottomRight: Radius.circular(32)),
+            color: kSecondary
+            // gradient: LinearGradient(
+            //     colors: [kPrimary, kSecondary],
+            //     begin: Alignment.centerLeft,
+            //     end: Alignment.centerRight),
+            ),
       ),
       //preferredSize: Size(MediaQuery.of(context).size.width, 0.0),
     );
@@ -3181,7 +3181,7 @@ class MmmButtons {
     );
   }
 
-  static Container acceptInterestScreen() {
+  static Container acceptInterestScreen(Function()? action) {
     return Container(
       height: 28,
       width: 91,
@@ -3190,7 +3190,7 @@ class MmmButtons {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () {},
+            onTap: action,
             child: Center(
               child: Row(
                 children: [
@@ -3273,7 +3273,7 @@ class MmmButtons {
     );
   }
 
-  static Container cancelButtonInterestScreen() {
+  static Container cancelButtonInterestScreen(Function()? action) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
@@ -3284,7 +3284,7 @@ class MmmButtons {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () {},
+            onTap: action,
             child: Container(
               alignment: Alignment.center,
               height: 28,
@@ -3330,7 +3330,7 @@ class MmmButtons {
     );
   }
 
-  static Container rejectButtonInterestScreen() {
+  static Container rejectButtonInterestScreen(Function()? action) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
@@ -3339,7 +3339,7 @@ class MmmButtons {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {},
+          onTap: action,
           child: Container(
             alignment: Alignment.center,
             height: 28,
