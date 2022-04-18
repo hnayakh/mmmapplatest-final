@@ -10,6 +10,7 @@ class RechargeConnectBloc
   final UserRepository userRepository;
   int connectCount = 1;
   double totalAmount = 0, tax = 0, promoDiscount = 0;
+  double totalPayable = 0;
   late ConnectPriceDetails connectPriceDetails;
 
   RechargeConnectBloc(this.userRepository)
@@ -23,7 +24,13 @@ class RechargeConnectBloc
       var response = await this.userRepository.getConnectPrice();
       if (response.status == AppConstants.SUCCESS) {
         connectPriceDetails = response.couponDetails!;
-        this.totalAmount = connectPriceDetails.discountedPrice;
+        this.totalAmount = connectPriceDetails.connectPrice;
+        promoDiscount = (connectPriceDetails.connectPrice *
+                connectPriceDetails.discount /
+                100)
+            .toDouble();
+        this.tax = (this.totalAmount * 18 / 100).roundToDouble();
+        this.totalPayable = this.totalAmount + this.tax - this.promoDiscount;
       }
       yield OnGotConnectDetails();
     }
