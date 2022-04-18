@@ -844,4 +844,15 @@ class ApiClient {
       return CurrentBalanceResponse.fromError("Something went wrong");
     }
   }
+
+  Future<RechargeHistoryResponse> getTransactionHistory(String id) async {
+    try {
+      var response = await this.dio.get(
+            AppConstants.ENDPOINT + 'connects/recharge/$id',
+          );
+      return RechargeHistoryResponse.fromJson(response.data);
+    } catch (error) {
+      return RechargeHistoryResponse.fromError("Something went wrong");
+    }
+  }
 }

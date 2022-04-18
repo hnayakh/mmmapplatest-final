@@ -1,5 +1,6 @@
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/app_helper.dart';
+import 'package:makemymarry/views/home/menu/wallet/recharge_history/RechargeHistoryScreen.dart';
 
 class CouponDetails {
   late String id, code;
@@ -117,5 +118,42 @@ class CurrentBalanceResponse {
     this.status = AppConstants.FAILURE;
     this.message = message;
     this.balance = 0;
+  }
+}
+
+class RechargeHistoryItem {
+  late String date, transactionId;
+  late int connectCount;
+  late double amount;
+
+  RechargeHistoryItem.fromJson(json) {
+    this.date = json["date"];
+    this.transactionId = json["transactionId"];
+    this.connectCount = json["connectCount"];
+    this.amount = (json["actualAmount"]).toDouble();
+  }
+}
+
+class RechargeHistoryResponse {
+  late String message, status;
+  List<RechargeHistoryItem> list = [];
+
+  RechargeHistoryResponse.fromError(json) {
+    this.message = json;
+    this.status = AppConstants.FAILURE;
+  }
+
+  RechargeHistoryResponse.fromJson(json) {
+    this.message = json["message"];
+    this.status = json["type"];
+    this.list = createList(json["data"]);
+  }
+
+  List<RechargeHistoryItem> createList(json) {
+    List<RechargeHistoryItem> list = [];
+    for (var item in json) {
+      list.add(RechargeHistoryItem.fromJson(item));
+    }
+    return list;
   }
 }

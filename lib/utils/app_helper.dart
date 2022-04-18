@@ -190,4 +190,24 @@ class AppHelper {
       return '';
     }
   }
+
+  static String getTimeGone(String date) {
+    DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+    DateTime myDate = dateFormat.parse(date);
+    var difference = DateTime.now().difference(myDate).inMinutes;
+    if (difference >= 60 * 24 * 30) {
+      var month = (difference / 60 / 24 / 30).round();
+      return "${month.round()} ${month > 1 ? 'months' : 'month'} ago";
+    } else if (difference >= 60 * 24) {
+      var day = difference / 60 / 24;
+      print("days:${day.round()}");
+      return "${day.round()} ${day.round() > 1 ? 'days' : 'day'} ago";
+    } else if (difference >= 60) {
+      return "${(difference / 60).round()}hr ago";
+    } else if (difference > 1) {
+      return "${difference}m ago";
+    } else {
+      return "Now";
+    }
+  }
 }

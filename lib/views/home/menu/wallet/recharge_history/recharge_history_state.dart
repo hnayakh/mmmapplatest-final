@@ -14,6 +14,6 @@ class OnError extends RechargeHistoryState{
 
   OnError(this.message);
 }
-class RechargeInitialState extends RechargeHistoryState{
+class RechargeHistoryInitialState extends RechargeHistoryState{
 
 }

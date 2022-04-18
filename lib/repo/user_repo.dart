@@ -317,4 +317,8 @@ class UserRepository {
   Future<CurrentBalanceResponse>fetchCurrentBalance() async{
     return this.apiClient.fetchCurrentBalance(this.useDetails!.id);
   }
+
+  Future<RechargeHistoryResponse>getTransactionHistory() async{
+    return this.apiClient.getTransactionHistory(this.useDetails!.id);
+  }
 }
