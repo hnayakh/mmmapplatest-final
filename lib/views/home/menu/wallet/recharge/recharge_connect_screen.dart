@@ -83,7 +83,8 @@ class _RechargeConnectScreenState extends State<RechargeConnectScreen> {
           showUi = true;
         }
         if (state is OnRechargeSuccess) {
-          Navigator.of(context).pop(state.connectCount);
+          print("Connect Count: ${state.connectCount}");
+          // Navigator.of(context).pop(state.connectCount);
         }
       }),
     );
@@ -359,7 +360,10 @@ class _RechargeConnectScreenState extends State<RechargeConnectScreen> {
             ],
           ),
         ),
-        state is OnLoading ? MmmWidgets.buildLoader2(context) : Container()
+        state is OnLoading ? MmmWidgets.buildLoader2(context) : Container(),
+        state is OnRechargeSuccess
+            ? buildRechargeSuccess(state.connectCount)
+            : Container()
       ],
     ));
   }
@@ -453,6 +457,91 @@ class _RechargeConnectScreenState extends State<RechargeConnectScreen> {
                     ))
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildRechargeSuccess(int connectCount) {
+    return Container(
+      height: double.infinity,
+      width: double.infinity,
+      color: Colors.white.withOpacity(0.5),
+      child: AlertDialog(
+        backgroundColor: Colors.transparent,
+        contentPadding: EdgeInsets.all(0),
+        content: Container(
+          //width: 328,
+          height: 393,
+          padding: kMargin12,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              color: Color(0xffFFFFFF),
+              boxShadow: [
+                MmmShadow.elevation3(shadowColor: kShadowColorForWhite)
+              ]),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: double.infinity,
+              ),
+              Container(
+                width: double.infinity,
+                height: 163,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.asset(
+                    'images/connect_success.png',
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 24,
+              ),
+              Container(
+                child: Text(
+                  'Recharge Successful',
+                  textAlign: TextAlign.center,
+                  style: MmmTextStyles.heading4(textColor: kDark5),
+                ),
+              ),
+              SizedBox(
+                height: 24,
+              ),
+              Container(
+                  height: 60,
+                  child: Text(
+                    '${connectCounts} connects has been added your account successfully.',
+                    textAlign: TextAlign.center,
+                    style: MmmTextStyles.bodySmall(textColor: kDark5),
+                  )),
+              Container(
+                height: 42,
+                child: Container(
+                  decoration: MmmDecorations.primaryButtonDecoration(),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).pop(connectCount);
+                        },
+                        child: Center(
+                          child: Text(
+                            'Continue',
+                            style: MmmTextStyles.heading6(textColor: gray7),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

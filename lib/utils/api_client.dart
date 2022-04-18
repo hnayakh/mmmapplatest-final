@@ -830,4 +830,15 @@ class ApiClient {
       return SimpleResponse.fromError("Something went wrong");
     }
   }
+
+  Future<CurrentBalanceResponse> fetchCurrentBalance(String id) async {
+    try {
+      var response = await this.dio.get(
+            AppConstants.ENDPOINT + 'connects/user_connect/$id',
+          );
+      return CurrentBalanceResponse.fromJson(response.data);
+    } catch (error) {
+      return CurrentBalanceResponse.fromError("Something went wrong");
+    }
+  }
 }

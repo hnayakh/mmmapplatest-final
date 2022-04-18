@@ -89,11 +89,33 @@ class RechargeModel {
       "amount": totalAmount,
       "connectCount": connectCount,
       "date": DateTime.now().toString(),
-      "modeOfPayment": 1,
+      "modeOfPayment": couponDetails != null ? couponDetails.discountType : 1,
+      //discount type
       "transactionId": transactionId,
       "failureReason": "",
       "userBasicId": userId,
-      "paymentStatus": 1
+      "paymentStatus": 0
     };
+  }
+}
+
+class CurrentBalanceResponse {
+  late String status, message;
+  late int balance;
+
+  CurrentBalanceResponse.fromJson(data) {
+    this.status = data["type"];
+    this.message = data["message"];
+    if (data["data"] != null) {
+      this.balance = data["data"]["connectBalance"];
+    } else {
+      this.balance = 0;
+    }
+  }
+
+  CurrentBalanceResponse.fromError(String message) {
+    this.status = AppConstants.FAILURE;
+    this.message = message;
+    this.balance = 0;
   }
 }

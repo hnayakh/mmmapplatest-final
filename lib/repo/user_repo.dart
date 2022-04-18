@@ -313,4 +313,8 @@ class UserRepository {
   Future<SimpleResponse> recharge(RechargeModel rechargeModel) async {
     return this.apiClient.recharge(rechargeModel);
   }
+
+  Future<CurrentBalanceResponse>fetchCurrentBalance() async{
+    return this.apiClient.fetchCurrentBalance(this.useDetails!.id);
+  }
 }
