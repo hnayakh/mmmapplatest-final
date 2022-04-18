@@ -7,6 +7,7 @@ import 'package:makemymarry/datamodels/interests_model.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/datamodels/profile_data.dart';
+import 'package:makemymarry/datamodels/recharge.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
@@ -796,6 +797,28 @@ class ApiClient {
       return LikeStatusResponse.fromJson(response.data);
     } catch (error) {
       return LikeStatusResponse.fromError(error.toString());
+    }
+  }
+
+  Future<CouponDetailsResponse> validateCoupon(String coupon) async {
+    try {
+      var response = await this
+          .dio
+          .get(AppConstants.ENDPOINT + 'masters/coupons/$coupon');
+      return CouponDetailsResponse.fromJson(response.data);
+    } catch (error) {
+      return CouponDetailsResponse.fromError("Something went wrong");
+    }
+  }
+
+  Future<ConnectPriceDetailsResponse> getConnectPriceDetails()async {
+    try {
+      var response = await this
+          .dio
+          .get(AppConstants.ENDPOINT + 'masters/connects');
+      return ConnectPriceDetailsResponse.fromJson(response.data);
+    } catch (error) {
+      return ConnectPriceDetailsResponse.fromError("Something went wrong");
     }
   }
 }

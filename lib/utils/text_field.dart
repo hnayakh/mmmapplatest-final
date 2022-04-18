@@ -7,20 +7,24 @@ import 'colors.dart';
 
 class MmmTextFileds {
   static Widget textFiledWithLabel(
-      String label, String hintText, TextEditingController controller,
-      {TextInputType inputType: TextInputType.text, bool isPassword: false}) {
+      String? label, String hintText, TextEditingController controller,
+      {TextInputType inputType: TextInputType.text,
+      bool isPassword: false,
+      TextCapitalization textCapitalization: TextCapitalization.none}) {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Container(
-            //padding: const EdgeInsets.only(top: 4, left: 4),
-            child: Text(
-              label,
-              textScaleFactor: 1.0,
-              style: MmmTextStyles.bodySmall(textColor: kDark5),
-            ),
-          ),
+          label != null
+              ? Container(
+                  //padding: const EdgeInsets.only(top: 4, left: 4),
+                  child: Text(
+                    label,
+                    textScaleFactor: 1.0,
+                    style: MmmTextStyles.bodySmall(textColor: kDark5),
+                  ),
+                )
+              : Container(),
           SizedBox(
             height: 4,
           ),
@@ -29,6 +33,7 @@ class MmmTextFileds {
             child: TextField(
               maxLength: 30,
               controller: controller,
+              textCapitalization: textCapitalization,
               keyboardType: inputType,
               style: MmmTextStyles.bodyRegular(textColor: kDark5),
               cursorColor: kDark5,

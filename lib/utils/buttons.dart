@@ -1767,6 +1767,82 @@ class MmmButtons {
     );
   }
 
+  static PreferredSize appBarAccountBar(
+      String name, String image, ProfileActivationStatus status,
+      {BuildContext? context}) {
+    return PreferredSize(
+      preferredSize: Size.fromHeight(164.0),
+      child: Container(
+        child: AppBar(
+          toolbarHeight: 164.0,
+          title: Container(
+            width: MediaQuery.of(context!).size.width,
+            height: 164,
+            child: Row(
+              children: [
+                ClipRRect(
+                    borderRadius: BorderRadius.circular(37),
+                    child: Image.network(
+                      image,
+                      height: 74,
+                      fit: BoxFit.cover,
+                      width: 74,
+                    )),
+                SizedBox(
+                  width: 16,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      name,
+                      style: MmmTextStyles.heading4(textColor: kLight2),
+                    ),
+                    SizedBox(
+                      height: 6,
+                    ),
+                    status == ProfileActivationStatus.Verified
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SvgPicture.asset(
+                                'images/Verified.svg',
+                                height: 20.51,
+                                color: Colors.white,
+                              ),
+                              SizedBox(
+                                width: 4,
+                              ),
+                              Text(
+                                "Verified User",
+                                style: MmmTextStyles.bodyRegular(
+                                    textColor: kLight2),
+                              ),
+                            ],
+                          )
+                        : Container()
+                  ],
+                )
+              ],
+            ),
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+        ),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(bottomRight: Radius.circular(32)),
+            color: kSecondary
+            // gradient: LinearGradient(
+            //     colors: [kPrimary, kSecondary],
+            //     begin: Alignment.centerLeft,
+            //     end: Alignment.centerRight),
+            ),
+      ),
+      //preferredSize: Size(MediaQuery.of(context).size.width, 0.0),
+    );
+  }
+
   static Widget appBarCurvedReset(Function()? action, String title,
       {BuildContext? context}) {
     return PreferredSize(
