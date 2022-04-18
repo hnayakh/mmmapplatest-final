@@ -7,3 +7,5 @@ class CancelSentInterest extends SentEvents {
 
   CancelSentInterest(this.index);
 }
+
+class CheckSentListIsEmpty extends SentEvents {}

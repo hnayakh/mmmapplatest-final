@@ -13,3 +13,7 @@ class OnError extends ReceivedStates {
 }
 
 class EmptyReceivedListState extends ReceivedStates {}
+
+class ListIsEmptyState extends ReceivedStates {}
+
+class ListIsNotEmpty extends ReceivedStates {}

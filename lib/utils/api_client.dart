@@ -723,13 +723,16 @@ class ApiClient {
 
   Future<LikeStatusResponse> setLikeStatus(
       String likedUserId, String likedByUserId) async {
+    print('set like');
+    print(likedByUserId);
+    print(likedUserId);
     try {
       var response = await this
           .dio
           .post(AppConstants.ENDPOINT + 'connects/user_request', data: {
         "requestingUserBasicId": likedByUserId,
         "requestedUserBasicId": likedUserId,
-        "userRequestId": "string",
+        "userRequestId": "",
         "operation": 0
       });
       return LikeStatusResponse.fromJson(response.data);
@@ -789,8 +792,8 @@ class ApiClient {
       var response = await this
           .dio
           .post(AppConstants.ENDPOINT + 'connects/user_request', data: {
-        "requestingUserBasicId": currentUser,
-        "requestedUserBasicId": otherUser,
+        "requestingUserBasicId": otherUser,
+        "requestedUserBasicId": currentUser,
         "userRequestId": requestId,
         "operation": 1
       });

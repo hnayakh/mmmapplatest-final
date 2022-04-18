@@ -8,15 +8,30 @@ import 'received_states.dart';
 
 class ReceivedsBloc extends Bloc<ReceivedEvents, ReceivedStates> {
   late final UserRepository userRepository;
-  late final List<ActiveInterests> listReceived; //Received
+  late List<ActiveInterests> listReceived = []; //Received
 
-  ReceivedsBloc(this.userRepository, this.listReceived)
-      : super(ReceivedInitialState());
+  ReceivedsBloc(
+    this.userRepository,
+  ) : super(ReceivedInitialState());
 
   @override
   Stream<ReceivedStates> mapEventToState(ReceivedEvents event) async* {
     yield OnLoading();
 
+    if (event is CheckListisEmpty) {
+      print(userRepository.useDetails!.id);
+      var result = await this
+          .userRepository
+          .getInterestList(this.userRepository.useDetails!.id);
+      if (result.status == AppConstants.SUCCESS) {
+        this.listReceived = result.data.activeInvites;
+        if (this.listReceived.length == 0) {
+          yield ListIsEmptyState();
+        } else {
+          yield ListIsNotEmpty();
+        }
+      }
+    }
     if (event is RejectInterestEvent) {
       print(listReceived.length);
       var result = await this.userRepository.rejectReceivedInterest(
