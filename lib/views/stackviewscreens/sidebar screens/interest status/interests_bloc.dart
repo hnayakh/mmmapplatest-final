@@ -17,6 +17,7 @@ class InterestsBloc extends Bloc<InterestEvents, InterestStates> {
   Stream<InterestStates> mapEventToState(InterestEvents event) async* {
     yield OnLoading();
     if (event is GetListOfInterests) {
+      print(userRepository.useDetails!.id);
       var result = await this
           .userRepository
           .getInterestList(this.userRepository.useDetails!.id);

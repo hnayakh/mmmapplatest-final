@@ -188,10 +188,10 @@ class _WalletScreenState extends State<WalletScreen> {
   }
 
   void selectConnectsBottomSheet(BuildContext context) async {
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => RechargeConnect(
-              userRepository: widget.userRepository,
-            )));
+    // Navigator.of(context).push(MaterialPageRoute(
+    //     builder: (context) => RechargeConnect(
+    //           userRepository: widget.userRepository,
+    //         )));
     // var result = await showModalBottomSheet(
     //     isScrollControlled: true,
     //     backgroundColor: Colors.transparent,

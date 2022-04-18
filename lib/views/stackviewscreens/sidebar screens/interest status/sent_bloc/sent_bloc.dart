@@ -15,6 +15,14 @@ class SentsBloc extends Bloc<SentEvents, SentStates> {
   Stream<SentStates> mapEventToState(SentEvents event) async* {
     yield OnLoading();
 
+    if (event is CheckSentListIsEmpty) {
+      if (this.listSent.length == 0) {
+        yield SentListisEmpty();
+      } else {
+        yield SentListIsNotEmpty();
+      }
+    }
+
     if (event is CancelSentInterest) {
       print(listSent.length);
       var result = await this.userRepository.cancelSentInterest(

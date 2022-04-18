@@ -22,7 +22,7 @@ class Received extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ReceivedsBloc(userRepository, listReceived),
+      create: (context) => ReceivedsBloc(userRepository),
       child: ReceivedScreen(),
     );
   }
@@ -60,8 +60,8 @@ class ReceivedScreen extends StatelessWidget {
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(12),
-                        child: Image.asset(
-                          listReceived[index].requestedUserDeatails.imageURL,
+                        child: Image.network(
+                          listReceived[index].requestingUserDeatails.imageURL,
                           height: MediaQuery.of(context).size.width * 0.28,
                           width: MediaQuery.of(context).size.width * 0.28,
                           fit: BoxFit.cover,
@@ -78,7 +78,7 @@ class ReceivedScreen extends StatelessWidget {
                             children: [
                               Text(
                                 listReceived[index]
-                                    .requestedUserDeatails
+                                    .requestingUserDeatails
                                     .displayId,
                                 style: MmmTextStyles.bodySmall(
                                     textColor: kPrimary),
@@ -91,7 +91,7 @@ class ReceivedScreen extends StatelessWidget {
                                 color: kPrimary,
                               ),
                               SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.19,
+                                width: MediaQuery.of(context).size.width * 0.12,
                               ),
                               Stack(
                                 children: [
@@ -138,14 +138,14 @@ class ReceivedScreen extends StatelessWidget {
                             height: 14,
                           ),
                           Text(
-                            listReceived[index].requestedUserDeatails.name,
+                            listReceived[index].requestingUserDeatails.name,
                             style: MmmTextStyles.heading5(textColor: kDark5),
                           ),
                           SizedBox(
                             height: 4,
                           ),
                           Text(
-                            listReceived[index].requestedUserDeatails.aboutMe,
+                            listReceived[index].requestingUserDeatails.aboutMe,
                             style: MmmTextStyles.footer(textColor: gray3),
                           ),
                         ],

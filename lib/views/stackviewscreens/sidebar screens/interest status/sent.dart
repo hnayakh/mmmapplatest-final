@@ -42,6 +42,18 @@ class SentScreen extends StatelessWidget {
           },
           builder: (context, state) {
             initData(context);
+            if (state is SentInitialState) {
+              BlocProvider.of<SentsBloc>(context).add(CheckSentListIsEmpty());
+            }
+
+            if (state is SentListisEmpty) {
+              return Center(
+                child: Text(
+                  'No requests sent yet..',
+                  style: TextStyle(color: kPrimary),
+                ),
+              );
+            }
             return ListView.separated(
               itemBuilder: (context, index) {
                 return ListTile(

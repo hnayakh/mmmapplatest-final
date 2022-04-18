@@ -789,8 +789,8 @@ class ApiClient {
       var response = await this
           .dio
           .post(AppConstants.ENDPOINT + 'connects/user_request', data: {
-        "requestingUserBasicId": currentUser,
-        "requestedUserBasicId": otherUser,
+        "requestingUserBasicId": otherUser,
+        "requestedUserBasicId": currentUser,
         "userRequestId": requestId,
         "operation": 1
       });
@@ -802,20 +802,18 @@ class ApiClient {
 
   Future<CouponDetailsResponse> validateCoupon(String coupon) async {
     try {
-      var response = await this
-          .dio
-          .get(AppConstants.ENDPOINT + 'masters/coupons/$coupon');
+      var response =
+          await this.dio.get(AppConstants.ENDPOINT + 'masters/coupons/$coupon');
       return CouponDetailsResponse.fromJson(response.data);
     } catch (error) {
       return CouponDetailsResponse.fromError("Something went wrong");
     }
   }
 
-  Future<ConnectPriceDetailsResponse> getConnectPriceDetails()async {
+  Future<ConnectPriceDetailsResponse> getConnectPriceDetails() async {
     try {
-      var response = await this
-          .dio
-          .get(AppConstants.ENDPOINT + 'masters/connects');
+      var response =
+          await this.dio.get(AppConstants.ENDPOINT + 'masters/connects');
       return ConnectPriceDetailsResponse.fromJson(response.data);
     } catch (error) {
       return ConnectPriceDetailsResponse.fromError("Something went wrong");

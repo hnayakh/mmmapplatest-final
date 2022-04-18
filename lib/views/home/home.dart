@@ -4,6 +4,7 @@ import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/home/menu/sidebar_account_screen.dart';
+import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/interest%20status/interest_status_screen.dart';
 
 import 'filter_screens/filter_screen.dart';
 import 'matching_profile/matching_profile.dart';
@@ -22,7 +23,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  var index = -1;
+  var index = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -37,15 +38,14 @@ class HomeScreenState extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               MmmWidgets.bottomBarUnits(
-                  'images/Search.svg', 'Search', index == 0 ? kPrimary : gray3,
+                  'images/Search.svg', 'Home', index == 0 ? kPrimary : gray3,
                   action: () {
                 setState(() {
                   this.index = 0;
                 });
               }),
-              MmmWidgets.bottomBarUnits(
-                  'images/filter2.svg', 'Filter', index == 1 ? kPrimary : gray3,
-                  action: () {
+              MmmWidgets.bottomBarUnits('images/filter2.svg', 'Interests',
+                  index == 1 ? kPrimary : gray3, action: () {
                 setState(() {
                   this.index = 1;
                 });
@@ -79,13 +79,13 @@ class HomeScreenState extends State<HomeScreen> {
 
   Widget getContent() {
     switch (index) {
-      case -1:
+      case 0:
         return MatchingProfileScreen(
           userRepository: widget.userRepository,
           list: widget.list,
         );
       case 1:
-        return Filter(
+        return Interests(
           userRepository: widget.userRepository,
         );
       case 4:

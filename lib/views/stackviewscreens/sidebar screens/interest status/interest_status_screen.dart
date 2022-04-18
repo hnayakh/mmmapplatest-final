@@ -176,7 +176,10 @@ class _InterestStatusScreenState extends State<InterestStatusScreen>
                       userRepository: BlocProvider.of<InterestsBloc>(context)
                           .userRepository,
                     ),
-                    AcceptedScreen()
+                    Accepted(
+                        listAccepted: this.listConnections,
+                        userRepository: BlocProvider.of<InterestsBloc>(context)
+                            .userRepository)
                   ],
                 ))
               ],

@@ -11,3 +11,7 @@ class OnError extends SentStates {
 
   OnError(this.message);
 }
+
+class SentListisEmpty extends SentStates {}
+
+class SentListIsNotEmpty extends SentStates {}
