@@ -723,13 +723,16 @@ class ApiClient {
 
   Future<LikeStatusResponse> setLikeStatus(
       String likedUserId, String likedByUserId) async {
+    print('set like');
+    print(likedByUserId);
+    print(likedUserId);
     try {
       var response = await this
           .dio
           .post(AppConstants.ENDPOINT + 'connects/user_request', data: {
         "requestingUserBasicId": likedByUserId,
         "requestedUserBasicId": likedUserId,
-        "userRequestId": "string",
+        "userRequestId": "",
         "operation": 0
       });
       return LikeStatusResponse.fromJson(response.data);
@@ -817,6 +820,17 @@ class ApiClient {
       return ConnectPriceDetailsResponse.fromJson(response.data);
     } catch (error) {
       return ConnectPriceDetailsResponse.fromError("Something went wrong");
+    }
+  }
+
+  Future<SimpleResponse> recharge(RechargeModel rechargeModel) async {
+    try {
+      var response = await this.dio.post(
+          AppConstants.ENDPOINT + 'connects/recharge',
+          data: rechargeModel.data);
+      return SimpleResponse.fromJson(response.data);
+    } catch (error) {
+      return SimpleResponse.fromError("Something went wrong");
     }
   }
 }

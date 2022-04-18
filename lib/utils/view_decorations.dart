@@ -56,4 +56,25 @@ class MmmDecorations {
         fillColor: kLight4,
         hintStyle: MmmTextStyles.bodyRegular(textColor: kDark2));
   }
+
+  static BoxDecoration whiteBgBottomShadow() {
+    return BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+              blurRadius: 22,
+              spreadRadius: 0,
+              color: Color(0X3D4B5C1F)
+                  .withOpacity(0.12),
+              offset: Offset(0, 12)),
+          BoxShadow(
+              blurRadius: 12,
+              spreadRadius: 0,
+              color: Colors.white,
+              offset: Offset(2, -12)),
+        ],
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(16),
+            bottomRight: Radius.circular(16)));
+  }
 }

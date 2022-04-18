@@ -69,3 +69,31 @@ class ConnectPriceDetailsResponse {
     this.message = mesage;
   }
 }
+
+class RechargeModel {
+  dynamic data;
+
+  RechargeModel(
+      double totalAmount,
+      double discount,
+      int connectCount,
+      double grandTotal,
+      String transactionId,
+      String userId,
+      CouponDetails? couponDetails) {
+    this.data = {
+      "actualAmount": grandTotal,
+      "discountedAmount": discount,
+      "isCouponApplied": couponDetails != null,
+      "couponCode": couponDetails != null ? couponDetails.code : '',
+      "amount": totalAmount,
+      "connectCount": connectCount,
+      "date": DateTime.now().toString(),
+      "modeOfPayment": 1,
+      "transactionId": transactionId,
+      "failureReason": "",
+      "userBasicId": userId,
+      "paymentStatus": 1
+    };
+  }
+}
