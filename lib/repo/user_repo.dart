@@ -306,7 +306,11 @@ class UserRepository {
     return this.apiClient.validateCoupon(coupon);
   }
 
-  Future<ConnectPriceDetailsResponse>getConnectPrice() async{
+  Future<ConnectPriceDetailsResponse> getConnectPrice() async {
     return this.apiClient.getConnectPriceDetails();
+  }
+
+  Future<SimpleResponse> recharge(RechargeModel rechargeModel) async {
+    return this.apiClient.recharge(rechargeModel);
   }
 }

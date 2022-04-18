@@ -7,6 +7,7 @@ import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
+import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
@@ -44,6 +45,9 @@ class _RechargeConnectScreenState extends State<RechargeConnectScreen> {
   late int connectCounts = 0;
   late String mobile, email;
   bool showUi = false;
+  double totalAmount = 0, tax = 0, promoDiscount = 0;
+  double totalPayable = 0;
+  CouponDetails? couponDetails;
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +57,15 @@ class _RechargeConnectScreenState extends State<RechargeConnectScreen> {
           builder: (context, state) {
         this.connectCounts =
             BlocProvider.of<RechargeConnectBloc>(context).connectCount;
+        this.totalAmount =
+            BlocProvider.of<RechargeConnectBloc>(context).totalAmount;
+        this.tax = BlocProvider.of<RechargeConnectBloc>(context).tax;
+        this.promoDiscount =
+            BlocProvider.of<RechargeConnectBloc>(context).promoDiscount;
+        this.totalPayable =
+            BlocProvider.of<RechargeConnectBloc>(context).totalPayable;
+        this.couponDetails =
+            BlocProvider.of<RechargeConnectBloc>(context).couponDetails;
         this.mobile = BlocProvider.of<RechargeConnectBloc>(context)
             .userRepository
             .useDetails!
@@ -68,6 +81,9 @@ class _RechargeConnectScreenState extends State<RechargeConnectScreen> {
       }, listener: (context, state) {
         if (state is OnGotConnectDetails) {
           showUi = true;
+        }
+        if (state is OnRechargeSuccess) {
+          Navigator.of(context).pop(state.connectCount);
         }
       }),
     );
@@ -89,7 +105,7 @@ class _RechargeConnectScreenState extends State<RechargeConnectScreen> {
   void openCheckout() async {
     var options = {
       'key': 'rzp_test_KKICP7OGSuGiN1',
-      'amount': 500,
+      'amount': this.totalPayable * 100,
       'name': 'Ironage Tech Pvt. Ltd.',
       'description': 'MakeMyMarry Connect Recharge',
       'retry': {'enabled': true, 'max_count': 1},
@@ -189,6 +205,7 @@ class _RechargeConnectScreenState extends State<RechargeConnectScreen> {
                           children: [
                             Text(
                               '*you can connect with $connectCounts people',
+                              textScaleFactor: 1.0,
                               style: MmmTextStyles.bodySmall(textColor: gray3),
                             )
                           ],
@@ -200,9 +217,131 @@ class _RechargeConnectScreenState extends State<RechargeConnectScreen> {
                         SizedBox(
                           height: 24,
                         ),
-                        MmmButtons.walletButtons('Have Coupons?', action: () {
-                          navigateToCoupon();
-                        })
+                        this.couponDetails != null
+                            ? buildCouponWidget()
+                            : MmmButtons.walletButtons('Have Coupons?',
+                                action: () {
+                                navigateToCoupon();
+                              }),
+                        SizedBox(
+                          height: 70,
+                        ),
+                        Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                'Total Amount',
+                                textScaleFactor: 1.0,
+                                style:
+                                    MmmTextStyles.heading5(textColor: kDark5),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 24),
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'Item Total',
+                                          textScaleFactor: 1.0,
+                                          style: MmmTextStyles.bodySmall(
+                                              textColor: kDark5),
+                                        ),
+                                        Text(
+                                          '\u{20B9}${totalAmount.toStringAsFixed(2)}',
+                                          textScaleFactor: 1.0,
+                                          style: MmmTextStyles.bodySmall(
+                                              textColor: kDark5),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 8,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'GST (18%)',
+                                          textScaleFactor: 1.0,
+                                          style: MmmTextStyles.bodySmall(
+                                              textColor: kDark5),
+                                        ),
+                                        Text(
+                                          '\u{20B9}${tax.toStringAsFixed(2)}',
+                                          textScaleFactor: 1.0,
+                                          style: MmmTextStyles.bodySmall(
+                                              textColor: kDark5),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 8,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          this.couponDetails != null
+                                              ? 'Promo Discount'
+                                              : 'General Discount',
+                                          textScaleFactor: 1.0,
+                                          style: MmmTextStyles.bodySmall(
+                                              textColor: kDark5),
+                                        ),
+                                        Text(
+                                          '- \u{20B9}${promoDiscount.toStringAsFixed(2)}',
+                                          textScaleFactor: 1.0,
+                                          style: MmmTextStyles.bodySmall(
+                                              textColor: kDark5),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 12,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 24),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Grand Total',
+                                      textScaleFactor: 1.0,
+                                      style: MmmTextStyles.bodyMedium(
+                                          textColor: kDark5),
+                                    ),
+                                    Text(
+                                      '\u{20B9}${totalPayable.toStringAsFixed(2)}',
+                                      textScaleFactor: 1.0,
+                                      style: MmmTextStyles.bodyMedium(
+                                          textColor: kPrimary),
+                                    ),
+                                  ],
+                                ),
+                                height: 60,
+                                decoration:
+                                    MmmDecorations.whiteBgBottomShadow(),
+                              )
+                            ],
+                          ),
+                        )
                       ],
                     ),
                     SizedBox(
@@ -226,7 +365,9 @@ class _RechargeConnectScreenState extends State<RechargeConnectScreen> {
   }
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
-    print('Success Response: $response');
+    print('Success Response: ${response.paymentId}');
+    BlocProvider.of<RechargeConnectBloc>(context)
+        .add(OnPaymentSuccess(response.paymentId!));
     /*Fluttertoast.showToast(
         msg: "SUCCESS: " + response.paymentId!,
         toastLength: Toast.LENGTH_SHORT); */
@@ -234,9 +375,6 @@ class _RechargeConnectScreenState extends State<RechargeConnectScreen> {
 
   void _handlePaymentError(PaymentFailureResponse response) {
     print('Error Response: $response');
-    /* Fluttertoast.showToast(
-        msg: "ERROR: " + response.code.toString() + " - " + response.message!,
-        toastLength: Toast.LENGTH_SHORT); */
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
@@ -257,6 +395,68 @@ class _RechargeConnectScreenState extends State<RechargeConnectScreen> {
       BlocProvider.of<RechargeConnectBloc>(context)
           .add(ApplyCouponCode(result));
     }
+  }
+
+  Widget buildCouponWidget() {
+    return Container(
+      height: 74,
+      width: MediaQuery.of(context).size.width - 48,
+      decoration: BoxDecoration(
+        color: kWhite,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          MmmShadow.filterButton(),
+        ],
+        //border: Border.all(width: 1, color: kLight4),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Material(
+          color: Colors.transparent,
+          child: Container(
+            padding: EdgeInsets.only(left: 22, right: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "${this.couponDetails!.code}",
+                      textScaleFactor: 1.0,
+                      style: MmmTextStyles.bodyMedium(textColor: kDark5),
+                    ),
+                    Text(
+                      "Promo Code applied",
+                      textScaleFactor: 1.0,
+                      style: MmmTextStyles.bodySmall(textColor: kDark2),
+                    ),
+                  ],
+                ),
+                // SvgPicture.asset(
+                //   'images/rightArrow.svg',
+                //   width: 24,
+                //   height: 24,
+                //   color: gray3,
+                //   fit: BoxFit.cover,
+                // ),
+                IconButton(
+                    onPressed: () {
+                      BlocProvider.of<RechargeConnectBloc>(context)
+                          .add(RemovePromoCode());
+                    },
+                    icon: Icon(
+                      Icons.delete,
+                      color: kPrimary,
+                    ))
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
 // void navigateTopay() {

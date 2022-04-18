@@ -802,23 +802,32 @@ class ApiClient {
 
   Future<CouponDetailsResponse> validateCoupon(String coupon) async {
     try {
-      var response = await this
-          .dio
-          .get(AppConstants.ENDPOINT + 'masters/coupons/$coupon');
+      var response =
+          await this.dio.get(AppConstants.ENDPOINT + 'masters/coupons/$coupon');
       return CouponDetailsResponse.fromJson(response.data);
     } catch (error) {
       return CouponDetailsResponse.fromError("Something went wrong");
     }
   }
 
-  Future<ConnectPriceDetailsResponse> getConnectPriceDetails()async {
+  Future<ConnectPriceDetailsResponse> getConnectPriceDetails() async {
     try {
-      var response = await this
-          .dio
-          .get(AppConstants.ENDPOINT + 'masters/connects');
+      var response =
+          await this.dio.get(AppConstants.ENDPOINT + 'masters/connects');
       return ConnectPriceDetailsResponse.fromJson(response.data);
     } catch (error) {
       return ConnectPriceDetailsResponse.fromError("Something went wrong");
+    }
+  }
+
+  Future<SimpleResponse> recharge(RechargeModel rechargeModel) async {
+    try {
+      var response = await this.dio.post(
+          AppConstants.ENDPOINT + 'connects/recharge',
+          data: rechargeModel.data);
+      return SimpleResponse.fromJson(response.data);
+    } catch (error) {
+      return SimpleResponse.fromError("Something went wrong");
     }
   }
 }

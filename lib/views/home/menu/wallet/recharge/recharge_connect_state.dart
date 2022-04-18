@@ -14,7 +14,10 @@ class OnError extends RechargeConnectState {
   OnError(this.message);
 }
 
-class OnConnectCountChange extends RechargeConnectState {
+class OnConnectCountChange extends RechargeConnectState {}
 
+class OnRechargeSuccess extends RechargeConnectState {
+  final int connectCount;
+
+  OnRechargeSuccess(this.connectCount);
 }
-

@@ -18,3 +18,11 @@ class ChangeConnectCount extends RechargeConnectEvent {
 }
 
 class BuyConnects extends RechargeConnectEvent {}
+
+class RemovePromoCode extends RechargeConnectEvent {}
+
+class OnPaymentSuccess extends RechargeConnectEvent {
+  final String transactionId;
+
+  OnPaymentSuccess(this.transactionId);
+}
