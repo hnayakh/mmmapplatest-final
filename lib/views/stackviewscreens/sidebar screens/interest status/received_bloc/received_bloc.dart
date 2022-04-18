@@ -17,6 +17,15 @@ class ReceivedsBloc extends Bloc<ReceivedEvents, ReceivedStates> {
   Stream<ReceivedStates> mapEventToState(ReceivedEvents event) async* {
     yield OnLoading();
 
+    if (event is CheckListisEmpty) {
+      print(this.listReceived.length);
+      print(userRepository.useDetails!.id);
+      if (this.listReceived.length == 0) {
+        yield ListIsEmptyState();
+      } else {
+        yield ListIsNotEmpty();
+      }
+    }
     if (event is RejectInterestEvent) {
       print(listReceived.length);
       var result = await this.userRepository.rejectReceivedInterest(

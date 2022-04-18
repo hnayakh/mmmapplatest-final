@@ -13,3 +13,5 @@ class AcceptInterestEvent extends ReceivedEvents {
 
   AcceptInterestEvent(this.index);
 }
+
+class CheckListisEmpty extends ReceivedEvents {}

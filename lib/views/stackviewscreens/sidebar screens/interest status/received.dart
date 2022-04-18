@@ -42,7 +42,17 @@ class ReceivedScreen extends StatelessWidget {
           },
           builder: (context, state) {
             initData(context);
-
+            if (state is ReceivedInitialState) {
+              BlocProvider.of<ReceivedsBloc>(context).add(CheckListisEmpty());
+            }
+            if (state is ListIsEmptyState) {
+              return Center(
+                child: Text(
+                  'No requests received yet..',
+                  style: TextStyle(color: kPrimary),
+                ),
+              );
+            }
             return ListView.separated(
               itemBuilder: (context, index) {
                 return ListTile(
@@ -175,13 +185,6 @@ class ReceivedScreen extends StatelessWidget {
                 return Divider();
               },
             );
-
-            // return Center(
-            //   child: Text(
-            //     'No requests received yet..',
-            //     style: TextStyle(color: kPrimary),
-            //   ),
-            // );
           },
         ),
       ),
