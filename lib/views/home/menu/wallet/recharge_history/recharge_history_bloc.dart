@@ -20,7 +20,7 @@ class RechargeHistoryBloc
     if (event is GetTransactionHistory) {
       var response = await this.userRepository.getTransactionHistory();
       if (response.status == AppConstants.SUCCESS) {
-        this.list = response.list;
+        this.list = response.list.reversed.toList();
         yield OnGotTransactionList();
       } else {
         yield OnError(response.message);

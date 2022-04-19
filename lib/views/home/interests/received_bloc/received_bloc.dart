@@ -2,8 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/datamodels/interests_model.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
-import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/interest%20status/received_bloc/received_events.dart';
 
+import 'received_events.dart';
 import 'received_states.dart';
 
 class ReceivedsBloc extends Bloc<ReceivedEvents, ReceivedStates> {

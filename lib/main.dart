@@ -2,21 +2,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_styles.dart';
-import 'package:makemymarry/views/dialog_test.dart';
-import 'package:makemymarry/views/profile_loader/profile_loader.dart';
-import 'package:makemymarry/views/signinscreens/signin_screen1.dart';
 import 'package:makemymarry/views/splash_screen.dart';
-import 'package:makemymarry/views/stackviewscreens/connect/chat_screen.dart';
-import 'package:makemymarry/views/stackviewscreens/message_screen.dart';
-import 'package:makemymarry/views/home/menu/wallet/wallet_main.dart';
-
 import 'package:makemymarry/views/widget_views.dart';
 
-import 'views/stackviewscreens/sidebar screens/interest status/interest_status_screen.dart';
 
 // @dart=2.9
 class SimpleObserver extends BlocObserver {

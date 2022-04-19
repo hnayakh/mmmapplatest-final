@@ -2,8 +2,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/datamodels/interests_model.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
-import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/interest%20status/sent_bloc/sent_events.dart';
-import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/interest%20status/sent_bloc/sent_states.dart';
+
+import 'sent_events.dart';
+import 'sent_states.dart';
+
 
 class SentsBloc extends Bloc<SentEvents, SentStates> {
   late final UserRepository userRepository;

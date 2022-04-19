@@ -2,13 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:makemymarry/datamodels/interests_model.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
-import 'package:makemymarry/datamodels/profile_data.dart';
 import 'package:makemymarry/datamodels/recharge.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/utils/api_client.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/storage_service.dart';
-import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/interest%20status/interest_events.dart';
 
 class UserRepository {
   late StorageService storageService;

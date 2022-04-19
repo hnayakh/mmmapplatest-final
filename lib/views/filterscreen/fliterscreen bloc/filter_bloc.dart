@@ -101,7 +101,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
       yield FilterInitialState();
     }
     //  if (event is OnFilterDone) {
-
+    //
     //     if (this.maritalStatus == null) {
     //      yield OnError('Select marital status.');
     //    } else if (this.heightStatus == null) {
@@ -109,12 +109,12 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
     //    } else {
     //       var result = await this.userRepository.Filter(
     //          this.noOfChildren,
-    ////         this.maritalStatus,
+    // //         this.maritalStatus,
     //         this.abilityStatus,
     //         this.childrenStatus,
     //        this.heightStatus,
     //        );
-
+    //
     //     if (result.status == AppConstants.SUCCESS) {
     //      this.userRepository.useDetails = result.userDetails;
     // await this.userRepository.saveUserDetails();

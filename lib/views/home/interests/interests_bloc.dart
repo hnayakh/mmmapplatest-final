@@ -2,8 +2,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/datamodels/interests_model.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
-import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/interest%20status/interest_events.dart';
-import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/interest%20status/interest_states.dart';
+
+import 'interest_events.dart';
+import 'interest_states.dart';
+
 
 class InterestsBloc extends Bloc<InterestEvents, InterestStates> {
   late final UserRepository userRepository;

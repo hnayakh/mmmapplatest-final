@@ -337,7 +337,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
             ));
           }
           if (state is ProfileFilterComplete) {
-            navigateToFilter(state.list);
+            Navigator.of(context).pop(state.list);
           }
         },
       ),
@@ -1071,7 +1071,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
         BlocProvider.of<ProfilePreferenceBloc>(context).userRepository;
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => ProfileLoader(
-          userRepository: userRepo,
-        )));
+              userRepository: userRepo,
+            )));
   }
 }

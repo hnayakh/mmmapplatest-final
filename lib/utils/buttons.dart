@@ -1766,6 +1766,31 @@ class MmmButtons {
       //preferredSize: Size(MediaQuery.of(context).size.width, 0.0),
     );
   }
+  static PreferredSize appTabTitleBarCurved(String title, {BuildContext? context}) {
+    return PreferredSize(
+      preferredSize: Size.fromHeight(74.0),
+      child: Container(
+        child: AppBar(
+          toolbarHeight: 74.0,
+          title: Text(
+            title,
+            style: MmmTextStyles.heading4(textColor: kLight2),
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+        ),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(bottomRight: Radius.circular(32)),
+            color: kSecondary
+            // gradient: LinearGradient(
+            //     colors: [kPrimary, kSecondary],
+            //     begin: Alignment.centerLeft,
+            //     end: Alignment.centerRight),
+            ),
+      ),
+      //preferredSize: Size(MediaQuery.of(context).size.width, 0.0),
+    );
+  }
 
   static PreferredSize appBarAccountBar(
       String name, String image, ProfileActivationStatus status,

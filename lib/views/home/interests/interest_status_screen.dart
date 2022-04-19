@@ -6,12 +6,13 @@ import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
-import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/interest%20status/accepted.dart';
-import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/interest%20status/interest_events.dart';
-import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/interest%20status/interest_states.dart';
-import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/interest%20status/interests_bloc.dart';
-import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/interest%20status/received.dart';
-import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/interest%20status/sent.dart';
+
+import 'accepted.dart';
+import 'interest_events.dart';
+import 'interest_states.dart';
+import 'interests_bloc.dart';
+import 'received.dart';
+import 'sent.dart';
 
 class Interests extends StatelessWidget {
   final UserRepository userRepository;
@@ -73,38 +74,6 @@ class _InterestStatusScreenState extends State<InterestStatusScreen>
                           MediaQuery.of(context).size.height * 0.1),
                       child: Container(
                           child: AppBar(
-                        leading: Container(
-                          margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
-                          decoration: BoxDecoration(
-                              color: kLight2.withOpacity(0.60),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8)),
-                              boxShadow: [
-                                MmmShadow.elevationbBackButton(
-                                    shadowColor: kShadowColorForWhite)
-                              ]),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Container(
-                                    height: 32,
-                                    width: 32,
-                                    alignment: Alignment.center,
-                                    child: SvgPicture.asset(
-                                      'images/arrowLeft.svg',
-                                      height: 17.45,
-                                      width: 17.45,
-                                      color: gray3,
-                                    )),
-                              ),
-                            ),
-                          ),
-                        ),
                         toolbarHeight:
                             MediaQuery.of(context).size.height * 0.108,
                         title: Text(
@@ -114,14 +83,9 @@ class _InterestStatusScreenState extends State<InterestStatusScreen>
                         backgroundColor: Colors.transparent,
                         elevation: 0.0,
                       ))),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [kPrimary, kSecondary],
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight),
-                  ),
+                  decoration: BoxDecoration(color: kSecondary),
                 ),
-                TabBar(
+                Material(color: Colors.white,child: TabBar(
                   controller: tabController,
                   indicator: UnderlineTabIndicator(
                       borderSide: BorderSide(
@@ -160,7 +124,7 @@ class _InterestStatusScreenState extends State<InterestStatusScreen>
                       ),
                     ),
                   ],
-                ),
+                ),elevation: 4,),
                 Expanded(
                     child: TabBarView(
                   controller: tabController,
