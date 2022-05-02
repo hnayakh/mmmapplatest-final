@@ -200,7 +200,7 @@ class AcceptedScreen extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: Image.network(
-                    listAccepted[index].requestedUserDeatails.imageURL,
+                    listAccepted[index].requestingUserDeatails.imageURL,
                     height: MediaQuery.of(context).size.width * 0.28,
                     width: MediaQuery.of(context).size.width * 0.28,
                     fit: BoxFit.cover,
@@ -216,7 +216,7 @@ class AcceptedScreen extends StatelessWidget {
                       children: [
                         Text(
                           listAccepted[index]
-                              .requestedUserDeatails
+                              .requestingUserDeatails
                               .displayId
                               .toUpperCase(),
                           textScaleFactor: 1.0,
@@ -226,7 +226,7 @@ class AcceptedScreen extends StatelessWidget {
                           width: MediaQuery.of(context).size.width * 0.04,
                         ),
                         listAccepted[index]
-                                    .requestedUserDeatails
+                                    .requestingUserDeatails
                                     .activationStatus ==
                                 ActivationStatus.Verified.index
                             ? SvgPicture.asset(
@@ -240,7 +240,7 @@ class AcceptedScreen extends StatelessWidget {
                       height: 8,
                     ),
                     Text(
-                      listAccepted[index].requestedUserDeatails.name,
+                      listAccepted[index].requestingUserDeatails.name,
                       textScaleFactor: 1.0,
                       style: MmmTextStyles.heading5(textColor: kDark5),
                     ),
@@ -248,14 +248,15 @@ class AcceptedScreen extends StatelessWidget {
                       height: 4,
                     ),
                     Text(
-                      "${AppHelper.getAgeFromDob(listAccepted[index].requestedUserDeatails.dateOfBirth)} Years, "
-                      "${listAccepted[index].requestedUserDeatails.height}', ${listAccepted[index].requestedUserDeatails.highestEducation}",
+                      "${AppHelper.getAgeFromDob(listAccepted[index].requestingUserDeatails.dateOfBirth)} Years, "
+                      "${listAccepted[index].requestingUserDeatails.height}', ${listAccepted[index].requestingUserDeatails.highestEducation}",
+                      overflow: TextOverflow.ellipsis,
                       textScaleFactor: 1.0,
                       maxLines: 2,
                       style: MmmTextStyles.footer(textColor: gray3),
                     ),
                     Text(
-                      "${listAccepted[index].requestedUserDeatails.careerCity}, ${listAccepted[index].requestedUserDeatails.careerState}, ${listAccepted[index].requestedUserDeatails.careerCountry}",
+                      "${listAccepted[index].requestingUserDeatails.careerCity}, ${listAccepted[index].requestingUserDeatails.careerState}, ${listAccepted[index].requestingUserDeatails.careerCountry}",
                       textScaleFactor: 1.0,
                       maxLines: 2,
                       style: MmmTextStyles.footer(textColor: gray3),

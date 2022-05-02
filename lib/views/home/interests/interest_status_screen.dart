@@ -71,11 +71,11 @@ class _InterestStatusScreenState extends State<InterestStatusScreen>
                 Container(
                   child: PreferredSize(
                       preferredSize: Size.fromHeight(
-                          MediaQuery.of(context).size.height * 0.1),
+                          74),
                       child: Container(
                           child: AppBar(
                         toolbarHeight:
-                            MediaQuery.of(context).size.height * 0.108,
+                            74,
                         title: Text(
                           "Interests",
                           style: MmmTextStyles.heading4(textColor: kLight2),

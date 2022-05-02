@@ -98,6 +98,7 @@ class _FilterScreenState extends State<FilterScreen> {
   InterestFilter? interestStatus;
   EmployeedInFilter? employeedInStatus;
   String? occupation;
+
   //Education? education;
   String? education;
   String maritalStatusHintText = '';
@@ -108,6 +109,7 @@ class _FilterScreenState extends State<FilterScreen> {
   dynamic gothra;
 
   String? caste;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,6 +147,7 @@ class _FilterScreenState extends State<FilterScreen> {
                         Text(
                           'Selected age is in between ${_currentRangeValues.start.round()} and ${_currentRangeValues.end.round()}',
                           style: MmmTextStyles.bodyRegular(textColor: kDark5),
+                          textScaleFactor: 1.0,
                         ),
                         RangeSlider(
                           values: _currentRangeValues,
