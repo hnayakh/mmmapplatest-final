@@ -9,6 +9,7 @@ import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
+import 'package:makemymarry/utils/preference_helper.dart';
 import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/profilescreens/about/about.dart';
@@ -319,9 +320,11 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
     return InkWell(
       onTap: () {
         showCountryPicker(
+            countryFilter: PreferenceHelper.countryPickerList,
             context: context,
             showPhoneCode: true,
             onSelect: (country) {
+              print(country.countryCode);
               BlocProvider.of<CreateAccountBloc>(context)
                   .add(OnCountrySelected(country));
             });

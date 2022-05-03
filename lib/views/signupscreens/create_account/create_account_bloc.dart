@@ -87,10 +87,21 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
             var result = await this.userRepository.getCountries();
             if (result.status == AppConstants.SUCCESS) {
               var countries = result.list;
+              print(result.list);
+
+              countryModel.id = -1;
+              countryModel.phoneCode = -1;
+
               for (var country in countries) {
-                if (country.name.toLowerCase().trim() ==
-                    selectedCountry.name.toLowerCase().trim()) {
+                if (country.shortName.toLowerCase().trim() ==
+                    selectedCountry.countryCode.toLowerCase().trim()) {
                   countryModel.id = country.id;
+                  countryModel.phoneCode = country.phoneCode;
+                  print('match found..');
+                  print(country.id); //4
+                  print(country.phoneCode); //1684
+                  print(country.name); //American Samoa
+                  print(country.shortName); //AS
                 }
               }
             } else {
@@ -107,7 +118,8 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
               "",
               "",
               mobile,
-              selectedCountry.phoneCode,
+              countryModel.phoneCode.toString(),
+              // selectedCountry.phoneCode,
               email,
               this.gender!.index,
               true,

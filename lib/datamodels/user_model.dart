@@ -1,6 +1,7 @@
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
+import 'package:makemymarry/utils/preference_helper.dart';
 
 class SigninResponse {
   late String message, status;
@@ -21,16 +22,26 @@ class SigninResponse {
             userDetails!.motherTongue = SimpleMasterData()
               ..id = extraData[0]["motherTongue"]
               ..title = extraData[0]["motherTongue"];
+          } else {
+            userDetails!.motherTongue = SimpleMasterData()
+              ..id = 'unknown'
+              ..title = 'UNK';
           }
           if (extraData[0]["dateOfBirth"] != null) {
             userDetails!.dateOfBirth = extraData[0]["dateOfBirth"];
+          } else {
+            userDetails!.dateOfBirth = '';
           }
           if (extraData[0]["height"] != null) {
             userDetails!.height = double.parse(extraData[0]["height"]);
+          } else {
+            userDetails!.height = 4.6;
           }
           if (extraData[0]["maritalStatus"] != null) {
             userDetails!.maritalStatus =
                 MaritalStatus.values[extraData[0]["maritalStatus"]];
+          } else {
+            userDetails!.maritalStatus = MaritalStatus.NeverMarried;
           }
 
           if (extraData[0]["careerCountryId"] != null) {
@@ -38,15 +49,37 @@ class SigninResponse {
               ..id = extraData[0]["careerCountryId"]
               ..name = extraData[0]["careerCountry"]
               ..shortName = extraData[0]["careerCountry"];
+          } else {
+            // userDetails!.countryModel = CountryModel()
+            //   ..id = 101
+            //   ..name = 'India'
+            //   ..shortName = 'IN';
+
+            for (var country in PreferenceHelper.countryList) {
+              if (json["data"]["userBasic"]["countryCode"] ==
+                  country["phoneCode"].toString()) {
+                print('success found match');
+                userDetails!.countryModel = CountryModel()
+                  ..id = country["id"]
+                  ..name = country["name"]
+                  ..shortName = country["shortName"];
+              }
+            }
           }
           if (extraData[0]["religion"] != null) {
             userDetails!.religion = SimpleMasterData()
               ..id = extraData[0]["religion"]
               ..title = extraData[0]["religion"];
+          } else {
+            userDetails!.religion = SimpleMasterData()
+              ..id = 'unknown'
+              ..title = 'UNK';
           }
           if (extraData[0]["abilityStatus"] != null) {
             userDetails!.abilityStatus =
                 AbilityStatus.values[extraData[0]["abilityStatus"]];
+          } else {
+            userDetails!.abilityStatus = AbilityStatus.Normal;
           }
         }
       }
