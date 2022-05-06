@@ -180,6 +180,7 @@ class CountryModel {
     this.name = json["name"];
     this.shortName = json["shortName"];
     this.id = json["id"];
+    this.phoneCode = json["phoneCode"];
   }
 }
 

@@ -42,13 +42,13 @@ class StorageService {
     this
         .sharedPreferences
         .setInt(AppConstants.ABILITYSTATUS, userDetails.abilityStatus.index);
-    this.sharedPreferences.setString(
-        AppConstants.COUNTRYMODELNAME, userDetails.countryModel.name);
-    this.sharedPreferences.setString(
-        AppConstants.COUNTRYMODELSHORTNAME, userDetails.countryModel.shortName);
-    this
-        .sharedPreferences
-        .setInt(AppConstants.COUNTRYMODELID, userDetails.countryModel.id);
+    // this.sharedPreferences.setString(
+    //     AppConstants.COUNTRYMODELNAME, userDetails.countryModel.name);
+    // this.sharedPreferences.setString(
+    //     AppConstants.COUNTRYMODELSHORTNAME, userDetails.countryModel.shortName);
+    // this
+    //     .sharedPreferences
+    //     .setInt(AppConstants.COUNTRYMODELID, userDetails.countryModel.id);
     this
         .sharedPreferences
         .setString(AppConstants.RELIGIONID, userDetails.religion.id);
@@ -60,6 +60,13 @@ class StorageService {
         .setString(AppConstants.MOTHERTONGUEID, userDetails.motherTongue.id);
     this.sharedPreferences.setString(
         AppConstants.MOTHERTONGUETITLE, userDetails.motherTongue.title);
+    this.sharedPreferences.setString(
+        AppConstants.COUNTRYMODELNAME, userDetails.countryModel.name);
+    this.sharedPreferences.setString(
+        AppConstants.COUNTRYMODELSHORTNAME, userDetails.countryModel.shortName);
+    this
+        .sharedPreferences
+        .setInt(AppConstants.COUNTRYMODELID, userDetails.countryModel.id);
 
     this.sharedPreferences.setString(AppConstants.MOBILE, userDetails.mobile);
     this.sharedPreferences.setString(AppConstants.EMAIL, userDetails.email);
