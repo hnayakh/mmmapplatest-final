@@ -43,3 +43,4 @@ const kShadow = Color(0xff3D4B5C1F);
 const kMessage = Color(0xffFF8FA3);
 const kBorder = Color(0xffE2E0EB);
 const kNotify = Color(0xff423C5D);
+const kCoffee = Color(0xff513333);

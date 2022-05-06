@@ -71,29 +71,40 @@ class TransactionScreenState extends State<TransactionScreen> {
         return ListTile(
           title: Container(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      child: SvgPicture.asset("images/link_4.svg"),
-                    ),
-                    Container(
-                      width: 36,
-                      height: 36,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          color: Colors.green, shape: BoxShape.circle),
-                      child: Text(
-                        list[index].connectCount.toString(),
-                        textScaleFactor: 1.0,
-                        style: MmmTextStyles.heading4(textColor: Colors.white),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "images/link_4.png",
+                            width: 14,
+                            height: 14,
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          RichText(
+                              text: TextSpan(children: [
+                            TextSpan(
+                                text: list[index].connectCount.toString(),
+                                style: MmmTextStyles.bodyMedium(
+                                    textColor: Colors.black)),
+                            TextSpan(
+                                text: " Connects",
+                                style: MmmTextStyles.bodyRegular(
+                                    textColor: Colors.black)),
+                          ]))
+                        ],
                       ),
                     ),
                     Text(
                       "\u{20B9}${list[index].amount.toStringAsFixed(2)}",
                       textScaleFactor: 1.0,
-                      style: MmmTextStyles.heading6(textColor: kDark5),
+                      style: MmmTextStyles.heading6(textColor: kCoffee),
                     )
                   ],
                 ),
@@ -104,16 +115,20 @@ class TransactionScreenState extends State<TransactionScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      list[index].transactionId,
+                      "#${list[index].transactionId}",
                       textScaleFactor: 1.0,
-                      style: MmmTextStyles.bodyRegular(textColor: gray3),
-                    ),
-                    Text(
-                      AppHelper.getTimeGone(list[index].date),
-                      textScaleFactor: 1.0,
-                      style: MmmTextStyles.bodyRegular(textColor: gray1),
+                      style: MmmTextStyles.bodyRegular(textColor: kCoffee),
                     ),
                   ],
+                ),
+                SizedBox(
+                  height: 4,
+                ),
+                Text(
+                  AppHelper.getReadableDateTIme(list[index].date),
+                  // list[index].date,
+                  textScaleFactor: 1.0,
+                  style: MmmTextStyles.bodyRegular(textColor: gray1),
                 ),
               ],
             ),

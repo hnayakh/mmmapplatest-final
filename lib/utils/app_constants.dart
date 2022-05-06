@@ -35,6 +35,7 @@ class AppConstants {
   static final FAILURE = "FAILURE";
   static final DATEFORMAT = 'dd MMM yyyy';
   static final SERVERDATEFORMAT = 'yyyy-MM-dd';
+  static final SERVERDATETIMEFORMAT = 'yyyy-MM-dd hh:mm';
 
   static final PUBLICIMAGEBASEURL =
       "https://mmm-user-image.s3.ap-south-1.amazonaws.com/";
