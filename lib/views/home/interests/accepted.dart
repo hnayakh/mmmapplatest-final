@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -8,6 +9,7 @@ import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
+import 'package:makemymarry/views/connect_pages/call/in_app_call.dart';
 
 import 'accepted_bloc/accepted_Bloc.dart';
 import 'accepted_bloc/accepted_events.dart';
@@ -252,7 +254,7 @@ class AcceptedScreen extends StatelessWidget {
                       "${listAccepted[index].requestingUserDeatails.height}', ${listAccepted[index].requestingUserDeatails.highestEducation}",
                       overflow: TextOverflow.ellipsis,
                       textScaleFactor: 1.0,
-                      maxLines: 2,
+                      maxLines: 3,
                       style: MmmTextStyles.footer(textColor: gray3),
                     ),
                     Text(
@@ -276,7 +278,10 @@ class AcceptedScreen extends StatelessWidget {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.31,
                     ),
-                    MmmButtons.connectButton('Connect Now', action: () {}),
+                    MmmButtons.connectButton('Connect Now', action: () {
+                      var user = listAccepted[index].requestingUserDeatails;
+                      navigateToInAppCall(context, user);
+                    }),
                   ],
                 )
               ],
@@ -294,5 +299,16 @@ class AcceptedScreen extends StatelessWidget {
 
   void initData(BuildContext context) {
     this.listAccepted = BlocProvider.of<AcceptedsBloc>(context).listAccepted;
+  }
+
+  void navigateToInAppCall(BuildContext context, RequestDetails user) {
+    var userRepo = BlocProvider.of<AcceptedsBloc>(context).userRepository;
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => InAppCall(
+              userRepository: userRepo,
+              image: user.imageURL,
+              name: user.name,
+              destinationUserId: user.id,
+            )));
   }
 }

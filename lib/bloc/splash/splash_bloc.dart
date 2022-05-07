@@ -29,7 +29,7 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
         //print(this.userRepository.useDetails!.id);
         //testing only
         // this.userRepository.useDetails!.registrationStep = 5;
-        userDetails = null;
+        // userDetails = null;
 
         List<String> countryPickerList = [];
         for (var country in PreferenceHelper.countryList) {
