@@ -9,6 +9,7 @@ import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 
 import 'package:makemymarry/utils/text_styles.dart';
+import 'package:makemymarry/views/connect_pages/call/in_app_call.dart';
 
 import 'sent_bloc/sent_bloc.dart';
 import 'sent_bloc/sent_events.dart';
@@ -266,7 +267,10 @@ class SentScreen extends StatelessWidget {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.32,
                     ),
-                    MmmButtons.connectButton('Connect Now', action: () {}),
+                    MmmButtons.connectButton('Connect Now', action: () {
+                      navigateToInAppCall(
+                          context, listSent[index].requestedUserDeatails);
+                    }),
                     SizedBox(
                       width: 12,
                     ),
@@ -287,5 +291,16 @@ class SentScreen extends StatelessWidget {
       ));
     }
     return list;
+  }
+
+  void navigateToInAppCall(BuildContext context, RequestDetails user) {
+    var userRepo = BlocProvider.of<SentsBloc>(context).userRepository;
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => InAppCall(
+              userRepository: userRepo,
+              image: user.imageURL,
+              name: user.name,
+              destinationUserId: user.id,
+            )));
   }
 }
