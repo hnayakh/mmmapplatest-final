@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "523587139485",
-    "project_id": "makemymarry-d2197",
-    "storage_bucket": "makemymarry-d2197.appspot.com"
+    "project_number": "861274241402",
+    "project_id": "makemymarry-ef951",
+    "storage_bucket": "makemymarry-ef951.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:523587139485:android:821dcf32cc26ac86ed2174",
+        "mobilesdk_app_id": "1:861274241402:android:4283e6cb7b92ad253f3ec3",
         "android_client_info": {
           "package_name": "com.irongate.makemymarry"
         }
       },
       "oauth_client": [
         {
-          "client_id": "523587139485-a1ah348bqmct531bhkdcub5eqmoso1dl.apps.googleusercontent.com",
+          "client_id": "861274241402-ut9bheajc3tf15ibjp13dinlt7nbmo9q.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB4leqWIO_wIT1SyE7oYgH0S5aJjz1mePE"
+          "current_key": "AIzaSyDiW4EuORwQMRWgF9mkwZmqB6_wpBnn-eM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "523587139485-a1ah348bqmct531bhkdcub5eqmoso1dl.apps.googleusercontent.com",
+              "client_id": "861274241402-ut9bheajc3tf15ibjp13dinlt7nbmo9q.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

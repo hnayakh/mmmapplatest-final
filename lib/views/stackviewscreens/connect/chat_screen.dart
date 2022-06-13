@@ -67,48 +67,48 @@ class _ChatScreenState extends State<ChatScreen> {
                 },
               ),
             ),
-            Row(
-              children: [
-                Expanded(
-                    child: (Container(
-                  height: 68,
-                  decoration: BoxDecoration(boxShadow: [
-                    MmmShadow.elevationStack(),
-                  ]),
-                  padding: EdgeInsets.only(top: 8, bottom: 8),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        MmmWidgets.bottomBarUnits('images/Search.svg', 'Search',
-                            index == 0 ? kPrimary : gray3, action: () {
-                          setColor(0);
-                        }),
-                        MmmWidgets.bottomBarUnits(
-                            'images/filter2.svg',
-                            'Filter',
-                            index == 1 ? kPrimary : gray3, action: () {
-                          setColor(1);
-                        }),
-                        MmmWidgets.bottomBarUnits(
-                            'images/connect.svg',
-                            'Connect',
-                            index == 2 ? kPrimary : gray3, action: () {
-                          setColor(2);
-                        }),
-                        MmmWidgets.bottomBarUnits(
-                            'images/Search.svg',
-                            'Notifications',
-                            index == 3 ? kPrimary : gray3, action: () {
-                          setColor(3);
-                        }),
-                        MmmWidgets.bottomBarUnits('images/menu.svg', 'More',
-                            index == 4 ? kPrimary : gray3, action: () {
-                          setColor(4);
-                        })
-                      ]),
-                ))),
-              ],
-            )
+            // Row(
+            //   children: [
+            //     Expanded(
+            //         child: (Container(
+            //       height: 68,
+            //       decoration: BoxDecoration(boxShadow: [
+            //         MmmShadow.elevationStack(),
+            //       ]),
+            //       padding: EdgeInsets.only(top: 8, bottom: 8),
+            //       child: Row(
+            //           mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //           children: [
+            //             MmmWidgets.bottomBarUnits('images/Search.svg', 'Search',
+            //                 index == 0 ? kPrimary : gray3, action: () {
+            //               setColor(0);
+            //             }),
+            //             MmmWidgets.bottomBarUnits(
+            //                 'images/filter2.svg',
+            //                 'Filter',
+            //                 index == 1 ? kPrimary : gray3, action: () {
+            //               setColor(1);
+            //             }),
+            //             MmmWidgets.bottomBarUnits(
+            //                 'images/connect.svg',
+            //                 'Connect',
+            //                 index == 2 ? kPrimary : gray3, action: () {
+            //               setColor(2);
+            //             }),
+            //             MmmWidgets.bottomBarUnits(
+            //                 'images/Search.svg',
+            //                 'Notifications',
+            //                 index == 3 ? kPrimary : gray3, action: () {
+            //               setColor(3);
+            //             }),
+            //             MmmWidgets.bottomBarUnits('images/menu.svg', 'More',
+            //                 index == 4 ? kPrimary : gray3, action: () {
+            //               setColor(4);
+            //             })
+            //           ]),
+            //     ))),
+            //   ],
+            // )
           ],
         ),
       ),

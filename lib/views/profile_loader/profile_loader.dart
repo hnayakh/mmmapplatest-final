@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -23,19 +24,58 @@ class ProfileLoader extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ProfileLoaderBloc(userRepository),
-      child: ProfileLoaderScreen(),
+      child: ProfileLoaderScreen(
+        repo: userRepository,
+      ),
     );
   }
 }
 
 class ProfileLoaderScreen extends StatefulWidget {
+  final UserRepository repo;
+
+  const ProfileLoaderScreen({Key? key, required this.repo}) : super(key: key);
   @override
   State<StatefulWidget> createState() {
     return ProfileLoaderScreenState();
   }
 }
 
-class ProfileLoaderScreenState extends State<ProfileLoaderScreen> {
+class ProfileLoaderScreenState extends State<ProfileLoaderScreen>
+    with WidgetsBindingObserver {
+  String? userId;
+
+  @override
+  void initState() {
+    userId = widget.repo.useDetails!.id;
+    WidgetsBinding.instance!.addObserver(this);
+    setStatus('Online');
+    super.initState();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print('userid=' + userId!);
+    if (userId != null || userId != '') {
+      print('ProfileLoad Applifecycle userid not null');
+      if (state == AppLifecycleState.resumed) {
+        setStatus('Online');
+      } else {
+        setStatus('Offline');
+      }
+    }
+
+    super.didChangeAppLifecycleState(state);
+  }
+
+  void setStatus(String status) async {
+    print(status);
+    await FirebaseFirestore.instance
+        .collection('userStatus')
+        .doc(userId)
+        .set({'status': status}, SetOptions(merge: true));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,33 +86,33 @@ class ProfileLoaderScreenState extends State<ProfileLoaderScreen> {
             BlocProvider.of<ProfileLoaderBloc>(context).add(GetProfiles());
           }
           return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
-                  children: [
-                    Image.asset(
-                      "images/app_loader4.gif",
-                      width: 96,
-                      height: 96,
-                    )
-                  ],
-                  mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                children: [
+                  Image.asset(
+                    "images/app_loader4.gif",
+                    width: 96,
+                    height: 96,
+                  )
+                ],
+                mainAxisAlignment: MainAxisAlignment.center,
+              ),
+              SizedBox(
+                height: 32,
+              ),
+              Container(
+                child: Text(
+                  "Please Wait while we are matching your profile.",
+                  textAlign: TextAlign.center,
+                  textScaleFactor: 1.0,
+                  style: MmmTextStyles.heading4(textColor: kPrimary),
                 ),
-                SizedBox(
-                  height: 32,
-                ),
-                Container(
-                  child: Text(
-                    "Please Wait while we are matching your profile.",
-                    textAlign: TextAlign.center,
-                    textScaleFactor: 1.0,
-                    style: MmmTextStyles.heading4(textColor: kPrimary),
-                  ),
-                  padding: kMargin16,
-                )
-              ],
-            );
+                padding: kMargin16,
+              )
+            ],
+          );
         },
         listener: (context, state) {
           if (state is OnGotProfiles) {

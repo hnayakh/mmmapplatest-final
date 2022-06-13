@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,6 +48,7 @@ class SplashScreenState extends State<SplashScreen> {
         if (state is SplashScreenInitialState) {
           BlocProvider.of<SplashBloc>(context).add(GetUserState());
         }
+
         return Stack(
           children: [
             Container(

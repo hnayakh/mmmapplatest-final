@@ -212,7 +212,7 @@ class _MessageScreenState extends State<MessageScreen> {
               ),
               StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                   stream: chats
-                      .doc('87hoQkLnMwR7py55YVJO')
+                      .doc(chatDocId)
                       .collection('messages')
                       .orderBy('createdAt', descending: true)
                       .snapshots(),
@@ -349,8 +349,5 @@ class _MessageScreenState extends State<MessageScreen> {
         //id =senders id
         {'text': cntrlr.text, 'createdAt': Timestamp.now(), 'id': user2id});
     cntrlr.clear();
-    // setState(() {
-    //   cntrlr.text = '';
-    // });
   }
 }

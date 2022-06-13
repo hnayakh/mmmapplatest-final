@@ -6,8 +6,8 @@ import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/splash_screen.dart';
+import 'package:makemymarry/views/stackviewscreens/connect/message_screen.dart';
 import 'package:makemymarry/views/widget_views.dart';
-
 
 // @dart=2.9
 class SimpleObserver extends BlocObserver {

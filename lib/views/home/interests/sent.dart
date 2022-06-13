@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -33,6 +34,7 @@ class Sent extends StatelessWidget {
 
 class SentScreen extends StatelessWidget {
   late List<ActiveInterests> listSent;
+  var connects = FirebaseFirestore.instance.collection('connects');
 
   //const SentScreen({Key? key, required this.listSent}) : super(key: key);
 
@@ -268,6 +270,7 @@ class SentScreen extends StatelessWidget {
                       width: MediaQuery.of(context).size.width * 0.32,
                     ),
                     MmmButtons.connectButton('Connect Now', action: () {
+                      addToConnectsCollection(index, context);
                       navigateToInAppCall(
                           context, listSent[index].requestedUserDeatails);
                     }),
@@ -302,5 +305,22 @@ class SentScreen extends StatelessWidget {
               name: user.name,
               destinationUserId: user.id,
             )));
+  }
+
+  void addToConnectsCollection(int index, BuildContext context) {
+    var userRepo = BlocProvider.of<SentsBloc>(context).userRepository;
+    print('userid:');
+    print(userRepo.useDetails!.id);
+    Map<String, dynamic> data = {
+      'userId': listSent[index].requestedUserDeatails.id,
+      'image': listSent[index].requestedUserDeatails.imageURL,
+      'name': listSent[index].requestedUserDeatails.name,
+      'about': listSent[index].requestedUserDeatails.aboutMe
+    };
+    connects
+        .doc('userId:' + userRepo.useDetails!.id)
+        .collection('currentUserConnects')
+        .doc(listSent[index].requestedUserDeatails.id)
+        .set(data);
   }
 }

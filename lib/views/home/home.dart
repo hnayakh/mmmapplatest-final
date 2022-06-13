@@ -4,6 +4,7 @@ import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/home/menu/sidebar_account_screen.dart';
+import 'package:makemymarry/views/stackviewscreens/connect/connect.dart';
 
 import 'filter_screens/filter_screen.dart';
 import 'interests/interest_status_screen.dart';
@@ -88,6 +89,8 @@ class HomeScreenState extends State<HomeScreen> {
         return Interests(
           userRepository: widget.userRepository,
         );
+      case 2:
+        return ConnectMainScreen();
       case 4:
         return SidebarAccount(
           userRepository: widget.userRepository,

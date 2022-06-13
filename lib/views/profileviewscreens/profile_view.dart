@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
@@ -146,7 +147,24 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
 
   int selectedImagePos = 0;
 
+  bool? exist = false;
+
   _ProfileViewScreenState(this.profileDetails);
+
+  Future<bool> checkExist(String docID) async {
+    try {
+      await FirebaseFirestore.instance
+          .doc("userStatus/$docID")
+          .get()
+          .then((doc) {
+        exist = doc.exists;
+      });
+      return exist!;
+    } catch (e) {
+      // If any error
+      return false;
+    }
+  }
 
   @override
   void dispose() {
@@ -162,6 +180,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
   @override
   void initState() {
     super.initState();
+    checkExist(profileDetails.id);
     _controller.addListener(() {
       if (_controller.position.pixels >=
           MediaQuery.of(context).size.height * 0.66) {
@@ -561,21 +580,47 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                     ),
                   ),
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    //Expanded(
-                    // child:
-                    Container(
-                      height: 8,
-                      width: 8,
-                      decoration:
-                          BoxDecoration(shape: BoxShape.circle, color: kGreen),
-                    ),
-                    // ),
-                    Expanded(child: SizedBox())
-                  ],
-                ),
+                exist!
+                    ? StreamBuilder<DocumentSnapshot>(
+                        stream: FirebaseFirestore.instance
+                            .collection('userStatus')
+                            .doc(profileDetails.id)
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              //Expanded(
+                              // child:
+                              Container(
+                                height: 8,
+                                width: 8,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: snapshot.data!['status'] == 'Online'
+                                        ? kGreen
+                                        : kError),
+                              ),
+                              // ),
+                              Expanded(child: SizedBox())
+                            ],
+                          );
+                        })
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          //Expanded(
+                          // child:
+                          Container(
+                            height: 8,
+                            width: 8,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle, color: kGray),
+                          ),
+                          // ),
+                          Expanded(child: SizedBox())
+                        ],
+                      ),
                 profileDetails.activationStatus ==
                         ProfileActivationStatus.Verified
                     ? SvgPicture.asset(
