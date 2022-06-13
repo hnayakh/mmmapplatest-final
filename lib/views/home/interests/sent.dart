@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,8 +7,8 @@ import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
-
 import 'package:makemymarry/utils/text_styles.dart';
+import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/connect_pages/call/in_app_call.dart';
 
 import 'sent_bloc/sent_bloc.dart';
@@ -34,7 +33,6 @@ class Sent extends StatelessWidget {
 
 class SentScreen extends StatelessWidget {
   late List<ActiveInterests> listSent;
-  var connects = FirebaseFirestore.instance.collection('connects');
 
   //const SentScreen({Key? key, required this.listSent}) : super(key: key);
 
@@ -60,118 +58,125 @@ class SentScreen extends StatelessWidget {
             );
           }
           return Container(
-            color: Colors.white24,
-            child: SingleChildScrollView(
-              child: Column(
-                children: buildList(context),
-              ),
-            ),
-            //   child: ListView.separated(
-            //   itemBuilder: (context, index) {
-            //     return ListTile(
-            //       title: Row(
-            //         children: [
-            //           ClipRRect(
-            //             borderRadius: BorderRadius.circular(12),
-            //             child: Image.network(
-            //               listSent[index].requestedUserDeatails.imageURL,
-            //               height: MediaQuery.of(context).size.width * 0.28,
-            //               width: MediaQuery.of(context).size.width * 0.28,
-            //               fit: BoxFit.cover,
-            //             ),
-            //           ),
-            //           SizedBox(
-            //             width: 16,
-            //           ),
-            //           Column(
-            //             crossAxisAlignment: CrossAxisAlignment.start,
-            //             children: [
-            //               Row(
-            //                 children: [
-            //                   Text(
-            //                     listSent[index]
-            //                         .requestedUserDeatails
-            //                         .displayId
-            //                         .toUpperCase(),
-            //                     textScaleFactor: 1.0,
-            //                     style: MmmTextStyles.bodyRegular(
-            //                         textColor: kPrimary),
-            //                   ),
-            //                   SizedBox(
-            //                     width:
-            //                     MediaQuery.of(context).size.width * 0.04,
-            //                   ),
-            //                   listSent[index]
-            //                       .requestedUserDeatails
-            //                       .activationStatus ==
-            //                       ActivationStatus.Verified.index
-            //                       ? SvgPicture.asset(
-            //                     'images/Verified.svg',
-            //                     color: kPrimary,
-            //                   )
-            //                       : Container()
-            //                 ],
-            //               ),
-            //               SizedBox(
-            //                 height: 8,
-            //               ),
-            //               Text(
-            //                 listSent[index].requestedUserDeatails.name,
-            //                 textScaleFactor: 1.0,
-            //                 style: MmmTextStyles.heading5(textColor: kDark5),
-            //               ),
-            //               SizedBox(
-            //                 height: 4,
-            //               ),
-            //               Text(
-            //                 "${AppHelper.getAgeFromDob(listSent[index].requestedUserDeatails.dateOfBirth)} Years, "
-            //                     "${listSent[index].requestedUserDeatails.height}', ${listSent[index].requestedUserDeatails.highestEducation}",
-            //                 textScaleFactor: 1.0,
-            //                 maxLines: 2,
-            //                 style: MmmTextStyles.footer(textColor: gray3),
-            //               ),
-            //               Text(
-            //                 "${listSent[index].requestedUserDeatails.careerCity}, ${listSent[index].requestedUserDeatails.careerState}, ${listSent[index].requestedUserDeatails.careerCountry}",
-            //                 textScaleFactor: 1.0,
-            //                 maxLines: 2,
-            //                 style: MmmTextStyles.footer(textColor: gray3),
-            //               )
-            //             ],
-            //           ),
-            //         ],
-            //       ),
-            //       subtitle: Column(
-            //         children: [
-            //           SizedBox(
-            //             height: 8,
-            //           ),
-            //           Row(
-            //             mainAxisAlignment: MainAxisAlignment.start,
-            //             children: [
-            //               SizedBox(
-            //                 width: MediaQuery.of(context).size.width * 0.32,
-            //               ),
-            //               MmmButtons.connectButton('Connect Now',
-            //                   action: () {}),
-            //               SizedBox(
-            //                 width: 12,
-            //               ),
-            //               MmmButtons.cancelButtonInterestScreen(() {
-            //                 BlocProvider.of<SentsBloc>(context)
-            //                     .add(CancelSentInterest(index));
-            //               })
-            //             ],
-            //           )
-            //         ],
-            //       ),
-            //     );
-            //   },
-            //   itemCount: listSent.length,
-            //   separatorBuilder: (BuildContext context, int index) {
-            //     return Divider();
-            //   },
-            // ),
-          );
+              color: Colors.white24,
+              child: Stack(
+                children: [
+                  SingleChildScrollView(
+                    child: Column(
+                      children: buildList(context),
+                    ),
+                  ),
+                  state is OnLoading
+                      ? MmmWidgets.buildLoader2(context)
+                      : Container()
+                ],
+              )
+              //   child: ListView.separated(
+              //   itemBuilder: (context, index) {
+              //     return ListTile(
+              //       title: Row(
+              //         children: [
+              //           ClipRRect(
+              //             borderRadius: BorderRadius.circular(12),
+              //             child: Image.network(
+              //               listSent[index].requestedUserDeatails.imageURL,
+              //               height: MediaQuery.of(context).size.width * 0.28,
+              //               width: MediaQuery.of(context).size.width * 0.28,
+              //               fit: BoxFit.cover,
+              //             ),
+              //           ),
+              //           SizedBox(
+              //             width: 16,
+              //           ),
+              //           Column(
+              //             crossAxisAlignment: CrossAxisAlignment.start,
+              //             children: [
+              //               Row(
+              //                 children: [
+              //                   Text(
+              //                     listSent[index]
+              //                         .requestedUserDeatails
+              //                         .displayId
+              //                         .toUpperCase(),
+              //                     textScaleFactor: 1.0,
+              //                     style: MmmTextStyles.bodyRegular(
+              //                         textColor: kPrimary),
+              //                   ),
+              //                   SizedBox(
+              //                     width:
+              //                     MediaQuery.of(context).size.width * 0.04,
+              //                   ),
+              //                   listSent[index]
+              //                       .requestedUserDeatails
+              //                       .activationStatus ==
+              //                       ActivationStatus.Verified.index
+              //                       ? SvgPicture.asset(
+              //                     'images/Verified.svg',
+              //                     color: kPrimary,
+              //                   )
+              //                       : Container()
+              //                 ],
+              //               ),
+              //               SizedBox(
+              //                 height: 8,
+              //               ),
+              //               Text(
+              //                 listSent[index].requestedUserDeatails.name,
+              //                 textScaleFactor: 1.0,
+              //                 style: MmmTextStyles.heading5(textColor: kDark5),
+              //               ),
+              //               SizedBox(
+              //                 height: 4,
+              //               ),
+              //               Text(
+              //                 "${AppHelper.getAgeFromDob(listSent[index].requestedUserDeatails.dateOfBirth)} Years, "
+              //                     "${listSent[index].requestedUserDeatails.height}', ${listSent[index].requestedUserDeatails.highestEducation}",
+              //                 textScaleFactor: 1.0,
+              //                 maxLines: 2,
+              //                 style: MmmTextStyles.footer(textColor: gray3),
+              //               ),
+              //               Text(
+              //                 "${listSent[index].requestedUserDeatails.careerCity}, ${listSent[index].requestedUserDeatails.careerState}, ${listSent[index].requestedUserDeatails.careerCountry}",
+              //                 textScaleFactor: 1.0,
+              //                 maxLines: 2,
+              //                 style: MmmTextStyles.footer(textColor: gray3),
+              //               )
+              //             ],
+              //           ),
+              //         ],
+              //       ),
+              //       subtitle: Column(
+              //         children: [
+              //           SizedBox(
+              //             height: 8,
+              //           ),
+              //           Row(
+              //             mainAxisAlignment: MainAxisAlignment.start,
+              //             children: [
+              //               SizedBox(
+              //                 width: MediaQuery.of(context).size.width * 0.32,
+              //               ),
+              //               MmmButtons.connectButton('Connect Now',
+              //                   action: () {}),
+              //               SizedBox(
+              //                 width: 12,
+              //               ),
+              //               MmmButtons.cancelButtonInterestScreen(() {
+              //                 BlocProvider.of<SentsBloc>(context)
+              //                     .add(CancelSentInterest(index));
+              //               })
+              //             ],
+              //           )
+              //         ],
+              //       ),
+              //     );
+              //   },
+              //   itemCount: listSent.length,
+              //   separatorBuilder: (BuildContext context, int index) {
+              //     return Divider();
+              //   },
+              // ),
+              );
         },
       ),
     );
@@ -194,7 +199,7 @@ class SentScreen extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: Image.network(
-                    listSent[index].requestedUserDeatails.imageURL,
+                    listSent[index].user.imageURL,
                     height: MediaQuery.of(context).size.width * 0.28,
                     width: MediaQuery.of(context).size.width * 0.28,
                     fit: BoxFit.cover,
@@ -209,19 +214,14 @@ class SentScreen extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          listSent[index]
-                              .requestedUserDeatails
-                              .displayId
-                              .toUpperCase(),
+                          listSent[index].user.displayId.toUpperCase(),
                           textScaleFactor: 1.0,
                           style: MmmTextStyles.bodyRegular(textColor: kPrimary),
                         ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.04,
                         ),
-                        listSent[index]
-                                    .requestedUserDeatails
-                                    .activationStatus ==
+                        listSent[index].user.activationStatus ==
                                 ActivationStatus.Verified.index
                             ? SvgPicture.asset(
                                 'images/Verified.svg',
@@ -234,7 +234,7 @@ class SentScreen extends StatelessWidget {
                       height: 8,
                     ),
                     Text(
-                      listSent[index].requestedUserDeatails.name,
+                      listSent[index].user.name,
                       textScaleFactor: 1.0,
                       style: MmmTextStyles.heading5(textColor: kDark5),
                     ),
@@ -242,14 +242,14 @@ class SentScreen extends StatelessWidget {
                       height: 4,
                     ),
                     Text(
-                      "${AppHelper.getAgeFromDob(listSent[index].requestedUserDeatails.dateOfBirth)} Years, "
-                      "${listSent[index].requestedUserDeatails.height}', ${listSent[index].requestedUserDeatails.highestEducation}",
+                      "${AppHelper.getAgeFromDob(listSent[index].user.dateOfBirth)} Years, "
+                      "${listSent[index].user.height}', ${listSent[index].user.highestEducation}",
                       textScaleFactor: 1.0,
                       maxLines: 2,
                       style: MmmTextStyles.footer(textColor: gray3),
                     ),
                     Text(
-                      "${listSent[index].requestedUserDeatails.careerCity}, ${listSent[index].requestedUserDeatails.careerState}, ${listSent[index].requestedUserDeatails.careerCountry}",
+                      "${listSent[index].user.careerCity}, ${listSent[index].user.careerState}, ${listSent[index].user.careerCountry}",
                       textScaleFactor: 1.0,
                       maxLines: 2,
                       style: MmmTextStyles.footer(textColor: gray3),
@@ -269,11 +269,17 @@ class SentScreen extends StatelessWidget {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.32,
                     ),
-                    MmmButtons.connectButton('Connect Now', action: () {
-                      addToConnectsCollection(index, context);
-                      navigateToInAppCall(
-                          context, listSent[index].requestedUserDeatails);
-                    }),
+                    listSent[index].user.connectStatus
+                        ? MmmButtons.connectButton('Call Now', action: () {})
+                        : MmmButtons.connectButton('Connect Now', action: () {
+                            BlocProvider.of<SentsBloc>(context).add(ConnectNow(
+                                connectById:
+                                    listSent[index].requestingUserBasicId,
+                                connectToId:
+                                    listSent[index].requestedUserBasicId));
+                            // navigateToInAppCall(
+                            //     context, listSent[index].requestedUserDeatails);
+                          }),
                     SizedBox(
                       width: 12,
                     ),
@@ -296,7 +302,7 @@ class SentScreen extends StatelessWidget {
     return list;
   }
 
-  void navigateToInAppCall(BuildContext context, RequestDetails user) {
+  void navigateToInAppCall(BuildContext context, InterestUser user) {
     var userRepo = BlocProvider.of<SentsBloc>(context).userRepository;
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => InAppCall(
@@ -305,22 +311,5 @@ class SentScreen extends StatelessWidget {
               name: user.name,
               destinationUserId: user.id,
             )));
-  }
-
-  void addToConnectsCollection(int index, BuildContext context) {
-    var userRepo = BlocProvider.of<SentsBloc>(context).userRepository;
-    print('userid:');
-    print(userRepo.useDetails!.id);
-    Map<String, dynamic> data = {
-      'userId': listSent[index].requestedUserDeatails.id,
-      'image': listSent[index].requestedUserDeatails.imageURL,
-      'name': listSent[index].requestedUserDeatails.name,
-      'about': listSent[index].requestedUserDeatails.aboutMe
-    };
-    connects
-        .doc('userId:' + userRepo.useDetails!.id)
-        .collection('currentUserConnects')
-        .doc(listSent[index].requestedUserDeatails.id)
-        .set(data);
   }
 }

@@ -201,10 +201,12 @@ class ProfileDetailsResponse {
 
 class LikeStatusResponse {
   late String status, message;
+
   LikeStatusResponse.fromJson(json) {
     this.message = json['message'];
     this.status = json["type"];
   }
+
   LikeStatusResponse.fromError(error) {
     this.status = AppConstants.FAILURE;
     this.message = error;

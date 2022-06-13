@@ -177,7 +177,7 @@ class ReceivedScreen extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(12),
                         child: Image.network(
-                          listReceived[index].requestingUserDeatails.imageURL,
+                          listReceived[index].user.imageURL,
                           height: MediaQuery.of(context).size.width * 0.28,
                           width: MediaQuery.of(context).size.width * 0.28,
                           fit: BoxFit.cover,
@@ -197,7 +197,7 @@ class ReceivedScreen extends StatelessWidget {
                                   children: [
                                     Text(
                                       listReceived[index]
-                                          .requestingUserDeatails
+                                          .user
                                           .displayId
                                           .toUpperCase(),
                                       textScaleFactor: 1.0,
@@ -209,7 +209,7 @@ class ReceivedScreen extends StatelessWidget {
                                           0.04,
                                     ),
                                     listReceived[index]
-                                                .requestingUserDeatails
+                                                .user
                                                 .activationStatus ==
                                             ActivationStatus.Verified.index
                                         ? SvgPicture.asset(
@@ -267,14 +267,14 @@ class ReceivedScreen extends StatelessWidget {
                             height: 14,
                           ),
                           Text(
-                            listReceived[index].requestingUserDeatails.name,
+                            listReceived[index].user.name,
                             style: MmmTextStyles.heading5(textColor: kDark5),
                           ),
                           SizedBox(
                             height: 4,
                           ),
                           Text(
-                            listReceived[index].requestingUserDeatails.aboutMe,
+                            listReceived[index].user.aboutMe,
                             style: MmmTextStyles.footer(textColor: gray3),
                           ),
                         ],
@@ -335,7 +335,7 @@ class ReceivedScreen extends StatelessWidget {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: Image.network(
-                      listReceived[index].requestingUserDeatails.imageURL,
+                      listReceived[index].user.imageURL,
                       height: MediaQuery.of(context).size.width * 0.28,
                       width: MediaQuery.of(context).size.width * 0.28,
                       fit: BoxFit.cover,
@@ -356,7 +356,7 @@ class ReceivedScreen extends StatelessWidget {
                               children: [
                                 Text(
                                   listReceived[index]
-                                      .requestingUserDeatails
+                                      .user
                                       .displayId
                                       .toUpperCase(),
                                   textScaleFactor: 1.0,
@@ -368,7 +368,7 @@ class ReceivedScreen extends StatelessWidget {
                                       MediaQuery.of(context).size.width * 0.04,
                                 ),
                                 listReceived[index]
-                                            .requestingUserDeatails
+                                            .user
                                             .activationStatus ==
                                         ActivationStatus.Verified.index
                                     ? SvgPicture.asset(
@@ -425,7 +425,7 @@ class ReceivedScreen extends StatelessWidget {
                         height: 14,
                       ),
                       Text(
-                        listReceived[index].requestingUserDeatails.name,
+                        listReceived[index].user.name,
                         textScaleFactor: 1.0,
                         style: MmmTextStyles.heading5(textColor: kDark5),
                       ),
@@ -433,14 +433,14 @@ class ReceivedScreen extends StatelessWidget {
                         height: 4,
                       ),
                       Text(
-                        "${AppHelper.getAgeFromDob(listReceived[index].requestingUserDeatails.dateOfBirth)} Years, "
-                        "${listReceived[index].requestingUserDeatails.height}', ${listReceived[index].requestingUserDeatails.highestEducation}",
+                        "${AppHelper.getAgeFromDob(listReceived[index].user.dateOfBirth)} Years, "
+                        "${listReceived[index].user.height}', ${listReceived[index].user.highestEducation}",
                         textScaleFactor: 1.0,
                         maxLines: 2,
                         style: MmmTextStyles.footer(textColor: gray3),
                       ),
                       Text(
-                        "${listReceived[index].requestingUserDeatails.careerCity}, ${listReceived[index].requestingUserDeatails.careerState}, ${listReceived[index].requestingUserDeatails.careerCountry}",
+                        "${listReceived[index].user.careerCity}, ${listReceived[index].user.careerState}, ${listReceived[index].user.careerCountry}",
                         textScaleFactor: 1.0,
                         maxLines: 2,
                         style: MmmTextStyles.footer(textColor: gray3),

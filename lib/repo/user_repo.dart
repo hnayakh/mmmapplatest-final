@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:makemymarry/datamodels/connect.dart';
 import 'package:makemymarry/datamodels/interests_model.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
@@ -312,11 +313,19 @@ class UserRepository {
     return this.apiClient.recharge(rechargeModel);
   }
 
-  Future<CurrentBalanceResponse>fetchCurrentBalance() async{
+  Future<CurrentBalanceResponse> fetchCurrentBalance() async {
     return this.apiClient.fetchCurrentBalance(this.useDetails!.id);
   }
 
-  Future<RechargeHistoryResponse>getTransactionHistory() async{
+  Future<RechargeHistoryResponse> getTransactionHistory() async {
     return this.apiClient.getTransactionHistory(this.useDetails!.id);
+  }
+
+  Future<ConnectResponse> connectUsers(String connectById, String connectToId) {
+    return this.apiClient.connectUsers(connectById, connectToId);
+  }
+
+  Future<MyConnectResponse> getMyConnects() async {
+    return this.apiClient.getMyConnects(this.useDetails!.id);
   }
 }

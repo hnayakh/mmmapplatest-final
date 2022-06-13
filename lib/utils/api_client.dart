@@ -3,17 +3,16 @@ import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:dio_logger/dio_logger.dart';
+import 'package:makemymarry/datamodels/connect.dart';
 import 'package:makemymarry/datamodels/interests_model.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
-import 'package:makemymarry/datamodels/profile_data.dart';
 import 'package:makemymarry/datamodels/recharge.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 
 import 'app_helper.dart';
-import 'package:http/http.dart' as http;
 
 class ApiClient {
   final Dio dio = Dio();
@@ -853,6 +852,29 @@ class ApiClient {
       return RechargeHistoryResponse.fromJson(response.data);
     } catch (error) {
       return RechargeHistoryResponse.fromError("Something went wrong");
+    }
+  }
+
+  Future<ConnectResponse> connectUsers(
+      String connectById, String connectToId) async {
+    try {
+      var response = await this.dio.post(
+          AppConstants.ENDPOINT + 'connects/user_connect_request',
+          data: {"userOneBasicId": connectById, "userTwoBasicId": connectToId});
+      return ConnectResponse.fromJson(response.data);
+    } catch (error) {
+      return ConnectResponse.fromError("Something went wrong");
+    }
+  }
+
+  Future<MyConnectResponse> getMyConnects(String userId) async {
+    try {
+      var response = await this.dio.get(
+            AppConstants.ENDPOINT + 'connects/user_allconnect/$userId',
+          );
+      return MyConnectResponse.fromJson(response.data);
+    } catch (error) {
+      return MyConnectResponse.fromError("Something went wrong");
     }
   }
 }

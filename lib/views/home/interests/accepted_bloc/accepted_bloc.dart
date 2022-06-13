@@ -35,5 +35,20 @@ class AcceptedsBloc extends Bloc<AcceptedEvents, AcceptedStates> {
         yield OnError(result.message);
       }
     }
+    if (event is ConnectNow) {
+      var result = await this
+          .userRepository
+          .connectUsers(this.userRepository.useDetails!.id, event.userId);
+      if (result.status == AppConstants.SUCCESS) {
+        var result = this.listAccepted.firstWhere((element) =>
+            element.user.id == event.userId &&
+            element.requestedUserBasicId == this.userRepository.useDetails!.id);
+        result.user.connectStatus = true;
+        result.user.connectId = result.id;
+        yield AcceptedListIsNotEmpty();
+      } else {
+        yield OnError(result.message);
+      }
+    }
   }
 }

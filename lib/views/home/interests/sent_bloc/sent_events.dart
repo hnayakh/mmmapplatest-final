@@ -9,3 +9,9 @@ class CancelSentInterest extends SentEvents {
 }
 
 class CheckSentListIsEmpty extends SentEvents {}
+
+class ConnectNow extends SentEvents {
+  final String connectById, connectToId;
+
+  ConnectNow({required this.connectById, required this.connectToId});
+}

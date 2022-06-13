@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,6 +8,7 @@ import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
+import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/connect_pages/call/in_app_call.dart';
 
 import 'accepted_bloc/accepted_Bloc.dart';
@@ -59,10 +59,17 @@ class AcceptedScreen extends StatelessWidget {
           }
           return Container(
               color: Colors.white24,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: buildList(context),
-                ),
+              child: Stack(
+                children: [
+                  SingleChildScrollView(
+                    child: Column(
+                      children: buildList(context),
+                    ),
+                  ),
+                  state is OnLoading
+                      ? MmmWidgets.buildLoader2(context)
+                      : Container()
+                ],
               ));
           return ListView.separated(
             itemBuilder: (context, index) {
@@ -72,7 +79,7 @@ class AcceptedScreen extends StatelessWidget {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(12),
                       child: Image.network(
-                        listAccepted[index].requestingUserDeatails.imageURL,
+                        listAccepted[index].user.imageURL,
                         height: MediaQuery.of(context).size.width * 0.28,
                         width: MediaQuery.of(context).size.width * 0.28,
                         fit: BoxFit.cover,
@@ -87,9 +94,7 @@ class AcceptedScreen extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              listAccepted[index]
-                                  .requestingUserDeatails
-                                  .displayId,
+                              listAccepted[index].user.displayId,
                               style:
                                   MmmTextStyles.bodySmall(textColor: kPrimary),
                             ),
@@ -147,14 +152,14 @@ class AcceptedScreen extends StatelessWidget {
                           height: 14,
                         ),
                         Text(
-                          listAccepted[index].requestingUserDeatails.name,
+                          listAccepted[index].user.name,
                           style: MmmTextStyles.heading5(textColor: kDark5),
                         ),
                         SizedBox(
                           height: 4,
                         ),
                         Text(
-                          listAccepted[index].requestingUserDeatails.aboutMe,
+                          listAccepted[index].user.aboutMe,
                           style: MmmTextStyles.footer(textColor: gray3),
                         ),
                       ],
@@ -202,7 +207,7 @@ class AcceptedScreen extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: Image.network(
-                    listAccepted[index].requestingUserDeatails.imageURL,
+                    listAccepted[index].user.imageURL,
                     height: MediaQuery.of(context).size.width * 0.28,
                     width: MediaQuery.of(context).size.width * 0.28,
                     fit: BoxFit.cover,
@@ -217,19 +222,14 @@ class AcceptedScreen extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          listAccepted[index]
-                              .requestingUserDeatails
-                              .displayId
-                              .toUpperCase(),
+                          listAccepted[index].user.displayId.toUpperCase(),
                           textScaleFactor: 1.0,
                           style: MmmTextStyles.bodyRegular(textColor: kPrimary),
                         ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.04,
                         ),
-                        listAccepted[index]
-                                    .requestingUserDeatails
-                                    .activationStatus ==
+                        listAccepted[index].user.activationStatus ==
                                 ActivationStatus.Verified.index
                             ? SvgPicture.asset(
                                 'images/Verified.svg',
@@ -242,7 +242,7 @@ class AcceptedScreen extends StatelessWidget {
                       height: 8,
                     ),
                     Text(
-                      listAccepted[index].requestingUserDeatails.name,
+                      listAccepted[index].user.name,
                       textScaleFactor: 1.0,
                       style: MmmTextStyles.heading5(textColor: kDark5),
                     ),
@@ -250,15 +250,15 @@ class AcceptedScreen extends StatelessWidget {
                       height: 4,
                     ),
                     Text(
-                      "${AppHelper.getAgeFromDob(listAccepted[index].requestingUserDeatails.dateOfBirth)} Years, "
-                      "${listAccepted[index].requestingUserDeatails.height}', ${listAccepted[index].requestingUserDeatails.highestEducation}",
+                      "${AppHelper.getAgeFromDob(listAccepted[index].user.dateOfBirth)} Years, "
+                      "${listAccepted[index].user.height}', ${listAccepted[index].user.highestEducation}",
                       overflow: TextOverflow.ellipsis,
                       textScaleFactor: 1.0,
                       maxLines: 3,
                       style: MmmTextStyles.footer(textColor: gray3),
                     ),
                     Text(
-                      "${listAccepted[index].requestingUserDeatails.careerCity}, ${listAccepted[index].requestingUserDeatails.careerState}, ${listAccepted[index].requestingUserDeatails.careerCountry}",
+                      "${listAccepted[index].user.careerCity}, ${listAccepted[index].user.careerState}, ${listAccepted[index].user.careerCountry}",
                       textScaleFactor: 1.0,
                       maxLines: 2,
                       style: MmmTextStyles.footer(textColor: gray3),
@@ -278,10 +278,14 @@ class AcceptedScreen extends StatelessWidget {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.31,
                     ),
-                    MmmButtons.connectButton('Connect Now', action: () {
-                      var user = listAccepted[index].requestingUserDeatails;
-                      navigateToInAppCall(context, user);
-                    }),
+                    listAccepted[index].user.connectStatus
+                        ? MmmButtons.connectButton('Call Now', action: () {})
+                        : MmmButtons.connectButton('Connect Now', action: () {
+                            BlocProvider.of<AcceptedsBloc>(context)
+                                .add(ConnectNow(listAccepted[index].user.id));
+                            // var user = listAccepted[index].user;
+                            // navigateToInAppCall(context, user);
+                          }),
                   ],
                 )
               ],
@@ -301,7 +305,7 @@ class AcceptedScreen extends StatelessWidget {
     this.listAccepted = BlocProvider.of<AcceptedsBloc>(context).listAccepted;
   }
 
-  void navigateToInAppCall(BuildContext context, RequestDetails user) {
+  void navigateToInAppCall(BuildContext context, InterestUser user) {
     var userRepo = BlocProvider.of<AcceptedsBloc>(context).userRepository;
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => InAppCall(

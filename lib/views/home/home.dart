@@ -4,9 +4,8 @@ import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/home/menu/sidebar_account_screen.dart';
-import 'package:makemymarry/views/stackviewscreens/connect/connect.dart';
+import 'package:makemymarry/views/home/my_connects/my_connects_screen.dart';
 
-import 'filter_screens/filter_screen.dart';
 import 'interests/interest_status_screen.dart';
 import 'matching_profile/matching_profile.dart';
 
@@ -51,7 +50,7 @@ class HomeScreenState extends State<HomeScreen> {
                   this.index = 1;
                 });
               }),
-              MmmWidgets.bottomBarUnits('images/connect.svg', 'Connect',
+              MmmWidgets.bottomBarUnits('images/connect.svg', 'Contacts',
                   index == 2 ? kPrimary : gray3, action: () {
                 setState(() {
                   this.index = 2;
@@ -90,7 +89,7 @@ class HomeScreenState extends State<HomeScreen> {
           userRepository: widget.userRepository,
         );
       case 2:
-        return ConnectMainScreen();
+        return MyConnects(userRepository: widget.userRepository);
       case 4:
         return SidebarAccount(
           userRepository: widget.userRepository,

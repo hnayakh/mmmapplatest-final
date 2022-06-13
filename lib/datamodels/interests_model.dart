@@ -1,27 +1,29 @@
+import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 
 class InterestResponse {
   late final String status;
   late final String message;
-  late final Data data;
+  late final InterestsDataItem data;
 
   InterestResponse.fromJson(Map<String, dynamic> json) {
     status = json['type'];
     message = json['message'];
-    data = Data.fromJson(json['data']);
+    data = InterestsDataItem.fromJson(json['data']);
   }
+
   InterestResponse.fromError(String error) {
     this.status = AppConstants.FAILURE;
     this.message = error;
   }
 }
 
-class Data {
+class InterestsDataItem {
   late final List<ActiveInterests> activeSent;
   late final List<ActiveInterests> activeconnections;
   late final List<ActiveInterests> activeInvites;
 
-  Data.fromJson(Map<String, dynamic> json) {
+  InterestsDataItem.fromJson(Map<String, dynamic> json) {
     if (json['activeSent'] != []) {
       activeSent = List.from(json['activeSent'])
           .map((e) => ActiveInterests.fromJson(e))
@@ -61,8 +63,7 @@ class ActiveInterests {
   late final String requestDate;
   late final String acceptanceRejectionDate;
   late final int operation;
-  late final RequestDetails requestedUserDeatails;
-  late final RequestDetails requestingUserDeatails;
+  late final InterestUser user;
 
   ActiveInterests.fromJson(Map<String, dynamic> json) {
     id = json['id'] ?? '';
@@ -78,14 +79,11 @@ class ActiveInterests {
     requestDate = json['requestDate'] ?? '';
     acceptanceRejectionDate = json['acceptanceRejectionDate'] ?? '';
     operation = json['operation'] ?? -1;
-    requestedUserDeatails =
-        RequestDetails.fromJson(json['requestedUserDeatails']);
-    requestingUserDeatails =
-        RequestDetails.fromJson(json['requestingUserDeatails']);
+    user = InterestUser.fromJson(json['user']);
   }
 }
 
-class RequestDetails {
+class InterestUser {
   late final int gender;
   late final int registrationStep;
   late final int activationStatus;
@@ -144,8 +142,10 @@ class RequestDetails {
   late final String aboutMe;
   late final String imageURL;
   late final String thumbnailURL;
+  late bool connectStatus;
+  String? connectId;
 
-  RequestDetails.fromJson(Map<String, dynamic> json) {
+  InterestUser.fromJson(Map<String, dynamic> json) {
     id = json['id'] ?? '';
 
     email = json['email'] ?? '';
@@ -197,5 +197,18 @@ class RequestDetails {
     aboutMe = json['aboutMe'] ?? '';
     imageURL = json['imageURL'] ?? '';
     thumbnailURL = json['thumbnailURL'] ?? '';
+    connectId = json["connectStatus"]["id"];
+    connectStatus = json["connectStatus"]["isConnected"];
   }
+}
+
+class ConnectResponse extends SimpleResponse {
+  late String? id;
+
+  ConnectResponse.fromJson(json) : super.fromJson(json) {
+    if (this.status == AppConstants.SUCCESS) {
+      this.id = json["id"];
+    }
+  }
+  ConnectResponse.fromError(String error) : super.fromError(error);
 }
