@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
@@ -11,6 +12,9 @@ import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
+import 'package:makemymarry/views/profileviewscreens/profile_view_bloc.dart';
+import 'package:makemymarry/views/profileviewscreens/profile_view_event.dart';
+import 'package:makemymarry/views/profileviewscreens/profile_view_state.dart';
 
 class ProfileView extends StatelessWidget {
   final UserRepository userRepository;
@@ -22,26 +26,21 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProfileViewScreen(
-      profileDetails: profileDetails,
+    return BlocProvider(
+      create: (context) => ProfileViewBloc(userRepository, profileDetails),
+      child: ProfileViewScreen(),
     );
   }
 }
 
 class ProfileViewScreen extends StatefulWidget {
-  final ProfileDetails profileDetails;
-
-  const ProfileViewScreen({Key? key, required this.profileDetails})
-      : super(key: key);
-
   @override
-  _ProfileViewScreenState createState() =>
-      _ProfileViewScreenState(profileDetails);
+  _ProfileViewScreenState createState() => _ProfileViewScreenState();
 }
 
 class _ProfileViewScreenState extends State<ProfileViewScreen>
     with TickerProviderStateMixin {
-  final ProfileDetails profileDetails;
+  late ProfileDetails profileDetails;
   bool showAppBar = true;
   ScrollController _controller = ScrollController();
   int aboutState = 0;
@@ -149,7 +148,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
 
   bool? exist = false;
 
-  _ProfileViewScreenState(this.profileDetails);
+  _ProfileViewScreenState();
 
   Future<bool> checkExist(String docID) async {
     try {
@@ -180,7 +179,6 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
   @override
   void initState() {
     super.initState();
-    checkExist(profileDetails.id);
     _controller.addListener(() {
       if (_controller.position.pixels >=
           MediaQuery.of(context).size.height * 0.66) {
@@ -205,69 +203,90 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: showAppBar
-          ? PreferredSize(
-              preferredSize:
-                  Size.fromHeight(MediaQuery.of(context).size.height * 0.17),
-              child: SizeTransition(
-                  sizeFactor: _appBarAnimation,
-                  axis: Axis.vertical,
-                  //axisAlignment: -1,
-                  child: MmmButtons.appBarCurvedProfile(profileDetails.name,
-                      context, this.profileDetails.images[selectedImagePos])),
-            )
-          : null,
-      body: SingleChildScrollView(
-        controller: _controller,
-        child: Column(
-          children: [
-            buildImages(context),
-            Container(
-              padding: kMargin16,
-              child: Column(
-                children: [
-                  buildBasicInfo(),
-                  SizedBox(
-                    height: 33,
-                  ),
-                  buildAboutMe(),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  buildHabits(context),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  buildReligion(),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  buildCarrer(),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  buildFamilyButton(),
-                  SizedBox(
-                    height: 60,
-                  ),
-                  MmmButtons.checkMatchButton(54, 'Check Match Percentage',
-                      action: () {}),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Text(
-                    'Blocked Profile',
-                    style: MmmTextStyles.bodyRegular(textColor: kPrimary),
-                  ),
-                ],
+    return BlocConsumer<ProfileViewBloc, ProfileViewState>(
+        builder: (context, state) {
+          if (state is ProfileViewInitialState) {
+            BlocProvider.of<ProfileViewBloc>(context).add(VisitProfile());
+          }
+          this.profileDetails =
+              BlocProvider.of<ProfileViewBloc>(context).profileDetails;
+          if (state is OnLoading) {
+            return Scaffold(
+              body: MmmWidgets.buildLoader2(context),
+            );
+          } else if(this.profileDetails != null) {
+            checkExist(profileDetails.id);
+            return Scaffold(
+              extendBodyBehindAppBar: true,
+              appBar: showAppBar
+                  ? PreferredSize(
+                      preferredSize: Size.fromHeight(
+                          MediaQuery.of(context).size.height * 0.17),
+                      child: SizeTransition(
+                          sizeFactor: _appBarAnimation,
+                          axis: Axis.vertical,
+                          //axisAlignment: -1,
+                          child: MmmButtons.appBarCurvedProfile(
+                              profileDetails.name,
+                              context,
+                              this.profileDetails.images[selectedImagePos])),
+                    )
+                  : null,
+              body: SingleChildScrollView(
+                controller: _controller,
+                child: Column(
+                  children: [
+                    buildImages(context),
+                    Container(
+                      padding: kMargin16,
+                      child: Column(
+                        children: [
+                          buildBasicInfo(),
+                          SizedBox(
+                            height: 33,
+                          ),
+                          buildAboutMe(),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          buildHabits(context),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          buildReligion(),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          buildCarrer(),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          buildFamilyButton(),
+                          SizedBox(
+                            height: 60,
+                          ),
+                          MmmButtons.checkMatchButton(
+                              54, 'Check Match Percentage',
+                              action: () {}),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          Text(
+                            'Blocked Profile',
+                            style:
+                                MmmTextStyles.bodyRegular(textColor: kPrimary),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
-            )
-          ],
-        ),
-      ),
-    );
+            );
+          } else
+            return Scaffold(body: Container(),);
+        },
+        listener: (context, state) {});
   }
 
   Stack buildFamilyButton() {

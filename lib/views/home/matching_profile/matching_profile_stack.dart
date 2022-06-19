@@ -202,106 +202,9 @@ class MatchingProfileStackViewScreenState
                         Positioned(
                           bottom: 30,
                           right: 20,
-                          child: InkWell(
-                              onTap: () {
-                                BlocProvider.of<MatchingProfileBloc>(context)
-                                    .add(IsLikedAEvent(index));
-                              },
-                              child: Stack(
-                                children: [
-                                  Container(
-                                    height: 62,
-                                    width: 62,
-                                    child: Center(
-                                      child: SvgPicture.asset(
-                                        "images/heart.svg",
-                                        color: Colors.white,
-                                        height: 32,
-                                        width: 32,
-                                      ),
-                                    ),
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        gradient:
-                                            MmmDecorations.primaryGradient(),
-                                        border: Border.all(
-                                            color: Colors.white, width: 1.2)),
-                                  ),
-                                  Container(
-                                      height: 62,
-                                      width: 62,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: kPrimary.withAlpha(50),
-                                          border: Border.all(
-                                              color: Colors.white, width: 1.2)))
-                                ],
-                              )
-
-                              // !isLiked
-                              //     ? Stack(
-                              //         children: [
-                              //           Container(
-                              //               height: 62,
-                              //               width: 62,
-                              //               decoration: BoxDecoration(
-                              //                   shape: BoxShape.circle,
-                              //                   color: kLight4,
-                              //                   border: Border.all(
-                              //                       color: kPrimaryHeart,
-                              //                       width: 1.2))),
-                              //           Container(
-                              //             height: 62,
-                              //             width: 62,
-                              //             child: Center(
-                              //               child: SvgPicture.asset(
-                              //                 "images/heart.svg",
-                              //                 color: kPrimaryHeart,
-                              //                 height: 32,
-                              //                 width: 32,
-                              //               ),
-                              //             ),
-                              //             decoration: BoxDecoration(
-                              //                 shape: BoxShape.circle,
-                              //                 border: Border.all(
-                              //                     color: kPrimaryHeart,
-                              //                     width: 1.2)),
-                              //           ),
-                              //         ],
-                              //       )
-                              //     : Stack(
-                              //         children: [
-                              //           Container(
-                              //             height: 62,
-                              //             width: 62,
-                              //             child: Center(
-                              //               child: SvgPicture.asset(
-                              //                 "images/heart.svg",
-                              //                 color: Colors.white,
-                              //                 height: 32,
-                              //                 width: 32,
-                              //               ),
-                              //             ),
-                              //             decoration: BoxDecoration(
-                              //                 shape: BoxShape.circle,
-                              //                 gradient: MmmDecorations
-                              //                     .primaryGradient(),
-                              //                 border: Border.all(
-                              //                     color: Colors.white,
-                              //                     width: 1.2)),
-                              //           ),
-                              //           Container(
-                              //               height: 62,
-                              //               width: 62,
-                              //               decoration: BoxDecoration(
-                              //                   shape: BoxShape.circle,
-                              //                   color: kPrimary.withAlpha(50),
-                              //                   border: Border.all(
-                              //                       color: Colors.white,
-                              //                       width: 1.2)))
-                              //         ],
-                              //       ),
-                              ),
+                          child: list[index].isConnected
+                              ? buildConnected(context, index)
+                              : buildInterest(context, index),
                         ),
                       ],
                     );
@@ -319,6 +222,242 @@ class MatchingProfileStackViewScreenState
         }
       },
     );
+  }
+
+  InkWell buildInterest(BuildContext context, int index) {
+    if (list[index].requestStatus == InterestRequest.Accepted) {
+      buildConnect(context, index);
+    } else if (list[index].requestStatus == InterestRequest.Sent) {
+      return InkWell(
+          onTap: () {
+            BlocProvider.of<MatchingProfileBloc>(context)
+                .add(IsLikedAEvent(index));
+          },
+          child: Row(
+            children: [
+              Stack(
+                children: [
+                  Container(
+                    height: 62,
+                    width: 62,
+                    child: Center(
+                      child: SvgPicture.asset(
+                        "images/cancel.svg",
+                        color: Colors.white,
+                        height: 32,
+                        width: 32,
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: MmmDecorations.primaryGradient(),
+                        border: Border.all(color: Colors.white, width: 1.2)),
+                  ),
+                  Container(
+                      height: 62,
+                      width: 62,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: kPrimary.withAlpha(50),
+                          border: Border.all(color: Colors.white, width: 1.2)))
+                ],
+              ),
+              Stack(
+                children: [
+                  Container(
+                    height: 62,
+                    width: 62,
+                    child: Center(
+                      child: SvgPicture.asset(
+                        "images/heart.svg",
+                        color: Colors.white,
+                        height: 32,
+                        width: 32,
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: MmmDecorations.primaryGradient(),
+                        border: Border.all(color: Colors.white, width: 1.2)),
+                  ),
+                  Container(
+                      height: 62,
+                      width: 62,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: kGreen.withAlpha(50),
+                          border: Border.all(color: Colors.white, width: 1.2)))
+                ],
+              )
+            ],
+          ));
+    } else if (list[index].requestStatus == InterestRequest.Received) {
+      return InkWell(
+          onTap: () {
+            BlocProvider.of<MatchingProfileBloc>(context)
+                .add(IsLikedAEvent(index));
+          },
+          child: Row(
+            children: [
+              Stack(
+                children: [
+                  Container(
+                    height: 62,
+                    width: 62,
+                    child: Center(
+                      child: SvgPicture.asset(
+                        "images/Cross.svg",
+                        color: Colors.white,
+                        height: 32,
+                        width: 32,
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: kShadowColorForGrid.withAlpha(7),
+                        border: Border.all(color: Colors.white, width: 1.2)),
+                  ),
+                  Container(
+                      height: 62,
+                      width: 62,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: kPrimary.withAlpha(50),
+                          border: Border.all(color: Colors.white, width: 1.2)))
+                ],
+              ),
+              Stack(
+                children: [
+                  Container(
+                    height: 62,
+                    width: 62,
+                    child: Center(
+                      child: SvgPicture.asset(
+                        "images/Check.svg",
+                        color: Colors.white,
+                        height: 32,
+                        width: 32,
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: MmmDecorations.primaryGradient(),
+                        border: Border.all(color: Colors.white, width: 1.2)),
+                  ),
+                  Container(
+                      height: 62,
+                      width: 62,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: kGreen.withAlpha(50),
+                          border: Border.all(color: Colors.white, width: 1.2)))
+                ],
+              )
+            ],
+          ));
+    }
+    return InkWell(
+        onTap: () {
+          BlocProvider.of<MatchingProfileBloc>(context)
+              .add(IsLikedAEvent(index));
+        },
+        child: Stack(
+          children: [
+            Container(
+              height: 62,
+              width: 62,
+              child: Center(
+                child: SvgPicture.asset(
+                  "images/heart.svg",
+                  color: Colors.white,
+                  height: 32,
+                  width: 32,
+                ),
+              ),
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: MmmDecorations.primaryGradient(),
+                  border: Border.all(color: Colors.white, width: 1.2)),
+            ),
+            Container(
+                height: 62,
+                width: 62,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: kPrimary.withAlpha(50),
+                    border: Border.all(color: Colors.white, width: 1.2)))
+          ],
+        ));
+  }
+
+  InkWell buildConnect(BuildContext context, int index) {
+    return InkWell(
+        onTap: () {
+          BlocProvider.of<MatchingProfileBloc>(context)
+              .add(IsLikedAEvent(index));
+        },
+        child: Stack(
+          children: [
+            Container(
+              height: 62,
+              width: 62,
+              child: Center(
+                child: SvgPicture.asset(
+                  "images/heart.svg",
+                  color: Colors.white,
+                  height: 32,
+                  width: 32,
+                ),
+              ),
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: MmmDecorations.primaryGradient(),
+                  border: Border.all(color: Colors.white, width: 1.2)),
+            ),
+            Container(
+                height: 62,
+                width: 62,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: kGreen.withAlpha(50),
+                    border: Border.all(color: Colors.white, width: 1.2)))
+          ],
+        ));
+  }
+
+  InkWell buildConnected(BuildContext context, int index) {
+    return InkWell(
+        onTap: () {
+          BlocProvider.of<MatchingProfileBloc>(context)
+              .add(IsLikedAEvent(index));
+        },
+        child: Stack(
+          children: [
+            Container(
+              height: 62,
+              width: 62,
+              child: Center(
+                child: SvgPicture.asset(
+                  "images/connect.svg",
+                  color: Colors.white,
+                  height: 32,
+                  width: 32,
+                ),
+              ),
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: MmmDecorations.primaryGradient(),
+                  border: Border.all(color: Colors.white, width: 1.2)),
+            ),
+            Container(
+                height: 62,
+                width: 62,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: kPrimary.withAlpha(50),
+                    border: Border.all(color: Colors.white, width: 1.2)))
+          ],
+        ));
   }
 
   void navigateToProfileDetails(ProfileDetails profileDetails) {

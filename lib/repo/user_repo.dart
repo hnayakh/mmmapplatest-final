@@ -176,6 +176,14 @@ class UserRepository {
     return this.apiClient.getMyMatchingProfile(this.useDetails!.id);
   }
 
+  Future<MatchingProfileResponse> getProfileVisitor() async {
+    return this.apiClient.getProfileVisitor(this.useDetails!.id);
+  }
+
+  Future<MatchingProfileResponse> getRecentViews() async {
+    return this.apiClient.getRecentViews(this.useDetails!.id);
+  }
+
   Future<ProfileDetailsResponse> getOtheruserDetails(
       String id, ProfileActivationStatus activationStatus) async {
     return apiClient.getOtherUserDetails(id, activationStatus);
@@ -327,5 +335,13 @@ class UserRepository {
 
   Future<MyConnectResponse> getMyConnects() async {
     return this.apiClient.getMyConnects(this.useDetails!.id);
+  }
+
+  Future visitProfile(String id) async {
+    return this.apiClient.visitProfile(id, this.useDetails!.id);
+  }
+
+  Future<ConnectHistoryResponse> getCOnnecHistory() async {
+    return this.apiClient.getConnectHistory(this.useDetails!.id);
   }
 }

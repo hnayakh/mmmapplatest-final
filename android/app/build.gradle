@@ -29,19 +29,19 @@ apply plugin: 'com.google.gms.google-services'
 android {
     signingConfigs {
         debug {
-            storeFile file('E:\\Keys\\irongates\\makemymarry.jks')
+            storeFile file('F:\\Keys\\irongates\\makemymarry.jks')
             storePassword 'makemymarry'
             keyAlias 'makemymarry'
             keyPassword 'makemymarry'
         }
         release {
-            storeFile file('E:\\Keys\\irongates\\makemymarry.jks')
+            storeFile file('F:\\Keys\\irongates\\makemymarry.jks')
             storePassword 'makemymarry'
             keyAlias 'makemymarry'
             keyPassword 'makemymarry'
         }
     }
-    compileSdkVersion 30
+    compileSdkVersion 33
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -51,7 +51,7 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.irongate.makemymarry"
         minSdkVersion 19
-        targetSdkVersion 30
+        targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true

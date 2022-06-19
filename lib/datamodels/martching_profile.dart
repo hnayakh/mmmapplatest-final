@@ -35,6 +35,10 @@ class MatchingProfile {
   late FamilyType familyType;
   late ProfileActivationStatus activationStatus;
 
+  late bool isConnected;
+  late InterestRequest requestStatus;
+  late String? requestId, connectId;
+
   MatchingProfile.fromJson(json) {
     this.id = json["id"];
     this.email = json["email"];
@@ -47,8 +51,32 @@ class MatchingProfile {
     this.country = json["careerCountry"];
     this.activationStatus =
         ProfileActivationStatus.values[json["activationStatus"]];
+    if (json["connectStatus"] != null) {
+      this.isConnected = json["connectStatus"]["isConnected"];
+      if (this.isConnected) {
+        this.connectId = json["connectStatus"]["id"];
+      }
+    }else{
+      this.isConnected = false;
+    }
+    if(json["interestStatus"] !=null) {
+      this.requestId = json["interestStatus"]["id"];
+      if (json["interestStatus"]["isLiked"]) {
+        this.requestStatus = InterestRequest.Accepted;
+      } else if (json["interestStatus"]["sent"]) {
+        this.requestStatus = InterestRequest.Sent;
+      } else if (json["interestStatus"]["requested"]) {
+        this.requestStatus = InterestRequest.Received;
+      } else {
+        this.requestStatus = InterestRequest.NotConnected;
+      }
+    }else{
+      this.requestStatus = InterestRequest.NotConnected;
+    }
   }
 }
+
+enum InterestRequest { NotConnected, Sent, Received, Accepted }
 
 class MatchingProfileResponse {
   late String status, message;

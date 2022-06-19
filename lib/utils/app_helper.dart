@@ -46,6 +46,12 @@ class AppHelper {
     print(date.toString());
     DateFormat dateFormat2 = DateFormat("dd MMM yyyy HH:mm");
     return dateFormat2.format(date);
+  }  static getReadableDateTImeFromServer(String dateOfBirth) {
+    DateFormat dateFormat1 = DateFormat(AppConstants.SERVERDATEFORMAT);
+    var date = dateFormat1.parse(dateOfBirth);
+    print(date.toString());
+    DateFormat dateFormat2 = DateFormat("dd MMM yyyy HH:mm");
+    return dateFormat2.format(date);
   }
 
   static String serverFormatDate(DateTime dateOfBirth) {

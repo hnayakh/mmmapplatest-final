@@ -568,6 +568,44 @@ class ApiClient {
     }
   }
 
+  Future<MatchingProfileResponse> getRecentViews(String id) async {
+    try {
+      var response = await this
+          .dio
+          .get("${AppConstants.ENDPOINT}users/profile_visited_by/$id");
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return MatchingProfileResponse.fromJson(response.data);
+      }
+      return MatchingProfileResponse.fromError(
+          "Error Occurred. Please try again.");
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      return MatchingProfileResponse.fromError(
+          "Error Occurred. Please try again.");
+    }
+  }
+
+  Future<MatchingProfileResponse> getProfileVisitor(String id) async {
+    // try {
+      var response =
+          await this.dio.get("${AppConstants.ENDPOINT}users/recent_view/$id");
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return MatchingProfileResponse.fromJson(response.data);
+      }
+      return MatchingProfileResponse.fromError(
+          "Error Occurred. Please try again.");
+    // }
+    // catch (error) {
+    //   if (error is DioError) {
+    //     print(error.message);
+    //   }
+    //   return MatchingProfileResponse.fromError(
+    //       "Error Occurred. Please try again.");
+    // }
+  }
+
   Future<ProfileDetailsResponse> getOtherUserDetails(
       String id, ProfileActivationStatus activationStatus) async {
     // try {
@@ -876,5 +914,23 @@ class ApiClient {
     } catch (error) {
       return MyConnectResponse.fromError("Something went wrong");
     }
+  }
+
+  Future visitProfile(String id, String visitedBy) async {
+    var reponse = await this.dio.post(
+        AppConstants.ENDPOINT + "users/visit_profile",
+        queryParameters: {"visitedBy": visitedBy, "visitedTo": id});
+    print(reponse);
+  }
+
+  Future<ConnectHistoryResponse> getConnectHistory(String id) async {
+    // try {
+    var response = await this.dio.get(
+          AppConstants.ENDPOINT + 'connects/connect_transaction/$id',
+        );
+    return ConnectHistoryResponse.fromJson(response.data);
+    // } catch (error) {
+    //   return ConnectHistoryResponse.fromError("Something went wrong");
+    // }
   }
 }

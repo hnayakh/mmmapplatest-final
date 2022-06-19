@@ -3,8 +3,9 @@ import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/text_styles.dart';
-import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/home/menu/wallet/recharge_history/transaction_screen.dart';
+
+import '../connect_history/connect_history_screen.dart';
 
 class RechargeHistory extends StatefulWidget {
   final UserRepository userRepository;
@@ -79,7 +80,7 @@ class RechargeHistoryState extends State<RechargeHistory>
                 Transaction(
                   userRepository: widget.userRepository,
                 ),
-                Transaction(
+                ConnectHistory(
                   userRepository: widget.userRepository,
                 ),
               ],

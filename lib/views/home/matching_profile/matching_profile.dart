@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
+import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/colors.dart';
-import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/home/filter_screens/filter_screen.dart';
 
@@ -15,6 +15,12 @@ class MatchingProfileScreen extends StatefulWidget {
   final UserRepository userRepository;
 
   List<MatchingProfile> list;
+  List<String> filters = [
+    "Recommended",
+    "Profile Visitors",
+    "Recent Views",
+    "Search With Filter"
+  ];
 
   MatchingProfileScreen(
       {Key? key, required this.userRepository, required this.list})
@@ -22,12 +28,16 @@ class MatchingProfileScreen extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return MatchingProfileScreenState();
+    return MatchingProfileScreenState(list);
   }
 }
 
 class MatchingProfileScreenState extends State<MatchingProfileScreen> {
   bool isStack = true;
+  int selectedFilterPos = 0;
+  List<MatchingProfile> list =[];
+
+  MatchingProfileScreenState(this.list);
 
   @override
   Widget build(BuildContext context) {
@@ -40,11 +50,11 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
           this.isStack
               ? MatchingProfileStackView(
                   userRepository: widget.userRepository,
-                  list: widget.list,
+                  list: list,
                 )
               : MatchingProfileGridView(
                   userRepository: widget.userRepository,
-                  list: widget.list,
+                  list: list,
                 ),
           Positioned(
             child: Container(
@@ -53,6 +63,30 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
                 children: [
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        this.isStack = !this.isStack;
+                      });
+                    },
+                    child: Container(
+                      height: 44,
+                      width: 44,
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.85),
+                          borderRadius: BorderRadius.circular(6)),
+                      child: SvgPicture.asset(
+                        this.isStack
+                            ? "images/stack.svg"
+                            : "images/stack.svg",
+                        color: kShadowColorForGrid,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 16,
+                  ),
                   Expanded(
                       child: Container(
                     child: TextField(
@@ -73,7 +107,7 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                               borderRadius: BorderRadius.circular(8)),
                           focusedBorder: OutlineInputBorder(
                             borderSide:
-                            BorderSide(color: Colors.white, width: 1),
+                                BorderSide(color: Colors.white, width: 1),
                             borderRadius: BorderRadius.all(Radius.circular(8)),
                           ),
                           contentPadding: const EdgeInsets.symmetric(
@@ -93,7 +127,8 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                     children: [
                       InkWell(
                         onTap: () {
-                          navigateToFilter();
+                          // navigateToFilter();
+                          showOptions();
                         },
                         child: Container(
                           height: 44,
@@ -108,30 +143,8 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(
-                        width: 16,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          setState(() {
-                            this.isStack = !this.isStack;
-                          });
-                        },
-                        child: Container(
-                          height: 44,
-                          width: 44,
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.45),
-                              borderRadius: BorderRadius.circular(6)),
-                          child: SvgPicture.asset(
-                            this.isStack
-                                ? "images/stack.svg"
-                                : "images/stack.svg",
-                            color: kShadowColorForGrid,
-                          ),
-                        ),
-                      )
+
+
                     ],
                   )
                 ],
@@ -152,6 +165,62 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
       setState(() {
         widget.list = result;
       });
+    }
+  }
+
+  void showOptions() async {
+    var res = await showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+            height: 270,
+            child: ListView.separated(
+              itemBuilder: (context, index) {
+                return ListTile(
+                  onTap: () {
+                    Navigator.of(context).pop(index);
+                  },
+                  title: Text(
+                    widget.filters[index],
+                    textScaleFactor: 1.0,
+                    style: MmmTextStyles.bodyMedium(),
+                  ),
+                );
+              },
+              itemCount: widget.filters.length,
+              separatorBuilder: (BuildContext context, int index) {
+                return Divider();
+              },
+            ),
+          );
+        });
+    if (res != null) {
+      this.selectedFilterPos = res;
+      if (res == 3) {
+        navigateToFilter();
+      } else if (res == 0) {
+        var result = await widget.userRepository.getMyMatchingProfile();
+        if (result.status == AppConstants.SUCCESS) {
+          setState(() {
+            list = result.list;
+          });
+        }
+      } else if (res == 1) {
+        var result = await widget.userRepository.getProfileVisitor();
+        if (result.status == AppConstants.SUCCESS) {
+          setState(() {
+            list = result.list;
+          });
+        }
+      }else if(res == 2){
+        var result = await widget.userRepository.getProfileVisitor();
+        if (result.status == AppConstants.SUCCESS) {
+          setState(() {
+            list = result.list;
+          });
+        }
+      }
+      print(list.length);
     }
   }
 }
