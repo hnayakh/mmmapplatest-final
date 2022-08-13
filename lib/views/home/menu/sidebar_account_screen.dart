@@ -10,6 +10,7 @@ import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
 import 'package:makemymarry/views/home/menu/account_menu_event.dart';
 import 'package:makemymarry/views/home/menu/account_menu_state.dart';
+import 'package:makemymarry/views/signinscreens/phone%20signin/phone_screen.dart';
 
 import 'wallet/wallet_main.dart';
 
@@ -105,7 +106,7 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
     "My Profile",
     "Search",
     "Interest",
-    "Connect",
+    "ConnectTTT",
     "Wallet",
     "Setting",
     "Sign out"
@@ -114,14 +115,25 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
   void navigateTo(int index) {
     var userRepo = BlocProvider.of<AccountMenuBloc>(context).userRepository;
     switch (index) {
+      case 0:
+        print("Profile ahead");
+        break;
       case 4:
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => Wallet(
                   userRepository: userRepo,
                 )));
         break;
+      case 6:
+        print("fyuewgryuewr");
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => SigninWithPhone(
+                      userRepository: userRepo,
+                    )),
+            (Route<dynamic> route) => false);
+        break;
       default:
-        print(index);
     }
   }
 }

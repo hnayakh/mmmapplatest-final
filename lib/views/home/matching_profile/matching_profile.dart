@@ -35,7 +35,7 @@ class MatchingProfileScreen extends StatefulWidget {
 class MatchingProfileScreenState extends State<MatchingProfileScreen> {
   bool isStack = true;
   int selectedFilterPos = 0;
-  List<MatchingProfile> list =[];
+  List<MatchingProfile> list = [];
 
   MatchingProfileScreenState(this.list);
 
@@ -77,9 +77,7 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                           color: Colors.white.withOpacity(0.85),
                           borderRadius: BorderRadius.circular(6)),
                       child: SvgPicture.asset(
-                        this.isStack
-                            ? "images/stack.svg"
-                            : "images/stack.svg",
+                        this.isStack ? "images/stack.svg" : "images/stack.svg",
                         color: kShadowColorForGrid,
                       ),
                     ),
@@ -143,8 +141,6 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                           ),
                         ),
                       ),
-
-
                     ],
                   )
                 ],
@@ -212,7 +208,7 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
             list = result.list;
           });
         }
-      }else if(res == 2){
+      } else if (res == 2) {
         var result = await widget.userRepository.getProfileVisitor();
         if (result.status == AppConstants.SUCCESS) {
           setState(() {

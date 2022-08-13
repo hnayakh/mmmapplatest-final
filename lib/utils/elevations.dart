@@ -46,7 +46,7 @@ class MmmShadow {
     return BoxShadow(
         color: kShadowColorForWhite.withOpacity(0.08),
         offset: Offset(0, 15),
-        blurRadius: 30,
+        blurRadius: 200,
         spreadRadius: 8);
   }
 

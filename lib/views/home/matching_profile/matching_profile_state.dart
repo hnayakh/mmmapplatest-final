@@ -1,22 +1,20 @@
 import 'package:makemymarry/bloc/base_event_state.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 
-class MatchingProfileState extends BaseEventState{
+class MatchingProfileState extends BaseEventState {}
 
-}
-class MatchingProfileInitialState extends MatchingProfileState{
+class MatchingProfileInitialState extends MatchingProfileState {}
 
-}
-class OnLoading extends MatchingProfileState{
+class OnLoading extends MatchingProfileState {}
 
-}
-class OnError extends MatchingProfileState{
-final String message;
+class OnError extends MatchingProfileState {
+  final String message;
 
   OnError(this.message);
 }
-class OnGotProfileDetails extends MatchingProfileState{
-final ProfileDetails profileDetails;
+
+class OnGotProfileDetails extends MatchingProfileState {
+  final ProfileDetails profileDetails;
 
   OnGotProfileDetails(this.profileDetails);
 }
