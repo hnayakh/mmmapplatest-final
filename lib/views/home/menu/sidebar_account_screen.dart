@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -5,11 +7,14 @@ import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/dimens.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
+import 'package:makemymarry/views/home/interests/interest_status_screen.dart';
 import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
 import 'package:makemymarry/views/home/menu/account_menu_event.dart';
 import 'package:makemymarry/views/home/menu/account_menu_state.dart';
+import 'package:makemymarry/views/profilescreens/bio/bio.dart';
 import 'package:makemymarry/views/signinscreens/phone%20signin/phone_screen.dart';
 
 import 'wallet/wallet_main.dart';
@@ -27,6 +32,23 @@ class SidebarAccount extends StatelessWidget {
       child: SidebarAccountScreen(),
     );
   }
+}
+
+Future<void> _deleteCacheDir() async {
+  Directory tempDir = await getTemporaryDirectory();
+
+  if (tempDir.existsSync()) {
+    tempDir.deleteSync(recursive: true);
+  }
+}
+
+Future<void> _deleteAppDir() async {
+  // Directory appDocDir = await getApplicationDocumentsDirectory();
+  var appDir = (await getTemporaryDirectory()).path;
+  new Directory(appDir).delete(recursive: true);
+  // if (appDocDir.existsSync()) {
+  //   appDocDir.deleteSync(recursive: true);
+  // }
 }
 
 class SidebarAccountScreen extends StatefulWidget {
@@ -117,6 +139,16 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
     switch (index) {
       case 0:
         print("Profile ahead");
+        Navigator.of(context).push(
+          MaterialPageRoute(
+              builder: (context) => Bio(userRepository: userRepo)),
+        );
+        break;
+      case 2:
+        Navigator.of(context).push(
+          MaterialPageRoute(
+              builder: (context) => Interests(userRepository: userRepo)),
+        );
         break;
       case 4:
         Navigator.of(context).push(MaterialPageRoute(
@@ -126,12 +158,15 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
         break;
       case 6:
         print("fyuewgryuewr");
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (context) => SigninWithPhone(
-                      userRepository: userRepo,
-                    )),
-            (Route<dynamic> route) => false);
+        _deleteCacheDir();
+
+        _deleteAppDir().then((value) => Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                  builder: (context) => SigninWithPhone(
+                        userRepository: userRepo,
+                      )),
+            ));
+
         break;
       default:
     }
