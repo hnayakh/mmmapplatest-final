@@ -39,6 +39,10 @@ class UserRepository {
     return this.apiClient.signinUser(email, password);
   }
 
+  Future<SigninResponse> logout(String email, String password) async {
+    return this.apiClient.signinUser(email, password);
+  }
+
   Future<SigninResponse> about(
       NoOfChildren? noOfChildren,
       MaritalStatus? maritalStatus,

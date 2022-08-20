@@ -236,7 +236,7 @@ class SentScreen extends StatelessWidget {
                     Text(
                       listSent[index].user.name,
                       textScaleFactor: 1.0,
-                      style: MmmTextStyles.heading5(textColor: kDark5),
+                      style: MmmTextStyles.heading5(textColor: Colors.red),
                     ),
                     SizedBox(
                       height: 4,

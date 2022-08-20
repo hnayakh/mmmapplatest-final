@@ -74,6 +74,10 @@ class ApiClient {
     }
   }
 
+  Future<void> signoutuser() async {
+    return null;
+  }
+
   Future<SigninResponse> aboutVerification(
       NoOfChildren? noOfChildren,
       MaritalStatus? maritalStatus,
@@ -589,13 +593,13 @@ class ApiClient {
 
   Future<MatchingProfileResponse> getProfileVisitor(String id) async {
     // try {
-      var response =
-          await this.dio.get("${AppConstants.ENDPOINT}users/recent_view/$id");
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        return MatchingProfileResponse.fromJson(response.data);
-      }
-      return MatchingProfileResponse.fromError(
-          "Error Occurred. Please try again.");
+    var response =
+        await this.dio.get("${AppConstants.ENDPOINT}users/recent_view/$id");
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return MatchingProfileResponse.fromJson(response.data);
+    }
+    return MatchingProfileResponse.fromError(
+        "Error Occurred. Please try again.");
     // }
     // catch (error) {
     //   if (error is DioError) {

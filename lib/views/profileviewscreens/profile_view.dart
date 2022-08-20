@@ -214,7 +214,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
             return Scaffold(
               body: MmmWidgets.buildLoader2(context),
             );
-          } else if(this.profileDetails != null) {
+          } else if (this.profileDetails != null) {
             checkExist(profileDetails.id);
             return Scaffold(
               extendBodyBehindAppBar: true,
@@ -284,7 +284,9 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
               ),
             );
           } else
-            return Scaffold(body: Container(),);
+            return Scaffold(
+              body: Container(),
+            );
         },
         listener: (context, state) {});
   }

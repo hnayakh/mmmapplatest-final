@@ -7,3 +7,5 @@ class ValidateAndSignin extends SignInEvent {
 
   ValidateAndSignin(this.email, this.password);
 }
+
+class UserLoggedOut extends SignInEvent {}

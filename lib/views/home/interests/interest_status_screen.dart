@@ -70,12 +70,10 @@ class _InterestStatusScreenState extends State<InterestStatusScreen>
               children: [
                 Container(
                   child: PreferredSize(
-                      preferredSize: Size.fromHeight(
-                          74),
+                      preferredSize: Size.fromHeight(74),
                       child: Container(
                           child: AppBar(
-                        toolbarHeight:
-                            74,
+                        toolbarHeight: 74,
                         title: Text(
                           "Interests",
                           style: MmmTextStyles.heading4(textColor: kLight2),
@@ -85,46 +83,50 @@ class _InterestStatusScreenState extends State<InterestStatusScreen>
                       ))),
                   decoration: BoxDecoration(color: kSecondary),
                 ),
-                Material(color: Colors.white,child: TabBar(
-                  controller: tabController,
-                  indicator: UnderlineTabIndicator(
-                      borderSide: BorderSide(
-                        width: 4.0,
-                        color: kPrimary,
-                      ),
-                      insets: EdgeInsets.symmetric(horizontal: 16.0)),
-                  automaticIndicatorColorAdjustment: true,
-                  labelColor: kPrimary,
-                  labelStyle: MmmTextStyles.heading6(),
-                  unselectedLabelColor: kDark5,
-                  unselectedLabelStyle: MmmTextStyles.heading6(),
-                  tabs: [
-                    Tab(
-                      child: Container(
-                        alignment: Alignment.center,
-                        child: Text(
-                          'Sent',
+                Material(
+                  color: Colors.white,
+                  child: TabBar(
+                    controller: tabController,
+                    indicator: UnderlineTabIndicator(
+                        borderSide: BorderSide(
+                          width: 4.0,
+                          color: kPrimary,
+                        ),
+                        insets: EdgeInsets.symmetric(horizontal: 16.0)),
+                    automaticIndicatorColorAdjustment: true,
+                    labelColor: kPrimary,
+                    labelStyle: MmmTextStyles.heading6(),
+                    unselectedLabelColor: kDark5,
+                    unselectedLabelStyle: MmmTextStyles.heading6(),
+                    tabs: [
+                      Tab(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Sent',
+                          ),
                         ),
                       ),
-                    ),
-                    Tab(
-                      child: Container(
-                        alignment: Alignment.center,
-                        child: Text(
-                          'Received',
+                      Tab(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Received',
+                          ),
                         ),
                       ),
-                    ),
-                    Tab(
-                      child: Container(
-                        alignment: Alignment.center,
-                        child: Text(
-                          'Accepted',
+                      Tab(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Accepted',
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),elevation: 4,),
+                    ],
+                  ),
+                  elevation: 4,
+                ),
                 Expanded(
                     child: TabBarView(
                   controller: tabController,

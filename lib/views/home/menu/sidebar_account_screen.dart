@@ -1,5 +1,6 @@
 import 'dart:io';
-
+import 'dart:developer';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,6 +8,7 @@ import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/dimens.dart';
+import 'package:makemymarry/views/home/my_connects/my_connects_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
@@ -16,6 +18,7 @@ import 'package:makemymarry/views/home/menu/account_menu_event.dart';
 import 'package:makemymarry/views/home/menu/account_menu_state.dart';
 import 'package:makemymarry/views/profilescreens/bio/bio.dart';
 import 'package:makemymarry/views/signinscreens/phone%20signin/phone_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'wallet/wallet_main.dart';
 
@@ -43,9 +46,12 @@ Future<void> _deleteCacheDir() async {
 }
 
 Future<void> _deleteAppDir() async {
+  var sharedPreferences = await SharedPreferences.getInstance();
   // Directory appDocDir = await getApplicationDocumentsDirectory();
+  sharedPreferences.setString('secretToken', '');
   var appDir = (await getTemporaryDirectory()).path;
   new Directory(appDir).delete(recursive: true);
+
   // if (appDocDir.existsSync()) {
   //   appDocDir.deleteSync(recursive: true);
   // }
@@ -63,6 +69,7 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('Profffile ddddd--$profileDetails');
     return BlocConsumer<AccountMenuBloc, AccountMenuState>(
       builder: (context, state) {
         if (state is AccountMenuInitialState) {
@@ -128,10 +135,10 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
     "My Profile",
     "Search",
     "Interest",
-    "ConnectTTT",
+    "Connect",
     "Wallet",
     "Setting",
-    "Sign out"
+    "Sign Out"
   ];
 
   void navigateTo(int index) {
@@ -150,6 +157,11 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
               builder: (context) => Interests(userRepository: userRepo)),
         );
         break;
+      case 3:
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => MyConnects(userRepository: userRepo),
+        ));
+        break;
       case 4:
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => Wallet(
@@ -157,7 +169,6 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
                 )));
         break;
       case 6:
-        print("fyuewgryuewr");
         _deleteCacheDir();
 
         _deleteAppDir().then((value) => Navigator.of(context).pushReplacement(

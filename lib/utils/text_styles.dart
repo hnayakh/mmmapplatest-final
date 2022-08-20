@@ -60,7 +60,7 @@ class MmmTextStyles {
   static TextStyle bodyMedium({Color textColor: kTextColor}) {
     return TextStyle(
         fontFamily: "MakeMyMarryMedium",
-        fontSize: 16,
+        fontSize: 13,
         height: 1.625,
         color: textColor);
   }

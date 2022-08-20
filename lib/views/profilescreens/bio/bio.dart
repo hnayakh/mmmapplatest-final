@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
@@ -46,6 +47,7 @@ class BioScreen extends StatefulWidget {
 }
 
 class _BioScreenState extends State<BioScreen> {
+  ProfileDetails? profileDetails;
   var bioController = TextEditingController();
   List<String> localImagePaths = [];
 
@@ -245,7 +247,7 @@ class _BioScreenState extends State<BioScreen> {
                 keyboardType: TextInputType.multiline,
                 maxLines: 6,
                 decoration: InputDecoration(
-                  hintText: 'A little bit about me ...',
+                  hintText: profileDetails?.aboutMe,
                   hintStyle: MmmTextStyles.bodySmall(textColor: gray4),
                   contentPadding: EdgeInsets.zero,
                   border: InputBorder.none,

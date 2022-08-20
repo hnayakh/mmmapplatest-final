@@ -50,7 +50,7 @@ class HomeScreenState extends State<HomeScreen> {
                   this.index = 1;
                 });
               }),
-              MmmWidgets.bottomBarUnits('images/connect.svg', 'Contacts',
+              MmmWidgets.bottomBarUnits('images/connect.svg', 'Connects',
                   index == 2 ? kPrimary : gray3, action: () {
                 setState(() {
                   this.index = 2;

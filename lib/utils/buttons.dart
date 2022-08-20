@@ -1766,7 +1766,9 @@ class MmmButtons {
       //preferredSize: Size(MediaQuery.of(context).size.width, 0.0),
     );
   }
-  static PreferredSize appTabTitleBarCurved(String title, {BuildContext? context}) {
+
+  static PreferredSize appTabTitleBarCurved(String title,
+      {BuildContext? context}) {
     return PreferredSize(
       preferredSize: Size.fromHeight(74.0),
       child: Container(

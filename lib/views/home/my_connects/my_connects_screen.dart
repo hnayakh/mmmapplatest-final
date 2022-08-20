@@ -2,12 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/datamodels/connect.dart';
 import 'package:makemymarry/repo/user_repo.dart';
+import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
+import 'package:makemymarry/views/home/interests/interests_bloc.dart';
+import 'package:makemymarry/views/home/my_connects/chats.dart';
 import 'package:makemymarry/views/home/my_connects/my_connects_bloc.dart';
 import 'package:makemymarry/views/home/my_connects/my_connects_event.dart';
 import 'package:makemymarry/views/home/my_connects/my_connects_state.dart';
+import 'package:makemymarry/views/stackviewscreens/connect/chat_screen.dart';
+import 'package:makemymarry/views/stackviewscreens/connect/connect_screen.dart';
+// import './chats.dart';
+// import 'connected.dart';
 
 class MyConnects extends StatelessWidget {
   final UserRepository userRepository;
@@ -30,8 +37,17 @@ class MyConnectsScreen extends StatefulWidget {
   }
 }
 
-class MyConnectsScreenState extends State<MyConnectsScreen> {
+class MyConnectsScreenState extends State<MyConnectsScreen>
+    with SingleTickerProviderStateMixin {
+  late TabController tabController;
   List<MyConnectItem> list = [];
+
+  @override
+  void initState() {
+    tabController = TabController(length: 2, vsync: this);
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,22 +62,70 @@ class MyConnectsScreenState extends State<MyConnectsScreen> {
               Container(
                 child: Column(
                   children: [
-                    Container(
-                      child: PreferredSize(
-                          preferredSize: Size.fromHeight(74),
-                          child: Container(
-                              child: AppBar(
-                            toolbarHeight: 74,
-                            title: Text(
-                              "Contacts",
-                              style: MmmTextStyles.heading4(textColor: kLight2),
+                    MmmButtons.appBarCurved('Connects', context: context),
+                    // Container(
+                    //   child: PreferredSize(
+                    //       preferredSize: Size.fromHeight(74),
+                    //       child: Container(
+                    //           child: AppBar(
+                    //         toolbarHeight: 74,
+                    //         title: Text(
+                    //           "Connects",
+                    //           style: MmmTextStyles.heading4(textColor: kLight2),
+                    //         ),
+                    //         backgroundColor: Colors.transparent,
+                    //         elevation: 0.0,
+                    //       ))),
+                    //   decoration: BoxDecoration(color: kSecondary),
+                    // ),
+                    Material(
+                      color: Colors.white,
+                      child: TabBar(
+                        controller: tabController,
+                        indicator: UnderlineTabIndicator(
+                            borderSide: BorderSide(
+                              width: 4.0,
+                              color: kPrimary,
                             ),
-                            backgroundColor: Colors.transparent,
-                            elevation: 0.0,
-                          ))),
-                      decoration: BoxDecoration(color: kSecondary),
+                            insets: EdgeInsets.symmetric(horizontal: 16.0)),
+                        automaticIndicatorColorAdjustment: true,
+                        labelColor: kPrimary,
+                        labelStyle: MmmTextStyles.heading6(),
+                        unselectedLabelColor: kDark5,
+                        unselectedLabelStyle: MmmTextStyles.heading6(),
+                        tabs: [
+                          Tab(
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: Text(
+                                'Connects',
+                              ),
+                            ),
+                          ),
+                          Tab(
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: Text(
+                                'Chats',
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      elevation: 4,
                     ),
-                    Expanded(child: buildList())
+                    Expanded(
+                        child: TabBarView(
+                      controller: tabController,
+                      physics: NeverScrollableScrollPhysics(),
+                      children: [
+                        // ChatsScreen(),
+                        ConnectScreen(),
+                        ChatsScreen(),
+                        // ConnectedScreen(),
+                      ],
+                    ))
+                    // Expanded(child: Text('Hello'))
                   ],
                 ),
               ),
@@ -107,7 +171,9 @@ class MyConnectsScreenState extends State<MyConnectsScreen> {
                   style: MmmTextStyles.caption(textColor: kWhite),
                 ),
               ),
-              SizedBox(height: 4,),
+              SizedBox(
+                height: 4,
+              ),
               Text(
                 '8m ago',
                 textScaleFactor: 1.0,

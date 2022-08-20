@@ -19,6 +19,8 @@ class OnSignIn extends SigninState {
 
 class OnSigninFailed extends SigninState {}
 
+class OnUserSignOut extends SigninState {}
+
 class OnLoading extends SigninState {}
 
 class OnError extends SigninState {

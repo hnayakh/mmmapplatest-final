@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/utils/app_constants.dart';
@@ -22,6 +24,8 @@ class StorageService {
   }
 
   Future saveUserDetails(UserDetails userDetails) async {
+    // print('UserDetail------');
+    // print(userDetails.secretToken);
     await initPrefs();
     //ifelse all
     this.sharedPreferences.setString(AppConstants.USERID, userDetails.id);
@@ -84,6 +88,11 @@ class StorageService {
         .sharedPreferences
         .setInt(AppConstants.REGISTRATIONSTEP, userDetails.registrationStep);
     this.sharedPreferences.setBool(AppConstants.ISACTIVE, userDetails.isActive);
+    // this.sharedPreferences.setString('secretToken', userDetails.secretToken);
+// To save the value, use this:
+    //await storage.write(key: "my-secure-jwt", value: myJwt);
+
+    //this.sharedPreferences.setString("jwt", userDetails.jwt);
   }
 
   Future<UserDetails?> getUserDetails() async {
@@ -94,6 +103,8 @@ class StorageService {
       return null;
     } else {
       print('id not null');
+      //var jwt = this.sharedPreferences.getString("jwt")!;
+
       var displayId = this.sharedPreferences.getString(AppConstants.DISPLAYID);
       var gender = this.sharedPreferences.getInt(AppConstants.GENDER);
       var isActive = this.sharedPreferences.getBool(AppConstants.ISACTIVE);
@@ -141,6 +152,7 @@ class StorageService {
       return UserDetails.fromStorage(
         displayId!,
         id,
+        // jwt,
         mobile!,
         dialCode!,
         email!,
