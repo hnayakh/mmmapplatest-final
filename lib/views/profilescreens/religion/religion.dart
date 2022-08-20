@@ -260,14 +260,14 @@ class ReligionScreenState extends State<ReligionScreen> {
                                                 Manglik.NotApplicable));
                                       }),
                                 ),
-                                SizedBox(
-                                  width: 8,
-                                ),
-                                Text(
-                                  'Not Applicable',
-                                  style: MmmTextStyles.bodySmall(
-                                      textColor: kDark5),
-                                ),
+                                // SizedBox(
+                                //   width: 8,
+                                // ),
+                                // Text(
+                                //   'Not Applicable',
+                                //   style: MmmTextStyles.bodySmall(
+                                //       textColor: kDark5),
+                                // ),
                               ],
                             ),
                           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
@@ -8,7 +9,9 @@ import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({Key? key}) : super(key: key);
+  final UserRepository userRepository;
+  const SearchScreen({Key? key, required this.userRepository})
+      : super(key: key);
 
   @override
   _SearchScreenState createState() => _SearchScreenState();
@@ -20,7 +23,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MmmButtons.appBarCurved('Search'),
+      appBar: MmmButtons.appBarCurved('Search', context: context),
       body: SingleChildScrollView(
         child: Column(
           children: [

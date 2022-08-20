@@ -62,22 +62,22 @@ class MyConnectsScreenState extends State<MyConnectsScreen>
               Container(
                 child: Column(
                   children: [
-                    MmmButtons.appBarCurved('Connects', context: context),
-                    // Container(
-                    //   child: PreferredSize(
-                    //       preferredSize: Size.fromHeight(74),
-                    //       child: Container(
-                    //           child: AppBar(
-                    //         toolbarHeight: 74,
-                    //         title: Text(
-                    //           "Connects",
-                    //           style: MmmTextStyles.heading4(textColor: kLight2),
-                    //         ),
-                    //         backgroundColor: Colors.transparent,
-                    //         elevation: 0.0,
-                    //       ))),
-                    //   decoration: BoxDecoration(color: kSecondary),
-                    // ),
+                    // MmmButtons.appBarCurved('Connects', context: context),
+                    Container(
+                      child: PreferredSize(
+                          preferredSize: Size.fromHeight(74),
+                          child: Container(
+                              child: AppBar(
+                            toolbarHeight: 74,
+                            title: Text(
+                              "Connects",
+                              style: MmmTextStyles.heading4(textColor: kLight2),
+                            ),
+                            backgroundColor: Colors.transparent,
+                            elevation: 0.0,
+                          ))),
+                      decoration: BoxDecoration(color: kSecondary),
+                    ),
                     Material(
                       color: Colors.white,
                       child: TabBar(

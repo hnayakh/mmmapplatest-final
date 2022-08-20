@@ -9,6 +9,8 @@ import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/views/home/my_connects/my_connects_screen.dart';
+import 'package:makemymarry/views/stackviewscreens/search_screen.dart';
+import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/setting_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
@@ -151,6 +153,12 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
               builder: (context) => Bio(userRepository: userRepo)),
         );
         break;
+      case 1:
+        Navigator.of(context).push(
+          MaterialPageRoute(
+              builder: (context) => SearchScreen(userRepository: userRepo)),
+        );
+        break;
       case 2:
         Navigator.of(context).push(
           MaterialPageRoute(
@@ -165,6 +173,12 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
       case 4:
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => Wallet(
+                  userRepository: userRepo,
+                )));
+        break;
+      case 5:
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => SettingScreen(
                   userRepository: userRepo,
                 )));
         break;

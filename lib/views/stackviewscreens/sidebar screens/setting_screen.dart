@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 
 class SettingScreen extends StatelessWidget {
-  const SettingScreen({Key? key}) : super(key: key);
+  final UserRepository userRepository;
+
+  const SettingScreen({Key? key, required this.userRepository})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MmmButtons.appBarCurved('Setting'),
+      appBar: MmmButtons.appBarCurved('Setting', context: context),
       body: Column(
         children: [
           SizedBox(
