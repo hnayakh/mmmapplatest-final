@@ -248,18 +248,18 @@ class ReligionScreenState extends State<ReligionScreen> {
                                 SizedBox(
                                   width: 22,
                                 ),
-                                Transform.scale(
-                                  scale: 1.2,
-                                  child: Radio(
-                                      activeColor: Colors.pinkAccent,
-                                      value: Manglik.NotApplicable,
-                                      groupValue: isManglik,
-                                      onChanged: (val) {
-                                        BlocProvider.of<ReligionBloc>(context)
-                                            .add(OnMaglikChanged(
-                                                Manglik.NotApplicable));
-                                      }),
-                                ),
+                                // Transform.scale(
+                                //   scale: 1.2,
+                                //   child: Radio(
+                                //       activeColor: Colors.pinkAccent,
+                                //       value: Manglik.NotApplicable,
+                                //       groupValue: isManglik,
+                                //       onChanged: (val) {
+                                //         BlocProvider.of<ReligionBloc>(context)
+                                //             .add(OnMaglikChanged(
+                                //                 Manglik.NotApplicable));
+                                //       }),
+                                // ),
                                 // SizedBox(
                                 //   width: 8,
                                 // ),

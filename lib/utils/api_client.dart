@@ -352,7 +352,7 @@ class ApiClient {
   }
 
   Future<SigninResponse> careerVerification(
-      String nameOfOrg,
+      // String nameOfOrg,
       String? occupation,
       AnualIncome income,
       String? education,
@@ -364,7 +364,7 @@ class ApiClient {
       Response response =
           await this.dio.post(AppConstants.ENDPOINT + "users/career", data: {
         "userBasicId": id,
-        "employedIn": nameOfOrg,
+        "employedIn": 'Bypassedasperclient',
         "occupation": occupation,
         "annualIncome": income.index,
         "highestEducation": education,
@@ -375,7 +375,7 @@ class ApiClient {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SigninResponse.fromJson(response.data);
       } else {
-        return SigninResponse.fromError("Error Occurred. Please try againa.");
+        return SigninResponse.fromError("Error Occurred. Please try againaaa.");
       }
     } catch (error) {
       if (error is DioError) {
@@ -615,6 +615,8 @@ class ApiClient {
     // try {
     var response =
         await this.dio.get("${AppConstants.ENDPOINT}users/basic/$id");
+    print("response");
+    print(response);
     if (response.statusCode == 200 || response.statusCode == 201) {
       return ProfileDetailsResponse.fromJson(response.data, activationStatus);
     }

@@ -84,6 +84,8 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
         } else if (state is OnGotProfile) {
           this.profileDetails =
               BlocProvider.of<AccountMenuBloc>(context).profileData;
+          print("this.profileDetails");
+          print(this.profileDetails);
           return Scaffold(
             appBar: MmmButtons.appBarAccountBar(profileDetails!.name,
                 profileDetails!.images.first, profileDetails!.activationStatus,

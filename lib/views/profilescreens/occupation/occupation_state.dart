@@ -14,17 +14,22 @@ class OnError extends OccupationState {
 class OccupationInitialState extends OccupationState {}
 
 class MoveToFamily extends OccupationState {}
-class OnGotCounties extends OccupationState{
+
+class MoveToFamilyTo extends OccupationState {}
+
+class OnGotCounties extends OccupationState {
   final List<CountryModel> list;
 
   OnGotCounties(this.list);
 }
-class OnGotCities extends OccupationState{
+
+class OnGotCities extends OccupationState {
   final List<StateModel> list;
 
   OnGotCities(this.list);
 }
-class OnGotStates extends OccupationState{
+
+class OnGotStates extends OccupationState {
   final List<StateModel> list;
 
   OnGotStates(this.list);

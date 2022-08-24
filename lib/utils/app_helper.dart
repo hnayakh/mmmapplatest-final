@@ -40,13 +40,16 @@ class AppHelper {
     DateFormat dateFormat2 = DateFormat("dd MMM,yyyy");
     return dateFormat2.format(date);
   }
+
   static getReadableDateTIme(String dateOfBirth) {
     DateFormat dateFormat1 = DateFormat("yyyy-MM-dd HH:mm:ss");
     var date = dateFormat1.parse(dateOfBirth);
     print(date.toString());
     DateFormat dateFormat2 = DateFormat("dd MMM yyyy HH:mm");
     return dateFormat2.format(date);
-  }  static getReadableDateTImeFromServer(String dateOfBirth) {
+  }
+
+  static getReadableDateTImeFromServer(String dateOfBirth) {
     DateFormat dateFormat1 = DateFormat(AppConstants.SERVERDATEFORMAT);
     var date = dateFormat1.parse(dateOfBirth);
     print(date.toString());
@@ -62,11 +65,15 @@ class AppHelper {
   static String getHeight(index) {
     double heightCm = AppHelper.getHeights()[index] * 30.48;
     heightCm.round();
+    print('Akash');
     print(heightCm);
     String heightText =
         '${AppHelper.getHeights()[index].toStringAsFixed(1)} ft';
+    print('Jonty');
+    print(heightText[3]);
     return (heightText[0] +
         "' " +
+        // '.' +
         heightText[2] +
         '"' +
         " (${heightCm.round()}" +

@@ -94,46 +94,52 @@ class FamilyBackgroundBloc
           !this.isStayingWithParents &&
           myState == null &&
           city == null) {
-        yield OnError('Enter your family background');
+        await this
+            .userRepository
+            .storageService
+            .saveUserDetails(this.userRepository.useDetails!);
+        this.userRepository.updateRegistrationStep(8);
+        yield OnUpdate();
+        //yield OnError('Enter your family background');
       }
-      if (this.level == null) {
-        yield OnError("Select Family Status");
-      } else if (this.values == null) {
-        yield OnError("Select Family Values");
-      } else if (!this.isStayingWithParents && this.countryModel == null) {
-        yield OnError("Select Country");
-      } else if (!this.isStayingWithParents && myState == null) {
-        yield OnError("Select State");
-      } else if (!this.isStayingWithParents && city == null) {
-        yield OnError("Select City");
+      // if (this.level == null) {
+      //   yield OnError("Select Family Status");
+      // } else if (this.values == null) {
+      //   yield OnError("Select Family Values");
+      // } else if (!this.isStayingWithParents && this.countryModel == null) {
+      //   yield OnError("Select Country");
+      // } else if (!this.isStayingWithParents && myState == null) {
+      //   yield OnError("Select State");
+      // } else if (!this.isStayingWithParents && city == null) {
+      //   yield OnError("Select City");
+      // } else {
+      var result = await this.userRepository.updateFamilyBackground(
+          this.level!,
+          this.values!,
+          this.type,
+          this.isStayingWithParents
+              ? this.selectedCountry!
+              : this.countryModel!,
+          this.isStayingWithParents ? this.selectedState! : this.myState!,
+          this.isStayingWithParents ? this.selectedCity! : this.city!);
+      if (result.status == AppConstants.SUCCESS) {
+        this.userRepository.useDetails!.registrationStep =
+            result.userDetails!.registrationStep;
+        //await this.userRepository.saveUserDetails();
+        await this
+            .userRepository
+            .storageService
+            .saveUserDetails(this.userRepository.useDetails!);
+        this.userRepository.updateRegistrationStep(8);
+        print('in familybackground');
+        print(
+            'dobinfambackbloc=${this.userRepository.useDetails!.dateOfBirth}');
+        print(this.userRepository.useDetails!.registrationStep);
+        yield OnUpdate();
       } else {
-        var result = await this.userRepository.updateFamilyBackground(
-            this.level!,
-            this.values!,
-            this.type,
-            this.isStayingWithParents
-                ? this.selectedCountry!
-                : this.countryModel!,
-            this.isStayingWithParents ? this.selectedState! : this.myState!,
-            this.isStayingWithParents ? this.selectedCity! : this.city!);
-        if (result.status == AppConstants.SUCCESS) {
-          this.userRepository.useDetails!.registrationStep =
-              result.userDetails!.registrationStep;
-          //await this.userRepository.saveUserDetails();
-          await this
-              .userRepository
-              .storageService
-              .saveUserDetails(this.userRepository.useDetails!);
-          this.userRepository.updateRegistrationStep(8);
-          print('in familybackground');
-          print(
-              'dobinfambackbloc=${this.userRepository.useDetails!.dateOfBirth}');
-          print(this.userRepository.useDetails!.registrationStep);
-          yield OnUpdate();
-        } else {
-          yield OnError(result.message);
-        }
+        yield OnError(result.message);
       }
+      //  }
     }
   }
 }

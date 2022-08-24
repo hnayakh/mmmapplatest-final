@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
+import 'package:makemymarry/views/stackviewscreens/notification.dart';
+import 'package:makemymarry/views/stackviewscreens/search_screen.dart';
+import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/sidebar_about_screen.dart';
+import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/sidebar_contactsupport_screen.dart';
 
 class SettingScreen extends StatelessWidget {
   final UserRepository userRepository;
@@ -17,14 +21,32 @@ class SettingScreen extends StatelessWidget {
           SizedBox(
             height: 20,
           ),
-          MmmButtons.searchScreenButton('Notifications', action: () {}),
+          MmmButtons.searchScreenButton('Notifications', action: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Notifications(userRepository: userRepository)),
+            );
+          }),
           MmmButtons.searchScreenButton('Privacy', action: () {}),
           MmmButtons.searchScreenButton('Account', action: () {}),
           MmmButtons.searchScreenButton('Leave us a review', action: () {}),
           MmmButtons.searchScreenButton('FAQ', action: () {}),
           MmmButtons.searchScreenButton('Terms and Conditions', action: () {}),
-          MmmButtons.searchScreenButton('Contact Support', action: () {}),
-          MmmButtons.searchScreenButton('About', action: () {}),
+          MmmButtons.searchScreenButton('Contact Support', action: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ContactSupportScreen(userRepository: userRepository)),
+            );
+          }),
+          MmmButtons.searchScreenButton('About', action: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (context) =>
+                      SidebarAboutScreen(userRepository: userRepository)),
+            );
+          }),
         ],
       ),
     );

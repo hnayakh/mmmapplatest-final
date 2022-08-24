@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 
 class ContactSupportScreen extends StatelessWidget {
-  const ContactSupportScreen({Key? key}) : super(key: key);
+  final UserRepository userRepository;
+  const ContactSupportScreen({Key? key, required this.userRepository})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MmmButtons.appBarCurved('Contact support'),
+      appBar: MmmButtons.appBarCurved('Contact support', context: context),
       body: Container(
         padding: kMargin16,
         child: Column(

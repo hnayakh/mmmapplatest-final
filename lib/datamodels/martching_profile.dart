@@ -56,10 +56,10 @@ class MatchingProfile {
       if (this.isConnected) {
         this.connectId = json["connectStatus"]["id"];
       }
-    }else{
+    } else {
       this.isConnected = false;
     }
-    if(json["interestStatus"] !=null) {
+    if (json["interestStatus"] != null) {
       this.requestId = json["interestStatus"]["id"];
       if (json["interestStatus"]["isLiked"]) {
         this.requestStatus = InterestRequest.Accepted;
@@ -70,7 +70,7 @@ class MatchingProfile {
       } else {
         this.requestStatus = InterestRequest.NotConnected;
       }
-    }else{
+    } else {
       this.requestStatus = InterestRequest.NotConnected;
     }
   }
@@ -178,17 +178,18 @@ class ProfileDetails {
     this.state = userCareer["stateName"];
     this.city = userCareer["cityName"];
     this.highiestEducation = userCareer["highestEducation"];
+    if (json["userFamilyBackgrounds"].length > 0) {
+      var userFamilyBackground = json["userFamilyBackgrounds"][0];
 
-    var userFamilyBackground = json["userFamilyBackgrounds"][0];
-
-    this.familyAfluenceLevel =
-        FamilyAfluenceLevel.values[userFamilyBackground["familyStatus"]];
-    this.familyValues =
-        FamilyValues.values[userFamilyBackground["familyValues"]];
-    this.familyType = FamilyType.values[userFamilyBackground["familyType"]];
-    this.familyCountry = userFamilyBackground["countryName"];
-    this.familyState = userFamilyBackground["stateName"];
-    this.familyCity = userFamilyBackground["cityName"];
+      this.familyAfluenceLevel =
+          FamilyAfluenceLevel.values[userFamilyBackground["familyStatus"]];
+      this.familyValues =
+          FamilyValues.values[userFamilyBackground["familyValues"]];
+      this.familyType = FamilyType.values[userFamilyBackground["familyType"]];
+      this.familyCountry = userFamilyBackground["countryName"];
+      this.familyState = userFamilyBackground["stateName"];
+      this.familyCity = userFamilyBackground["cityName"];
+    }
 
     if (json["userFamilyDetails"].length > 0) {
       var userFamilyDetail = json["userFamilyDetails"][0];

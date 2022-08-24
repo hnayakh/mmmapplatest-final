@@ -117,15 +117,15 @@ class UserRepository {
   }
 
   Future<SigninResponse> career(
-      String nameOfOrg,
+      // String nameOfOrg,
       String? occupation,
       AnualIncome income,
       String? education,
       CountryModel country,
       StateModel stateName,
       StateModel city) async {
-    return apiClient.careerVerification(nameOfOrg, occupation, income,
-        education, country, stateName, city, useDetails!.id);
+    return apiClient.careerVerification(occupation, income, education, country,
+        stateName, city, useDetails!.id);
   }
 
   Future<CountryResponse> getCountries() async {

@@ -121,7 +121,7 @@ class MyConnectsScreenState extends State<MyConnectsScreen>
                       children: [
                         // ChatsScreen(),
                         ConnectScreen(),
-                        ChatsScreen(),
+                        ChatScreen(),
                         // ConnectedScreen(),
                       ],
                     ))

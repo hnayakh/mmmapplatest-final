@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 
 class SidebarAboutScreen extends StatelessWidget {
-  const SidebarAboutScreen({Key? key}) : super(key: key);
+  final UserRepository userRepository;
+  const SidebarAboutScreen({Key? key, required this.userRepository})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MmmButtons.appBarCurved('About'),
+      appBar: MmmButtons.appBarCurved('About', context: context),
       body: Container(
         padding: kMargin16,
         child: Column(

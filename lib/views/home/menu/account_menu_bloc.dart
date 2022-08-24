@@ -21,10 +21,15 @@ class AccountMenuBloc extends Bloc<AccountMenuEvent, AccountMenuState> {
           userRepository.useDetails!.id,
           ProfileActivationStatus
               .values[userRepository.useDetails!.activationStatus]);
+      print('etywgfyuegtwqyuetwqetwquyteuywqteuy');
+      print(response);
       if (response.status == AppConstants.SUCCESS) {
         this.profileData = response.profileDetails;
+        print('etywgfyuegtwqyuetwqetwquyteuywqteuy');
         yield OnGotProfile();
       } else {
+        print('etywgfyuegtwqyuetwqetwquyteuywqteuy');
+        print(response);
         yield OnError(response.message);
       }
     }

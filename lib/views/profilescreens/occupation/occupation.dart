@@ -94,6 +94,9 @@ class _OccupationScreenState extends State<OccupationScreen> {
           if (state is MoveToFamily) {
             navigateToFamily(context);
           }
+          if (state is MoveToFamilyTo) {
+            navigateToFamilyTo(context);
+          }
           if (state is OnGotCounties) {
             selectCountry(context, state.list);
           }
@@ -150,13 +153,13 @@ class _OccupationScreenState extends State<OccupationScreen> {
                             'images/rightArrow.svg', action: () {
                           selectAnualIncome(context);
                         }),
-                        SizedBox(
-                          height: 24,
-                        ),
-                        MmmTextFileds.textFiledWithLabelStar(
-                            'Employeed in',
-                            'Enter name of your organisation',
-                            orgNameController),
+                        // SizedBox(
+                        //   height: 24,
+                        // ),
+                        // MmmTextFileds.textFiledWithLabelStar(
+                        //     'Employeed in',
+                        //     'Enter name of your organisation',
+                        //     orgNameController),
                         SizedBox(
                           height: 24,
                         ),
@@ -368,6 +371,20 @@ class _OccupationScreenState extends State<OccupationScreen> {
               countryModel: countryModel,
               stateModel: stateModel,
               city: city,
+            )));
+  }
+
+  void navigateToFamilyTo(BuildContext context) {
+    var userRepo = BlocProvider.of<OccupationBloc>(context).userRepository;
+    // var countryModel = BlocProvider.of<OccupationBloc>(context).countryModel!;
+    // var stateModel = BlocProvider.of<OccupationBloc>(context).myState!;
+    // var city = BlocProvider.of<OccupationBloc>(context).city!;
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => FamilyScreen(
+              userRepository: userRepo,
+              // countryModel: countryModel,
+              // stateModel: stateModel,
+              // city: city,
             )));
   }
 }

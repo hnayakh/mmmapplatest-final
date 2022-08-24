@@ -23,17 +23,15 @@ import '../grid_view_stack.dart';
 class StackView extends StatelessWidget {
   final UserRepository userRepository;
 
-  const StackView(
-      {Key? key,
-      required this.userRepository,
-     })
-      : super(key: key);
+  const StackView({
+    Key? key,
+    required this.userRepository,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          StackViewBloc(userRepository),
+      create: (context) => StackViewBloc(userRepository),
       child: StackViewScreen(),
     );
   }
@@ -48,7 +46,6 @@ class StackViewScreen extends StatefulWidget {
 
 class _StackViewScreenState extends State<StackViewScreen> {
   var index = 0;
-
 
   @override
   Widget build(BuildContext context) {
@@ -262,15 +259,9 @@ class _StackViewScreenState extends State<StackViewScreen> {
     );
   }
 
-  void heartEvent(int likeInfo) {
+  void heartEvent(int likeInfo) {}
 
-  }
-
-
-
-  void navigateToGridView() {
-
-  }
+  void navigateToGridView() {}
 
   void setColor(int indexCode) {
     setState(() {
@@ -278,7 +269,5 @@ class _StackViewScreenState extends State<StackViewScreen> {
     });
   }
 
-  Future<void> initData() async {
-
-  }
+  Future<void> initData() async {}
 }

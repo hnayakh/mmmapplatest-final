@@ -22,6 +22,7 @@ class ProfileLoaderBloc extends Bloc<ProfileLoaderEvent, ProfileLoaderState> {
         //     .saveUserDetails(this.userRepository.useDetails!);
         print('in profileloader');
         print(this.userRepository.useDetails!.registrationStep);
+        print(result.list);
         yield OnGotProfiles(result.list);
       } else {
         yield OnError(result.message);

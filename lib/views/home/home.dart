@@ -5,6 +5,7 @@ import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/home/menu/sidebar_account_screen.dart';
 import 'package:makemymarry/views/home/my_connects/my_connects_screen.dart';
+import 'package:makemymarry/views/stackviewscreens/notification.dart';
 
 import 'interests/interest_status_screen.dart';
 import 'matching_profile/matching_profile.dart';
@@ -90,6 +91,8 @@ class HomeScreenState extends State<HomeScreen> {
         );
       case 2:
         return MyConnects(userRepository: widget.userRepository);
+      case 3:
+        return Notifications(userRepository: widget.userRepository);
       case 4:
         return SidebarAccount(
           userRepository: widget.userRepository,

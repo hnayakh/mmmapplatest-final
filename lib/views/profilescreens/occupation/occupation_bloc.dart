@@ -13,7 +13,7 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
 
   String? occupation;
   String? education;
-  late String nameOfOrg;
+  // late String nameOfOrg;
   late String income;
   CountryModel? countryModel;
   CountryModel? prevCountryModel;
@@ -95,20 +95,22 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
       }
     }
     if (event is UpdateCareer) {
-      this.nameOfOrg = event.name;
+      // this.nameOfOrg = event.name;
       this.income = event.income;
-      if (this.nameOfOrg == '' &&
+      if (
+          // this.nameOfOrg == '' &&
           this.anualIncome == null &&
-          this.myState == null &&
-          this.city == null &&
-          this.occupation == null &&
-          this.education == null) {
+              this.myState == null &&
+              this.city == null &&
+              this.occupation == null &&
+              this.education == null) {
         yield OnError('Please enter all mandatory career details');
       }
 
-      if (this.nameOfOrg == '') {
-        yield OnError('Enter name of organisation employeed in.');
-      } else if (this.anualIncome == null) {
+      // if (this.nameOfOrg == '') {
+      //   yield OnError('Enter name of organisation employeed in.');
+      // } else
+      if (this.anualIncome == null) {
         yield OnError('Enter annual income.');
       } else if (this.countryModel == null) {
         yield OnError('Enter name of country belonging to.');
@@ -122,7 +124,7 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
         yield OnError('select your educational qualifications.');
       } else {
         var result = await this.userRepository.career(
-              this.nameOfOrg,
+              // this.nameOfOrg,
               this.occupation,
               this.anualIncome!,
               this.education,

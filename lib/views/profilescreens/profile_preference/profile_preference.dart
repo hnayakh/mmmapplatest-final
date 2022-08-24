@@ -395,7 +395,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
                 child: RangeSlider(
                   values: RangeValues(minAge, maxAge),
                   min: this.gender == Gender.Female ? 18 : 21,
-                  max: 70,
+                  max: 50,
                   inactiveColor: kGray,
                   activeColor: kPrimary,
                   // divisions: 30,
