@@ -27,7 +27,7 @@ class ProfilePreferenceBloc
   List<SimpleMasterData> motherTongue = [];
   List<String?> occupation = [];
   List<Education> education = [];
-
+  List<AnualIncome> annualIncomeMax = [];
   List<AnualIncome> annualIncome = [];
   late List<EatingHabit> eatingHabit = [];
   late List<SmokingHabit> smokingHabit = [];
@@ -222,8 +222,16 @@ class ProfilePreferenceBloc
       this.annualIncome = event.list;
       yield ProfilePreferenceInitialState();
     }
+    if (event is IncomeSelectedMax) {
+      this.annualIncomeMax = event.list;
+      yield ProfilePreferenceInitialState();
+    }
     if (event is RemoveIncome) {
       this.annualIncome = [];
+      yield ProfilePreferenceInitialState();
+    }
+    if (event is RemoveMaxIncome) {
+      this.annualIncomeMax = [];
       yield ProfilePreferenceInitialState();
     }
     if (event is DrinkingSelected) {

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +13,7 @@ import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/elevations.dart';
+import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
@@ -261,6 +263,103 @@ class _BioScreenState extends State<BioScreen> {
                   //    borderRadius: BorderRadius.circular(8)),
                 )))
       ],
+    );
+  }
+
+  static Container aboutProfileViewButtons(String icon, String label,
+      String about, MaritalStatus maritalStatus, AbilityStatus abilityStatus,
+      {Function()? action}) {
+    return Container(
+      decoration: BoxDecoration(
+        color: kWhite,
+        boxShadow: [MmmShadow.elevation1()],
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: Color(0xffF0EFF5),
+          width: 1,
+        ),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: action,
+          child: Container(
+            alignment: Alignment.center,
+            // height: 264,
+            padding: EdgeInsets.all(9),
+
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 8,
+                ),
+                Row(
+                  children: [
+                    SvgPicture.asset(
+                      icon,
+                      color: Color(0xff121619),
+                      fit: BoxFit.cover,
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: SizedBox(),
+                    ),
+                    Text(
+                      label,
+                      textScaleFactor: 1.0,
+                      //textAlign: TextAlign.start,
+                      style: MmmTextStyles.heading5(textColor: kDark6),
+                    ),
+                    Expanded(
+                      flex: 20,
+                      child: SizedBox(),
+                    ),
+                    Container(
+                      child: SvgPicture.asset(
+                        "images/arrowUp.svg",
+                        color: Color(0xff878D96),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Container(
+                  margin: kMargin16,
+                  child: Column(
+                    children: [
+                      Text(
+                        about,
+                        style: MmmTextStyles.bodySmall(),
+                      ),
+                      SizedBox(
+                        height: 24,
+                      ),
+                      Row(
+                        children: [
+                          Text('Marital Status: ',
+                              style: MmmTextStyles.heading6()),
+                          Text(describeEnum(maritalStatus),
+                              style: MmmTextStyles.bodySmall()),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text('Disability: ', style: MmmTextStyles.heading6()),
+                          Text(describeEnum(abilityStatus),
+                              style: MmmTextStyles.bodySmall()),
+                        ],
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 

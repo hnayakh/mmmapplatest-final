@@ -58,7 +58,15 @@ class IncomeSelected extends ProfilePreferenceEvent {
   IncomeSelected(this.list);
 }
 
+class IncomeSelectedMax extends ProfilePreferenceEvent {
+  final List<AnualIncome> list;
+
+  IncomeSelectedMax(this.list);
+}
+
 class RemoveIncome extends ProfilePreferenceEvent {}
+
+class RemoveMaxIncome extends ProfilePreferenceEvent {}
 
 class DietrySelected extends ProfilePreferenceEvent {
   final List<EatingHabit> eatingHabit;

@@ -99,30 +99,44 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
       this.income = event.income;
       if (
           // this.nameOfOrg == '' &&
-          this.anualIncome == null &&
-              this.myState == null &&
-              this.city == null &&
-              this.occupation == null &&
+          // this.anualIncome == null &&
+          //     this.myState == null &&
+          //     this.city == null &&
+          //     this.occupation == null &&
+          //     this.education == null) {
+          this.anualIncome == null ||
+              this.myState == null ||
+              this.city == null ||
+              this.occupation == null ||
               this.education == null) {
-        yield OnError('Please enter all mandatory career details');
+        print('test from null');
+        //  yield OnError('Please enter all mandatory career details');
+        await this
+            .userRepository
+            .storageService
+            .saveUserDetails(this.userRepository.useDetails!);
+        this.userRepository.updateRegistrationStep(6);
+        yield MoveToFamilyTo();
       }
 
       // if (this.nameOfOrg == '') {
       //   yield OnError('Enter name of organisation employeed in.');
       // } else
-      if (this.anualIncome == null) {
-        yield OnError('Enter annual income.');
-      } else if (this.countryModel == null) {
-        yield OnError('Enter name of country belonging to.');
-      } else if (this.myState == null) {
-        yield OnError('Enter name of state belonging to.');
-      } else if (this.city == null) {
-        yield OnError('Enter name of city belonging to.');
-      } else if (this.occupation == null) {
-        yield OnError('select your occupation.');
-      } else if (this.education == null) {
-        yield OnError('select your educational qualifications.');
-      } else {
+      // if (this.anualIncome == null) {
+      //   yield OnError('Enter annual income.');
+      // } else if (this.countryModel == null) {
+      //   yield OnError('Enter name of country belonging to.');
+      // } else if (this.myState == null) {
+      //   yield OnError('Enter name of state belonging to.');
+      // } else if (this.city == null) {
+      //   yield OnError('Enter name of city belonging to.');
+      // } else if (this.occupation == null) {
+      //   yield OnError('select your occupation.');
+      // } else if (this.education == null) {
+      //   yield OnError('select your educational qualifications.');
+      // }
+      else {
+        print('test after all');
         var result = await this.userRepository.career(
               // this.nameOfOrg,
               this.occupation,

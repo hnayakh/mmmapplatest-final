@@ -73,6 +73,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   late List<String?> occupation;
   late List<Education> education;
   late List<AnualIncome> annualIncome;
+  late List<AnualIncome> annualIncomeMax;
   String titleRedOcc = '';
   TextEditingController annIncomeController = TextEditingController();
   late List<EatingHabit> eatingHabit;
@@ -138,6 +139,8 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
         BlocProvider.of<ProfilePreferenceBloc>(context).smokingHabit;
     this.annualIncome =
         BlocProvider.of<ProfilePreferenceBloc>(context).annualIncome;
+    this.annualIncomeMax =
+        BlocProvider.of<ProfilePreferenceBloc>(context).annualIncomeMax;
     this.abilityStatus =
         BlocProvider.of<ProfilePreferenceBloc>(context).abilityStatus;
   }
@@ -953,6 +956,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
         isScrollControlled: true,
         builder: (context) => AnnualIncomePreference(
               list: this.annualIncome,
+              listMax: this.annualIncomeMax,
             ));
     if (result != null && result is List<AnualIncome>) {
       BlocProvider.of<ProfilePreferenceBloc>(context)

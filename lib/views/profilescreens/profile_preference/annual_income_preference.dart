@@ -8,19 +8,22 @@ import 'package:makemymarry/utils/text_styles.dart';
 
 class AnnualIncomePreference extends StatefulWidget {
   final List<AnualIncome> list;
+  final List<AnualIncome> listMax;
 
-  const AnnualIncomePreference({Key? key, required this.list})
+  const AnnualIncomePreference(
+      {Key? key, required this.list, required this.listMax})
       : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return AnnualIncomePreferenceScreen(list);
+    return AnnualIncomePreferenceScreen(list, listMax);
   }
 }
 
 class AnnualIncomePreferenceScreen extends State<AnnualIncomePreference> {
   List<AnualIncome> list;
-  AnnualIncomePreferenceScreen(this.list);
+  List<AnualIncome> listMax;
+  AnnualIncomePreferenceScreen(this.list, this.listMax);
   List<String> incomes = [
     'No Income',
     '1 lakh',

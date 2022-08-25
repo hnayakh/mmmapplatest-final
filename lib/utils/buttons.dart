@@ -1304,7 +1304,7 @@ class MmmButtons {
             ),
             required
                 ? Text(
-                    ' *',
+                    '',
                     style: MmmTextStyles.bodySmall(textColor: kredStar),
                   )
                 : Container()

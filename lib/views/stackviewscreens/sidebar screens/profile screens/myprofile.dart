@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_styles.dart';
+import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
+import 'package:makemymarry/views/profilescreens/bio/bio.dart';
 
 class MyprofileScreen extends StatelessWidget {
-  const MyprofileScreen({Key? key}) : super(key: key);
+  final UserRepository userRepository;
+  const MyprofileScreen({Key? key, required this.userRepository})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MmmButtons.appBarCurved('My Profile'),
+      appBar: MmmButtons.appBarCurved('My Profile', context: context),
       body: SingleChildScrollView(
         child: Container(
           padding: kMargin16,
@@ -110,7 +116,14 @@ class MyprofileScreen extends StatelessWidget {
               SizedBox(
                 height: 16,
               ),
-              MmmButtons.myProfileButtons('About', action: () {}),
+              MmmButtons.myProfileButtons('About', action: () {
+                var userRepo =
+                    BlocProvider.of<AccountMenuBloc>(context).userRepository;
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context) => Bio(userRepository: userRepo)),
+                );
+              }),
               SizedBox(
                 height: 16,
               ),

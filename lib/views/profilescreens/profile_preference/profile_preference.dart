@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/repo/user_repo.dart';
@@ -13,6 +14,8 @@ import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/profile_loader/profile_loader.dart';
+import 'package:makemymarry/views/profilescreens/family/family_details/family_details_bloc.dart';
+import 'package:makemymarry/views/profilescreens/family/family_details/family_details_events.dart';
 import 'package:makemymarry/views/profilescreens/occupation/education_bottom_sheet.dart';
 import 'package:makemymarry/views/profilescreens/occupation/occupation_bottom_sheet.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/annual_income_preference.dart';
@@ -69,6 +72,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   late List<String?> occupation;
   late List<Education> education;
   late List<AnualIncome> annualIncome;
+  late List<AnualIncome> annualIncomeMax;
   String titleRedOcc = '';
   TextEditingController annIncomeController = TextEditingController();
   late List<EatingHabit> eatingHabit;
@@ -96,6 +100,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
     '1 crore and above'
   ];
   List<String> currentIncomes = [];
+  List<String> currentMaxIncomes = [];
 
   void initData(BuildContext context) {
     this.userData = BlocProvider.of<ProfilePreferenceBloc>(context)
@@ -130,6 +135,8 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
         BlocProvider.of<ProfilePreferenceBloc>(context).smokingHabit;
     this.annualIncome =
         BlocProvider.of<ProfilePreferenceBloc>(context).annualIncome;
+    this.annualIncomeMax =
+        BlocProvider.of<ProfilePreferenceBloc>(context).annualIncomeMax;
     this.abilityStatus =
         BlocProvider.of<ProfilePreferenceBloc>(context).abilityStatus;
   }
@@ -200,6 +207,14 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
                               height: 24,
                             ),
                             buildAnnualIncome(),
+                            // SizedBox(
+                            //   height: 24,
+                            // ),
+                            // buildAnnualIncomeNew(),
+                            SizedBox(
+                              height: 24,
+                            ),
+                            buildAnnualIncomeNewDemo(),
                             SizedBox(
                               height: 24,
                             ),
@@ -896,6 +911,251 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
     return value;
   }
 
+  Widget buildAnnualIncomeNewDemo() {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              'Annual Income',
+              style: MmmTextStyles.bodyMedium(textColor: kDark5),
+            ),
+          ],
+        ),
+        Row(children: [
+          SizedBox(
+            width: 6,
+          ),
+          Expanded(
+            child: MmmButtons.categoryButtons(
+                'Minimum',
+                this.annualIncome.length > 0
+                    ? getStringIncome(currentIncomes)
+                    : 'Does not matter',
+                'Select Annual Income',
+                'images/rightArrow.svg',
+                action: () {
+                  selectMinimumAnnualIncome();
+                },
+                showCancel: this.annualIncome.length > 0,
+                cancelAction: () {
+                  this.currentIncomes = [];
+                  BlocProvider.of<ProfilePreferenceBloc>(context)
+                      .add(RemoveIncome());
+                }),
+          ),
+          SizedBox(
+            width: 6,
+          ),
+          Expanded(
+              child: MmmButtons.categoryButtons(
+                  'Maximum',
+                  this.annualIncomeMax.length > 0
+                      ? getStringIncome(currentMaxIncomes)
+                      : 'Does not matter',
+                  'Select Maximum Annual Income',
+                  'images/rightArrow.svg',
+                  action: () {
+                    selectMaximumAnnualIncome();
+                  },
+                  showCancel: this.annualIncomeMax.length > 0,
+                  cancelAction: () {
+                    this.currentMaxIncomes = [];
+                    BlocProvider.of<ProfilePreferenceBloc>(context)
+                        .add(RemoveIncome());
+                  }))
+        ])
+      ],
+    );
+  }
+
+  Widget buildAnnualIncomeNew() {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              'Annual Income(in lakhs)',
+              style: MmmTextStyles.bodyMedium(textColor: kDark5),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 16,
+        ),
+        Row(
+          children: [
+            Expanded(
+                child: Row(
+              children: [
+                Text(
+                  'Minimum',
+                  textScaleFactor: 1.0,
+                  style: MmmTextStyles.bodySmall(textColor: kDark5),
+                ),
+                SizedBox(
+                  width: 2,
+                ),
+                Text(
+                  '*',
+                  style: MmmTextStyles.bodySmall(textColor: kredStar),
+                )
+              ],
+            )),
+            SizedBox(
+              width: 8,
+            ),
+            Expanded(
+                child: Row(
+              children: [
+                Text(
+                  'Maximum',
+                  textScaleFactor: 1.0,
+                  style: MmmTextStyles.bodySmall(textColor: kDark5),
+                ),
+                SizedBox(
+                  width: 2,
+                ),
+                Text(
+                  '*',
+                  style: MmmTextStyles.bodySmall(textColor: kredStar),
+                )
+              ],
+            )),
+          ],
+        ),
+        SizedBox(
+          height: 8,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+                child: Container(
+              height: 44,
+              padding: EdgeInsets.fromLTRB(12, 8, 12, 8),
+              decoration: BoxDecoration(
+                  color: kLight4,
+                  border: Border.all(color: kBioSecondary, width: 1),
+                  borderRadius: BorderRadius.circular(8)),
+              child: Row(
+                children: [
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () {
+                        BlocProvider.of<FamilyDetailsBloc>(context)
+                            .add(ChangeNoOfBrothers(-1));
+                      },
+                      child: SvgPicture.asset(
+                        'images/minus.svg',
+                        height: 24,
+                        width: 24,
+                        color: kDark2,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Expanded(
+                    child: Text(
+                      "2",
+                      textScaleFactor: 1.0,
+                      textAlign: TextAlign.center,
+                      style: MmmTextStyles.bodyRegular(textColor: kDark5),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () {
+                        BlocProvider.of<FamilyDetailsBloc>(context)
+                            .add(ChangeNoOfBrothers(1));
+                      },
+                      child: SvgPicture.asset(
+                        'images/plus.svg',
+                        height: 24,
+                        width: 24,
+                        color: kDark2,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )),
+            SizedBox(
+              width: 16,
+            ),
+            Expanded(
+                child: Container(
+              height: 44,
+              width: (MediaQuery.of(context).size.width / 2) - 48,
+              padding: EdgeInsets.fromLTRB(12, 8, 12, 8),
+              decoration: BoxDecoration(
+                  color: kLight4,
+                  border: Border.all(color: kBioSecondary, width: 1),
+                  borderRadius: BorderRadius.circular(8)),
+              child: Row(
+                children: [
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () {
+                        BlocProvider.of<FamilyDetailsBloc>(context)
+                            .add(ChangeNoOfBrothersMarried(-1));
+                      },
+                      child: SvgPicture.asset(
+                        'images/minus.svg',
+                        height: 24,
+                        width: 24,
+                        color: kDark2,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Expanded(
+                    child: Text(
+                      "5",
+                      textScaleFactor: 1.0,
+                      textAlign: TextAlign.center,
+                      style: MmmTextStyles.bodyRegular(textColor: kDark5),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () {
+                        BlocProvider.of<FamilyDetailsBloc>(context)
+                            .add(ChangeNoOfBrothersMarried(1));
+                      },
+                      child: SvgPicture.asset(
+                        'images/plus.svg',
+                        height: 24,
+                        width: 24,
+                        color: kDark2,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ))
+          ],
+        )
+      ],
+    );
+  }
+
   Widget buildAnnualIncome() {
     return MmmButtons.categoryButtons(
         'Annual Income',
@@ -905,7 +1165,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
         'Select Annual Income',
         'images/rightArrow.svg',
         action: () {
-          selectAnnualIncome();
+          selectMinimumAnnualIncome();
         },
         showCancel: this.annualIncome.length > 0,
         cancelAction: () {
@@ -914,19 +1174,38 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
         });
   }
 
-  void selectAnnualIncome() async {
+  void selectMinimumAnnualIncome() async {
     var result = await showModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
         builder: (context) => AnnualIncomePreference(
-              list: this.annualIncome,
+              list: annualIncome,
+              listMax: this.annualIncomeMax,
             ));
     if (result != null && result is List<AnualIncome>) {
       BlocProvider.of<ProfilePreferenceBloc>(context)
           .add(IncomeSelected(result));
       for (int i = 0; i < result.length; i++) {
         currentIncomes.add(incomes[result[i].index]);
+      }
+    }
+  }
+
+  void selectMaximumAnnualIncome() async {
+    var result = await showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (context) => AnnualIncomePreference(
+              list: annualIncomeMax,
+              listMax: this.annualIncomeMax,
+            ));
+    if (result != null && result is List<AnualIncome>) {
+      BlocProvider.of<ProfilePreferenceBloc>(context)
+          .add(IncomeSelected(result));
+      for (int i = 0; i < result.length; i++) {
+        currentMaxIncomes.add(incomes[result[i].index]);
       }
     }
   }

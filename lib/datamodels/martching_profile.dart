@@ -168,16 +168,17 @@ class ProfileDetails {
     this.gothra = userReligion["gothra"];
     this.motherTongue = userReligion["motherTongue"];
     this.manglik = Manglik.values[userReligion["isManglik"]];
+    if (json["userCareers"].length > 0) {
+      var userCareer = json["userCareers"][0];
 
-    var userCareer = json["userCareers"][0];
-
-    this.occupation = userCareer["occupation"];
-    this.employedin = userCareer["employedIn"];
-    this.annualIncome = AnualIncome.values[userCareer["annualIncome"]];
-    this.country = userCareer["countryName"];
-    this.state = userCareer["stateName"];
-    this.city = userCareer["cityName"];
-    this.highiestEducation = userCareer["highestEducation"];
+      this.occupation = userCareer["occupation"];
+      this.employedin = userCareer["employedIn"];
+      this.annualIncome = AnualIncome.values[userCareer["annualIncome"]];
+      this.country = userCareer["countryName"];
+      this.state = userCareer["stateName"];
+      this.city = userCareer["cityName"];
+      this.highiestEducation = userCareer["highestEducation"];
+    }
     if (json["userFamilyBackgrounds"].length > 0) {
       var userFamilyBackground = json["userFamilyBackgrounds"][0];
 
