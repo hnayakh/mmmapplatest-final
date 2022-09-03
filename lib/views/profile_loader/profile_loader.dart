@@ -116,21 +116,20 @@ class ProfileLoaderScreenState extends State<ProfileLoaderScreen>
         },
         listener: (context, state) {
           if (state is OnGotProfiles) {
-            navigateToViewProfiles(state.list);
+            navigateToViewProfiles(state.list, state.searchList);
           }
         },
       )),
     );
   }
 
-  void navigateToViewProfiles(List<MatchingProfile> list) {
+  void navigateToViewProfiles(
+      List<MatchingProfile> list, List<MatchingProfileSearch> seachList) {
     var userRepo = BlocProvider.of<ProfileLoaderBloc>(context).userRepository;
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
             builder: (context) => HomeScreen(
-                  userRepository: userRepo,
-                  list: list,
-                )),
+                userRepository: userRepo, list: list, searchList: seachList)),
         (route) => false);
   }
 }

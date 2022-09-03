@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:makemymarry/datamodels/connect.dart';
 // import 'package:flutter_tindercard/flutter_tindercard.dart';
 
 import 'package:makemymarry/datamodels/martching_profile.dart';
@@ -21,15 +22,22 @@ import 'matching_profile_state.dart';
 class MatchingProfileStackView extends StatelessWidget {
   final UserRepository userRepository;
   final List<MatchingProfile> list;
+  final List<MatchingProfileSearch> searchList;
+  final List<MatchingProfileSearch>? mySearCh;
 
   const MatchingProfileStackView(
-      {Key? key, required this.userRepository, required this.list})
+      {Key? key,
+      required this.userRepository,
+      required this.list,
+      required this.searchList,
+      this.mySearCh})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => MatchingProfileBloc(userRepository, list),
+      create: (context) =>
+          MatchingProfileBloc(userRepository, list, searchList),
       child: MatchingProfileStackViewScreen(),
     );
   }
@@ -46,6 +54,8 @@ class MatchingProfileStackViewScreenState
     extends State<MatchingProfileStackViewScreen>
     with TickerProviderStateMixin {
   late List<MatchingProfile> list;
+  late List<MatchingProfileSearch> searchList;
+  //late List<MatchingProfileSearch> myNewSearch;
   late bool isLiked;
 
   // late CardController controller;
@@ -55,6 +65,16 @@ class MatchingProfileStackViewScreenState
     return BlocConsumer<MatchingProfileBloc, MatchingProfileState>(
       builder: (context, state) {
         this.list = BlocProvider.of<MatchingProfileBloc>(context).list;
+        this.searchList =
+            BlocProvider.of<MatchingProfileBloc>(context).searchList;
+        if (this.searchList.length > 0) {
+          this.list = this.searchList as List<MatchingProfile>;
+        }
+        // this.myNewSearch =
+        //  BlocProvider.of<MatchingProfileBloc>(context).searchList;
+        print("test");
+        // print(myNewSearch);
+
         return Stack(
           children: [
             Container(
@@ -72,7 +92,9 @@ class MatchingProfileStackViewScreenState
                               children: [
                                 ClipRRect(
                                   child: Image.network(
-                                    '${list[index].imageUrl}',
+                                    searchList.length > 0
+                                        ? ''
+                                        : '${list[index].imageUrl}',
                                     height: double.maxFinite,
                                     fit: BoxFit.cover,
                                     width: double.infinity,
@@ -100,7 +122,9 @@ class MatchingProfileStackViewScreenState
                                                   // Expanded(
                                                   //     child:
                                                   Text(
-                                                    "${list[index].name}, ${AppHelper.getAgeFromDob(list[index].dateOfBirth)}",
+                                                    searchList.length > 0
+                                                        ? 'TEST'
+                                                        : "${list[index].name}, ${AppHelper.getAgeFromDob(list[index].dateOfBirth)}",
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -157,7 +181,9 @@ class MatchingProfileStackViewScreenState
                                                   // Expanded(
                                                   //     child:
                                                   Text(
-                                                    "${this.list[index].city}, ${this.list[index].state}",
+                                                    searchList.length > 0
+                                                        ? ''
+                                                        : "${this.list[index].city}, ${this.list[index].state}",
                                                     textScaleFactor: 1.0,
                                                     overflow:
                                                         TextOverflow.ellipsis,

@@ -8,6 +8,7 @@ import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/utils/api_client.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/storage_service.dart';
+import 'package:makemymarry/views/home/matching_profile/matching_profile.dart';
 
 class UserRepository {
   late StorageService storageService;
@@ -347,5 +348,9 @@ class UserRepository {
 
   Future<ConnectHistoryResponse> getCOnnecHistory() async {
     return this.apiClient.getConnectHistory(this.useDetails!.id);
+  }
+
+  Future<MySearchResponse> getConnectThroughMMId(displayId) async {
+    return this.apiClient.getConnectThroughMMId(this.useDetails!.id, displayId);
   }
 }

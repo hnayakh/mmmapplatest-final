@@ -1,3 +1,4 @@
+import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 
@@ -76,6 +77,43 @@ class ConnectHistoryItem {
     this.displayId = data["displayId"];
     this.name = data["name"];
     this.name = data["name"];
-    this.activationStatus = data["activationStatus"] != null? ActivationStatus.values[data["activationStatus"]]:ActivationStatus.Pending;
+    this.activationStatus = data["activationStatus"] != null
+        ? ActivationStatus.values[data["activationStatus"]]
+        : ActivationStatus.Pending;
+  }
+}
+
+class MySearchResponse extends SimpleResponse {
+  List<MatchingProfileSearch> searchList = [];
+
+  MySearchResponse.fromError(String error) : super.fromError(error);
+
+  MySearchResponse.fromJson(json) : super.fromJson(json) {
+    this.searchList = createList(json["data"]);
+    print('JONTY');
+    print(this.searchList);
+  }
+
+  List<MatchingProfileSearch> createList(json) {
+    List<MatchingProfileSearch> newlist = [];
+    for (var item in json) {
+      newlist.add(MatchingProfileSearch.fromJson(item));
+    }
+    return newlist;
+  }
+}
+
+class MySeachItem {
+  late String connectId, userId, displayId, name, imageURL, thumbnailURL;
+  late ActivationStatus activationStatus;
+
+  MySeachItem.fromJson(json) {
+    this.connectId = json["connectId"];
+    this.userId = json["userId"];
+    this.displayId = json["displayId"];
+    this.activationStatus = ActivationStatus.values[json["activationStatus"]];
+    this.imageURL = json["imageURL"];
+    this.thumbnailURL = json["thumbnailURL"];
+    this.name = json["name"];
   }
 }

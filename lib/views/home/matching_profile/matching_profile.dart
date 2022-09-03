@@ -1,20 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:makemymarry/datamodels/connect.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/colors.dart';
+import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/home/filter_screens/filter_screen.dart';
+import 'package:makemymarry/views/home/matching_profile/matching_profile_bloc.dart';
+import 'package:makemymarry/views/home/matching_profile/matching_profile_event.dart';
 
 import 'matching_profile_grid.dart';
 import 'matching_profile_stack.dart';
+
+// TextEditingController mycontroller = TextEditingController();
 
 class MatchingProfileScreen extends StatefulWidget {
   final UserRepository userRepository;
 
   List<MatchingProfile> list;
+  List<MatchingProfileSearch> searchList;
+  String? searchText;
   List<String> filters = [
     "Recommended",
     "Profile Visitors",
@@ -23,24 +32,53 @@ class MatchingProfileScreen extends StatefulWidget {
   ];
 
   MatchingProfileScreen(
-      {Key? key, required this.userRepository, required this.list})
+      {Key? key,
+      required this.userRepository,
+      required this.list,
+      required this.searchList})
       : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return MatchingProfileScreenState(list);
+    return MatchingProfileScreenState(list, searchText);
   }
 }
 
 class MatchingProfileScreenState extends State<MatchingProfileScreen> {
+  final myController = TextEditingController();
   bool isStack = true;
   int selectedFilterPos = 0;
   List<MatchingProfile> list = [];
+  List<MatchingProfileSearch> searchList = [];
+  String? searchText;
+  @override
+  void initState() {
+    super.initState();
 
-  MatchingProfileScreenState(this.list);
+    // Start listening to changes.
+    myController.addListener(onChangeTextSearch);
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the widget tree.
+    // This also removes the _printLatestValue listener.
+    myController.dispose();
+    super.dispose();
+  }
+
+  MatchingProfileScreenState(this.list, searchText);
+  void onChangeTextSearch() {
+    setState(() {
+      this.searchText = myController.text;
+    });
+    print('Second text field: ${myController.text}');
+  }
 
   @override
   Widget build(BuildContext context) {
+    print("searchHer");
+    print(this.searchList);
     return Container(
       height: MediaQuery.of(context).size.height - 72,
       width: MediaQuery.of(context).size.width,
@@ -51,11 +89,11 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
               ? MatchingProfileStackView(
                   userRepository: widget.userRepository,
                   list: list,
-                )
+                  searchList: searchList)
               : MatchingProfileGridView(
                   userRepository: widget.userRepository,
                   list: list,
-                ),
+                  searchList: searchList),
           Positioned(
             child: Container(
               width: MediaQuery.of(context).size.width,
@@ -88,6 +126,13 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                   Expanded(
                       child: Container(
                     child: TextField(
+                      // onChanged: (text) {
+                      //   var value = text;
+                      //   print('Akash');
+                      //   print(value);
+                      // },
+                      controller: myController,
+
                       decoration: InputDecoration(
                           counterText: '',
                           // suffix: Container(
@@ -110,7 +155,7 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                           ),
                           contentPadding: const EdgeInsets.symmetric(
                               horizontal: 12, vertical: 9),
-                          hintText: "Search by mmy id",
+                          hintText: "Search by mm id",
                           isDense: true,
                           filled: true,
                           fillColor: Colors.white,
@@ -118,6 +163,37 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                               MmmTextStyles.bodyRegular(textColor: kDark2)),
                     ),
                   )),
+                  Positioned(
+                    left: 8,
+                    top: 8,
+                    child: Container(
+                        width: 44,
+                        height: 44,
+                        // alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: kLight4,
+                            boxShadow: [
+                              MmmShadow.filterButton(
+                                  shadowColor: kShadowColorForGrid)
+                            ],
+                            borderRadius: BorderRadius.all(Radius.circular(8))),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                  onTap: () {
+                                    showOptionsSearchThroughId();
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(10),
+                                    child: SvgPicture.asset(
+                                      'images/Search.svg',
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ))),
+                        )),
+                  ),
                   SizedBox(
                     width: 16,
                   ),
@@ -154,6 +230,11 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
     );
   }
 
+  void viewProfile() async {
+    print("test");
+    print(searchText);
+  }
+
   void navigateToFilter() async {
     var result = await Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => Filter(userRepository: widget.userRepository)));
@@ -162,6 +243,21 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
         widget.list = result;
       });
     }
+  }
+
+  void showOptionsSearchThroughId() async {
+    var result =
+        await widget.userRepository.getConnectThroughMMId(this.searchText);
+    print('Result');
+    print(result);
+    if (result.status == AppConstants.SUCCESS) {
+      setState(() {
+        searchList = result.searchList;
+      });
+    }
+    // BlocProvider.of<MatchingProfileBloc>(context).add(MatchingProfileEvent());
+    print('SearchhhhNow');
+    print(searchList);
   }
 
   void showOptions() async {

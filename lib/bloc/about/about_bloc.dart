@@ -86,7 +86,7 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
 
           this.userRepository.useDetails!.maritalStatus = this.maritalStatus!;
           this.userRepository.useDetails!.height =
-              AppHelper.getHeights()[this.heightStatus!];
+              double.parse(AppHelper.getHeights()[this.heightStatus!]);
           this.userRepository.useDetails!.abilityStatus = this.abilityStatus!;
 
           // await this.userRepository.saveUserDetails();

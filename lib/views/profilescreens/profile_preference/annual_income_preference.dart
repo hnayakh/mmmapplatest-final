@@ -9,21 +9,27 @@ import 'package:makemymarry/utils/text_styles.dart';
 class AnnualIncomePreference extends StatefulWidget {
   final List<AnualIncome> list;
   final List<AnualIncome> listMax;
-
+  final int? minimumSelectedIndex;
   const AnnualIncomePreference(
-      {Key? key, required this.list, required this.listMax})
+      {Key? key,
+      required this.list,
+      required this.listMax,
+      this.minimumSelectedIndex})
       : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return AnnualIncomePreferenceScreen(list, listMax);
+    return AnnualIncomePreferenceScreen(list, listMax, minimumSelectedIndex);
   }
 }
 
 class AnnualIncomePreferenceScreen extends State<AnnualIncomePreference> {
   List<AnualIncome> list;
   List<AnualIncome> listMax;
-  AnnualIncomePreferenceScreen(this.list, this.listMax);
+  int? minimumSelectedIndex;
+  AnnualIncomePreferenceScreen(
+      this.list, this.listMax, this.minimumSelectedIndex);
+
   List<String> incomes = [
     'No Income',
     '1 lakh',
@@ -109,7 +115,7 @@ class AnnualIncomePreferenceScreen extends State<AnnualIncomePreference> {
                     ),
                     onTap: () {
                       setState(() {
-                        setSelected(AnualIncome.values[index]);
+                        setSelected(AnualIncome.values[index], index);
                       });
                       // Navigator.of(context).pop(MaritalStatus.values[index]);
                     },
@@ -143,19 +149,23 @@ class AnnualIncomePreferenceScreen extends State<AnnualIncomePreference> {
     return false;
   }
 
-  void setSelected(AnualIncome value) {
-    bool isFound = false;
-    int index = 0;
-    for (var item in list) {
-      if (item == value) {
-        isFound = true;
-        index = list.indexOf(item);
-      }
-    }
-    if (!isFound) {
-      this.list.add(value);
-    } else {
-      this.list.removeAt(index);
-    }
+  void setSelected(AnualIncome value, index) {
+    print(list);
+    this.list = [value];
+    this.minimumSelectedIndex = index;
+    print(this.minimumSelectedIndex);
+    // bool isFound = false;
+    // int index = 0;
+    // for (var item in list) {
+    //   if (item == value) {
+    //     isFound = true;
+    //     index = list.indexOf(item);
+    //   }
+    // }
+    // if (!isFound) {
+    //   this.list.add(value);
+    // } else {
+    //   this.list.removeAt(index);
+    // }
   }
 }

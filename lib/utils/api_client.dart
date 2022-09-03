@@ -11,6 +11,7 @@ import 'package:makemymarry/datamodels/recharge.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
+import 'package:makemymarry/views/home/matching_profile/matching_profile.dart';
 
 import 'app_helper.dart';
 
@@ -88,6 +89,12 @@ class ApiClient {
       String? name,
       String userId) async {
     try {
+      double heightCm =
+          double.parse(AppHelper.getHeights()[heightStatus!].split(".")[0]) *
+                  30.48 +
+              double.parse(AppHelper.getHeights()[heightStatus].split(".")[1]) *
+                  2.54;
+
       Response response =
           await this.dio.post(AppConstants.ENDPOINT + "users/about", data: {
         "userBasicId": userId,
@@ -96,7 +103,7 @@ class ApiClient {
         "maritalStatus": maritalStatus!.index,
         "childrenStatus": childrenStatus!.index,
         "abilityStatus": abilityStatus!.index,
-        "height": AppHelper.getHeights()[heightStatus!] * 30.48,
+        "height": double.parse(AppHelper.getHeights()[heightStatus]) * 30.48,
         "numberOfChildren": noOfChildren == null ? null : noOfChildren.index
       });
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -791,7 +798,8 @@ class ApiClient {
           .get(AppConstants.ENDPOINT + 'connects/user_request/$id');
       return InterestResponse.fromJson(response.data);
     } catch (error) {
-      return InterestResponse.fromError(error.toString());
+      // return InterestResponse.fromError(error.toString());
+      return InterestResponse.fromError("No Request Sent Yet");
     }
   }
 
@@ -938,5 +946,22 @@ class ApiClient {
     // } catch (error) {
     //   return ConnectHistoryResponse.fromError("Something went wrong");
     // }
+  }
+
+  Future<MySearchResponse> getConnectThroughMMId(
+      String id, String displayId) async {
+    try {
+      var response = await this.dio.get(
+            AppConstants.ENDPOINT + 'users/user_serach/$id?diplayId=$displayId',
+          );
+      print("object");
+      print(response.data);
+      return MySearchResponse.fromJson(response.data);
+    } catch (error) {
+      print("error");
+      return MySearchResponse.fromError("Something went wrong");
+
+      //return MySearchResponse.fromError(error.toString());
+    }
   }
 }

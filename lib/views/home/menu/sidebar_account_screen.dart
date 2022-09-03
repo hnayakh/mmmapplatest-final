@@ -48,12 +48,25 @@ Future<void> _deleteCacheDir() async {
   }
 }
 
+// Future<void> _deleteAppDir() async {
+//   var sharedPreferences = await SharedPreferences.getInstance();
+//   // Directory appDocDir = await getApplicationDocumentsDirectory();
+//   sharedPreferences.setString('secretToken', '');
+//   var appDir = (await getTemporaryDirectory()).path;
+//   new Directory(appDir).delete(recursive: true);
+
+//   // if (appDocDir.existsSync()) {
+//   //   appDocDir.deleteSync(recursive: true);
+//   // }
+// }
 Future<void> _deleteAppDir() async {
-  var sharedPreferences = await SharedPreferences.getInstance();
+  //var sharedPreferences = await SharedPreferences.getInstance();
   // Directory appDocDir = await getApplicationDocumentsDirectory();
-  sharedPreferences.setString('secretToken', '');
-  var appDir = (await getTemporaryDirectory()).path;
-  new Directory(appDir).delete(recursive: true);
+  //sharedPreferences.setString('secretToken', '');
+  //var appDir = (await getTemporaryDirectory()).path;
+  //new Directory(appDir).delete(recursive: true);
+  final pref = await SharedPreferences.getInstance();
+  await pref.clear();
 
   // if (appDocDir.existsSync()) {
   //   appDocDir.deleteSync(recursive: true);

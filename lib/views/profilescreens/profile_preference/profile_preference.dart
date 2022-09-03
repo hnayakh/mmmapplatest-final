@@ -19,6 +19,7 @@ import 'package:makemymarry/views/profilescreens/family/family_details/family_de
 import 'package:makemymarry/views/profilescreens/occupation/education_bottom_sheet.dart';
 import 'package:makemymarry/views/profilescreens/occupation/occupation_bottom_sheet.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/annual_income_preference.dart';
+import 'package:makemymarry/views/profilescreens/profile_preference/annual_max_income_preference.dart';
 
 import 'package:makemymarry/views/profilescreens/profile_preference/city_preference_bottom_sheet.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/country_preference_sheet.dart';
@@ -73,6 +74,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   late List<Education> education;
   late List<AnualIncome> annualIncome;
   late List<AnualIncome> annualIncomeMax;
+  int minimumSelectedIndex = 0;
   String titleRedOcc = '';
   TextEditingController annIncomeController = TextEditingController();
   late List<EatingHabit> eatingHabit;
@@ -99,8 +101,8 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
     '1 crore',
     '1 crore and above'
   ];
-  List<String> currentIncomes = [];
-  List<String> currentMaxIncomes = [];
+  String currentIncomes = "";
+  String currentMaxIncomes = "";
 
   void initData(BuildContext context) {
     this.userData = BlocProvider.of<ProfilePreferenceBloc>(context)
@@ -153,8 +155,10 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
                 child: SafeArea(
                     child: Column(
                   children: [
-                    MmmButtons.appBarCurved('Profile Preference',
-                        context: context),
+                    MmmButtons.appBarCurved(
+                      'Profile Preference',
+                      // context: context
+                    ),
                     Expanded(
                         child: Container(
                       padding: kMargin16,
@@ -203,10 +207,10 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
                               height: 24,
                             ),
                             buildEducation(),
-                            SizedBox(
-                              height: 24,
-                            ),
-                            buildAnnualIncome(),
+                            // SizedBox(
+                            //   height: 24,
+                            // ),
+                            // buildAnnualIncome(),
                             // SizedBox(
                             //   height: 24,
                             // ),
@@ -931,7 +935,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
             child: MmmButtons.categoryButtons(
                 'Minimum',
                 this.annualIncome.length > 0
-                    ? getStringIncome(currentIncomes)
+                    ? currentIncomes
                     : 'Does not matter',
                 'Select Annual Income',
                 'images/rightArrow.svg',
@@ -940,7 +944,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
                 },
                 showCancel: this.annualIncome.length > 0,
                 cancelAction: () {
-                  this.currentIncomes = [];
+                  this.currentIncomes = "";
                   BlocProvider.of<ProfilePreferenceBloc>(context)
                       .add(RemoveIncome());
                 }),
@@ -952,7 +956,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
               child: MmmButtons.categoryButtons(
                   'Maximum',
                   this.annualIncomeMax.length > 0
-                      ? getStringIncome(currentMaxIncomes)
+                      ? currentMaxIncomes
                       : 'Does not matter',
                   'Select Maximum Annual Income',
                   'images/rightArrow.svg',
@@ -961,9 +965,9 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
                   },
                   showCancel: this.annualIncomeMax.length > 0,
                   cancelAction: () {
-                    this.currentMaxIncomes = [];
+                    this.currentMaxIncomes = "";
                     BlocProvider.of<ProfilePreferenceBloc>(context)
-                        .add(RemoveIncome());
+                        .add(RemoveMaxIncome());
                   }))
         ])
       ],
@@ -1159,9 +1163,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   Widget buildAnnualIncome() {
     return MmmButtons.categoryButtons(
         'Annual Income',
-        this.annualIncome.length > 0
-            ? getStringIncome(currentIncomes)
-            : 'Does not matter',
+        this.annualIncome.length > 0 ? currentIncomes : 'Does not matter',
         'Select Annual Income',
         'images/rightArrow.svg',
         action: () {
@@ -1169,7 +1171,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
         },
         showCancel: this.annualIncome.length > 0,
         cancelAction: () {
-          this.currentIncomes = [];
+          this.currentIncomes = "";
           BlocProvider.of<ProfilePreferenceBloc>(context).add(RemoveIncome());
         });
   }
@@ -1179,15 +1181,16 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
         context: context,
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
-        builder: (context) => AnnualIncomePreference(
-              list: annualIncome,
-              listMax: this.annualIncomeMax,
-            ));
+        builder: (context) =>
+            AnnualIncomePreference(list: annualIncome, listMax: annualIncomeMax
+                // minimumSelectedIndex: minimumSelectedIndex,
+                ));
     if (result != null && result is List<AnualIncome>) {
       BlocProvider.of<ProfilePreferenceBloc>(context)
           .add(IncomeSelected(result));
       for (int i = 0; i < result.length; i++) {
-        currentIncomes.add(incomes[result[i].index]);
+        currentIncomes = incomes[result[i].index];
+        minimumSelectedIndex = result[i].index + 1;
       }
     }
   }
@@ -1197,15 +1200,16 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
         context: context,
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
-        builder: (context) => AnnualIncomePreference(
-              list: annualIncomeMax,
-              listMax: this.annualIncomeMax,
+        builder: (context) => AnnualMaxIncomePreference(
+              list: annualIncome,
+              listMax: annualIncomeMax,
+              minimumSelectedIndex: minimumSelectedIndex,
             ));
     if (result != null && result is List<AnualIncome>) {
       BlocProvider.of<ProfilePreferenceBloc>(context)
-          .add(IncomeSelected(result));
+          .add(IncomeSelectedMax(result));
       for (int i = 0; i < result.length; i++) {
-        currentMaxIncomes.add(incomes[result[i].index]);
+        currentMaxIncomes = incomes[result[i].index];
       }
     }
   }

@@ -159,3 +159,5 @@ enum AnualIncome {
   SeventyFivelacToOneCrore,
   MoreThanOneCrore
 }
+
+enum Index { test }

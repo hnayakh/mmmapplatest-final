@@ -18,6 +18,8 @@ class SentsBloc extends Bloc<SentEvents, SentStates> {
 
     if (event is CheckSentListIsEmpty) {
       if (this.listSent.length == 0) {
+        print("this.listSent.length");
+        print(this.listSent);
         yield SentListisEmpty();
       } else {
         yield SentListIsNotEmpty();

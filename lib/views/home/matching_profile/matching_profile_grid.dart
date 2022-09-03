@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:makemymarry/datamodels/connect.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_helper.dart';
@@ -18,15 +19,22 @@ import 'package:makemymarry/views/profileviewscreens/profile_view.dart';
 class MatchingProfileGridView extends StatelessWidget {
   final UserRepository userRepository;
   final List<MatchingProfile> list;
+  final List<MatchingProfileSearch> searchList;
+  final List<MatchingProfileSearch>? mySearCh;
 
   const MatchingProfileGridView(
-      {Key? key, required this.userRepository, required this.list})
+      {Key? key,
+      required this.userRepository,
+      required this.list,
+      required this.searchList,
+      this.mySearCh})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => MatchingProfileBloc(userRepository, list),
+      create: (context) =>
+          MatchingProfileBloc(userRepository, list, searchList),
       child: MatchingProfileGridViewScreen(),
     );
   }
@@ -42,6 +50,7 @@ class MatchingProfileGridViewScreen extends StatefulWidget {
 class MatchingProfileGridViewScreenState
     extends State<MatchingProfileGridViewScreen> {
   late List<MatchingProfile> list;
+  late List<MatchingProfileSearch> searchList;
 
   @override
   Widget build(BuildContext context) {

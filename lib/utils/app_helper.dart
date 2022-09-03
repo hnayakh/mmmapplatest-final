@@ -2,6 +2,12 @@ import 'package:intl/intl.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 
+class Height {
+  int feet;
+  int inch;
+  Height(this.feet, this.inch);
+}
+
 class AppHelper {
   static String countryCodeToEmoji(String countryCode) {
     final int firstLetter = countryCode.codeUnitAt(0) - 0x41 + 0x1F1E6;
@@ -9,13 +15,43 @@ class AppHelper {
     return String.fromCharCode(firstLetter) + String.fromCharCode(secondLetter);
   }
 
-  static List<double> getHeights() {
-    List<double> heights = [];
-    //convert to ft in change
+  // static List<double> getHeights() {
+  //   List<double> heights = [];
+  //   //convert to ft in change
+  //   for (double i = 4.5; i <= 8.5; i += 0.1) {
+  //     heights.add(i);
+  //   }
+  //   return heights;
+  // }
+
+  static List<String> getHeights() {
+    List<Height> result = [];
+    var requiredIndices = [];
+
     for (double i = 4.5; i <= 8.5; i += 0.1) {
-      heights.add(i);
+      var intPart = i.toInt();
+      var decimalPart = ((i - i.toInt()) * 10).round();
+      print('decimalPart$decimalPart');
+      var item = new Height(intPart, decimalPart);
+      result.add(item);
+      if (decimalPart == 9) {
+        var requiredIndex = result.indexWhere(
+            (item) => item.feet == intPart && item.inch == decimalPart);
+        print('requiredIndex$requiredIndex');
+
+        result.add(new Height(intPart, 11));
+        result.add(new Height(intPart + 1, 0));
+      }
     }
-    return heights;
+    result.sort((a, b) =>
+        (((a.feet * 12 + (a.inch)) - (b.feet * 12 + (b.inch))).toInt()));
+
+    var finalResult = result.map((height) {
+      return "${height.feet}.${(height.inch)}";
+    });
+    print(finalResult);
+    //var heights = finalResult;
+    return finalResult.toList();
   }
 
   static List<dynamic> getHeightsFilter() {
@@ -63,18 +99,17 @@ class AppHelper {
   }
 
   static String getHeight(index) {
-    double heightCm = AppHelper.getHeights()[index] * 30.48;
+    String heightFitInch = AppHelper.getHeights()[index];
+    double heightCm = (double.parse(heightFitInch.split(".")[0]) * 30.48) +
+        (double.parse(heightFitInch.split(".")[1]) * 2.54);
     heightCm.round();
-    print('Akash');
     print(heightCm);
-    String heightText =
-        '${AppHelper.getHeights()[index].toStringAsFixed(1)} ft';
-    print('Jonty');
-    print(heightText[3]);
-    return (heightText[0] +
+    // String heightText =
+    //     '$heightFitInch ft';
+    return (heightFitInch.split(".")[0] +
         "' " +
-        // '.' +
-        heightText[2] +
+        '.' +
+        heightFitInch.split(".")[1] +
         '"' +
         " (${heightCm.round()}" +
         " cm)");

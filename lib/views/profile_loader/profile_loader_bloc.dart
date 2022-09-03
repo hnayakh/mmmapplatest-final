@@ -13,7 +13,9 @@ class ProfileLoaderBloc extends Bloc<ProfileLoaderEvent, ProfileLoaderState> {
   Stream<ProfileLoaderState> mapEventToState(ProfileLoaderEvent event) async* {
     yield OnLoading();
     if (event is GetProfiles) {
+      var mmid = '';
       var result = await this.userRepository.getMyMatchingProfile();
+      var resultSearch = await this.userRepository.getConnectThroughMMId(mmid);
       if (result.status == AppConstants.SUCCESS) {
         this.userRepository.updateRegistrationStep(10);
         // await this
@@ -23,7 +25,7 @@ class ProfileLoaderBloc extends Bloc<ProfileLoaderEvent, ProfileLoaderState> {
         print('in profileloader');
         print(this.userRepository.useDetails!.registrationStep);
         print(result.list);
-        yield OnGotProfiles(result.list);
+        yield OnGotProfiles(result.list, resultSearch.searchList);
       } else {
         yield OnError(result.message);
         print(result.status);

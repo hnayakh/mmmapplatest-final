@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:makemymarry/datamodels/connect.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
@@ -9,10 +10,11 @@ class MatchingProfileBloc
     extends Bloc<MatchingProfileEvent, MatchingProfileState> {
   final UserRepository userRepository;
   List<MatchingProfile> list;
+  List<MatchingProfileSearch> searchList;
   int selectedPos = 0;
   List<bool> isLikedList = [];
 
-  MatchingProfileBloc(this.userRepository, this.list)
+  MatchingProfileBloc(this.userRepository, this.list, this.searchList)
       : super(MatchingProfileInitialState()) {
     this.isLikedList = List.generate(list.length, (index) => false);
   }
@@ -43,6 +45,18 @@ class MatchingProfileBloc
         yield MatchingProfileInitialState();
       } else {
         yield OnError(result.message);
+      }
+    }
+
+    if (event is OnSearchByMMID) {
+      print("search clicked");
+      yield OnLoading();
+      var response = await this.userRepository.getConnectThroughMMId(event);
+      if (response.status == AppConstants.SUCCESS) {
+        this.searchList = response.searchList;
+        yield OnMMIDSearch(this.searchList);
+      } else {
+        yield OnError(response.message);
       }
     }
   }

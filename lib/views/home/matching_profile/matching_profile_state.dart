@@ -13,6 +13,11 @@ class OnError extends MatchingProfileState {
   OnError(this.message);
 }
 
+class OnMMIDSearch extends MatchingProfileState {
+  final searchList;
+  OnMMIDSearch(this.searchList);
+}
+
 class OnGotProfileDetails extends MatchingProfileState {
   final ProfileDetails profileDetails;
 

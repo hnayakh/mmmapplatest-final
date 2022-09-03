@@ -38,7 +38,7 @@ class MatchingProfile {
   late bool isConnected;
   late InterestRequest requestStatus;
   late String? requestId, connectId;
-
+  MatchingProfile.fromError(String error);
   MatchingProfile.fromJson(json) {
     this.id = json["id"];
     this.email = json["email"];
@@ -49,6 +49,82 @@ class MatchingProfile {
     this.city = json["careerCity"];
     this.state = json["careerState"];
     this.country = json["careerCountry"];
+    this.activationStatus =
+        ProfileActivationStatus.values[json["activationStatus"]];
+    if (json["connectStatus"] != null) {
+      this.isConnected = json["connectStatus"]["isConnected"];
+      if (this.isConnected) {
+        this.connectId = json["connectStatus"]["id"];
+      }
+    } else {
+      this.isConnected = false;
+    }
+    if (json["interestStatus"] != null) {
+      this.requestId = json["interestStatus"]["id"];
+      if (json["interestStatus"]["isLiked"]) {
+        this.requestStatus = InterestRequest.Accepted;
+      } else if (json["interestStatus"]["sent"]) {
+        this.requestStatus = InterestRequest.Sent;
+      } else if (json["interestStatus"]["requested"]) {
+        this.requestStatus = InterestRequest.Received;
+      } else {
+        this.requestStatus = InterestRequest.NotConnected;
+      }
+    } else {
+      this.requestStatus = InterestRequest.NotConnected;
+    }
+  }
+}
+
+class MatchingProfileSearch {
+  late String id,
+      email,
+      name,
+      countryCode,
+      contact,
+      dateOfBirth,
+      aboutMe,
+      city,
+      state,
+      country,
+      imageUrl;
+  late double height;
+  late int marriedNumberOfBrothers,
+      noOfBrother,
+      noOfSister,
+      marriedNumberOfSisters;
+  late Gender gender;
+  late Relationship relationship;
+  late MaritalStatus maritalStatus;
+  late ChildrenStatus childrenStatus;
+  late AbilityStatus abilityStatus;
+  late EatingHabit eatingHabit;
+  late SmokingHabit smokingHabit;
+  late DrinkingHabit drinkingHabit;
+  late Manglik manglik;
+  dynamic caste;
+  late FatherOccupation fatherOccupation;
+  late MotherOccupation motherOccupation;
+  late FamilyAfluenceLevel familyAfluenceLevel;
+  late FamilyValues familyValues;
+  late FamilyType familyType;
+  late ProfileActivationStatus activationStatus;
+
+  late bool isConnected;
+  late InterestRequest requestStatus;
+  late String? requestId, connectId;
+
+  MatchingProfileSearch.fromJson(json) {
+    print('here');
+    this.id = json["id"];
+    this.email = json["email"];
+    this.gender = Gender.values[json["gender"]];
+    this.imageUrl = json["imageURL"];
+    this.dateOfBirth = json["dateOfBirth"];
+    this.name = json["name"];
+    // this.city = json["careerCity"];
+    // this.state = json["careerState"];
+    // this.country = json["careerCountry"];
     this.activationStatus =
         ProfileActivationStatus.values[json["activationStatus"]];
     if (json["connectStatus"] != null) {
@@ -99,6 +175,30 @@ class MatchingProfileResponse {
       list.add(MatchingProfile.fromJson(item));
     }
     return list;
+  }
+}
+
+class MatchingProfileSearchResponse {
+  late String status, message;
+  List<MatchingProfileSearchResponse> searchList = [];
+
+  MatchingProfileSearchResponse.fromError(String message) {
+    this.status = AppConstants.FAILURE;
+    this.message = message;
+  }
+
+  MatchingProfileSearchResponse.fromJson(json) {
+    this.status = json['type'];
+    this.message = json["message"];
+    this.searchList = createSearchList(json["data"]);
+  }
+
+  List<MatchingProfileSearchResponse> createSearchList(json) {
+    List<MatchingProfileSearchResponse> searchList = [];
+    for (var item in json) {
+      searchList.add(MatchingProfileSearchResponse.fromJson(item));
+    }
+    return searchList;
   }
 }
 

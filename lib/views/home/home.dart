@@ -13,8 +13,13 @@ import 'matching_profile/matching_profile.dart';
 class HomeScreen extends StatefulWidget {
   final UserRepository userRepository;
   final List<MatchingProfile> list;
+  final List<MatchingProfileSearch> searchList;
 
-  const HomeScreen({Key? key, required this.userRepository, required this.list})
+  const HomeScreen(
+      {Key? key,
+      required this.userRepository,
+      required this.list,
+      required this.searchList})
       : super(key: key);
 
   @override
@@ -84,6 +89,7 @@ class HomeScreenState extends State<HomeScreen> {
         return MatchingProfileScreen(
           userRepository: widget.userRepository,
           list: widget.list,
+          searchList: widget.searchList,
         );
       case 1:
         return Interests(

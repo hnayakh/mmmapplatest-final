@@ -223,7 +223,7 @@ class ProfilePreferenceBloc
       yield ProfilePreferenceInitialState();
     }
     if (event is IncomeSelectedMax) {
-      this.annualIncomeMax = event.list;
+      this.annualIncomeMax = event.listMax;
       yield ProfilePreferenceInitialState();
     }
     if (event is RemoveIncome) {
