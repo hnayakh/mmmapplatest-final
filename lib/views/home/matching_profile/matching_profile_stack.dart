@@ -37,7 +37,7 @@ class MatchingProfileStackView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          MatchingProfileBloc(userRepository, list, searchList),
+          MatchingProfileBloc(userRepository, this.list, this.searchList),
       child: MatchingProfileStackViewScreen(),
     );
   }
@@ -58,8 +58,7 @@ class MatchingProfileStackViewScreenState
   //late List<MatchingProfileSearch> myNewSearch;
   late bool isLiked;
 
-  // late CardController controller;
-
+  // late CardController RepositoryProvider(
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<MatchingProfileBloc, MatchingProfileState>(
