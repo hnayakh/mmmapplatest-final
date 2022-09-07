@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:makemymarry/matching_percentage/matching_percentage.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
@@ -8,6 +9,7 @@ import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
 import 'package:makemymarry/views/profilescreens/bio/bio.dart';
+import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/sidebar_about_screen.dart';
 
 class MyprofileScreen extends StatelessWidget {
   final UserRepository userRepository;
@@ -117,11 +119,12 @@ class MyprofileScreen extends StatelessWidget {
                 height: 16,
               ),
               MmmButtons.myProfileButtons('About', action: () {
-                var userRepo =
-                    BlocProvider.of<AccountMenuBloc>(context).userRepository;
+                // var userRepo =
+                //     BlocProvider.of<AccountMenuBloc>(context).userRepository;
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                      builder: (context) => Bio(userRepository: userRepo)),
+                      builder: (context) =>
+                          Bio(userRepository: userRepository)),
                 );
               }),
               SizedBox(
@@ -136,7 +139,17 @@ class MyprofileScreen extends StatelessWidget {
               SizedBox(
                 height: 16,
               ),
-              MmmButtons.myProfileButtons('Change Status', action: () {})
+              MmmButtons.myProfileButtons('Change Status', action: () {}),
+              SizedBox(
+                height: 16,
+              ),
+              MmmButtons.myProfileButtons('Matching Percentage', action: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context) => MatchingPercentageScreen(
+                          userRepository: userRepository)),
+                );
+              })
             ],
           ),
         ),

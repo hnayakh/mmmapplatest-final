@@ -46,9 +46,24 @@ class MatchingProfile {
     this.imageUrl = json["imageURL"];
     this.dateOfBirth = json["dateOfBirth"];
     this.name = json["name"];
-    this.city = json["careerCity"];
-    this.state = json["careerState"];
-    this.country = json["careerCountry"];
+    if (json["careerCity"] != null && json["careerCity"] != Null) {
+      this.city = json["careerCity"];
+    }
+    if (json["careerState"] != null) {
+      this.state = json["careerState"]!;
+    } else {
+      this.state = "";
+    }
+    if (json["careerCountry"] != null) {
+      this.city = json["careerCity"];
+    } else {
+      this.city = "";
+    }
+    if (json["careerCountry"] != null) {
+      this.country = json["careerCountry"];
+    } else {
+      this.country = "";
+    }
     this.activationStatus =
         ProfileActivationStatus.values[json["activationStatus"]];
     if (json["connectStatus"] != null) {

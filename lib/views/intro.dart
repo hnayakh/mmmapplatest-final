@@ -25,8 +25,7 @@ class IntroScreenState extends State<IntroScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) =>
-              SignIn(userRepository: widget.userRepository)),
+          builder: (context) => SignIn(userRepository: widget.userRepository)),
     );
   }
 

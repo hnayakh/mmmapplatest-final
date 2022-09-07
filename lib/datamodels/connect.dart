@@ -84,7 +84,7 @@ class ConnectHistoryItem {
 }
 
 class MySearchResponse extends SimpleResponse {
-  List<MatchingProfileSearch> searchList = [];
+  List<MatchingProfile> searchList = [];
 
   MySearchResponse.fromError(String error) : super.fromError(error);
 
@@ -94,10 +94,10 @@ class MySearchResponse extends SimpleResponse {
     print(this.searchList);
   }
 
-  List<MatchingProfileSearch> createList(json) {
-    List<MatchingProfileSearch> newlist = [];
+  List<MatchingProfile> createList(json) {
+    List<MatchingProfile> newlist = [];
     for (var item in json) {
-      newlist.add(MatchingProfileSearch.fromJson(item));
+      newlist.add(MatchingProfile.fromJson(item));
     }
     return newlist;
   }

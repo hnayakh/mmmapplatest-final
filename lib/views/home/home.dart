@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
+import 'package:makemymarry/views/home/matching_profile/matching_profile_bloc.dart';
 import 'package:makemymarry/views/home/menu/sidebar_account_screen.dart';
 import 'package:makemymarry/views/home/my_connects/my_connects_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/notification.dart';
@@ -13,7 +15,7 @@ import 'matching_profile/matching_profile.dart';
 class HomeScreen extends StatefulWidget {
   final UserRepository userRepository;
   final List<MatchingProfile> list;
-  final List<MatchingProfileSearch> searchList;
+  final List<MatchingProfile> searchList;
 
   const HomeScreen(
       {Key? key,
@@ -86,11 +88,16 @@ class HomeScreenState extends State<HomeScreen> {
   Widget getContent() {
     switch (index) {
       case 0:
-        return MatchingProfileScreen(
-          userRepository: widget.userRepository,
-          list: widget.list,
-          searchList: widget.searchList,
-        );
+        return BlocProvider<MatchingProfileBloc>(
+            create: (context) => MatchingProfileBloc(
+                widget.userRepository, widget.list, widget.searchList),
+            child: Builder(builder: (context) {
+              return MatchingProfileScreen(
+                userRepository: widget.userRepository,
+                list: widget.list,
+                searchList: widget.searchList,
+              );
+            }));
       case 1:
         return Interests(
           userRepository: widget.userRepository,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
@@ -10,6 +11,7 @@ import 'package:makemymarry/utils/widgets_large.dart';
 
 class SearchScreen extends StatefulWidget {
   final UserRepository userRepository;
+
   const SearchScreen({Key? key, required this.userRepository})
       : super(key: key);
 
@@ -86,7 +88,9 @@ class _SearchScreenState extends State<SearchScreen> {
                                   child: Material(
                                       color: Colors.transparent,
                                       child: InkWell(
-                                          onTap: () {},
+                                          onTap: () {
+                                            print("serach started");
+                                          },
                                           child: Container(
                                             padding: EdgeInsets.all(10),
                                             child: SvgPicture.asset(

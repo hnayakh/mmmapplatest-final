@@ -22,8 +22,8 @@ import 'matching_profile_state.dart';
 class MatchingProfileStackView extends StatelessWidget {
   final UserRepository userRepository;
   final List<MatchingProfile> list;
-  final List<MatchingProfileSearch> searchList;
-  final List<MatchingProfileSearch>? mySearCh;
+  final List<MatchingProfile> searchList;
+  final List<MatchingProfile>? mySearCh;
 
   const MatchingProfileStackView(
       {Key? key,
@@ -35,11 +35,12 @@ class MatchingProfileStackView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          MatchingProfileBloc(userRepository, this.list, this.searchList),
-      child: MatchingProfileStackViewScreen(),
-    );
+    // return BlocProvider(
+    //   create: (context) =>
+    //       MatchingProfileBloc(userRepository, this.list, this.searchList),
+    //   child: MatchingProfileStackViewScreen(),
+    // );
+    return MatchingProfileStackViewScreen();
   }
 }
 
@@ -54,7 +55,7 @@ class MatchingProfileStackViewScreenState
     extends State<MatchingProfileStackViewScreen>
     with TickerProviderStateMixin {
   late List<MatchingProfile> list;
-  late List<MatchingProfileSearch> searchList;
+  late List<MatchingProfile> searchList;
   //late List<MatchingProfileSearch> myNewSearch;
   late bool isLiked;
 
@@ -66,14 +67,13 @@ class MatchingProfileStackViewScreenState
         this.list = BlocProvider.of<MatchingProfileBloc>(context).list;
         this.searchList =
             BlocProvider.of<MatchingProfileBloc>(context).searchList;
-        if (this.searchList.length > 0) {
-          this.list = this.searchList as List<MatchingProfile>;
-        }
         // this.myNewSearch =
         //  BlocProvider.of<MatchingProfileBloc>(context).searchList;
         print("test");
         // print(myNewSearch);
-
+        var listLength = this.searchList.length > 0
+            ? this.searchList.length
+            : this.list.length;
         return Stack(
           children: [
             Container(
@@ -82,7 +82,12 @@ class MatchingProfileStackViewScreenState
                 color: gray5,
                 child: PageView.builder(
                   itemBuilder: (context, index) {
+                    MatchingProfile item = this.searchList.length > 0
+                        ? this.searchList[index]
+                        : this.list[index];
+
                     initData(index);
+
                     return Stack(
                       children: [
                         Card(
@@ -91,9 +96,7 @@ class MatchingProfileStackViewScreenState
                               children: [
                                 ClipRRect(
                                   child: Image.network(
-                                    searchList.length > 0
-                                        ? ''
-                                        : '${list[index].imageUrl}',
+                                    '${item.imageUrl}',
                                     height: double.maxFinite,
                                     fit: BoxFit.cover,
                                     width: double.infinity,
@@ -121,9 +124,7 @@ class MatchingProfileStackViewScreenState
                                                   // Expanded(
                                                   //     child:
                                                   Text(
-                                                    searchList.length > 0
-                                                        ? 'TEST'
-                                                        : "${list[index].name}, ${AppHelper.getAgeFromDob(list[index].dateOfBirth)}",
+                                                    "${item.name}, ${AppHelper.getAgeFromDob(item.dateOfBirth)}",
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -136,7 +137,7 @@ class MatchingProfileStackViewScreenState
                                                   SizedBox(
                                                     width: 8,
                                                   ),
-                                                  list[index].activationStatus ==
+                                                  item.activationStatus ==
                                                           ProfileActivationStatus
                                                               .Verified
                                                       ? Stack(
@@ -182,7 +183,7 @@ class MatchingProfileStackViewScreenState
                                                   Text(
                                                     searchList.length > 0
                                                         ? ''
-                                                        : "${this.list[index].city}, ${this.list[index].state}",
+                                                        : "${item.city}, ${item.state}",
                                                     textScaleFactor: 1.0,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -227,14 +228,14 @@ class MatchingProfileStackViewScreenState
                         Positioned(
                           bottom: 30,
                           right: 20,
-                          child: list[index].isConnected
+                          child: item.isConnected
                               ? buildConnected(context, index)
                               : buildInterest(context, index),
                         ),
                       ],
                     );
                   },
-                  itemCount: list.length,
+                  itemCount: listLength,
                   scrollDirection: Axis.vertical,
                 )),
             state is OnLoading ? MmmWidgets.buildLoader(context) : Container()
@@ -250,9 +251,11 @@ class MatchingProfileStackViewScreenState
   }
 
   InkWell buildInterest(BuildContext context, int index) {
-    if (list[index].requestStatus == InterestRequest.Accepted) {
+    MatchingProfile item =
+        this.searchList.length > 0 ? this.searchList[index] : this.list[index];
+    if (item.requestStatus == InterestRequest.Accepted) {
       buildConnect(context, index);
-    } else if (list[index].requestStatus == InterestRequest.Sent) {
+    } else if (item.requestStatus == InterestRequest.Sent) {
       return InkWell(
           onTap: () {
             BlocProvider.of<MatchingProfileBloc>(context)
@@ -316,7 +319,7 @@ class MatchingProfileStackViewScreenState
               )
             ],
           ));
-    } else if (list[index].requestStatus == InterestRequest.Received) {
+    } else if (item.requestStatus == InterestRequest.Received) {
       return InkWell(
           onTap: () {
             BlocProvider.of<MatchingProfileBloc>(context)

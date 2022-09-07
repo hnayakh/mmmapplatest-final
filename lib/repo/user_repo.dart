@@ -351,7 +351,7 @@ class UserRepository {
   }
 
   Future<MySearchResponse> getConnectThroughMMId(displayId) async {
-    print(displayId);
-    return this.apiClient.getConnectThroughMMId(this.useDetails!.id, displayId);
+    var userDetails = await getUserDetails();
+    return this.apiClient.getConnectThroughMMId(userDetails!.id, displayId);
   }
 }

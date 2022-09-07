@@ -23,7 +23,7 @@ import 'matching_profile_state.dart';
 class MatchingProfileScreen extends StatefulWidget {
   final UserRepository userRepository;
   List<MatchingProfile> list;
-  List<MatchingProfileSearch> searchList;
+  List<MatchingProfile> searchList;
   String? searchText;
   List<String> filters = [
     "Recommended",
@@ -59,8 +59,9 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
   final myController = TextEditingController();
   bool isStack = true;
   int selectedFilterPos = 0;
-  late List<MatchingProfile> list = [];
-  late List<MatchingProfileSearch> searchList = [];
+  List<MatchingProfile> list = [];
+  UserRepository userRepository = UserRepository();
+  List<MatchingProfile> searchList = [];
   String? searchText;
   @override
   void initState() {
@@ -90,163 +91,162 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
   Widget build(BuildContext context) {
     print("searchHer");
     print(this.searchList);
-    return BlocProvider(
-      create: (context) =>
-          MatchingProfileBloc(widget.userRepository, list, searchList),
-      child: Container(
-        height: MediaQuery.of(context).size.height - 72,
-        width: MediaQuery.of(context).size.width,
-        color: gray5,
-        child: Stack(
-          children: [
-            this.isStack
-                ? MatchingProfileStackView(
-                    userRepository: widget.userRepository,
-                    list: list,
-                    searchList: searchList)
-                : MatchingProfileGridView(
-                    userRepository: widget.userRepository,
-                    list: list,
-                    searchList: searchList),
-            Positioned(
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                // height: 48,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          this.isStack = !this.isStack;
-                        });
-                      },
-                      child: Container(
-                        height: 44,
-                        width: 44,
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.85),
-                            borderRadius: BorderRadius.circular(6)),
-                        child: SvgPicture.asset(
-                          this.isStack
-                              ? "images/stack.svg"
-                              : "images/stack.svg",
-                          color: kShadowColorForGrid,
-                        ),
+    // return BlocProvider<MatchingProfileBloc>(
+    //   create: (context) =>
+    //       MatchingProfileBloc(userRepository, list, searchList),
+    //   child: Builder(builder: (context) {
+    return Container(
+      height: MediaQuery.of(context).size.height - 72,
+      width: MediaQuery.of(context).size.width,
+      color: gray5,
+      child: Stack(
+        children: [
+          this.isStack
+              ? MatchingProfileGridView(
+                  userRepository: widget.userRepository,
+                  list: list,
+                  searchList: searchList)
+              : MatchingProfileStackView(
+                  userRepository: widget.userRepository,
+                  list: list,
+                  searchList: searchList),
+          Positioned(
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              // height: 48,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        this.isStack = !this.isStack;
+                      });
+                    },
+                    child: Container(
+                      height: 44,
+                      width: 44,
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.85),
+                          borderRadius: BorderRadius.circular(6)),
+                      child: SvgPicture.asset(
+                        this.isStack ? "images/stack.svg" : "images/stack.svg",
+                        color: kShadowColorForGrid,
                       ),
                     ),
-                    SizedBox(
-                      width: 16,
-                    ),
-                    Expanded(
-                        child: Container(
-                      child: TextField(
-                        // onChanged: (text) {
-                        //   var value = text;
-                        //   print('Akash');
-                        //   print(value);
-                        // },
-                        controller: myController,
+                  ),
+                  SizedBox(
+                    width: 16,
+                  ),
+                  Expanded(
+                      child: Container(
+                    child: TextField(
+                      // onChanged: (text) {
+                      //   var value = text;
+                      //   print('Akash');
+                      //   print(value);
+                      // },
+                      controller: myController,
 
-                        decoration: InputDecoration(
-                            counterText: '',
-                            // suffix: Container(
-                            //   width: 24,
-                            //   height: 24,
-                            //   padding: const EdgeInsets.all(8),
-                            //   child: SvgPicture.asset(
-                            //     "images/Search.svg",
-                            //     color: kDark5,
-                            //   ),
-                            // ),
-                            border: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.white, width: 1),
-                                borderRadius: BorderRadius.circular(8)),
-                            focusedBorder: OutlineInputBorder(
+                      decoration: InputDecoration(
+                          counterText: '',
+                          // suffix: Container(
+                          //   width: 24,
+                          //   height: 24,
+                          //   padding: const EdgeInsets.all(8),
+                          //   child: SvgPicture.asset(
+                          //     "images/Search.svg",
+                          //     color: kDark5,
+                          //   ),
+                          // ),
+                          border: OutlineInputBorder(
                               borderSide:
                                   BorderSide(color: Colors.white, width: 1),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8)),
-                            ),
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 9),
-                            hintText: "Search by mm id",
-                            isDense: true,
-                            filled: true,
-                            fillColor: Colors.white,
-                            hintStyle:
-                                MmmTextStyles.bodyRegular(textColor: kDark2)),
-                      ),
-                    )),
-                    Column(
-                      children: [
-                        Container(
-                            width: 44,
-                            height: 44,
-                            // alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: kLight4,
-                                boxShadow: [
-                                  MmmShadow.filterButton(
-                                      shadowColor: kShadowColorForGrid)
-                                ],
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8))),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Material(
-                                  color: Colors.transparent,
-                                  child: InkWell(
-                                      onTap: () {
-                                        showOptionsSearchThroughId();
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.all(10),
-                                        child: SvgPicture.asset(
-                                          'images/Search.svg',
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ))),
-                            )),
-                      ],
+                              borderRadius: BorderRadius.circular(8)),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.white, width: 1),
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 9),
+                          hintText: "Search by mm id",
+                          isDense: true,
+                          filled: true,
+                          fillColor: Colors.white,
+                          hintStyle:
+                              MmmTextStyles.bodyRegular(textColor: kDark2)),
                     ),
-                    SizedBox(
-                      width: 16,
-                    ),
-                    Row(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            // navigateToFilter();
-                            showOptions();
-                          },
-                          child: Container(
-                            height: 44,
-                            width: 44,
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.9),
-                                borderRadius: BorderRadius.circular(6)),
-                            child: SvgPicture.asset(
-                              "images/filter2.svg",
-                              color: kDark5,
-                            ),
+                  )),
+                  Positioned(
+                    left: 8,
+                    top: 8,
+                    child: Container(
+                        width: 44,
+                        height: 44,
+                        // alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: kLight4,
+                            boxShadow: [
+                              MmmShadow.filterButton(
+                                  shadowColor: kShadowColorForGrid)
+                            ],
+                            borderRadius: BorderRadius.all(Radius.circular(8))),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                  onTap: () {
+                                    print("search button click");
+                                    showOptionsSearchThroughId();
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(10),
+                                    child: SvgPicture.asset(
+                                      'images/Search.svg',
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ))),
+                        )),
+                  ),
+                  SizedBox(
+                    width: 16,
+                  ),
+                  Row(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          // navigateToFilter();
+                          showOptions();
+                        },
+                        child: Container(
+                          height: 44,
+                          width: 44,
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.9),
+                              borderRadius: BorderRadius.circular(6)),
+                          child: SvgPicture.asset(
+                            "images/filter2.svg",
+                            color: kDark5,
                           ),
                         ),
-                      ],
-                    )
-                  ],
-                ),
+                      ),
+                    ],
+                  )
+                ],
               ),
-              top: 62,
-              // right: 28,
-            )
-          ],
-        ),
+            ),
+            top: 62,
+            // right: 28,
+          )
+        ],
       ),
     );
+    //   }),
+    // );
   }
 
   void viewProfile() async {
@@ -265,19 +265,18 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
   }
 
   void showOptionsSearchThroughId() async {
-    var result =
-        await widget.userRepository.getConnectThroughMMId(this.searchText);
-    print('Result');
-    print(result);
-    if (result.status == AppConstants.SUCCESS) {
-      setState(() {
-        searchList = result.searchList;
-      });
-    }
-    // BlocProvider.of<MatchingProfileBloc>(context)
-    //     .add(OnSearchByMMID(this.searchText));
-    // print('SearchhhhNow');
-    // print(searchList);
+    // var result =
+    //     await widget.userRepository.getConnectThroughMMId(this.searchText);
+    // print('Result');
+    // print(result);
+    // if (result.status == AppConstants.SUCCESS) {
+    //   setState(() {
+    //     searchList = result.searchList;
+    //   });
+    // }
+    context.read<MatchingProfileBloc>().add(OnSearchByMMID(this.searchText));
+    print('SearchhhhNow');
+    //print(searchList);
   }
 
   void showOptions() async {
