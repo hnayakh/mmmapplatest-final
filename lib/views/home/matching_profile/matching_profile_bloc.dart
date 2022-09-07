@@ -10,7 +10,7 @@ class MatchingProfileBloc
     extends Bloc<MatchingProfileEvent, MatchingProfileState> {
   final UserRepository userRepository;
   List<MatchingProfile> list;
-  List<MatchingProfileSearch> searchList;
+  List<MatchingProfile> searchList;
   int selectedPos = 0;
   List<bool> isLikedList = [];
 
@@ -50,8 +50,9 @@ class MatchingProfileBloc
 
     if (event is OnSearchByMMID) {
       print("search clicked");
-      yield OnLoading();
-      var response = await this.userRepository.getConnectThroughMMId(event);
+      // yield OnLoading();
+      var response =
+          await this.userRepository.getConnectThroughMMId(event.mmmId);
       if (response.status == AppConstants.SUCCESS) {
         this.searchList = response.searchList;
         yield OnMMIDSearch(this.searchList);

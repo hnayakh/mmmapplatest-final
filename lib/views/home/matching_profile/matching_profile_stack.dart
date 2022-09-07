@@ -22,7 +22,7 @@ import 'matching_profile_state.dart';
 class MatchingProfileStackView extends StatelessWidget {
   final UserRepository userRepository;
   final List<MatchingProfile> list;
-  final List<MatchingProfileSearch> searchList;
+  final List<MatchingProfile> searchList;
   final List<MatchingProfileSearch>? mySearCh;
 
   const MatchingProfileStackView(
@@ -54,7 +54,7 @@ class MatchingProfileStackViewScreenState
     extends State<MatchingProfileStackViewScreen>
     with TickerProviderStateMixin {
   late List<MatchingProfile> list;
-  late List<MatchingProfileSearch> searchList;
+  late List<MatchingProfile> searchList;
   //late List<MatchingProfileSearch> myNewSearch;
   late bool isLiked;
 

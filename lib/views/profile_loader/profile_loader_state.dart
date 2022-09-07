@@ -9,7 +9,7 @@ class OnLoading extends ProfileLoaderState {}
 
 class OnGotProfiles extends ProfileLoaderState {
   final List<MatchingProfile> list;
-  final List<MatchingProfileSearch> searchList;
+  final List<MatchingProfile> searchList;
 
   OnGotProfiles(this.list, this.searchList);
 }

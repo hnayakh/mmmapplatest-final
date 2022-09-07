@@ -86,7 +86,9 @@ class _SearchScreenState extends State<SearchScreen> {
                                   child: Material(
                                       color: Colors.transparent,
                                       child: InkWell(
-                                          onTap: () {},
+                                          onTap: () {
+                                            print("serach started");
+                                          },
                                           child: Container(
                                             padding: EdgeInsets.all(10),
                                             child: SvgPicture.asset(

@@ -22,7 +22,7 @@ class MatchingProfileScreen extends StatefulWidget {
   final UserRepository userRepository;
 
   List<MatchingProfile> list;
-  List<MatchingProfileSearch> searchList;
+  List<MatchingProfile> searchList;
   String? searchText;
   List<String> filters = [
     "Recommended",
@@ -49,7 +49,8 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
   bool isStack = true;
   int selectedFilterPos = 0;
   List<MatchingProfile> list = [];
-  List<MatchingProfileSearch> searchList = [];
+  UserRepository userRepository = UserRepository();
+  List<MatchingProfile> searchList = [];
   String? searchText;
   @override
   void initState() {
@@ -79,6 +80,10 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
   Widget build(BuildContext context) {
     print("searchHer");
     print(this.searchList);
+    // return BlocProvider<MatchingProfileBloc>(
+    //   create: (context) =>
+    //       MatchingProfileBloc(userRepository, list, searchList),
+    //   child: Builder(builder: (context) {
     return Container(
       height: MediaQuery.of(context).size.height - 72,
       width: MediaQuery.of(context).size.width,
@@ -183,6 +188,7 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                               color: Colors.transparent,
                               child: InkWell(
                                   onTap: () {
+                                    print("search button click");
                                     showOptionsSearchThroughId();
                                   },
                                   child: Container(
@@ -228,6 +234,8 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
         ],
       ),
     );
+    //   }),
+    // );
   }
 
   void viewProfile() async {
@@ -246,18 +254,18 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
   }
 
   void showOptionsSearchThroughId() async {
-    var result =
-        await widget.userRepository.getConnectThroughMMId(this.searchText);
-    print('Result');
-    print(result);
-    if (result.status == AppConstants.SUCCESS) {
-      setState(() {
-        searchList = result.searchList;
-      });
-    }
-    // BlocProvider.of<MatchingProfileBloc>(context).add(MatchingProfileEvent());
+    // var result =
+    //     await widget.userRepository.getConnectThroughMMId(this.searchText);
+    // print('Result');
+    // print(result);
+    // if (result.status == AppConstants.SUCCESS) {
+    //   setState(() {
+    //     searchList = result.searchList;
+    //   });
+    // }
+    context.read<MatchingProfileBloc>().add(OnSearchByMMID(this.searchText));
     print('SearchhhhNow');
-    print(searchList);
+    //print(searchList);
   }
 
   void showOptions() async {

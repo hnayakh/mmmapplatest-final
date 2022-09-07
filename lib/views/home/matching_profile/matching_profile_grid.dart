@@ -19,8 +19,8 @@ import 'package:makemymarry/views/profileviewscreens/profile_view.dart';
 class MatchingProfileGridView extends StatelessWidget {
   final UserRepository userRepository;
   final List<MatchingProfile> list;
-  final List<MatchingProfileSearch> searchList;
-  final List<MatchingProfileSearch>? mySearCh;
+  final List<MatchingProfile> searchList;
+  final List<MatchingProfile>? mySearCh;
 
   const MatchingProfileGridView(
       {Key? key,
@@ -32,11 +32,11 @@ class MatchingProfileGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          MatchingProfileBloc(userRepository, list, searchList),
-      child: MatchingProfileGridViewScreen(),
-    );
+    // return BlocBuilder<MatchingProfileBloc, MatchingProfileState>(
+    //     builder: (context, searchList) {
+    //   print("object_search => $searchList");
+    return MatchingProfileGridViewScreen();
+    //});
   }
 }
 
@@ -50,13 +50,18 @@ class MatchingProfileGridViewScreen extends StatefulWidget {
 class MatchingProfileGridViewScreenState
     extends State<MatchingProfileGridViewScreen> {
   late List<MatchingProfile> list;
-  late List<MatchingProfileSearch> searchList;
+  late List<MatchingProfile> searchList;
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<MatchingProfileBloc, MatchingProfileState>(
         builder: (context, state) {
       this.list = BlocProvider.of<MatchingProfileBloc>(context).list;
+      // if (state is OnSearchByMMID) {
+      this.searchList =
+          BlocProvider.of<MatchingProfileBloc>(context).searchList;
+      //}
+      print("searchlist$searchList");
       return Stack(
         children: [
           Container(
@@ -74,6 +79,8 @@ class MatchingProfileGridViewScreenState
   }
 
   GridView buildGridView() {
+    var listLength =
+        this.searchList.length > 0 ? this.searchList.length : this.list.length;
     return GridView.builder(
       padding: const EdgeInsets.only(top: 96),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -82,19 +89,23 @@ class MatchingProfileGridViewScreenState
           crossAxisSpacing: 16,
           mainAxisSpacing: 16),
       itemBuilder: (context, index) {
+        MatchingProfile item = this.searchList.length > 0
+            ? this.searchList[index]
+            : this.list[index];
+        print('itemDetails: $item');
         return InkWell(
           child: Card(
             child: Stack(
               children: [
                 ClipRRect(
                   child: Image.network(
-                    '${list[index].imageUrl}',
+                    '${item.imageUrl}',
                     width: (MediaQuery.of(context).size.width - 48) / 2,
                     fit: BoxFit.cover,
                   ),
                   borderRadius: BorderRadius.circular(4),
                 ),
-                list[index].activationStatus == ProfileActivationStatus.Verified
+                item.activationStatus == ProfileActivationStatus.Verified
                     ? Positioned(
                         child: Container(
                           child: SvgPicture.asset(
@@ -112,7 +123,7 @@ class MatchingProfileGridViewScreenState
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "${list[index].name}, ${AppHelper.getAgeFromDob(list[index].dateOfBirth)}",
+                          "${item.name}, ${AppHelper.getAgeFromDob(item.dateOfBirth)}",
                           style: MmmTextStyles.heading6(textColor: gray6),
                         ),
                         Row(
@@ -127,8 +138,7 @@ class MatchingProfileGridViewScreenState
                               width: 8,
                             ),
                             Expanded(
-                                child: Text(
-                                    "${this.list[index].city}, ${this.list[index].state}",
+                                child: Text("${item.city}, ${item.state}",
                                     textScaleFactor: 1.0,
                                     style: MmmTextStyles.bodySmall(
                                         textColor: Colors.white),
@@ -158,7 +168,7 @@ class MatchingProfileGridViewScreenState
           },
         );
       },
-      itemCount: this.list.length,
+      itemCount: listLength,
     );
   }
 

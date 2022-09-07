@@ -124,7 +124,7 @@ class ProfileLoaderScreenState extends State<ProfileLoaderScreen>
   }
 
   void navigateToViewProfiles(
-      List<MatchingProfile> list, List<MatchingProfileSearch> seachList) {
+      List<MatchingProfile> list, List<MatchingProfile> seachList) {
     var userRepo = BlocProvider.of<ProfileLoaderBloc>(context).userRepository;
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
