@@ -46,8 +46,16 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                   .matchingPercentage;
               var image =
                   BlocProvider.of<MatchingPercentageBloc>(context).images;
+              var matchingFieldList =
+                  BlocProvider.of<MatchingPercentageBloc>(context)
+                      .matchingFieldList;
+              var differentFieldList =
+                  BlocProvider.of<MatchingPercentageBloc>(context)
+                      .differentFieldList;
               print("percent$percent");
               print("percent$image");
+              print("percent$matchingFieldList");
+              print("percent$differentFieldList");
 
               return Container(
                 padding: kMargin16,

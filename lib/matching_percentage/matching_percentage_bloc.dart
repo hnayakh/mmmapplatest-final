@@ -13,9 +13,13 @@ class MatchingPercentageBloc
 
   int matchingPercentage = 0;
   String images = '';
+  List matchingFieldList = [];
+  List differentFieldList = [];
 
-  MatchingPercentageBloc(this.userRepository, this.profileDetails)
-      : super(MatchingPercentageInitialState());
+  MatchingPercentageBloc(
+    this.userRepository,
+    this.profileDetails,
+  ) : super(MatchingPercentageInitialState());
 
   @override
   Stream<MatchingPercentageState> mapEventToState(
@@ -29,7 +33,10 @@ class MatchingPercentageBloc
       if (response.status == AppConstants.SUCCESS) {
         this.matchingPercentage = response.percent;
         this.images = this.profileDetails.images[0];
-        yield OnProfileVisited(this.matchingPercentage, this.images);
+        this.matchingFieldList = response.matchingFields;
+        this.differentFieldList = response.differentFields;
+        yield OnProfileVisited(this.matchingPercentage, this.images,
+            this.matchingFieldList, this.differentFieldList);
       } else {
         yield OnError(response.message);
       }
