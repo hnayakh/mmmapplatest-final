@@ -10,7 +10,7 @@ import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/views/home/my_connects/my_connects_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/search_screen.dart';
-import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/profile%20screens/myprofile.dart';
+import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/my_profile/myprofile.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/setting_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:makemymarry/utils/text_styles.dart';

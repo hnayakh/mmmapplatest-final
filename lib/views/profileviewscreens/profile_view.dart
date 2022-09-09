@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
+import 'package:makemymarry/matching_percentage/matching_percentage.dart';
+import 'package:makemymarry/matching_percentage/matching_percentage_bloc.dart';
+import 'package:makemymarry/matching_percentage/matching_percentage_event.dart';
+import 'package:makemymarry/matching_percentage/matching_percentage_state.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
@@ -26,10 +30,17 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ProfileViewBloc(userRepository, profileDetails),
-      child: ProfileViewScreen(),
-    );
+    return MultiBlocProvider(providers: [
+      BlocProvider<ProfileViewBloc>(
+        create: (BuildContext context) =>
+            ProfileViewBloc(userRepository, profileDetails),
+      ),
+      BlocProvider<MatchingPercentageBloc>(
+        create: (BuildContext context) =>
+            MatchingPercentageBloc(userRepository, profileDetails),
+      )
+    ], child: ProfileViewScreen());
+    //return
   }
 }
 
@@ -210,6 +221,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
           }
           this.profileDetails =
               BlocProvider.of<ProfileViewBloc>(context).profileDetails;
+
           if (state is OnLoading) {
             return Scaffold(
               body: MmmWidgets.buildLoader2(context),
@@ -234,7 +246,18 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                   : null,
               body: SingleChildScrollView(
                 controller: _controller,
-                child: Column(
+                child:
+                    // BlocConsumer<MatchingPercentageBloc,
+                    //     MatchingPercentageState>(
+                    //   listener: (context, state) {
+                    //     if (state is MatchingPercentageInitialState) {
+                    //       BlocProvider.of<MatchingPercentageBloc>(context)
+                    //           .add(MatchProfile());
+                    //     }
+                    //     // TODO: implement listener
+                    //   },
+                    //  builder: (context, state) {
+                    Column(
                   children: [
                     buildImages(context),
                     Container(
@@ -266,8 +289,19 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                             height: 60,
                           ),
                           MmmButtons.checkMatchButton(
-                              54, 'Check Match Percentage',
-                              action: () {}),
+                              54, 'Check Match Percentage', action: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => BlocProvider(
+                                  create: (context) => MatchingPercentageBloc(
+                                      UserRepository(), profileDetails),
+                                  child: MatchingPercentageScreen(
+                                    userRepository: UserRepository(),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }),
                           SizedBox(
                             height: 16,
                           ),
@@ -280,6 +314,8 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                       ),
                     )
                   ],
+                  //   );
+                  // },
                 ),
               ),
             );

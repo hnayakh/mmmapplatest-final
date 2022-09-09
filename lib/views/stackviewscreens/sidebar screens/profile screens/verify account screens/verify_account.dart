@@ -43,7 +43,7 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MmmButtons.appBarCurved('Verify your account'),
+      appBar: MmmButtons.appBarCurved('Verify your account', context: context),
       body: BlocConsumer<VerifyBloc, VerifyState>(
         listener: (context, state) {
           // TODO: implement listener

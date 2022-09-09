@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:makemymarry/datamodels/connect.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
+import 'package:makemymarry/matching_percentage/matching_percentage_bloc.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/colors.dart';
@@ -63,6 +64,7 @@ class MatchingProfileGridViewScreenState
       //}
       print("searchlist$searchList");
       return Stack(
+        fit: StackFit.expand,
         children: [
           Container(
             padding: kMargin16,
@@ -96,6 +98,7 @@ class MatchingProfileGridViewScreenState
         return InkWell(
           child: Card(
             child: Stack(
+              fit: StackFit.expand,
               children: [
                 ClipRRect(
                   child: Image.network(
@@ -175,9 +178,13 @@ class MatchingProfileGridViewScreenState
   void navigateToProfileDetails(ProfileDetails profileDetails) {
     var userRepo = BlocProvider.of<MatchingProfileBloc>(context).userRepository;
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => ProfileView(
-              userRepository: userRepo,
-              profileDetails: profileDetails,
+        builder: (context) => BlocProvider(
+              create: (context) =>
+                  MatchingPercentageBloc(userRepo, profileDetails),
+              child: ProfileView(
+                userRepository: userRepo,
+                profileDetails: profileDetails,
+              ),
             )));
   }
 }

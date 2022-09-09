@@ -7,6 +7,7 @@ import 'package:makemymarry/datamodels/connect.dart';
 import 'package:makemymarry/datamodels/interests_model.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
+import 'package:makemymarry/datamodels/matching_percentage_response.dart';
 import 'package:makemymarry/datamodels/recharge.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/utils/app_constants.dart';
@@ -960,6 +961,24 @@ class ApiClient {
     } catch (error) {
       print("error");
       return MySearchResponse.fromError("Something went wrong");
+
+      //return MySearchResponse.fromError(error.toString());
+    }
+  }
+
+  Future<MatchingPercentageResponse> getMatchPercentage(
+      String id, String otherBasicId) async {
+    try {
+      var response = await this.dio.get(
+            AppConstants.ENDPOINT +
+                'users/match_percentage/$id?otherUserBasicId=$otherBasicId',
+          );
+      print("object");
+      print(response.data);
+      return MatchingPercentageResponse.fromJson(response.data);
+    } catch (error) {
+      print("error");
+      return MatchingPercentageResponse.fromError("Something went wrong");
 
       //return MySearchResponse.fromError(error.toString());
     }

@@ -1,0 +1,51 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:makemymarry/matching_percentage/matching_percentage_event.dart';
+import 'package:makemymarry/matching_percentage/matching_percentage_state.dart';
+import 'package:makemymarry/repo/user_repo.dart';
+import 'package:makemymarry/utils/app_constants.dart';
+
+import '../../datamodels/martching_profile.dart';
+
+class MatchingPercentageBloc
+    extends Bloc<MatchingPercentageEvent, MatchingPercentageState> {
+  final UserRepository userRepository;
+  final ProfileDetails profileDetails;
+
+  int matchingPercentage = 0;
+  String images = '';
+
+  MatchingPercentageBloc(this.userRepository, this.profileDetails)
+      : super(MatchingPercentageInitialState());
+
+  @override
+  Stream<MatchingPercentageState> mapEventToState(
+      MatchingPercentageEvent event) async* {
+    if (event is MatchProfile) {
+      print("Details...");
+      print(profileDetails);
+      //yield OnLoading();
+      var response =
+          await this.userRepository.getMatchPercentage(this.profileDetails.id);
+      if (response.status == AppConstants.SUCCESS) {
+        this.matchingPercentage = response.percent;
+        this.images = this.profileDetails.images[0];
+        yield OnProfileVisited(this.matchingPercentage, this.images);
+      } else {
+        yield OnError(response.message);
+      }
+    }
+
+    // if (event is MatchProfileImages) {
+    //   //yield OnLoading();
+    //   var response =
+    //       await this.userRepository.getMatchPercentage(this.profileDetails.id);
+    //   if (response.status == AppConstants.SUCCESS) {
+    //     this.matchingPercentage = response.percent;
+    //     yield OnProfileVisited(
+    //         this.matchingPercentage, this.profileDetails.images[0]);
+    //   } else {
+    //     yield OnError(response.message);
+    //   }
+    // }
+  }
+}

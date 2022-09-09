@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
@@ -11,6 +12,7 @@ import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
+import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/profile%20screens/verify%20account%20screens/verify_account.dart';
 
 class MmmButtons {
   static Widget walletApps(String title, String icon) {
@@ -3460,7 +3462,7 @@ class MmmButtons {
   }
 
   //fliter screen===========================================================
-  static Container verifyAccountFliterScreen() {
+  static Container verifyAccountFliterScreen(context) {
     return Container(
       decoration: BoxDecoration(
         color: Color(0xffF0EFF5),
@@ -3475,7 +3477,14 @@ class MmmButtons {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () {},
+            onTap: () {
+              print("Here...VerifyAccount");
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                    builder: (context) =>
+                        VerifyAccount(userRepository: UserRepository())),
+              );
+            },
             child: Container(
               alignment: Alignment.center,
               height: 87,

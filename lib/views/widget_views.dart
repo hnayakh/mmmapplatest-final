@@ -120,7 +120,7 @@ class WidgetViewState extends State<WidgetView> {
         return MmmButtons.rejectButtonInterestScreen(() {});
         break;
       case 29:
-        return MmmButtons.verifyAccountFliterScreen();
+        return MmmButtons.verifyAccountFliterScreen(context);
         break;
       case 30:
         return MmmButtons.interestSelected();
