@@ -17,15 +17,16 @@ class AccountMenuBloc extends Bloc<AccountMenuEvent, AccountMenuState> {
   Stream<AccountMenuState> mapEventToState(AccountMenuEvent event) async* {
     yield OnLoading();
     if (event is FetchMyProfile) {
+      print('saurabh 1${userRepository.useDetails!.id}');
       var response = await this.userRepository.getOtheruserDetails(
           userRepository.useDetails!.id,
           ProfileActivationStatus
               .values[userRepository.useDetails!.activationStatus]);
-      print('etywgfyuegtwqyuetwqetwquyteuywqteuy');
+
       print(response);
       if (response.status == AppConstants.SUCCESS) {
         this.profileData = response.profileDetails;
-        print('etywgfyuegtwqyuetwqetwquyteuywqteuy');
+        print('saurabh 2$profileData');
         yield OnGotProfile();
       } else {
         print('etywgfyuegtwqyuetwqetwquyteuywqteuy');

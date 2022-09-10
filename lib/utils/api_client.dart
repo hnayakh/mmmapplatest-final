@@ -640,6 +640,7 @@ class ApiClient {
   }
 
   Future<String?> uploadImage(String id, String images) async {
+    print("saurabh uplaod");
     try {
       var length = await File(images).length();
       var file = MultipartFile(File(images).openRead(), length);

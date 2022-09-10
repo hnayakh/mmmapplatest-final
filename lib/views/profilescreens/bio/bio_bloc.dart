@@ -40,6 +40,8 @@ class BioBloc extends Bloc<BioEvent, BioState> {
       }
     }
     if (event is AddImage) {
+      print("saurabh uplaod 2");
+
       var result = await this.userRepository.uploadImage(event.images);
       if (result != null) {
         this.localImagePaths.add(result);
