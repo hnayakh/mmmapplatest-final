@@ -20,9 +20,9 @@ class MatchingPercentageResponse {
   MatchingPercentageResponse.fromJson(json) {
     this.status = json["type"];
     this.message = json["message"];
-    this.matchingFields = json["matchingFields"];
-    this.differentFields = json["differentFields"];
-    this.percent = json["data"];
+    this.matchingFields = json["data"]["matchingFields"];
+    this.differentFields = json["data"]["differentFields"];
+    this.percent = int.parse(json["data"]["match_percentage"]);
   }
 
   MatchingPercentageResponse.fromError(String message) {

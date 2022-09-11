@@ -70,10 +70,10 @@ class ProfileLoaderScreenState extends State<ProfileLoaderScreen>
 
   void setStatus(String status) async {
     print(status);
-    await FirebaseFirestore.instance
-        .collection('userStatus')
-        .doc(userId)
-        .set({'status': status}, SetOptions(merge: true));
+    // await FirebaseFirestore.instance
+    //     .collection('userStatus')
+    //     .doc(userId)
+    //     .set({'status': status}, SetOptions(merge: true));
   }
 
   @override
