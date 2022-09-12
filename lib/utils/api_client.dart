@@ -623,8 +623,8 @@ class ApiClient {
     // try {
     var response =
         await this.dio.get("${AppConstants.ENDPOINT}users/basic/$id");
-    print("response");
-    print(response);
+
+    print("sresponse${response.data['data']}");
     if (response.statusCode == 200 || response.statusCode == 201) {
       return ProfileDetailsResponse.fromJson(response.data, activationStatus);
     }

@@ -20,16 +20,29 @@ import '../../../profilescreens/bio/bio_bloc.dart';
 import '../../../profilescreens/bio/bio_event.dart';
 import '../../../profilescreens/bio/image_picker_dialog.dart';
 
-class MyprofileScreen extends StatefulWidget {
+class MyprofileScreen extends StatelessWidget {
   final UserRepository userRepository;
   const MyprofileScreen({Key? key, required this.userRepository})
       : super(key: key);
 
   @override
-  State<MyprofileScreen> createState() => _MyprofileScreenState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => BioBloc(userRepository),
+      child: MyProfile(userRepository: userRepository),
+    );
+  }
 }
 
-class _MyprofileScreenState extends State<MyprofileScreen> {
+class MyProfile extends StatefulWidget {
+  final UserRepository userRepository;
+  const MyProfile({Key? key, required this.userRepository}) : super(key: key);
+
+  @override
+  State<MyProfile> createState() => _MyProfileState();
+}
+
+class _MyProfileState extends State<MyProfile> {
   // UserRepository userRepository = UserRepository();
   ProfileDetails? profileDetails;
   @override
@@ -50,6 +63,7 @@ class _MyprofileScreenState extends State<MyprofileScreen> {
                 child: BlocConsumer<AccountMenuBloc, AccountMenuState>(
                   listener: (context, state) {},
                   builder: (context, state) {
+                    print('checkimagestatus$state');
                     if (state is AccountMenuInitialState) {
                       BlocProvider.of<AccountMenuBloc>(context)
                           .add(FetchMyProfile());
@@ -61,7 +75,7 @@ class _MyprofileScreenState extends State<MyprofileScreen> {
                     } else if (state is OnGotProfile) {
                       this.profileDetails =
                           BlocProvider.of<AccountMenuBloc>(context).profileData;
-                      // print('saurabh ${profileDetails!.images.first}');
+                      print('saurabh ${profileDetails!.images.first}');
                       return Stack(
                         children: [
                           Container(
@@ -82,25 +96,19 @@ class _MyprofileScreenState extends State<MyprofileScreen> {
                           Positioned(
                             bottom: 0,
                             left: MediaQuery.of(context).size.width * 0.077,
-                            child: BlocProvider(
-                              create: (context) =>
-                                  BioBloc(widget.userRepository),
-                              child: InkWell(
-                                onTap: () {
-                                  showImagePickerDialog();
-                                },
-                                child: Container(
-                                  height:
-                                      MediaQuery.of(context).size.width * 0.1,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.1,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      color: kWhite, shape: BoxShape.circle),
-                                  child: SvgPicture.asset(
-                                    'images/camera.svg',
-                                    color: kDark2,
-                                  ),
+                            child: InkWell(
+                              onTap: () {
+                                showImagePickerDialog();
+                              },
+                              child: Container(
+                                height: MediaQuery.of(context).size.width * 0.1,
+                                width: MediaQuery.of(context).size.width * 0.1,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: kWhite, shape: BoxShape.circle),
+                                child: SvgPicture.asset(
+                                  'images/camera.svg',
+                                  color: kDark2,
                                 ),
                               ),
                             ),
