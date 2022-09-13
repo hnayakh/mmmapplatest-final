@@ -567,7 +567,10 @@ class ApiClient {
       var response =
           await this.dio.get("${AppConstants.ENDPOINT}users/profiles/$id");
       if (response.statusCode == 200 || response.statusCode == 201) {
-        return MatchingProfileResponse.fromJson(response.data);
+        print("omg${response.data}");
+        var data = MatchingProfileResponse.fromJson(response.data);
+
+        return data;
       }
       return MatchingProfileResponse.fromError(
           "Error Occurred. Please try again.");

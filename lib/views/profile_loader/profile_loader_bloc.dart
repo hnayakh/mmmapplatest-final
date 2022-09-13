@@ -14,6 +14,7 @@ class ProfileLoaderBloc extends Bloc<ProfileLoaderEvent, ProfileLoaderState> {
     yield OnLoading();
     if (event is GetProfiles) {
       var mmid = '';
+      print('in profileloader');
       var result = await this.userRepository.getMyMatchingProfile();
       var resultSearch = await this.userRepository.getConnectThroughMMId(mmid);
       if (result.status == AppConstants.SUCCESS) {
@@ -28,8 +29,8 @@ class ProfileLoaderBloc extends Bloc<ProfileLoaderEvent, ProfileLoaderState> {
         yield OnGotProfiles(result.list, resultSearch.searchList);
       } else {
         yield OnError(result.message);
-        print(result.status);
-        print(result.message);
+        // print(result.status);
+        // print(result.message);
       }
     }
   }
