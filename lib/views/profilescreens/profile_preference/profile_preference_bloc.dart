@@ -62,7 +62,9 @@ class ProfilePreferenceBloc
     } else {
       this.minAge = myAge;
       this.maxAge = myAge + 4;
-      this.minHeight = this.userRepository.useDetails!.height;
+      this.minHeight =
+          (this.userRepository.useDetails!.height.floor() / 2.54 ~/ 12)
+              .toDouble();
       this.maxHeight = this.userRepository.useDetails!.height + 0.6;
       this.minSliderAge = 21;
     }
@@ -289,7 +291,7 @@ class ProfilePreferenceBloc
         print(maxHeight);
         this.userRepository.updateRegistrationStep(10);
         this.userRepository.useDetails!.registrationStep = 10;
-        // await this.userRepository.saveUserDetails();
+        await this.userRepository.saveUserDetails();
         // await this
         //     .userRepository
         //     .storageService

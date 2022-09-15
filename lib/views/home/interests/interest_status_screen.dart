@@ -154,7 +154,7 @@ class _InterestStatusScreenState extends State<InterestStatusScreen>
         },
         listener: (context, state) {
           if (state is OnError) {
-            Scaffold.of(context).showSnackBar(SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text(state.message),
               backgroundColor: kError,
             ));

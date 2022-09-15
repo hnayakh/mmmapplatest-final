@@ -342,7 +342,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
           //   navigateToFetchProfile();
           // }
           if (state is OnError) {
-            Scaffold.of(context).showSnackBar(SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
               content: Text(state.message),
               backgroundColor: kError,
             ));
@@ -353,6 +353,9 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   }
 
   Widget buildAgePreference() {
+    var maxValue = maxAge > 0 ? maxAge : 0.0;
+    //var progress = RangeValues(minAge, maxAge);
+//maxValue>progress?progress:maxValue;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -412,7 +415,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
                     showValueIndicator: ShowValueIndicator.always,
                     valueIndicatorColor: kPrimary.withOpacity(0.7)),
                 child: RangeSlider(
-                  values: RangeValues(minAge, maxAge),
+                  values: RangeValues(minAge, maxValue),
                   min: this.gender == Gender.Female ? 18 : 21,
                   max: 50,
                   inactiveColor: kGray,
@@ -437,6 +440,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   }
 
   Widget buildHeight() {
+    var maxValue = maxHeight > 0 ? maxHeight : 0.0;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -496,7 +500,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
                     showValueIndicator: ShowValueIndicator.always,
                     valueIndicatorColor: kPrimary.withOpacity(0.7)),
                 child: RangeSlider(
-                  values: RangeValues(minHeight, maxHeight),
+                  values: RangeValues(minHeight, maxValue),
                   min: 4,
                   max: 7,
                   inactiveColor: kGray,

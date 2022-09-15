@@ -1,12 +1,14 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/bloc/sign_in/signin_event.dart';
 import 'package:makemymarry/bloc/sign_in/signin_state.dart';
+import 'package:makemymarry/datamodels/martching_profile.dart';
 
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 
 class SignInBloc extends Bloc<SignInEvent, SigninState> {
   final UserRepository userRepository;
+
   String email = '', password = '';
 
   SignInBloc(this.userRepository) : super(SigninInitialState());
@@ -31,7 +33,6 @@ class SignInBloc extends Bloc<SignInEvent, SigninState> {
           yield OnValidationFail('Entered email and password is incorrect.');
         } else if (result.status == AppConstants.SUCCESS) {
           this.userRepository.useDetails = result.userDetails;
-
           //await this.userRepository.saveUserDetails();
           await this
               .userRepository

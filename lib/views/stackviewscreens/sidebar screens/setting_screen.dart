@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:makemymarry/repo/user_repo.dart';
+import 'package:makemymarry/saurabh/success_stories.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/views/stackviewscreens/notification.dart';
 import 'package:makemymarry/views/stackviewscreens/search_screen.dart';
@@ -30,6 +31,11 @@ class SettingScreen extends StatelessWidget {
           }),
           MmmButtons.searchScreenButton('Privacy', action: () {}),
           MmmButtons.searchScreenButton('Account', action: () {}),
+          MmmButtons.searchScreenButton('Success Story', action: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => SuccessStories()),
+            );
+          }),
           MmmButtons.searchScreenButton('Leave us a review', action: () {}),
           MmmButtons.searchScreenButton('FAQ', action: () {}),
           MmmButtons.searchScreenButton('Terms and Conditions', action: () {}),

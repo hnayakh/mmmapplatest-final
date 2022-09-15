@@ -50,7 +50,7 @@ class _HabitScreenState extends State<HabitScreen> {
             navigateToReligion();
           }
           if (state is OnError) {
-            Scaffold.of(context).showSnackBar(SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text(state.message),
               backgroundColor: Colors.red,
             ));

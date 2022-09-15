@@ -5,14 +5,14 @@ import '../utils/text_styles.dart';
 import 'custom_drawer.dart';
 import 'hexcolor.dart';
 
-class ProfileDetails extends StatefulWidget {
-  ProfileDetails({Key? key}) : super(key: key);
+class ProfileDetailsScreen extends StatefulWidget {
+  ProfileDetailsScreen({Key? key}) : super(key: key);
 
   @override
-  State<ProfileDetails> createState() => _ProfileDetailsState();
+  State<ProfileDetailsScreen> createState() => _ProfileDetailsState();
 }
 
-class _ProfileDetailsState extends State<ProfileDetails> {
+class _ProfileDetailsState extends State<ProfileDetailsScreen> {
   bool favStatus = false;
 
   @override
@@ -74,16 +74,19 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                                               MainAxisAlignment.center,
                                           children: [
                                             iconText(
-                                                leading: Icon(Icons.percent),
+                                                leading: Icon(Icons
+                                                    .verified_user_outlined),
                                                 text: "Online Members"),
                                             iconText(
-                                                leading: Icon(Icons.percent),
+                                                leading: Icon(
+                                                    Icons.workspace_premium),
                                                 text: "Premium Members"),
                                             iconText(
-                                                leading: Icon(Icons.percent),
+                                                leading: Icon(
+                                                    Icons.visibility_outlined),
                                                 text: "Profile Visitors"),
                                             iconText(
-                                                leading: Icon(Icons.percent),
+                                                leading: Icon(Icons.search),
                                                 text: "Recently Viewed"),
                                           ],
                                         ),
@@ -115,7 +118,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                         height: 100,
                         width: screenSize.width,
                         decoration: BoxDecoration(
-                            color: Colors.black12,
+                            color: Colors.black54,
                             borderRadius: BorderRadius.only(
                                 bottomLeft: Radius.circular(30),
                                 bottomRight: Radius.circular(30))),
