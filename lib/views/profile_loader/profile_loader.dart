@@ -82,6 +82,7 @@ class ProfileLoaderScreenState extends State<ProfileLoaderScreen>
       body: SafeArea(
           child: BlocConsumer<ProfileLoaderBloc, ProfileLoaderState>(
         builder: (context, state) {
+          print('checkprofileloader$state');
           if (state is ProfileLoaderInitialState) {
             BlocProvider.of<ProfileLoaderBloc>(context).add(GetProfiles());
           }

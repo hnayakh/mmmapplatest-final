@@ -30,6 +30,7 @@ class MatchingPercentageBloc
       //yield OnLoading();
       var response =
           await this.userRepository.getMatchPercentage(this.profileDetails.id);
+
       if (response.status == AppConstants.SUCCESS) {
         this.matchingPercentage = response.percent;
         this.images = this.profileDetails.images[0];
