@@ -280,7 +280,8 @@ class ProfileDetails {
 
     this.religion = userReligion["religion"];
     this.cast = userReligion["cast"];
-    this.gothra = userReligion["gothra"];
+    this.gothra = 'ok';
+    // userReligion["gothra"];
     this.motherTongue = userReligion["motherTongue"];
     this.manglik = Manglik.values[userReligion["isManglik"]];
     if (json["userCareers"].length > 0) {
