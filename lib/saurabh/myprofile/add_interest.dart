@@ -34,7 +34,7 @@ class _AddIterestsState extends State<AddIterests> {
     Size screenSize = MediaQuery.of(context).size;
     var primaryColor = HexColor('C9184A');
     return Scaffold(
-        appBar: MmmButtons.appBarCurved('About', context: context),
+        appBar: MmmButtons.appBarCurved('Ad Interests', context: context),
         body: Container(
             padding: EdgeInsets.symmetric(horizontal: 15),
             child: Column(
@@ -72,10 +72,14 @@ class _AddIterestsState extends State<AddIterests> {
                               child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
+                                    // SvgPicture.asset(
+                                    //   interestList[i]['icon'].toString(),
+                                    //   height: 30,
+                                    //   width: 30,
+                                    // ),
                                     SvgPicture.asset(
-                                      interestList[i]['icon'].toString(),
-                                      height: 30,
-                                      width: 30,
+                                      "images/Veg2.svg",
+                                      fit: BoxFit.cover,
                                     ),
                                     SizedBox(
                                       width: 20,
