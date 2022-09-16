@@ -165,12 +165,12 @@ class _MyProfileState extends State<MyProfile> {
                     '#123456',
                     style: MmmTextStyles.bodyRegular(textColor: gray3),
                   ),
-                  TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        'Edit',
-                        style: MmmTextStyles.heading6(textColor: kPrimary),
-                      )),
+                  // TextButton(
+                  //     onPressed: () {},
+                  //     child: Text(
+                  //       'Edit',
+                  //       style: MmmTextStyles.heading6(textColor: kPrimary),
+                  //     )),
                 ],
               ),
               SizedBox(
@@ -189,6 +189,10 @@ class _MyProfileState extends State<MyProfile> {
               //             Bio(userRepository: userRepository)),
               //   );
               // }),
+              SizedBox(
+                height: 16,
+              ),
+              MmmButtons.myProfileButtons('About', action: () {}),
               SizedBox(
                 height: 16,
               ),
