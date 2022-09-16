@@ -720,6 +720,11 @@ class ApiClient {
     }
   }
 
+  Future updateRegistartionStep(basicuserId, step) {
+    return this.dio.post(AppConstants.ENDPOINT +
+        "users/app/users/updateRegistrationStep/$basicuserId/$step");
+  }
+
   Future<MatchingProfileResponse> completeFilter(
       double maxHeight,
       double minHeight,

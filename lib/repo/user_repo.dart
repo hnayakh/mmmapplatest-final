@@ -42,6 +42,10 @@ class UserRepository {
     return this.apiClient.signinUser(email, password);
   }
 
+  Future updateRegistartionStep(String basicUserId, int step) async {
+    return this.apiClient.updateRegistartionStep(basicUserId, step);
+  }
+
   Future<SigninResponse> logout(String email, String password) async {
     return this.apiClient.signinUser(email, password);
   }
