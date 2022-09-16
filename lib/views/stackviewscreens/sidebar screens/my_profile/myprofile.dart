@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:makemymarry/matching_percentage/matching_percentage.dart';
 import 'package:makemymarry/repo/user_repo.dart';
+import 'package:makemymarry/saurabh/myprofile/add_interest.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
@@ -13,6 +14,7 @@ import 'package:makemymarry/views/profilescreens/bio/bio.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/sidebar_about_screen.dart';
 
 import '../../../../datamodels/martching_profile.dart';
+import '../../../../saurabh/myprofile/about_profile.dart';
 import '../../../../utils/widgets_large.dart';
 import '../../../home/menu/account_menu_event.dart';
 import '../../../home/menu/account_menu_state.dart';
@@ -165,12 +167,12 @@ class _MyProfileState extends State<MyProfile> {
                     '#123456',
                     style: MmmTextStyles.bodyRegular(textColor: gray3),
                   ),
-                  TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        'Edit',
-                        style: MmmTextStyles.heading6(textColor: kPrimary),
-                      )),
+                  // TextButton(
+                  //     onPressed: () {},
+                  //     child: Text(
+                  //       'Edit',
+                  //       style: MmmTextStyles.heading6(textColor: kPrimary),
+                  //     )),
                 ],
               ),
               SizedBox(
@@ -192,12 +194,26 @@ class _MyProfileState extends State<MyProfile> {
               SizedBox(
                 height: 16,
               ),
+              MmmButtons.myProfileButtons('About', action: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ABoutProfile()),
+                );
+              }),
+              SizedBox(
+                height: 16,
+              ),
               MmmButtons.myProfileButtons('Edit partner preference',
                   action: () {}),
               SizedBox(
                 height: 16,
               ),
-              MmmButtons.myProfileButtons('Add interests ', action: () {}),
+              MmmButtons.myProfileButtons('Add interests ', action: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddIterests()),
+                );
+              }),
               SizedBox(
                 height: 16,
               ),

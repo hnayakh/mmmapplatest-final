@@ -42,6 +42,10 @@ class UserRepository {
     return this.apiClient.signinUser(email, password);
   }
 
+  Future updateRegistartionStep(String basicUserId, int step) async {
+    return this.apiClient.updateRegistartionStep(basicUserId, step);
+  }
+
   Future<SigninResponse> logout(String email, String password) async {
     return this.apiClient.signinUser(email, password);
   }
@@ -361,9 +365,9 @@ class UserRepository {
   Future<MatchingPercentageResponse> getMatchPercentage(otherBasicId) async {
     var userDetails = await getUserDetails();
 
-    return this.apiClient.getMatchPercentage(userDetails!.id, otherBasicId);
-    // return this.apiClient.getMatchPercentage(
-    //     "39222b1b-07e4-46a6-a504-9a521380d099",
-    //     "a6e1b1af-a3d4-47cd-b4e0-88070996cd61");
+    // return this.apiClient.getMatchPercentage(userDetails!.id, otherBasicId);
+    return this.apiClient.getMatchPercentage(
+        "39222b1b-07e4-46a6-a504-9a521380d099",
+        "a6e1b1af-a3d4-47cd-b4e0-88070996cd61");
   }
 }

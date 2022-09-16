@@ -110,63 +110,60 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                     SizedBox(
                       width: double.infinity,
                     ),
-                    Stack(
-                      children: [
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.17,
-                          width: MediaQuery.of(context).size.width * 0.244,
-                          //color: Colors.orangeAccent,
-                        ),
-                        Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            // mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              SizedBox(width: 0.1),
-                              CircleAvatar(
-                                radius:
-                                    MediaQuery.of(context).size.width * 0.122,
-                                child: ClipOval(
-                                  child: Image.asset(
-                                    'images/stackviewImage.jpg',
-                                    width: double.infinity,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
+                    Stack(children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.17,
+                        width: MediaQuery.of(context).size.width * 0.244,
+                        //color: Colors.orangeAccent,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        // mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          SizedBox(width: 0.1),
+                          CircleAvatar(
+                            radius: MediaQuery.of(context).size.width * 0.122,
+                            child: ClipOval(
+                              child: Image.asset(
+                                'images/stackviewImage.jpg',
+                                width: double.infinity,
+                                fit: BoxFit.cover,
                               ),
-                              SizedBox(width: 0.1),
-                              Container(
-                                height: 45,
-                                width: 45,
-                                child: Center(
-                                  child: SvgPicture.asset(
-                                    "images/heart.svg",
-                                    color: Colors.white,
-                                    height: 62,
-                                    width: 62,
-                                  ),
-                                ),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    gradient: MmmDecorations.primaryGradient(),
-                                    border: Border.all(
-                                        color: Colors.white, width: 1.2)),
+                            ),
+                          ),
+                          SizedBox(width: 0.1),
+                          Container(
+                            height: 45,
+                            width: 45,
+                            child: Center(
+                              child: SvgPicture.asset(
+                                "images/heart.svg",
+                                color: Colors.white,
+                                height: 62,
+                                width: 62,
                               ),
-                              SizedBox(width: 0.1),
-                              CircleAvatar(
-                                radius:
-                                    MediaQuery.of(context).size.width * 0.122,
-                                child: ClipOval(
-                                  child: Image.network(
-                                    '$image',
-                                    width: double.infinity,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
+                            ),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                gradient: MmmDecorations.primaryGradient(),
+                                border: Border.all(
+                                    color: Colors.white, width: 1.2)),
+                          ),
+                          SizedBox(width: 0.1),
+                          CircleAvatar(
+                            radius: MediaQuery.of(context).size.width * 0.122,
+                            child: ClipOval(
+                              child: Image.network(
+                                '$image',
+                                width: double.infinity,
+                                fit: BoxFit.cover,
                               ),
-                            ]),
-                      ],
-                    ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ]),
                     Column(
                       children: [
                         Text(

@@ -306,6 +306,9 @@ class ProfilePreferenceBloc
     }
 
     if (event is CompleteFilter) {
+      var response = await this
+          .userRepository
+          .updateRegistartionStep(this.userRepository.useDetails!.id, 10);
       var result = await this.userRepository.completeFilter(
           this.maxHeight,
           this.minHeight,
