@@ -125,7 +125,7 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                           CircleAvatar(
                             radius: MediaQuery.of(context).size.width * 0.122,
                             child: ClipOval(
-                              child: Image.asset(
+                              child: Image.network(
                                 'images/stackviewImage.jpg',
                                 width: double.infinity,
                                 fit: BoxFit.cover,
@@ -188,16 +188,16 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                     //   title: Text("ok"),
                     //   subtitle: Text("ok"),
                     // ),
-                    if (matchingFieldList.isEmpty && differentFieldList.isEmpty)
-                      Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(50.0),
-                          child: Text(
-                            "No information available!",
-                            style: MmmTextStyles.heading4(),
-                          ),
-                        ),
-                      ),
+                    // if (matchingFieldList.isEmpty && differentFieldList.isEmpty)
+                    //   Center(
+                    //     child: Padding(
+                    //       padding: const EdgeInsets.all(50.0),
+                    //       child: Text(
+                    //         "No information available!",
+                    //         style: MmmTextStyles.heading4(),
+                    //       ),
+                    //     ),
+                    //   ),
                     if (matchingFieldList.isNotEmpty)
                       Column(
                         children: List.generate(matchingFieldList.length, (i) {

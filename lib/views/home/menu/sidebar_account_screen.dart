@@ -173,7 +173,8 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
         break;
       case 1:
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => ProfileDetailsScreen()),
+          MaterialPageRoute(
+              builder: (context) => SearchScreen(userRepository: userRepo)),
         );
         break;
       case 2:

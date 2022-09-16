@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:makemymarry/bloc/sign_in/signin_bloc.dart';
 import 'package:makemymarry/matching_percentage/matching_percentage.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/saurabh/myprofile/add_interest.dart';
@@ -11,6 +12,7 @@ import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
 import 'package:makemymarry/views/profilescreens/bio/bio.dart';
+import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/sidebar_about_screen.dart';
 
 import '../../../../datamodels/martching_profile.dart';
@@ -47,6 +49,7 @@ class MyProfile extends StatefulWidget {
 class _MyProfileState extends State<MyProfile> {
   // UserRepository userRepository = UserRepository();
   ProfileDetails? profileDetails;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -157,7 +160,8 @@ class _MyProfileState extends State<MyProfile> {
                 height: 16,
               ),
               Text(
-                'Kristen Stewart',
+                // profileDetails!.name,
+                "Akash",
                 style: MmmTextStyles.heading4(textColor: kDark5),
               ),
               Row(
@@ -204,7 +208,16 @@ class _MyProfileState extends State<MyProfile> {
                 height: 16,
               ),
               MmmButtons.myProfileButtons('Edit partner preference',
-                  action: () {}),
+                  action: () {
+                // var userRepo =
+                //     BlocProvider.of<SignInBloc>(context).userRepository;
+                // Navigator.of(context).pushAndRemoveUntil(
+                //     MaterialPageRoute(
+                //         builder: (context) => ProfilePreference(
+                //               userRepository: userRepository,
+                //             )),
+                //     (route) => false);
+              }),
               SizedBox(
                 height: 16,
               ),
