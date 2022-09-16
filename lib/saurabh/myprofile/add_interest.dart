@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 
@@ -34,7 +32,7 @@ class _AddIterestsState extends State<AddIterests> {
     Size screenSize = MediaQuery.of(context).size;
     var primaryColor = HexColor('C9184A');
     return Scaffold(
-        appBar: MmmButtons.appBarCurved('Ad Interests', context: context),
+        appBar: MmmButtons.appBarCurved('Add Interests', context: context),
         body: Container(
             padding: EdgeInsets.symmetric(horizontal: 15),
             child: Column(
