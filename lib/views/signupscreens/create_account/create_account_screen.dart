@@ -75,7 +75,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
             navigateToOtpScreen(state);
           }
           if (state is OnError) {
-            Scaffold.of(context).showSnackBar(SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text(state.message),
               backgroundColor: Colors.red,
             ));

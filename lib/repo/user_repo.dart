@@ -16,6 +16,7 @@ class UserRepository {
   ApiClient apiClient = ApiClient();
 
   UserDetails? useDetails;
+
   late MasterData masterData;
   late List<ProfileDetails> listProfileDetails;
 

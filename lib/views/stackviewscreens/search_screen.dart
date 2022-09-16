@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
+import 'package:makemymarry/saurabh/custom_drawer.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
@@ -192,6 +193,10 @@ class _SearchScreenState extends State<SearchScreen> {
                         MmmWidgets.bottomBarUnits('images/menu.svg', 'More',
                             index == 4 ? kPrimary : gray3, action: () {
                           setColor(4);
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => AppDrawer()),
+                          );
                         })
                       ]),
                 ))),

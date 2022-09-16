@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
+import 'package:makemymarry/saurabh/profile_detail.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/views/home/my_connects/my_connects_screen.dart';
@@ -171,8 +172,7 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
         break;
       case 1:
         Navigator.of(context).push(
-          MaterialPageRoute(
-              builder: (context) => SearchScreen(userRepository: userRepo)),
+          MaterialPageRoute(builder: (context) => ProfileDetailsScreen()),
         );
         break;
       case 2:

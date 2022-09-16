@@ -171,7 +171,9 @@ class SplashScreenState extends State<SplashScreen> {
       default:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-                builder: (context) => SignIn(userRepository: userRepo)),
+                builder: (context) => SignIn(
+                      userRepository: userRepo,
+                    )),
             (route) => false);
         break;
     }

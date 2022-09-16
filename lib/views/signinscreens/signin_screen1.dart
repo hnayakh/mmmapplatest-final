@@ -5,16 +5,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/bloc/sign_in/signin_bloc.dart';
 import 'package:makemymarry/bloc/sign_in/signin_event.dart';
 import 'package:makemymarry/bloc/sign_in/signin_state.dart';
+import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
+import 'package:makemymarry/utils/storage_service.dart';
 import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/forgotpasswordscreens/forgot_password.dart';
 import 'package:makemymarry/views/home/home.dart';
+import 'package:makemymarry/views/home/matching_profile/matching_profile_bloc.dart';
 import 'package:makemymarry/views/profile_loader/profile_loader.dart';
+import 'package:makemymarry/views/profile_loader/profile_loader_bloc.dart';
 import 'package:makemymarry/views/profilescreens/about/about.dart';
 import 'package:makemymarry/views/profilescreens/bio/bio.dart';
 import 'package:makemymarry/views/profilescreens/family/family.dart';
@@ -29,7 +33,10 @@ import 'package:simple_gradient_text/simple_gradient_text.dart';
 class SignIn extends StatelessWidget {
   final UserRepository userRepository;
 
-  const SignIn({Key? key, required this.userRepository}) : super(key: key);
+  const SignIn({
+    Key? key,
+    required this.userRepository,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -254,13 +261,13 @@ class SignInScreenState extends State<SignInScreen> {
               navigateToProfileSetup();
             }
             if (state is OnError) {
-              Scaffold.of(context).showSnackBar(SnackBar(
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(state.message),
                 backgroundColor: kError,
               ));
             }
             if (state is OnValidationFail) {
-              Scaffold.of(context).showSnackBar(SnackBar(
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(state.message),
                 backgroundColor: kError,
               ));
@@ -271,6 +278,32 @@ class SignInScreenState extends State<SignInScreen> {
     );
   }
 
+  // void navigateToHome(
+  //     List<MatchingProfile> list, List<MatchingProfile> seachList) {
+  //   var userRepo = BlocProvider.of<ProfileLoaderBloc>(context).userRepository;
+  //   Navigator.of(context).push(
+  //       MaterialPageRoute(
+  //           builder: (context) => HomeScreen(
+  //               userRepository: userRepo, list: list, searchList: seachList)),
+  //   )
+  // }
+  // void navigateToHome(
+  //     List<MatchingProfile> list, List<MatchingProfile> seachList) {
+  //   print("Home");
+  //   var userRepo = BlocProvider.of<SignInBloc>(context).userRepository;
+  //   Navigator.of(context).push(MaterialPageRoute(
+  //       builder: (context) => HomeScreen(
+  //           userRepository: userRepo, list: list, searchList: seachList)));
+  // }
+
+  // void navigateToHome() {
+  //   var userRepo = BlocProvider.of<SignInBloc>(context).userRepository;
+  //   Navigator.of(context).push(MaterialPageRoute(
+  //       builder: (context) => HomeScreen(
+  //             userRepository: userRepo,
+  //              list: list, searchList: seachList
+  //           )));
+  // }
   void navigateToForgotPassword() {
     var userRepo = BlocProvider.of<SignInBloc>(context).userRepository;
     Navigator.of(context).push(MaterialPageRoute(
@@ -298,6 +331,7 @@ class SignInScreenState extends State<SignInScreen> {
   void navigateToProfileSetup() {
     var userRepo = BlocProvider.of<SignInBloc>(context).userRepository;
 
+    // var userRegistrationStep = userRepo.getUserDetails();
     switch (userRepo.useDetails!.registrationStep) {
       case 10:
         Navigator.of(context).pushAndRemoveUntil(
@@ -308,8 +342,9 @@ class SignInScreenState extends State<SignInScreen> {
       case 9:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-                builder: (context) =>
-                    ProfilePreference(userRepository: userRepo)),
+                builder: (context) => ProfilePreference(
+                      userRepository: userRepo,
+                    )),
             (route) => false);
         break;
       case 8:
@@ -352,7 +387,9 @@ class SignInScreenState extends State<SignInScreen> {
       default:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-                builder: (context) => SignIn(userRepository: userRepo)),
+                builder: (context) => SignIn(
+                      userRepository: userRepo,
+                    )),
             (route) => false);
         break;
     }
