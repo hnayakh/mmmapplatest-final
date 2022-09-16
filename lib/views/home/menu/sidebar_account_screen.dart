@@ -10,6 +10,7 @@ import 'package:makemymarry/saurabh/profile_detail.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/views/home/my_connects/my_connects_screen.dart';
+import 'package:makemymarry/views/signinscreens/signin_screen1.dart';
 import 'package:makemymarry/views/stackviewscreens/search_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/my_profile/myprofile.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/setting_screen.dart';
@@ -203,7 +204,7 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
 
         _deleteAppDir().then((value) => Navigator.of(context).pushReplacement(
               MaterialPageRoute(
-                  builder: (context) => SigninWithPhone(
+                  builder: (context) => SignIn(
                         userRepository: userRepo,
                       )),
             ));
