@@ -17,6 +17,7 @@ import 'package:makemymarry/views/profilescreens/family/family_details/family_de
 import 'package:makemymarry/views/profilescreens/family/family_details/family_details_state.dart';
 import 'package:makemymarry/views/profilescreens/family/family_details/mother_occupation.dart';
 
+import '../../bio/bio.dart';
 import 'father_occupation.dart';
 
 class FamilyDetails extends StatelessWidget {
@@ -36,16 +37,17 @@ class FamilyDetails extends StatelessWidget {
         userRepository,
       ),
       child: FamilyDetailsScreen(
-        onComplete: onComplete,
-      ),
+          onComplete: onComplete, userRepository: userRepository),
     );
   }
 }
 
 class FamilyDetailsScreen extends StatefulWidget {
   final Function onComplete;
+  final UserRepository userRepository;
 
-  const FamilyDetailsScreen({Key? key, required this.onComplete})
+  const FamilyDetailsScreen(
+      {Key? key, required this.onComplete, required this.userRepository})
       : super(key: key);
 
   @override
@@ -86,6 +88,29 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
                 },
                 child: MmmIcons.rightArrowEnabled(),
               )),
+          Positioned(
+              bottom: 24,
+              left: 24,
+              child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (ctx) => Bio(
+                                  userRepository: widget.userRepository,
+                                )));
+                    // BlocProvider.of<FamilyDetailsBloc>(context)
+                    //     .add(UpdateFamilyDetails());
+                    // BlocProvider.of<OccupationBloc>(context).add(UpdateCareer(
+                    //     orgNameController.text.trim(),
+                    //     annIncomeController.text.trim(),
+                    //     countryController.text.trim(),
+                    //     stateController.text.trim(),
+                    //     cityController.text.trim()));
+                  },
+                  // child: MmmIcons.rightArrowEnabled(),
+                  child: Text('Skip >',
+                      style: TextStyle(color: kPrimary, fontSize: 18)))),
           state is OnLoading ? MmmWidgets.buildLoader(context) : Container(),
         ],
       ));
