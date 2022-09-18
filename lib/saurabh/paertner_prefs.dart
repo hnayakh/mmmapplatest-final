@@ -258,7 +258,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
             Container(
                 height: 60,
                 child: Text(
-                  'Your document is sent for the verification. We’ll notify you once verification is done.',
+                  'Your document is sent for the verification. We’ll notify you once verification is done..',
                   textAlign: TextAlign.center,
                   style: MmmTextStyles.bodySmall(textColor: kDark5),
                 )),
