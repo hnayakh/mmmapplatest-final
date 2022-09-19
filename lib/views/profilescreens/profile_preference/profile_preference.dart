@@ -170,14 +170,20 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
                             SizedBox(
                               height: 24,
                             ),
+
+                            // det height
                             buildHeight(),
                             SizedBox(
                               height: 24,
                             ),
+
+                            // marital status
                             buildMaritalStatus(),
                             SizedBox(
                               height: 24,
                             ),
+
+                            // set country
                             buildCountry(),
                             SizedBox(
                               height: 24,
