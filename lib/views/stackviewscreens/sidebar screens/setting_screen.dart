@@ -28,7 +28,7 @@ class SettingScreen extends StatelessWidget {
             Navigator.of(context).push(
               MaterialPageRoute(
                   builder: (context) =>
-                      Notifications(userRepository: userRepository)),
+                      NotificationsSwitch(userRepository: userRepository)),
             );
           }),
           MmmButtons.searchScreenButton('Privacy', action: () {

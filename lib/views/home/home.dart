@@ -7,7 +7,7 @@ import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/home/matching_profile/matching_profile_bloc.dart';
 import 'package:makemymarry/views/home/menu/sidebar_account_screen.dart';
 import 'package:makemymarry/views/home/my_connects/my_connects_screen.dart';
-import 'package:makemymarry/views/stackviewscreens/notification.dart';
+import 'package:makemymarry/views/stackviewscreens/notification_list.dart';
 
 import 'interests/interest_status_screen.dart';
 import 'matching_profile/matching_profile.dart';

@@ -10,16 +10,16 @@ import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 
-class Notifications extends StatefulWidget {
+class NotificationsSwitch extends StatefulWidget {
   final UserRepository userRepository;
-  const Notifications({Key? key, required this.userRepository})
+  const NotificationsSwitch({Key? key, required this.userRepository})
       : super(key: key);
 
   @override
-  _NotificationsState createState() => _NotificationsState();
+  _NotificationsSwitchState createState() => _NotificationsSwitchState();
 }
 
-class _NotificationsState extends State<Notifications> {
+class _NotificationsSwitchState extends State<NotificationsSwitch> {
   var index;
   bool status = false;
 
