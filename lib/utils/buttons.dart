@@ -2524,10 +2524,10 @@ class MmmButtons {
                 width: 16,
               ),
               Container(
-                height: 24,
-                width: 24,
-                child: SvgPicture.asset(
-                  "images/social/instagram.svg",
+                height: 30,
+                width: 30,
+                child: Image.network(
+                  "https://pbs.twimg.com/profile_images/1526231349354303489/3Bg-2ZsT_400x400.jpg",
                   fit: BoxFit.cover,
                 ),
               ),
@@ -2813,7 +2813,7 @@ class MmmButtons {
           child: Container(
             alignment: Alignment.center,
             height: 58,
-            // width: 342,
+            width: 360,
             child: Row(
               children: [
                 SizedBox(
@@ -2878,7 +2878,7 @@ class MmmButtons {
           child: Container(
             alignment: Alignment.center,
             height: 58,
-            width: 342,
+            width: 360,
             child: Row(
               children: [
                 SizedBox(
@@ -2943,7 +2943,7 @@ class MmmButtons {
           child: Container(
             alignment: Alignment.center,
             height: 58,
-            width: 342,
+            width: 360,
             child: Row(
               children: [
                 SizedBox(
