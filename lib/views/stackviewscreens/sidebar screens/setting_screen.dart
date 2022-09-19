@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/saurabh/success_stories.dart';
 import 'package:makemymarry/utils/buttons.dart';
+import 'package:makemymarry/views/stackviewscreens/account.dart';
 import 'package:makemymarry/views/stackviewscreens/notification.dart';
+import 'package:makemymarry/views/stackviewscreens/privacy.dart';
 import 'package:makemymarry/views/stackviewscreens/search_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/sidebar_about_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/sidebar_contactsupport_screen.dart';
@@ -29,8 +31,20 @@ class SettingScreen extends StatelessWidget {
                       Notifications(userRepository: userRepository)),
             );
           }),
-          MmmButtons.searchScreenButton('Privacy', action: () {}),
-          MmmButtons.searchScreenButton('Account', action: () {}),
+          MmmButtons.searchScreenButton('Privacy', action: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Privacy(userRepository: userRepository)),
+            );
+          }),
+          MmmButtons.searchScreenButton('Account', action: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Account(userRepository: userRepository)),
+            );
+          }),
           MmmButtons.searchScreenButton('Success Story', action: () {
             Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => SuccessStories()),

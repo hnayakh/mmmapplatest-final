@@ -65,6 +65,14 @@ class MmmTextStyles {
         color: textColor);
   }
 
+  static TextStyle bodyMediumNotification({Color textColor: kTextColor}) {
+    return TextStyle(
+        fontFamily: "MakeMyMarryMedium",
+        fontSize: 16,
+        height: 1.625,
+        color: textColor);
+  }
+
   static TextStyle cardNumber({Color textColor: kTextColor}) {
     return TextStyle(
         fontFamily: "MakeMyMarryMedium",

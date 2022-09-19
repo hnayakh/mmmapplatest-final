@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:makemymarry/bloc/splash/splash_bloc.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
@@ -19,6 +21,7 @@ class Notifications extends StatefulWidget {
 
 class _NotificationsState extends State<Notifications> {
   var index;
+  bool status = false;
 
   void navigateToNotification() {
     print('Hello');
@@ -34,95 +37,48 @@ class _NotificationsState extends State<Notifications> {
     return Scaffold(
       appBar: MmmButtons.appBarCurved('Notifications', context: context),
       body: Container(
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView.separated(
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    leading: Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(8),
-                            bottomRight: Radius.circular(8)),
-                      ),
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(8),
-                              bottomRight: Radius.circular(8)),
-                          child: Image.asset(
-                            'images/bio.jpg',
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                          )),
+          padding: const EdgeInsets.all(10),
+          child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                  onTap: () {},
+                  child: Container(
+                    height: 62,
+                    padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                    decoration: BoxDecoration(
+                      color: Colors.white70,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.symmetric(
+                          horizontal: BorderSide(color: kBorder),
+                          vertical: BorderSide(color: kBorder)),
                     ),
-                    trailing: Text(
-                      '8m ago',
-                      style: MmmTextStyles.caption(textColor: gray1),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Notification",
+                          style: MmmTextStyles.bodyMediumNotification(
+                              textColor: kDark5),
+                        ),
+                        Container(
+                            child: FlutterSwitch(
+                                width: 50.0,
+                                height: 30.0,
+                                activeColor: Colors.pink,
+                                valueFontSize: 30.0,
+                                toggleSize: 20.0,
+                                value: status,
+                                borderRadius: 30.0,
+                                padding: 3.0,
+                                //showOnOff: true,
+                                onToggle: (val) {
+                                  setState(() {
+                                    status = val;
+                                  });
+                                }))
+                      ],
                     ),
-                    title: Text(
-                      'Header',
-                      style: MmmTextStyles.heading5(),
-                    ),
-                    subtitle: Text(
-                      "He'll want to use your yacht, and I don't want this thing smelling",
-                      style: MmmTextStyles.bodySmall(),
-                    ),
-                  );
-                },
-                itemCount: 8,
-                separatorBuilder: (BuildContext context, int index) {
-                  return Divider();
-                },
-              ),
-            ),
-            // Row(
-            //   children: [
-            //     Expanded(
-            //         child: (Container(
-            //       height: 68,
-            //       decoration: BoxDecoration(boxShadow: [
-            //         MmmShadow.elevationStack(),
-            //       ]),
-            //       padding: EdgeInsets.only(top: 8, bottom: 8),
-            //       child: Row(
-            //           mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //           children: [
-            //             MmmWidgets.bottomBarUnits('images/Search.svg', 'Search',
-            //                 index == 0 ? kPrimary : gray3, action: () {
-            //               setColor(0);
-            //             }),
-            //             MmmWidgets.bottomBarUnits(
-            //                 'images/filter2.svg',
-            //                 'Filter',
-            //                 index == 1 ? kPrimary : gray3, action: () {
-            //               setColor(1);
-            //             }),
-            //             MmmWidgets.bottomBarUnits(
-            //                 'images/connect.svg',
-            //                 'Connect',
-            //                 index == 2 ? kPrimary : gray3, action: () {
-            //               setColor(2);
-            //             }),
-            //             MmmWidgets.bottomBarUnits(
-            //                 'images/Search.svg',
-            //                 'Notifications',
-            //                 index == 3 ? kPrimary : gray3, action: () {
-            //               setColor(3);
-            //             }),
-            //             MmmWidgets.bottomBarUnits('images/menu.svg', 'More',
-            //                 index == 4 ? kPrimary : gray3, action: () {
-            //               setColor(4);
-            //             })
-            //           ]),
-            //     ))),
-            //   ],
-            // )
-          ],
-        ),
-      ),
+                  )))),
     );
   }
 
