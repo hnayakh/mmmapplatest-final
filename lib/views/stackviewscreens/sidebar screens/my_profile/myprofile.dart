@@ -81,7 +81,7 @@ class _MyProfileState extends State<MyProfile> {
                     } else if (state is OnGotProfile) {
                       this.profileDetails =
                           BlocProvider.of<AccountMenuBloc>(context).profileData;
-                      print('saurabh ${profileDetails!.images.first}');
+                      print('saurabh ${profileDetails!.name}');
                       return Stack(
                         children: [
                           Container(
@@ -89,18 +89,22 @@ class _MyProfileState extends State<MyProfile> {
                             width: MediaQuery.of(context).size.width * 0.244,
                             //color: Colors.orangeAccent,
                           ),
-                          CircleAvatar(
-                            radius: MediaQuery.of(context).size.width * 0.122,
-                            child: ClipOval(
-                              child: Image.network(
-                                profileDetails!.images.first.toString(),
-                                width: double.infinity,
-                                fit: BoxFit.cover,
+                          Container(
+                            alignment: Alignment.center,
+                            child: CircleAvatar(
+                              radius: MediaQuery.of(context).size.width * 0.122,
+                              child: ClipOval(
+                                child: Image.network(
+                                  profileDetails!.images.first.toString(),
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                           ),
                           Positioned(
-                            bottom: 0,
+                            bottom: 50,
+                            right: 25,
                             left: MediaQuery.of(context).size.width * 0.077,
                             child: InkWell(
                               onTap: () {
@@ -120,7 +124,7 @@ class _MyProfileState extends State<MyProfile> {
                             ),
                           ),
                           Positioned(
-                            right: MediaQuery.of(context).size.width * 0.02,
+                            right: MediaQuery.of(context).size.width * 0.36,
                             child: Stack(
                               children: [
                                 Container(
@@ -144,42 +148,44 @@ class _MyProfileState extends State<MyProfile> {
                                 )
                               ],
                             ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(top: 120),
+                            alignment: Alignment.bottomCenter,
+                            child: Text(
+                              profileDetails!.name,
+                              style: MmmTextStyles.heading4(textColor: kDark5),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(top: 150),
+                            alignment: Alignment.bottomCenter,
+                            child: Text(
+                              profileDetails!.mmId,
+                              style:
+                                  MmmTextStyles.bodyRegular(textColor: gray3),
+                            ),
                           )
+
+                          // TextButton(
+                          //     onPressed: () {},
+                          //     child: Text(
+                          //       'Edit',
+                          //       style: MmmTextStyles.heading6(textColor: kPrimary),
+                          //     )),
                         ],
                       );
                     } else
                       return Container(
-                        child: Text(
-                          'else',
-                          style: MmmTextStyles.heading4(textColor: kDark5),
-                        ),
-                      );
+                          // child: Text(
+                          //   'else',
+                          //   style: MmmTextStyles.heading4(textColor: kDark5),
+                          // ),
+                          );
                   },
                 ),
               ),
-              SizedBox(
-                height: 16,
-              ),
-              Text(
-                // profileDetails!.name,
-                "Akash",
-                style: MmmTextStyles.heading4(textColor: kDark5),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '#123456',
-                    style: MmmTextStyles.bodyRegular(textColor: gray3),
-                  ),
-                  // TextButton(
-                  //     onPressed: () {},
-                  //     child: Text(
-                  //       'Edit',
-                  //       style: MmmTextStyles.heading6(textColor: kPrimary),
-                  //     )),
-                ],
-              ),
+
               SizedBox(
                 height: 40,
               ),
@@ -187,15 +193,7 @@ class _MyProfileState extends State<MyProfile> {
               SizedBox(
                 height: 16,
               ),
-              // MmmButtons.myProfileButtons('About', action: () {
-              //   // var userRepo =
-              //   //     BlocProvider.of<AccountMenuBloc>(context).userRepository;
-              //   Navigator.of(context).push(
-              //     MaterialPageRoute(
-              //         builder: (context) =>
-              //             Bio(userRepository: userRepository)),
-              //   );
-              // }),
+
               SizedBox(
                 height: 16,
               ),
@@ -203,9 +201,9 @@ class _MyProfileState extends State<MyProfile> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ABoutProfile(
-                            userRepository: widget.userRepository,
-                          )),
+                    builder: (context) =>
+                        ABoutProfile(userRepository: widget.userRepository),
+                  ),
                 );
               }),
               SizedBox(
@@ -215,7 +213,10 @@ class _MyProfileState extends State<MyProfile> {
                   action: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => PartnerPrefs()),
+                  MaterialPageRoute(
+                      builder: (context) => PartnerPrefsScreen(
+                            userRepository: widget.userRepository,
+                          )),
                 );
                 // var userRepo =
                 //     BlocProvider.of<SignInBloc>(context).userRepository;
