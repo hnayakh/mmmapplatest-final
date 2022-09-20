@@ -112,7 +112,7 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                     ),
                     Stack(children: [
                       Container(
-                        height: MediaQuery.of(context).size.height * 0.10,
+                        height: MediaQuery.of(context).size.height * 0.15,
                         width: MediaQuery.of(context).size.width * 0.90,
                         //color: Colors.orangeAccent,
                       ),
@@ -125,7 +125,7 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                       // SizedBox(height: 10),
                       //SizedBox(width: 80),
                       Positioned(
-                        left: 20,
+                        left: 60,
                         child: CircleAvatar(
                           radius: MediaQuery.of(context).size.width * 0.122,
                           child: ClipOval(
@@ -138,18 +138,6 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                         ),
                       ),
 
-                      Positioned(
-                        left: 100,
-                        top: 30,
-                        child: Container(
-                          child: SvgPicture.asset(
-                            "images/heart.svg",
-                            color: Colors.pinkAccent,
-                            height: 61,
-                            width: 61,
-                          ),
-                        ),
-                      ),
                       //  SizedBox(width: 20),
                       Positioned(
                         left: 180,
@@ -164,14 +152,27 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                           ),
                         ),
                       ),
+                      Positioned(
+                        left: 140,
+                        top: 40,
+                        child: Container(
+                          child: SvgPicture.asset(
+                            "images/heart.svg",
+                            color: Colors.pinkAccent,
+                            height: 61,
+                            width: 61,
+                          ),
+                        ),
+                      ),
                       //  SizedBox(width: 80),
                       //],
                       //),
                     ]),
+                    //  SizedBox(height: 10),
                     Container(
                       alignment: Alignment.center,
                       height: 70.0,
-                      // width: 500.0,
+                      // width: 900.0,
                       margin: const EdgeInsets.all(20.0),
                       padding: const EdgeInsets.all(3.0),
                       decoration: BoxDecoration(
