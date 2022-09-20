@@ -178,29 +178,31 @@ class _AboutProfileScreenState extends State<AboutProfileScreen> {
                                       ),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
-                                    Positioned(
-                                        top: 8,
-                                        right: 8,
+                                    // Positioned(
+                                    //     top: 8,
+                                    //     right: 8,
+                                    Container(
                                         child: InkWell(
-                                          onTap: () {
-                                            BlocProvider.of<BioBloc>(context)
-                                                .add(RemoveImage(index));
-                                          },
-                                          child: Container(
-                                            child: SvgPicture.asset(
-                                              "images/Cross.svg",
-                                              color: Colors.white,
-                                            ),
-                                            width: 18,
-                                            height: 18,
-                                            padding: const EdgeInsets.all(2),
-                                            decoration: BoxDecoration(
-                                                gradient: MmmDecorations
-                                                    .primaryGradient(),
-                                                borderRadius:
-                                                    BorderRadius.circular(9)),
-                                          ),
-                                        ))
+                                      onTap: () {
+                                        BlocProvider.of<BioBloc>(context)
+                                            .add(RemoveImage(index));
+                                      },
+                                      child: Container(
+                                        child: SvgPicture.asset(
+                                          "images/Cross.svg",
+                                          color: Colors.white,
+                                        ),
+                                        width: 18,
+                                        height: 18,
+                                        padding: const EdgeInsets.all(2),
+                                        decoration: BoxDecoration(
+                                            gradient: MmmDecorations
+                                                .primaryGradient(),
+                                            borderRadius:
+                                                BorderRadius.circular(9)),
+                                      ),
+                                    ))
+                                    //)
                                   ],
                                 ),
                                 decoration: BoxDecoration(

@@ -213,7 +213,10 @@ class _MyProfileState extends State<MyProfile> {
                   action: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => PartnerPrefs()),
+                  MaterialPageRoute(
+                      builder: (context) => PartnerPrefsScreen(
+                            userRepository: widget.userRepository,
+                          )),
                 );
                 // var userRepo =
                 //     BlocProvider.of<SignInBloc>(context).userRepository;
