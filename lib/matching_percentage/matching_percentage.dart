@@ -112,16 +112,17 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                     ),
                     Stack(children: [
                       Container(
-                        height: MediaQuery.of(context).size.height * 0.17,
-                        width: MediaQuery.of(context).size.width * 0.244,
+                        height: MediaQuery.of(context).size.height * 0.10,
+                        width: MediaQuery.of(context).size.width * 0.90,
                         //color: Colors.orangeAccent,
                       ),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
+                        verticalDirection: VerticalDirection.down,
                         mainAxisAlignment: MainAxisAlignment.center,
                         // mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          SizedBox(width: 0.1),
+                          // SizedBox(height: 10),
                           CircleAvatar(
                             radius: MediaQuery.of(context).size.width * 0.122,
                             child: ClipOval(
@@ -132,25 +133,27 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                               ),
                             ),
                           ),
-                          SizedBox(width: 0.1),
+                          // SizedBox(height: 10),
                           Container(
-                            height: 45,
-                            width: 45,
-                            child: Center(
-                              child: SvgPicture.asset(
-                                "images/heart.svg",
-                                color: Colors.white,
-                                height: 62,
-                                width: 62,
-                              ),
-                            ),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                gradient: MmmDecorations.primaryGradient(),
-                                border: Border.all(
-                                    color: Colors.white, width: 1.2)),
+                            height: 65,
+                            width: 65,
+                            //   child: Center(
+                            child: Icon(Icons.favorite,
+                                size: 70.0, color: Colors.pink),
+                            //  SvgPicture.asset(
+                            //   "images/heart.svg",
+                            //   color: Colors.white,
+                            //   height: 62,
+                            //   width: 62,
+                            // ),
+                            //    ),
+                            // decoration: BoxDecoration(
+                            //     shape: BoxShape.circle,
+                            //     gradient: MmmDecorations.primaryGradient(),
+                            //     border: Border.all(
+                            //         color: Colors.white, width: 1.2)),
                           ),
-                          SizedBox(width: 0.1),
+                          //SizedBox(height: 10),
                           CircleAvatar(
                             radius: MediaQuery.of(context).size.width * 0.122,
                             child: ClipOval(
@@ -164,22 +167,42 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                         ],
                       ),
                     ]),
-                    Column(
-                      children: [
-                        Text(
-                          'You Match Percentage with Alia is $percent%',
-                          style: MmmTextStyles.heading4(textColor: kPrimary),
+                    Container(
+                      alignment: Alignment.center,
+                      height: 70.0,
+                      // width: 500.0,
+                      margin: const EdgeInsets.all(20.0),
+                      padding: const EdgeInsets.all(3.0),
+                      decoration: BoxDecoration(
+                        color: Color(0xffF0EFF5),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: Color(0xffDDE1E6),
+                          width: 1,
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        LinearProgressIndicator(
-                          backgroundColor: Colors.grey.shade400,
-                          minHeight: 5,
-                          value: percent.toDouble() / 100.0,
-                          semanticsLabel: 'Linear progress indicator',
-                        ),
-                      ],
+                      ),
+                      child: Column(
+                        children: [
+                          Center(
+                            child: Text(
+                              'You Match Percentage with Alia is $percent%',
+                              style:
+                                  MmmTextStyles.heading4(textColor: kPrimary),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Center(
+                            child: LinearProgressIndicator(
+                              backgroundColor: Colors.grey.shade400,
+                              minHeight: 7,
+                              value: percent.toDouble() / 100.0,
+                              semanticsLabel: 'Linear progress indicator',
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: 10,
