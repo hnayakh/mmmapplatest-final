@@ -116,56 +116,57 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                         width: MediaQuery.of(context).size.width * 0.90,
                         //color: Colors.orangeAccent,
                       ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        verticalDirection: VerticalDirection.down,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        // mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          // SizedBox(height: 10),
-                          CircleAvatar(
-                            radius: MediaQuery.of(context).size.width * 0.122,
-                            child: ClipOval(
-                              child: Image.network(
-                                'images/stackviewImage.jpg',
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                              ),
+                      // Row(
+                      //   crossAxisAlignment: CrossAxisAlignment.end,
+                      //   verticalDirection: VerticalDirection.down,
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   // mainAxisAlignment: MainAxisAlignment.end,
+                      //   children: [
+                      // SizedBox(height: 10),
+                      //SizedBox(width: 80),
+                      Positioned(
+                        left: 20,
+                        child: CircleAvatar(
+                          radius: MediaQuery.of(context).size.width * 0.122,
+                          child: ClipOval(
+                            child: Image.network(
+                              'images/stackviewImage.jpg',
+                              width: double.infinity,
+                              fit: BoxFit.cover,
                             ),
                           ),
-                          // SizedBox(height: 10),
-                          Container(
-                            height: 65,
-                            width: 65,
-                            //   child: Center(
-                            child: Icon(Icons.favorite,
-                                size: 70.0, color: Colors.pink),
-                            //  SvgPicture.asset(
-                            //   "images/heart.svg",
-                            //   color: Colors.white,
-                            //   height: 62,
-                            //   width: 62,
-                            // ),
-                            //    ),
-                            // decoration: BoxDecoration(
-                            //     shape: BoxShape.circle,
-                            //     gradient: MmmDecorations.primaryGradient(),
-                            //     border: Border.all(
-                            //         color: Colors.white, width: 1.2)),
-                          ),
-                          //SizedBox(height: 10),
-                          CircleAvatar(
-                            radius: MediaQuery.of(context).size.width * 0.122,
-                            child: ClipOval(
-                              child: Image.network(
-                                '$image',
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
+
+                      Positioned(
+                        left: 100,
+                        top: 30,
+                        child: Container(
+                          child: SvgPicture.asset(
+                            "images/heart.svg",
+                            color: Colors.pinkAccent,
+                            height: 61,
+                            width: 61,
+                          ),
+                        ),
+                      ),
+                      //  SizedBox(width: 20),
+                      Positioned(
+                        left: 180,
+                        child: CircleAvatar(
+                          radius: MediaQuery.of(context).size.width * 0.122,
+                          child: ClipOval(
+                            child: Image.network(
+                              '$image',
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+                      //  SizedBox(width: 80),
+                      //],
+                      //),
                     ]),
                     Container(
                       alignment: Alignment.center,
@@ -232,11 +233,21 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                             initialValue:
                                 matchingFieldList[i]['value'].toString(),
                             decoration: InputDecoration(
-                                border: UnderlineInputBorder(),
-                                labelText:
-                                    matchingFieldList[i]['filed'].toString(),
-                                suffixIcon:
-                                    Icon(Icons.verified, color: Colors.green)),
+                              border: UnderlineInputBorder(),
+                              labelText:
+                                  matchingFieldList[i]['filed'].toString(),
+                              suffixIcon: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: SvgPicture.asset(
+                                  "images/tick.svg",
+                                  color: Colors.green,
+                                  width: 20,
+                                  height: 20,
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                              // Icon(Icons.verified, color: Colors.green)
+                            ),
                           );
                         }),
                       ),
@@ -255,8 +266,8 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                                 border: UnderlineInputBorder(),
                                 labelText:
                                     differentFieldList[i]['filed'].toString(),
-                                suffixIcon:
-                                    Icon(Icons.cancel, color: Colors.red)),
+                                suffixIcon: Icon(Icons.cancel_outlined,
+                                    color: Colors.red)),
                           );
                         }),
                       ),
