@@ -218,7 +218,14 @@ class MatchingProfileSearchResponse {
 }
 
 class ProfileDetails {
-  late String id, email, countryCode, dialCode, name, aboutMe, dateOfBirth;
+  late String id,
+      email,
+      mmId,
+      countryCode,
+      dialCode,
+      name,
+      aboutMe,
+      dateOfBirth;
   late Gender gender;
   late Relationship relationship;
   late MaritalStatus maritalStatus;
@@ -250,6 +257,7 @@ class ProfileDetails {
 
   ProfileDetails.fromJson(json, ProfileActivationStatus activationStatus) {
     this.id = json["id"];
+    this.mmId = json["displayId"];
     this.activationStatus = activationStatus;
     this.email = json["email"];
     this.countryCode = json["countryCode"];
