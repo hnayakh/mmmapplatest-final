@@ -3,12 +3,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/saurabh/custom_drawer.dart';
+import 'package:makemymarry/saurabh/filter_preference.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
+import 'package:makemymarry/views/stackviewscreens/notification_list.dart';
 
 class SearchScreen extends StatefulWidget {
   final UserRepository userRepository;
@@ -156,6 +158,9 @@ class _SearchScreenState extends State<SearchScreen> {
                 ],
               ),
             ),
+            SizedBox(
+              height: 50,
+            ),
             Row(
               children: [
                 Expanded(
@@ -177,6 +182,11 @@ class _SearchScreenState extends State<SearchScreen> {
                             'Filter',
                             index == 1 ? kPrimary : gray3, action: () {
                           setColor(1);
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => FilterPrefsScreen(
+                                    userRepository: widget.userRepository)),
+                          );
                         }),
                         MmmWidgets.bottomBarUnits(
                             'images/connect.svg',
@@ -189,6 +199,12 @@ class _SearchScreenState extends State<SearchScreen> {
                             'Notifications',
                             index == 3 ? kPrimary : gray3, action: () {
                           setColor(3);
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => Notifications(
+                                      userRepository: widget.userRepository,
+                                    )),
+                          );
                         }),
                         MmmWidgets.bottomBarUnits('images/menu.svg', 'More',
                             index == 4 ? kPrimary : gray3, action: () {

@@ -155,10 +155,8 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
                 child: SafeArea(
                     child: Column(
                   children: [
-                    MmmButtons.appBarCurved(
-                      'Profile Preference',
-                      // context: context
-                    ),
+                    MmmButtons.appBarCurved('Profile Preference',
+                        context: context),
                     Expanded(
                         child: Container(
                       padding: kMargin16,

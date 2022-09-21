@@ -30,7 +30,7 @@ class _AddIterestsState extends State<AddIterests> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    var primaryColor = HexColor('C9184A');
+    var primaryColor = HexColor('#FF4D6D');
     return Scaffold(
         appBar: MmmButtons.appBarCurved('Add Interests', context: context),
         body: Container(
@@ -115,7 +115,7 @@ class _AddIterestsState extends State<AddIterests> {
 }
 
 var interestList = [
-  {'icon': '', 'name': "Sports", "status": true},
+  {'icon': 'images/icons/camera.svg', 'name': "Sports", "status": true},
   {'icon': '', 'name': "Ravel", "status": true},
   {'icon': 'images/icons/camera.svg', 'name': "Photography", "status": true},
   {'icon': '', 'name': "Gaming ", "status": true},

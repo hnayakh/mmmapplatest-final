@@ -125,7 +125,7 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                       // SizedBox(height: 10),
                       //SizedBox(width: 80),
                       Positioned(
-                        left: 60,
+                        left: 68,
                         child: CircleAvatar(
                           radius: MediaQuery.of(context).size.width * 0.122,
                           child: ClipOval(
@@ -140,7 +140,7 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
 
                       //  SizedBox(width: 20),
                       Positioned(
-                        left: 180,
+                        left: 188,
                         child: CircleAvatar(
                           radius: MediaQuery.of(context).size.width * 0.122,
                           child: ClipOval(
@@ -153,14 +153,14 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                         ),
                       ),
                       Positioned(
-                        left: 140,
-                        top: 40,
+                        left: 148,
+                        top: 30,
                         child: Container(
                           child: SvgPicture.asset(
                             "images/heart.svg",
                             color: Colors.pinkAccent,
-                            height: 61,
-                            width: 61,
+                            height: 65,
+                            width: 65,
                           ),
                         ),
                       ),

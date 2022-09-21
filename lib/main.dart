@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/saurabh/myprofile/about_profile.dart';
 import 'package:makemymarry/saurabh/myprofile/add_interest.dart';
-import 'package:makemymarry/saurabh/paertner_prefs.dart';
+import 'package:makemymarry/saurabh/filter_preference.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_styles.dart';

@@ -6,7 +6,7 @@ import 'package:makemymarry/bloc/sign_in/signin_bloc.dart';
 import 'package:makemymarry/matching_percentage/matching_percentage.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/saurabh/myprofile/add_interest.dart';
-import 'package:makemymarry/saurabh/paertner_prefs.dart';
+import 'package:makemymarry/saurabh/filter_preference.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
@@ -214,10 +214,17 @@ class _MyProfileState extends State<MyProfile> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => PartnerPrefsScreen(
+                      builder: (context) => ProfilePreference(
                             userRepository: widget.userRepository,
                           )),
                 );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //       builder: (context) => PartnerPrefsScreen(
+                //             userRepository: widget.userRepository,
+                //           )),
+                // );
                 // var userRepo =
                 //     BlocProvider.of<SignInBloc>(context).userRepository;
                 // Navigator.of(context).pushAndRemoveUntil(
