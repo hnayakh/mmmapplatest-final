@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
+import 'package:makemymarry/premium_members/premium_members.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/saurabh/custom_drawer.dart';
 import 'package:makemymarry/saurabh/filter_preference.dart';
@@ -14,8 +15,14 @@ import 'package:makemymarry/views/stackviewscreens/notification_list.dart';
 
 class SearchScreen extends StatefulWidget {
   final UserRepository userRepository;
+  final List<MatchingProfile> list;
+  final List<MatchingProfile> searchList;
 
-  const SearchScreen({Key? key, required this.userRepository})
+  const SearchScreen(
+      {Key? key,
+      required this.userRepository,
+      required this.list,
+      required this.searchList})
       : super(key: key);
 
   @override
@@ -141,8 +148,16 @@ class _SearchScreenState extends State<SearchScreen> {
                       action: () {}),
                   SizedBox(height: 8),
                   MmmButtons.searchButtons(
-                      'images/online.svg', 'Premium Members',
-                      action: () {}),
+                      'images/online.svg', 'Premium Members', action: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => PremiumMembersScreen(
+                                userRepository: widget.userRepository,
+                                list: widget.list,
+                                searchList: widget.searchList,
+                              )),
+                    );
+                  }),
                   SizedBox(height: 8),
                   MmmButtons.searchButtons(
                       'images/profileViewed.svg', 'Profile Viewed by',

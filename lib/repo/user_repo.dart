@@ -205,6 +205,11 @@ class UserRepository {
     return apiClient.uploadImage(useDetails!.id, images);
   }
 
+  Future<String?> uploadDocument(String images) async {
+    print("Akash uplaod");
+    return apiClient.uploadImage(useDetails!.id, images);
+  }
+
   Future<SimpleResponse> completePreference(
       double maxHeight,
       double minHeight,

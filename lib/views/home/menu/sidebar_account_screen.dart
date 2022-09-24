@@ -9,6 +9,7 @@ import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/saurabh/profile_detail.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/dimens.dart';
+import 'package:makemymarry/views/home/matching_profile/matching_profile_bloc.dart';
 import 'package:makemymarry/views/home/my_connects/my_connects_screen.dart';
 import 'package:makemymarry/views/signinscreens/signin_screen1.dart';
 import 'package:makemymarry/views/stackviewscreens/search_screen.dart';
@@ -29,14 +30,28 @@ import 'wallet/wallet_main.dart';
 
 class SidebarAccount extends StatelessWidget {
   final UserRepository userRepository;
+  final List<MatchingProfile> list;
+  final List<MatchingProfile> searchList;
 
-  const SidebarAccount({Key? key, required this.userRepository})
+  const SidebarAccount(
+      {Key? key,
+      required this.userRepository,
+      required this.list,
+      required this.searchList})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AccountMenuBloc(userRepository),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => AccountMenuBloc(userRepository),
+        ),
+        BlocProvider(
+          create: (context) =>
+              MatchingProfileBloc(userRepository, list, searchList),
+        ),
+      ],
       child: SidebarAccountScreen(),
     );
   }
@@ -163,6 +178,8 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
 
   void navigateTo(int index) {
     var userRepo = BlocProvider.of<AccountMenuBloc>(context).userRepository;
+    var list = BlocProvider.of<MatchingProfileBloc>(context).list;
+    var searchList = BlocProvider.of<MatchingProfileBloc>(context).searchList;
     switch (index) {
       case 0:
         print("Profile ahead");
@@ -174,7 +191,11 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
       case 1:
         Navigator.of(context).push(
           MaterialPageRoute(
-              builder: (context) => SearchScreen(userRepository: userRepo)),
+              builder: (context) => SearchScreen(
+                    userRepository: userRepo,
+                    list: list,
+                    searchList: searchList,
+                  )),
         );
         break;
       case 2:

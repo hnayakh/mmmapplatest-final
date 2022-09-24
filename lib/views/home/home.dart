@@ -109,6 +109,8 @@ class HomeScreenState extends State<HomeScreen> {
       case 4:
         return SidebarAccount(
           userRepository: widget.userRepository,
+          list: widget.list,
+          searchList: widget.searchList,
         );
     }
     return Container();
