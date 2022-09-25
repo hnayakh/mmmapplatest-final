@@ -10,6 +10,7 @@ import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
+import 'package:makemymarry/utils/view_decorations.dart';
 import 'package:makemymarry/views/profilescreens/bio/bio_bloc.dart';
 import 'package:makemymarry/views/profilescreens/bio/bio_event.dart';
 import 'package:makemymarry/views/profilescreens/bio/image_picker_dialog.dart';
@@ -44,6 +45,7 @@ class VerifyAccountScreen extends StatefulWidget {
 class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
   IdProofType? idProof;
   String docImage = '';
+  List<String> localImagePaths = [];
 
   @override
   Widget build(BuildContext context) {
@@ -84,19 +86,104 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
                         borderRadius: BorderRadius.circular(8),
                         color: kWhite,
                         boxShadow: [MmmShadow.elevation2()]),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset('images/filter.svg'),
-                        SizedBox(
-                          height: 4,
+                    child: Container(
+                      height: (MediaQuery.of(context).size.height) / 3,
+                      child: Flexible(
+                        child: GridView.builder(
+                          shrinkWrap: true,
+                          gridDelegate:
+                              SliverGridDelegateWithMaxCrossAxisExtent(
+                                  maxCrossAxisExtent:
+                                      (MediaQuery.of(context).size.width) / 2,
+                                  mainAxisExtent: 120,
+                                  crossAxisSpacing: 20,
+                                  mainAxisSpacing: 20),
+                          itemBuilder: (context, index) {
+                            print('saurabhtest ${this.localImagePaths.length}');
+                            if (index == this.localImagePaths.length) {
+                              return addImageButton();
+
+                              // if (index == 0) {
+                              //   return ClipRRect(
+                              //     borderRadius: BorderRadius.circular(10),
+                              //     child: Image.network(
+                              //       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6eSTakjPRBatCMcm9fiX2KON4RC-Pjox1L2hqotKsmqIZhNaTKCuBUZbHiw6lvms2uwc&usqp=CAU",
+                              //       height: 120,
+                              //       // width: 120,
+                              //       fit: BoxFit.fitWidth,
+                              //     ),
+                              //   );
+                            } else
+                              // return addImageButton();
+                              return Container(
+                                child: Stack(
+                                  children: [
+                                    ClipRRect(
+                                      child: Image.network(
+                                        this.localImagePaths[index],
+                                        fit: BoxFit.cover,
+                                        width: (MediaQuery.of(context)
+                                                .size
+                                                .width) /
+                                            2,
+                                        height: 120,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    // Positioned(
+                                    //     top: 8,
+                                    //     right: 8,
+                                    Container(
+                                        child: InkWell(
+                                      onTap: () {
+                                        BlocProvider.of<BioBloc>(context)
+                                            .add(RemoveImage(index));
+                                      },
+                                      child: Container(
+                                        child: SvgPicture.asset(
+                                          "images/Cross.svg",
+                                          color: Colors.white,
+                                        ),
+                                        width: 18,
+                                        height: 18,
+                                        padding: const EdgeInsets.all(2),
+                                        decoration: BoxDecoration(
+                                            gradient: MmmDecorations
+                                                .primaryGradient(),
+                                            borderRadius:
+                                                BorderRadius.circular(9)),
+                                      ),
+                                    ))
+                                    //)
+                                  ],
+                                ),
+                                decoration: BoxDecoration(
+                                    boxShadow: [
+                                      MmmShadow.elevation3(shadowColor: kShadow)
+                                    ],
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(8)),
+                              );
+                          },
+                          itemCount: this.localImagePaths.length + 1,
                         ),
-                        Text(
-                          'Click to upload your document',
-                          style: MmmTextStyles.bodySmall(textColor: gray3),
-                        )
-                      ],
+                      ),
                     ),
+                    // child: Column(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+
+                    //   children: [
+                    //     SvgPicture.asset('images/filter.svg'),
+                    //     SizedBox(
+                    //       height: 4,
+                    //     ),
+
+                    //     Text(
+                    //       'Click to upload your document',
+                    //       style: MmmTextStyles.bodySmall(textColor: gray3),
+                    //     )
+                    //   ],
+                    // ),
                   ),
                 ),
                 SizedBox(
@@ -128,7 +215,43 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
 
   void initData() {
     this.idProof = BlocProvider.of<VerifyBloc>(context).idProof;
-    this.docImage = BlocProvider.of<VerifyBloc>(context).docImage;
+    this.localImagePaths = BlocProvider.of<VerifyBloc>(context).localImagePaths;
+  }
+
+  InkWell addImageButton() {
+    return InkWell(
+      onTap: () {
+        showImagePickerDialog();
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SvgPicture.asset('images/filter.svg'),
+          SizedBox(
+            height: 4,
+          ),
+          Text(
+            'Click to upload your document',
+            style: MmmTextStyles.bodySmall(textColor: gray3),
+          )
+        ],
+      ),
+      // child: Container(
+      //   decoration: BoxDecoration(
+      //       boxShadow: [MmmShadow.elevation3(shadowColor: kShadow)],
+      //       color: Colors.white,
+      //       borderRadius: BorderRadius.circular(8)),
+      //   child: Center(
+      //     child: Container(
+      //       decoration: BoxDecoration(
+      //           border: Border.all(color: kBioSecondary, width: 1.5),
+      //           borderRadius: BorderRadius.circular(7)),
+      //       padding: const EdgeInsets.all(6),
+      //       child: SvgPicture.asset("images/plus.svg"),
+      //     ),
+      //   ),
+      // ),
+    );
   }
 
   void showImagePickerDialog() async {
@@ -159,6 +282,7 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
       source: source,
       imageQuality: 60,
     );
+    print(file);
     if (file != null) {
       //BlocProvider.of<BioBloc>(context).add(AddImage(file.path));
       BlocProvider.of<VerifyBloc>(context).add(IdVerificationEvent(file.path));

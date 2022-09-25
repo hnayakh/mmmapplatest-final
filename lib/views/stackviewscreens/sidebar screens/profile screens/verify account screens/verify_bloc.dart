@@ -7,7 +7,7 @@ import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/profile%20s
 class VerifyBloc extends Bloc<VerifyEvent, VerifyState> {
   late final UserRepository userRepository;
   IdProofType? idProof;
-  String docImage = '';
+  List<String> localImagePaths = [];
 
   VerifyBloc(this.userRepository) : super(VerifyInitialState());
 
@@ -19,9 +19,10 @@ class VerifyBloc extends Bloc<VerifyEvent, VerifyState> {
       yield VerifyInitialState();
     }
     if (event is IdVerificationEvent) {
-      var result = await this.userRepository.uploadDocument(event.image);
+      var result = await this.userRepository.uploadImage(event.image);
+      print(result);
       if (result != null) {
-        this.docImage = event.image;
+        this.localImagePaths.add(event.image);
         yield VerifyInitialState();
       } else {
         yield OnError('Couldnot upload document');

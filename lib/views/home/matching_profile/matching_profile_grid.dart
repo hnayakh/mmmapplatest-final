@@ -22,13 +22,15 @@ class MatchingProfileGridView extends StatelessWidget {
   final List<MatchingProfile> list;
   final List<MatchingProfile> searchList;
   final List<MatchingProfile>? mySearCh;
+  final String? screenName;
 
   const MatchingProfileGridView(
       {Key? key,
       required this.userRepository,
       required this.list,
       required this.searchList,
-      this.mySearCh})
+      this.mySearCh,
+      this.screenName})
       : super(key: key);
 
   @override

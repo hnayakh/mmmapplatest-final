@@ -16,12 +16,15 @@ class PremiumMembersScreen extends StatefulWidget {
   final UserRepository userRepository;
   final List<MatchingProfile> list;
   final List<MatchingProfile> searchList;
-
-  const PremiumMembersScreen(
+  final String? screenName;
+  final String? searchText;
+  PremiumMembersScreen(
       {Key? key,
       required this.userRepository,
       required this.list,
-      required this.searchList})
+      required this.searchList,
+      required this.screenName,
+      this.searchText})
       : super(key: key);
 
   @override
@@ -97,6 +100,7 @@ class PremiumMembersScreenState extends State<PremiumMembersScreen> {
   }
 
   Widget getContent() {
+    print(widget.screenName);
     switch (index) {
       case 0:
         return BlocProvider<MatchingProfileBloc>(
@@ -104,10 +108,11 @@ class PremiumMembersScreenState extends State<PremiumMembersScreen> {
                 widget.userRepository, widget.list, widget.searchList),
             child: Builder(builder: (context) {
               return MatchingProfileScreen(
-                userRepository: widget.userRepository,
-                list: widget.list,
-                searchList: widget.searchList,
-              );
+                  userRepository: widget.userRepository,
+                  list: widget.list,
+                  searchList: widget.searchList,
+                  screenName: widget.screenName,
+                  searchTextNew: widget.searchText);
             }));
       case 1:
         return Interests(

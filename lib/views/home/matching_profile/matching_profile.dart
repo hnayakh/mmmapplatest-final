@@ -25,6 +25,8 @@ class MatchingProfileScreen extends StatefulWidget {
   List<MatchingProfile> list;
   List<MatchingProfile> searchList;
   String? searchText;
+  final String? screenName;
+  final String? searchTextNew;
   List<String> filters = [
     "Recommended",
     "Profile Visitors",
@@ -42,12 +44,14 @@ class MatchingProfileScreen extends StatefulWidget {
       {Key? key,
       required this.userRepository,
       required this.list,
-      required this.searchList})
+      required this.searchList,
+      this.screenName,
+      this.searchTextNew})
       : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return MatchingProfileScreenState(list, searchText);
+    return MatchingProfileScreenState(list, searchText, screenName);
   }
 }
 
@@ -63,6 +67,7 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
   UserRepository userRepository = UserRepository();
   List<MatchingProfile> searchList = [];
   String? searchText;
+  final String? screenName;
   @override
   void initState() {
     super.initState();
@@ -79,7 +84,8 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
     super.dispose();
   }
 
-  MatchingProfileScreenState(this.list, searchText);
+  MatchingProfileScreenState(this.list, searchText, this.screenName);
+
   void onChangeTextSearch() {
     setState(() {
       this.searchText = myController.text;
@@ -91,6 +97,10 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
   Widget build(BuildContext context) {
     print("searchHer");
     print(this.searchList);
+    print(screenName);
+    if (widget.searchTextNew != null) {
+      showOptionsSearchThroughId(widget.searchTextNew);
+    }
     // return BlocProvider<MatchingProfileBloc>(
     //   create: (context) =>
     //       MatchingProfileBloc(userRepository, list, searchList),
@@ -105,7 +115,8 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
               ? MatchingProfileGridView(
                   userRepository: widget.userRepository,
                   list: list,
-                  searchList: searchList)
+                  searchList: searchList,
+                  screenName: screenName)
               : MatchingProfileStackView(
                   userRepository: widget.userRepository,
                   list: list,
@@ -144,75 +155,214 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                 ),
                 Expanded(
                     child: Container(
-                  child: TextField(
-                    // onChanged: (text) {
-                    //   var value = text;
-                    //   print('Akash');
-                    //   print(value);
-                    // },
-                    controller: myController,
+                  child: screenName == 'PremiumMembers'
+                      ? Container(
+                          height: 44,
+                          //margin: const EdgeInsets.all(15.0),
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                  color: Color.fromARGB(174, 181, 178, 178))),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.king_bed,
+                                size: 30,
+                                color: Colors.black,
+                              ),
+                              Text(
+                                "Premium Members",
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        )
+                      : screenName == 'ProfileViewedBy'
+                          ? Container(
+                              height: 44,
+                              //margin: const EdgeInsets.all(15.0),
+                              padding: const EdgeInsets.all(8.0),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      color:
+                                          Color.fromARGB(174, 181, 178, 178))),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.king_bed,
+                                    size: 30,
+                                    color: Colors.black,
+                                  ),
+                                  Text(
+                                    "Profile Viewed By",
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            )
+                          : screenName == 'ProfileRecentlyViewed'
+                              ? Container(
+                                  height: 44,
+                                  //margin: const EdgeInsets.all(15.0),
+                                  padding: const EdgeInsets.all(8.0),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                          color: Color.fromARGB(
+                                              174, 181, 178, 178))),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.king_bed,
+                                        size: 30,
+                                        color: Colors.black,
+                                      ),
+                                      Text(
+                                        "Recently Viewed",
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : screenName == 'OnlineMembers'
+                                  ? Container(
+                                      height: 44,
+                                      //margin: const EdgeInsets.all(15.0),
+                                      padding: const EdgeInsets.all(8.0),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          border: Border.all(
+                                              color: Color.fromARGB(
+                                                  174, 181, 178, 178))),
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.king_bed,
+                                            size: 30,
+                                            color: Colors.black,
+                                          ),
+                                          Text(
+                                            "Online Members",
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : screenName == 'RecomendedProfile'
+                                      ? Container(
+                                          height: 44,
+                                          //margin: const EdgeInsets.all(15.0),
+                                          padding: const EdgeInsets.all(8.0),
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              border: Border.all(
+                                                  color: Color.fromARGB(
+                                                      174, 181, 178, 178))),
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.king_bed,
+                                                size: 30,
+                                                color: Colors.black,
+                                              ),
+                                              Text(
+                                                "Recomended Profile",
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      : TextField(
+                                          // onChanged: (text) {
+                                          //   var value = text;
+                                          //   print('Akash');
+                                          //   print(value);
+                                          // },
+                                          controller: myController,
 
-                    decoration: InputDecoration(
-                        counterText: '',
-                        // suffix: Container(
-                        //   width: 24,
-                        //   height: 24,
-                        //   padding: const EdgeInsets.all(8),
-                        //   child: SvgPicture.asset(
-                        //     "images/Search.svg",
-                        //     color: kDark5,
-                        //   ),
-                        // ),
-                        border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.white, width: 1),
-                            borderRadius: BorderRadius.circular(8)),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white, width: 1),
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 9),
-                        hintText: "Search by mm id",
-                        isDense: true,
-                        filled: true,
-                        fillColor: Colors.white,
-                        hintStyle:
-                            MmmTextStyles.bodyRegular(textColor: kDark2)),
-                  ),
+                                          decoration: InputDecoration(
+                                              counterText: '',
+                                              // suffix: Container(
+                                              //   width: 24,
+                                              //   height: 24,
+                                              //   padding: const EdgeInsets.all(8),
+                                              //   child: SvgPicture.asset(
+                                              //     "images/Search.svg",
+                                              //     color: kDark5,
+                                              //   ),
+                                              // ),
+                                              border: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Colors.white,
+                                                      width: 1),
+                                                  borderRadius:
+                                                      BorderRadius.circular(8)),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.white,
+                                                    width: 1),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(8)),
+                                              ),
+                                              contentPadding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 12,
+                                                      vertical: 9),
+                                              hintText: "Search by mm id",
+                                              isDense: true,
+                                              filled: true,
+                                              fillColor: Colors.white,
+                                              hintStyle:
+                                                  MmmTextStyles.bodyRegular(
+                                                      textColor: kDark2)),
+                                        ),
                 )),
                 // Positioned(
                 //   left: 8,
                 //   top: 8,
                 //   child:
-                Container(
-                    width: 44,
-                    height: 44,
-                    // alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: kLight4,
-                        boxShadow: [
-                          MmmShadow.filterButton(
-                              shadowColor: kShadowColorForGrid)
-                        ],
-                        borderRadius: BorderRadius.all(Radius.circular(8))),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                              onTap: () {
-                                print("search button click");
-                                showOptionsSearchThroughId();
-                              },
-                              child: Container(
-                                padding: EdgeInsets.all(10),
-                                child: SvgPicture.asset(
-                                  'images/Search.svg',
-                                  fit: BoxFit.cover,
-                                ),
-                              ))),
-                    )),
+                screenName != 'PremiumMembers'
+                    ? Container(
+                        width: 44,
+                        height: 44,
+                        // alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: kLight4,
+                            boxShadow: [
+                              MmmShadow.filterButton(
+                                  shadowColor: kShadowColorForGrid)
+                            ],
+                            borderRadius: BorderRadius.all(Radius.circular(8))),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                  onTap: () {
+                                    print("search button click");
+                                    showOptionsSearchThroughId(this.searchText);
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(10),
+                                    child: SvgPicture.asset(
+                                      'images/Search.svg',
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ))),
+                        ))
+                    : Container(
+                        width: 0,
+                        height: 44,
+                      ),
                 // ),
                 SizedBox(
                   width: 16,
@@ -267,7 +417,7 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
     }
   }
 
-  void showOptionsSearchThroughId() async {
+  void showOptionsSearchThroughId(text) async {
     // var result =
     //     await widget.userRepository.getConnectThroughMMId(this.searchText);
     // print('Result');
@@ -277,7 +427,7 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
     //     searchList = result.searchList;
     //   });
     // }
-    context.read<MatchingProfileBloc>().add(OnSearchByMMID(this.searchText));
+    context.read<MatchingProfileBloc>().add(OnSearchByMMID(text));
     print('SearchhhhNow');
     //print(searchList);
   }

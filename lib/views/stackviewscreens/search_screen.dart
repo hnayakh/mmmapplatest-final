@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/premium_members/premium_members.dart';
@@ -12,6 +13,9 @@ import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/stackviewscreens/notification_list.dart';
+
+import '../home/matching_profile/matching_profile_bloc.dart';
+import '../home/matching_profile/matching_profile_event.dart';
 
 class SearchScreen extends StatefulWidget {
   final UserRepository userRepository;
@@ -31,6 +35,23 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   var index;
+  final myController = TextEditingController();
+  String? searchText;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Start listening to changes.
+    myController.addListener(onChangeTextSearch);
+  }
+
+  void onChangeTextSearch() {
+    setState(() {
+      this.searchText = myController.text;
+    });
+    print('Second text field: ${myController.text}');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +85,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             child: Container(
                               width: 100,
                               child: TextField(
+                                  controller: myController,
                                   //controller: cntrlr,
                                   keyboardType: TextInputType.multiline,
                                   maxLines: 1,
@@ -99,7 +121,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                       color: Colors.transparent,
                                       child: InkWell(
                                           onTap: () {
-                                            print("serach started");
+                                            print("search button click");
+                                            showOptionsSearchThroughId();
                                           },
                                           child: Container(
                                             padding: EdgeInsets.all(10),
@@ -144,8 +167,17 @@ class _SearchScreenState extends State<SearchScreen> {
                     height: 40,
                   ),
                   MmmButtons.searchButtons(
-                      'images/online.svg', 'Online Members',
-                      action: () {}),
+                      'images/online.svg', 'Online Members', action: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => PremiumMembersScreen(
+                                userRepository: widget.userRepository,
+                                list: widget.list,
+                                searchList: widget.searchList,
+                                screenName: "OnlineMembers",
+                              )),
+                    );
+                  }),
                   SizedBox(height: 8),
                   MmmButtons.searchButtons(
                       'images/online.svg', 'Premium Members', action: () {
@@ -155,21 +187,51 @@ class _SearchScreenState extends State<SearchScreen> {
                                 userRepository: widget.userRepository,
                                 list: widget.list,
                                 searchList: widget.searchList,
+                                screenName: "PremiumMembers",
                               )),
                     );
                   }),
                   SizedBox(height: 8),
                   MmmButtons.searchButtons(
                       'images/profileViewed.svg', 'Profile Viewed by',
-                      action: () {}),
+                      action: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => PremiumMembersScreen(
+                                userRepository: widget.userRepository,
+                                list: widget.list,
+                                searchList: widget.searchList,
+                                screenName: "ProfileViewedBy",
+                              )),
+                    );
+                  }),
                   SizedBox(height: 8),
                   MmmButtons.searchButtons(
                       'images/Search.svg', 'Profile Recently Viewed',
-                      action: () {}),
+                      action: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => PremiumMembersScreen(
+                                userRepository: widget.userRepository,
+                                list: widget.list,
+                                searchList: widget.searchList,
+                                screenName: "ProfileRecentlyViewed",
+                              )),
+                    );
+                  }),
                   SizedBox(height: 8),
                   MmmButtons.searchButtons(
-                      'images/Check.svg', 'Recommended Profile',
-                      action: () {}),
+                      'images/Check.svg', 'Recommended Profile', action: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => PremiumMembersScreen(
+                                userRepository: widget.userRepository,
+                                list: widget.list,
+                                searchList: widget.searchList,
+                                screenName: "RecomendedProfile",
+                              )),
+                    );
+                  }),
                 ],
               ),
             ),
@@ -236,6 +298,22 @@ class _SearchScreenState extends State<SearchScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  void showOptionsSearchThroughId() async {
+    // context.read<MatchingProfileBloc>().add(OnSearchByMMID(this.searchText));
+    // print('SearchhhhNow');
+    //print(searchList);
+    Navigator.of(context).push(
+      MaterialPageRoute(
+          builder: (context) => PremiumMembersScreen(
+                userRepository: widget.userRepository,
+                list: widget.list,
+                searchList: widget.searchList,
+                screenName: "",
+                searchText: this.searchText,
+              )),
     );
   }
 

@@ -191,10 +191,14 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
       case 1:
         Navigator.of(context).push(
           MaterialPageRoute(
-              builder: (context) => SearchScreen(
-                    userRepository: userRepo,
-                    list: list,
-                    searchList: searchList,
+              builder: (context) => BlocProvider(
+                    create: (context) =>
+                        MatchingProfileBloc(userRepo, list, searchList),
+                    child: SearchScreen(
+                      userRepository: userRepo,
+                      list: list,
+                      searchList: searchList,
+                    ),
                   )),
         );
         break;
