@@ -20,6 +20,7 @@ import 'package:makemymarry/views/profileviewscreens/profile_view.dart';
 class MatchingProfileGridView extends StatelessWidget {
   final UserRepository userRepository;
   final List<MatchingProfile> list;
+  final List<MatchingProfile> premiumList;
   final List<MatchingProfile> searchList;
   final List<MatchingProfile>? mySearCh;
   final String? screenName;
@@ -29,6 +30,7 @@ class MatchingProfileGridView extends StatelessWidget {
       required this.userRepository,
       required this.list,
       required this.searchList,
+      required this.premiumList,
       this.mySearCh,
       this.screenName})
       : super(key: key);
@@ -52,19 +54,27 @@ class MatchingProfileGridViewScreen extends StatefulWidget {
 
 class MatchingProfileGridViewScreenState
     extends State<MatchingProfileGridViewScreen> {
-  late List<MatchingProfile> list;
-  late List<MatchingProfile> searchList;
+  List<MatchingProfile> list = [];
+  List<MatchingProfile> searchList = [];
+  List<MatchingProfile> premiumList = [];
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<MatchingProfileBloc, MatchingProfileState>(
         builder: (context, state) {
-      this.list = BlocProvider.of<MatchingProfileBloc>(context).list;
-      // if (state is OnSearchByMMID) {
-      this.searchList =
-          BlocProvider.of<MatchingProfileBloc>(context).searchList;
+      if (state is MatchingProfileInitialState) {
+        this.list = BlocProvider.of<MatchingProfileBloc>(context).list;
+      }
+      if (state is OnSearchByMMID) {
+        this.searchList =
+            BlocProvider.of<MatchingProfileBloc>(context).searchList;
+      }
+      if (state is OnGotPremium) {
+        this.premiumList =
+            BlocProvider.of<MatchingProfileBloc>(context).premiumList;
+      }
       //}
-      print("searchlist$searchList");
+      print("premiumList$premiumList");
       return Stack(
         fit: StackFit.expand,
         children: [
@@ -82,9 +92,33 @@ class MatchingProfileGridViewScreenState
     });
   }
 
+  int getListLength() {
+    var result = this.list.length;
+    if (this.premiumList.length > 0) {
+      result = this.premiumList.length;
+    }
+    if (this.searchList.length > 0) {
+      result = this.searchList.length;
+    }
+    return result;
+  }
+
+  getItem(index) {
+    var result = this.list[index];
+    if (this.premiumList.length > 0) {
+      result = this.premiumList[index];
+    }
+    if (this.searchList.length > 0) {
+      result = this.searchList[index];
+    }
+
+    return result;
+  }
+
   GridView buildGridView() {
-    var listLength =
-        this.searchList.length > 0 ? this.searchList.length : this.list.length;
+    // var listLength =
+    //     this.searchList.length > 0 ? this.searchList.length : this.list.length;
+    var listLength = getListLength();
     return GridView.builder(
       padding: const EdgeInsets.only(top: 96),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -93,9 +127,10 @@ class MatchingProfileGridViewScreenState
           crossAxisSpacing: 16,
           mainAxisSpacing: 16),
       itemBuilder: (context, index) {
-        MatchingProfile item = this.searchList.length > 0
-            ? this.searchList[index]
-            : this.list[index];
+        MatchingProfile item = getItem(index);
+        // this.searchList.length > 0
+        //     ? this.searchList[index]
+        //     : this.list[index];
         print('itemDetails: $item');
         return InkWell(
           child: Card(

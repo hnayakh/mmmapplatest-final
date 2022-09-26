@@ -7,6 +7,11 @@ class MatchingProfileInitialState extends MatchingProfileState {}
 
 class OnLoading extends MatchingProfileState {}
 
+class OnGotPremium extends MatchingProfileState {
+  final List<MatchingProfile> list;
+  OnGotPremium(this.list);
+}
+
 class OnError extends MatchingProfileState {
   final String message;
 

@@ -32,11 +32,13 @@ class SidebarAccount extends StatelessWidget {
   final UserRepository userRepository;
   final List<MatchingProfile> list;
   final List<MatchingProfile> searchList;
+  final List<MatchingProfile> premiumList;
 
   const SidebarAccount(
       {Key? key,
       required this.userRepository,
       required this.list,
+      required this.premiumList,
       required this.searchList})
       : super(key: key);
 
@@ -48,8 +50,8 @@ class SidebarAccount extends StatelessWidget {
           create: (context) => AccountMenuBloc(userRepository),
         ),
         BlocProvider(
-          create: (context) =>
-              MatchingProfileBloc(userRepository, list, searchList),
+          create: (context) => MatchingProfileBloc(
+              userRepository, list, searchList, premiumList),
         ),
       ],
       child: SidebarAccountScreen(),
@@ -180,6 +182,7 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
     var userRepo = BlocProvider.of<AccountMenuBloc>(context).userRepository;
     var list = BlocProvider.of<MatchingProfileBloc>(context).list;
     var searchList = BlocProvider.of<MatchingProfileBloc>(context).searchList;
+    var premiumList = BlocProvider.of<MatchingProfileBloc>(context).premiumList;
     switch (index) {
       case 0:
         print("Profile ahead");
@@ -192,12 +195,13 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
         Navigator.of(context).push(
           MaterialPageRoute(
               builder: (context) => BlocProvider(
-                    create: (context) =>
-                        MatchingProfileBloc(userRepo, list, searchList),
+                    create: (context) => MatchingProfileBloc(
+                        userRepo, list, searchList, premiumList),
                     child: SearchScreen(
                       userRepository: userRepo,
                       list: list,
                       searchList: searchList,
+                      premiumList: premiumList,
                     ),
                   )),
         );

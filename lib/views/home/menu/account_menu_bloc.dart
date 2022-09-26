@@ -26,7 +26,7 @@ class AccountMenuBloc extends Bloc<AccountMenuEvent, AccountMenuState> {
       print(response);
       if (response.status == AppConstants.SUCCESS) {
         this.profileData = response.profileDetails;
-        print('saurabh 2$profileData}');
+        print('saurabh 2$profileData.}');
         yield OnGotProfile(this.profileData!);
       } else {
         print('etywgfyuegtwqyuetwqetwquyteuywqteuy');

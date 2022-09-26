@@ -21,11 +21,13 @@ class SearchScreen extends StatefulWidget {
   final UserRepository userRepository;
   final List<MatchingProfile> list;
   final List<MatchingProfile> searchList;
+  final List<MatchingProfile> premiumList;
 
   const SearchScreen(
       {Key? key,
       required this.userRepository,
       required this.list,
+      required this.premiumList,
       required this.searchList})
       : super(key: key);
 
@@ -174,6 +176,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 userRepository: widget.userRepository,
                                 list: widget.list,
                                 searchList: widget.searchList,
+                                premiumList: widget.premiumList,
                                 screenName: "OnlineMembers",
                               )),
                     );
@@ -187,6 +190,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 userRepository: widget.userRepository,
                                 list: widget.list,
                                 searchList: widget.searchList,
+                                premiumList: widget.premiumList,
                                 screenName: "PremiumMembers",
                               )),
                     );
@@ -201,6 +205,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 userRepository: widget.userRepository,
                                 list: widget.list,
                                 searchList: widget.searchList,
+                                premiumList: widget.premiumList,
                                 screenName: "ProfileViewedBy",
                               )),
                     );
@@ -215,6 +220,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 userRepository: widget.userRepository,
                                 list: widget.list,
                                 searchList: widget.searchList,
+                                premiumList: widget.premiumList,
                                 screenName: "ProfileRecentlyViewed",
                               )),
                     );
@@ -228,6 +234,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 userRepository: widget.userRepository,
                                 list: widget.list,
                                 searchList: widget.searchList,
+                                premiumList: widget.premiumList,
                                 screenName: "RecomendedProfile",
                               )),
                     );
@@ -311,6 +318,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 userRepository: widget.userRepository,
                 list: widget.list,
                 searchList: widget.searchList,
+                premiumList: widget.premiumList,
                 screenName: "",
                 searchText: this.searchText,
               )),

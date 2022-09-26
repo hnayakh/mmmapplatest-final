@@ -66,6 +66,7 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
   List<MatchingProfile> list = [];
   UserRepository userRepository = UserRepository();
   List<MatchingProfile> searchList = [];
+  List<MatchingProfile> premiumList = [];
   String? searchText;
   final String? screenName;
   @override
@@ -90,21 +91,16 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
     setState(() {
       this.searchText = myController.text;
     });
-    print('Second text field: ${myController.text}');
   }
 
   @override
   Widget build(BuildContext context) {
-    print("searchHer");
-    print(this.searchList);
-    print(screenName);
     if (widget.searchTextNew != null) {
       showOptionsSearchThroughId(widget.searchTextNew);
     }
-    // return BlocProvider<MatchingProfileBloc>(
-    //   create: (context) =>
-    //       MatchingProfileBloc(userRepository, list, searchList),
-    //   child: Builder(builder: (context) {
+    if (screenName == 'PremiumMembers') {
+      context.read<MatchingProfileBloc>().add(GetPremiumMembers());
+    }
     return Container(
       height: MediaQuery.of(context).size.height - 72,
       width: MediaQuery.of(context).size.width,
@@ -116,10 +112,12 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                   userRepository: widget.userRepository,
                   list: list,
                   searchList: searchList,
+                  premiumList: premiumList,
                   screenName: screenName)
               : MatchingProfileStackView(
                   userRepository: widget.userRepository,
                   list: list,
+                  premiumList: premiumList,
                   searchList: searchList),
           // Positioned(
           //child:
@@ -167,14 +165,25 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                                   color: Color.fromARGB(174, 181, 178, 178))),
                           child: Row(
                             children: [
-                              Icon(
-                                Icons.king_bed,
-                                size: 30,
+                              // Icon(
+                              //   Icons.king_bed,
+                              //   size: 30,
+                              //   color: Colors.black,
+                              // ),
+                              Image.asset(
+                                "images/Vector.png",
                                 color: Colors.black,
+                                // fit: BoxFit.contain,
+                                height: 40.0,
+                                width: 40.0,
+                                // allowDrawingOutsideViewBox: false,
                               ),
                               Text(
                                 "Premium Members",
                                 textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontFamily: "MakeMyMarrySemiBold",
+                                    color: kDark5),
                               ),
                             ],
                           ),
@@ -197,10 +206,10 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                                     size: 30,
                                     color: Colors.black,
                                   ),
-                                  Text(
-                                    "Profile Viewed By",
-                                    textAlign: TextAlign.center,
-                                  ),
+                                  Text("Profile Viewed By",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontFamily: "MakeMyMarrySemiBold")),
                                 ],
                               ),
                             )
@@ -222,10 +231,11 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                                         size: 30,
                                         color: Colors.black,
                                       ),
-                                      Text(
-                                        "Recently Viewed",
-                                        textAlign: TextAlign.center,
-                                      ),
+                                      Text("Recently Viewed",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontFamily:
+                                                  "MakeMyMarrySemiBold")),
                                     ],
                                   ),
                                 )
@@ -248,10 +258,11 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                                             size: 30,
                                             color: Colors.black,
                                           ),
-                                          Text(
-                                            "Online Members",
-                                            textAlign: TextAlign.center,
-                                          ),
+                                          Text("Online Members",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  fontFamily:
+                                                      "MakeMyMarrySemiBold")),
                                         ],
                                       ),
                                     )
@@ -330,7 +341,7 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                 //   left: 8,
                 //   top: 8,
                 //   child:
-                screenName != 'PremiumMembers'
+                screenName == '' || screenName == null
                     ? Container(
                         width: 44,
                         height: 44,
@@ -418,18 +429,7 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
   }
 
   void showOptionsSearchThroughId(text) async {
-    // var result =
-    //     await widget.userRepository.getConnectThroughMMId(this.searchText);
-    // print('Result');
-    // print(result);
-    // if (result.status == AppConstants.SUCCESS) {
-    //   setState(() {
-    //     searchList = result.searchList;
-    //   });
-    // }
     context.read<MatchingProfileBloc>().add(OnSearchByMMID(text));
-    print('SearchhhhNow');
-    //print(searchList);
   }
 
   void showOptions() async {

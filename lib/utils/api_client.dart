@@ -583,6 +583,28 @@ class ApiClient {
     }
   }
 
+  Future<PremiumMembersResponse> getPremiumMembers(String id) async {
+    try {
+      var response = await this
+          .dio
+          .get("${AppConstants.ENDPOINT}users/premium_members/$id");
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print("omg${response.data}");
+        var data = PremiumMembersResponse.fromJson(response.data);
+
+        return data;
+      }
+      return PremiumMembersResponse.fromError(
+          "Error Occurred. Please try again.");
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      return PremiumMembersResponse.fromError(
+          "Error Occurred. Please try again.");
+    }
+  }
+
   Future<MatchingProfileResponse> getRecentViews(String id) async {
     try {
       var response = await this

@@ -187,6 +187,10 @@ class UserRepository {
     return this.apiClient.getMyMatchingProfile(this.useDetails!.id);
   }
 
+  Future<PremiumMembersResponse> getPremiumMembers() async {
+    return this.apiClient.getPremiumMembers(this.useDetails!.id);
+  }
+
   Future<MatchingProfileResponse> getProfileVisitor() async {
     return this.apiClient.getProfileVisitor(this.useDetails!.id);
   }

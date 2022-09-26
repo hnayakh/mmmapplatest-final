@@ -73,6 +73,7 @@ class _BioScreenState extends State<BioScreen> {
         }
       },
       builder: (context, state) {
+        print("Akashh...$state");
         this.localImagePaths =
             BlocProvider.of<BioBloc>(context).localImagePaths;
         return Stack(

@@ -15,6 +15,8 @@ class OnSearchByMMID extends MatchingProfileEvent {
   OnSearchByMMID(this.mmmId);
 }
 
+class GetPremiumMembers extends MatchingProfileEvent {}
+
 class IsLikedAEvent extends MatchingProfileEvent {
   final int index;
   IsLikedAEvent(this.index);

@@ -15,6 +15,7 @@ import 'package:makemymarry/views/stackviewscreens/notification_list.dart';
 class PremiumMembersScreen extends StatefulWidget {
   final UserRepository userRepository;
   final List<MatchingProfile> list;
+  final List<MatchingProfile> premiumList;
   final List<MatchingProfile> searchList;
   final String? screenName;
   final String? searchText;
@@ -22,6 +23,7 @@ class PremiumMembersScreen extends StatefulWidget {
       {Key? key,
       required this.userRepository,
       required this.list,
+      required this.premiumList,
       required this.searchList,
       required this.screenName,
       this.searchText})
@@ -86,7 +88,8 @@ class PremiumMembersScreenState extends State<PremiumMembersScreen> {
                 });
               }),
               MmmWidgets.bottomBarUnits(
-                  '', 'More', index == 4 ? kPrimary : gray3, action: () {
+                  'images/menu.svg', 'More', index == 4 ? kPrimary : gray3,
+                  action: () {
                 setState(() {
                   this.index = 4;
                 });
@@ -104,8 +107,8 @@ class PremiumMembersScreenState extends State<PremiumMembersScreen> {
     switch (index) {
       case 0:
         return BlocProvider<MatchingProfileBloc>(
-            create: (context) => MatchingProfileBloc(
-                widget.userRepository, widget.list, widget.searchList),
+            create: (context) => MatchingProfileBloc(widget.userRepository,
+                widget.list, widget.searchList, widget.premiumList),
             child: Builder(builder: (context) {
               return MatchingProfileScreen(
                   userRepository: widget.userRepository,
@@ -127,6 +130,7 @@ class PremiumMembersScreenState extends State<PremiumMembersScreen> {
           userRepository: widget.userRepository,
           list: widget.list,
           searchList: widget.searchList,
+          premiumList: widget.premiumList,
         );
     }
     return Container();

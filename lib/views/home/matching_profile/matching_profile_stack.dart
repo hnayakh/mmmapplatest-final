@@ -24,12 +24,14 @@ class MatchingProfileStackView extends StatelessWidget {
   final List<MatchingProfile> list;
   final List<MatchingProfile> searchList;
   final List<MatchingProfile>? mySearCh;
+  final List<MatchingProfile> premiumList;
 
   const MatchingProfileStackView(
       {Key? key,
       required this.userRepository,
       required this.list,
       required this.searchList,
+      required this.premiumList,
       this.mySearCh})
       : super(key: key);
 
@@ -56,8 +58,32 @@ class MatchingProfileStackViewScreenState
     with TickerProviderStateMixin {
   late List<MatchingProfile> list;
   late List<MatchingProfile> searchList;
+  late List<MatchingProfile> premiumList;
   //late List<MatchingProfileSearch> myNewSearch;
   late bool isLiked;
+  int getListLength() {
+    var result = 0;
+    if (this.list.length > 0) {
+      result = this.list.length;
+    } else if (this.searchList.length > 0) {
+      result = this.searchList.length;
+    } else {
+      result = this.premiumList.length;
+    }
+    return result;
+  }
+
+  getItem(index) {
+    var result;
+    if (this.list.length > 0) {
+      result = this.list[index];
+    } else if (this.searchList.length > 0) {
+      result = this.searchList[index];
+    } else {
+      result = this.premiumList[index];
+    }
+    return result;
+  }
 
   // late CardController RepositoryProvider(
   @override
@@ -67,13 +93,16 @@ class MatchingProfileStackViewScreenState
         this.list = BlocProvider.of<MatchingProfileBloc>(context).list;
         this.searchList =
             BlocProvider.of<MatchingProfileBloc>(context).searchList;
+        this.premiumList =
+            BlocProvider.of<MatchingProfileBloc>(context).premiumList;
         // this.myNewSearch =
         //  BlocProvider.of<MatchingProfileBloc>(context).searchList;
         print("test");
         // print(myNewSearch);
-        var listLength = this.searchList.length > 0
-            ? this.searchList.length
-            : this.list.length;
+        var listLength = getListLength();
+        // this.searchList.length > 0
+        //     ? this.searchList.length
+        //     : this.list.length;
         return Stack(
           children: [
             Container(
@@ -82,9 +111,10 @@ class MatchingProfileStackViewScreenState
                 color: gray5,
                 child: PageView.builder(
                   itemBuilder: (context, index) {
-                    MatchingProfile item = this.searchList.length > 0
-                        ? this.searchList[index]
-                        : this.list[index];
+                    MatchingProfile item = getItem(index);
+                    // this.searchList.length > 0
+                    //     ? this.searchList[index]
+                    //     : this.list[index];
 
                     initData(index);
 

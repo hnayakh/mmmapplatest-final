@@ -15,12 +15,15 @@ import 'matching_profile/matching_profile.dart';
 class HomeScreen extends StatefulWidget {
   final UserRepository userRepository;
   final List<MatchingProfile> list;
+  // final List<PremiumMembers> list;
   final List<MatchingProfile> searchList;
+  final List<MatchingProfile> premiumList;
 
   const HomeScreen(
       {Key? key,
       required this.userRepository,
       required this.list,
+      required this.premiumList,
       required this.searchList})
       : super(key: key);
 
@@ -89,13 +92,14 @@ class HomeScreenState extends State<HomeScreen> {
     switch (index) {
       case 0:
         return BlocProvider<MatchingProfileBloc>(
-            create: (context) => MatchingProfileBloc(
-                widget.userRepository, widget.list, widget.searchList),
+            create: (context) => MatchingProfileBloc(widget.userRepository,
+                widget.list, widget.searchList, widget.premiumList),
             child: Builder(builder: (context) {
               return MatchingProfileScreen(
                 userRepository: widget.userRepository,
                 list: widget.list,
                 searchList: widget.searchList,
+                screenName: null,
               );
             }));
       case 1:
@@ -111,6 +115,7 @@ class HomeScreenState extends State<HomeScreen> {
           userRepository: widget.userRepository,
           list: widget.list,
           searchList: widget.searchList,
+          premiumList: widget.premiumList,
         );
     }
     return Container();

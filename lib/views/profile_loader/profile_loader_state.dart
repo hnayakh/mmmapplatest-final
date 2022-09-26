@@ -9,9 +9,10 @@ class OnLoading extends ProfileLoaderState {}
 
 class OnGotProfiles extends ProfileLoaderState {
   final List<MatchingProfile> list;
+  final List<MatchingProfile> premiumList;
   final List<MatchingProfile> searchList;
 
-  OnGotProfiles(this.list, this.searchList);
+  OnGotProfiles(this.list, this.searchList, this.premiumList);
 }
 
 class OnError extends ProfileLoaderState {

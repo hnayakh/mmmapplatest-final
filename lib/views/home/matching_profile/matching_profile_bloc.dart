@@ -10,11 +10,13 @@ class MatchingProfileBloc
     extends Bloc<MatchingProfileEvent, MatchingProfileState> {
   final UserRepository userRepository;
   List<MatchingProfile> list;
+  List<MatchingProfile> premiumList;
   List<MatchingProfile> searchList;
   int selectedPos = 0;
   List<bool> isLikedList = [];
 
-  MatchingProfileBloc(this.userRepository, this.list, this.searchList)
+  MatchingProfileBloc(
+      this.userRepository, this.list, this.searchList, this.premiumList)
       : super(MatchingProfileInitialState()) {
     this.isLikedList = List.generate(list.length, (index) => false);
   }
@@ -58,6 +60,19 @@ class MatchingProfileBloc
         yield OnMMIDSearch(this.searchList);
       } else {
         yield OnError(response.message);
+      }
+    }
+    if (event is GetPremiumMembers) {
+      var result = await this.userRepository.getPremiumMembers();
+      if (result.status == AppConstants.SUCCESS) {
+        this.premiumList = result.list;
+        print("PREMIUM MEMBERS");
+        print(result.list);
+        yield OnGotPremium(this.premiumList);
+      } else {
+        yield OnError(result.message);
+        // print(result.status);
+        // print(result.message);
       }
     }
   }

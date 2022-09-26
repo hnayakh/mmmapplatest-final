@@ -38,6 +38,43 @@ class MatchingProfile {
   late bool isConnected;
   late InterestRequest requestStatus;
   late String? requestId, connectId;
+  // MatchingProfile.fromError(String error);
+  MatchingProfile.fromPremiumJson(json) {
+    this.id = json["userBasicId"];
+    this.name = json["name"];
+    this.city = json["city"];
+    this.state = json["state"];
+    this.dateOfBirth = json["dateOfBirth"];
+    this.imageUrl = json["imageURL"];
+    if (json["activationStatus"] != null) {
+      this.activationStatus =
+          ProfileActivationStatus.values[json["activationStatus"]];
+    } else {
+      this.activationStatus = ProfileActivationStatus.values[1];
+    }
+    if (json["connectStatus"] != null) {
+      this.isConnected = json["connectStatus"]["isConnected"];
+      if (this.isConnected) {
+        this.connectId = json["connectStatus"]["id"];
+      }
+    } else {
+      this.isConnected = false;
+    }
+    if (json["interestStatus"] != null) {
+      this.requestId = json["interestStatus"]["id"];
+      if (json["interestStatus"]["isLiked"]) {
+        this.requestStatus = InterestRequest.Accepted;
+      } else if (json["interestStatus"]["sent"]) {
+        this.requestStatus = InterestRequest.Sent;
+      } else if (json["interestStatus"]["requested"]) {
+        this.requestStatus = InterestRequest.Received;
+      } else {
+        this.requestStatus = InterestRequest.NotConnected;
+      }
+    } else {
+      this.requestStatus = InterestRequest.NotConnected;
+    }
+  }
   MatchingProfile.fromError(String error);
   MatchingProfile.fromJson(json) {
     this.id = json["id"];
@@ -90,6 +127,20 @@ class MatchingProfile {
     }
   }
 }
+
+// class PremiumMembers {
+//   late String id, name, religion, city, state, dateOfBirth, imageURL;
+//   MatchingProfile.fromError(String error);
+//   MatchingProfile.fromPremiumJson(json) {
+//     this.id = json["id"];
+//     this.name = json["name"];
+//     this.religion = json["religion"];
+//     this.city = json["city"];
+//     this.state = json["state"];
+//     this.dateOfBirth = json["dateOfBirth"];
+//     this.imageURL = json["imageURL"];
+//   }
+// }
 
 class MatchingProfileSearch {
   late String id,
@@ -172,6 +223,7 @@ enum InterestRequest { NotConnected, Sent, Received, Accepted }
 class MatchingProfileResponse {
   late String status, message;
   List<MatchingProfile> list = [];
+  // List<PremiumMembers> list = [];
 
   MatchingProfileResponse.fromError(String message) {
     this.status = AppConstants.FAILURE;
@@ -188,6 +240,30 @@ class MatchingProfileResponse {
     List<MatchingProfile> list = [];
     for (var item in json) {
       list.add(MatchingProfile.fromJson(item));
+    }
+    return list;
+  }
+}
+
+class PremiumMembersResponse {
+  late String status, message;
+  List<MatchingProfile> list = [];
+
+  PremiumMembersResponse.fromError(String message) {
+    this.status = AppConstants.FAILURE;
+    this.message = message;
+  }
+
+  PremiumMembersResponse.fromJson(json) {
+    this.status = json['type'];
+    this.message = json["message"];
+    this.list = createList(json["data"]);
+  }
+
+  List<MatchingProfile> createList(json) {
+    List<MatchingProfile> list = [];
+    for (var item in json) {
+      list.add(MatchingProfile.fromPremiumJson(item));
     }
     return list;
   }

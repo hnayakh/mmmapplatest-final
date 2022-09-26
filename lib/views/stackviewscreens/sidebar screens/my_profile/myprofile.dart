@@ -69,6 +69,7 @@ class _MyProfileState extends State<MyProfile> {
                 child: BlocConsumer<AccountMenuBloc, AccountMenuState>(
                   listener: (context, state) {},
                   builder: (context, state) {
+                    print("Akash");
                     print('checkimagestatus$state');
                     if (state is AccountMenuInitialState) {
                       BlocProvider.of<AccountMenuBloc>(context)
@@ -81,7 +82,7 @@ class _MyProfileState extends State<MyProfile> {
                     } else if (state is OnGotProfile) {
                       this.profileDetails =
                           BlocProvider.of<AccountMenuBloc>(context).profileData;
-                      print('saurabh ${profileDetails!.name}');
+                      print('saurabh12345 ${profileDetails!.images}');
                       return Stack(
                         children: [
                           Container(

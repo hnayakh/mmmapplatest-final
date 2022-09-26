@@ -85,6 +85,8 @@ class ProfileLoaderScreenState extends State<ProfileLoaderScreen>
           print('checkprofileloader$state');
           if (state is ProfileLoaderInitialState) {
             BlocProvider.of<ProfileLoaderBloc>(context).add(GetProfiles());
+            // BlocProvider.of<ProfileLoaderBloc>(context)
+            //     .add(GetPremiumMembers());
           }
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -117,20 +119,39 @@ class ProfileLoaderScreenState extends State<ProfileLoaderScreen>
         },
         listener: (context, state) {
           if (state is OnGotProfiles) {
-            navigateToViewProfiles(state.list, state.searchList);
+            navigateToViewProfiles(
+                state.list, state.searchList, state.premiumList);
           }
+          // if (state is OnGotPremium) {
+          //   navigateFor(state.list);
+          // }
         },
       )),
     );
   }
 
-  void navigateToViewProfiles(
-      List<MatchingProfile> list, List<MatchingProfile> seachList) {
+  void navigateToViewProfiles(List<MatchingProfile> list,
+      List<MatchingProfile> seachList, List<MatchingProfile> premiumList) {
     var userRepo = BlocProvider.of<ProfileLoaderBloc>(context).userRepository;
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
             builder: (context) => HomeScreen(
-                userRepository: userRepo, list: list, searchList: seachList)),
+                userRepository: userRepo,
+                list: list,
+                searchList: seachList,
+                premiumList: premiumList)),
         (route) => false);
   }
+
+  // void navigateFor(List<PremiumMembers> list) {
+  //   var userRepo = BlocProvider.of<ProfileLoaderBloc>(context).userRepository;
+  //   Navigator.of(context).pushAndRemoveUntil(
+  //       MaterialPageRoute(
+  //           builder: (context) => HomeScreen(
+  //                 userRepository: userRepo,
+  //                 list: list,
+  //                 searchList: [],
+  //               )),
+  //       (route) => false);
+  // }
 }
