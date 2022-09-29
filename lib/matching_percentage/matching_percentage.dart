@@ -187,7 +187,7 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                         children: [
                           Center(
                             child: Text(
-                              'You Match Percentage with Alia is $percent%',
+                              'You Match Percentage with  is $percent%',
                               style:
                                   MmmTextStyles.heading4(textColor: kPrimary),
                             ),
@@ -267,8 +267,11 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                                 border: UnderlineInputBorder(),
                                 labelText:
                                     differentFieldList[i]['filed'].toString(),
-                                suffixIcon: Icon(Icons.cancel_outlined,
-                                    color: Colors.red)),
+                                suffixIcon: Icon(
+                                  Icons.cancel_outlined,
+                                  color: Colors.red,
+                                  size: 28,
+                                )),
                           );
                         }),
                       ),

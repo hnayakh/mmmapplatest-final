@@ -92,33 +92,33 @@ class MatchingProfileGridViewScreenState
     });
   }
 
-  int getListLength() {
-    var result = this.list.length;
-    if (this.premiumList.length > 0) {
-      result = this.premiumList.length;
-    }
-    if (this.searchList.length > 0) {
-      result = this.searchList.length;
-    }
-    return result;
-  }
+  // int getListLength() {
+  //   var result = this.list.length;
+  //   if (this.premiumList.length > 0) {
+  //     result = this.premiumList.length;
+  //   }
+  //   if (this.searchList.length > 0) {
+  //     result = this.searchList.length;
+  //   }
+  //   return result;
+  // }
 
-  getItem(index) {
-    var result = this.list[index];
-    if (this.premiumList.length > 0) {
-      result = this.premiumList[index];
-    }
-    if (this.searchList.length > 0) {
-      result = this.searchList[index];
-    }
+  // getItem(index) {
+  //   var result = this.list[index];
+  //   if (this.premiumList.length > 0) {
+  //     result = this.premiumList[index];
+  //   }
+  //   if (this.searchList.length > 0) {
+  //     result = this.searchList[index];
+  //   }
 
-    return result;
-  }
+  //   return result;
+  // }
 
   GridView buildGridView() {
-    // var listLength =
-    //     this.searchList.length > 0 ? this.searchList.length : this.list.length;
-    var listLength = getListLength();
+    var listLength =
+        this.searchList.length > 0 ? this.searchList.length : this.list.length;
+    // var listLength = getListLength();
     return GridView.builder(
       padding: const EdgeInsets.only(top: 96),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -127,10 +127,11 @@ class MatchingProfileGridViewScreenState
           crossAxisSpacing: 16,
           mainAxisSpacing: 16),
       itemBuilder: (context, index) {
-        MatchingProfile item = getItem(index);
-        // this.searchList.length > 0
-        //     ? this.searchList[index]
-        //     : this.list[index];
+        MatchingProfile item =
+            //getItem(index);
+            this.searchList.length > 0
+                ? this.searchList[index]
+                : this.list[index];
         print('itemDetails: $item');
         return InkWell(
           child: Card(

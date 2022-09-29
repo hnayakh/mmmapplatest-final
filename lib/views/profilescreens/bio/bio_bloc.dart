@@ -1,13 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
+import 'package:makemymarry/utils/mmm_enums.dart';
 
 import 'bio_event.dart';
 import 'bio_state.dart';
 
 class BioBloc extends Bloc<BioEvent, BioState> {
   final UserRepository userRepository;
-
+  ProfileDetails? profileData;
   BioBloc(this.userRepository) : super(BioInitialState());
   List<String> localImagePaths = [];
 
@@ -72,6 +74,24 @@ class BioBloc extends Bloc<BioEvent, BioState> {
     if (event is RemoveImage) {
       this.localImagePaths.removeAt(event.pos);
       yield BioInitialState();
+    }
+    if (event is FetchMyImage) {
+      var response = await this.userRepository.getOtheruserDetails(
+          userRepository.useDetails!.id,
+          ProfileActivationStatus
+              .values[userRepository.useDetails!.activationStatus]);
+      print('saurabh 1${response.profileDetails.images}');
+
+      print(response);
+      if (response.status == AppConstants.SUCCESS) {
+        this.profileData = response.profileDetails;
+        print('saurabh 2$profileData.}');
+        yield OnGotProfileandImages(this.profileData!);
+      } else {
+        print('etywgfyuegtwqyuetwqetwquyteuywqteuy');
+        print(response);
+        yield OnError(response.message);
+      }
     }
   }
 }

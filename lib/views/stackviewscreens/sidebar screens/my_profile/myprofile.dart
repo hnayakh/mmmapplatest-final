@@ -7,6 +7,7 @@ import 'package:makemymarry/matching_percentage/matching_percentage.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/saurabh/myprofile/add_interest.dart';
 import 'package:makemymarry/saurabh/filter_preference.dart';
+import 'package:makemymarry/saurabh/partner_preference.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
@@ -215,7 +216,7 @@ class _MyProfileState extends State<MyProfile> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ProfilePreference(
+                      builder: (context) => PartnerPrefsScreen(
                             userRepository: widget.userRepository,
                           )),
                 );

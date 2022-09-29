@@ -104,6 +104,8 @@ class PremiumMembersScreenState extends State<PremiumMembersScreen> {
 
   Widget getContent() {
     print(widget.screenName);
+    print('object');
+    print(index);
     switch (index) {
       case 0:
         return BlocProvider<MatchingProfileBloc>(

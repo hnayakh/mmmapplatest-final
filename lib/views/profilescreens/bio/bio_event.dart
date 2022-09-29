@@ -7,13 +7,17 @@ class AddImage extends BioEvent {
 
   AddImage(this.images);
 }
-class RemoveImage extends BioEvent{
+
+class RemoveImage extends BioEvent {
   final int pos;
 
   RemoveImage(this.pos);
 }
-class UpdateBio extends BioEvent{
+
+class UpdateBio extends BioEvent {
   final String bio;
 
   UpdateBio(this.bio);
 }
+
+class FetchMyImage extends BioEvent {}

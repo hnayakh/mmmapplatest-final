@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:makemymarry/utils/colors.dart';
+import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
 
 import '../../datamodels/martching_profile.dart';
 import '../../repo/user_repo.dart';
@@ -26,10 +27,17 @@ class ABoutProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => BioBloc(
-        userRepository,
-      ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => BioBloc(
+            userRepository,
+          ),
+        ),
+        BlocProvider(
+          create: (context) => AccountMenuBloc(this.userRepository),
+        ),
+      ],
       child: AboutProfileScreen(),
     );
   }
@@ -55,6 +63,10 @@ class _AboutProfileScreenState extends State<AboutProfileScreen> {
         body: Container(
             padding: EdgeInsets.symmetric(horizontal: 15),
             child: BlocConsumer<BioBloc, BioState>(listener: (context, state) {
+              if (state is FetchMyImage) {
+                //navigate to profile screen
+                print('profile setup completed Akash$FetchMyImage');
+              }
               if (state is OnProfileSetupCompletion) {
                 //navigate to profile screen
                 print('profile setup completed');

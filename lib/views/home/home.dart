@@ -8,7 +8,6 @@ import 'package:makemymarry/views/home/matching_profile/matching_profile_bloc.da
 import 'package:makemymarry/views/home/menu/sidebar_account_screen.dart';
 import 'package:makemymarry/views/home/my_connects/my_connects_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/notification_list.dart';
-
 import 'interests/interest_status_screen.dart';
 import 'matching_profile/matching_profile.dart';
 
