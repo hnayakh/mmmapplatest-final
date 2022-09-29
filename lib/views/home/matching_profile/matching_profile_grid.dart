@@ -7,15 +7,21 @@ import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/matching_percentage/matching_percentage_bloc.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_helper.dart';
+import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
+import 'package:makemymarry/views/home/home.dart';
 import 'package:makemymarry/views/home/matching_profile/matching_profile_bloc.dart';
 import 'package:makemymarry/views/home/matching_profile/matching_profile_event.dart';
 import 'package:makemymarry/views/home/matching_profile/matching_profile_state.dart';
+import 'package:makemymarry/views/profile_loader/profile_loader_bloc.dart';
 import 'package:makemymarry/views/profileviewscreens/profile_view.dart';
+import 'package:makemymarry/views/stackviewscreens/search_screen.dart';
+
+import '../../../saurabh/hexcolor.dart';
 
 class MatchingProfileGridView extends StatelessWidget {
   final UserRepository userRepository;
@@ -62,10 +68,11 @@ class MatchingProfileGridViewScreenState
   Widget build(BuildContext context) {
     return BlocConsumer<MatchingProfileBloc, MatchingProfileState>(
         builder: (context, state) {
-      if (state is MatchingProfileInitialState) {
+      if (state is MatchingProfileInitialState ||
+          state is OnGotProfileDetails) {
         this.list = BlocProvider.of<MatchingProfileBloc>(context).list;
       }
-      if (state is OnSearchByMMID) {
+      if (state is OnMMIDSearch) {
         this.searchList =
             BlocProvider.of<MatchingProfileBloc>(context).searchList;
       }
@@ -80,7 +87,39 @@ class MatchingProfileGridViewScreenState
         children: [
           Container(
             padding: kMargin16,
-            child: buildGridView(),
+            child: this.searchList.length == 0 && state is OnMMIDSearch
+                ? AlertDialog(
+                    backgroundColor: kWhite,
+                    title: Text("User doesn't exist",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight
+                                .bold)), // To display the title it is optional
+                    content: new RichText(
+                        textAlign: TextAlign.center,
+                        text: new TextSpan(
+                          // Note: Styles for TextSpans must be explicitly defined.
+                          // Child text spans will inherit styles from parent
+                          style: new TextStyle(
+                            fontSize: 14.0,
+                            color: Colors.black,
+                          ),
+                          children: <TextSpan>[
+                            new TextSpan(text: 'Please enter correct'),
+                            new TextSpan(
+                                text: ' mmyid',
+                                style: new TextStyle(color: kPrimary)),
+                            new TextSpan(text: ' to find your perfect match.'),
+                          ],
+                        )),
+                    // Action widget which will provide the user to acknowledge the choice
+                    actions: [
+                      MmmButtons.primaryButton("Ok", () {
+                        navigateToHome(state);
+                      })
+                    ],
+                  )
+                : buildGridView(),
           ),
           state is OnLoading ? MmmWidgets.buildLoader(context) : Container()
         ],
@@ -103,6 +142,20 @@ class MatchingProfileGridViewScreenState
     return result;
   }
 
+  void navigateToHome(state) {
+    print("navigate to home");
+
+    Navigator.of(context, rootNavigator: true).pop('dialog');
+    //   context,
+    //   MaterialPageRoute(
+    //       builder: (context) => SearchScreen(
+    //           userRepository: UserRepository(),
+    //           list: list,
+    //           premiumList: premiumList,
+    //           searchList: searchList)),
+    // );
+  }
+
   getItem(index) {
     var result = this.list[index];
     if (this.premiumList.length > 0) {
@@ -119,6 +172,7 @@ class MatchingProfileGridViewScreenState
     // var listLength =
     //     this.searchList.length > 0 ? this.searchList.length : this.list.length;
     var listLength = getListLength();
+
     return GridView.builder(
       padding: const EdgeInsets.only(top: 96),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

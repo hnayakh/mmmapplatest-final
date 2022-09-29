@@ -49,7 +49,7 @@ class _AboutProfileScreenState extends State<AboutProfileScreen> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    var primaryColor = HexColor('C9184A');
+    var primaryColor = HexColor('EB5B86');
     return Scaffold(
         appBar: MmmButtons.appBarCurved('About', context: context),
         body: Container(
