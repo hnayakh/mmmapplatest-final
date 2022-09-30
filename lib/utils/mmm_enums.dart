@@ -3,9 +3,11 @@ enum Gender {
   Female,
   Other,
 }
+
 enum Relationship { Self, Son, Daughter, Sister, Brother, Friend, Relative }
 
 enum MaritalStatus { NeverMarried, Divorced, Widowed, AwaitingDivorce }
+
 enum MaritalStatusFilter {
   DoesnotMatter,
   NeverMarried,
@@ -13,12 +15,16 @@ enum MaritalStatusFilter {
   Widowed,
   AwaitingDivorce
 }
+
 enum ProfileActivationStatus { Pending, Verified }
+
 enum AbilityStatus {
   Normal,
   PhysicallyChallenged,
 }
+
 enum NoOfChildren { One, Two, ThreeOrMore }
+
 enum ChildrenStatus { No, YesLivingTogether, YesNotLivingTogether }
 
 enum EatingHabit {
@@ -26,6 +32,7 @@ enum EatingHabit {
   Eggitarrian,
   Nonvegetarrian,
 }
+
 enum EatingHabitFilter {
   DoesnotMatter,
   Vegetarrian,
@@ -34,10 +41,12 @@ enum EatingHabitFilter {
 }
 
 enum SmokingHabit {
+  DoesnotMatter,
   Smoker,
   NonSmoker,
   Occasionally,
 }
+
 enum SmokingHabitFilter {
   DoesnotMatter,
   Smoker,
@@ -50,28 +59,46 @@ enum DrinkingHabit {
   Nonalcoholic,
   Occasionally,
 }
+
 enum DrinkingHabitFilter {
   DoesnotMatter,
   Alcoholic,
   Nonalcoholic,
   Occasionally,
 }
+
 enum IdProofType { Passport, VoterIdCard, AadharCard, DrivingLicence, PanCard }
 
-enum FamilyType { Nuclear, Joint, Other }
+enum FamilyType { Nuclear, Joint, Other, Notmentioned }
 
-enum FamilyValues { Traditional, Moderate, Liberal }
+enum FamilyValues { Traditional, Moderate, Liberal, NotMentioned }
 
 enum FamilyAfluenceLevel {
   Rich,
   UpperMiddleClass,
   MiddleClass,
-  LowerMiddleClass
+  LowerMiddleClass,
+  NotMentioned
 }
 
-enum FatherOccupation { Employed, Business, Retired, NotEmployed, PassedAway }
+enum FatherOccupation {
+  Employed,
+  Business,
+  Retired,
+  NotEmployed,
+  PassedAway,
+  NotMentioned
+}
 
-enum MotherOccupation { HomeMaker, Employed, Business, Retired, PassedAway }
+enum MotherOccupation {
+  HomeMaker,
+  Employed,
+  Business,
+  Retired,
+  PassedAway,
+  NotMentioned
+}
+
 enum HeightStatus {
   lessthan5feet,
   lessthan5andhalffeet,
@@ -114,14 +141,18 @@ enum OtpType {
   Login,
   ForgotPassword,
 }
+
 enum Manglik { Yes, No, NotApplicable }
+
 enum ManglikFilter { DoesnotMatter, Yes, No, NotApplicable }
+
 enum EmployeedInFilter {
   DoesnotMatter,
   PrivateJob,
   BusinessOrSelfEmployeed,
   GovernmentJob
 }
+
 enum InterestFilter {
   DoesnotMatter,
   Sports,
@@ -141,6 +172,7 @@ enum InterestFilter {
   Tech,
   Social
 }
+
 enum AnualIncome {
   NoIncome,
   LessThanOneLacs,

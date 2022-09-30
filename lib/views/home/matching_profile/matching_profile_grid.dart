@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:makemymarry/datamodels/connect.dart';
@@ -7,15 +8,24 @@ import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/matching_percentage/matching_percentage_bloc.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_helper.dart';
+import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
+import 'package:makemymarry/views/home/home.dart';
+import 'package:makemymarry/views/home/matching_profile/matching_profile.dart';
 import 'package:makemymarry/views/home/matching_profile/matching_profile_bloc.dart';
 import 'package:makemymarry/views/home/matching_profile/matching_profile_event.dart';
 import 'package:makemymarry/views/home/matching_profile/matching_profile_state.dart';
+import 'package:makemymarry/views/profile_loader/profile_loader_bloc.dart';
+import 'package:makemymarry/views/profile_loader/profile_loader_event.dart';
 import 'package:makemymarry/views/profileviewscreens/profile_view.dart';
+import 'package:makemymarry/views/stackviewscreens/search_screen.dart';
+import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/sidebar_contactsupport_screen.dart';
+
+import '../../../saurabh/hexcolor.dart';
 
 class MatchingProfileGridView extends StatelessWidget {
   final UserRepository userRepository;
@@ -41,6 +51,11 @@ class MatchingProfileGridView extends StatelessWidget {
     //     builder: (context, searchList) {
     //   print("object_search => $searchList");
     return MatchingProfileGridViewScreen();
+    // return BlocProvider(
+    //   create: (context) =>
+    //       MatchingProfileBloc(userRepository, list, searchList, premiumList),
+    //   child: MatchingProfileGridViewScreen(),
+    // );
     //});
   }
 }
@@ -62,10 +77,11 @@ class MatchingProfileGridViewScreenState
   Widget build(BuildContext context) {
     return BlocConsumer<MatchingProfileBloc, MatchingProfileState>(
         builder: (context, state) {
-      if (state is MatchingProfileInitialState) {
+      if (state is MatchingProfileInitialState ||
+          state is OnGotProfileDetails) {
         this.list = BlocProvider.of<MatchingProfileBloc>(context).list;
       }
-      if (state is OnSearchByMMID) {
+      if (state is OnMMIDSearch) {
         this.searchList =
             BlocProvider.of<MatchingProfileBloc>(context).searchList;
       }
@@ -80,7 +96,39 @@ class MatchingProfileGridViewScreenState
         children: [
           Container(
             padding: kMargin16,
-            child: buildGridView(),
+            child: this.searchList.length == 0 && state is OnMMIDSearch
+                ? AlertDialog(
+                    backgroundColor: kWhite,
+                    title: Text("User doesn't exist",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight
+                                .bold)), // To display the title it is optional
+                    content: new RichText(
+                        textAlign: TextAlign.center,
+                        text: new TextSpan(
+                          // Note: Styles for TextSpans must be explicitly defined.
+                          // Child text spans will inherit styles from parent
+                          style: new TextStyle(
+                            fontSize: 14.0,
+                            color: Colors.black,
+                          ),
+                          children: <TextSpan>[
+                            new TextSpan(text: 'Please enter correct'),
+                            new TextSpan(
+                                text: ' mmyid',
+                                style: new TextStyle(color: kPrimary)),
+                            new TextSpan(text: ' to find your perfect match.'),
+                          ],
+                        )),
+                    // Action widget which will provide the user to acknowledge the choice
+                    actions: [
+                      MmmButtons.primaryButton("Ok", () {
+                        navigateToHome(state);
+                      })
+                    ],
+                  )
+                : buildGridView(),
           ),
           state is OnLoading ? MmmWidgets.buildLoader(context) : Container()
         ],
@@ -92,33 +140,94 @@ class MatchingProfileGridViewScreenState
     });
   }
 
-  // int getListLength() {
-  //   var result = this.list.length;
-  //   if (this.premiumList.length > 0) {
-  //     result = this.premiumList.length;
-  //   }
-  //   if (this.searchList.length > 0) {
-  //     result = this.searchList.length;
-  //   }
-  //   return result;
-  // }
+  int getListLength() {
+    var result = this.list.length;
+    if (this.premiumList.length > 0) {
+      result = this.premiumList.length;
+    }
+    if (this.searchList.length > 0) {
+      result = this.searchList.length;
+    }
+    return result;
+  }
 
-  // getItem(index) {
-  //   var result = this.list[index];
-  //   if (this.premiumList.length > 0) {
-  //     result = this.premiumList[index];
-  //   }
-  //   if (this.searchList.length > 0) {
-  //     result = this.searchList[index];
-  //   }
+  void navigateToHome(state) {
+    print("navigate to home");
 
-  //   return result;
-  // }
+    this.list = BlocProvider.of<MatchingProfileBloc>(context).list;
+    //  Navigator.push(
+    //         context,
+    //         MaterialPageRoute(builder: (context) => ContactSupportScreen(userRepository)),
+    //     );
+
+    if (Navigator.canPop(context)) {
+      Navigator.of(context, rootNavigator: true).pop();
+    } else {
+      var userRepo =
+          BlocProvider.of<MatchingProfileBloc>(context).userRepository;
+      // var list = BlocProvider.of<MatchingProfileBloc>(context).list;
+      // var searchList = BlocProvider.of<MatchingProfileBloc>(context).searchList;
+      var premiumList =
+          BlocProvider.of<MatchingProfileBloc>(context).premiumList;
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => HomeScreen(
+                userRepository: userRepo,
+                list: list,
+                searchList: searchList,
+                premiumList: premiumList,
+              )));
+    }
+    // premiumList: premiumList)),
+    // builder: (context) => ContactSupportScreen(
+    //       userRepository: UserRepository(),
+    //       // list: this.list,
+    //       // searchList: this.searchList,
+    //       // premiumList: this.premiumList
+    //     )),
+    //);
+    // Navigator.of(context, rootNavigator: true).pop(context);
+    //  if (Navigator.canPop(context)) {
+    //   Navigator.of(context).pop();
+    // } else {
+    // Navigator.pushReplacement(
+    //     context,
+    //     MaterialPageRoute(
+    //         builder: (_) => MatchingProfileGridView(
+    //             userRepository: UserRepository(),
+    //             list: list,
+    //             searchList: searchList,
+    //             premiumList: premiumList)));
+    //  }
+    // Navigator.of(context).maybePop();
+
+    //Navigator.of(context, rootNavigator: true).pop('dialog');
+    //   context,
+    //   MaterialPageRoute(
+    //       builder: (context) => SearchScreen(
+    //           userRepository: UserRepository(),
+    //           list: list,
+    //           premiumList: premiumList,
+    //           searchList: searchList)),
+    // );
+  }
+
+  getItem(index) {
+    var result = this.list[index];
+    if (this.premiumList.length > 0) {
+      result = this.premiumList[index];
+    }
+    if (this.searchList.length > 0) {
+      result = this.searchList[index];
+    }
+
+    return result;
+  }
 
   GridView buildGridView() {
-    var listLength =
-        this.searchList.length > 0 ? this.searchList.length : this.list.length;
-    // var listLength = getListLength();
+    // var listLength =
+    //     this.searchList.length > 0 ? this.searchList.length : this.list.length;
+    var listLength = getListLength();
+
     return GridView.builder(
       padding: const EdgeInsets.only(top: 96),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -131,7 +240,9 @@ class MatchingProfileGridViewScreenState
             //getItem(index);
             this.searchList.length > 0
                 ? this.searchList[index]
-                : this.list[index];
+                : this.premiumList.length > 0
+                    ? this.premiumList[index]
+                    : this.list[index];
         print('itemDetails: $item');
         return InkWell(
           child: Card(

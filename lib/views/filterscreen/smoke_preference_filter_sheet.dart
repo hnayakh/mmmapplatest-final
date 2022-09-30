@@ -7,7 +7,7 @@ import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 
 class SmokeStatusFilterSheet extends StatefulWidget {
-  final SmokingHabitFilter? selectedSmokeStatus;
+  final SmokingHabit? selectedSmokeStatus;
   const SmokeStatusFilterSheet({Key? key, required this.selectedSmokeStatus})
       : super(key: key);
 
@@ -29,7 +29,7 @@ class _SmokeStatusFilterSheetState extends State<SmokeStatusFilterSheet> {
               height: 24,
             ),
             Text(
-              'Select marital status:',
+              'Select Smoking status:',
               style: MmmTextStyles.bodyMedium(textColor: kDark5),
             ),
             SizedBox(
@@ -58,13 +58,12 @@ class _SmokeStatusFilterSheetState extends State<SmokeStatusFilterSheet> {
                             height: 8,
                           ),
                           Text(
-                              SmokingHabitFilter.values[index] ==
-                                      SmokingHabitFilter.DoesnotMatter
+                              SmokingHabit.values[index] ==
+                                      SmokingHabit.DoesnotMatter
                                   ? 'Doesnot Matter'
-                                  : describeEnum(
-                                      SmokingHabitFilter.values[index]),
+                                  : describeEnum(SmokingHabit.values[index]),
                               style: MmmTextStyles.bodyMediumSmall(
-                                  textColor: SmokingHabitFilter.values[index] ==
+                                  textColor: SmokingHabit.values[index] ==
                                           this.widget.selectedSmokeStatus
                                       ? kPrimary
                                       : kModalPrimary)),

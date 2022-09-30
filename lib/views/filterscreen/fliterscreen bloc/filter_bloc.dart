@@ -15,7 +15,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
   MaritalStatusFilter? maritalStatus;
   EatingHabitFilter? foodStatus;
   DrinkingHabitFilter? drinkingStatus;
-  SmokingHabitFilter? smokeStatus;
+  SmokingHabit? smokeStatus;
   InterestFilter? interestStatus;
   ManglikFilter? isManglik;
   EmployeedInFilter? employeedIn;

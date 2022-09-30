@@ -94,7 +94,7 @@ class _FilterScreenState extends State<FilterScreen> {
   ManglikFilter? manglikStatus;
   EatingHabitFilter? foodStatus;
   DrinkingHabitFilter? drinkStatus;
-  SmokingHabitFilter? smokeStatus;
+  SmokingHabit? smokeStatus;
   InterestFilter? interestStatus;
   EmployeedInFilter? employeedInStatus;
   String? occupation;
@@ -489,7 +489,7 @@ class _FilterScreenState extends State<FilterScreen> {
               selectedSmokeStatus: smokeStatus,
             ));
 
-    if (result != null && result is SmokingHabitFilter) {
+    if (result != null && result is SmokingHabit) {
       BlocProvider.of<FilterBloc>(context).add(OnSmokeFilterSelected(result));
     }
   }

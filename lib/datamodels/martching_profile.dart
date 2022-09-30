@@ -370,14 +370,22 @@ class ProfileDetails {
     this.manglik = Manglik.values[userReligion["isManglik"]];
     if (json["userCareers"].length > 0) {
       var userCareer = json["userCareers"][0];
-
-      this.occupation = userCareer["occupation"];
+      if (userCareer["occupation"] != null) {
+        this.occupation = userCareer["occupation"];
+      } else {
+        this.occupation = "";
+      }
       this.employedin = userCareer["employedIn"];
       this.annualIncome = AnualIncome.values[userCareer["annualIncome"]];
       this.country = userCareer["countryName"];
       this.state = userCareer["stateName"];
       this.city = userCareer["cityName"];
       this.highiestEducation = userCareer["highestEducation"];
+    } else {
+      this.occupation = "";
+      this.annualIncome = AnualIncome.NoIncome;
+
+      this.employedin = "";
     }
     if (json["userFamilyBackgrounds"].length > 0) {
       var userFamilyBackground = json["userFamilyBackgrounds"][0];
@@ -390,8 +398,14 @@ class ProfileDetails {
       this.familyCountry = userFamilyBackground["countryName"];
       this.familyState = userFamilyBackground["stateName"];
       this.familyCity = userFamilyBackground["cityName"];
+    } else {
+      this.familyAfluenceLevel = FamilyAfluenceLevel.NotMentioned;
+      this.familyValues = FamilyValues.NotMentioned;
+      this.familyType = FamilyType.Notmentioned;
+      this.familyCountry = "";
+      this.familyState = "";
+      this.familyCity = "";
     }
-
     if (json["userFamilyDetails"].length > 0) {
       var userFamilyDetail = json["userFamilyDetails"][0];
 
@@ -403,6 +417,14 @@ class ProfileDetails {
       this.brothersMarried = userFamilyDetail["marriedNumberOfBrothers"];
       this.noOfSister = userFamilyDetail["numberOfSisters"];
       this.sistersMarried = userFamilyDetail["marriedNumberOfSisters"];
+    } else {
+      this.fatherOccupation = FatherOccupation.NotEmployed;
+      this.motherOccupation = MotherOccupation.NotMentioned;
+      this.noOfBrother = 0;
+      this.brothersMarried = 0;
+
+      this.noOfSister = 0;
+      this.sistersMarried = 0;
     }
     var userImages = json["userImages"];
     for (var item in userImages) {

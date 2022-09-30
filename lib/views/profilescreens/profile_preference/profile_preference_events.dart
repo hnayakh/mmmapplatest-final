@@ -92,6 +92,12 @@ class OnMaritalStatusSelected extends ProfilePreferenceEvent {
   OnMaritalStatusSelected(this.status);
 }
 
+class OnSelectSmoking extends ProfilePreferenceEvent {
+  final List<SmokingHabitFilter> status;
+
+  OnSelectSmoking(this.status);
+}
+
 class OnAgeRangeChanged extends ProfilePreferenceEvent {
   final double start;
   final double end;

@@ -3,6 +3,17 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:makemymarry/views/filterscreen/drink_preference_bottom_sheet.dart';
+import 'package:makemymarry/views/filterscreen/fliterscreen%20bloc/filter_bloc.dart';
+import 'package:makemymarry/views/filterscreen/fliterscreen%20bloc/filter_event.dart';
+import 'package:makemymarry/views/filterscreen/food_preference_filter_sheet.dart';
+import 'package:makemymarry/views/filterscreen/interest_preference_filter_sheet.dart';
+import 'package:makemymarry/views/filterscreen/religion_preference_filter_sheet.dart';
+import 'package:makemymarry/views/filterscreen/smoke_preference_filter_sheet.dart';
+import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference_events.dart'
+    as profilepreferenceEvent;
+import 'package:makemymarry/views/profilescreens/religion/religion_event.dart';
+import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/sidebar_contactsupport_screen.dart';
 
 import '../datamodels/master_data.dart';
 import '../datamodels/user_model.dart';
@@ -20,14 +31,14 @@ import '../views/profilescreens/occupation/occupation_bloc.dart';
 import '../views/profilescreens/occupation/occupation_event.dart';
 import '../views/profilescreens/profile_preference/marital_status_preference.dart';
 import '../views/profilescreens/profile_preference/mother_tongue_preference_sheet.dart';
-import '../views/profilescreens/profile_preference/profile_preference.dart';
+
 import '../views/profilescreens/profile_preference/profile_preference_bloc.dart';
-import '../views/profilescreens/profile_preference/profile_preference_events.dart';
 import '../views/profilescreens/profile_preference/profile_preference_state.dart';
 import '../views/profilescreens/profile_preference/religion_preference_sheet.dart';
+import '../views/profilescreens/profile_preference/subcast_preference_sheet.dart';
 import '../views/profilescreens/religion/gothra_bottom_sheet.dart';
 import '../views/profilescreens/religion/religion_bloc.dart';
-import '../views/profilescreens/religion/religion_event.dart';
+
 import 'hexcolor.dart';
 
 class PartnerPrefsScreen extends StatelessWidget {
@@ -44,6 +55,12 @@ class PartnerPrefsScreen extends StatelessWidget {
       ),
       BlocProvider(
         create: (context) => ReligionBloc(userRepository),
+      ),
+      BlocProvider(
+        create: (context) => OccupationBloc(userRepository),
+      ),
+      BlocProvider(
+        create: (context) => FilterBloc(userRepository),
       ),
     ], child: PartnerPrefs()
         // ProfilePreference(userRepository: userRepository),
@@ -122,6 +139,8 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
     this.maxHeight = BlocProvider.of<ProfilePreferenceBloc>(context).maxHeight;
     this.maritalStatus =
         BlocProvider.of<ProfilePreferenceBloc>(context).maritalStatus;
+    this.maritalStatus =
+        BlocProvider.of<ProfilePreferenceBloc>(context).maritalStatus;
 
     this.countryModel =
         BlocProvider.of<ProfilePreferenceBloc>(context).countryModel;
@@ -148,12 +167,145 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
         BlocProvider.of<ProfilePreferenceBloc>(context).abilityStatus;
   }
 
+  void selectSubCast(List<CastSubCast> castList) async {
+    var result = await showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (context) => SubCastPreferenceSheet(
+              list: castList,
+              selected: this.subCaste,
+            ));
+    if (result != null) {
+      BlocProvider.of<ProfilePreferenceBloc>(context)
+          .add(profilepreferenceEvent.OnSubCastSelected(result));
+    }
+  }
+
+  void selectFood(BuildContext context) async {
+    //  var list = BlocProvider.of<FilterBloc>(context)
+    //   .userRepository
+    //       .masterData
+    //   .listReligion;
+//  SimpleMasterData? castData = SimpleMasterData();
+//  castData.id = 'Doesnot Matter';
+//  castData.title = 'Doesnot Matter';
+//   list.insert(0, castData);
+    EatingHabitFilter? foodStatus;
+    var result = await showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (context) => FoodStatusFilterSheet(
+              selectedFoodStatus: foodStatus,
+            ));
+    if (result != null && result is EatingHabitFilter) {
+      BlocProvider.of<FilterBloc>(context).add(OnFoodFilterSelected(result));
+    }
+    // if (result != null && result is SimpleMasterData) {
+    //   BlocProvider.of<FilterBloc>(context)
+    //       .add(OnReligionFilterSelected(result));
+    //   this.initCaste = 0;
+    // }
+  }
+
+  // void showMaritalStatusBottomSheet() async {
+  //   var result = await showModalBottomSheet(
+  //       context: context,
+  //       builder: (context) => MaritalStatusPreference(
+  //             list: this.maritalStatus,
+  //           ));
+  //   if (result != null && result is List<MaritalStatus>) {
+  //     BlocProvider.of<ProfilePreferenceBloc>(context)
+  //         .add(profilepreferenceEvent.OnMaritalStatusSelected(result));
+  //   }
+  // }
+
+  void selectSmoke(BuildContext context) async {
+    //  var list = BlocProvider.of<FilterBloc>(context)
+    //   .userRepository
+    //       .masterData
+    //   .listReligion;
+//  SimpleMasterData? castData = SimpleMasterData();
+//  castData.id = 'Doesnot Matter';
+//  castData.title = 'Doesnot Matter';
+//   list.insert(0, castData);
+    SmokingHabit? smokeStatus;
+    var result = await showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (context) => SmokeStatusFilterSheet(
+              selectedSmokeStatus: smokeStatus,
+            ));
+    if (result != null && result is List<SmokingHabitFilter>) {
+      BlocProvider.of<ProfilePreferenceBloc>(context)
+          .add(profilepreferenceEvent.OnSelectSmoking(result));
+      // BlocProvider.of<ProfilePreferenceBloc>(context)
+      //     .add(OnSmokeFilterSelected(result));
+    }
+
+    // if (result != null && result is SimpleMasterData) {
+    //   BlocProvider.of<FilterBloc>(context)
+    //       .add(OnReligionFilterSelected(result));
+    //   this.initCaste = 0;
+    // }
+  }
+
+  void selectDrink(BuildContext context) async {
+    //  var list = BlocProvider.of<FilterBloc>(context)
+    //   .userRepository
+    //       .masterData
+    //   .listReligion;
+//  SimpleMasterData? castData = SimpleMasterData();
+//  castData.id = 'Doesnot Matter';
+//  castData.title = 'Doesnot Matter';
+//   list.insert(0, castData);
+    DrinkingHabitFilter? drinkStatus;
+    var result = await showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (context) => DrinkStatusFilterSheet(
+              selectedDrinkStatus: drinkStatus,
+            ));
+    // if (result != null && result is SimpleMasterData) {
+    //   BlocProvider.of<FilterBloc>(context)
+    //       .add(OnReligionFilterSelected(result));
+    //   this.initCaste = 0;
+    // }
+  }
+
+  void selectInterest(BuildContext context) async {
+    //  var list = BlocProvider.of<FilterBloc>(context)
+    //   .userRepository
+    //       .masterData
+    //   .listReligion;
+//  SimpleMasterData? castData = SimpleMasterData();
+//  castData.id = 'Doesnot Matter';
+//  castData.title = 'Doesnot Matter';
+//   list.insert(0, castData);
+    InterestFilter? interestStatus;
+    var result = await showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (context) => SmokeInterestFilterSheet(
+              selectedInterestStatus: interestStatus,
+            ));
+    // if (result != null && result is SimpleMasterData) {
+    //   BlocProvider.of<FilterBloc>(context)
+    //       .add(OnReligionFilterSelected(result));
+    //   this.initCaste = 0;
+    // }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
     var primaryColor = HexColor('C9184A');
     return Scaffold(
-        appBar: customAppBar('Partner Preference', "Reset", context: context),
+        appBar: customAppBar('Partner', "Reset", context: context),
         body: BlocConsumer<ProfilePreferenceBloc, ProfilePreferenceState>(
             listener: (context, state) {
           if (state is OnGotCounties) {
@@ -166,7 +318,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
             // selectCity(context, state.list, "City");
           }
           if (state is OnGotCasteList) {
-            // selectSubCast(state.caste);
+            selectSubCast(state.caste);
           }
           // if (state is ProfilePreferenceComplete) {
           //   navigateToFetchProfile();
@@ -331,10 +483,10 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                   style:
                       MmmTextStyles.bodyMediumSmall(textColor: Colors.black87),
                 ),
-                SizedBox(
-                  height: 10,
-                ),
-                MmmButtons.myProfileButtons('Employeed in ', action: () {}),
+                // SizedBox(
+                //   height: 10,
+                // ),
+                // MmmButtons.myProfileButtons('Employeed in ', action: () {}),
                 SizedBox(
                   height: 10,
                 ),
@@ -371,25 +523,36 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                 SizedBox(
                   height: 10,
                 ),
-                MmmButtons.myProfileButtons('Food', action: () {}),
+                MmmButtons.myProfileButtons('Food', action: () {
+                  selectFood(context);
+                }),
                 SizedBox(
                   height: 10,
                 ),
-                MmmButtons.myProfileButtons('Smoke', action: () {}),
+                MmmButtons.myProfileButtons('Smoke', action: () {
+                  selectSmoke(context);
+                }),
                 SizedBox(
                   height: 10,
                 ),
-                MmmButtons.myProfileButtons('Drink', action: () {}),
+                MmmButtons.myProfileButtons('Drink', action: () {
+                  selectDrink(context);
+                }),
                 SizedBox(
                   height: 10,
                 ),
-                MmmButtons.myProfileButtons('Interests', action: () {}),
+                MmmButtons.myProfileButtons('Interests', action: () {
+                  selectInterest(context);
+                }),
                 SizedBox(
                   height: 30,
                 ),
                 MmmButtons.enabledRedButtonbodyMedium(50, 'Apply Filter',
                     action: () {
-                  FocusScope.of(context).requestFocus(FocusNode());
+                  print("Hello");
+                  //FocusScope.of(context).requestFocus(FocusNode());
+                  BlocProvider.of<ProfilePreferenceBloc>(context)
+                      .add(profilepreferenceEvent.CompletePreference());
                   // BlocProvider.of<BioBloc>(context)
                   //     .add(UpdateBio(this.bioController.text));
                 }),
@@ -446,7 +609,8 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
         },
         showCancel: this.religion.length > 0,
         cancelAction: () {
-          BlocProvider.of<ProfilePreferenceBloc>(context).add(RemoveReligion());
+          BlocProvider.of<ProfilePreferenceBloc>(context)
+              .add(profilepreferenceEvent.RemoveReligion());
         });
   }
 
@@ -470,8 +634,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
     list.removeAt(0);
     if (result != null && result is SimpleMasterData) {
       //  BlocProvider.of<ReligionBloc>(context).add(OnReligionSelected(result));
-      // BlocProvider.of<ProfilePreferenceBloc>(context)
-      //     .add(OnReligionSelected(result));
+      //BlocProvider.of<ReligionBloc>(context).add(OnReligionSelected(result));
     }
   }
 
@@ -500,7 +663,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
         showCancel: this.motherTongue.length > 0,
         cancelAction: () {
           BlocProvider.of<ProfilePreferenceBloc>(context)
-              .add(RemoveMotherTongue());
+              .add(profilepreferenceEvent.RemoveMotherTongue());
         });
   }
 
@@ -535,12 +698,12 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                 'images/rightArrow.svg',
                 action: () {
                   BlocProvider.of<ProfilePreferenceBloc>(context)
-                      .add(GetCasteList());
+                      .add(profilepreferenceEvent.GetCasteList());
                 },
                 showCancel: subCaste.length > 0,
                 cancelAction: () {
                   BlocProvider.of<ProfilePreferenceBloc>(context)
-                      .add(RemoveCaste());
+                      .add(profilepreferenceEvent.RemoveCaste());
                 }));
     // : Container();
   }
@@ -576,7 +739,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
             ));
     if (result != null && result is List<MaritalStatus>) {
       BlocProvider.of<ProfilePreferenceBloc>(context)
-          .add(OnMaritalStatusSelected(result));
+          .add(profilepreferenceEvent.OnMaritalStatusSelected(result));
     }
   }
 
@@ -674,8 +837,9 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                   ),
                   onChanged: (RangeValues values) {
                     print(values.end);
-                    BlocProvider.of<ProfilePreferenceBloc>(context)
-                        .add(OnAgeRangeChanged(values.start, values.end));
+                    BlocProvider.of<ProfilePreferenceBloc>(context).add(
+                        profilepreferenceEvent.OnAgeRangeChanged(
+                            values.start, values.end));
                   },
                 ),
               ),

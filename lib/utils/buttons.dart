@@ -2392,7 +2392,7 @@ class MmmButtons {
                 height: 24,
                 width: 24,
                 child: SvgPicture.asset(
-                  "",
+                  "images/social/facebook.svg",
                   fit: BoxFit.cover,
                 ),
               ),

@@ -31,7 +31,7 @@ class _SmokeInterestFilterSheetState extends State<SmokeInterestFilterSheet> {
               height: 24,
             ),
             Text(
-              'Select marital status:',
+              'Select Interest status:',
               style: MmmTextStyles.bodyMedium(textColor: kDark5),
             ),
             SizedBox(

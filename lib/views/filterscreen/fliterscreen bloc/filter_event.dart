@@ -29,7 +29,7 @@ class OnDrinkFilterSelected extends FilterEvent {
 }
 
 class OnSmokeFilterSelected extends FilterEvent {
-  late final SmokingHabitFilter smokeStatus;
+  late final SmokingHabit smokeStatus;
 
   OnSmokeFilterSelected(this.smokeStatus);
 }

@@ -29,7 +29,7 @@ class _DrinkStatusFilterSheetState extends State<DrinkStatusFilterSheet> {
               height: 24,
             ),
             Text(
-              'Select marital status:',
+              'Select drinking status:',
               style: MmmTextStyles.bodyMedium(textColor: kDark5),
             ),
             SizedBox(
