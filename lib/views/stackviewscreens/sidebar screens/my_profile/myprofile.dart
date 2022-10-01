@@ -97,7 +97,7 @@ class _MyProfileState extends State<MyProfile> {
                               radius: MediaQuery.of(context).size.width * 0.122,
                               child: ClipOval(
                                 child: Image.network(
-                                  profileDetails!.images.first.toString(),
+                                  profileDetails!.images[3].toString(),
                                   width: double.infinity,
                                   fit: BoxFit.cover,
                                 ),
@@ -281,7 +281,7 @@ class _MyProfileState extends State<MyProfile> {
       print("saurabh uplaod 1${file!.path}");
 
       BlocProvider.of<BioBloc>(context).add(AddImage(file.path));
-      print("saurabh uplaod 3${file!.path}");
+      print("saurabh uplaod 3${file.path}");
     }
     // }
   }

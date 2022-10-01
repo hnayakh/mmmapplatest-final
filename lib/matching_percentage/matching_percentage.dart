@@ -46,6 +46,9 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                   .matchingPercentage;
               var image =
                   BlocProvider.of<MatchingPercentageBloc>(context).images;
+              var name = BlocProvider.of<MatchingPercentageBloc>(context).name;
+              var userImage =
+                  BlocProvider.of<MatchingPercentageBloc>(context).userImage;
               var matchingFieldList =
                   BlocProvider.of<MatchingPercentageBloc>(context)
                       .matchingFieldList;
@@ -130,7 +133,8 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                           radius: MediaQuery.of(context).size.width * 0.122,
                           child: ClipOval(
                             child: Image.network(
-                              'images/stackviewImage.jpg',
+                              userImage,
+                              // 'images/stackviewImage.jpg',
                               width: double.infinity,
                               fit: BoxFit.cover,
                             ),
@@ -187,7 +191,7 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                         children: [
                           Center(
                             child: Text(
-                              'You Match Percentage with  is $percent%',
+                              'You Match Percentage with $name is $percent%',
                               style:
                                   MmmTextStyles.heading4(textColor: kPrimary),
                             ),

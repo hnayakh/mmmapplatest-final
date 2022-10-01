@@ -11,9 +11,10 @@ class OnProfileVisited extends MatchingPercentageState {
   final String images;
   final List matchingFields;
   final List differentFields;
+  final String name;
 
   OnProfileVisited(this.matchingPercentage, this.images, this.matchingFields,
-      this.differentFields);
+      this.differentFields, this.name);
 }
 
 class OnError extends MatchingPercentageState {

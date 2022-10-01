@@ -62,6 +62,12 @@ class IncomeSelectedMax extends ProfilePreferenceEvent {
   IncomeSelectedMax(this.listMax);
 }
 
+class OnGothraSelect extends ProfilePreferenceEvent {
+  final dynamic gothra;
+
+  OnGothraSelect(this.gothra);
+}
+
 class RemoveIncome extends ProfilePreferenceEvent {}
 
 class RemoveMaxIncome extends ProfilePreferenceEvent {}
@@ -70,6 +76,11 @@ class DietrySelected extends ProfilePreferenceEvent {
   final List<EatingHabit> eatingHabit;
 
   DietrySelected(this.eatingHabit);
+}
+
+class InterestSelected extends ProfilePreferenceEvent {
+  final List<InterestFilter> interestHabit;
+  InterestSelected(this.interestHabit);
 }
 
 class DrinkingSelected extends ProfilePreferenceEvent {
@@ -93,7 +104,7 @@ class OnMaritalStatusSelected extends ProfilePreferenceEvent {
 }
 
 class OnSelectSmoking extends ProfilePreferenceEvent {
-  final List<SmokingHabitFilter> status;
+  final List<SmokingHabit> status;
 
   OnSelectSmoking(this.status);
 }

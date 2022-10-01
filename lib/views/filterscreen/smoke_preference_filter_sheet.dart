@@ -58,10 +58,11 @@ class _SmokeStatusFilterSheetState extends State<SmokeStatusFilterSheet> {
                             height: 8,
                           ),
                           Text(
-                              SmokingHabit.values[index] ==
-                                      SmokingHabit.DoesnotMatter
+                              SmokingHabitFilter.values[index] ==
+                                      SmokingHabitFilter.DoesnotMatter
                                   ? 'Doesnot Matter'
-                                  : describeEnum(SmokingHabit.values[index]),
+                                  : describeEnum(
+                                      SmokingHabitFilter.values[index]),
                               style: MmmTextStyles.bodyMediumSmall(
                                   textColor: SmokingHabit.values[index] ==
                                           this.widget.selectedSmokeStatus

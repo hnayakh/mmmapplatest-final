@@ -41,7 +41,6 @@ enum EatingHabitFilter {
 }
 
 enum SmokingHabit {
-  DoesnotMatter,
   Smoker,
   NonSmoker,
   Occasionally,

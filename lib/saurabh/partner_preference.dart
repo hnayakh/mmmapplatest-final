@@ -10,8 +10,18 @@ import 'package:makemymarry/views/filterscreen/food_preference_filter_sheet.dart
 import 'package:makemymarry/views/filterscreen/interest_preference_filter_sheet.dart';
 import 'package:makemymarry/views/filterscreen/religion_preference_filter_sheet.dart';
 import 'package:makemymarry/views/filterscreen/smoke_preference_filter_sheet.dart';
+import 'package:makemymarry/views/profilescreens/profile_preference/annual_income_preference.dart';
+import 'package:makemymarry/views/profilescreens/profile_preference/annual_max_income_preference.dart';
+import 'package:makemymarry/views/profilescreens/profile_preference/drinking_habit.dart';
+import 'package:makemymarry/views/profilescreens/profile_preference/eating_prefs.dart';
+import 'package:makemymarry/views/profilescreens/profile_preference/education_preference_sheet.dart';
+import 'package:makemymarry/views/profilescreens/profile_preference/interest_prefs.dart';
+import 'package:makemymarry/views/profilescreens/profile_preference/mother_tongue_preference_sheet.dart';
+import 'package:makemymarry/views/profilescreens/profile_preference/occupation_preference_sheet.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference_events.dart'
     as profilepreferenceEvent;
+import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference_events.dart';
+import 'package:makemymarry/views/profilescreens/profile_preference/smoking_prefs.dart';
 import 'package:makemymarry/views/profilescreens/religion/religion_event.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/sidebar_contactsupport_screen.dart';
 
@@ -30,7 +40,6 @@ import '../views/profilescreens/occupation/anual_income_bottom_sheet.dart';
 import '../views/profilescreens/occupation/occupation_bloc.dart';
 import '../views/profilescreens/occupation/occupation_event.dart';
 import '../views/profilescreens/profile_preference/marital_status_preference.dart';
-import '../views/profilescreens/profile_preference/mother_tongue_preference_sheet.dart';
 
 import '../views/profilescreens/profile_preference/profile_preference_bloc.dart';
 import '../views/profilescreens/profile_preference/profile_preference_state.dart';
@@ -96,6 +105,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
   String titleRedOcc = '';
   TextEditingController annIncomeController = TextEditingController();
   late List<EatingHabit> eatingHabit;
+  late List<InterestFilter> interestHabit;
   late List<SmokingHabit> smokingHabit;
   late List<DrinkingHabit> drinkingHabit;
   late AbilityStatus abilityStatus;
@@ -139,9 +149,6 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
     this.maxHeight = BlocProvider.of<ProfilePreferenceBloc>(context).maxHeight;
     this.maritalStatus =
         BlocProvider.of<ProfilePreferenceBloc>(context).maritalStatus;
-    this.maritalStatus =
-        BlocProvider.of<ProfilePreferenceBloc>(context).maritalStatus;
-
     this.countryModel =
         BlocProvider.of<ProfilePreferenceBloc>(context).countryModel;
     this.myState = BlocProvider.of<ProfilePreferenceBloc>(context).myState;
@@ -159,12 +166,15 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
         BlocProvider.of<ProfilePreferenceBloc>(context).eatingHabit;
     this.smokingHabit =
         BlocProvider.of<ProfilePreferenceBloc>(context).smokingHabit;
+    this.interestHabit =
+        BlocProvider.of<ProfilePreferenceBloc>(context).interestHabit;
     this.annualIncome =
         BlocProvider.of<ProfilePreferenceBloc>(context).annualIncome;
     this.annualIncomeMax =
         BlocProvider.of<ProfilePreferenceBloc>(context).annualIncomeMax;
     this.abilityStatus =
         BlocProvider.of<ProfilePreferenceBloc>(context).abilityStatus;
+    this.gothra = BlocProvider.of<ProfilePreferenceBloc>(context).gothra;
   }
 
   void selectSubCast(List<CastSubCast> castList) async {
@@ -221,36 +231,36 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
   //   }
   // }
 
-  void selectSmoke(BuildContext context) async {
-    //  var list = BlocProvider.of<FilterBloc>(context)
-    //   .userRepository
-    //       .masterData
-    //   .listReligion;
-//  SimpleMasterData? castData = SimpleMasterData();
-//  castData.id = 'Doesnot Matter';
-//  castData.title = 'Doesnot Matter';
-//   list.insert(0, castData);
-    SmokingHabit? smokeStatus;
-    var result = await showModalBottomSheet(
-        context: context,
-        backgroundColor: Colors.transparent,
-        isScrollControlled: true,
-        builder: (context) => SmokeStatusFilterSheet(
-              selectedSmokeStatus: smokeStatus,
-            ));
-    if (result != null && result is List<SmokingHabitFilter>) {
-      BlocProvider.of<ProfilePreferenceBloc>(context)
-          .add(profilepreferenceEvent.OnSelectSmoking(result));
-      // BlocProvider.of<ProfilePreferenceBloc>(context)
-      //     .add(OnSmokeFilterSelected(result));
-    }
+//   void selectSmoke(BuildContext context) async {
+//     //  var list = BlocProvider.of<FilterBloc>(context)
+//     //   .userRepository
+//     //       .masterData
+//     //   .listReligion;
+// //  SimpleMasterData? castData = SimpleMasterData();
+// //  castData.id = 'Doesnot Matter';
+// //  castData.title = 'Doesnot Matter';
+// //   list.insert(0, castData);
+//     SmokingHabit? smokeStatus;
+//     var result = await showModalBottomSheet(
+//         context: context,
+//         backgroundColor: Colors.transparent,
+//         isScrollControlled: true,
+//         builder: (context) => SmokeStatusFilterSheet(
+//               selectedSmokeStatus: smokeStatus,
+//             ));
+//     if (result != null && result is List<SmokingHabit>) {
+//       BlocProvider.of<ProfilePreferenceBloc>(context)
+//           .add(profilepreferenceEvent.SmokingSelected(result));
+//       // BlocProvider.of<ProfilePreferenceBloc>(context)
+//       //     .add(OnSmokeFilterSelected(result));
+//     }
 
-    // if (result != null && result is SimpleMasterData) {
-    //   BlocProvider.of<FilterBloc>(context)
-    //       .add(OnReligionFilterSelected(result));
-    //   this.initCaste = 0;
-    // }
-  }
+//     // if (result != null && result is SimpleMasterData) {
+//     //   BlocProvider.of<FilterBloc>(context)
+//     //       .add(OnReligionFilterSelected(result));
+//     //   this.initCaste = 0;
+//     // }
+//   }
 
   void selectDrink(BuildContext context) async {
     //  var list = BlocProvider.of<FilterBloc>(context)
@@ -418,7 +428,9 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                 SizedBox(
                   height: 10,
                 ),
-                MmmButtons.myProfileButtons('Height ', action: () {}),
+                // MmmButtons.myProfileButtons('Height ', action: () {
+                buildHeight(),
+                //   }),
                 SizedBox(
                   height: 10,
                 ),
@@ -469,7 +481,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                 ),
                 MmmButtons.categoryButtons(
                     'Gothra',
-                    this.gothra != null ? gothra : 'Select your gothra',
+                    this.gothra.length != 0 ? gothra : 'Select your gothra',
                     'Select your gothra',
                     'images/rightArrow.svg', action: () {
                   selectGothra(context);
@@ -490,28 +502,33 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                 SizedBox(
                   height: 10,
                 ),
-                MmmButtons.myProfileButtons('Occupation ', action: () {}),
+                // MmmButtons.myProfileButtons('Occupation ', action: () {
+                buildOccupation(),
+                //      }),
                 SizedBox(
                   height: 10,
                 ),
-                MmmButtons.myProfileButtons('Highest Education', action: () {}),
+                // MmmButtons.myProfileButtons('Highest Education', action: () {
+                buildEducation(),
+                //    }),
                 SizedBox(
                   height: 10,
                 ),
                 // MmmButtons.myProfileButtons('Annual Income', action: () {}),
-                MmmButtons.categoryButtons(
-                    'Annual Income',
-                    anualIncome != null
-                        ?
-                        //'${describeEnum(anualIncome!)}'
-                        //incomes[anualIncome!.index]
-                        AppHelper.getStringFromEnum(
-                            AnualIncome.values[anualIncome!.index])
-                        : 'Select your income',
-                    'Select your income',
-                    'images/rightArrow.svg', action: () {
-                  selectAnualIncome(context);
-                }),
+                buildAnnualIncome(),
+                // MmmButtons.categoryButtons(
+                //     'Annual Income',
+                //     anualIncome != null
+                //         ?
+                //         //'${describeEnum(anualIncome!)}'
+                //         //incomes[anualIncome!.index]
+                //         AppHelper.getStringFromEnum(
+                //             AnualIncome.values[anualIncome!.index])
+                //         : 'Select your income',
+                //     'Select your income',
+                //     'images/rightArrow.svg', action: () {
+                //   selectAnualIncome(context);
+                // }),
                 SizedBox(
                   height: 10,
                 ),
@@ -523,36 +540,36 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                 SizedBox(
                   height: 10,
                 ),
-                MmmButtons.myProfileButtons('Food', action: () {
-                  selectFood(context);
-                }),
+                //  MmmButtons.myProfileButtons('Food', action: () {
+                buildEatingStatus(),
+                //  }),
                 SizedBox(
                   height: 10,
                 ),
-                MmmButtons.myProfileButtons('Smoke', action: () {
-                  selectSmoke(context);
-                }),
+                //  MmmButtons.myProfileButtons('Smoke', action: () {
+                buildSmokingStatus(),
+                //  }),
                 SizedBox(
                   height: 10,
                 ),
-                MmmButtons.myProfileButtons('Drink', action: () {
-                  selectDrink(context);
-                }),
+                //  MmmButtons.myProfileButtons('Drink', action: () {
+                buildDrinkStatus(),
+                // }),
                 SizedBox(
                   height: 10,
                 ),
-                MmmButtons.myProfileButtons('Interests', action: () {
-                  selectInterest(context);
-                }),
+                //  MmmButtons.myProfileButtons('Interests', action: () {
+                buildInterestStatus(),
+                //     }),
                 SizedBox(
                   height: 30,
                 ),
                 MmmButtons.enabledRedButtonbodyMedium(50, 'Apply Filter',
                     action: () {
-                  print("Hello");
+                  print("Hiiiii");
                   //FocusScope.of(context).requestFocus(FocusNode());
                   BlocProvider.of<ProfilePreferenceBloc>(context)
-                      .add(profilepreferenceEvent.CompletePreference());
+                      .add(profilepreferenceEvent.CompleteFilter());
                   // BlocProvider.of<BioBloc>(context)
                   //     .add(UpdateBio(this.bioController.text));
                 }),
@@ -577,7 +594,8 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
               selected: this.gothra,
             ));
     if (result != null) {
-      BlocProvider.of<ReligionBloc>(context).add(OnGothraSelected(result));
+      BlocProvider.of<ProfilePreferenceBloc>(context)
+          .add(OnGothraSelect(result));
     }
   }
 
@@ -681,8 +699,8 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
               mtModel: this.motherTongue,
             ));
     if (result != null && result is List<SimpleMasterData>) {
-      // BlocProvider.of<ProfilePreferenceBloc>(context)
-      //     .add(OnMotherTongueSelected(result));
+      BlocProvider.of<ProfilePreferenceBloc>(context)
+          .add(profilepreferenceEvent.OnMotherTongueSelected(result));
     }
   }
 
@@ -713,6 +731,427 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
     for (var i = 0; i < subCaste.length; i++) {
       value = value + subCaste[i];
       if (i < subCaste.length - 1) {
+        value = value + ", ";
+      }
+    }
+    return value;
+  }
+
+  Widget buildInterestStatus() {
+    return MmmButtons.categoryButtons(
+        'Interest',
+        this.interestHabit.length > 0
+            ? getStringFromInterest(this.interestHabit)
+            : 'Select your Interest status',
+        'Select your Interest status',
+        'images/rightArrow.svg', action: () {
+      interestStatusBottomSheet();
+    });
+  }
+
+  void interestStatusBottomSheet() async {
+    var result = await showModalBottomSheet(
+        context: context,
+        builder: (context) => InterestPrefs(
+              list: this.interestHabit,
+            ));
+    if (result != null && result is List<InterestFilter>) {
+      BlocProvider.of<ProfilePreferenceBloc>(context)
+          .add(profilepreferenceEvent.InterestSelected(result));
+    }
+  }
+
+  String getStringFromInterest(List<dynamic> interestFilter) {
+    String value = "";
+    print("Hello$interestFilter");
+    for (var i = 0; i < interestFilter.length; i++) {
+      value = AppHelper.getStringFromEnum(interestFilter[i]);
+      if (i < interestFilter.length - 1) {
+        value = value + ", ";
+      }
+    }
+    return value;
+  }
+
+  Widget buildEatingStatus() {
+    return MmmButtons.categoryButtons(
+        'Eating Habit',
+        this.eatingHabit.length > 0
+            ? getStringFromEating(this.eatingHabit)
+            : 'Select your Eating status',
+        'Select your Eating status',
+        'images/rightArrow.svg', action: () {
+      eatingStatusBottomSheet();
+    });
+  }
+
+  void eatingStatusBottomSheet() async {
+    var result = await showModalBottomSheet(
+        context: context,
+        builder: (context) => EatingPrefs(
+              list: this.eatingHabit,
+            ));
+    if (result != null && result is List<EatingHabit>) {
+      BlocProvider.of<ProfilePreferenceBloc>(context)
+          .add(profilepreferenceEvent.DietrySelected(result));
+    }
+  }
+
+  String getStringFromEating(List<dynamic> eatingStatus) {
+    String value = "";
+    print("Hello$eatingStatus");
+    for (var i = 0; i < eatingStatus.length; i++) {
+      value = AppHelper.getStringFromEnum(eatingStatus[i]);
+      if (i < eatingStatus.length - 1) {
+        value = value + ", ";
+      }
+    }
+    return value;
+  }
+
+  Widget buildDrinkStatus() {
+    return MmmButtons.categoryButtons(
+        'Drinking Habit',
+        this.drinkingHabit.length > 0
+            ? getStringFromDrinking(this.drinkingHabit)
+            : 'Select your drinking status',
+        'Select your drinking status',
+        'images/rightArrow.svg', action: () {
+      drinkingtatusBottomSheet();
+    });
+  }
+
+  void drinkingtatusBottomSheet() async {
+    var result = await showModalBottomSheet(
+        context: context,
+        builder: (context) => DrinkingPrefs(
+              list: this.drinkingHabit,
+            ));
+    if (result != null && result is List<DrinkingHabit>) {
+      BlocProvider.of<ProfilePreferenceBloc>(context)
+          .add(profilepreferenceEvent.DrinkingSelected(result));
+    }
+  }
+
+  String getStringFromDrinking(List<dynamic> smokingStatus) {
+    String value = "";
+    print("Hello$smokingStatus");
+    for (var i = 0; i < smokingStatus.length; i++) {
+      value = AppHelper.getStringFromEnum(smokingStatus[i]);
+      if (i < smokingStatus.length - 1) {
+        value = value + ", ";
+      }
+    }
+    return value;
+  }
+
+  Widget buildSmokingStatus() {
+    return MmmButtons.categoryButtons(
+        'Smoking Habit',
+        this.smokingHabit.length > 0
+            ? getStringFromSmoking(this.smokingHabit)
+            : 'Select your smoking status',
+        'Select your Smoking status',
+        'images/rightArrow.svg', action: () {
+      smokingtatusBottomSheet();
+    });
+  }
+
+  void smokingtatusBottomSheet() async {
+    var result = await showModalBottomSheet(
+        context: context,
+        builder: (context) => SmokingPrefs(
+              list: this.smokingHabit,
+            ));
+    if (result != null && result is List<SmokingHabit>) {
+      BlocProvider.of<ProfilePreferenceBloc>(context)
+          .add(profilepreferenceEvent.SmokingSelected(result));
+    }
+  }
+
+  String getStringFromSmoking(List<dynamic> drinkingStatus) {
+    String value = "";
+    print("Hello$drinkingStatus");
+    for (var i = 0; i < drinkingStatus.length; i++) {
+      value = AppHelper.getStringFromEnum(drinkingStatus[i]);
+      if (i < drinkingStatus.length - 1) {
+        value = value + ", ";
+      }
+    }
+    return value;
+  }
+
+  Widget buildOccupation() {
+    return MmmButtons.categoryButtons(
+        'Occupation',
+        occupation.length > 0
+            ? getOccupationText(occupation)
+            : 'Does not matter',
+        'Select your occupation',
+        'images/rightArrow.svg',
+        action: () {
+          selectOccupation(context);
+        },
+        showCancel: occupation.length > 0,
+        cancelAction: () {
+          BlocProvider.of<ProfilePreferenceBloc>(context)
+              .add(RemoveOccupation());
+        });
+  }
+
+  void selectOccupation(BuildContext context) async {
+    var list = BlocProvider.of<ProfilePreferenceBloc>(context)
+        .userRepository
+        .masterData
+        .listOccupation;
+    var result = await showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (context) => OccupationPreferenceSheet(
+              list: list,
+              selected: this.occupation,
+            ));
+
+    if (result != null && result is List<String>) {
+      BlocProvider.of<ProfilePreferenceBloc>(context)
+          .add(profilepreferenceEvent.OnOccupationSelected(result));
+    }
+  }
+
+  String getOccupationText(List<String?> occupation) {
+    String value = "";
+    for (var i = 0; i < occupation.length; i++) {
+      value = value + occupation[i]!;
+      if (i < subCaste.length - 1) {
+        value = value + ", ";
+      }
+    }
+    return value;
+  }
+
+  Widget buildAnnualIncome() {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              'Annual Income',
+              style: MmmTextStyles.bodyMedium(textColor: kDark5),
+            ),
+          ],
+        ),
+        Row(children: [
+          SizedBox(
+            width: 6,
+          ),
+          Expanded(
+            child: MmmButtons.categoryButtons(
+                'Minimum',
+                this.annualIncome.length > 0
+                    ? currentIncomes
+                    : 'Does not matter',
+                'Select Annual Income',
+                'images/rightArrow.svg',
+                action: () {
+                  selectMinimumAnnualIncome();
+                },
+                showCancel: this.annualIncome.length > 0,
+                cancelAction: () {
+                  this.currentIncomes = "";
+                  BlocProvider.of<ProfilePreferenceBloc>(context)
+                      .add(RemoveIncome());
+                }),
+          ),
+          SizedBox(
+            width: 6,
+          ),
+          Expanded(
+              child: MmmButtons.categoryButtons(
+                  'Maximum',
+                  this.annualIncomeMax.length > 0
+                      ? currentMaxIncomes
+                      : 'Does not matter',
+                  'Select Maximum Annual Income',
+                  'images/rightArrow.svg',
+                  action: () {
+                    selectMaximumAnnualIncome();
+                  },
+                  showCancel: this.annualIncomeMax.length > 0,
+                  cancelAction: () {
+                    this.currentMaxIncomes = "";
+                    BlocProvider.of<ProfilePreferenceBloc>(context)
+                        .add(RemoveMaxIncome());
+                  }))
+        ])
+      ],
+    );
+  }
+
+  void selectMaximumAnnualIncome() async {
+    var result = await showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (context) => AnnualMaxIncomePreference(
+              list: annualIncome,
+              listMax: annualIncomeMax,
+              minimumSelectedIndex: minimumSelectedIndex,
+            ));
+    if (result != null && result is List<AnualIncome>) {
+      BlocProvider.of<ProfilePreferenceBloc>(context)
+          .add(IncomeSelectedMax(result));
+      for (int i = 0; i < result.length; i++) {
+        currentMaxIncomes = incomes[result[i].index];
+      }
+    }
+  }
+
+  void selectMinimumAnnualIncome() async {
+    var result = await showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (context) =>
+            AnnualIncomePreference(list: annualIncome, listMax: annualIncomeMax
+                // minimumSelectedIndex: minimumSelectedIndex,
+                ));
+    if (result != null && result is List<AnualIncome>) {
+      BlocProvider.of<ProfilePreferenceBloc>(context)
+          .add(IncomeSelected(result));
+      for (int i = 0; i < result.length; i++) {
+        currentIncomes = incomes[result[i].index];
+        minimumSelectedIndex = result[i].index + 1;
+      }
+    }
+  }
+
+  Widget buildHeight() {
+    var maxValue = maxHeight > 0 ? maxHeight : 0.0;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          'Height Preference',
+          style: MmmTextStyles.bodyMediumSmall(textColor: kDark5),
+        ),
+        SizedBox(
+          height: 4,
+        ),
+        Container(
+          padding: kMargin24,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(8)),
+              border: Border.all(width: 1, color: kLight4)),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Text(
+              //   ' ${minHeight.toStringAsFixed(1)}"" <---> ${maxHeight.toStringAsFixed(1)}""',
+              //   style: MmmTextStyles.bodyRegular(textColor: kDark5),
+              // ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    height: MediaQuery.of(context).size.width * 0.1,
+                    width: MediaQuery.of(context).size.width * 0.1,
+                    decoration: BoxDecoration(
+                        color: kLight4, borderRadius: BorderRadius.circular(8)),
+                    child: FittedBox(
+                      child: Text(
+                        '${minHeight.toStringAsFixed(1)}',
+                        style: MmmTextStyles.bodyRegular(textColor: kDark5),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    height: MediaQuery.of(context).size.width * 0.1,
+                    width: MediaQuery.of(context).size.width * 0.1,
+                    decoration: BoxDecoration(
+                        color: kLight4, borderRadius: BorderRadius.circular(8)),
+                    child: FittedBox(
+                      child: Text(
+                        '${maxHeight.toStringAsFixed(1)}',
+                        style: MmmTextStyles.bodyRegular(textColor: kDark5),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SliderTheme(
+                data: SliderThemeData(
+                    showValueIndicator: ShowValueIndicator.always,
+                    valueIndicatorColor: kPrimary.withOpacity(0.7)),
+                child: RangeSlider(
+                  values: RangeValues(minHeight, maxValue),
+                  min: 4,
+                  max: 7,
+                  inactiveColor: kGray,
+                  activeColor: kPrimary,
+                  // divisions: 30,
+                  labels: RangeLabels(
+                    minHeight.toStringAsFixed(1),
+                    maxHeight.toStringAsFixed(1),
+                  ),
+                  onChanged: (RangeValues values) {
+                    print(values.end);
+                    BlocProvider.of<ProfilePreferenceBloc>(context)
+                        .add(OnHeightRangeChanged(values.start, values.end));
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildEducation() {
+    return MmmButtons.categoryButtons(
+        'Highest Education',
+        education.length > 0 ? getEducationText(education) : 'Does not matter',
+        'Select your highest education',
+        'images/rightArrow.svg',
+        action: () {
+          selectEducation(context);
+        },
+        showCancel: education.length > 0,
+        cancelAction: () {
+          BlocProvider.of<ProfilePreferenceBloc>(context)
+              .add(RemoveEducation());
+        });
+  }
+
+  void selectEducation(BuildContext context) async {
+    var list = BlocProvider.of<ProfilePreferenceBloc>(context)
+        .userRepository
+        .masterData
+        .listEducation;
+    var result = await showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (context) => EducationPreferenceSheet(
+              list: list,
+              eduModel: this.education,
+            ));
+    if (result != null && result is List<Education>) {
+      BlocProvider.of<ProfilePreferenceBloc>(context)
+          .add(profilepreferenceEvent.OnEducationSelected(result));
+    }
+  }
+
+  String getEducationText(List<Education> education) {
+    String value = "";
+    for (var i = 0; i < education.length; i++) {
+      value = value + education[i].title;
+      if (i < education.length - 1) {
         value = value + ", ";
       }
     }

@@ -30,10 +30,12 @@ class ProfilePreferenceBloc
   List<AnualIncome> annualIncomeMax = [];
   List<AnualIncome> annualIncome = [];
   late List<EatingHabit> eatingHabit = [];
+  late List<InterestFilter> interestHabit = [];
   late List<SmokingHabit> smokingHabit = [];
   late List<DrinkingHabit> drinkingHabit = [];
   late AbilityStatus abilityStatus;
   late Gender gender;
+  dynamic gothra = "";
 
   ProfilePreferenceBloc(this.userRepository)
       : super(ProfilePreferenceInitialState()) {
@@ -95,6 +97,10 @@ class ProfilePreferenceBloc
     }
     if (event is OnMaritalStatusSelected) {
       this.maritalStatus = event.status;
+      yield ProfilePreferenceInitialState();
+    }
+    if (event is SmokingSelected) {
+      this.smokingHabit = event.smokingHabit;
       yield ProfilePreferenceInitialState();
     }
     if (event is GetAllCountries) {
@@ -240,6 +246,10 @@ class ProfilePreferenceBloc
       this.drinkingHabit = event.drinkingHabit;
       yield ProfilePreferenceInitialState();
     }
+    if (event is OnGothraSelect) {
+      this.gothra = event.gothra;
+      yield ProfilePreferenceInitialState();
+    }
     if (event is RemoveDrinking) {
       this.drinkingHabit = [];
       yield ProfilePreferenceInitialState();
@@ -248,14 +258,15 @@ class ProfilePreferenceBloc
       this.eatingHabit = event.eatingHabit;
       yield ProfilePreferenceInitialState();
     }
+    if (event is InterestSelected) {
+      this.interestHabit = event.interestHabit;
+      yield ProfilePreferenceInitialState();
+    }
     if (event is RemoveEating) {
       this.eatingHabit = [];
       yield ProfilePreferenceInitialState();
     }
-    if (event is SmokingSelected) {
-      this.smokingHabit = event.smokingHabit;
-      yield ProfilePreferenceInitialState();
-    }
+
     if (event is RemoveSmoking) {
       this.smokingHabit = [];
       yield ProfilePreferenceInitialState();

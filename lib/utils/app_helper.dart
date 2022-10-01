@@ -134,6 +134,27 @@ class AppHelper {
         'Awaiting Divorce'
       ];
       return maritalFilter[enumEntry.index];
+    } else if (enumName == 'Interest') {
+      List<String> interestFilter = [
+        'DoesnotMatter',
+        'Sports',
+        'Travel',
+        'Photography',
+        'Gaming',
+        'Singing',
+        'Dance',
+        'Food',
+        'Music',
+        'Art',
+        'Cooking',
+        'Fashion',
+        'vblogging',
+        'Animals',
+        'Nature',
+        'Tech',
+        'Social'
+      ];
+      return interestFilter[enumEntry.index];
     } else if (enumName == 'AbilityStatus') {
       List<String> abilityStatus = [
         'Normal',

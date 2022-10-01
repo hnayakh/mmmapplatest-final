@@ -13,6 +13,8 @@ class MatchingPercentageBloc
 
   int matchingPercentage = 0;
   String images = '';
+  String userImage = '';
+  String name = '';
   List matchingFieldList = [];
   List differentFieldList = [];
 
@@ -34,10 +36,12 @@ class MatchingPercentageBloc
       if (response.status == AppConstants.SUCCESS) {
         this.matchingPercentage = response.percent;
         this.images = this.profileDetails.images[0];
+        this.userImage = response.userImage;
+        this.name = this.profileDetails.name;
         this.matchingFieldList = response.matchingFields;
         this.differentFieldList = response.differentFields;
         yield OnProfileVisited(this.matchingPercentage, this.images,
-            this.matchingFieldList, this.differentFieldList);
+            this.matchingFieldList, this.differentFieldList, this.name);
       } else {
         yield OnError(response.message);
       }
