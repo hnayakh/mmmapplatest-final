@@ -109,7 +109,7 @@ class MSentScreen extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                'Meet in Person',
+                                'Meet in person',
                                 style: MmmTextStyles.bodySmall(
                                     textColor: kPrimary),
                               ),
@@ -171,8 +171,44 @@ class MSentScreen extends StatelessWidget {
                           SizedBox(
                             width: 12,
                           ),
-                          MmmButtons.cancelButtonMeetScreen('Cancel', 76,
-                              action: () {})
+                          MmmButtons.cancelButtonMeetScreen('Cancellll', 76,
+                              action: () {
+                            print("Hello");
+                            // AlertDialog(
+                            //   backgroundColor: kWhite,
+                            //   title: Text("User doesn't exist",
+                            //       textAlign: TextAlign.center,
+                            //       style: TextStyle(
+                            //           fontWeight: FontWeight
+                            //               .bold)), // To display the title it is optional
+                            //   content: new RichText(
+                            //       textAlign: TextAlign.center,
+                            //       text: new TextSpan(
+                            //         // Note: Styles for TextSpans must be explicitly defined.
+                            //         // Child text spans will inherit styles from parent
+                            //         style: new TextStyle(
+                            //           fontSize: 14.0,
+                            //           color: Colors.black,
+                            //         ),
+                            //         children: <TextSpan>[
+                            //           new TextSpan(
+                            //               text: 'Please enter correct'),
+                            //           new TextSpan(
+                            //               text: ' mmyid',
+                            //               style:
+                            //                   new TextStyle(color: kPrimary)),
+                            //           new TextSpan(
+                            //               text: ' to find your perfect match.'),
+                            //         ],
+                            //       )),
+                            //   // Action widget which will provide the user to acknowledge the choice
+                            //   actions: [
+                            //     MmmButtons.primaryButton("Ok", () {
+                            //       // navigateToHome(state);
+                            //     })
+                            //   ],
+                            // );
+                          })
                         ],
                       )
                     ],

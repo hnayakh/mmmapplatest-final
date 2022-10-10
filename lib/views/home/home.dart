@@ -7,6 +7,7 @@ import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/home/matching_profile/matching_profile_bloc.dart';
 import 'package:makemymarry/views/home/menu/sidebar_account_screen.dart';
 import 'package:makemymarry/views/home/my_connects/my_connects_screen.dart';
+import 'package:makemymarry/views/stackviewscreens/meet%20status/meet_status_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/notification_list.dart';
 import 'interests/interest_status_screen.dart';
 import 'matching_profile/matching_profile.dart';
@@ -109,6 +110,7 @@ class HomeScreenState extends State<HomeScreen> {
         return MyConnects(userRepository: widget.userRepository);
       case 3:
         return Notifications(userRepository: widget.userRepository);
+      // return MeetStatusScreen();
       case 4:
         return SidebarAccount(
           userRepository: widget.userRepository,

@@ -3,6 +3,7 @@ import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
+import 'package:makemymarry/views/stackviewscreens/connect/chat_screen_ui.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -23,41 +24,46 @@ class _ChatScreenState extends State<ChatScreen> {
             Expanded(
               child: ListView.separated(
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    leading: CircleAvatar(
-                      radius: 25,
-                      child: ClipOval(
-                        child: Image.asset(
-                          'images/stackviewImage.jpg',
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    trailing: Column(
-                      children: [
-                        CircleAvatar(
-                          radius: 8,
-                          backgroundColor: kPrimary,
-                          child: Text(
-                            '1',
-                            textAlign: TextAlign.center,
-                            style: MmmTextStyles.caption(textColor: kWhite),
+                  return GestureDetector(
+                    onTap: () {
+                      navigateToChat();
+                    },
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        radius: 25,
+                        child: ClipOval(
+                          child: Image.asset(
+                            'images/stackviewImage.jpg',
+                            width: double.infinity,
+                            fit: BoxFit.cover,
                           ),
                         ),
-                        Text(
-                          '8m ago',
-                          style: MmmTextStyles.caption(textColor: gray1),
-                        ),
-                      ],
-                    ),
-                    title: Text(
-                      'Header',
-                      style: MmmTextStyles.heading5(),
-                    ),
-                    subtitle: Text(
-                      "He'll want to use your yacht, and I don't want this thing smelling",
-                      style: MmmTextStyles.bodySmall(),
+                      ),
+                      trailing: Column(
+                        children: [
+                          CircleAvatar(
+                            radius: 8,
+                            backgroundColor: kPrimary,
+                            child: Text(
+                              '1',
+                              textAlign: TextAlign.center,
+                              style: MmmTextStyles.caption(textColor: kWhite),
+                            ),
+                          ),
+                          Text(
+                            '8m ago',
+                            style: MmmTextStyles.caption(textColor: gray1),
+                          ),
+                        ],
+                      ),
+                      title: Text(
+                        'Header',
+                        style: MmmTextStyles.heading5(),
+                      ),
+                      subtitle: Text(
+                        "He'll want to use your yacht, and I don't want this thing smelling",
+                        style: MmmTextStyles.bodySmall(),
+                      ),
                     ),
                   );
                 },
@@ -119,5 +125,13 @@ class _ChatScreenState extends State<ChatScreen> {
     setState(() {
       index = indexCode;
     });
+  }
+
+  void navigateToChat() {
+    print("Hello");
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ChatScreenUi()),
+    );
   }
 }
