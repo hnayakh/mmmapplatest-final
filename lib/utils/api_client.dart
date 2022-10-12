@@ -621,23 +621,23 @@ class ApiClient {
     }
   }
 
-  Future<MatchingProfileResponse> getProfileVisitor(String id) async {
-    // try {
-    var response =
-        await this.dio.get("${AppConstants.ENDPOINT}users/recent_view/$id");
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      return MatchingProfileResponse.fromJson(response.data);
+  Future<ProfileVisitedResponse> getProfileVisitor(String id) async {
+    try {
+      var response = await this
+          .dio
+          .get("${AppConstants.ENDPOINT}users/profile_visited_by/$id");
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return ProfileVisitedResponse.fromJson(response.data);
+      }
+      return ProfileVisitedResponse.fromError(
+          "Error Occurred. Please try again.");
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      return ProfileVisitedResponse.fromError(
+          "Error Occurred. Please try again.");
     }
-    return MatchingProfileResponse.fromError(
-        "Error Occurred. Please try again.");
-    // }
-    // catch (error) {
-    //   if (error is DioError) {
-    //     print(error.message);
-    //   }
-    //   return MatchingProfileResponse.fromError(
-    //       "Error Occurred. Please try again.");
-    // }
   }
 
   Future<ProfileDetailsResponse> getOtherUserDetails(

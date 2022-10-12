@@ -119,8 +119,12 @@ class ProfileLoaderScreenState extends State<ProfileLoaderScreen>
         },
         listener: (context, state) {
           if (state is OnGotProfiles) {
-            navigateToViewProfiles(state.list, state.searchList,
-                state.premiumList, state.recentViewList);
+            navigateToViewProfiles(
+                state.list,
+                state.searchList,
+                state.premiumList,
+                state.recentViewList,
+                state.profileVisitorList);
           }
           // if (state is OnGotPremium) {
           //   navigateFor(state.list);
@@ -134,7 +138,8 @@ class ProfileLoaderScreenState extends State<ProfileLoaderScreen>
       List<MatchingProfile> list,
       List<MatchingProfile> seachList,
       List<MatchingProfile> premiumList,
-      List<MatchingProfile> recentViewList) {
+      List<MatchingProfile> recentViewList,
+      List<MatchingProfile> profileVisitorList) {
     var userRepo = BlocProvider.of<ProfileLoaderBloc>(context).userRepository;
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
@@ -143,7 +148,8 @@ class ProfileLoaderScreenState extends State<ProfileLoaderScreen>
                 list: list,
                 searchList: seachList,
                 recentViewList: recentViewList,
-                premiumList: premiumList)),
+                premiumList: premiumList,
+                profileVisitorList: profileVisitorList)),
         (route) => false);
   }
 

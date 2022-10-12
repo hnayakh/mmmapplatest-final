@@ -22,6 +22,7 @@ class HomeScreen extends StatefulWidget {
   final List<MatchingProfile> searchList;
   final List<MatchingProfile> premiumList;
   final List<MatchingProfile> recentViewList;
+  final List<MatchingProfile> profileVisitorList;
 
   const HomeScreen(
       {Key? key,
@@ -29,7 +30,8 @@ class HomeScreen extends StatefulWidget {
       required this.list,
       required this.premiumList,
       required this.searchList,
-      required this.recentViewList})
+      required this.recentViewList,
+      required this.profileVisitorList})
       : super(key: key);
 
   @override
@@ -109,7 +111,8 @@ class HomeScreenState extends State<HomeScreen> {
                 widget.list,
                 widget.searchList,
                 widget.premiumList,
-                widget.recentViewList),
+                widget.recentViewList,
+                widget.profileVisitorList),
             child: Builder(builder: (context) {
               return MatchingProfileScreen(
                   userRepository: widget.userRepository,
@@ -117,7 +120,8 @@ class HomeScreenState extends State<HomeScreen> {
                   searchList: widget.searchList,
                   screenName: null,
                   premiumList: widget.premiumList,
-                  recentViewList: widget.recentViewList);
+                  recentViewList: widget.recentViewList,
+                  profileVisitorList: widget.profileVisitorList);
             }));
       case 1:
         return
@@ -128,6 +132,7 @@ class HomeScreenState extends State<HomeScreen> {
           searchList: widget.searchList,
           premiumList: widget.premiumList,
           recentViewList: widget.recentViewList,
+          profileVisitorList: widget.profileVisitorList,
         );
       case 2:
         return
@@ -148,7 +153,8 @@ class HomeScreenState extends State<HomeScreen> {
             list: widget.list,
             searchList: widget.searchList,
             premiumList: widget.premiumList,
-            recentViewList: widget.recentViewList);
+            recentViewList: widget.recentViewList,
+            profileVisitorList: widget.profileVisitorList);
     }
     return Container();
   }

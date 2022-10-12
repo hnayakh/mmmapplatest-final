@@ -27,6 +27,7 @@ class MatchingProfileScreen extends StatefulWidget {
   List<MatchingProfile> searchList;
   final List<MatchingProfile> premiumList;
   final List<MatchingProfile> recentViewList;
+  final List<MatchingProfile> profileVisitorList;
   String? searchText;
   final String? screenName;
   final String? searchTextNew;
@@ -50,6 +51,7 @@ class MatchingProfileScreen extends StatefulWidget {
       required this.searchList,
       required this.premiumList,
       required this.recentViewList,
+      required this.profileVisitorList,
       this.screenName,
       this.searchTextNew})
       : super(key: key);
@@ -109,6 +111,9 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
     }
     if (screenName == 'ProfileRecentlyViewed') {
       context.read<MatchingProfileBloc>().add(GetRecentViewMembers());
+    }
+    if (screenName == 'ProfileViewedBy') {
+      context.read<MatchingProfileBloc>().add(GetProfileVisited());
     }
     return Container(
       height: MediaQuery.of(context).size.height - 72,
@@ -456,6 +461,8 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                                                             widget.premiumList,
                                                         recentViewList: widget
                                                             .recentViewList,
+                                                        profileVisitorList: widget
+                                                            .profileVisitorList,
                                                         screenName:
                                                             "PremiumMembers",
                                                       )),

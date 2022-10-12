@@ -19,6 +19,7 @@ class ProfileLoaderBloc extends Bloc<ProfileLoaderEvent, ProfileLoaderState> {
       var resultSearch = await this.userRepository.getConnectThroughMMId(mmid);
       var premium = await this.userRepository.getPremiumMembers();
       var recentViewed = await this.userRepository.getRecentViews();
+      var profileVisitorList = await this.userRepository.getProfileVisitor();
       if (result.status == AppConstants.SUCCESS) {
         this.userRepository.updateRegistrationStep(10);
         // await this
@@ -29,7 +30,7 @@ class ProfileLoaderBloc extends Bloc<ProfileLoaderEvent, ProfileLoaderState> {
         print(this.userRepository.useDetails!.registrationStep);
         print(result.list);
         yield OnGotProfiles(result.list, resultSearch.searchList, premium.list,
-            recentViewed.list);
+            recentViewed.list, profileVisitorList.list);
       } else {
         yield OnError(result.message);
         // print(result.status);

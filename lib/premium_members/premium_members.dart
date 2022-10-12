@@ -20,6 +20,7 @@ class PremiumMembersScreen extends StatefulWidget {
   final List<MatchingProfile> premiumList;
   final List<MatchingProfile> searchList;
   final List<MatchingProfile> recentViewList;
+  final List<MatchingProfile> profileVisitorList;
   final String? screenName;
   final String? searchText;
   PremiumMembersScreen(
@@ -30,6 +31,7 @@ class PremiumMembersScreen extends StatefulWidget {
       required this.searchList,
       required this.screenName,
       required this.recentViewList,
+      required this.profileVisitorList,
       this.searchText})
       : super(key: key);
 
@@ -157,7 +159,8 @@ class PremiumMembersScreenState extends State<PremiumMembersScreen> {
                 widget.list,
                 widget.searchList,
                 widget.premiumList,
-                widget.recentViewList),
+                widget.recentViewList,
+                widget.profileVisitorList),
             child: Builder(builder: (context) {
               return MatchingProfileScreen(
                   userRepository: widget.userRepository,
@@ -166,17 +169,20 @@ class PremiumMembersScreenState extends State<PremiumMembersScreen> {
                   premiumList: widget.premiumList,
                   recentViewList: widget.recentViewList,
                   screenName: widget.screenName,
+                  profileVisitorList: widget.profileVisitorList,
                   searchTextNew: widget.searchText);
             }));
       case 1:
         return
             // ScheduleMeetingTime();
             SearchScreen(
-                userRepository: widget.userRepository,
-                list: widget.list,
-                searchList: widget.searchList,
-                premiumList: widget.premiumList,
-                recentViewList: widget.recentViewList);
+          userRepository: widget.userRepository,
+          list: widget.list,
+          searchList: widget.searchList,
+          premiumList: widget.premiumList,
+          recentViewList: widget.recentViewList,
+          profileVisitorList: widget.profileVisitorList,
+        );
       case 2:
         return
             // ScheduleMeetingTime();
@@ -192,11 +198,13 @@ class PremiumMembersScreenState extends State<PremiumMembersScreen> {
 
       case 4:
         return SidebarAccount(
-            userRepository: widget.userRepository,
-            list: widget.list,
-            searchList: widget.searchList,
-            premiumList: widget.premiumList,
-            recentViewList: widget.recentViewList);
+          userRepository: widget.userRepository,
+          list: widget.list,
+          searchList: widget.searchList,
+          premiumList: widget.premiumList,
+          recentViewList: widget.recentViewList,
+          profileVisitorList: widget.profileVisitorList,
+        );
       // case 1:
       //   return Interests(
       //     userRepository: widget.userRepository,

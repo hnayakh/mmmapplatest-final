@@ -34,6 +34,7 @@ class SidebarAccount extends StatelessWidget {
   final List<MatchingProfile> searchList;
   final List<MatchingProfile> premiumList;
   final List<MatchingProfile> recentViewList;
+  final List<MatchingProfile> profileVisitorList;
 
   const SidebarAccount(
       {Key? key,
@@ -41,7 +42,8 @@ class SidebarAccount extends StatelessWidget {
       required this.list,
       required this.premiumList,
       required this.searchList,
-      required this.recentViewList})
+      required this.recentViewList,
+      required this.profileVisitorList})
       : super(key: key);
 
   @override
@@ -52,8 +54,8 @@ class SidebarAccount extends StatelessWidget {
           create: (context) => AccountMenuBloc(userRepository),
         ),
         BlocProvider(
-          create: (context) => MatchingProfileBloc(
-              userRepository, list, searchList, premiumList, recentViewList),
+          create: (context) => MatchingProfileBloc(userRepository, list,
+              searchList, premiumList, recentViewList, profileVisitorList),
         ),
       ],
       child: SidebarAccountScreen(),
@@ -187,6 +189,8 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
     var premiumList = BlocProvider.of<MatchingProfileBloc>(context).premiumList;
     var recentViewList =
         BlocProvider.of<MatchingProfileBloc>(context).recentViewList;
+    var profileVisitorList =
+        BlocProvider.of<MatchingProfileBloc>(context).profileVisitorList;
     switch (index) {
       case 0:
         print("Profile ahead");
@@ -199,14 +203,20 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
         Navigator.of(context).push(
           MaterialPageRoute(
               builder: (context) => BlocProvider(
-                    create: (context) => MatchingProfileBloc(userRepo, list,
-                        searchList, premiumList, recentViewList),
+                    create: (context) => MatchingProfileBloc(
+                        userRepo,
+                        list,
+                        searchList,
+                        premiumList,
+                        recentViewList,
+                        profileVisitorList),
                     child: SearchScreen(
                       userRepository: userRepo,
                       list: list,
                       searchList: searchList,
                       premiumList: premiumList,
                       recentViewList: recentViewList,
+                      profileVisitorList: profileVisitorList,
                     ),
                   )),
         );

@@ -19,6 +19,8 @@ class GetPremiumMembers extends MatchingProfileEvent {}
 
 class GetRecentViewMembers extends MatchingProfileEvent {}
 
+class GetProfileVisited extends MatchingProfileEvent {}
+
 class IsLikedAEvent extends MatchingProfileEvent {
   final int index;
   IsLikedAEvent(this.index);

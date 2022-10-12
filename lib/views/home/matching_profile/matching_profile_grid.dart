@@ -75,6 +75,7 @@ class MatchingProfileGridViewScreenState
   List<MatchingProfile> searchList = [];
   List<MatchingProfile> premiumList = [];
   List<MatchingProfile> recentViewList = [];
+  List<MatchingProfile> profileVisitorList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -96,9 +97,15 @@ class MatchingProfileGridViewScreenState
         this.recentViewList =
             BlocProvider.of<MatchingProfileBloc>(context).recentViewList;
       }
+      if (state is onGotProfileVisitors) {
+        this.profileVisitorList =
+            BlocProvider.of<MatchingProfileBloc>(context).profileVisitorList;
+      }
+
       //}
       print("premiumList$premiumList");
       print("recentC=ViewList$recentViewList");
+      print("ProfileVisitorsList$profileVisitorList");
       return Stack(
         fit: StackFit.expand,
         children: [
@@ -153,6 +160,9 @@ class MatchingProfileGridViewScreenState
     if (this.premiumList.length > 0) {
       result = this.premiumList.length;
     }
+    if (this.profileVisitorList.length > 0) {
+      result = this.profileVisitorList.length;
+    }
     if (this.recentViewList.length > 0) {
       result = this.recentViewList.length;
     }
@@ -182,13 +192,16 @@ class MatchingProfileGridViewScreenState
           BlocProvider.of<MatchingProfileBloc>(context).premiumList;
       var recentViewList =
           BlocProvider.of<MatchingProfileBloc>(context).recentViewList;
+      var profileVisitorList =
+          BlocProvider.of<MatchingProfileBloc>(context).profileVisitorList;
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => HomeScreen(
               userRepository: userRepo,
               list: list,
               searchList: searchList,
               premiumList: premiumList,
-              recentViewList: recentViewList)));
+              recentViewList: recentViewList,
+              profileVisitorList: profileVisitorList)));
     }
     // premiumList: premiumList)),
     // builder: (context) => ContactSupportScreen(
@@ -257,7 +270,9 @@ class MatchingProfileGridViewScreenState
                     ? this.premiumList[index]
                     : this.recentViewList.length > 0
                         ? this.recentViewList[index]
-                        : this.list[index];
+                        : this.profileVisitorList.length > 0
+                            ? this.profileVisitorList[index]
+                            : this.list[index];
         print('itemDetails: $item');
         return InkWell(
           child: Card(

@@ -97,7 +97,7 @@ class _MyProfileState extends State<MyProfile> {
                               radius: MediaQuery.of(context).size.width * 0.122,
                               child: ClipOval(
                                 child: Image.network(
-                                  profileDetails!.images[3].toString(),
+                                  profileDetails!.images[0].toString(),
                                   width: double.infinity,
                                   fit: BoxFit.cover,
                                 ),

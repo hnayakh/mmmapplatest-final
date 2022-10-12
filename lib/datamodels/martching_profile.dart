@@ -4,7 +4,10 @@ import 'package:makemymarry/utils/mmm_enums.dart';
 class MatchingProfile {
   late String id,
       email,
+      visitedId,
       name,
+      mmId,
+      dialCode,
       countryCode,
       contact,
       dateOfBirth,
@@ -15,6 +18,7 @@ class MatchingProfile {
       imageUrl;
   late double height;
   late int marriedNumberOfBrothers,
+      age,
       noOfBrother,
       noOfSister,
       marriedNumberOfSisters;
@@ -78,10 +82,76 @@ class MatchingProfile {
   MatchingProfile.fromRecentViewJson(json) {
     this.id = json["userBasicId"];
     this.name = json["name"];
-    this.city = json["city"];
-    this.state = json["state"];
+    this.email = json["email"];
+    this.gender = Gender.values[json["gender"]];
+    this.countryCode = json["countryCode"];
+    this.dialCode = json["phoneNumber"];
+    this.mmId = json["displayId"];
+    this.aboutMe = json["aboutMe"];
     this.dateOfBirth = json["dateOfBirth"];
     this.imageUrl = json["imageURL"];
+    if (json["careerCity"] != null) {
+      this.city = json["careerCity"];
+    } else {
+      this.city = "";
+    }
+    if (json['careerState'] != null) {
+      this.state = json['careerState'];
+    } else {
+      this.state = "";
+    }
+    if (json["activationStatus"] != null) {
+      this.activationStatus =
+          ProfileActivationStatus.values[json["activationStatus"]];
+    } else {
+      this.activationStatus = ProfileActivationStatus.values[1];
+    }
+    if (json["connectStatus"] != null) {
+      this.isConnected = json["connectStatus"]["isConnected"];
+      if (this.isConnected) {
+        this.connectId = json["connectStatus"]["id"];
+      }
+    } else {
+      this.isConnected = false;
+    }
+    if (json["interestStatus"] != null) {
+      this.requestId = json["interestStatus"]["id"];
+      if (json["interestStatus"]["isLiked"]) {
+        this.requestStatus = InterestRequest.Accepted;
+      } else if (json["interestStatus"]["sent"]) {
+        this.requestStatus = InterestRequest.Sent;
+      } else if (json["interestStatus"]["requested"]) {
+        this.requestStatus = InterestRequest.Received;
+      } else {
+        this.requestStatus = InterestRequest.NotConnected;
+      }
+    } else {
+      this.requestStatus = InterestRequest.NotConnected;
+    }
+  }
+  MatchingProfile.fromProfileVisitedJson(json) {
+    this.visitedId = json["visitId"];
+    this.id = json["id"];
+    this.name = json["name"];
+    this.email = json["email"];
+    this.gender = Gender.values[json["gender"]];
+    this.countryCode = json["countryCode"];
+    this.dialCode = json["phoneNumber"];
+    this.mmId = json["displayId"];
+    this.aboutMe = json["aboutMe"];
+    this.dateOfBirth = json["dateOfBirth"];
+    this.imageUrl = json["imageURL"];
+    this.age = json["age"];
+    if (json["careerCity"] != null) {
+      this.city = json["careerCity"];
+    } else {
+      this.city = "";
+    }
+    if (json['careerState'] != null) {
+      this.state = json['careerState'];
+    } else {
+      this.state = "";
+    }
     if (json["activationStatus"] != null) {
       this.activationStatus =
           ProfileActivationStatus.values[json["activationStatus"]];
@@ -305,6 +375,30 @@ class PremiumMembersResponse {
   }
 }
 
+class ProfileVisitedResponse {
+  late String status, message;
+  List<MatchingProfile> list = [];
+
+  ProfileVisitedResponse.fromError(String message) {
+    this.status = AppConstants.FAILURE;
+    this.message = message;
+  }
+
+  ProfileVisitedResponse.fromJson(json) {
+    this.status = json['type'];
+    this.message = json["message"];
+    this.list = createList(json["data"]);
+  }
+
+  List<MatchingProfile> createList(json) {
+    List<MatchingProfile> list = [];
+    for (var item in json) {
+      list.add(MatchingProfile.fromProfileVisitedJson(item));
+    }
+    return list;
+  }
+}
+
 class RecentViewsResponse {
   late String status, message;
   List<MatchingProfile> list = [];
@@ -328,6 +422,30 @@ class RecentViewsResponse {
     return list;
   }
 }
+
+// class ProfileVisitedResponse {
+//   late String status, message;
+//   List<MatchingProfile> list = [];
+
+//   ProfileVisitedResponse.fromError(String message) {
+//     this.status = AppConstants.FAILURE;
+//     this.message = message;
+//   }
+
+//   ProfileVisitedResponse.fromJson(json) {
+//     this.status = json['type'];
+//     this.message = json["message"];
+//     this.list = createList(json["data"]);
+//   }
+
+//   List<MatchingProfile> createList(json) {
+//     List<MatchingProfile> list = [];
+//     for (var item in json) {
+//       list.add(MatchingProfile.fromProfileVisitedJson(item));
+//     }
+//     return list;
+//   }
+// }
 
 class MatchingProfileSearchResponse {
   late String status, message;

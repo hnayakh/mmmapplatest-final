@@ -23,6 +23,7 @@ class SearchScreen extends StatefulWidget {
   final List<MatchingProfile> searchList;
   final List<MatchingProfile> premiumList;
   final List<MatchingProfile> recentViewList;
+  final List<MatchingProfile> profileVisitorList;
 
   const SearchScreen(
       {Key? key,
@@ -30,7 +31,8 @@ class SearchScreen extends StatefulWidget {
       required this.list,
       required this.premiumList,
       required this.searchList,
-      required this.recentViewList})
+      required this.recentViewList,
+      required this.profileVisitorList})
       : super(key: key);
 
   @override
@@ -189,6 +191,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 searchList: widget.searchList,
                                 premiumList: widget.premiumList,
                                 recentViewList: widget.recentViewList,
+                                profileVisitorList: widget.profileVisitorList,
                                 screenName: "OnlineMembers",
                               )),
                     );
@@ -204,6 +207,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 searchList: widget.searchList,
                                 premiumList: widget.premiumList,
                                 recentViewList: widget.recentViewList,
+                                profileVisitorList: widget.profileVisitorList,
                                 screenName: "PremiumMembers",
                               )),
                     );
@@ -220,6 +224,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 searchList: widget.searchList,
                                 premiumList: widget.premiumList,
                                 recentViewList: widget.recentViewList,
+                                profileVisitorList: widget.profileVisitorList,
                                 screenName: "ProfileViewedBy",
                               )),
                     );
@@ -236,6 +241,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 searchList: widget.searchList,
                                 premiumList: widget.premiumList,
                                 recentViewList: widget.recentViewList,
+                                profileVisitorList: widget.profileVisitorList,
                                 screenName: "ProfileRecentlyViewed",
                               )),
                     );
@@ -251,6 +257,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 searchList: widget.searchList,
                                 premiumList: widget.premiumList,
                                 recentViewList: widget.recentViewList,
+                                profileVisitorList: widget.profileVisitorList,
                                 screenName: "RecomendedProfile",
                               )),
                     );
@@ -336,6 +343,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 searchList: widget.searchList,
                 premiumList: widget.premiumList,
                 recentViewList: widget.recentViewList,
+                profileVisitorList: widget.profileVisitorList,
                 screenName: "",
                 searchText: this.searchText,
               )),
