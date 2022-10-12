@@ -11,8 +11,10 @@ class OnGotProfiles extends ProfileLoaderState {
   final List<MatchingProfile> list;
   final List<MatchingProfile> premiumList;
   final List<MatchingProfile> searchList;
+  final List<MatchingProfile> recentViewList;
 
-  OnGotProfiles(this.list, this.searchList, this.premiumList);
+  OnGotProfiles(
+      this.list, this.searchList, this.premiumList, this.recentViewList);
 }
 
 class OnError extends ProfileLoaderState {

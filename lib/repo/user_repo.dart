@@ -195,7 +195,7 @@ class UserRepository {
     return this.apiClient.getProfileVisitor(this.useDetails!.id);
   }
 
-  Future<MatchingProfileResponse> getRecentViews() async {
+  Future<RecentViewsResponse> getRecentViews() async {
     return this.apiClient.getRecentViews(this.useDetails!.id);
   }
 

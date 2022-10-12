@@ -31,6 +31,7 @@ class MatchingProfileGridView extends StatelessWidget {
   final UserRepository userRepository;
   final List<MatchingProfile> list;
   final List<MatchingProfile> premiumList;
+  final List<MatchingProfile> recentViewList;
   final List<MatchingProfile> searchList;
   final List<MatchingProfile>? mySearCh;
   final String? screenName;
@@ -41,6 +42,7 @@ class MatchingProfileGridView extends StatelessWidget {
       required this.list,
       required this.searchList,
       required this.premiumList,
+      required this.recentViewList,
       this.mySearCh,
       this.screenName})
       : super(key: key);
@@ -72,6 +74,7 @@ class MatchingProfileGridViewScreenState
   List<MatchingProfile> list = [];
   List<MatchingProfile> searchList = [];
   List<MatchingProfile> premiumList = [];
+  List<MatchingProfile> recentViewList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -89,8 +92,13 @@ class MatchingProfileGridViewScreenState
         this.premiumList =
             BlocProvider.of<MatchingProfileBloc>(context).premiumList;
       }
+      if (state is OnGotRecentView) {
+        this.recentViewList =
+            BlocProvider.of<MatchingProfileBloc>(context).recentViewList;
+      }
       //}
       print("premiumList$premiumList");
+      print("recentC=ViewList$recentViewList");
       return Stack(
         fit: StackFit.expand,
         children: [
@@ -145,6 +153,9 @@ class MatchingProfileGridViewScreenState
     if (this.premiumList.length > 0) {
       result = this.premiumList.length;
     }
+    if (this.recentViewList.length > 0) {
+      result = this.recentViewList.length;
+    }
     if (this.searchList.length > 0) {
       result = this.searchList.length;
     }
@@ -169,13 +180,15 @@ class MatchingProfileGridViewScreenState
       // var searchList = BlocProvider.of<MatchingProfileBloc>(context).searchList;
       var premiumList =
           BlocProvider.of<MatchingProfileBloc>(context).premiumList;
+      var recentViewList =
+          BlocProvider.of<MatchingProfileBloc>(context).recentViewList;
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => HomeScreen(
-                userRepository: userRepo,
-                list: list,
-                searchList: searchList,
-                premiumList: premiumList,
-              )));
+              userRepository: userRepo,
+              list: list,
+              searchList: searchList,
+              premiumList: premiumList,
+              recentViewList: recentViewList)));
     }
     // premiumList: premiumList)),
     // builder: (context) => ContactSupportScreen(
@@ -242,7 +255,9 @@ class MatchingProfileGridViewScreenState
                 ? this.searchList[index]
                 : this.premiumList.length > 0
                     ? this.premiumList[index]
-                    : this.list[index];
+                    : this.recentViewList.length > 0
+                        ? this.recentViewList[index]
+                        : this.list[index];
         print('itemDetails: $item');
         return InkWell(
           child: Card(

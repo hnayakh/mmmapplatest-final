@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:makemymarry/utils/colors.dart';
+import 'package:makemymarry/views/stackviewscreens/meet%20status/meet_status_screen.dart';
 
 class MmmIcons {
   static Container heart(Color color, {Function()? action}) {
@@ -42,7 +43,7 @@ class MmmIcons {
     );
   }
 
-  static Container meet() {
+  static Container meet(context) {
     return Container(
       //height: 48,
       //width: 48,
@@ -70,7 +71,11 @@ class MmmIcons {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => MeetStatusScreen()),
+              );
+            },
             child: Container(
               padding: EdgeInsets.all(12),
               child: SvgPicture.asset(

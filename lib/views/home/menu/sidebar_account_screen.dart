@@ -33,13 +33,15 @@ class SidebarAccount extends StatelessWidget {
   final List<MatchingProfile> list;
   final List<MatchingProfile> searchList;
   final List<MatchingProfile> premiumList;
+  final List<MatchingProfile> recentViewList;
 
   const SidebarAccount(
       {Key? key,
       required this.userRepository,
       required this.list,
       required this.premiumList,
-      required this.searchList})
+      required this.searchList,
+      required this.recentViewList})
       : super(key: key);
 
   @override
@@ -51,7 +53,7 @@ class SidebarAccount extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => MatchingProfileBloc(
-              userRepository, list, searchList, premiumList),
+              userRepository, list, searchList, premiumList, recentViewList),
         ),
       ],
       child: SidebarAccountScreen(),
@@ -183,6 +185,8 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
     var list = BlocProvider.of<MatchingProfileBloc>(context).list;
     var searchList = BlocProvider.of<MatchingProfileBloc>(context).searchList;
     var premiumList = BlocProvider.of<MatchingProfileBloc>(context).premiumList;
+    var recentViewList =
+        BlocProvider.of<MatchingProfileBloc>(context).recentViewList;
     switch (index) {
       case 0:
         print("Profile ahead");
@@ -195,13 +199,14 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
         Navigator.of(context).push(
           MaterialPageRoute(
               builder: (context) => BlocProvider(
-                    create: (context) => MatchingProfileBloc(
-                        userRepo, list, searchList, premiumList),
+                    create: (context) => MatchingProfileBloc(userRepo, list,
+                        searchList, premiumList, recentViewList),
                     child: SearchScreen(
                       userRepository: userRepo,
                       list: list,
                       searchList: searchList,
                       premiumList: premiumList,
+                      recentViewList: recentViewList,
                     ),
                   )),
         );

@@ -12,6 +12,11 @@ class OnGotPremium extends MatchingProfileState {
   OnGotPremium(this.list);
 }
 
+class OnGotRecentView extends MatchingProfileState {
+  final List<MatchingProfile> list;
+  OnGotRecentView(this.list);
+}
+
 class OnError extends MatchingProfileState {
   final String message;
 

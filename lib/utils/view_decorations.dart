@@ -63,8 +63,7 @@ class MmmDecorations {
           BoxShadow(
               blurRadius: 22,
               spreadRadius: 0,
-              color: Color(0X3D4B5C1F)
-                  .withOpacity(0.12),
+              color: Color(0X3D4B5C1F).withOpacity(0.12),
               offset: Offset(0, 12)),
           BoxShadow(
               blurRadius: 12,
@@ -74,7 +73,6 @@ class MmmDecorations {
         ],
         color: Colors.white,
         borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(16),
-            bottomRight: Radius.circular(16)));
+            bottomLeft: Radius.circular(16), bottomRight: Radius.circular(16)));
   }
 }

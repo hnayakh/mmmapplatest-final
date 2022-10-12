@@ -625,13 +625,15 @@ class MatchingProfileStackViewScreenState
       // var searchList = BlocProvider.of<MatchingProfileBloc>(context).searchList;
       var premiumList =
           BlocProvider.of<MatchingProfileBloc>(context).premiumList;
+      var recentViewList =
+          BlocProvider.of<MatchingProfileBloc>(context).recentViewList;
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => HomeScreen(
-                userRepository: userRepo,
-                list: list,
-                searchList: searchList,
-                premiumList: premiumList,
-              )));
+              userRepository: userRepo,
+              list: list,
+              searchList: searchList,
+              premiumList: premiumList,
+              recentViewList: recentViewList)));
     }
     // premiumList: premiumList)),
     // builder: (context) => ContactSupportScreen(

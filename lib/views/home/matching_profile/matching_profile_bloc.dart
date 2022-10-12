@@ -11,12 +11,13 @@ class MatchingProfileBloc
   final UserRepository userRepository;
   List<MatchingProfile> list;
   List<MatchingProfile> premiumList;
+  List<MatchingProfile> recentViewList;
   List<MatchingProfile> searchList;
   int selectedPos = 0;
   List<bool> isLikedList = [];
 
-  MatchingProfileBloc(
-      this.userRepository, this.list, this.searchList, this.premiumList)
+  MatchingProfileBloc(this.userRepository, this.list, this.searchList,
+      this.premiumList, this.recentViewList)
       : super(MatchingProfileInitialState()) {
     this.isLikedList = List.generate(list.length, (index) => false);
   }
@@ -69,6 +70,19 @@ class MatchingProfileBloc
         print("PREMIUM MEMBERS");
         print(result.list);
         yield OnGotPremium(this.premiumList);
+      } else {
+        yield OnError(result.message);
+        // print(result.status);
+        // print(result.message);
+      }
+    }
+    if (event is GetRecentViewMembers) {
+      var result = await this.userRepository.getRecentViews();
+      if (result.status == AppConstants.SUCCESS) {
+        this.recentViewList = result.list;
+        print("RECENT MEMBERS");
+        print(result.list);
+        yield OnGotRecentView(this.recentViewList);
       } else {
         yield OnError(result.message);
         // print(result.status);

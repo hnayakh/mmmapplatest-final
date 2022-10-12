@@ -605,22 +605,19 @@ class ApiClient {
     }
   }
 
-  Future<MatchingProfileResponse> getRecentViews(String id) async {
+  Future<RecentViewsResponse> getRecentViews(String id) async {
     try {
-      var response = await this
-          .dio
-          .get("${AppConstants.ENDPOINT}users/profile_visited_by/$id");
+      var response =
+          await this.dio.get("${AppConstants.ENDPOINT}users/recent_view/$id");
       if (response.statusCode == 200 || response.statusCode == 201) {
-        return MatchingProfileResponse.fromJson(response.data);
+        return RecentViewsResponse.fromJson(response.data);
       }
-      return MatchingProfileResponse.fromError(
-          "Error Occurred. Please try again.");
+      return RecentViewsResponse.fromError("Error Occurred. Please try again.");
     } catch (error) {
       if (error is DioError) {
         print(error.message);
       }
-      return MatchingProfileResponse.fromError(
-          "Error Occurred. Please try again.");
+      return RecentViewsResponse.fromError("Error Occurred. Please try again.");
     }
   }
 
