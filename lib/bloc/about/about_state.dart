@@ -1,8 +1,14 @@
 import 'package:makemymarry/bloc/base_event_state.dart';
+import 'package:makemymarry/datamodels/martching_profile.dart';
 
 class AboutState extends BaseEventState {}
 
 class AboutInitialState extends AboutState {}
+
+class ProfileDetailsState extends AboutState {
+  late final ProfileDetails profileDetails;
+  ProfileDetailsState(this.profileDetails);
+}
 
 class OnLoading extends AboutState {}
 

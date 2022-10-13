@@ -262,7 +262,14 @@ class AppHelper {
         'Passed away'
       ];
       return motherOcc[enumEntry.index];
-    } else {
+    }
+
+    // else if (enumName == 'NoOfChildren') {
+    //   List<String> noOfChildren = ['One', 'Two', 'ThreeOrMore'];
+    //   return noOfChildren[enumEntry.index];
+    // }
+
+    else {
       return '';
     }
   }

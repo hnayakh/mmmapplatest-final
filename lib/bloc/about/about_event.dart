@@ -1,4 +1,5 @@
 import 'package:makemymarry/bloc/base_event_state.dart';
+import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 
 class AboutEvent extends BaseEventState {}
@@ -21,6 +22,12 @@ class OnChildrenSelected extends AboutEvent {
   OnChildrenSelected(this.childrenStatus);
 }
 
+class onAboutDataLoad extends AboutEvent {
+  final String basicUserId;
+
+  onAboutDataLoad(this.basicUserId);
+}
+
 class OnDisabilitySelected extends AboutEvent {
   late final AbilityStatus abilityStatus;
 
@@ -28,7 +35,7 @@ class OnDisabilitySelected extends AboutEvent {
 }
 
 class OnChangeNoOfChildren extends AboutEvent {
-  late final NoOfChildren noOfChildren;
+  final NoOfChildren noOfChildren;
 
   OnChangeNoOfChildren(this.noOfChildren);
 }

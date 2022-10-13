@@ -444,7 +444,8 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   }
 
   Widget buildHeight() {
-    var maxValue = maxHeight > 0 ? maxHeight : 0.0;
+    var maxValue = maxHeight > 0 ? maxHeight : 7;
+    print("maxHeight$maxHeight");
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -504,7 +505,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
                     showValueIndicator: ShowValueIndicator.always,
                     valueIndicatorColor: kPrimary.withOpacity(0.7)),
                 child: RangeSlider(
-                  values: RangeValues(minHeight, maxValue),
+                  values: RangeValues(minHeight, maxHeight),
                   min: 4,
                   max: 7,
                   inactiveColor: kGray,
