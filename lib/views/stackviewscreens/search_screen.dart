@@ -344,7 +344,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 premiumList: widget.premiumList,
                 recentViewList: widget.recentViewList,
                 profileVisitorList: widget.profileVisitorList,
-                screenName: "",
+                screenName: "SearchMMID",
                 searchText: this.searchText,
               )),
     );

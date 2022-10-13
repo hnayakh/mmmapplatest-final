@@ -472,10 +472,54 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                                               Icon(Icons.workspace_premium),
                                           text: "Premium Members"),
                                       iconText(
+                                          action: () {
+                                            print("Hello");
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      PremiumMembersScreen(
+                                                        userRepository: widget
+                                                            .userRepository,
+                                                        list: widget.list,
+                                                        searchList:
+                                                            widget.searchList,
+                                                        premiumList:
+                                                            widget.premiumList,
+                                                        recentViewList: widget
+                                                            .recentViewList,
+                                                        profileVisitorList: widget
+                                                            .profileVisitorList,
+                                                        screenName:
+                                                            "ProfileViewedBy",
+                                                      )),
+                                            );
+                                          },
                                           leading:
                                               Icon(Icons.visibility_outlined),
                                           text: "Profile Visitors"),
                                       iconText(
+                                          action: () {
+                                            print("Hello");
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      PremiumMembersScreen(
+                                                        userRepository: widget
+                                                            .userRepository,
+                                                        list: widget.list,
+                                                        searchList:
+                                                            widget.searchList,
+                                                        premiumList:
+                                                            widget.premiumList,
+                                                        recentViewList: widget
+                                                            .recentViewList,
+                                                        profileVisitorList: widget
+                                                            .profileVisitorList,
+                                                        screenName:
+                                                            "ProfileRecentlyViewed",
+                                                      )),
+                                            );
+                                          },
                                           leading: Icon(Icons.search),
                                           text: "Recently Viewed"),
                                     ],

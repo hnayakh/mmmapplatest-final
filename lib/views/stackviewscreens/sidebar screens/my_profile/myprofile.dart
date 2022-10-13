@@ -16,6 +16,7 @@ import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
 import 'package:makemymarry/views/profilescreens/bio/bio.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/sidebar_about_screen.dart';
+import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/status_screen.dart';
 
 import '../../../../datamodels/martching_profile.dart';
 import '../../../../saurabh/myprofile/about_profile.dart';
@@ -248,7 +249,12 @@ class _MyProfileState extends State<MyProfile> {
               SizedBox(
                 height: 16,
               ),
-              MmmButtons.myProfileButtons('Change Status', action: () {}),
+              MmmButtons.myProfileButtons('Change Status', action: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => StatusScreen()),
+                );
+              }),
               SizedBox(
                 height: 16,
               ),

@@ -83,7 +83,7 @@ class PremiumMembersScreenState extends State<PremiumMembersScreen> {
                 });
               }),
               MmmWidgets.bottomBarUnits('images/Frame.svg', 'Interests',
-                  index == 1 ? kPrimary : gray3, action: () {
+                  index == 2 ? kPrimary : gray3, action: () {
                 setState(() {
                   this.index = 2;
                 });
@@ -148,6 +148,7 @@ class PremiumMembersScreenState extends State<PremiumMembersScreen> {
   }
 
   Widget getContent() {
+    print("SCREENNAME");
     print(widget.screenName);
     print('object');
     print(index);
