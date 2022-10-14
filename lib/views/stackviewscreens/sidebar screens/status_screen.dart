@@ -2,6 +2,7 @@ import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:makemymarry/utils/buttons.dart';
 
 class StatusScreen extends StatefulWidget {
   const StatusScreen({Key? key}) : super(key: key);
@@ -14,10 +15,11 @@ class _StatusScreenState extends State<StatusScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      appBar: MmmButtons.appBarCurved('Status', context: context),
+      //    backgroundColor: Colors.black,
       body: Container(
-        height: 450,
-        width: 370,
+        // height: 450,
+        // width: 370,
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(20)),
         child: Column(
