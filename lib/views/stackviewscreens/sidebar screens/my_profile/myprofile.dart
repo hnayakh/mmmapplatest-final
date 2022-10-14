@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:makemymarry/bloc/about/about_bloc.dart';
+import 'package:makemymarry/bloc/about/about_state.dart';
 import 'package:makemymarry/bloc/sign_in/signin_bloc.dart';
 import 'package:makemymarry/matching_percentage/matching_percentage.dart';
 import 'package:makemymarry/repo/user_repo.dart';
@@ -13,6 +15,7 @@ import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
+import 'package:makemymarry/views/profilescreens/about/about.dart';
 import 'package:makemymarry/views/profilescreens/bio/bio.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/sidebar_about_screen.dart';
@@ -22,7 +25,7 @@ import '../../../../datamodels/martching_profile.dart';
 import '../../../../saurabh/myprofile/about_profile.dart';
 import '../../../../utils/widgets_large.dart';
 import '../../../home/menu/account_menu_event.dart';
-import '../../../home/menu/account_menu_state.dart';
+import '../../../home/menu/account_menu_state.dart' as Menu;
 import '../../../profilescreens/bio/bio_bloc.dart';
 import '../../../profilescreens/bio/bio_event.dart';
 import '../../../profilescreens/bio/image_picker_dialog.dart';
@@ -68,12 +71,12 @@ class _MyProfileState extends State<MyProfile> {
               ),
               BlocProvider(
                 create: (context) => AccountMenuBloc(widget.userRepository),
-                child: BlocConsumer<AccountMenuBloc, AccountMenuState>(
+                child: BlocConsumer<AccountMenuBloc, Menu.AccountMenuState>(
                   listener: (context, state) {},
                   builder: (context, state) {
                     print("Akash");
                     print('checkimagestatus$state');
-                    if (state is AccountMenuInitialState) {
+                    if (state is Menu.AccountMenuInitialState) {
                       BlocProvider.of<AccountMenuBloc>(context)
                           .add(FetchMyProfile());
                     }
@@ -81,103 +84,112 @@ class _MyProfileState extends State<MyProfile> {
                       return Scaffold(
                         body: MmmWidgets.buildLoader2(context),
                       );
-                    } else if (state is OnGotProfile) {
+                    } else if (state is Menu.OnGotProfile) {
                       this.profileDetails =
                           BlocProvider.of<AccountMenuBloc>(context).profileData;
                       print('saurabh12345 ${profileDetails!.images}');
-                      return Stack(
-                        children: [
-                          Container(
-                            height: MediaQuery.of(context).size.height * 0.17,
-                            width: MediaQuery.of(context).size.width * 0.244,
-                            //color: Colors.orangeAccent,
-                          ),
-                          Container(
-                            alignment: Alignment.center,
-                            child: CircleAvatar(
-                              radius: MediaQuery.of(context).size.width * 0.122,
-                              child: ClipOval(
-                                child: Image.network(
-                                  profileDetails!.images[0].toString(),
-                                  width: double.infinity,
-                                  fit: BoxFit.cover,
-                                ),
+                      return Stack(children: [
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.17,
+                          width: MediaQuery.of(context).size.width * 0.244,
+                          //color: Colors.orangeAccent,
+                        ),
+                        Container(
+                          alignment: Alignment.center,
+                          child: CircleAvatar(
+                            radius: MediaQuery.of(context).size.width * 0.122,
+                            child: ClipOval(
+                              child: Image.network(
+                                profileDetails!.images[0].toString(),
+                                width: double.infinity,
+                                fit: BoxFit.cover,
                               ),
                             ),
                           ),
-                          Positioned(
-                            bottom: 50,
-                            right: 25,
-                            left: MediaQuery.of(context).size.width * 0.077,
-                            child: InkWell(
-                              onTap: () {
-                                showImagePickerDialog();
-                              },
-                              child: Container(
-                                height: MediaQuery.of(context).size.width * 0.1,
-                                width: MediaQuery.of(context).size.width * 0.1,
-                                alignment: Alignment.center,
+                        ),
+                        Positioned(
+                          bottom: 50,
+                          right: 25,
+                          left: MediaQuery.of(context).size.width * 0.077,
+                          child: InkWell(
+                            onTap: () {
+                              showImagePickerDialog();
+                            },
+                            child: Container(
+                              height: MediaQuery.of(context).size.width * 0.1,
+                              width: MediaQuery.of(context).size.width * 0.1,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: kWhite, shape: BoxShape.circle),
+                              child: SvgPicture.asset(
+                                'images/camera.svg',
+                                color: kDark2,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          right: MediaQuery.of(context).size.width * 0.36,
+                          child: Stack(
+                            children: [
+                              Container(
+                                width: 20,
+                                height: 20,
                                 decoration: BoxDecoration(
-                                    color: kWhite, shape: BoxShape.circle),
-                                child: SvgPicture.asset(
-                                  'images/camera.svg',
-                                  color: kDark2,
+                                  shape: BoxShape.circle,
+                                  color: kWhite,
                                 ),
                               ),
-                            ),
+                              Positioned(
+                                top: 3,
+                                bottom: 3,
+                                right: 3,
+                                left: 3,
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: kPrimary,
+                                )),
+                              )
+                            ],
                           ),
-                          Positioned(
-                            right: MediaQuery.of(context).size.width * 0.36,
-                            child: Stack(
-                              children: [
-                                Container(
-                                  width: 20,
-                                  height: 20,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: kWhite,
-                                  ),
-                                ),
-                                Positioned(
-                                  top: 3,
-                                  bottom: 3,
-                                  right: 3,
-                                  left: 3,
-                                  child: Container(
-                                      decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: kPrimary,
-                                  )),
-                                )
-                              ],
-                            ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(top: 120),
+                          alignment: Alignment.bottomCenter,
+                          child: Text(
+                            profileDetails!.name,
+                            style: MmmTextStyles.heading4(textColor: kDark5),
                           ),
-                          Container(
-                            margin: const EdgeInsets.only(top: 120),
-                            alignment: Alignment.bottomCenter,
-                            child: Text(
-                              profileDetails!.name,
-                              style: MmmTextStyles.heading4(textColor: kDark5),
-                            ),
-                          ),
-                          Container(
+                        ),
+                        Container(
                             margin: const EdgeInsets.only(top: 150),
                             alignment: Alignment.bottomCenter,
-                            child: Text(
-                              profileDetails!.mmId,
-                              style:
-                                  MmmTextStyles.bodyRegular(textColor: gray3),
-                            ),
-                          )
-
-                          // TextButton(
-                          //     onPressed: () {},
-                          //     child: Text(
-                          //       'Edit',
-                          //       style: MmmTextStyles.heading6(textColor: kPrimary),
-                          //     )),
-                        ],
-                      );
+                            child: Row(
+                              children: [
+                                Text(
+                                  profileDetails!.mmId,
+                                  style: MmmTextStyles.bodyRegular(
+                                      textColor: gray3),
+                                ),
+                                // BlocProvider(
+                                //   create: (context) =>
+                                //       AboutBloc(widget.userRepository),
+                                //   child: BlocConsumer<AboutBloc, AboutState>(
+                                //     listener: (context, state) {},
+                                //     builder: (context, state) {
+                                TextButton(
+                                  child: Text("Edit"),
+                                  onPressed: () {
+                                    onEdit();
+                                  },
+                                )
+                                //     },
+                                //   ),
+                                // )
+                              ],
+                            ))
+                      ]);
                     } else
                       return Container(
                           // child: Text(
@@ -291,6 +303,22 @@ class _MyProfileState extends State<MyProfile> {
       print("saurabh uplaod 3${file.path}");
     }
     // }
+  }
+
+  void onEdit() {
+    print("hekllo222");
+    // Navigator.of(context)
+    //     .push(MaterialPageRoute(builder: (context) => AboutScreen()));
+    //var userRepository = BlocProvider.of<AboutBloc>(context).userRepository;
+    print("hekllo333");
+    Navigator.of(context).push(
+      MaterialPageRoute<AboutBloc>(
+        builder: (context) => BlocProvider<AboutBloc>(
+          create: (context) => AboutBloc(widget.userRepository),
+          child: AboutScreen(),
+        ),
+      ),
+    );
   }
 
   void showImagePickerDialog() async {

@@ -32,7 +32,7 @@ dependencies:
   pin_code_text_field: ^1.8.0
   flutter_typeahead: ^3.2.0
   flutter_svg:
-  google_sign_in: ^5.0.5
+
   flutter_facebook_login: ^3.0.0
   firebase_auth: ^3.0.1
   introduction_screen: ^2.1.0

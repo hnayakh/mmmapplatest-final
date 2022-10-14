@@ -1,6 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/bloc/about/about_event.dart';
 import 'package:makemymarry/bloc/about/about_state.dart';
+import 'package:makemymarry/datamodels/martching_profile.dart';
+import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/app_helper.dart';
@@ -17,10 +19,21 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
   int? heightStatus;
   DateTime? dateOfBirth;
   String? name;
-
+  ProfileDetails? profileDetails;
   @override
   Stream<AboutState> mapEventToState(AboutEvent event) async* {
     yield OnLoading();
+    if (event is onAboutDataLoad) {
+      var result = await this.userRepository.getOtheruserDetails(
+          event.basicUserId, ProfileActivationStatus.Verified);
+
+      if (result.status == AppConstants.SUCCESS) {
+        this.profileDetails = result.profileDetails;
+        yield ProfileDetailsState(result.profileDetails);
+      } else {
+        yield OnError(result.message);
+      }
+    }
     if (event is OnMaritalStatusSelected) {
       this.maritalStatus = event.ms;
       if (event.ms == MaritalStatus.NeverMarried) {

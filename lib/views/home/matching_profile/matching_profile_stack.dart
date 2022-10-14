@@ -656,12 +656,14 @@ class MatchingProfileStackViewScreenState
           BlocProvider.of<MatchingProfileBloc>(context).profileVisitorList;
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => HomeScreen(
-              userRepository: userRepo,
-              list: list,
-              searchList: searchList,
-              premiumList: premiumList,
-              recentViewList: recentViewList,
-              profileVisitorList: profileVisitorList)));
+                userRepository: userRepo,
+                list: list,
+                searchList: searchList,
+                premiumList: premiumList,
+                recentViewList: recentViewList,
+                profileVisitorList: profileVisitorList,
+                screenName: "",
+              )));
     }
     // premiumList: premiumList)),
     // builder: (context) => ContactSupportScreen(

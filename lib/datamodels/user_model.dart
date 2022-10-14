@@ -94,7 +94,7 @@ class SigninResponse {
 }
 
 class UserDetails {
-  late String id, email, mobile, dialCode, displayId;
+  late String id, email, mobile, dialCode, displayId, name;
   late bool isActive;
   late int gender, registrationStep, lifecycleStatus, activationStatus;
   late Relationship relationship;
@@ -110,6 +110,7 @@ class UserDetails {
 
   UserDetails.fromJson(json) {
     this.displayId = json["displayId"];
+
     this.id = json["id"];
     this.email = json["email"];
     this.mobile = json["phoneNumber"];

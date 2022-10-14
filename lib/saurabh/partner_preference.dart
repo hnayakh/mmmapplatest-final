@@ -147,6 +147,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
     this.maxAge = BlocProvider.of<ProfilePreferenceBloc>(context).maxAge;
     this.minHeight = BlocProvider.of<ProfilePreferenceBloc>(context).minHeight;
     this.maxHeight = BlocProvider.of<ProfilePreferenceBloc>(context).maxHeight;
+
     this.maritalStatus =
         BlocProvider.of<ProfilePreferenceBloc>(context).maritalStatus;
     this.countryModel =
@@ -1027,8 +1028,15 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
     }
   }
 
+  double convertHeight(double height) {
+    return (height.floor() / 2.54 ~/ 12).toDouble();
+  }
+
   Widget buildHeight() {
-    var maxValue = maxHeight > 0 ? maxHeight : 0.0;
+    print("minHeight${minHeight}");
+
+    var maxValue = maxHeight > 0 ? maxHeight : 7.0;
+    print("maxHeight${maxValue}");
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -1093,10 +1101,10 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                   max: 7,
                   inactiveColor: kGray,
                   activeColor: kPrimary,
-                  // divisions: 30,
+                  divisions: 5,
                   labels: RangeLabels(
-                    minHeight.toStringAsFixed(1),
-                    maxHeight.toStringAsFixed(1),
+                    convertHeight(minHeight).toStringAsFixed(1),
+                    maxValue.toStringAsFixed(1),
                   ),
                   onChanged: (RangeValues values) {
                     print(values.end);

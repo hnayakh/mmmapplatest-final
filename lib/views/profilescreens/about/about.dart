@@ -6,6 +6,7 @@ import 'package:makemymarry/bloc/about/about_bloc.dart';
 import 'package:makemymarry/bloc/about/about_event.dart';
 import 'package:makemymarry/bloc/about/about_state.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
+import 'package:makemymarry/matching_percentage/matching_percentage_bloc.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
@@ -16,6 +17,7 @@ import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
+import 'package:makemymarry/views/home/matching_profile/matching_profile_bloc.dart';
 import 'package:makemymarry/views/profilescreens/about/height_status_bottom_sheet.dart';
 import 'package:makemymarry/views/profilescreens/about/marital_status_bottom_sheet.dart';
 
@@ -52,6 +54,7 @@ class _AboutScreenState extends State<AboutScreen> {
   MaritalStatus? maritalStatus;
 
   String heightStatusHintText = 'Select your height';
+  String savedHeight = "";
   DateTime? dobHintText;
   NoOfChildren? noOfChildren;
   int? heightStatus;
@@ -60,6 +63,9 @@ class _AboutScreenState extends State<AboutScreen> {
 
   @override
   Widget build(BuildContext context) {
+    this.userDetails =
+        BlocProvider.of<AboutBloc>(context).userRepository.useDetails!;
+    BlocProvider.of<AboutBloc>(context).add(onAboutDataLoad(userDetails.id));
     return Scaffold(
       // appBar: MmmButtons.appBarCurved('About'),
 
@@ -92,7 +98,7 @@ class _AboutScreenState extends State<AboutScreen> {
             children: [
               SingleChildScrollView(
                 child: Container(
-                  child: buildForm(),
+                  child: buildForm(this.noOfChildren),
                 ),
               ),
               Positioned(
@@ -114,7 +120,14 @@ class _AboutScreenState extends State<AboutScreen> {
     );
   }
 
-  Widget buildForm() {
+  Widget buildForm(noOfChildren) {
+    var hintText = this.heightStatus != null
+        ? AppHelper.getHeight(heightStatus)
+        : savedHeight != ""
+            ? savedHeight != null
+                ? savedHeight
+                : 'Select your height'
+            : 'Select your height';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -154,7 +167,7 @@ class _AboutScreenState extends State<AboutScreen> {
               ),
               MmmButtons.categoryButtons(
                   'Marital Status',
-                  maritalStatusHintText,
+                  AppHelper.getStringFromEnum(this.maritalStatus),
                   'Select your maritial status',
                   'images/rightArrow.svg', action: () {
                 showMaritalStatusBottomSheet();
@@ -186,6 +199,8 @@ class _AboutScreenState extends State<AboutScreen> {
                                       BlocProvider.of<AboutBloc>(context).add(
                                           OnChildrenSelected(ChildrenStatus
                                               .YesLivingTogether));
+                                      this.childrenStatus =
+                                          ChildrenStatus.YesLivingTogether;
                                     }),
                               ),
                               Text(
@@ -206,6 +221,8 @@ class _AboutScreenState extends State<AboutScreen> {
                                       BlocProvider.of<AboutBloc>(context).add(
                                           OnChildrenSelected(ChildrenStatus
                                               .YesNotLivingTogether));
+                                      this.childrenStatus =
+                                          ChildrenStatus.YesNotLivingTogether;
                                     }),
                               ),
                               Text(
@@ -229,6 +246,7 @@ class _AboutScreenState extends State<AboutScreen> {
                                       BlocProvider.of<AboutBloc>(context).add(
                                           OnChildrenSelected(
                                               ChildrenStatus.No));
+                                      this.childrenStatus = ChildrenStatus.No;
                                     }),
                               ),
                               Text(
@@ -250,7 +268,7 @@ class _AboutScreenState extends State<AboutScreen> {
                         ),
                         MmmButtons.categoryButtons(
                             "No of children",
-                            this.noOfChildren != null
+                            noOfChildren != null
                                 ? //'${describeEnum(this.noOfChildren!)}'
                                 AppHelper.getStringFromEnum(this.noOfChildren)
                                 : 'Select number of children',
@@ -264,13 +282,8 @@ class _AboutScreenState extends State<AboutScreen> {
               SizedBox(
                 height: 24,
               ),
-              MmmButtons.categoryButtons(
-                  "Height",
-                  this.heightStatus != null
-                      ? AppHelper.getHeight(heightStatus)
-                      : 'Select your height',
-                  'Select your height',
-                  'images/rightArrow.svg', action: () {
+              MmmButtons.categoryButtons("Height", hintText,
+                  'Select your height', 'images/rightArrow.svg', action: () {
                 showHeightStatusBottomSheet();
               }),
               SizedBox(
@@ -380,6 +393,7 @@ class _AboutScreenState extends State<AboutScreen> {
     if (result != null && result is MaritalStatus) {
       // this.maritalStatusHintText = describeEnum(result);
       this.maritalStatusHintText = AppHelper.getStringFromEnum(result);
+      this.maritalStatus = result;
       BlocProvider.of<AboutBloc>(context).add(OnMaritalStatusSelected(result));
     }
   }
@@ -395,6 +409,7 @@ class _AboutScreenState extends State<AboutScreen> {
 
     if (result != null && result is int) {
       BlocProvider.of<AboutBloc>(context).add(OnHeightStatusSelected(result));
+      this.heightStatus = result;
     }
   }
 
@@ -407,15 +422,42 @@ class _AboutScreenState extends State<AboutScreen> {
   }
 
   void initData() {
-    this.userDetails =
-        BlocProvider.of<AboutBloc>(context).userRepository.useDetails!;
     this.maritalStatus = BlocProvider.of<AboutBloc>(context).maritalStatus;
     this.heightStatus = BlocProvider.of<AboutBloc>(context).heightStatus;
     this.childrenStatus = BlocProvider.of<AboutBloc>(context).childrenStatus;
     this.abilityStatus = BlocProvider.of<AboutBloc>(context).abilityStatus;
     this.noOfChildren = BlocProvider.of<AboutBloc>(context).noOfChildren;
     this.dobHintText = BlocProvider.of<AboutBloc>(context).dateOfBirth;
-
+    if (BlocProvider.of<AboutBloc>(context).profileDetails != null) {
+      this.namecontroller.text =
+          BlocProvider.of<AboutBloc>(context).profileDetails!.name;
+      if (this.dobHintText == null)
+        this.dobHintText = DateTime.parse(
+            BlocProvider.of<AboutBloc>(context).profileDetails!.dateOfBirth);
+      if (this.maritalStatus == null)
+        this.maritalStatus =
+            BlocProvider.of<AboutBloc>(context).profileDetails!.maritalStatus;
+      // BlocProvider.of<AboutBloc>(context)
+      //     .add(OnMaritalStatusSelected(maritalStatus!));
+      // .name;
+      this.childrenStatus =
+          BlocProvider.of<AboutBloc>(context).profileDetails!.childrenStatus;
+      if (BlocProvider.of<AboutBloc>(context).profileDetails!.noOfChildren !=
+          null) {
+        this.noOfChildren =
+            BlocProvider.of<AboutBloc>(context).profileDetails!.noOfChildren;
+      }
+      if (BlocProvider.of<AboutBloc>(context).profileDetails!.height != null &&
+          this.heightStatus == null) {
+        this.savedHeight =
+            BlocProvider.of<AboutBloc>(context).profileDetails!.height;
+      }
+      if (BlocProvider.of<AboutBloc>(context).profileDetails!.abilityStatus !=
+          null) {
+        this.abilityStatus =
+            BlocProvider.of<AboutBloc>(context).profileDetails!.abilityStatus;
+      }
+    }
     //this.dobHintText = BlocProvider.of<AboutBloc>(context).dob != null
     //    ? BlocProvider.of<AboutBloc>(context).dob!
     //   : '';
@@ -432,6 +474,7 @@ class _AboutScreenState extends State<AboutScreen> {
 
     if (result != null && result is NoOfChildren) {
       BlocProvider.of<AboutBloc>(context).add(OnChangeNoOfChildren(result));
+      this.noOfChildren = result;
     }
   }
 }

@@ -76,7 +76,7 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
   List<MatchingProfile> premiumList = [];
   List<MatchingProfile> recentViewList = [];
   String? searchText;
-  final String? screenName;
+  String? screenName;
   @override
   void initState() {
     super.initState();
@@ -106,13 +106,16 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
     if (widget.searchTextNew != null) {
       showOptionsSearchThroughId(widget.searchTextNew);
     }
-    if (screenName == 'PremiumMembers') {
+    // if (screenName == '') {
+    //   context.read<MatchingProfileBloc>().add(GetProfileDetails(0));
+    // }
+    if (widget.screenName == 'PremiumMembers') {
       context.read<MatchingProfileBloc>().add(GetPremiumMembers());
     }
-    if (screenName == 'ProfileRecentlyViewed') {
+    if (widget.screenName == 'ProfileRecentlyViewed') {
       context.read<MatchingProfileBloc>().add(GetRecentViewMembers());
     }
-    if (screenName == 'ProfileViewedBy') {
+    if (widget.screenName == 'ProfileViewedBy') {
       context.read<MatchingProfileBloc>().add(GetProfileVisited());
     }
     return Container(
@@ -128,7 +131,7 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                   searchList: searchList,
                   premiumList: premiumList,
                   recentViewList: recentViewList,
-                  screenName: screenName)
+                  screenName: widget.screenName)
               : MatchingProfileStackView(
                   userRepository: widget.userRepository,
                   list: list,
@@ -168,7 +171,7 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                 ),
                 Expanded(
                     child: Container(
-                        child: screenName == 'PremiumMembers'
+                        child: widget.screenName == 'PremiumMembers'
                             ? Container(
                                 height: 44,
                                 //margin: const EdgeInsets.all(15.0),
@@ -204,7 +207,7 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                                   ],
                                 ),
                               )
-                            : screenName == 'ProfileViewedBy'
+                            : widget.screenName == 'ProfileViewedBy'
                                 ? Container(
                                     height: 44,
                                     //margin: const EdgeInsets.all(15.0),
@@ -230,7 +233,7 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                                       ],
                                     ),
                                   )
-                                : screenName == 'ProfileRecentlyViewed'
+                                : widget.screenName == 'ProfileRecentlyViewed'
                                     ? Container(
                                         height: 44,
                                         //margin: const EdgeInsets.all(15.0),
@@ -257,7 +260,7 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                                           ],
                                         ),
                                       )
-                                    : screenName == 'OnlineMembers'
+                                    : widget.screenName == 'OnlineMembers'
                                         ? Container(
                                             height: 44,
                                             //margin: const EdgeInsets.all(15.0),
@@ -284,7 +287,8 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                                               ],
                                             ),
                                           )
-                                        : screenName == 'RecomendedProfile'
+                                        : widget.screenName ==
+                                                'RecomendedProfile'
                                             ? Container(
                                                 height: 44,
                                                 //margin: const EdgeInsets.all(15.0),
@@ -370,7 +374,7 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                 //   left: 8,
                 //   top: 8,
                 //   child:
-                screenName == '' || screenName == null
+                widget.screenName == '' || widget.screenName == null
                     ? Container(
                         width: 0,
                         height: 44,
