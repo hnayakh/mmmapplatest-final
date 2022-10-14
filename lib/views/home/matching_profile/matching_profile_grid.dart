@@ -49,10 +49,12 @@ class MatchingProfileGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("SCREENANME$screenName");
     // return BlocBuilder<MatchingProfileBloc, MatchingProfileState>(
     //     builder: (context, searchList) {
     //   print("object_search => $searchList");
-    return MatchingProfileGridViewScreen();
+    return MatchingProfileGridViewScreen(
+        this.screenName == null ? "" : this.screenName!);
     // return BlocProvider(
     //   create: (context) =>
     //       MatchingProfileBloc(userRepository, list, searchList, premiumList),
@@ -63,9 +65,11 @@ class MatchingProfileGridView extends StatelessWidget {
 }
 
 class MatchingProfileGridViewScreen extends StatefulWidget {
+  final String screeName;
+  MatchingProfileGridViewScreen(this.screeName);
   @override
   State<StatefulWidget> createState() {
-    return MatchingProfileGridViewScreenState();
+    return MatchingProfileGridViewScreenState(this.screeName);
   }
 }
 
@@ -76,9 +80,12 @@ class MatchingProfileGridViewScreenState
   List<MatchingProfile> premiumList = [];
   List<MatchingProfile> recentViewList = [];
   List<MatchingProfile> profileVisitorList = [];
+  String screenName;
+  MatchingProfileGridViewScreenState(this.screenName);
 
   @override
   Widget build(BuildContext context) {
+    print("Screen Name from build$screenName");
     return BlocConsumer<MatchingProfileBloc, MatchingProfileState>(
         builder: (context, state) {
       if (state is MatchingProfileInitialState ||
@@ -143,7 +150,7 @@ class MatchingProfileGridViewScreenState
                       })
                     ],
                   )
-                : buildGridView(),
+                : buildGridView(screenName),
           ),
           state is OnLoading ? MmmWidgets.buildLoader(context) : Container()
         ],
@@ -155,18 +162,22 @@ class MatchingProfileGridViewScreenState
     });
   }
 
-  int getListLength() {
+  int getListLength(screenName) {
     var result = this.list.length;
-    if (this.premiumList.length > 0) {
+    if (screenName == null) {
+      return result;
+    }
+    if (screenName == "PremiumMembers" && this.premiumList.length > 0) {
       result = this.premiumList.length;
     }
-    if (this.profileVisitorList.length > 0) {
+    if (screenName == "ProfileViewedBy" && this.profileVisitorList.length > 0) {
       result = this.profileVisitorList.length;
     }
-    if (this.recentViewList.length > 0) {
+    if (screenName == "ProfileRecentlyViewed" &&
+        this.recentViewList.length > 0) {
       result = this.recentViewList.length;
     }
-    if (this.searchList.length > 0) {
+    if (screenName == "SearchMMID" && this.searchList.length > 0) {
       result = this.searchList.length;
     }
     return result;
@@ -237,22 +248,32 @@ class MatchingProfileGridViewScreenState
     // );
   }
 
-  getItem(index) {
+  getItem(index, screenName) {
     var result = this.list[index];
-    if (this.premiumList.length > 0) {
+    if (screenName == null) {
+      return result;
+    }
+    if (screenName == "PremiumMembers" && this.premiumList.length > 0) {
       result = this.premiumList[index];
     }
-    if (this.searchList.length > 0) {
+    if (screenName == "ProfileViewedBy" && this.profileVisitorList.length > 0) {
+      result = this.profileVisitorList[index];
+    }
+    if (screenName == "ProfileRecentlyViewed" &&
+        this.recentViewList.length > 0) {
+      result = this.recentViewList[index];
+    }
+    if (screenName == "SearchMMID" && this.searchList.length > 0) {
       result = this.searchList[index];
     }
 
     return result;
   }
 
-  GridView buildGridView() {
+  GridView buildGridView(screenName) {
     // var listLength =
     //     this.searchList.length > 0 ? this.searchList.length : this.list.length;
-    var listLength = getListLength();
+    // var listLength = getListLength(screenName);
 
     return GridView.builder(
       padding: const EdgeInsets.only(top: 96),
@@ -262,17 +283,16 @@ class MatchingProfileGridViewScreenState
           crossAxisSpacing: 16,
           mainAxisSpacing: 16),
       itemBuilder: (context, index) {
-        MatchingProfile item =
-            //getItem(index);
-            this.searchList.length > 0
-                ? this.searchList[index]
-                : this.premiumList.length > 0
-                    ? this.premiumList[index]
-                    : this.recentViewList.length > 0
-                        ? this.recentViewList[index]
-                        : this.profileVisitorList.length > 0
-                            ? this.profileVisitorList[index]
-                            : this.list[index];
+        MatchingProfile item = getItem(index, screenName);
+        // this.searchList.length > 0
+        //     ? this.searchList[index]
+        //     : this.premiumList.length > 0
+        //         ? this.premiumList[index]
+        //         : this.recentViewList.length > 0
+        //             ? this.recentViewList[index]
+        //             : this.profileVisitorList.length > 0
+        //                 ? this.profileVisitorList[index]
+        //                 : this.list[index];
         print('itemDetails: $item');
         return InkWell(
           child: Card(
@@ -350,7 +370,7 @@ class MatchingProfileGridViewScreenState
           },
         );
       },
-      itemCount: listLength,
+      itemCount: getListLength(screenName),
     );
   }
 
