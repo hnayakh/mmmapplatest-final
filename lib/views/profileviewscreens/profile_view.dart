@@ -498,7 +498,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                     flex: 1,
                     child: SizedBox(),
                   ),
-                  MmmIcons.meet(),
+                  MmmIcons.meet(context),
                   Expanded(flex: 2, child: SizedBox()),
                 ],
               ),

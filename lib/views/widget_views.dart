@@ -129,7 +129,7 @@ class WidgetViewState extends State<WidgetView> {
         return MmmIcons.heart(gray7);
         break;
       case 32:
-        return MmmIcons.meet();
+        return MmmIcons.meet(context);
         break;
       case 33:
         return MmmIcons.cancel();

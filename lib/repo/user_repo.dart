@@ -191,11 +191,11 @@ class UserRepository {
     return this.apiClient.getPremiumMembers(this.useDetails!.id);
   }
 
-  Future<MatchingProfileResponse> getProfileVisitor() async {
+  Future<ProfileVisitedResponse> getProfileVisitor() async {
     return this.apiClient.getProfileVisitor(this.useDetails!.id);
   }
 
-  Future<MatchingProfileResponse> getRecentViews() async {
+  Future<RecentViewsResponse> getRecentViews() async {
     return this.apiClient.getRecentViews(this.useDetails!.id);
   }
 

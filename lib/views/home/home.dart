@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
+import 'package:makemymarry/saurabh/profile_detail.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/home/matching_profile/matching_profile_bloc.dart';
 import 'package:makemymarry/views/home/menu/sidebar_account_screen.dart';
 import 'package:makemymarry/views/home/my_connects/my_connects_screen.dart';
+import 'package:makemymarry/views/stackviewscreens/meet%20status/meet_status_screen.dart';
+import 'package:makemymarry/views/stackviewscreens/meet%20status/meet_timing/schedule_meeting_time.dart';
 import 'package:makemymarry/views/stackviewscreens/notification_list.dart';
+import 'package:makemymarry/views/stackviewscreens/search_screen.dart';
 import 'interests/interest_status_screen.dart';
 import 'matching_profile/matching_profile.dart';
 
@@ -17,13 +21,17 @@ class HomeScreen extends StatefulWidget {
   // final List<PremiumMembers> list;
   final List<MatchingProfile> searchList;
   final List<MatchingProfile> premiumList;
+  final List<MatchingProfile> recentViewList;
+  final List<MatchingProfile> profileVisitorList;
 
   const HomeScreen(
       {Key? key,
       required this.userRepository,
       required this.list,
       required this.premiumList,
-      required this.searchList})
+      required this.searchList,
+      required this.recentViewList,
+      required this.profileVisitorList})
       : super(key: key);
 
   @override
@@ -54,26 +62,33 @@ class HomeScreenState extends State<HomeScreen> {
                   this.index = 0;
                 });
               }),
-              MmmWidgets.bottomBarUnits('images/filter2.svg', 'Interests',
-                  index == 1 ? kPrimary : gray3, action: () {
+              MmmWidgets.bottomBarUnits(
+                  'images/filter2.svg', 'Filter', index == 1 ? kPrimary : gray3,
+                  action: () {
                 setState(() {
                   this.index = 1;
                 });
               }),
-              MmmWidgets.bottomBarUnits('images/connect.svg', 'Connects',
+              MmmWidgets.bottomBarUnits('images/Frame.svg', 'Interests',
                   index == 2 ? kPrimary : gray3, action: () {
                 setState(() {
                   this.index = 2;
                 });
               }),
-              MmmWidgets.bottomBarUnits('images/filter2.svg', 'Notifications',
+              // MmmWidgets.bottomBarUnits('images/connect.svg', 'Connects',
+              //     index == 2 ? kPrimary : gray3, action: () {
+              //   setState(() {
+              //     this.index = 3;
+              //   });
+              // }),
+              MmmWidgets.bottomBarUnits('images/noti.svg', 'Notifications',
                   index == 3 ? kPrimary : gray3, action: () {
                 setState(() {
                   this.index = 3;
                 });
               }),
               MmmWidgets.bottomBarUnits(
-                  'images/menu.svg', 'More', index == 4 ? kPrimary : gray3,
+                  'images/menu.svg', 'Menu', index == 4 ? kPrimary : gray3,
                   action: () {
                 setState(() {
                   this.index = 4;
@@ -91,31 +106,55 @@ class HomeScreenState extends State<HomeScreen> {
     switch (index) {
       case 0:
         return BlocProvider<MatchingProfileBloc>(
-            create: (context) => MatchingProfileBloc(widget.userRepository,
-                widget.list, widget.searchList, widget.premiumList),
+            create: (context) => MatchingProfileBloc(
+                widget.userRepository,
+                widget.list,
+                widget.searchList,
+                widget.premiumList,
+                widget.recentViewList,
+                widget.profileVisitorList),
             child: Builder(builder: (context) {
               return MatchingProfileScreen(
-                userRepository: widget.userRepository,
-                list: widget.list,
-                searchList: widget.searchList,
-                screenName: null,
-              );
+                  userRepository: widget.userRepository,
+                  list: widget.list,
+                  searchList: widget.searchList,
+                  screenName: null,
+                  premiumList: widget.premiumList,
+                  recentViewList: widget.recentViewList,
+                  profileVisitorList: widget.profileVisitorList);
             }));
       case 1:
-        return Interests(
-          userRepository: widget.userRepository,
-        );
-      case 2:
-        return MyConnects(userRepository: widget.userRepository);
-      case 3:
-        return Notifications(userRepository: widget.userRepository);
-      case 4:
-        return SidebarAccount(
+        return
+            // ScheduleMeetingTime();
+            SearchScreen(
           userRepository: widget.userRepository,
           list: widget.list,
           searchList: widget.searchList,
           premiumList: widget.premiumList,
+          recentViewList: widget.recentViewList,
+          profileVisitorList: widget.profileVisitorList,
         );
+      case 2:
+        return
+            // ScheduleMeetingTime();
+            Interests(
+          userRepository: widget.userRepository,
+        );
+      // case 3:
+      //   return MyConnects(userRepository: widget.userRepository);
+      case 3:
+        return Notifications(userRepository: widget.userRepository);
+      //  return MeetStatusScreen();
+      // return ProfileDetailsScreen();
+
+      case 4:
+        return SidebarAccount(
+            userRepository: widget.userRepository,
+            list: widget.list,
+            searchList: widget.searchList,
+            premiumList: widget.premiumList,
+            recentViewList: widget.recentViewList,
+            profileVisitorList: widget.profileVisitorList);
     }
     return Container();
   }

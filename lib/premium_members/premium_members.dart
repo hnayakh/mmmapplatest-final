@@ -10,13 +10,17 @@ import 'package:makemymarry/views/home/matching_profile/matching_profile_bloc.da
 import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
 import 'package:makemymarry/views/home/menu/sidebar_account_screen.dart';
 import 'package:makemymarry/views/home/my_connects/my_connects_screen.dart';
+import 'package:makemymarry/views/stackviewscreens/meet%20status/meet_status_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/notification_list.dart';
+import 'package:makemymarry/views/stackviewscreens/search_screen.dart';
 
 class PremiumMembersScreen extends StatefulWidget {
   final UserRepository userRepository;
   final List<MatchingProfile> list;
   final List<MatchingProfile> premiumList;
   final List<MatchingProfile> searchList;
+  final List<MatchingProfile> recentViewList;
+  final List<MatchingProfile> profileVisitorList;
   final String? screenName;
   final String? searchText;
   PremiumMembersScreen(
@@ -26,6 +30,8 @@ class PremiumMembersScreen extends StatefulWidget {
       required this.premiumList,
       required this.searchList,
       required this.screenName,
+      required this.recentViewList,
+      required this.profileVisitorList,
       this.searchText})
       : super(key: key);
 
@@ -69,31 +75,70 @@ class PremiumMembersScreenState extends State<PremiumMembersScreen> {
                   this.index = 0;
                 });
               }),
-              MmmWidgets.bottomBarUnits('images/filter2.svg', 'Interests',
-                  index == 1 ? kPrimary : gray3, action: () {
+              MmmWidgets.bottomBarUnits(
+                  'images/filter2.svg', 'Filter', index == 1 ? kPrimary : gray3,
+                  action: () {
                 setState(() {
                   this.index = 1;
                 });
               }),
-              MmmWidgets.bottomBarUnits('images/connect.svg', 'Connects',
-                  index == 2 ? kPrimary : gray3, action: () {
+              MmmWidgets.bottomBarUnits('images/Frame.svg', 'Interests',
+                  index == 1 ? kPrimary : gray3, action: () {
                 setState(() {
                   this.index = 2;
                 });
               }),
-              MmmWidgets.bottomBarUnits('images/filter2.svg', 'Notifications',
+              // MmmWidgets.bottomBarUnits('images/connect.svg', 'Connects',
+              //     index == 2 ? kPrimary : gray3, action: () {
+              //   setState(() {
+              //     this.index = 3;
+              //   });
+              // }),
+              MmmWidgets.bottomBarUnits('images/noti.svg', 'Notifications',
                   index == 3 ? kPrimary : gray3, action: () {
                 setState(() {
                   this.index = 3;
                 });
               }),
               MmmWidgets.bottomBarUnits(
-                  'images/menu.svg', 'More', index == 4 ? kPrimary : gray3,
+                  'images/menu.svg', 'Menu', index == 4 ? kPrimary : gray3,
                   action: () {
                 setState(() {
                   this.index = 4;
                 });
               })
+              // MmmWidgets.bottomBarUnits(
+              //     'images/home.svg', 'Home', index == 0 ? kPrimary : gray3,
+              //     action: () {
+              //   setState(() {
+              //     this.index = 0;
+              //   });
+              // }),
+              // MmmWidgets.bottomBarUnits('images/filter2.svg', 'Interests',
+              //     index == 1 ? kPrimary : gray3, action: () {
+              //   setState(() {
+              //     this.index = 1;
+              //   });
+              // }),
+              // MmmWidgets.bottomBarUnits('images/connect.svg', 'Connects',
+              //     index == 2 ? kPrimary : gray3, action: () {
+              //   setState(() {
+              //     this.index = 2;
+              //   });
+              // }),
+              // MmmWidgets.bottomBarUnits('images/filter2.svg', 'Notifications',
+              //     index == 3 ? kPrimary : gray3, action: () {
+              //   setState(() {
+              //     this.index = 3;
+              //   });
+              // }),
+              // MmmWidgets.bottomBarUnits(
+              //     'images/menu.svg', 'More', index == 4 ? kPrimary : gray3,
+              //     action: () {
+              //   setState(() {
+              //     this.index = 4;
+              //   });
+              // })
             ],
           ),
           padding: const EdgeInsets.only(left: 12, right: 12, top: 12),
@@ -109,31 +154,72 @@ class PremiumMembersScreenState extends State<PremiumMembersScreen> {
     switch (index) {
       case 0:
         return BlocProvider<MatchingProfileBloc>(
-            create: (context) => MatchingProfileBloc(widget.userRepository,
-                widget.list, widget.searchList, widget.premiumList),
+            create: (context) => MatchingProfileBloc(
+                widget.userRepository,
+                widget.list,
+                widget.searchList,
+                widget.premiumList,
+                widget.recentViewList,
+                widget.profileVisitorList),
             child: Builder(builder: (context) {
               return MatchingProfileScreen(
                   userRepository: widget.userRepository,
                   list: widget.list,
                   searchList: widget.searchList,
+                  premiumList: widget.premiumList,
+                  recentViewList: widget.recentViewList,
                   screenName: widget.screenName,
+                  profileVisitorList: widget.profileVisitorList,
                   searchTextNew: widget.searchText);
             }));
       case 1:
-        return Interests(
+        return
+            // ScheduleMeetingTime();
+            SearchScreen(
           userRepository: widget.userRepository,
+          list: widget.list,
+          searchList: widget.searchList,
+          premiumList: widget.premiumList,
+          recentViewList: widget.recentViewList,
+          profileVisitorList: widget.profileVisitorList,
         );
       case 2:
-        return MyConnects(userRepository: widget.userRepository);
+        return
+            // ScheduleMeetingTime();
+            Interests(
+          userRepository: widget.userRepository,
+        );
+      // case 3:
+      //   return MyConnects(userRepository: widget.userRepository);
       case 3:
         return Notifications(userRepository: widget.userRepository);
+      //return MeetStatusScreen();
+      // return ProfileDetailsScreen();
+
       case 4:
         return SidebarAccount(
           userRepository: widget.userRepository,
           list: widget.list,
           searchList: widget.searchList,
           premiumList: widget.premiumList,
+          recentViewList: widget.recentViewList,
+          profileVisitorList: widget.profileVisitorList,
         );
+      // case 1:
+      //   return Interests(
+      //     userRepository: widget.userRepository,
+      //   );
+      // case 2:
+      //   return MyConnects(userRepository: widget.userRepository);
+      // case 3:
+      //   return Notifications(userRepository: widget.userRepository);
+      // case 4:
+      //   return SidebarAccount(
+      //     userRepository: widget.userRepository,
+      //     list: widget.list,
+      //     searchList: widget.searchList,
+      //     premiumList: widget.premiumList,
+      //   );
     }
     return Container();
   }

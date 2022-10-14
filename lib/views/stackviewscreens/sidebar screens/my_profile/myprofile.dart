@@ -180,7 +180,7 @@ class _MyProfileState extends State<MyProfile> {
                                 TextButton(
                                   child: Text("Edit"),
                                   onPressed: () {
-                                    //  onEdit();
+                                    onEdit();
                                   },
                                 )
                                 //     },

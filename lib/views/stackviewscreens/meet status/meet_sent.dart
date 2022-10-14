@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
+import 'package:makemymarry/utils/dimens.dart';
+import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
@@ -81,7 +83,9 @@ class MSentScreen extends StatelessWidget {
                             width: 12,
                           ),
                           MmmButtons.cancelButtonMeetScreen('Cancel', 76,
-                              action: () {})
+                              action: () {
+                            _showDialog(context);
+                          })
                         ],
                       )
                     ],
@@ -109,7 +113,7 @@ class MSentScreen extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                'Meet in Person',
+                                'Meet in person',
                                 style: MmmTextStyles.bodySmall(
                                     textColor: kPrimary),
                               ),
@@ -172,7 +176,9 @@ class MSentScreen extends StatelessWidget {
                             width: 12,
                           ),
                           MmmButtons.cancelButtonMeetScreen('Cancel', 76,
-                              action: () {})
+                              action: () {
+                            _showDialog(context);
+                          })
                         ],
                       )
                     ],
@@ -187,6 +193,68 @@ class MSentScreen extends StatelessWidget {
           },
         ),
       ),
+    );
+  }
+
+  void _showDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(15.0))),
+          backgroundColor: kWhite,
+          title: Text("Cancel Request",
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                  fontWeight:
+                      FontWeight.bold)), // To display the title it is optional
+          content: new RichText(
+              textAlign: TextAlign.center,
+              text: new TextSpan(
+                // Note: Styles for TextSpans must be explicitly defined.
+                // Child text spans will inherit styles from parent
+                style: new TextStyle(
+                  fontSize: 16.0,
+                  color: Colors.grey,
+                ),
+                children: <TextSpan>[
+                  new TextSpan(text: 'Are you want to cancel his request'),
+                  // new TextSpan(
+                  //     text: ' mmyid', style: new TextStyle(color: kPrimary)),
+                  // new TextSpan(text: ' to find your perfect match.'),
+                ],
+              )),
+          // Action widget which will provide the user to acknowledge the choice
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                MmmButtons.primaryButtonMeet("cancel", () {
+                  Navigator.of(context).pop();
+                  // navigateToHome(state);
+                }),
+                MmmButtons.primaryButtonMeet("Confirm", () {
+                  Navigator.of(context).pop();
+                  // navigateToHome(state);
+                })
+              ],
+            )
+          ],
+        );
+        //  AlertDialog(
+        //   title: new Text("Alert!!"),
+        //   content: new Text("You are awesome!"),
+        //   actions: <Widget>[
+        //     GestureDetector(
+        //       child: new Text("OK"),
+        //       onTap: () {
+        //         Navigator.of(context).pop();
+        //       },
+        //     ),
+        //   ],
+        // );
+      },
     );
   }
 }

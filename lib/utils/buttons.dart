@@ -1630,7 +1630,7 @@ class MmmButtons {
           Positioned(
               bottom: 0,
               right: MediaQuery.of(context).size.width * 0.06,
-              child: Transform.scale(scale: 0.9, child: MmmIcons.meet()))
+              child: Transform.scale(scale: 0.9, child: MmmIcons.meet(context)))
         ],
       ),
     );
@@ -2126,6 +2126,27 @@ class MmmButtons {
           ),
         ),
       ),
+    );
+  }
+
+  static Widget primaryButtonMeet(String title, Function()? onTap) {
+    return Container(
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          height: 40,
+          width: 80,
+          alignment: Alignment.center,
+          child: Text(
+            title,
+            textScaleFactor: 1.0,
+            style: MmmTextStyles.heading6(textColor: Colors.white),
+            textAlign: TextAlign.center,
+          ),
+          decoration: MmmDecorations.primaryButtonDecoration(),
+        ),
+      ),
+      margin: kMargin32,
     );
   }
 

@@ -121,6 +121,13 @@ class _AboutScreenState extends State<AboutScreen> {
   }
 
   Widget buildForm(noOfChildren) {
+    var hintText = this.heightStatus != null
+        ? AppHelper.getHeight(heightStatus)
+        : savedHeight != ""
+            ? savedHeight != null
+                ? savedHeight
+                : 'Select your height'
+            : 'Select your height';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -160,7 +167,7 @@ class _AboutScreenState extends State<AboutScreen> {
               ),
               MmmButtons.categoryButtons(
                   'Marital Status',
-                  maritalStatusHintText,
+                  AppHelper.getStringFromEnum(this.maritalStatus),
                   'Select your maritial status',
                   'images/rightArrow.svg', action: () {
                 showMaritalStatusBottomSheet();
@@ -192,6 +199,8 @@ class _AboutScreenState extends State<AboutScreen> {
                                       BlocProvider.of<AboutBloc>(context).add(
                                           OnChildrenSelected(ChildrenStatus
                                               .YesLivingTogether));
+                                      this.childrenStatus =
+                                          ChildrenStatus.YesLivingTogether;
                                     }),
                               ),
                               Text(
@@ -212,6 +221,8 @@ class _AboutScreenState extends State<AboutScreen> {
                                       BlocProvider.of<AboutBloc>(context).add(
                                           OnChildrenSelected(ChildrenStatus
                                               .YesNotLivingTogether));
+                                      this.childrenStatus =
+                                          ChildrenStatus.YesNotLivingTogether;
                                     }),
                               ),
                               Text(
@@ -235,6 +246,7 @@ class _AboutScreenState extends State<AboutScreen> {
                                       BlocProvider.of<AboutBloc>(context).add(
                                           OnChildrenSelected(
                                               ChildrenStatus.No));
+                                      this.childrenStatus = ChildrenStatus.No;
                                     }),
                               ),
                               Text(
@@ -270,15 +282,8 @@ class _AboutScreenState extends State<AboutScreen> {
               SizedBox(
                 height: 24,
               ),
-              MmmButtons.categoryButtons(
-                  "Height",
-                  this.heightStatus != null
-                      ? savedHeight != null
-                          ? savedHeight
-                          : AppHelper.getHeight(heightStatus)
-                      : 'Select your height',
-                  'Select your height',
-                  'images/rightArrow.svg', action: () {
+              MmmButtons.categoryButtons("Height", hintText,
+                  'Select your height', 'images/rightArrow.svg', action: () {
                 showHeightStatusBottomSheet();
               }),
               SizedBox(
@@ -388,6 +393,7 @@ class _AboutScreenState extends State<AboutScreen> {
     if (result != null && result is MaritalStatus) {
       // this.maritalStatusHintText = describeEnum(result);
       this.maritalStatusHintText = AppHelper.getStringFromEnum(result);
+      this.maritalStatus = result;
       BlocProvider.of<AboutBloc>(context).add(OnMaritalStatusSelected(result));
     }
   }
@@ -403,6 +409,7 @@ class _AboutScreenState extends State<AboutScreen> {
 
     if (result != null && result is int) {
       BlocProvider.of<AboutBloc>(context).add(OnHeightStatusSelected(result));
+      this.heightStatus = result;
     }
   }
 
@@ -424,12 +431,14 @@ class _AboutScreenState extends State<AboutScreen> {
     if (BlocProvider.of<AboutBloc>(context).profileDetails != null) {
       this.namecontroller.text =
           BlocProvider.of<AboutBloc>(context).profileDetails!.name;
-      this.dobHintText = DateTime.parse(
-          BlocProvider.of<AboutBloc>(context).profileDetails!.dateOfBirth);
-      this.maritalStatus =
-          BlocProvider.of<AboutBloc>(context).profileDetails!.maritalStatus;
-      BlocProvider.of<AboutBloc>(context)
-          .add(OnMaritalStatusSelected(maritalStatus!));
+      if (this.dobHintText == null)
+        this.dobHintText = DateTime.parse(
+            BlocProvider.of<AboutBloc>(context).profileDetails!.dateOfBirth);
+      if (this.maritalStatus == null)
+        this.maritalStatus =
+            BlocProvider.of<AboutBloc>(context).profileDetails!.maritalStatus;
+      // BlocProvider.of<AboutBloc>(context)
+      //     .add(OnMaritalStatusSelected(maritalStatus!));
       // .name;
       this.childrenStatus =
           BlocProvider.of<AboutBloc>(context).profileDetails!.childrenStatus;
@@ -438,9 +447,15 @@ class _AboutScreenState extends State<AboutScreen> {
         this.noOfChildren =
             BlocProvider.of<AboutBloc>(context).profileDetails!.noOfChildren;
       }
-      if (BlocProvider.of<AboutBloc>(context).profileDetails!.height != null) {
+      if (BlocProvider.of<AboutBloc>(context).profileDetails!.height != null &&
+          this.heightStatus == null) {
         this.savedHeight =
             BlocProvider.of<AboutBloc>(context).profileDetails!.height;
+      }
+      if (BlocProvider.of<AboutBloc>(context).profileDetails!.abilityStatus !=
+          null) {
+        this.abilityStatus =
+            BlocProvider.of<AboutBloc>(context).profileDetails!.abilityStatus;
       }
     }
     //this.dobHintText = BlocProvider.of<AboutBloc>(context).dob != null
@@ -459,6 +474,7 @@ class _AboutScreenState extends State<AboutScreen> {
 
     if (result != null && result is NoOfChildren) {
       BlocProvider.of<AboutBloc>(context).add(OnChangeNoOfChildren(result));
+      this.noOfChildren = result;
     }
   }
 }

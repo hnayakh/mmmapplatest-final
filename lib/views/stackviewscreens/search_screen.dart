@@ -22,13 +22,17 @@ class SearchScreen extends StatefulWidget {
   final List<MatchingProfile> list;
   final List<MatchingProfile> searchList;
   final List<MatchingProfile> premiumList;
+  final List<MatchingProfile> recentViewList;
+  final List<MatchingProfile> profileVisitorList;
 
   const SearchScreen(
       {Key? key,
       required this.userRepository,
       required this.list,
       required this.premiumList,
-      required this.searchList})
+      required this.searchList,
+      required this.recentViewList,
+      required this.profileVisitorList})
       : super(key: key);
 
   @override
@@ -38,13 +42,15 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   var index;
   final myController = TextEditingController();
-  String? searchText;
+
+  String? searchText = "";
 
   @override
   void initState() {
     super.initState();
 
     // Start listening to changes.
+//  myController.value = TextEditingValue(text: "MM");
     myController.addListener(onChangeTextSearch);
   }
 
@@ -58,7 +64,10 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MmmButtons.appBarCurved('Search', context: context),
+      appBar: MmmButtons.appBarCurved(
+        'Search',
+        // context: context
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -87,6 +96,10 @@ class _SearchScreenState extends State<SearchScreen> {
                             child: Container(
                               width: 100,
                               child: TextField(
+                                  onTap: () {
+                                    myController.value =
+                                        TextEditingValue(text: "MM");
+                                  },
                                   controller: myController,
                                   //controller: cntrlr,
                                   keyboardType: TextInputType.multiline,
@@ -94,7 +107,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                   maxLength: 15,
                                   decoration: InputDecoration(
                                     counterText: '',
-                                    hintText: 'Search by mmy id',
+                                    hintText: "MMABC123",
                                     hintStyle: MmmTextStyles.bodyRegular(
                                         textColor: gray4),
                                     contentPadding: EdgeInsets.zero,
@@ -177,6 +190,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                 list: widget.list,
                                 searchList: widget.searchList,
                                 premiumList: widget.premiumList,
+                                recentViewList: widget.recentViewList,
+                                profileVisitorList: widget.profileVisitorList,
                                 screenName: "OnlineMembers",
                               )),
                     );
@@ -191,6 +206,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                 list: widget.list,
                                 searchList: widget.searchList,
                                 premiumList: widget.premiumList,
+                                recentViewList: widget.recentViewList,
+                                profileVisitorList: widget.profileVisitorList,
                                 screenName: "PremiumMembers",
                               )),
                     );
@@ -206,6 +223,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                 list: widget.list,
                                 searchList: widget.searchList,
                                 premiumList: widget.premiumList,
+                                recentViewList: widget.recentViewList,
+                                profileVisitorList: widget.profileVisitorList,
                                 screenName: "ProfileViewedBy",
                               )),
                     );
@@ -221,6 +240,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                 list: widget.list,
                                 searchList: widget.searchList,
                                 premiumList: widget.premiumList,
+                                recentViewList: widget.recentViewList,
+                                profileVisitorList: widget.profileVisitorList,
                                 screenName: "ProfileRecentlyViewed",
                               )),
                     );
@@ -235,6 +256,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                 list: widget.list,
                                 searchList: widget.searchList,
                                 premiumList: widget.premiumList,
+                                recentViewList: widget.recentViewList,
+                                profileVisitorList: widget.profileVisitorList,
                                 screenName: "RecomendedProfile",
                               )),
                     );
@@ -319,6 +342,8 @@ class _SearchScreenState extends State<SearchScreen> {
                 list: widget.list,
                 searchList: widget.searchList,
                 premiumList: widget.premiumList,
+                recentViewList: widget.recentViewList,
+                profileVisitorList: widget.profileVisitorList,
                 screenName: "",
                 searchText: this.searchText,
               )),

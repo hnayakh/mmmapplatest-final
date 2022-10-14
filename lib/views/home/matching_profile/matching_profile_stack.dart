@@ -61,6 +61,9 @@ class MatchingProfileStackViewScreenState
   List<MatchingProfile> list = [];
   List<MatchingProfile> searchList = [];
   List<MatchingProfile> premiumList = [];
+  List<MatchingProfile> recentViewList = [];
+  List<MatchingProfile> profileVisitorList = [];
+
   //late List<MatchingProfileSearch> myNewSearch;
   late bool isLiked;
   // int getListLength() {
@@ -79,6 +82,12 @@ class MatchingProfileStackViewScreenState
     var result = this.list.length;
     if (this.premiumList.length > 0) {
       result = this.premiumList.length;
+    }
+    if (this.profileVisitorList.length > 0) {
+      result = this.profileVisitorList.length;
+    }
+    if (this.recentViewList.length > 0) {
+      result = this.recentViewList.length;
     }
     if (this.searchList.length > 0) {
       result = this.searchList.length;
@@ -134,6 +143,14 @@ class MatchingProfileStackViewScreenState
           this.premiumList =
               BlocProvider.of<MatchingProfileBloc>(context).premiumList;
         }
+        if (state is OnGotRecentView) {
+          this.recentViewList =
+              BlocProvider.of<MatchingProfileBloc>(context).recentViewList;
+        }
+        if (state is onGotProfileVisitors) {
+          this.profileVisitorList =
+              BlocProvider.of<MatchingProfileBloc>(context).profileVisitorList;
+        }
         print("test");
         // print(myNewSearch);
         var listLength = getListLength();
@@ -187,7 +204,11 @@ class MatchingProfileStackViewScreenState
                                   ? this.searchList[index]
                                   : this.premiumList.length > 0
                                       ? this.premiumList[index]
-                                      : this.list[index];
+                                      : this.recentViewList.length > 0
+                                          ? this.recentViewList[index]
+                                          : this.profileVisitorList.length > 0
+                                              ? this.profileVisitorList[index]
+                                              : this.list[index];
 
                           initData(index);
 
@@ -362,7 +383,11 @@ class MatchingProfileStackViewScreenState
         ? this.searchList[index]
         : this.premiumList.length > 0
             ? this.premiumList[index]
-            : this.list[index];
+            : this.recentViewList.length > 0
+                ? this.recentViewList[index]
+                : this.profileVisitorList.length > 0
+                    ? this.profileVisitorList[index]
+                    : this.list[index];
     if (item.requestStatus == InterestRequest.Accepted) {
       buildConnect(context, index);
     } else if (item.requestStatus == InterestRequest.Sent) {
@@ -625,13 +650,18 @@ class MatchingProfileStackViewScreenState
       // var searchList = BlocProvider.of<MatchingProfileBloc>(context).searchList;
       var premiumList =
           BlocProvider.of<MatchingProfileBloc>(context).premiumList;
+      var recentViewList =
+          BlocProvider.of<MatchingProfileBloc>(context).recentViewList;
+      var profileVisitorList =
+          BlocProvider.of<MatchingProfileBloc>(context).profileVisitorList;
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => HomeScreen(
-                userRepository: userRepo,
-                list: list,
-                searchList: searchList,
-                premiumList: premiumList,
-              )));
+              userRepository: userRepo,
+              list: list,
+              searchList: searchList,
+              premiumList: premiumList,
+              recentViewList: recentViewList,
+              profileVisitorList: profileVisitorList)));
     }
     // premiumList: premiumList)),
     // builder: (context) => ContactSupportScreen(
