@@ -12,6 +12,7 @@ import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
+import 'package:makemymarry/views/home/home.dart';
 import 'package:makemymarry/views/stackviewscreens/notification_list.dart';
 
 import '../home/matching_profile/matching_profile_bloc.dart';
@@ -201,7 +202,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       'images/online.svg', 'Premium Members', action: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                          builder: (context) => PremiumMembersScreen(
+                          builder: (context) => HomeScreen(
                                 userRepository: widget.userRepository,
                                 list: widget.list,
                                 searchList: widget.searchList,
@@ -218,7 +219,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       action: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                          builder: (context) => PremiumMembersScreen(
+                          builder: (context) => HomeScreen(
                                 userRepository: widget.userRepository,
                                 list: widget.list,
                                 searchList: widget.searchList,
@@ -235,7 +236,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       action: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                          builder: (context) => PremiumMembersScreen(
+                          builder: (context) => HomeScreen(
                                 userRepository: widget.userRepository,
                                 list: widget.list,
                                 searchList: widget.searchList,
@@ -251,7 +252,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       'images/Check.svg', 'Recommended Profile', action: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                          builder: (context) => PremiumMembersScreen(
+                          builder: (context) => HomeScreen(
                                 userRepository: widget.userRepository,
                                 list: widget.list,
                                 searchList: widget.searchList,

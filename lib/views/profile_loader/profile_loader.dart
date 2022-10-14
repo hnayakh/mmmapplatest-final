@@ -144,12 +144,14 @@ class ProfileLoaderScreenState extends State<ProfileLoaderScreen>
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
             builder: (context) => HomeScreen(
-                userRepository: userRepo,
-                list: list,
-                searchList: seachList,
-                recentViewList: recentViewList,
-                premiumList: premiumList,
-                profileVisitorList: profileVisitorList)),
+                  userRepository: userRepo,
+                  list: list,
+                  searchList: seachList,
+                  recentViewList: recentViewList,
+                  premiumList: premiumList,
+                  profileVisitorList: profileVisitorList,
+                  screenName: "",
+                )),
         (route) => false);
   }
 

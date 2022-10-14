@@ -18,7 +18,7 @@ import 'matching_profile/matching_profile.dart';
 class HomeScreen extends StatefulWidget {
   final UserRepository userRepository;
   final List<MatchingProfile> list;
-  // final List<PremiumMembers> list;
+  final screenName;
   final List<MatchingProfile> searchList;
   final List<MatchingProfile> premiumList;
   final List<MatchingProfile> recentViewList;
@@ -29,6 +29,7 @@ class HomeScreen extends StatefulWidget {
       required this.userRepository,
       required this.list,
       required this.premiumList,
+      required this.screenName,
       required this.searchList,
       required this.recentViewList,
       required this.profileVisitorList})
@@ -55,11 +56,10 @@ class HomeScreenState extends State<HomeScreen> {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              MmmWidgets.bottomBarUnits(
-                  'images/home.svg', 'Home', index == 0 ? kPrimary : gray3,
-                  action: () {
+              MmmWidgets.bottomBarUnits('images/home.svg', 'Home',
+                  (index == 0 || index == -1) ? kPrimary : gray3, action: () {
                 setState(() {
-                  this.index = 0;
+                  this.index = -1;
                 });
               }),
               MmmWidgets.bottomBarUnits(
@@ -104,6 +104,26 @@ class HomeScreenState extends State<HomeScreen> {
 
   Widget getContent() {
     switch (index) {
+      case -1:
+        return BlocProvider<MatchingProfileBloc>(
+            create: (context) => MatchingProfileBloc(
+                widget.userRepository,
+                widget.list,
+                widget.searchList,
+                widget.premiumList,
+                widget.recentViewList,
+                widget.profileVisitorList),
+            child: Builder(builder: (context) {
+              return MatchingProfileScreen(
+                  userRepository: widget.userRepository,
+                  list: widget.list,
+                  searchList: widget.searchList,
+                  screenName: "",
+                  premiumList: widget.premiumList,
+                  recentViewList: widget.recentViewList,
+                  profileVisitorList: widget.profileVisitorList);
+            }));
+
       case 0:
         return BlocProvider<MatchingProfileBloc>(
             create: (context) => MatchingProfileBloc(
@@ -118,7 +138,7 @@ class HomeScreenState extends State<HomeScreen> {
                   userRepository: widget.userRepository,
                   list: widget.list,
                   searchList: widget.searchList,
-                  screenName: null,
+                  screenName: widget.screenName,
                   premiumList: widget.premiumList,
                   recentViewList: widget.recentViewList,
                   profileVisitorList: widget.profileVisitorList);

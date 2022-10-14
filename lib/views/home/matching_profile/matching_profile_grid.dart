@@ -53,8 +53,7 @@ class MatchingProfileGridView extends StatelessWidget {
     // return BlocBuilder<MatchingProfileBloc, MatchingProfileState>(
     //     builder: (context, searchList) {
     //   print("object_search => $searchList");
-    return MatchingProfileGridViewScreen(
-        this.screenName == null ? "" : this.screenName!);
+    return MatchingProfileGridViewScreen(this.screenName!);
     // return BlocProvider(
     //   create: (context) =>
     //       MatchingProfileBloc(userRepository, list, searchList, premiumList),
@@ -65,11 +64,12 @@ class MatchingProfileGridView extends StatelessWidget {
 }
 
 class MatchingProfileGridViewScreen extends StatefulWidget {
-  final String screeName;
-  MatchingProfileGridViewScreen(this.screeName);
+  final String screenName;
+  MatchingProfileGridViewScreen(this.screenName);
+
   @override
   State<StatefulWidget> createState() {
-    return MatchingProfileGridViewScreenState(this.screeName);
+    return MatchingProfileGridViewScreenState(this.screenName);
   }
 }
 
@@ -80,14 +80,21 @@ class MatchingProfileGridViewScreenState
   List<MatchingProfile> premiumList = [];
   List<MatchingProfile> recentViewList = [];
   List<MatchingProfile> profileVisitorList = [];
-  String screenName;
-  MatchingProfileGridViewScreenState(this.screenName);
+  // String screenName = "";
+  MatchingProfileGridViewScreenState(screenName);
 
   @override
   Widget build(BuildContext context) {
-    print("Screen Name from build$screenName");
+    print("Screen Name from build$widget.screenName");
     return BlocConsumer<MatchingProfileBloc, MatchingProfileState>(
         builder: (context, state) {
+      if (widget.screenName == "") {
+        this.searchList = [];
+        this.premiumList = [];
+        this.recentViewList = [];
+        this.profileVisitorList = [];
+        this.list = BlocProvider.of<MatchingProfileBloc>(context).list;
+      }
       if (state is MatchingProfileInitialState ||
           state is OnGotProfileDetails) {
         this.list = BlocProvider.of<MatchingProfileBloc>(context).list;
@@ -150,7 +157,7 @@ class MatchingProfileGridViewScreenState
                       })
                     ],
                   )
-                : buildGridView(screenName),
+                : buildGridView(widget.screenName),
           ),
           state is OnLoading ? MmmWidgets.buildLoader(context) : Container()
         ],
@@ -207,12 +214,14 @@ class MatchingProfileGridViewScreenState
           BlocProvider.of<MatchingProfileBloc>(context).profileVisitorList;
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => HomeScreen(
-              userRepository: userRepo,
-              list: list,
-              searchList: searchList,
-              premiumList: premiumList,
-              recentViewList: recentViewList,
-              profileVisitorList: profileVisitorList)));
+                userRepository: userRepo,
+                list: list,
+                searchList: searchList,
+                premiumList: premiumList,
+                recentViewList: recentViewList,
+                profileVisitorList: profileVisitorList,
+                screenName: widget.screenName,
+              )));
     }
     // premiumList: premiumList)),
     // builder: (context) => ContactSupportScreen(
@@ -250,7 +259,7 @@ class MatchingProfileGridViewScreenState
 
   getItem(index, screenName) {
     var result = this.list[index];
-    if (screenName == null) {
+    if (screenName == "") {
       return result;
     }
     if (screenName == "PremiumMembers" && this.premiumList.length > 0) {
