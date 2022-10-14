@@ -262,7 +262,9 @@ class _MyProfileState extends State<MyProfile> {
                 height: 16,
               ),
               MmmButtons.myProfileButtons('Change Status', action: () {
-                //  _showDialog(context);
+                print("Hello");
+                // showStatusDilogue(context);
+
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => StatusScreen()),
@@ -340,6 +342,10 @@ class _MyProfileState extends State<MyProfile> {
     }
   }
 
+  void showStatusDilogue(BuildContext context) {
+    MmmWidgets.selectStatusWidget(context);
+  }
+
   void _showDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -347,14 +353,16 @@ class _MyProfileState extends State<MyProfile> {
         return Scaffold(
           backgroundColor: Colors.black,
           body: Container(
+            alignment: Alignment.center,
             height: 450,
             width: 370,
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(20)),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 70),
-                const Text(
+                SizedBox(height: 70),
+                Text(
                   "Select your Status",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                 ),

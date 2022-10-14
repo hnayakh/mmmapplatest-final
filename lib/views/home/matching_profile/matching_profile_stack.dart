@@ -27,6 +27,7 @@ class MatchingProfileStackView extends StatelessWidget {
   final List<MatchingProfile> searchList;
   final List<MatchingProfile>? mySearCh;
   final List<MatchingProfile> premiumList;
+  final String? screenName;
 
   const MatchingProfileStackView(
       {Key? key,
@@ -34,7 +35,8 @@ class MatchingProfileStackView extends StatelessWidget {
       required this.list,
       required this.searchList,
       required this.premiumList,
-      this.mySearCh})
+      this.mySearCh,
+      this.screenName})
       : super(key: key);
 
   @override
@@ -44,14 +46,17 @@ class MatchingProfileStackView extends StatelessWidget {
     //       MatchingProfileBloc(userRepository, this.list, this.searchList),
     //   child: MatchingProfileStackViewScreen(),
     // );
-    return MatchingProfileStackViewScreen();
+    return MatchingProfileStackViewScreen(this.screenName!);
   }
 }
 
 class MatchingProfileStackViewScreen extends StatefulWidget {
+  final String screenName;
+  MatchingProfileStackViewScreen(this.screenName);
+
   @override
   State<StatefulWidget> createState() {
-    return MatchingProfileStackViewScreenState();
+    return MatchingProfileStackViewScreenState(this.screenName);
   }
 }
 
@@ -64,55 +69,76 @@ class MatchingProfileStackViewScreenState
   List<MatchingProfile> recentViewList = [];
   List<MatchingProfile> profileVisitorList = [];
 
+  MatchingProfileStackViewScreenState(screenName);
   //late List<MatchingProfileSearch> myNewSearch;
   late bool isLiked;
+
+  //from grid
   // int getListLength() {
-  //   var result = 0;
-  //   if (this.list.length > 0) {
-  //     result = this.list.length;
-  //   } else if (this.searchList.length > 0) {
-  //     result = this.searchList.length;
-  //   } else {
+  //   var result = this.list.length;
+  //   if (this.premiumList.length > 0) {
   //     result = this.premiumList.length;
+  //   }
+  //   if (this.profileVisitorList.length > 0) {
+  //     result = this.profileVisitorList.length;
+  //   }
+  //   if (this.recentViewList.length > 0) {
+  //     result = this.recentViewList.length;
+  //   }
+  //   if (this.searchList.length > 0) {
+  //     result = this.searchList.length;
   //   }
   //   return result;
   // }
-  //from grid
-  int getListLength() {
+  int getListLength(screenName) {
     var result = this.list.length;
-    if (this.premiumList.length > 0) {
+    if (screenName == "") {
+      return result;
+    }
+    if (screenName == "PremiumMembers" && this.premiumList.length > 0) {
       result = this.premiumList.length;
     }
-    if (this.profileVisitorList.length > 0) {
+    if (screenName == "ProfileViewedBy" && this.profileVisitorList.length > 0) {
       result = this.profileVisitorList.length;
     }
-    if (this.recentViewList.length > 0) {
+    if (screenName == "ProfileRecentlyViewed" &&
+        this.recentViewList.length > 0) {
       result = this.recentViewList.length;
     }
-    if (this.searchList.length > 0) {
+    if (screenName == "SearchMMID" && this.searchList.length > 0) {
       result = this.searchList.length;
     }
     return result;
   }
 
+//from grid
   // getItem(index) {
-  //   var result;
-  //   if (this.list.length > 0) {
-  //     result = this.list[index];
-  //   } else if (this.searchList.length > 0) {
-  //     result = this.searchList[index];
-  //   } else {
+  //   var result = this.list[index];
+  //   if (this.premiumList.length > 0) {
   //     result = this.premiumList[index];
   //   }
+  //   if (this.searchList.length > 0) {
+  //     result = this.searchList[index];
+  //   }
+
   //   return result;
   // }
-//from grid
-  getItem(index) {
+  getItem(index, screenName) {
     var result = this.list[index];
-    if (this.premiumList.length > 0) {
+    if (screenName == "") {
+      return result;
+    }
+    if (screenName == "PremiumMembers" && this.premiumList.length > 0) {
       result = this.premiumList[index];
     }
-    if (this.searchList.length > 0) {
+    if (screenName == "ProfileViewedBy" && this.profileVisitorList.length > 0) {
+      result = this.profileVisitorList[index];
+    }
+    if (screenName == "ProfileRecentlyViewed" &&
+        this.recentViewList.length > 0) {
+      result = this.recentViewList[index];
+    }
+    if (screenName == "SearchMMID" && this.searchList.length > 0) {
       result = this.searchList[index];
     }
 
@@ -131,6 +157,13 @@ class MatchingProfileStackViewScreenState
         //     BlocProvider.of<MatchingProfileBloc>(context).premiumList;
         // this.myNewSearch =
         //  BlocProvider.of<MatchingProfileBloc>(context).searchList;
+        if (widget.screenName == "") {
+          this.searchList = [];
+          this.premiumList = [];
+          this.recentViewList = [];
+          this.profileVisitorList = [];
+          this.list = BlocProvider.of<MatchingProfileBloc>(context).list;
+        }
         if (state is MatchingProfileInitialState ||
             state is OnGotProfileDetails) {
           this.list = BlocProvider.of<MatchingProfileBloc>(context).list;
@@ -153,7 +186,7 @@ class MatchingProfileStackViewScreenState
         }
         print("test");
         // print(myNewSearch);
-        var listLength = getListLength();
+        var listLength = getListLength(widget.screenName);
         // this.searchList.length > 0
         //     ? this.searchList.length
         //     : this.list.length;
@@ -199,16 +232,16 @@ class MatchingProfileStackViewScreenState
                     : PageView.builder(
                         itemBuilder: (context, index) {
                           MatchingProfile item =
-                              //  getItem(index);
-                              this.searchList.length > 0
-                                  ? this.searchList[index]
-                                  : this.premiumList.length > 0
-                                      ? this.premiumList[index]
-                                      : this.recentViewList.length > 0
-                                          ? this.recentViewList[index]
-                                          : this.profileVisitorList.length > 0
-                                              ? this.profileVisitorList[index]
-                                              : this.list[index];
+                              getItem(index, widget.screenName);
+                          // this.searchList.length > 0
+                          //     ? this.searchList[index]
+                          //     : this.premiumList.length > 0
+                          //         ? this.premiumList[index]
+                          //         : this.recentViewList.length > 0
+                          //             ? this.recentViewList[index]
+                          //             : this.profileVisitorList.length > 0
+                          //                 ? this.profileVisitorList[index]
+                          //                 : this.list[index];
 
                           initData(index);
 

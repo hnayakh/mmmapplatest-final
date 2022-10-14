@@ -11,6 +11,7 @@ import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/home/filter_screens/filter_screen.dart';
+import 'package:makemymarry/views/home/home.dart';
 import 'package:makemymarry/views/home/matching_profile/matching_profile_bloc.dart';
 import 'package:makemymarry/views/home/matching_profile/matching_profile_event.dart';
 
@@ -136,7 +137,8 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                   userRepository: widget.userRepository,
                   list: list,
                   premiumList: premiumList,
-                  searchList: searchList),
+                  searchList: searchList,
+                  screenName: widget.screenName),
           // Positioned(
           //child:
           Container(
@@ -455,7 +457,7 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                                             Navigator.of(context).push(
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      PremiumMembersScreen(
+                                                      HomeScreen(
                                                         userRepository: widget
                                                             .userRepository,
                                                         list: widget.list,
@@ -481,7 +483,7 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                                             Navigator.of(context).push(
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      PremiumMembersScreen(
+                                                      HomeScreen(
                                                         userRepository: widget
                                                             .userRepository,
                                                         list: widget.list,
@@ -507,7 +509,7 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                                             Navigator.of(context).push(
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      PremiumMembersScreen(
+                                                      HomeScreen(
                                                         userRepository: widget
                                                             .userRepository,
                                                         list: widget.list,

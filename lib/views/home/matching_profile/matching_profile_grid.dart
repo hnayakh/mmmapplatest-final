@@ -292,17 +292,16 @@ class MatchingProfileGridViewScreenState
           crossAxisSpacing: 16,
           mainAxisSpacing: 16),
       itemBuilder: (context, index) {
-        MatchingProfile item =
-            // getItem(index, screenName);
-            this.searchList.length > 0
-                ? this.searchList[index]
-                : this.premiumList.length > 0
-                    ? this.premiumList[index]
-                    : this.recentViewList.length > 0
-                        ? this.recentViewList[index]
-                        : this.profileVisitorList.length > 0
-                            ? this.profileVisitorList[index]
-                            : this.list[index];
+        MatchingProfile item = getItem(index, screenName);
+        // this.searchList.length > 0
+        //     ? this.searchList[index]
+        //     : this.premiumList.length > 0
+        //         ? this.premiumList[index]
+        //         : this.recentViewList.length > 0
+        //             ? this.recentViewList[index]
+        //             : this.profileVisitorList.length > 0
+        //                 ? this.profileVisitorList[index]
+        //                 : this.list[index];
         print('itemDetails: $item');
         return InkWell(
           child: Card(
