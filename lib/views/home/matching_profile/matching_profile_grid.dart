@@ -80,6 +80,7 @@ class MatchingProfileGridViewScreenState
   List<MatchingProfile> premiumList = [];
   List<MatchingProfile> recentViewList = [];
   List<MatchingProfile> profileVisitorList = [];
+  List<MatchingProfile> onlineMembersList = [];
   // String screenName = "";
   MatchingProfileGridViewScreenState(screenName);
 
@@ -114,6 +115,10 @@ class MatchingProfileGridViewScreenState
       if (state is onGotProfileVisitors) {
         this.profileVisitorList =
             BlocProvider.of<MatchingProfileBloc>(context).profileVisitorList;
+      }
+      if (state is onGotOnlineMembers) {
+        this.onlineMembersList =
+            BlocProvider.of<MatchingProfileBloc>(context).onlineMembersList;
       }
 
       //}
@@ -213,6 +218,8 @@ class MatchingProfileGridViewScreenState
           BlocProvider.of<MatchingProfileBloc>(context).recentViewList;
       var profileVisitorList =
           BlocProvider.of<MatchingProfileBloc>(context).profileVisitorList;
+      var onlineMembersList =
+          BlocProvider.of<MatchingProfileBloc>(context).onlineMembersList;
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => HomeScreen(
                 userRepository: userRepo,
@@ -221,6 +228,7 @@ class MatchingProfileGridViewScreenState
                 premiumList: premiumList,
                 recentViewList: recentViewList,
                 profileVisitorList: profileVisitorList,
+                onlineMembersList: onlineMembersList,
                 screenName: widget.screenName,
               )));
     }

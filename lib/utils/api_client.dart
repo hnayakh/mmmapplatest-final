@@ -1,6 +1,9 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:makemymarry/socket_io/StreamSocket.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:dio/dio.dart';
 import 'package:dio_logger/dio_logger.dart';
 import 'package:makemymarry/datamodels/connect.dart';
@@ -13,14 +16,16 @@ import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/views/home/matching_profile/matching_profile.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 
 import 'app_helper.dart';
 
 class ApiClient {
   final Dio dio = Dio();
-
+  late StreamSocket streamSocket;
   ApiClient() {
     dio.interceptors.add(dioLoggerInterceptor);
+    streamSocket = StreamSocket();
   }
 
   Future<RegistrationResponse> registerUser(
@@ -638,6 +643,80 @@ class ApiClient {
       return ProfileVisitedResponse.fromError(
           "Error Occurred. Please try again.");
     }
+  }
+
+  final _socketResponse = StreamController<String>();
+  void Function(String) get addResponse => _socketResponse.sink.add;
+  Stream<String> get getResponse => _socketResponse.stream;
+  void dispose() {
+    _socketResponse.close();
+  }
+
+  void connectAndListen(id) {
+    IO.Socket socket = IO.io('http://13.233.130.85:3000',
+        OptionBuilder().setTransports(['websocket']).build());
+
+    socket.onConnect((_) {
+      print('connect');
+      socket.emit('onlineUsers', "fd1d372e-580d-42d9-8019-2cc658e839d1");
+    });
+
+    //When an event recieved from server, data is added to the stream
+    socket.on('online_users_list', (data) {
+      print("data$data");
+      streamSocket.addResponse(data);
+    });
+    socket.onDisconnect((_) => print('disconnect'));
+  }
+
+  getOnlineMembers(String id) {
+    try {
+      //   IO.Socket socket = IO.io('http://13.233.130.85:3000',
+      //       OptionBuilder().setTransports(['websocket']).build());
+
+      //   socket.onConnect((_) {
+      //     print('connect');
+      //     socket.emit('onlineUsers', id);
+      //   });
+      //   var alldata;
+
+      //   //When an event recieved from server, data is added to the stream
+      //   socket.on('online_users_list', (data) {
+      //     print("DATA$data");
+      //     return ProfileVisitedResponse.fromJson(alldata);
+      //   });
+      //   // var data;
+      //   // socket.onDisconnect((_) {
+      //   //   print('disconnect');
+      //   //   dispose();
+      //   // });
+      connectAndListen(id);
+      print("streamSocket.getResponse${streamSocket.currentData}");
+      return ProfileVisitedResponse.fromJson(streamSocket.currentData);
+      //  return streamSocket.getResponse.sna
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      // return ProfileVisitedResponse.fromError(
+      //     "Error Occurred. Please try again.");
+    }
+    // try {
+    //   var response = await this
+    //       .dio
+    //       .get("${AppConstants.ENDPOINT}users/profile_visited_by/$id");
+    //   if (response.statusCode == 200 || response.statusCode == 201) {
+    //     return ProfileVisitedResponse.fromJson(response.data);
+    //   }
+    //   return ProfileVisitedResponse.fromError(
+    //       "Error Occurred. Please try again.");
+    // } catch (error) {
+    //   if (error is DioError) {
+    //     print(error.message);
+    //   }
+    //   return ProfileVisitedResponse.fromError(
+    //       "Error Occurred. Please try again.");
+    // }
   }
 
   Future<ProfileDetailsResponse> getOtherUserDetails(

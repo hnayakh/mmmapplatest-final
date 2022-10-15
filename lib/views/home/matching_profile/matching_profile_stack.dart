@@ -689,6 +689,8 @@ class MatchingProfileStackViewScreenState
           BlocProvider.of<MatchingProfileBloc>(context).recentViewList;
       var profileVisitorList =
           BlocProvider.of<MatchingProfileBloc>(context).profileVisitorList;
+      var onlineMembersList =
+          BlocProvider.of<MatchingProfileBloc>(context).onlineMembersList;
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => HomeScreen(
                 userRepository: userRepo,
@@ -697,6 +699,7 @@ class MatchingProfileStackViewScreenState
                 premiumList: premiumList,
                 recentViewList: recentViewList,
                 profileVisitorList: profileVisitorList,
+                onlineMembersList: onlineMembersList,
                 screenName: "",
               )));
     }

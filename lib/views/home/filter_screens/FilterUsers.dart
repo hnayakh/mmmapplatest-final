@@ -10,6 +10,7 @@ class FilterUsers extends StatelessWidget {
   final List<MatchingProfile> premiumList;
   final List<MatchingProfile> recentViewList;
   final List<MatchingProfile> profileVisitorList;
+  final List<MatchingProfile> onlineMembersList;
 
   const FilterUsers(
       {Key? key,
@@ -18,19 +19,22 @@ class FilterUsers extends StatelessWidget {
       required this.searchList,
       required this.premiumList,
       required this.recentViewList,
-      required this.profileVisitorList})
+      required this.profileVisitorList,
+      required this.onlineMembersList})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: MatchingProfileScreen(
-          userRepository: userRepository,
-          list: list,
-          searchList: searchList,
-          premiumList: premiumList,
-          recentViewList: recentViewList,
-          profileVisitorList: profileVisitorList),
+        userRepository: userRepository,
+        list: list,
+        searchList: searchList,
+        premiumList: premiumList,
+        recentViewList: recentViewList,
+        profileVisitorList: profileVisitorList,
+        onlineMembersList: onlineMembersList,
+      ),
     );
   }
 }

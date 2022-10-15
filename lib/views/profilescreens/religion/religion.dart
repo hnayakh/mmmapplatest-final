@@ -109,7 +109,7 @@ class ReligionScreenState extends State<ReligionScreen> {
     return Container(
       child: Column(
         children: [
-          MmmButtons.appBarCurved('Religion'),
+          MmmButtons.appBarCurved('Religion', context: context),
           Container(
             padding: kMargin16,
             child: Column(

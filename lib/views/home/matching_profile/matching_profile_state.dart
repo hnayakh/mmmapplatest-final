@@ -22,6 +22,11 @@ class onGotProfileVisitors extends MatchingProfileState {
   onGotProfileVisitors(this.list);
 }
 
+class onGotOnlineMembers extends MatchingProfileState {
+  final List<MatchingProfile> list;
+  onGotOnlineMembers(this.list);
+}
+
 class OnError extends MatchingProfileState {
   final String message;
 

@@ -25,6 +25,7 @@ class SearchScreen extends StatefulWidget {
   final List<MatchingProfile> premiumList;
   final List<MatchingProfile> recentViewList;
   final List<MatchingProfile> profileVisitorList;
+  final List<MatchingProfile> onlineMembersList;
 
   const SearchScreen(
       {Key? key,
@@ -33,7 +34,8 @@ class SearchScreen extends StatefulWidget {
       required this.premiumList,
       required this.searchList,
       required this.recentViewList,
-      required this.profileVisitorList})
+      required this.profileVisitorList,
+      required this.onlineMembersList})
       : super(key: key);
 
   @override
@@ -186,13 +188,14 @@ class _SearchScreenState extends State<SearchScreen> {
                       'images/online.svg', 'Online Members', action: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                          builder: (context) => PremiumMembersScreen(
+                          builder: (context) => HomeScreen(
                                 userRepository: widget.userRepository,
                                 list: widget.list,
                                 searchList: widget.searchList,
                                 premiumList: widget.premiumList,
                                 recentViewList: widget.recentViewList,
                                 profileVisitorList: widget.profileVisitorList,
+                                onlineMembersList: widget.onlineMembersList,
                                 screenName: "OnlineMembers",
                               )),
                     );
@@ -209,6 +212,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 premiumList: widget.premiumList,
                                 recentViewList: widget.recentViewList,
                                 profileVisitorList: widget.profileVisitorList,
+                                onlineMembersList: widget.onlineMembersList,
                                 screenName: "PremiumMembers",
                               )),
                     );
@@ -226,6 +230,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 premiumList: widget.premiumList,
                                 recentViewList: widget.recentViewList,
                                 profileVisitorList: widget.profileVisitorList,
+                                onlineMembersList: widget.onlineMembersList,
                                 screenName: "ProfileViewedBy",
                               )),
                     );
@@ -243,6 +248,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 premiumList: widget.premiumList,
                                 recentViewList: widget.recentViewList,
                                 profileVisitorList: widget.profileVisitorList,
+                                onlineMembersList: widget.onlineMembersList,
                                 screenName: "ProfileRecentlyViewed",
                               )),
                     );
@@ -259,6 +265,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 premiumList: widget.premiumList,
                                 recentViewList: widget.recentViewList,
                                 profileVisitorList: widget.profileVisitorList,
+                                onlineMembersList: widget.onlineMembersList,
                                 screenName: "RecomendedProfile",
                               )),
                     );
@@ -345,6 +352,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 premiumList: widget.premiumList,
                 recentViewList: widget.recentViewList,
                 profileVisitorList: widget.profileVisitorList,
+                onlineMembersList: widget.onlineMembersList,
                 screenName: "SearchMMID",
                 searchText: this.searchText,
               )),

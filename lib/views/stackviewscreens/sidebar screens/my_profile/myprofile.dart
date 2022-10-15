@@ -108,9 +108,9 @@ class _MyProfileState extends State<MyProfile> {
                           ),
                         ),
                         Positioned(
-                          bottom: 50,
+                          bottom: 70,
                           right: 25,
-                          left: MediaQuery.of(context).size.width * 0.077,
+                          left: MediaQuery.of(context).size.width * 0.066,
                           child: InkWell(
                             onTap: () {
                               showImagePickerDialog();
@@ -155,7 +155,7 @@ class _MyProfileState extends State<MyProfile> {
                           ),
                         ),
                         Container(
-                          margin: const EdgeInsets.only(top: 120),
+                          margin: const EdgeInsets.only(top: 130),
                           alignment: Alignment.bottomCenter,
                           child: Text(
                             profileDetails!.name,
@@ -166,6 +166,7 @@ class _MyProfileState extends State<MyProfile> {
                             margin: const EdgeInsets.only(top: 150),
                             alignment: Alignment.bottomCenter,
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
                                   profileDetails!.mmId,
@@ -179,7 +180,9 @@ class _MyProfileState extends State<MyProfile> {
                                 //     listener: (context, state) {},
                                 //     builder: (context, state) {
                                 TextButton(
-                                  child: Text("Edit"),
+                                  child: Text("Edit",
+                                      style: MmmTextStyles.bodyRegular(
+                                          textColor: kPrimary)),
                                   onPressed: () {
                                     onEdit();
                                   },

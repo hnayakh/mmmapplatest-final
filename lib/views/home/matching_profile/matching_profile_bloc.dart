@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/datamodels/connect.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
+import 'package:makemymarry/socket_io/StreamSocket.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/views/home/matching_profile/matching_profile_event.dart';
 import 'package:makemymarry/views/home/matching_profile/matching_profile_state.dart';
@@ -13,12 +14,19 @@ class MatchingProfileBloc
   List<MatchingProfile> premiumList;
   List<MatchingProfile> recentViewList;
   List<MatchingProfile> profileVisitorList;
+  List<MatchingProfile> onlineMembersList;
   List<MatchingProfile> searchList;
   int selectedPos = 0;
   List<bool> isLikedList = [];
 
-  MatchingProfileBloc(this.userRepository, this.list, this.searchList,
-      this.premiumList, this.recentViewList, this.profileVisitorList)
+  MatchingProfileBloc(
+      this.userRepository,
+      this.list,
+      this.searchList,
+      this.premiumList,
+      this.recentViewList,
+      this.profileVisitorList,
+      this.onlineMembersList)
       : super(MatchingProfileInitialState()) {
     this.isLikedList = List.generate(list.length, (index) => false);
   }
@@ -97,6 +105,19 @@ class MatchingProfileBloc
         print("PROFILE VISITORS");
         print(result.list);
         yield onGotProfileVisitors(this.profileVisitorList);
+      } else {
+        yield OnError(result.message);
+      }
+    }
+    if (event is GetOnlineMembers) {
+      var result = await this.userRepository.getOnlineMembers();
+      //StreamSocket streamSocket =StreamSocket();
+
+      if (result.status == AppConstants.SUCCESS) {
+        this.onlineMembersList = result.list;
+        print("PROFILE VISITORS");
+        print(result.list);
+        yield onGotOnlineMembers(this.onlineMembersList);
       } else {
         yield OnError(result.message);
       }

@@ -65,7 +65,9 @@ class _AboutScreenState extends State<AboutScreen> {
   Widget build(BuildContext context) {
     this.userDetails =
         BlocProvider.of<AboutBloc>(context).userRepository.useDetails!;
-    BlocProvider.of<AboutBloc>(context).add(onAboutDataLoad(userDetails.id));
+    if (this.userDetails.registrationStep > 2) {
+      BlocProvider.of<AboutBloc>(context).add(onAboutDataLoad(userDetails.id));
+    }
     return Scaffold(
       // appBar: MmmButtons.appBarCurved('About'),
 
@@ -131,7 +133,7 @@ class _AboutScreenState extends State<AboutScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        MmmButtons.appBarCurved('About'),
+        MmmButtons.appBarCurved('About', context: context),
         Container(
           padding: kMargin16,
           child: Column(

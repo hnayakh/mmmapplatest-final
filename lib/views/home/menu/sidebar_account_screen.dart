@@ -35,6 +35,7 @@ class SidebarAccount extends StatelessWidget {
   final List<MatchingProfile> premiumList;
   final List<MatchingProfile> recentViewList;
   final List<MatchingProfile> profileVisitorList;
+  final List<MatchingProfile> onlineMembersList;
 
   const SidebarAccount(
       {Key? key,
@@ -43,7 +44,8 @@ class SidebarAccount extends StatelessWidget {
       required this.premiumList,
       required this.searchList,
       required this.recentViewList,
-      required this.profileVisitorList})
+      required this.profileVisitorList,
+      required this.onlineMembersList})
       : super(key: key);
 
   @override
@@ -54,8 +56,14 @@ class SidebarAccount extends StatelessWidget {
           create: (context) => AccountMenuBloc(userRepository),
         ),
         BlocProvider(
-          create: (context) => MatchingProfileBloc(userRepository, list,
-              searchList, premiumList, recentViewList, profileVisitorList),
+          create: (context) => MatchingProfileBloc(
+              userRepository,
+              list,
+              searchList,
+              premiumList,
+              recentViewList,
+              profileVisitorList,
+              onlineMembersList),
         ),
       ],
       child: SidebarAccountScreen(),
@@ -191,6 +199,8 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
         BlocProvider.of<MatchingProfileBloc>(context).recentViewList;
     var profileVisitorList =
         BlocProvider.of<MatchingProfileBloc>(context).profileVisitorList;
+    var onlineMembersList =
+        BlocProvider.of<MatchingProfileBloc>(context).onlineMembersList;
     switch (index) {
       case 0:
         print("Profile ahead");
@@ -209,7 +219,8 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
                         searchList,
                         premiumList,
                         recentViewList,
-                        profileVisitorList),
+                        profileVisitorList,
+                        onlineMembersList),
                     child: SearchScreen(
                       userRepository: userRepo,
                       list: list,
@@ -217,6 +228,7 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
                       premiumList: premiumList,
                       recentViewList: recentViewList,
                       profileVisitorList: profileVisitorList,
+                      onlineMembersList: onlineMembersList,
                     ),
                   )),
         );

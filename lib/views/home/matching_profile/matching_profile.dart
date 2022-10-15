@@ -29,6 +29,7 @@ class MatchingProfileScreen extends StatefulWidget {
   final List<MatchingProfile> premiumList;
   final List<MatchingProfile> recentViewList;
   final List<MatchingProfile> profileVisitorList;
+  final List<MatchingProfile> onlineMembersList;
   String? searchText;
   final String? screenName;
   final String? searchTextNew;
@@ -53,6 +54,7 @@ class MatchingProfileScreen extends StatefulWidget {
       required this.premiumList,
       required this.recentViewList,
       required this.profileVisitorList,
+      required this.onlineMembersList,
       this.screenName,
       this.searchTextNew})
       : super(key: key);
@@ -112,6 +114,9 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
     // }
     if (widget.screenName == 'PremiumMembers') {
       context.read<MatchingProfileBloc>().add(GetPremiumMembers());
+    }
+    if (widget.screenName == 'OnlineMembers') {
+      context.read<MatchingProfileBloc>().add(GetOnlineMembers());
     }
     if (widget.screenName == 'ProfileRecentlyViewed') {
       context.read<MatchingProfileBloc>().add(GetRecentViewMembers());
@@ -469,6 +474,8 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                                                             .recentViewList,
                                                         profileVisitorList: widget
                                                             .profileVisitorList,
+                                                        onlineMembersList: widget
+                                                            .onlineMembersList,
                                                         screenName:
                                                             "PremiumMembers",
                                                       )),
@@ -495,6 +502,8 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                                                             .recentViewList,
                                                         profileVisitorList: widget
                                                             .profileVisitorList,
+                                                        onlineMembersList: widget
+                                                            .onlineMembersList,
                                                         screenName:
                                                             "ProfileViewedBy",
                                                       )),
@@ -521,6 +530,8 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                                                             .recentViewList,
                                                         profileVisitorList: widget
                                                             .profileVisitorList,
+                                                        onlineMembersList: widget
+                                                            .onlineMembersList,
                                                         screenName:
                                                             "ProfileRecentlyViewed",
                                                       )),

@@ -23,17 +23,19 @@ class HomeScreen extends StatefulWidget {
   final List<MatchingProfile> premiumList;
   final List<MatchingProfile> recentViewList;
   final List<MatchingProfile> profileVisitorList;
+  final List<MatchingProfile> onlineMembersList;
 
-  const HomeScreen(
-      {Key? key,
-      required this.userRepository,
-      required this.list,
-      required this.premiumList,
-      required this.screenName,
-      required this.searchList,
-      required this.recentViewList,
-      required this.profileVisitorList})
-      : super(key: key);
+  const HomeScreen({
+    Key? key,
+    required this.userRepository,
+    required this.list,
+    required this.premiumList,
+    required this.screenName,
+    required this.searchList,
+    required this.recentViewList,
+    required this.profileVisitorList,
+    required this.onlineMembersList,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -112,7 +114,8 @@ class HomeScreenState extends State<HomeScreen> {
                 widget.searchList,
                 widget.premiumList,
                 widget.recentViewList,
-                widget.profileVisitorList),
+                widget.profileVisitorList,
+                widget.onlineMembersList),
             child: Builder(builder: (context) {
               return MatchingProfileScreen(
                   userRepository: widget.userRepository,
@@ -121,7 +124,8 @@ class HomeScreenState extends State<HomeScreen> {
                   screenName: "",
                   premiumList: widget.premiumList,
                   recentViewList: widget.recentViewList,
-                  profileVisitorList: widget.profileVisitorList);
+                  profileVisitorList: widget.profileVisitorList,
+                  onlineMembersList: widget.onlineMembersList);
             }));
 
       case 0:
@@ -132,7 +136,8 @@ class HomeScreenState extends State<HomeScreen> {
                 widget.searchList,
                 widget.premiumList,
                 widget.recentViewList,
-                widget.profileVisitorList),
+                widget.profileVisitorList,
+                widget.onlineMembersList),
             child: Builder(builder: (context) {
               return MatchingProfileScreen(
                   userRepository: widget.userRepository,
@@ -141,7 +146,8 @@ class HomeScreenState extends State<HomeScreen> {
                   screenName: widget.screenName,
                   premiumList: widget.premiumList,
                   recentViewList: widget.recentViewList,
-                  profileVisitorList: widget.profileVisitorList);
+                  profileVisitorList: widget.profileVisitorList,
+                  onlineMembersList: widget.onlineMembersList);
             }));
       case 1:
         return
@@ -153,6 +159,7 @@ class HomeScreenState extends State<HomeScreen> {
           premiumList: widget.premiumList,
           recentViewList: widget.recentViewList,
           profileVisitorList: widget.profileVisitorList,
+          onlineMembersList: widget.onlineMembersList,
         );
       case 2:
         return
@@ -174,7 +181,8 @@ class HomeScreenState extends State<HomeScreen> {
             searchList: widget.searchList,
             premiumList: widget.premiumList,
             recentViewList: widget.recentViewList,
-            profileVisitorList: widget.profileVisitorList);
+            profileVisitorList: widget.profileVisitorList,
+            onlineMembersList: widget.onlineMembersList);
     }
     return Container();
   }

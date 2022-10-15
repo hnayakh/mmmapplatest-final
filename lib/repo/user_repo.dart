@@ -195,6 +195,10 @@ class UserRepository {
     return this.apiClient.getProfileVisitor(this.useDetails!.id);
   }
 
+  Future<ProfileVisitedResponse> getOnlineMembers() async {
+    return this.apiClient.getOnlineMembers(this.useDetails!.id);
+  }
+
   Future<RecentViewsResponse> getRecentViews() async {
     return this.apiClient.getRecentViews(this.useDetails!.id);
   }

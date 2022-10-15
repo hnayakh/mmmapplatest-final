@@ -21,6 +21,7 @@ class PremiumMembersScreen extends StatefulWidget {
   final List<MatchingProfile> searchList;
   final List<MatchingProfile> recentViewList;
   final List<MatchingProfile> profileVisitorList;
+  final List<MatchingProfile> onlineMembersList;
   final String? screenName;
   final String? searchText;
   PremiumMembersScreen(
@@ -32,6 +33,7 @@ class PremiumMembersScreen extends StatefulWidget {
       required this.screenName,
       required this.recentViewList,
       required this.profileVisitorList,
+      required this.onlineMembersList,
       this.searchText})
       : super(key: key);
 
@@ -161,7 +163,8 @@ class PremiumMembersScreenState extends State<PremiumMembersScreen> {
                 widget.searchList,
                 widget.premiumList,
                 widget.recentViewList,
-                widget.profileVisitorList),
+                widget.profileVisitorList,
+                widget.onlineMembersList),
             child: Builder(builder: (context) {
               return MatchingProfileScreen(
                   userRepository: widget.userRepository,
@@ -171,6 +174,7 @@ class PremiumMembersScreenState extends State<PremiumMembersScreen> {
                   recentViewList: widget.recentViewList,
                   screenName: widget.screenName,
                   profileVisitorList: widget.profileVisitorList,
+                  onlineMembersList: widget.onlineMembersList,
                   searchTextNew: widget.searchText);
             }));
       case 1:
@@ -183,6 +187,7 @@ class PremiumMembersScreenState extends State<PremiumMembersScreen> {
           premiumList: widget.premiumList,
           recentViewList: widget.recentViewList,
           profileVisitorList: widget.profileVisitorList,
+          onlineMembersList: widget.onlineMembersList,
         );
       case 2:
         return
@@ -205,6 +210,7 @@ class PremiumMembersScreenState extends State<PremiumMembersScreen> {
           premiumList: widget.premiumList,
           recentViewList: widget.recentViewList,
           profileVisitorList: widget.profileVisitorList,
+          onlineMembersList: widget.onlineMembersList,
         );
       // case 1:
       //   return Interests(
