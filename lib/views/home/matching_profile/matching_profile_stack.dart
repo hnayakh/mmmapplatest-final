@@ -91,8 +91,9 @@ class MatchingProfileStackViewScreenState
   //   return result;
   // }
   int getListLength(screenName) {
-    var result = this.list.length;
+    var result = 0;
     if (screenName == "") {
+      result = this.list.length;
       return result;
     }
     if (screenName == "PremiumMembers" && this.premiumList.length > 0) {
@@ -124,9 +125,10 @@ class MatchingProfileStackViewScreenState
   //   return result;
   // }
   getItem(index, screenName) {
-    var result = this.list[index];
+    var result;
     if (screenName == "") {
-      return result;
+      result = this.list[index];
+      ;
     }
     if (screenName == "PremiumMembers" && this.premiumList.length > 0) {
       result = this.premiumList[index];

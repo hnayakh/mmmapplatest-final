@@ -170,9 +170,10 @@ class MatchingProfileGridViewScreenState
   }
 
   int getListLength(screenName) {
-    var result = this.list.length;
-    if (screenName == null) {
-      return result;
+    var result = 0;
+    if (screenName == "" || screenName == null) {
+      result = this.list.length;
+      //return result;
     }
     if (screenName == "PremiumMembers" && this.premiumList.length > 0) {
       result = this.premiumList.length;
@@ -258,9 +259,9 @@ class MatchingProfileGridViewScreenState
   }
 
   getItem(index, screenName) {
-    var result = this.list[index];
+    var result;
     if (screenName == "") {
-      return result;
+      result = this.list[index];
     }
     if (screenName == "PremiumMembers" && this.premiumList.length > 0) {
       result = this.premiumList[index];
