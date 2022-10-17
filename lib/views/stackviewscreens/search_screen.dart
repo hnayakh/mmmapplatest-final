@@ -13,6 +13,7 @@ import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/home/home.dart';
+import 'package:makemymarry/views/home/my_connects/my_connects_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/notification_list.dart';
 
 import '../home/matching_profile/matching_profile_bloc.dart';
@@ -308,6 +309,11 @@ class _SearchScreenState extends State<SearchScreen> {
                             'Connect',
                             index == 2 ? kPrimary : gray3, action: () {
                           setColor(2);
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => MyConnects(
+                                    userRepository: widget.userRepository)),
+                          );
                         }),
                         MmmWidgets.bottomBarUnits(
                             'images/Search.svg',
@@ -326,7 +332,9 @@ class _SearchScreenState extends State<SearchScreen> {
                           setColor(4);
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                                builder: (context) => AppDrawer()),
+                                builder: (context) => AppDrawer(
+                                      userRepository: widget.userRepository,
+                                    )),
                           );
                         })
                       ]),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:makemymarry/repo/user_repo.dart';
 
 import '../utils/text_styles.dart';
 import 'custom_drawer.dart';
@@ -21,7 +22,9 @@ class _ProfileDetailsState extends State<ProfileDetailsScreen> {
 
     return Scaffold(
         backgroundColor: Colors.white,
-        drawer: AppDrawer(),
+        drawer: AppDrawer(
+          userRepository: UserRepository(),
+        ),
         body: Container(
           padding: EdgeInsets.only(top: kToolbarHeight / 2),
           child: Column(

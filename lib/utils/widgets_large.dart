@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/utils/app_helper.dart';
+import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/dimens.dart';
 
 import 'package:makemymarry/utils/elevations.dart';
@@ -1044,6 +1045,107 @@ class MmmWidgets {
             )
           ],
         ),
+      ),
+    );
+  }
+
+  static Widget selectMeetWidget(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(top: 40, left: 5),
+      height: 350,
+      width: 400,
+      decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(
+        topRight: Radius.circular(20),
+        topLeft: Radius.circular(20),
+      )),
+      child: Column(
+        children: [
+          const SizedBox(
+            height: 15,
+          ),
+
+          ClipRRect(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 330),
+              child: MmmButtons.backButton(context),
+            ),
+          ),
+
+          // Choose Your Type
+          const SizedBox(
+            width: 360,
+            child: Text(
+              'Choose your type of meet',
+              // textAlign: TextAlign.start,
+              style: TextStyle(
+                fontSize: 18,
+                fontFamily: "MakeMyMarrySemiBold",
+                //fontStyle: FontStyle.normal,
+                height: 3.5,
+              ),
+            ),
+          ),
+
+          Column(
+            children: [
+              const SizedBox(
+                height: 30,
+                width: 15,
+              ),
+              Container(
+                  width: 365,
+                  height: 55,
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    // ignore: sort_child_properties_last
+                    child: const Text(
+                      'Virtual meet',
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10), // <-- Radius
+                      ),
+                      side: const BorderSide(
+                        width: 1.0,
+                      ),
+                    ),
+                  )),
+              const SizedBox(
+                height: 15,
+              ),
+              Container(
+                  width: 365,
+                  height: 55,
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    // ignore: sort_child_properties_last
+                    child: const Text(
+                      'Meet in Person',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary:
+                          Color.fromRGBO(201, 24, 74, 1), //  Color Cose #C9184A
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10), // <-- Radius
+                      ),
+                      side: const BorderSide(
+                        width: 1.0,
+                      ),
+                    ),
+                  )),
+            ],
+          )
+        ],
       ),
     );
   }

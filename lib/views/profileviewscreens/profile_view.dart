@@ -19,6 +19,7 @@ import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/profileviewscreens/profile_view_bloc.dart';
 import 'package:makemymarry/views/profileviewscreens/profile_view_event.dart';
 import 'package:makemymarry/views/profileviewscreens/profile_view_state.dart';
+import 'package:makemymarry/views/stackviewscreens/meet%20status/meet_status_screen.dart';
 
 class ProfileView extends StatelessWidget {
   final UserRepository userRepository;
@@ -498,7 +499,15 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                     flex: 1,
                     child: SizedBox(),
                   ),
-                  MmmIcons.meet(context),
+                  MmmIcons.meet(
+                    context,
+                    action: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => MeetStatusScreen()));
+                      // navigateToCoupon();
+                      // print("gfchfdgfcbfbfxbfx");
+                    },
+                  ),
                   Expanded(flex: 2, child: SizedBox()),
                 ],
               ),
@@ -702,5 +711,11 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
         ],
       ),
     );
+  }
+
+  void navigateToCoupon() async {
+    var result = await showModalBottomSheet(
+        context: context,
+        builder: (context) => MmmWidgets.selectMeetWidget(context));
   }
 }

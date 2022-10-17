@@ -43,7 +43,7 @@ class MmmIcons {
     );
   }
 
-  static Container meet(context) {
+  static Container meet(context, {Function()? action}) {
     return Container(
       //height: 48,
       //width: 48,
@@ -71,11 +71,7 @@ class MmmIcons {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => MeetStatusScreen()),
-              );
-            },
+            onTap: action,
             child: Container(
               padding: EdgeInsets.all(12),
               child: SvgPicture.asset(
