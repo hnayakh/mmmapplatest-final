@@ -30,14 +30,36 @@ class MatchingProfileBloc
       : super(MatchingProfileInitialState()) {
     this.isLikedList = List.generate(list.length, (index) => false);
   }
+  getRequiredList(screenName) {
+    var result;
+    switch (screenName) {
+      case "PremiumMembers":
+        result = this.premiumList;
+        break;
+      case "SearchMMID":
+        result = this.searchList;
+        break;
+      case "ProfileViewedBy":
+        result = this.profileVisitorList;
+        break;
+      case "ProfileRecentlyViewed":
+        result = this.recentViewList;
+        break;
+      case "":
+        result = this.list;
+    }
+    return result;
+  }
 
   @override
   Stream<MatchingProfileState> mapEventToState(
       MatchingProfileEvent event) async* {
     yield OnLoading();
     if (event is GetProfileDetails) {
+      var requiredElement;
+      requiredElement = this.getRequiredList(event.screenName)[event.pos];
       var result = await this.userRepository.getOtheruserDetails(
-          this.list[event.pos].id, this.list[event.pos].activationStatus);
+          requiredElement.id, requiredElement.activationStatus);
 
       if (result.status == AppConstants.SUCCESS) {
         yield OnGotProfileDetails(result.profileDetails);

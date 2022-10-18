@@ -384,7 +384,7 @@ class MatchingProfileGridViewScreenState
           onTap: () {
             print("sadasd");
             BlocProvider.of<MatchingProfileBloc>(context)
-                .add(GetProfileDetails(index));
+                .add(GetProfileDetails(index, screenName));
           },
         );
       },

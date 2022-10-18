@@ -9,6 +9,7 @@ import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
+import 'package:makemymarry/views/stackviewscreens/meet%20status/meet_status_screen.dart';
 
 import 'colors.dart';
 
@@ -1097,17 +1098,20 @@ class MmmWidgets {
                   width: 365,
                   height: 55,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => MeetStatusScreen()));
+                    },
                     // ignore: sort_child_properties_last
                     child: const Text(
                       'Virtual meet',
                       style: TextStyle(
                           fontSize: 18,
-                          color: Colors.black,
+                          color: Colors.white,
                           fontWeight: FontWeight.bold),
                     ),
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.white,
+                      shadowColor: kPrimary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10), // <-- Radius
                       ),
@@ -1133,8 +1137,7 @@ class MmmWidgets {
                           color: Colors.white),
                     ),
                     style: ElevatedButton.styleFrom(
-                      primary:
-                          Color.fromRGBO(201, 24, 74, 1), //  Color Cose #C9184A
+                      shadowColor: kPrimary, //  Color Cose #C9184A
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10), // <-- Radius
                       ),

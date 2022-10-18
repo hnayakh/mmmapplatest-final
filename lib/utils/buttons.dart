@@ -2948,7 +2948,7 @@ class MmmButtons {
     );
   }
 
-  static Container deleteAccountSidebarNavigation() {
+  static Container deleteAccountSidebarNavigation({Function()? action}) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
@@ -2960,7 +2960,7 @@ class MmmButtons {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {},
+          onTap: action,
           child: Container(
             alignment: Alignment.center,
             height: 58,

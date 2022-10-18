@@ -4,8 +4,9 @@ class MatchingProfileEvent extends BaseEventState {}
 
 class GetProfileDetails extends MatchingProfileEvent {
   final int pos;
+  String screenName;
 
-  GetProfileDetails(this.pos);
+  GetProfileDetails(this.pos, this.screenName);
 }
 
 class GetMyConnects extends MatchingProfileEvent {}

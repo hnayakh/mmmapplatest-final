@@ -502,9 +502,9 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                   MmmIcons.meet(
                     context,
                     action: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => MeetStatusScreen()));
-                      // navigateToCoupon();
+                      // Navigator.of(context).push(MaterialPageRoute(
+                      //     builder: (context) => MeetStatusScreen()));
+                      navigateToSelectMeet();
                       // print("gfchfdgfcbfbfxbfx");
                     },
                   ),
@@ -713,7 +713,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
     );
   }
 
-  void navigateToCoupon() async {
+  void navigateToSelectMeet() async {
     var result = await showModalBottomSheet(
         context: context,
         builder: (context) => MmmWidgets.selectMeetWidget(context));

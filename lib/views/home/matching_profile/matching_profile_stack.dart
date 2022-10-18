@@ -378,7 +378,8 @@ class MatchingProfileStackViewScreenState
                                   onTap: () {
                                     BlocProvider.of<MatchingProfileBloc>(
                                             context)
-                                        .add(GetProfileDetails(index));
+                                        .add(GetProfileDetails(
+                                            index, widget.screenName));
                                   },
                                 ),
                                 shape: RoundedRectangleBorder(

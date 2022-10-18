@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:makemymarry/bloc/splash/splash_bloc.dart';
 import 'package:makemymarry/repo/user_repo.dart';
+import 'package:makemymarry/saurabh/hexcolor.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/elevations.dart';
@@ -21,6 +22,7 @@ class Account extends StatefulWidget {
 class _AccountState extends State<Account> {
   var index;
   bool status = false;
+  var primaryColor = HexColor('C9184A');
 
   void navigateToNotification() {
     print('Hello');
@@ -43,7 +45,9 @@ class _AccountState extends State<Account> {
             SizedBox(height: 20),
             MmmButtons.logoutSidebarNavigation(),
             SizedBox(height: 20),
-            MmmButtons.deleteAccountSidebarNavigation()
+            MmmButtons.deleteAccountSidebarNavigation(action: () {
+              deleteDilogue();
+            })
           ]),
         ));
   }
@@ -52,5 +56,87 @@ class _AccountState extends State<Account> {
     setState(() {
       index = indexCode;
     });
+  }
+
+  void deleteDilogue() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15.0))),
+            backgroundColor: Colors.white,
+            title: const Text("Delete Account ",
+                textAlign: TextAlign.left,
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            content: RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  style: const TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.grey,
+                  ),
+                  children: <TextSpan>[
+                    new TextSpan(text: 'Are you want to Delete your account'),
+                  ],
+                )),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        width: 140,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(10), // <-- Radius
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                        width: 140,
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          child: const Text(
+                            'Delete',
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            primary: primaryColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(10), // <-- Radius
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              )
+            ],
+          );
+        });
   }
 }

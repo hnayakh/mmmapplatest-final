@@ -11,6 +11,7 @@ import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/saurabh/hexcolor.dart';
 import 'package:makemymarry/saurabh/partner_preference.dart';
+import 'package:makemymarry/saurabh/refer_friend.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/home/interests/interest_status_screen.dart';
 import 'package:makemymarry/views/home/matching_profile/matching_profile_bloc.dart';
@@ -43,6 +44,9 @@ class AppDrawer extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => AccountMenuBloc(userRepository),
+        ),
+        BlocProvider(
+          create: (context) => AboutBloc(userRepository),
         ),
       ],
       child: AppDrawerScreen(),
@@ -149,7 +153,7 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                                       GestureDetector(
                                         onTap: () {
                                           print("Hello");
-                                          onEdit();
+                                          // onEdit();
                                         },
                                         child: Row(
                                           children: [
@@ -376,6 +380,12 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                                   //   ),
                                   //   ),
                                   InkWell(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ReferFriendScreen()));
+                                    },
                                     child: customListTile(
                                       leading: SvgPicture.asset(
                                           "images/Group3833.svg"),

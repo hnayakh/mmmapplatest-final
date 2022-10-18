@@ -25,17 +25,17 @@ class HomeScreen extends StatefulWidget {
   final List<MatchingProfile> profileVisitorList;
   final List<MatchingProfile> onlineMembersList;
 
-  const HomeScreen({
-    Key? key,
-    required this.userRepository,
-    required this.list,
-    required this.premiumList,
-    required this.screenName,
-    required this.searchList,
-    required this.recentViewList,
-    required this.profileVisitorList,
-    required this.onlineMembersList,
-  }) : super(key: key);
+  const HomeScreen(
+      {Key? key,
+      required this.userRepository,
+      required this.list,
+      required this.premiumList,
+      required this.screenName,
+      required this.searchList,
+      required this.recentViewList,
+      required this.profileVisitorList,
+      required this.onlineMembersList})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
