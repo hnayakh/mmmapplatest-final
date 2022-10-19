@@ -176,7 +176,7 @@ class InterestUser {
     isManglik = json['isManglik'] ?? -1;
     employedIn = json['employedIn'] ?? '';
     occupation = json['occupation'] ?? '';
-    annualIncome = json['annualIncome'] ?? '';
+    annualIncome = json['annualIncome'] ?? 0;
     highestEducation = json['highestEducation'] ?? '';
     careerCountryId = json['careerCountryId'] ?? -1;
     careerCountry = json['careerCountry'] ?? '';

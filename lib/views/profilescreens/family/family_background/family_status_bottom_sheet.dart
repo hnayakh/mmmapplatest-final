@@ -56,10 +56,10 @@ class FamilyStatusBottomSheetState extends State<FamilyStatusBottomSheet> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(
-                              //describeEnum(FamilyAfluenceLevel.values[index])
-                              AppHelper.getStringFromEnum(
-                                  FamilyAfluenceLevel.values[index]),
+                          Text(describeEnum(FamilyAfluenceLevel.values[index]),
+                              //Changed by me gray issue
+                              // AppHelper.getStringFromEnum(
+                              //     FamilyAfluenceLevel.values[index]),
                               style: MmmTextStyles.bodyMediumSmall(
                                   textColor: this.widget.level ==
                                           FamilyAfluenceLevel.values[index]

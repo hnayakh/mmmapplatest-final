@@ -34,7 +34,7 @@ class FatherOccupationBottomSheetState
               height: 24,
             ),
             Text(
-              "Select Father's Occupation:",
+              "Select Father's Occupations:",
               style: MmmTextStyles.bodyMedium(textColor: kDark5),
             ),
             SizedBox(
@@ -58,9 +58,10 @@ class FatherOccupationBottomSheetState
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(
-                              AppHelper.getStringFromEnum(
-                                  FatherOccupation.values[index]),
+                          Text(describeEnum(FatherOccupation.values[index]),
+                              //added by me gray issue
+                              // AppHelper.getStringFromEnum(
+                              //     FatherOccupation.values[index]),
                               style: MmmTextStyles.bodyMediumSmall(
                                   textColor: this.widget.occupation ==
                                           FatherOccupation.values[index]

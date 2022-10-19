@@ -58,9 +58,10 @@ class MotherOccupationBottomSheetState
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(
-                              AppHelper.getStringFromEnum(
-                                  MotherOccupation.values[index]),
+                          Text(describeEnum(MotherOccupation.values[index]),
+                              //added by me gray issue
+                              // AppHelper.getStringFromEnum(
+                              //     MotherOccupation.values[index]),
                               style: MmmTextStyles.bodyMediumSmall(
                                   textColor: this.widget.occupation ==
                                           MotherOccupation.values[index]

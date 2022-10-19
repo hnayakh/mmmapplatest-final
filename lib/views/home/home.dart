@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
+import 'package:makemymarry/saurabh/custom_drawer.dart';
 import 'package:makemymarry/saurabh/profile_detail.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
@@ -175,14 +176,15 @@ class HomeScreenState extends State<HomeScreen> {
       // return ProfileDetailsScreen();
 
       case 4:
-        return SidebarAccount(
-            userRepository: widget.userRepository,
-            list: widget.list,
-            searchList: widget.searchList,
-            premiumList: widget.premiumList,
-            recentViewList: widget.recentViewList,
-            profileVisitorList: widget.profileVisitorList,
-            onlineMembersList: widget.onlineMembersList);
+        return AppDrawer(userRepository: widget.userRepository);
+      // return SidebarAccount(
+      //     userRepository: widget.userRepository,
+      //     list: widget.list,
+      //     searchList: widget.searchList,
+      //     premiumList: widget.premiumList,
+      //     recentViewList: widget.recentViewList,
+      //     profileVisitorList: widget.profileVisitorList,
+      //     onlineMembersList: widget.onlineMembersList);
     }
     return Container();
   }

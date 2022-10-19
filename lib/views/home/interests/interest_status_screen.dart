@@ -170,5 +170,6 @@ class _InterestStatusScreenState extends State<InterestStatusScreen>
     this.listInvites = interests.listInvites;
     print('listInvites=' + '$listInvites');
     this.listSent = interests.listSent;
+    print('sentInvites=' + '$listSent');
   }
 }
