@@ -33,7 +33,7 @@ class Sent extends StatelessWidget {
 
 class SentScreen extends StatelessWidget {
   late List<ActiveInterests> listSent;
-
+  late UserRepository userRepository;
   //const SentScreen({Key? key, required this.listSent}) : super(key: key);
 
   @override
@@ -283,10 +283,17 @@ class SentScreen extends StatelessWidget {
                     SizedBox(
                       width: 12,
                     ),
-                    MmmButtons.cancelButtonInterestScreen(() {
-                      BlocProvider.of<SentsBloc>(context)
-                          .add(CancelSentInterest(index));
-                    })
+                    MmmButtons.cancelButtonInterestScreen(
+                      action: () {
+                        print("object");
+                        var requiredBloc = context.read<SentsBloc>();
+                        _showDialog(context, requiredBloc, index);
+                      },
+                    )
+                    // MmmButtons.cancelButtonInterestScreen(() {
+                    //   BlocProvider.of<SentsBloc>(context)
+                    //       .add(CancelSentInterest(index));
+                    // })
                   ],
                 )
               ],
@@ -311,5 +318,70 @@ class SentScreen extends StatelessWidget {
               name: user.name,
               destinationUserId: user.id,
             )));
+  }
+
+  void _showDialog(BuildContext context, SentsBloc bloc, index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return BlocProvider(
+          create: (ctx) => SentsBloc(userRepository, listSent),
+          child: AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15.0))),
+            backgroundColor: kWhite,
+            title: Text("Cancel Request",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                    fontWeight: FontWeight
+                        .bold)), // To display the title it is optional
+            content: new RichText(
+                textAlign: TextAlign.center,
+                text: new TextSpan(
+                  // Note: Styles for TextSpans must be explicitly defined.
+                  // Child text spans will inherit styles from parent
+                  style: new TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.grey,
+                  ),
+                  children: <TextSpan>[
+                    new TextSpan(text: 'Are you want to cancel his request'),
+                    // new TextSpan(
+                    //     text: ' mmyid', style: new TextStyle(color: kPrimary)),
+                    // new TextSpan(text: ' to find your perfect match.'),
+                  ],
+                )),
+            // Action widget which will provide the user to acknowledge the choice
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  MmmButtons.primaryButtonMeet("cancel", () {
+                    Navigator.of(context).pop();
+                    // navigateToHome(state);
+                  }),
+                  MmmButtons.primaryButtonMeet("Confirm", () {
+                    bloc.add(CancelSentInterest(index));
+                    Navigator.of(context).pop();
+                  })
+                ],
+              )
+            ],
+          ),
+          // );
+          //  AlertDialog(
+          //   title: new Text("Alert!!"),
+          //   content: new Text("You are awesome!"),
+          //   actions: <Widget>[
+          //     GestureDetector(
+          //       child: new Text("OK"),
+          //       onTap: () {
+          //         Navigator.of(context).pop();
+          //       },
+          //     ),
+          //   ],
+        );
+      },
+    );
   }
 }

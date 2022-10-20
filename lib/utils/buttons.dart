@@ -3399,7 +3399,7 @@ class MmmButtons {
     );
   }
 
-  static Container cancelButtonInterestScreen(Function()? action) {
+  static Container cancelButtonInterestScreen({Function()? action}) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),

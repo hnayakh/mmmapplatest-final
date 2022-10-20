@@ -114,7 +114,9 @@ class WidgetViewState extends State<WidgetView> {
         return MmmButtons.acceptInterestScreen(() {});
         break;
       case 27:
-        return MmmButtons.cancelButtonInterestScreen(() {});
+        return MmmButtons.cancelButtonInterestScreen(
+          action: () {},
+        );
         break;
       case 28:
         return MmmButtons.rejectButtonInterestScreen(() {});

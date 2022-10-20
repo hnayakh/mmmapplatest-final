@@ -1,8 +1,5 @@
 import 'package:makemymarry/bloc/base_event_state.dart';
 
-class ProfileViewEvent extends BaseEventState{
+class ProfileViewEvent extends BaseEventState {}
 
-}
-class VisitProfile extends ProfileViewEvent{
-
-}
+class VisitProfile extends ProfileViewEvent {}

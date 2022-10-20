@@ -10,6 +10,7 @@ import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
 import 'package:makemymarry/views/stackviewscreens/meet%20status/meet_status_screen.dart';
+import 'package:makemymarry/views/stackviewscreens/meet%20status/meet_timing/schedule_meeting_date.dart';
 
 import 'colors.dart';
 
@@ -1100,7 +1101,7 @@ class MmmWidgets {
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => MeetStatusScreen()));
+                          builder: (context) => BookYourDate()));
                     },
                     // ignore: sort_child_properties_last
                     child: const Text(

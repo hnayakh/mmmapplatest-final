@@ -143,7 +143,7 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                             ],
                           ),
                           Text(
-                            profileDetails!.mmId,
+                            profileDetails!.mmId.toUpperCase(),
                             style: MmmTextStyles.bodyMedium(
                                 textColor: Colors.white),
                           ),

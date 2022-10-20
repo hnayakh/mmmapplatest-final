@@ -111,7 +111,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                   maxLength: 15,
                                   decoration: InputDecoration(
                                     counterText: '',
-                                    hintText: "MMABC123",
+                                    hintText: "MMABC1234",
                                     hintStyle: MmmTextStyles.bodyRegular(
                                         textColor: gray4),
                                     contentPadding: EdgeInsets.zero,

@@ -169,7 +169,7 @@ class _MyProfileState extends State<MyProfile> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  profileDetails!.mmId,
+                                  profileDetails!.mmId.toUpperCase(),
                                   style: MmmTextStyles.bodyRegular(
                                       textColor: gray3),
                                 ),
