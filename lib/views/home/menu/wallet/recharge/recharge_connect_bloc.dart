@@ -66,7 +66,7 @@ class RechargeConnectBloc
     }
     if (event is ApplyCouponCode) {
       this.couponDetails = event.couponDetails;
-      if (this.couponDetails!.discountType == 1)
+      if (this.couponDetails!.discountType == 0)
         promoDiscount = (connectPriceDetails.connectPrice *
                 couponDetails!.discount /
                 100 *
@@ -75,6 +75,7 @@ class RechargeConnectBloc
       else {
         promoDiscount = couponDetails!.discount;
       }
+      this.totalPayable = this.totalAmount + this.tax - this.promoDiscount;
       yield OnGotConnectDetails();
     }
     if (event is RemovePromoCode) {

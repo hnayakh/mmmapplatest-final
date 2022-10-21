@@ -9,6 +9,7 @@ import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/home/matching_profile/matching_profile_bloc.dart';
 import 'package:makemymarry/views/home/menu/sidebar_account_screen.dart';
 import 'package:makemymarry/views/home/my_connects/my_connects_screen.dart';
+import 'package:makemymarry/views/profileviewscreens/profile_view_bloc.dart';
 import 'package:makemymarry/views/stackviewscreens/meet%20status/meet_status_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/meet%20status/meet_timing/schedule_meeting_time.dart';
 import 'package:makemymarry/views/stackviewscreens/notification_list.dart';
@@ -153,14 +154,18 @@ class HomeScreenState extends State<HomeScreen> {
       case 1:
         return
             // ScheduleMeetingTime();
-            SearchScreen(
-          userRepository: widget.userRepository,
-          list: widget.list,
-          searchList: widget.searchList,
-          premiumList: widget.premiumList,
-          recentViewList: widget.recentViewList,
-          profileVisitorList: widget.profileVisitorList,
-          onlineMembersList: widget.onlineMembersList,
+            BlocProvider(
+          create: (context) =>
+              ProfileViewBloc(widget.userRepository, ProfileDetails()),
+          child: SearchScreen(
+            userRepository: widget.userRepository,
+            list: widget.list,
+            searchList: widget.searchList,
+            premiumList: widget.premiumList,
+            recentViewList: widget.recentViewList,
+            profileVisitorList: widget.profileVisitorList,
+            onlineMembersList: widget.onlineMembersList,
+          ),
         );
       case 2:
         return

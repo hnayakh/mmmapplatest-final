@@ -508,7 +508,7 @@ class ProfileDetails {
   late String familyState, familyCity, familyCountry;
   List<String> images = [];
   late ProfileActivationStatus activationStatus;
-
+  ProfileDetails() {}
   ProfileDetails.fromJson(json, ProfileActivationStatus activationStatus) {
     this.id = json["id"];
     this.mmId = json["displayId"];
@@ -546,7 +546,7 @@ class ProfileDetails {
     // userReligion["gothra"];
     this.motherTongue = userReligion["motherTongue"];
     this.manglik = Manglik.values[userReligion["isManglik"]];
-    if (json["userCareers"].length > 0) {
+    if (json["userCareers"] != null && json["userCareers"].length > 0) {
       var userCareer = json["userCareers"][0];
       if (userCareer["occupation"] != null) {
         this.occupation = userCareer["occupation"];
@@ -619,8 +619,10 @@ class ProfileDetailsResponse {
       json, ProfileActivationStatus activationStatus) {
     this.status = json["type"];
     this.message = json["message"];
-    this.profileDetails =
-        ProfileDetails.fromJson(json["data"], activationStatus);
+    if (json["message"] != "No user found for given DisplayId") {
+      this.profileDetails =
+          ProfileDetails.fromJson(json["data"], activationStatus);
+    }
   }
 
   ProfileDetailsResponse.fromError(String message) {

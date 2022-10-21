@@ -53,6 +53,7 @@ class ProfileViewScreen extends StatefulWidget {
 class _ProfileViewScreenState extends State<ProfileViewScreen>
     with TickerProviderStateMixin {
   late ProfileDetails profileDetails;
+  late String message;
   bool showAppBar = true;
   ScrollController _controller = ScrollController();
   int aboutState = 0;
@@ -220,6 +221,10 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
           if (state is ProfileViewInitialState) {
             BlocProvider.of<ProfileViewBloc>(context).add(VisitProfile());
           }
+          // if (state is OnErrorView) {
+          //   this.message = BlocProvider.of<ProfileViewBloc>(context).message;
+          //   print("MESSAGE${this.message}");
+          // }
           this.profileDetails =
               BlocProvider.of<ProfileViewBloc>(context).profileDetails;
 

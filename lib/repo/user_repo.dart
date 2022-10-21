@@ -14,7 +14,7 @@ import 'package:makemymarry/views/home/matching_profile/matching_profile.dart';
 class UserRepository {
   late StorageService storageService;
   ApiClient apiClient = ApiClient();
-
+  ProfileDetails? profileDetails;
   UserDetails? useDetails;
 
   late MasterData masterData;
@@ -206,6 +206,12 @@ class UserRepository {
   Future<ProfileDetailsResponse> getOtheruserDetails(
       String id, ProfileActivationStatus activationStatus) async {
     return apiClient.getOtherUserDetails(id, activationStatus);
+  }
+
+  Future<ProfileDetailsResponse> getOtherUserDetailsByDisplayId(
+      String displayId, ProfileActivationStatus activationStatus) async {
+    return apiClient.getOtherUserDetailsByDisplayId(
+        displayId, activationStatus);
   }
 
   Future<String?> uploadImage(String images) async {

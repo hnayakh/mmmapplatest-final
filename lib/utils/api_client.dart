@@ -740,6 +740,28 @@ class ApiClient {
     // }
   }
 
+  Future<ProfileDetailsResponse> getOtherUserDetailsByDisplayId(
+      String displayId, ProfileActivationStatus activationStatus) async {
+    // try {
+    var response = await this
+        .dio
+        .get("${AppConstants.ENDPOINT}users/displaybasic/$displayId");
+
+    print("sresponse${response.data['data']}");
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return ProfileDetailsResponse.fromJson(response.data, activationStatus);
+    }
+    return ProfileDetailsResponse.fromError(
+        "Error Occurred. Please try again.");
+    // } catch (error) {
+    //   if (error is DioError) {
+    //     print(error.message);
+    //   }
+    //   return ProfileDetailsResponse.fromError(
+    //       "Error Occurred. Please try again.");
+    // }
+  }
+
   Future<String?> uploadImage(String id, String images) async {
     print("saurabh uplaod");
     try {
