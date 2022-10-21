@@ -66,6 +66,8 @@ dependencies:
   flutter_clean_calendar: ^1.0.2+1
   table_calendar: ^3.0.7
   scrollable_clean_calendar: 1.4.0
+  share_plus: 5.0.0
+  
 
 dev_dependencies:
   flutter_test:

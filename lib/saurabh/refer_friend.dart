@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:makemymarry/utils/colors.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ReferFriendScreen extends StatefulWidget {
   ReferFriendScreen({Key? key}) : super(key: key);
@@ -57,7 +58,10 @@ class ReferFriendScreenState extends State<ReferFriendScreen> {
                   width: 250,
                   height: 30,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Share.share(
+                          'check out Make My Marry App in Play store https://play.google.com/store/games');
+                    },
                     // ignore: sort_child_properties_last
                     child: const Text(
                       'Refer Now',
