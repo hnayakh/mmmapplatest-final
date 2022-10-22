@@ -507,6 +507,7 @@ class ProfileDetails {
 
   late String familyState, familyCity, familyCountry;
   List<String> images = [];
+  late String aboutmeMsg = "";
   late ProfileActivationStatus activationStatus;
   ProfileDetails() {}
   ProfileDetails.fromJson(json, ProfileActivationStatus activationStatus) {
@@ -562,7 +563,10 @@ class ProfileDetails {
     } else {
       this.occupation = "";
       this.annualIncome = AnualIncome.NoIncome;
-
+      this.city = "";
+      this.state = "";
+      this.country = "";
+      this.highiestEducation = "";
       this.employedin = "";
     }
     if (json["userFamilyBackgrounds"].length > 0) {

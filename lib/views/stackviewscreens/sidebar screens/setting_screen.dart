@@ -24,18 +24,26 @@ class SettingScreen extends StatelessWidget {
           SizedBox(
             height: 20,
           ),
-          MmmButtons.searchScreenButton('Notifications', action: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                  builder: (context) =>
-                      NotificationsSwitch(userRepository: userRepository)),
-            );
-          }),
-          MmmButtons.searchScreenButton('Privacy', action: () {
+
+          MmmButtons.searchScreenButton('Privacy Setting', action: () {
             Navigator.of(context).push(
               MaterialPageRoute(
                   builder: (context) =>
                       Privacy(userRepository: userRepository)),
+            );
+          }),
+          MmmButtons.searchScreenButton('Delete Profile', action: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Privacy(userRepository: userRepository)),
+            );
+          }),
+          MmmButtons.searchScreenButton('Notifications Settings', action: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (context) =>
+                      NotificationsSwitch(userRepository: userRepository)),
             );
           }),
           MmmButtons.searchScreenButton('Account', action: () {
@@ -50,9 +58,9 @@ class SettingScreen extends StatelessWidget {
               MaterialPageRoute(builder: (context) => SuccessStories()),
             );
           }),
-          MmmButtons.searchScreenButton('Leave us a review', action: () {}),
-          MmmButtons.searchScreenButton('FAQ', action: () {}),
-          MmmButtons.searchScreenButton('Terms and Conditions', action: () {}),
+          // MmmButtons.searchScreenButton('Leave us a review', action: () {}),
+          // MmmButtons.searchScreenButton('FAQ', action: () {}),
+          // MmmButtons.searchScreenButton('Terms and Conditions', action: () {}),
           MmmButtons.searchScreenButton('Contact Support', action: () {
             Navigator.of(context).push(
               MaterialPageRoute(

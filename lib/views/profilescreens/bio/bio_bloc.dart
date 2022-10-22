@@ -12,6 +12,7 @@ class BioBloc extends Bloc<BioEvent, BioState> {
   ProfileDetails? profileData;
   BioBloc(this.userRepository) : super(BioInitialState());
   List<String> localImagePaths = [];
+  String aboutMeMsg = "";
 
   @override
   Stream<BioState> mapEventToState(BioEvent event) async* {
@@ -81,11 +82,13 @@ class BioBloc extends Bloc<BioEvent, BioState> {
           ProfileActivationStatus
               .values[userRepository.useDetails!.activationStatus]);
       print('saurabh 1${response.profileDetails.images}');
+      print('Akash123${response.profileDetails}');
 
       print(response);
       if (response.status == AppConstants.SUCCESS) {
         this.profileData = response.profileDetails;
-        print('saurabh 2$profileData.}');
+        this.aboutMeMsg = response.profileDetails.aboutMe;
+        print('ABOUT 2${this.aboutMeMsg}');
         yield OnGotProfileandImages(this.profileData!);
       } else {
         print('etywgfyuegtwqyuetwqetwquyteuywqteuy');

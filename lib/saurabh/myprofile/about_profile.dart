@@ -52,6 +52,7 @@ class AboutProfileScreen extends StatefulWidget {
 
 class _AboutProfileScreenState extends State<AboutProfileScreen> {
   ProfileDetails? profileDetails;
+  late String aboutMeText;
   var bioController = TextEditingController();
   List<String> localImagePaths = [];
   @override
@@ -63,9 +64,10 @@ class _AboutProfileScreenState extends State<AboutProfileScreen> {
         body: Container(
             padding: EdgeInsets.symmetric(horizontal: 15),
             child: BlocConsumer<BioBloc, BioState>(listener: (context, state) {
-              if (state is FetchMyImage) {
+              if (state is OnGotProfileandImages) {
+                this.aboutMeText = BlocProvider.of<BioBloc>(context).aboutMeMsg;
                 //navigate to profile screen
-                print('profile setup completed Akash$FetchMyImage');
+                print('profile setup completed Akash$aboutMeText');
               }
               if (state is OnProfileSetupCompletion) {
                 //navigate to profile screen

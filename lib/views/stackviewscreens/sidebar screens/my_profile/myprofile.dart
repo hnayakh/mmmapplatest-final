@@ -88,6 +88,7 @@ class _MyProfileState extends State<MyProfile> {
                       this.profileDetails =
                           BlocProvider.of<AccountMenuBloc>(context).profileData;
                       print('saurabh12345 ${profileDetails!.images}');
+                      print('Aaurabh12345 ${profileDetails!.aboutMe}');
                       return Stack(children: [
                         Container(
                           height: MediaQuery.of(context).size.height * 0.17,
@@ -101,8 +102,9 @@ class _MyProfileState extends State<MyProfile> {
                             child: ClipOval(
                               child: Image.network(
                                 profileDetails!.images[0].toString(),
-                                width: double.infinity,
+                                // width: double.infinity,
                                 fit: BoxFit.cover,
+                                height: double.infinity,
                               ),
                             ),
                           ),
