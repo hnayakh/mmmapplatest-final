@@ -10,6 +10,9 @@ import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
+import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
+import 'package:makemymarry/views/signinscreens/signin_screen1.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Account extends StatefulWidget {
   final UserRepository userRepository;
@@ -43,7 +46,18 @@ class _AccountState extends State<Account> {
           child: Column(children: [
             MmmButtons.changePasswordSidebarNavigation(),
             SizedBox(height: 20),
-            MmmButtons.logoutSidebarNavigation(),
+            MmmButtons.logoutSidebarNavigation(
+              action: () {
+                print("object");
+                _deleteAppDir()
+                    .then((value) => Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                              builder: (context) => SignIn(
+                                    userRepository: UserRepository(),
+                                  )),
+                        ));
+              },
+            ),
             SizedBox(height: 20),
             MmmButtons.deleteAccountSidebarNavigation(action: () {
               deleteDilogue();
@@ -97,10 +111,10 @@ class _AccountState extends State<Account> {
                             style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.grey),
+                                color: Colors.white),
                           ),
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
+                            primary: kPrimary,
                             shape: RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.circular(10), // <-- Radius
@@ -114,7 +128,9 @@ class _AccountState extends State<Account> {
                       Container(
                         width: 140,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
                           child: const Text(
                             'Delete',
                             style: TextStyle(
@@ -123,7 +139,7 @@ class _AccountState extends State<Account> {
                                 color: Colors.white),
                           ),
                           style: ElevatedButton.styleFrom(
-                            primary: primaryColor,
+                            primary: kPrimary,
                             shape: RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.circular(10), // <-- Radius
@@ -138,5 +154,10 @@ class _AccountState extends State<Account> {
             ],
           );
         });
+  }
+
+  Future<void> _deleteAppDir() async {
+    final pref = await SharedPreferences.getInstance();
+    await pref.clear();
   }
 }
