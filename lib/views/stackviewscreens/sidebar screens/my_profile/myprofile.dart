@@ -102,7 +102,7 @@ class _MyProfileState extends State<MyProfile> {
                             child: ClipOval(
                               child: Image.network(
                                 profileDetails!.images[0].toString(),
-                                // width: double.infinity,
+                                width: double.infinity,
                                 fit: BoxFit.cover,
                                 height: double.infinity,
                               ),

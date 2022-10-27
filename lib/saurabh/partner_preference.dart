@@ -3,6 +3,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:makemymarry/views/filterscreen/disability_preference_filter_sheet.dart';
 import 'package:makemymarry/views/filterscreen/drink_preference_bottom_sheet.dart';
 import 'package:makemymarry/views/filterscreen/fliterscreen%20bloc/filter_bloc.dart';
 import 'package:makemymarry/views/filterscreen/fliterscreen%20bloc/filter_event.dart';
@@ -22,7 +23,8 @@ import 'package:makemymarry/views/profilescreens/profile_preference/profile_pref
     as profilepreferenceEvent;
 import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference_events.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/smoking_prefs.dart';
-import 'package:makemymarry/views/profilescreens/religion/religion_event.dart';
+import 'package:makemymarry/views/profilescreens/religion/religion_event.dart'
+    as religionEvent;
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/sidebar_contactsupport_screen.dart';
 
 import '../datamodels/master_data.dart';
@@ -88,7 +90,12 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
   RangeLabels labels = RangeLabels('1', "100");
   // int values = 10;
   RangeValues values = RangeValues(1, 100);
-
+  int? disabilityPreference;
+  final List<String> disabilityType = [
+    'Doesnot Matter',
+    'Normal',
+    'Physically Challenged',
+  ];
   late double minAge, maxAge, minSliderAge;
   late double minHeight, maxHeight;
   late List<MaritalStatus> maritalStatus;
@@ -176,6 +183,8 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
     this.abilityStatus =
         BlocProvider.of<ProfilePreferenceBloc>(context).abilityStatus;
     this.gothra = BlocProvider.of<ProfilePreferenceBloc>(context).gothra;
+    this.disabilityPreference =
+        BlocProvider.of<FilterBloc>(context).disabilityType;
   }
 
   void selectSubCast(List<CastSubCast> castList) async {
@@ -400,23 +409,24 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                 //     ],
                 //   ),
                 // ),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "Profile Peference",
-                  style:
-                      MmmTextStyles.bodyMediumSmall(textColor: Colors.black87),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                MmmButtons.myProfileButtons('Doesn\'t Matter ', action: () {
-                  print('ok');
-                  showDialog(
-                      context: context,
-                      builder: (ctx) => verificationSttausAlert());
-                }),
+                //commented by me
+                // SizedBox(
+                //   height: 20,
+                // ),
+                // Text(
+                //   "Profile Peference",
+                //   style:
+                //       MmmTextStyles.bodyMediumSmall(textColor: Colors.black87),
+                // ),
+                // SizedBox(
+                //   height: 10,
+                // ),
+                // MmmButtons.myProfileButtons('Doesn\'t Matter ', action: () {
+                //   print('ok');
+                //   showDialog(
+                //       context: context,
+                //       builder: (ctx) => verificationSttausAlert());
+                // }),
 
                 SizedBox(
                   height: 20,
@@ -440,7 +450,73 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                 SizedBox(
                   height: 10,
                 ),
-                MmmButtons.myProfileButtons("Disability", action: () {}),
+                // MmmButtons.myProfileButtons("Disability", action: () {}),
+                // MmmButtons.filterButtons(
+                //     this.disabilityPreference != null
+                //         ? disabilityType[disabilityPreference!]
+                //         : 'Disability', action: () {
+                //   showDisabilityBottomSheet();
+                // }),
+
+                Container(
+                  margin: EdgeInsets.only(left: 8),
+                  child: Text(
+                    'Disability',
+                    style: MmmTextStyles.bodyRegular(textColor: kDark5),
+                  ),
+                ),
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Transform.scale(
+                        scale: 1.2,
+                        child: Radio(
+                            activeColor: kPrimary,
+                            value: AbilityStatus.Normal,
+                            groupValue: abilityStatus,
+                            onChanged: (val) {
+                              BlocProvider.of<ProfilePreferenceBloc>(context)
+                                  .add(AbilityStatusChanged(
+                                      AbilityStatus.Normal));
+                            }),
+                      ),
+                      //SizedBox(
+                      // width: 8,
+                      //  ),
+                      Text(
+                        'Normal    ',
+                        style: MmmTextStyles.bodySmall(textColor: kDark5),
+                      ),
+
+                      Transform.scale(
+                        scale: 1.2,
+                        child: Radio(
+                            activeColor: kPrimary,
+                            value: AbilityStatus.PhysicallyChallenged,
+                            groupValue: abilityStatus,
+                            onChanged: (val) {
+                              BlocProvider.of<ProfilePreferenceBloc>(context)
+                                  .add(AbilityStatusChanged(
+                                      AbilityStatus.PhysicallyChallenged));
+                            }),
+                      ),
+                      // SizedBox(
+                      //   width: 8,
+                      // ),
+                      Text(
+                        'Physically Challenged',
+                        style: MmmTextStyles.bodySmall(textColor: kDark5),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: SizedBox(
+                            // width: 22,
+                            ),
+                      ),
+                    ],
+                  ),
+                ),
                 SizedBox(
                   height: 20,
                 ),
@@ -568,9 +644,11 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                 MmmButtons.enabledRedButtonbodyMedium(50, 'Apply Filter',
                     action: () {
                   print("Hiiiii");
-                  //FocusScope.of(context).requestFocus(FocusNode());
                   BlocProvider.of<ProfilePreferenceBloc>(context)
-                      .add(profilepreferenceEvent.CompleteFilter());
+                      .add(CompleteFilter());
+                  //FocusScope.of(context).requestFocus(FocusNode());
+                  // BlocProvider.of<ProfilePreferenceBloc>(context)
+                  //     .add(profilepreferenceEvent.CompleteFilter());
                   // BlocProvider.of<BioBloc>(context)
                   //     .add(UpdateBio(this.bioController.text));
                 }),
@@ -651,9 +729,13 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
               religionModel: this.religion,
             ));
     list.removeAt(0);
-    if (result != null && result is SimpleMasterData) {
-      //  BlocProvider.of<ReligionBloc>(context).add(OnReligionSelected(result));
-      //BlocProvider.of<ReligionBloc>(context).add(OnReligionSelected(result));
+    if (result != null && result is List<SimpleMasterData>) {
+      BlocProvider.of<ProfilePreferenceBloc>(context)
+          .add(OnReligionSelected(result));
+      // BlocProvider.of<ReligionBloc>(context)
+      //     .add(religionEvent.OnReligionSelected(result));
+      // BlocProvider.of<ReligionBloc>(context)
+      //     .add(religionEvent.OnReligionSelected(result));
     }
   }
 
@@ -1443,5 +1525,20 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
       ),
       //preferredSize: Size(MediaQuery.of(context).size.width, 0.0),
     );
+  }
+
+  void showDisabilityBottomSheet() async {
+    var result = await showModalBottomSheet(
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (context) => DisabilityPreferenceFilterSheet(
+              selectedDisabilityPreference: disabilityPreference,
+            ));
+
+    if (result != null && result is int) {
+      BlocProvider.of<FilterBloc>(context)
+          .add(OnDisabilityFilterSelected(result));
+    }
   }
 }

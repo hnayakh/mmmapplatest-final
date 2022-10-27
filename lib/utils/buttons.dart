@@ -1572,6 +1572,7 @@ class MmmButtons {
                         child: Image.network(
                           image,
                           width: double.infinity,
+                          height: double.infinity,
                           fit: BoxFit.cover,
                         ),
                       ),
