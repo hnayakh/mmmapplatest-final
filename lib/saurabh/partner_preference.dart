@@ -357,7 +357,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                 SizedBox(
                   height: 20,
                 ),
-// age
+                // age
                 buildAgePreference(),
                 // Text(
                 //   "Age Peference",
@@ -645,7 +645,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                     action: () {
                   print("Hiiiii");
                   BlocProvider.of<ProfilePreferenceBloc>(context)
-                      .add(CompleteFilter());
+                      .add(CompletePreference());
                   //FocusScope.of(context).requestFocus(FocusNode());
                   // BlocProvider.of<ProfilePreferenceBloc>(context)
                   //     .add(profilepreferenceEvent.CompleteFilter());

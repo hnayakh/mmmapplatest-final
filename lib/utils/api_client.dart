@@ -885,9 +885,9 @@ class ApiClient {
         "occupation": occupation.map((e) => e!).toList(),
         "maxIncome": annualIncome.map((e) => e.index).toList(),
         "minIncome": annualIncome.map((e) => e.index).toList(),
-        "dietaryHabits": annualIncome.map((e) => e.index).toList(),
-        "drinkingHabits": annualIncome.map((e) => e.index).toList(),
-        "smokingHabits": annualIncome.map((e) => e.index).toList(),
+        "dietaryHabits": eatingHabit.map((e) => e.index).toList(),
+        "drinkingHabits": drinkingHabit.map((e) => e.index).toList(),
+        "smokingHabits": smokingHabit.map((e) => e.index).toList(),
         "challenged": abilityStatus.index
       });
       if (response.statusCode == 200 || response.statusCode == 201) {
