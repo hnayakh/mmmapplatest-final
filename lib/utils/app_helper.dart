@@ -23,6 +23,20 @@ class AppHelper {
   //   }
   //   return heights;
   // }
+  static String getFormtedHeight(double height) {
+    print("height$height");
+    var intPart = height.toInt();
+    var decimalPart = ((height - height.toInt()) * 10).round();
+    print("decimal part$decimalPart");
+    String result = '$intPart.$decimalPart';
+    if (intPart > 4 && decimalPart < 2) {
+      result = '${intPart - 1}.${10 + decimalPart}';
+    }
+    if (intPart > 4 && decimalPart == 2) {
+      result = '${intPart}.0';
+    }
+    return result;
+  }
 
   static List<String> getHeights() {
     List<Height> result = [];

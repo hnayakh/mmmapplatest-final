@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
@@ -16,6 +17,7 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
   SimpleMasterData? motherTongue;
   dynamic gothra = "";
   Manglik isManglik = Manglik.NotApplicable;
+  ProfileDetails? profileDetails;
 
   SimpleMasterData? prevReligion;
 
@@ -24,6 +26,17 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
   @override
   Stream<ReligionState> mapEventToState(ReligionEvent event) async* {
     yield OnReligionLoading();
+    if (event is onReligionDataLoad) {
+      var result = await this.userRepository.getOtheruserDetails(
+          event.basicUserId, ProfileActivationStatus.Verified);
+
+      if (result.status == AppConstants.SUCCESS) {
+        this.profileDetails = result.profileDetails;
+        yield ReligionDetailsState(result.profileDetails);
+      } else {
+        yield OnError(result.message);
+      }
+    }
 
     if (event is OnReligionSelected) {
       if (this.religion == null) {

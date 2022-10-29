@@ -63,6 +63,11 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
     }
     if (event is OnAboutDone) {
       this.name = event.name;
+      this.maritalStatus = event.maritalStatus;
+      this.childrenStatus = event.childrenStatus;
+      this.abilityStatus = event.abilityStatus;
+      this.dateOfBirth = event.dateOfBirth;
+      this.heightStatus = event.heightStatus;
       if (this.name == '' &&
           this.maritalStatus == null &&
           this.heightStatus == null &&

@@ -110,6 +110,11 @@ class _AboutScreenState extends State<AboutScreen> {
                     onTap: () {
                       BlocProvider.of<AboutBloc>(context).add(OnAboutDone(
                         namecontroller.text.trim(),
+                        this.maritalStatus!,
+                        this.heightStatus!,
+                        this.childrenStatus!,
+                        this.dobHintText!,
+                        this.abilityStatus!,
                       ));
                     },
                     child: MmmIcons.rightArrowEnabled(),

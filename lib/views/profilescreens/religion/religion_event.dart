@@ -41,3 +41,9 @@ class OnMaglikChanged extends ReligionEvent {
 }
 
 class UpdateReligion extends ReligionEvent {}
+
+class onReligionDataLoad extends ReligionEvent {
+  final String basicUserId;
+
+  onReligionDataLoad(this.basicUserId);
+}

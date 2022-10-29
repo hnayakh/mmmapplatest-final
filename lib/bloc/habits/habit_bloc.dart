@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:makemymarry/datamodels/martching_profile.dart';
 
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
@@ -14,10 +15,22 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
   EatingHabit? eatingHabit;
   DrinkingHabit? drinkingHabit;
   SmokingHabit? smokingHabit;
+  ProfileDetails? profileDetails;
 
   @override
   Stream<HabitState> mapEventToState(HabitEvent event) async* {
     yield OnLoading();
+    if (event is onHabitDataLoad) {
+      var result = await this.userRepository.getOtheruserDetails(
+          event.basicUserId, ProfileActivationStatus.Verified);
+
+      if (result.status == AppConstants.SUCCESS) {
+        this.profileDetails = result.profileDetails;
+        yield HabitDetailsState(result.profileDetails);
+      } else {
+        yield OnError(result.message);
+      }
+    }
     if (event is EatingHabitSelected) {
       this.eatingHabit = event.eatingHabit;
       yield HabitInitialState();
@@ -31,6 +44,9 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
       yield HabitInitialState();
     }
     if (event is UpdateHabit) {
+      this.eatingHabit = event.eatingHabit;
+      this.drinkingHabit = event.drinkingHabit;
+      this.smokingHabit = event.smokingHabit;
       if (this.eatingHabit == null &&
           this.drinkingHabit == null &&
           this.smokingHabit == null) {

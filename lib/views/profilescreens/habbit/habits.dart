@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/bloc/habits/habit_bloc.dart';
 import 'package:makemymarry/bloc/habits/habit_event.dart';
 import 'package:makemymarry/bloc/habits/habit_state.dart';
+import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
@@ -40,9 +41,14 @@ class _HabitScreenState extends State<HabitScreen> {
   EatingHabit? eatingHabit;
   SmokingHabit? smokingHabit;
   DrinkingHabit? drinkingHabit;
-
+  late UserDetails userDetails;
   @override
   Widget build(BuildContext context) {
+    this.userDetails =
+        BlocProvider.of<HabitBloc>(context).userRepository.useDetails!;
+    if (this.userDetails.registrationStep > 3) {
+      BlocProvider.of<HabitBloc>(context).add(onHabitDataLoad(userDetails.id));
+    }
     return Scaffold(
       body: BlocConsumer<HabitBloc, HabitState>(
         listener: (context, state) {
@@ -238,7 +244,10 @@ class _HabitScreenState extends State<HabitScreen> {
                 right: 24,
                 child: InkWell(
                   onTap: () {
-                    BlocProvider.of<HabitBloc>(context).add(UpdateHabit());
+                    BlocProvider.of<HabitBloc>(context).add(UpdateHabit(
+                        this.eatingHabit!,
+                        this.drinkingHabit!,
+                        this.smokingHabit!));
                   },
                   child: MmmIcons.rightArrowEnabled(),
                 )),
@@ -301,5 +310,15 @@ class _HabitScreenState extends State<HabitScreen> {
     this.eatingHabit = BlocProvider.of<HabitBloc>(context).eatingHabit;
     this.drinkingHabit = BlocProvider.of<HabitBloc>(context).drinkingHabit;
     this.smokingHabit = BlocProvider.of<HabitBloc>(context).smokingHabit;
+    if (BlocProvider.of<HabitBloc>(context).profileDetails != null) {
+      this.eatingHabit =
+          BlocProvider.of<HabitBloc>(context).profileDetails!.eatingHabit;
+      if (this.drinkingHabit == null)
+        this.drinkingHabit =
+            BlocProvider.of<HabitBloc>(context).profileDetails!.drinkingHabit;
+      if (this.smokingHabit == null)
+        this.smokingHabit =
+            BlocProvider.of<HabitBloc>(context).profileDetails!.smokingHabit;
+    }
   }
 }

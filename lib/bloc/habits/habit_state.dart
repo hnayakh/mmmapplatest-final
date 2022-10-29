@@ -1,3 +1,5 @@
+import 'package:makemymarry/datamodels/martching_profile.dart';
+
 import '../base_event_state.dart';
 
 class HabitState extends BaseEventState {}
@@ -13,3 +15,8 @@ class OnError extends HabitState {
 }
 
 class NavigationToReligion extends HabitState {}
+
+class HabitDetailsState extends HabitState {
+  late final ProfileDetails profileDetails;
+  HabitDetailsState(this.profileDetails);
+}

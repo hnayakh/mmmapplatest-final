@@ -60,6 +60,11 @@ class OnNavigationButtonClicked extends AboutEvent {
 
 class OnAboutDone extends AboutEvent {
   final String name;
-
-  OnAboutDone(this.name);
+  final MaritalStatus maritalStatus;
+  final int heightStatus;
+  final ChildrenStatus childrenStatus;
+  final DateTime dateOfBirth;
+  final AbilityStatus abilityStatus;
+  OnAboutDone(this.name, this.maritalStatus, this.heightStatus,
+      this.childrenStatus, this.dateOfBirth, this.abilityStatus);
 }

@@ -506,14 +506,14 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
                     valueIndicatorColor: kPrimary.withOpacity(0.7)),
                 child: RangeSlider(
                   values: RangeValues(minValue, maxValue),
-                  min: 4,
-                  max: 7,
+                  min: 4.0,
+                  max: 7.0,
                   inactiveColor: kGray,
                   activeColor: kPrimary,
                   // divisions: 30,
                   labels: RangeLabels(
-                    minValue.toStringAsFixed(1),
-                    maxValue.toStringAsFixed(1),
+                    minValue.toString(),
+                    maxValue.toString(),
                   ),
                   onChanged: (RangeValues values) {
                     print(values.end);

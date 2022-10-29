@@ -1,3 +1,4 @@
+import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 
@@ -491,7 +492,7 @@ class ProfileDetails {
   late DrinkingHabit drinkingHabit;
   late EatingHabit eatingHabit;
   late SmokingHabit smokingHabit;
-
+  late SimpleMasterData religionDetails;
   late String religion, cast, gothra, motherTongue;
   late Manglik manglik;
 
@@ -542,6 +543,7 @@ class ProfileDetails {
     var userReligion = json["userReligions"][0];
 
     this.religion = userReligion["religion"];
+    this.religionDetails = userReligion["religion"];
     this.cast = userReligion["cast"];
     this.gothra = 'ok';
     // userReligion["gothra"];

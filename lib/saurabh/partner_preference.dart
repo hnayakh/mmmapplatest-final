@@ -1116,8 +1116,9 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
 
   Widget buildHeight() {
     print("minHeight${minHeight}");
-
-    var maxValue = maxHeight > 0 ? maxHeight : 7.0;
+    var maxValue = maxHeight == 0 ? 7.0 : maxHeight;
+    var minValue = minHeight == 0 ? 4.0 : minHeight;
+    // var maxValue = maxHeight > 0 ? maxHeight : 7.0;
     print("maxHeight${maxValue}");
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1153,7 +1154,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                         color: kLight4, borderRadius: BorderRadius.circular(8)),
                     child: FittedBox(
                       child: Text(
-                        '${minHeight.toStringAsFixed(1)}',
+                        '${AppHelper.getFormtedHeight(minHeight)}',
                         style: MmmTextStyles.bodyRegular(textColor: kDark5),
                       ),
                     ),
@@ -1166,7 +1167,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                         color: kLight4, borderRadius: BorderRadius.circular(8)),
                     child: FittedBox(
                       child: Text(
-                        '${maxHeight.toStringAsFixed(1)}',
+                        '${AppHelper.getFormtedHeight(maxHeight)}',
                         style: MmmTextStyles.bodyRegular(textColor: kDark5),
                       ),
                     ),
@@ -1178,18 +1179,21 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                     showValueIndicator: ShowValueIndicator.always,
                     valueIndicatorColor: kPrimary.withOpacity(0.7)),
                 child: RangeSlider(
-                  values: RangeValues(minHeight, maxValue),
+                  values: RangeValues(minValue, maxValue),
+
                   min: 4,
                   max: 7,
                   inactiveColor: kGray,
                   activeColor: kPrimary,
-                  divisions: 5,
+                  // divisions: 5,
                   labels: RangeLabels(
-                    convertHeight(minHeight).toStringAsFixed(1),
-                    maxValue.toStringAsFixed(1),
+                    AppHelper.getFormtedHeight(minValue),
+                    AppHelper.getFormtedHeight(maxValue),
+                    // convertHeight(minHeight).toStringAsFixed(1),
+                    // convertHeight(maxValue).toStringAsFixed(1),
                   ),
                   onChanged: (RangeValues values) {
-                    print(values.end);
+                    print("RANGEEND${values.end}");
                     BlocProvider.of<ProfilePreferenceBloc>(context)
                         .add(OnHeightRangeChanged(values.start, values.end));
                   },
