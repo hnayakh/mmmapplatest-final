@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:makemymarry/datamodels/martching_profile.dart';
 
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/repo/user_repo.dart';
@@ -20,6 +21,7 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
   StateModel? myState, city, prevState;
 
   AnualIncome? anualIncome;
+  ProfileDetails? profileDetails;
 
   OccupationBloc(this.userRepository) : super(OccupationInitialState()) {
     this.countryModel = userRepository.useDetails!.countryModel;
@@ -28,6 +30,17 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
   @override
   Stream<OccupationState> mapEventToState(OccupationEvent event) async* {
     yield OnLoading();
+    if (event is onOccupationDataLoad) {
+      var result = await this.userRepository.getOtheruserDetails(
+          event.basicUserId, ProfileActivationStatus.Verified);
+
+      if (result.status == AppConstants.SUCCESS) {
+        this.profileDetails = result.profileDetails;
+        yield OccupationDetailsState(result.profileDetails);
+      } else {
+        yield OnError(result.message);
+      }
+    }
     if (event is OnAnnualIncomeSelected) {
       this.anualIncome = event.income;
       yield OccupationInitialState();

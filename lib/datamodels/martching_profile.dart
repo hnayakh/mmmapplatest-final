@@ -488,14 +488,15 @@ class ProfileDetails {
   late NoOfChildren? noOfChildren;
   late AbilityStatus abilityStatus;
   late String height;
-
+  late int cityId;
+  late int stateId;
+  late String religionId;
   late DrinkingHabit drinkingHabit;
   late EatingHabit eatingHabit;
   late SmokingHabit smokingHabit;
   late SimpleMasterData religionDetails;
   late String religion, cast, gothra, motherTongue;
   late Manglik manglik;
-
   late String occupation, employedin, city, state, country, highiestEducation;
   late AnualIncome annualIncome;
   late FamilyAfluenceLevel familyAfluenceLevel;
@@ -543,7 +544,7 @@ class ProfileDetails {
     var userReligion = json["userReligions"][0];
 
     this.religion = userReligion["religion"];
-    this.religionDetails = userReligion["religion"];
+    //this.religionDetails = userReligion["religion"];
     this.cast = userReligion["cast"];
     this.gothra = 'ok';
     // userReligion["gothra"];
@@ -560,7 +561,9 @@ class ProfileDetails {
       this.annualIncome = AnualIncome.values[userCareer["annualIncome"]];
       this.country = userCareer["countryName"];
       this.state = userCareer["stateName"];
+      this.stateId = userCareer["state"];
       this.city = userCareer["cityName"];
+      this.cityId = userCareer["city"];
       this.highiestEducation = userCareer["highestEducation"];
     } else {
       this.occupation = "";
@@ -570,6 +573,7 @@ class ProfileDetails {
       this.country = "";
       this.highiestEducation = "";
       this.employedin = "";
+      this.cityId = -1;
     }
     if (json["userFamilyBackgrounds"].length > 0) {
       var userFamilyBackground = json["userFamilyBackgrounds"][0];

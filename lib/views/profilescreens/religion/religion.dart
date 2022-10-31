@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
+import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
@@ -59,9 +60,15 @@ class ReligionScreenState extends State<ReligionScreen> {
   SimpleMasterData? motherTongue;
   dynamic gothra;
   late Manglik isManglik;
-
+  late UserDetails userDetails;
   @override
   Widget build(BuildContext context) {
+    this.userDetails =
+        BlocProvider.of<ReligionBloc>(context).userRepository.useDetails!;
+    if (this.userDetails.registrationStep > 4) {
+      BlocProvider.of<ReligionBloc>(context)
+          .add(onReligionDataLoad(userDetails.id));
+    }
     return Scaffold(
       body: BlocConsumer<ReligionBloc, ReligionState>(
         builder: (context, state) {
@@ -297,6 +304,16 @@ class ReligionScreenState extends State<ReligionScreen> {
     this.cast = BlocProvider.of<ReligionBloc>(context).cast;
     this.subCaste = BlocProvider.of<ReligionBloc>(context).subCaste;
     this.religion = BlocProvider.of<ReligionBloc>(context).religion;
+    // if (BlocProvider.of<ReligionBloc>(context).profileDetails != null) {
+    //   if (this.religion == null) {
+    //     var ReligionName =
+    //         BlocProvider.of<ReligionBloc>(context).profileDetails!.religion;
+    //     var ReligionId =
+    //         BlocProvider.of<ReligionBloc>(context).profileDetails!.religionId;
+
+    //     this.religion = SimpleMasterData();
+    //   }
+    // }
   }
 
   void selectReligion(BuildContext context) async {

@@ -114,7 +114,7 @@ class CastSubCast {
   late String cast;
   late List<dynamic> subCasts;
 
-  CastSubCast();
+  CastSubCast(this.cast, this.subCasts);
 
   CastSubCast.fromJson(dynamic json) {
     this.cast = json["cast"];
@@ -187,7 +187,7 @@ class CountryModel {
 class StateModel {
   late String name;
   late int id;
-  StateModel();
+  StateModel(this.name, this.id);
 
   StateModel.fromJson(json) {
     this.name = json["name"];

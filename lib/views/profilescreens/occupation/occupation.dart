@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:makemymarry/datamodels/master_data.dart';
+import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
@@ -66,17 +67,25 @@ class _OccupationScreenState extends State<OccupationScreen> {
   String? education;
   CountryModel? countryModel;
   StateModel? myState, city;
+  late UserDetails userDetails;
   @override
   void initState() {
-    myState = StateModel();
+    myState = StateModel("", -1);
     myState!.name = '';
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    this.userDetails =
+        BlocProvider.of<OccupationBloc>(context).userRepository.useDetails!;
+    print("USERDETAIL${userDetails.religion.title}");
+    if (this.userDetails.registrationStep > 4) {
+      BlocProvider.of<OccupationBloc>(context)
+          .add(onOccupationDataLoad(userDetails.id));
+    }
     return Scaffold(
-      appBar: MmmButtons.appBarCurved('Career'),
+      appBar: MmmButtons.appBarCurved('Career', context: context),
       //  floatingActionButton: FloatingActionButton(
       //    child: MmmIcons.rightArrowEnabled(),
       //   onPressed: () {
@@ -285,6 +294,37 @@ class _OccupationScreenState extends State<OccupationScreen> {
     this.myState = BlocProvider.of<OccupationBloc>(context).myState;
     this.city = BlocProvider.of<OccupationBloc>(context).city;
     this.anualIncome = BlocProvider.of<OccupationBloc>(context).anualIncome;
+
+    if (BlocProvider.of<OccupationBloc>(context).profileDetails != null) {
+      print(
+          "EDUCATION${BlocProvider.of<OccupationBloc>(context).profileDetails!.annualIncome}");
+      this.education = BlocProvider.of<OccupationBloc>(context)
+          .profileDetails!
+          .highiestEducation;
+      //print("EDUCATION${this.city}");
+      if (this.occupation == null)
+        this.occupation =
+            BlocProvider.of<OccupationBloc>(context).profileDetails!.occupation;
+      if (this.anualIncome == null)
+        this.anualIncome = BlocProvider.of<OccupationBloc>(context)
+            .profileDetails!
+            .annualIncome;
+      if (this.city == null) {
+        //var cityName = this.city!.name;
+        var cityName =
+            BlocProvider.of<OccupationBloc>(context).profileDetails!.city;
+        var cityId =
+            BlocProvider.of<OccupationBloc>(context).profileDetails!.cityId;
+        this.city = StateModel(cityName, cityId);
+      }
+      if (this.myState == null) {
+        var stateName =
+            BlocProvider.of<OccupationBloc>(context).profileDetails!.state;
+        var stateId =
+            BlocProvider.of<OccupationBloc>(context).profileDetails!.stateId;
+        this.myState = StateModel(stateName, stateId);
+      }
+    }
   }
 
   void selectAnualIncome(BuildContext context) async {

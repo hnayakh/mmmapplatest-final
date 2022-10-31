@@ -1,4 +1,5 @@
 import 'package:makemymarry/bloc/base_event_state.dart';
+import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 
 class OccupationState extends BaseEventState {}
@@ -33,4 +34,9 @@ class OnGotStates extends OccupationState {
   final List<StateModel> list;
 
   OnGotStates(this.list);
+}
+
+class OccupationDetailsState extends OccupationState {
+  late final ProfileDetails profileDetails;
+  OccupationDetailsState(this.profileDetails);
 }

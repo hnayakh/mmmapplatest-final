@@ -9,6 +9,7 @@ class OnOccupationSelected extends OccupationEvent {
 
   OnOccupationSelected(this.occupation);
 }
+
 class OnAnnualIncomeSelected extends OccupationEvent {
   final AnualIncome income;
 
@@ -59,4 +60,10 @@ class OnCitySelected extends OccupationEvent {
   final StateModel stateModel;
 
   OnCitySelected(this.stateModel);
+}
+
+class onOccupationDataLoad extends OccupationEvent {
+  final String basicUserId;
+
+  onOccupationDataLoad(this.basicUserId);
 }
