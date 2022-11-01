@@ -56,16 +56,17 @@ class ReligionScreenState extends State<ReligionScreen> {
 
   SimpleMasterData? religion;
   dynamic subCaste;
-  CastSubCast? cast;
+  late CastSubCast cast;
   SimpleMasterData? motherTongue;
-  dynamic gothra;
+  late dynamic gothra;
   late Manglik isManglik;
   late UserDetails userDetails;
   @override
   Widget build(BuildContext context) {
     this.userDetails =
         BlocProvider.of<ReligionBloc>(context).userRepository.useDetails!;
-    if (this.userDetails.registrationStep > 4) {
+
+    if (this.userDetails.registrationStep > 3) {
       BlocProvider.of<ReligionBloc>(context)
           .add(onReligionDataLoad(userDetails.id));
     }
@@ -84,8 +85,13 @@ class ReligionScreenState extends State<ReligionScreen> {
                 child: InkWell(
                   child: MmmIcons.rightArrowEnabled(),
                   onTap: () {
-                    BlocProvider.of<ReligionBloc>(context)
-                        .add(UpdateReligion());
+                    BlocProvider.of<ReligionBloc>(context).add(UpdateReligion(
+                      this.motherTongue,
+                      this.gothra,
+                      this.isManglik,
+                      this.religion,
+                      this.cast,
+                    ));
                   },
                 ),
                 bottom: 24,
@@ -149,8 +155,8 @@ class ReligionScreenState extends State<ReligionScreen> {
                             ),
                             MmmButtons.categoryButtons(
                                 'Caste',
-                                subCaste != null
-                                    ? '${subCaste}'
+                                cast.subCasts.length != 0
+                                    ? '${this.cast.subCasts[0]}'
                                     : 'Select your caste',
                                 'Select your caste',
                                 'images/rightArrow.svg', action: () {
@@ -182,7 +188,7 @@ class ReligionScreenState extends State<ReligionScreen> {
                           MmmButtons.categoryButtons(
                               'Gothra',
                               this.gothra != null
-                                  ? gothra
+                                  ? '${gothra}'
                                   : 'Select your gothra',
                               'Select your gothra',
                               'images/rightArrow.svg', action: () {
@@ -216,7 +222,7 @@ class ReligionScreenState extends State<ReligionScreen> {
                                   child: Radio(
                                       activeColor: Colors.pinkAccent,
                                       value: Manglik.Yes,
-                                      groupValue: isManglik,
+                                      groupValue: this.isManglik,
                                       onChanged: (val) {
                                         BlocProvider.of<ReligionBloc>(context)
                                             .add(OnMaglikChanged(Manglik.Yes));
@@ -238,7 +244,7 @@ class ReligionScreenState extends State<ReligionScreen> {
                                   child: Radio(
                                       activeColor: Colors.pinkAccent,
                                       value: Manglik.No,
-                                      groupValue: isManglik,
+                                      groupValue: this.isManglik,
                                       onChanged: (val) {
                                         BlocProvider.of<ReligionBloc>(context)
                                             .add(OnMaglikChanged(Manglik.No));
@@ -304,16 +310,53 @@ class ReligionScreenState extends State<ReligionScreen> {
     this.cast = BlocProvider.of<ReligionBloc>(context).cast;
     this.subCaste = BlocProvider.of<ReligionBloc>(context).subCaste;
     this.religion = BlocProvider.of<ReligionBloc>(context).religion;
-    // if (BlocProvider.of<ReligionBloc>(context).profileDetails != null) {
-    //   if (this.religion == null) {
-    //     var ReligionName =
-    //         BlocProvider.of<ReligionBloc>(context).profileDetails!.religion;
-    //     var ReligionId =
-    //         BlocProvider.of<ReligionBloc>(context).profileDetails!.religionId;
+    if (BlocProvider.of<ReligionBloc>(context).profileDetails != null) {
+      if (this.religion == null) {
+        var religionName =
+            BlocProvider.of<ReligionBloc>(context).profileDetails!.religionName;
+        var religionId =
+            BlocProvider.of<ReligionBloc>(context).profileDetails!.religionId;
 
-    //     this.religion = SimpleMasterData();
-    //   }
-    // }
+        this.religion = SimpleMasterData(religionId, religionName);
+      }
+      if (this.motherTongue == null) {
+        var motherTongueName =
+            BlocProvider.of<ReligionBloc>(context).profileDetails!.motherTongue;
+        var motherTongueId = BlocProvider.of<ReligionBloc>(context)
+            .profileDetails!
+            .motherTongueId;
+
+        // var religionId =
+        //     BlocProvider.of<ReligionBloc>(context).profileDetails!.religionId;
+
+        this.motherTongue = SimpleMasterData(motherTongueId, motherTongueName);
+      }
+
+      if (this.gothra == null || this.gothra == "") {
+        this.gothra =
+            BlocProvider.of<ReligionBloc>(context).profileDetails!.gothra;
+      }
+      if (BlocProvider.of<ReligionBloc>(context).profileDetails!.manglik !=
+          null) {
+        this.isManglik =
+            BlocProvider.of<ReligionBloc>(context).profileDetails!.manglik;
+      }
+
+      if (this.cast.cast == "") {
+        var castName =
+            BlocProvider.of<ReligionBloc>(context).profileDetails!.casteName;
+
+        var subCasteName =
+            BlocProvider.of<ReligionBloc>(context).profileDetails!.subCasteName;
+        // var religionId =
+        //     BlocProvider.of<ReligionBloc>(context).profileDetails!.religionId;
+        print("Hello$castName");
+        print("Hello$subCasteName");
+
+        this.cast = CastSubCast(castName, [subCasteName]);
+        print("Hello${this.cast.subCasts[0]}");
+      }
+    }
   }
 
   void selectReligion(BuildContext context) async {

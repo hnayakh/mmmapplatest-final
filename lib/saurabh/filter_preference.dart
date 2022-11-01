@@ -455,7 +455,7 @@ class _FilterPrefsState extends State<FilterPrefs> {
         .userRepository
         .masterData
         .listReligion;
-    SimpleMasterData doesntMatter = SimpleMasterData();
+    SimpleMasterData doesntMatter = SimpleMasterData("", "");
     doesntMatter.id = 'Doesnot Matter';
     doesntMatter.title = 'Doesnot Matter';
     list.insert(0, doesntMatter);

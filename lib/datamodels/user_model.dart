@@ -19,11 +19,11 @@ class SigninResponse {
         if (extraData.length > 0) {
           print('extradata=$extraData');
           if (extraData[0]["motherTongue"] != null) {
-            userDetails!.motherTongue = SimpleMasterData()
+            userDetails!.motherTongue = SimpleMasterData("", "")
               ..id = extraData[0]["motherTongue"]
               ..title = extraData[0]["motherTongue"];
           } else {
-            userDetails!.motherTongue = SimpleMasterData()
+            userDetails!.motherTongue = SimpleMasterData("", "")
               ..id = 'unknown'
               ..title = 'UNK';
           }
@@ -67,11 +67,11 @@ class SigninResponse {
             }
           }
           if (extraData[0]["religion"] != null) {
-            userDetails!.religion = SimpleMasterData()
+            userDetails!.religion = SimpleMasterData("", "")
               ..id = extraData[0]["religion"]
               ..title = extraData[0]["religion"];
           } else {
-            userDetails!.religion = SimpleMasterData()
+            userDetails!.religion = SimpleMasterData("", "")
               ..id = 'unknown'
               ..title = 'UNK';
           }

@@ -681,7 +681,8 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
         .userRepository
         .masterData
         .listReligion;
-    SimpleMasterData doesntMatter = SimpleMasterData();
+    SimpleMasterData doesntMatter =
+        SimpleMasterData("Doesnot Matter", "Doesnot Matter");
     doesntMatter.id = 'Doesnot Matter';
     doesntMatter.title = 'Doesnot Matter';
     list.insert(0, doesntMatter);

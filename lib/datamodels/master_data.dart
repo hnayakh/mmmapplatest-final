@@ -90,7 +90,7 @@ class Occupation {
 class SimpleMasterData {
   late String id, title;
 
-  SimpleMasterData();
+  SimpleMasterData(this.id, this.title);
 
   SimpleMasterData.fromJson(json) {
     this.id = json["id"];

@@ -40,7 +40,16 @@ class OnMaglikChanged extends ReligionEvent {
   OnMaglikChanged(this.value);
 }
 
-class UpdateReligion extends ReligionEvent {}
+class UpdateReligion extends ReligionEvent {
+  final SimpleMasterData? motherTongue;
+  final dynamic gothra;
+  final Manglik isManglik;
+  final SimpleMasterData? religion;
+  final CastSubCast cast;
+
+  UpdateReligion(
+      this.motherTongue, this.gothra, this.isManglik, this.religion, this.cast);
+}
 
 class onReligionDataLoad extends ReligionEvent {
   final String basicUserId;

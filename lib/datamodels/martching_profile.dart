@@ -491,11 +491,15 @@ class ProfileDetails {
   late int cityId;
   late int stateId;
   late String religionId;
+  late String religionName;
+  late String casteName;
+  late String subCasteName;
   late DrinkingHabit drinkingHabit;
   late EatingHabit eatingHabit;
   late SmokingHabit smokingHabit;
   late SimpleMasterData religionDetails;
   late String religion, cast, gothra, motherTongue;
+  late String motherTongueName, motherTongueId;
   late Manglik manglik;
   late String occupation, employedin, city, state, country, highiestEducation;
   late AnualIncome annualIncome;
@@ -527,6 +531,9 @@ class ProfileDetails {
     this.dateOfBirth = aboutMe["dateOfBirth"];
     this.maritalStatus = MaritalStatus.values[aboutMe["maritalStatus"]];
     this.childrenStatus = ChildrenStatus.values[aboutMe["childrenStatus"]];
+    this.religionId = json["userReligions"][0]["religionId"][0]["id"];
+    this.religionName = json["userReligions"][0]["religionId"][0]["text"];
+
     if (aboutMe["numberOfChildren"] != null) {
       this.noOfChildren = NoOfChildren.values[aboutMe["numberOfChildren"]];
     } else {
@@ -546,10 +553,14 @@ class ProfileDetails {
     this.religion = userReligion["religion"];
     //this.religionDetails = userReligion["religion"];
     this.cast = userReligion["cast"];
-    this.gothra = 'ok';
+    this.casteName = userReligion["casteName"];
+    this.subCasteName = userReligion["subCasteName"];
+    this.gothra = userReligion["gothra"];
     // userReligion["gothra"];
     this.motherTongue = userReligion["motherTongue"];
+    this.motherTongueId = userReligion["motherTongueId"];
     this.manglik = Manglik.values[userReligion["isManglik"]];
+
     if (json["userCareers"] != null && json["userCareers"].length > 0) {
       var userCareer = json["userCareers"][0];
       if (userCareer["occupation"] != null) {
@@ -574,6 +585,7 @@ class ProfileDetails {
       this.highiestEducation = "";
       this.employedin = "";
       this.cityId = -1;
+      this.stateId = -1;
     }
     if (json["userFamilyBackgrounds"].length > 0) {
       var userFamilyBackground = json["userFamilyBackgrounds"][0];

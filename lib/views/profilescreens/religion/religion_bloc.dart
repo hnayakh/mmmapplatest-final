@@ -13,9 +13,9 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
 
   SimpleMasterData? religion;
   dynamic subCaste;
-  CastSubCast? cast;
+  CastSubCast cast = CastSubCast("", []);
   SimpleMasterData? motherTongue;
-  dynamic gothra = "";
+  dynamic gothra;
   Manglik isManglik = Manglik.NotApplicable;
   ProfileDetails? profileDetails;
 
@@ -46,7 +46,7 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
         this.religion = event.religion;
         if (prevReligion != this.religion) {
           this.subCaste = null;
-          this.cast = null;
+          this.cast = CastSubCast("", []);
           this.motherTongue = null;
           this.gothra = "";
         }
@@ -74,10 +74,24 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
       yield ReligionInitialState();
     }
     if (event is UpdateReligion) {
+      this.motherTongue = event.motherTongue;
+      this.gothra = event.gothra;
+      this.isManglik = event.isManglik;
+      this.religion = event.religion;
+      this.cast = event.cast;
+      //this.subCaste = event.subCaste;
+      if (this.motherTongue == null &&
+          this.gothra == null &&
+          this.isManglik == null &&
+          this.religion == null &&
+          this.cast.cast == '' &&
+          this.cast.subCasts.length == 0) {
+        yield OnError('Please enter all mandatory details');
+      }
       if (this.religion == null) {
         yield OnError("Please select religion");
-      } else if (!casteNotAvailable() && this.subCaste == null) {
-        yield OnError("Please select ub-caste");
+      } else if (!casteNotAvailable() && this.cast.cast == '') {
+        yield OnError("Please select sub-caste");
       } else if (this.motherTongue == null) {
         yield OnError("Please select mother tongue");
       }
@@ -86,8 +100,12 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
       //   yield OnError("Please select Gothra");
       // }
       else {
-        var result = await this.userRepository.updateReligion(this.religion!,
-            this.subCaste, this.motherTongue!, this.gothra, this.isManglik);
+        var result = await this.userRepository.updateReligion(
+            this.religion!,
+            this.cast.subCasts[0],
+            this.motherTongue!,
+            this.gothra,
+            this.isManglik);
 
         if (result.status == AppConstants.SUCCESS) {
           this.userRepository.useDetails!.religion = this.religion!;

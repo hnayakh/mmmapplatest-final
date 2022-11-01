@@ -136,8 +136,8 @@ class StorageService {
       countryModel.shortName =
           this.sharedPreferences.getString(AppConstants.COUNTRYMODELSHORTNAME)!;
 
-      SimpleMasterData religion = SimpleMasterData();
-      SimpleMasterData motherTongue = SimpleMasterData();
+      SimpleMasterData religion = SimpleMasterData("", "");
+      SimpleMasterData motherTongue = SimpleMasterData("", "");
       religion.id = this.sharedPreferences.getString(AppConstants.RELIGIONID)!;
       religion.title =
           this.sharedPreferences.getString(AppConstants.RELIGIONTITLE)!;

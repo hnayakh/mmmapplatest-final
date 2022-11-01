@@ -59,7 +59,7 @@ class _FilterScreenState extends State<FilterScreen> {
         .userRepository
         .masterData
         .listReligion;
-    SimpleMasterData? religionData = SimpleMasterData();
+    SimpleMasterData? religionData = SimpleMasterData("", "");
     religionData.id = 'Doesnot Matter';
     religionData.title = 'Doesnot Matter';
     listReligion.insert(0, religionData);

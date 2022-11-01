@@ -108,10 +108,10 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
               yield OnError(result.message);
             }
 
-            SimpleMasterData religion = SimpleMasterData();
+            SimpleMasterData religion = SimpleMasterData("", "");
             religion.id = 'unknown';
             religion.title = 'UNK';
-            SimpleMasterData motherTongue = SimpleMasterData();
+            SimpleMasterData motherTongue = SimpleMasterData("", "");
             motherTongue.id = 'unknown';
             motherTongue.title = 'UNK';
             this.userRepository.useDetails = UserDetails.fromStorage(
