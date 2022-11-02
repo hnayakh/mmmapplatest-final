@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
@@ -16,12 +17,23 @@ class FamilyDetailsBloc extends Bloc<FamilyDetailsEvent, FamilyDetailState> {
   FatherOccupation? fatherOccupation;
   MotherOccupation? motherOccupation;
   //String? familyBackgroundSaved;
-
+  ProfileDetails? profileDetails;
   int noOfBrothers = 0, noOfSister = 0, brotherMarried = 0, sistersMarried = 0;
 
   @override
   Stream<FamilyDetailState> mapEventToState(FamilyDetailsEvent event) async* {
     yield OnLoading();
+    if (event is onFamilyDetailDataLoad) {
+      var result = await this.userRepository.getOtheruserDetails(
+          event.basicUserId, ProfileActivationStatus.Verified);
+
+      if (result.status == AppConstants.SUCCESS) {
+        this.profileDetails = result.profileDetails;
+        yield familyDetailsDataState(result.profileDetails);
+      } else {
+        yield OnError(result.message);
+      }
+    }
     print('infamildetailsbloc');
     //print(familyBackgroundSaved);
     if (event is OnFathersOccupationSelected) {
@@ -83,9 +95,12 @@ class FamilyDetailsBloc extends Bloc<FamilyDetailsEvent, FamilyDetailState> {
     if (event is UpdateFamilyDetails) {
       // print('inoncomplete3');
       // // print(familyBackgroundSaved);
-      if (globals.familyBackgroundComplete == false) {
-        yield OnError("Please submit Family Background first");
-      } else if (this.fatherOccupation == null &&
+      // if (globals.familyBackgroundComplete == false) {
+
+      //yield OnError("Please submit Family Background first");
+      //  }
+      // else
+      if (this.fatherOccupation == null &&
           this.motherOccupation == null &&
           this.noOfBrothers == 0 &&
           this.noOfSister == 0 &&

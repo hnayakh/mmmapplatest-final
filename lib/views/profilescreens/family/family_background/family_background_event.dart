@@ -22,8 +22,7 @@ class OnFamilyTypeChanges extends FamilyBackgroundEvent {
   OnFamilyTypeChanges(this.familyType);
 }
 
-class UpdateFamilyBackground extends FamilyBackgroundEvent {
-}
+class UpdateFamilyBackground extends FamilyBackgroundEvent {}
 
 class GetAllCountries extends FamilyBackgroundEvent {}
 
@@ -48,8 +47,15 @@ class OnCitySelected extends FamilyBackgroundEvent {
 
   OnCitySelected(this.stateModel);
 }
-class OnStayingWithParentsChanged extends FamilyBackgroundEvent{
+
+class OnStayingWithParentsChanged extends FamilyBackgroundEvent {
   final bool isStayingWithParents;
 
   OnStayingWithParentsChanged(this.isStayingWithParents);
+}
+
+class onFamilyBackgroundDataLoad extends FamilyBackgroundEvent {
+  final String basicUserId;
+
+  onFamilyBackgroundDataLoad(this.basicUserId);
 }

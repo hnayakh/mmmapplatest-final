@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
+import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
@@ -80,9 +81,18 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
   String citytext = 'Select your city';
   bool? isStayingWithParents;
   late bool canSelectStayingWithParent;
-
+  late UserDetails userDetails;
   @override
   Widget build(BuildContext context) {
+    this.userDetails = BlocProvider.of<FamilyBackgroundBloc>(context)
+        .userRepository
+        .useDetails!;
+
+    if (this.userDetails.registrationStep > 5) {
+      print("registrationStep${this.userDetails.registrationStep}");
+      BlocProvider.of<FamilyBackgroundBloc>(context)
+          .add(onFamilyBackgroundDataLoad(userDetails.id));
+    }
     return BlocConsumer<FamilyBackgroundBloc, FamilyBackgroundState>(
       builder: (context, state) {
         initData();
@@ -374,6 +384,44 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
     this.canSelectStayingWithParent =
         BlocProvider.of<FamilyBackgroundBloc>(context)
             .canSelectStayingWithParent;
+
+    if (BlocProvider.of<FamilyBackgroundBloc>(context).profileDetails != null) {
+      if (this.level == null)
+        this.level = BlocProvider.of<FamilyBackgroundBloc>(context)
+            .profileDetails!
+            .familyAfluenceLevel;
+
+      if (this.values == null)
+        this.values = BlocProvider.of<FamilyBackgroundBloc>(context)
+            .profileDetails!
+            .familyValues;
+
+      if (this.type == null)
+        this.type = BlocProvider.of<FamilyBackgroundBloc>(context)
+            .profileDetails!
+            .familyType;
+
+      if (this.myState == null) {
+        var stateName = BlocProvider.of<FamilyBackgroundBloc>(context)
+            .profileDetails!
+            .familyState;
+
+        var stateId = BlocProvider.of<FamilyBackgroundBloc>(context)
+            .profileDetails!
+            .familyStateId;
+
+        this.myState = StateModel(stateName, stateId);
+      }
+      if (this.city == null) {
+        var cityName = BlocProvider.of<FamilyBackgroundBloc>(context)
+            .profileDetails!
+            .familyCity;
+        var cityId = BlocProvider.of<FamilyBackgroundBloc>(context)
+            .profileDetails!
+            .familyCityId;
+        this.city = StateModel(cityName, cityId);
+      }
+    }
   }
 
   showFamilyStatusSheet() async {

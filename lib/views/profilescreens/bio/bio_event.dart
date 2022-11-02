@@ -21,3 +21,9 @@ class UpdateBio extends BioEvent {
 }
 
 class FetchMyImage extends BioEvent {}
+
+class onBioDataLoad extends BioEvent {
+  final String basicUserId;
+
+  onBioDataLoad(this.basicUserId);
+}

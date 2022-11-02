@@ -1,4 +1,5 @@
 import 'package:makemymarry/bloc/base_event_state.dart';
+import 'package:makemymarry/datamodels/martching_profile.dart';
 
 class FamilyDetailState extends BaseEventState {}
 
@@ -13,3 +14,8 @@ class OnError extends FamilyDetailState {
 }
 
 class OnFamilyDetailsUpdated extends FamilyDetailState {}
+
+class familyDetailsDataState extends FamilyDetailState {
+  late final ProfileDetails profileDetails;
+  familyDetailsDataState(this.profileDetails);
+}

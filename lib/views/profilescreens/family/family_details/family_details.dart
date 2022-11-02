@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
@@ -63,6 +64,7 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
   int marriedSisters = 0;
   FatherOccupation? fatherOccupation;
   MotherOccupation? motherOccupation;
+  late UserDetails userDetails;
 
   late int noOfBrothers, noOfSister, brotherMarried, sistersMarried;
   String fatherOcctext = 'Select father’s occupation';
@@ -71,6 +73,14 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    this.userDetails =
+        BlocProvider.of<FamilyDetailsBloc>(context).userRepository.useDetails!;
+
+    if (this.userDetails.registrationStep > 5) {
+      print("registrationStep${this.userDetails.registrationStep}");
+      BlocProvider.of<FamilyDetailsBloc>(context)
+          .add(onFamilyDetailDataLoad(userDetails.id));
+    }
     return BlocConsumer<FamilyDetailsBloc, FamilyDetailState>(
         builder: (context, state) {
       initData();
@@ -592,5 +602,35 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
         BlocProvider.of<FamilyDetailsBloc>(context).brotherMarried;
     this.sistersMarried =
         BlocProvider.of<FamilyDetailsBloc>(context).sistersMarried;
+
+    if (BlocProvider.of<FamilyDetailsBloc>(context).profileDetails != null) {
+      if (this.fatherOccupation == null)
+        this.fatherOccupation = BlocProvider.of<FamilyDetailsBloc>(context)
+            .profileDetails!
+            .fatherOccupation;
+
+      if (this.motherOccupation == null)
+        this.motherOccupation = BlocProvider.of<FamilyDetailsBloc>(context)
+            .profileDetails!
+            .motherOccupation;
+
+      if (this.noOfBrothers == 0)
+        this.noOfBrothers = BlocProvider.of<FamilyDetailsBloc>(context)
+            .profileDetails!
+            .noOfBrother;
+
+      if (this.noOfSister == 0)
+        this.noOfSister = BlocProvider.of<FamilyDetailsBloc>(context)
+            .profileDetails!
+            .noOfSister;
+      if (this.brotherMarried == 0)
+        this.brotherMarried = BlocProvider.of<FamilyDetailsBloc>(context)
+            .profileDetails!
+            .brothersMarried;
+      if (this.sistersMarried == 0)
+        this.sistersMarried = BlocProvider.of<FamilyDetailsBloc>(context)
+            .profileDetails!
+            .sistersMarried;
+    }
   }
 }

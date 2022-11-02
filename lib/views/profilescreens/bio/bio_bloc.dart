@@ -18,6 +18,18 @@ class BioBloc extends Bloc<BioEvent, BioState> {
   Stream<BioState> mapEventToState(BioEvent event) async* {
     yield OnLoading();
 
+    if (event is onBioDataLoad) {
+      var result = await this.userRepository.getOtheruserDetails(
+          event.basicUserId, ProfileActivationStatus.Verified);
+
+      if (result.status == AppConstants.SUCCESS) {
+        this.profileData = result.profileDetails;
+        yield BioDataState(result.profileDetails);
+      } else {
+        yield OnError(result.message);
+      }
+    }
+
     if (event is UpdateBio) {
       if (event.bio.length == 0) {
         yield OnError("Enter Bio");

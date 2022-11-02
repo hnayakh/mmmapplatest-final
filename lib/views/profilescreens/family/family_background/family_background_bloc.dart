@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
@@ -20,6 +21,7 @@ class FamilyBackgroundBloc
   final CountryModel? selectedCountry;
   final StateModel? selectedState;
   final StateModel? selectedCity;
+  ProfileDetails? profileDetails;
 
   FamilyBackgroundBloc(this.userRepository, this.selectedCountry,
       this.selectedState, this.selectedCity)
@@ -36,6 +38,17 @@ class FamilyBackgroundBloc
   Stream<FamilyBackgroundState> mapEventToState(
       FamilyBackgroundEvent event) async* {
     yield OnLoading();
+    if (event is onFamilyBackgroundDataLoad) {
+      var result = await this.userRepository.getOtheruserDetails(
+          event.basicUserId, ProfileActivationStatus.Verified);
+
+      if (result.status == AppConstants.SUCCESS) {
+        this.profileDetails = result.profileDetails;
+        yield familyBackgroundDataState(result.profileDetails);
+      } else {
+        yield OnError(result.message);
+      }
+    }
     if (event is OnStayingWithParentsChanged) {
       this.isStayingWithParents = event.isStayingWithParents;
       yield FamilyBackgroundState();

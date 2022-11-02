@@ -512,6 +512,7 @@ class ProfileDetails {
   late int noOfSister, sistersMarried;
 
   late String familyState, familyCity, familyCountry;
+  late int familyStateId, familyCityId;
   List<String> images = [];
   late String aboutmeMsg = "";
   late ProfileActivationStatus activationStatus;
@@ -597,7 +598,9 @@ class ProfileDetails {
       this.familyType = FamilyType.values[userFamilyBackground["familyType"]];
       this.familyCountry = userFamilyBackground["countryName"];
       this.familyState = userFamilyBackground["stateName"];
+      this.familyStateId = userFamilyBackground["state"];
       this.familyCity = userFamilyBackground["cityName"];
+      this.familyCityId = userFamilyBackground["city"];
     } else {
       this.familyAfluenceLevel = FamilyAfluenceLevel.NotMentioned;
       this.familyValues = FamilyValues.NotMentioned;
@@ -605,6 +608,7 @@ class ProfileDetails {
       this.familyCountry = "";
       this.familyState = "";
       this.familyCity = "";
+      this.familyStateId = -1;
     }
     if (json["userFamilyDetails"].length > 0) {
       var userFamilyDetail = json["userFamilyDetails"][0];

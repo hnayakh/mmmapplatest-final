@@ -40,3 +40,9 @@ class ChangeNoOfBrothersMarried extends FamilyDetailsEvent {
 }
 
 class UpdateFamilyDetails extends FamilyDetailsEvent {}
+
+class onFamilyDetailDataLoad extends FamilyDetailsEvent {
+  final String basicUserId;
+
+  onFamilyDetailDataLoad(this.basicUserId);
+}

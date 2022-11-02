@@ -20,3 +20,8 @@ class OnGotProfileandImages extends BioState {
   final ProfileDetails profileDetails;
   OnGotProfileandImages(this.profileDetails);
 }
+
+class BioDataState extends BioState {
+  final ProfileDetails profileDetails;
+  BioDataState(this.profileDetails);
+}
