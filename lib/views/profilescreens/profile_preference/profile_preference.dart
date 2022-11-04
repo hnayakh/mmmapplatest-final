@@ -480,7 +480,8 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
                         color: kLight4, borderRadius: BorderRadius.circular(8)),
                     child: FittedBox(
                       child: Text(
-                        '${minHeight.toStringAsFixed(1)}',
+                        '${AppHelper.getFormtedHeight(minHeight)}',
+                        //'${minHeight.toStringAsFixed(1)}',
                         style: MmmTextStyles.bodyRegular(textColor: kDark5),
                       ),
                     ),
@@ -493,7 +494,8 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
                         color: kLight4, borderRadius: BorderRadius.circular(8)),
                     child: FittedBox(
                       child: Text(
-                        '${maxHeight.toStringAsFixed(1)}',
+                        '${AppHelper.getFormtedHeight(maxHeight)}',
+                        // '${maxHeight.toStringAsFixed(1)}',
                         style: MmmTextStyles.bodyRegular(textColor: kDark5),
                       ),
                     ),
@@ -507,13 +509,15 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
                 child: RangeSlider(
                   values: RangeValues(minValue, maxValue),
                   min: 4.0,
-                  max: 7.0,
+                  max: 7.2,
                   inactiveColor: kGray,
                   activeColor: kPrimary,
                   // divisions: 30,
                   labels: RangeLabels(
-                    minValue.toString(),
-                    maxValue.toString(),
+                    AppHelper.getFormtedHeight(minValue),
+                    AppHelper.getFormtedHeight(maxValue),
+                    // minValue.toString(),
+                    // maxValue.toString(),
                   ),
                   onChanged: (RangeValues values) {
                     print(values.end);
@@ -608,7 +612,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
         builder: (context) => SelectStatePreferenceSheet(
               list: list,
               stateModel: this.myState,
-              title: '',
+              title: '  ',
             ));
     if (result != null && result is List<StateModel?>) {
       if (title == "State")

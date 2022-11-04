@@ -377,7 +377,7 @@ class ApiClient {
       Response response =
           await this.dio.post(AppConstants.ENDPOINT + "users/career", data: {
         "userBasicId": id,
-        "employedIn": 'Bypassedasperclient',
+        "employedIn": '',
         "occupation": occupation,
         "annualIncome": income.index,
         "highestEducation": education,

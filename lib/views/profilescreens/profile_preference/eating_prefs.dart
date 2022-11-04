@@ -62,7 +62,6 @@ class EatingPrefsScreen extends State<EatingPrefs> {
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
                             children: [
                               Text(describeEnum(EatingHabit.values[index]),
                                   style: MmmTextStyles.bodyMediumSmall(

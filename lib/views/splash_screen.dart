@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:makemymarry/IntroductionScreen.dart';
 import 'package:makemymarry/bloc/splash/splash_bloc.dart';
 import 'package:makemymarry/bloc/splash/splash_event.dart';
 import 'package:makemymarry/bloc/splash/splash_state.dart';
@@ -108,7 +109,7 @@ class SplashScreenState extends State<SplashScreen> {
   void navigateToLogin() {
     var userRepo = BlocProvider.of<SplashBloc>(context).userRepository;
     Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => SignIn(
+        builder: (context) => OnBoardingPage(
               userRepository: userRepo,
             )));
   }

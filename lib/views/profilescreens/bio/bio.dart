@@ -214,8 +214,8 @@ class _BioScreenState extends State<BioScreen> {
                           MmmButtons.enabledRedButtonbodyMedium(
                               50, 'Submit your details', action: () {
                             FocusScope.of(context).requestFocus(FocusNode());
-                            BlocProvider.of<BioBloc>(context)
-                                .add(UpdateBio(this.bioController.text));
+                            BlocProvider.of<BioBloc>(context).add(
+                                UpdateBio(this.aboutMe!, this.localImagePaths));
                           })
                         ],
                       ),
@@ -235,6 +235,7 @@ class _BioScreenState extends State<BioScreen> {
         showImagePickerDialog();
       },
       child: Container(
+        height: 120,
         decoration: BoxDecoration(
             boxShadow: [MmmShadow.elevation3(shadowColor: kShadow)],
             color: Colors.white,
@@ -470,14 +471,16 @@ class _BioScreenState extends State<BioScreen> {
     this.localImagePaths = BlocProvider.of<BioBloc>(context).localImagePaths;
 
     // this.education = BlocProvider.of<OccupationBloc>(context).education;
-
+    //this.aboutMe = this.bioController.text;
     if (BlocProvider.of<BioBloc>(context).profileData != null) {
-      if (this.aboutMe == null)
+      if (this.aboutMe == null) {
         this.aboutMe = BlocProvider.of<BioBloc>(context).profileData!.aboutMe;
+      }
       if (this.localImagePaths.length == 0) {
         this.localImagePaths =
             BlocProvider.of<BioBloc>(context).profileData!.images;
-        this.localImagePaths.add("addImage");
+        if (!this.localImagePaths.contains("addImage"))
+          this.localImagePaths.add("addImage");
         print("object${BlocProvider.of<BioBloc>(context).profileData!.images}");
       }
     }

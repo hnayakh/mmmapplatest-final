@@ -105,7 +105,6 @@ class UserDetails {
   late CountryModel countryModel;
   late SimpleMasterData religion;
   late AbilityStatus abilityStatus;
-
   late SimpleMasterData motherTongue;
 
   UserDetails.fromJson(json) {

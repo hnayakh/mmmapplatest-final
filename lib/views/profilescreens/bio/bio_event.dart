@@ -16,8 +16,8 @@ class RemoveImage extends BioEvent {
 
 class UpdateBio extends BioEvent {
   final String bio;
-
-  UpdateBio(this.bio);
+  final List<String> localImagePaths;
+  UpdateBio(this.bio, this.localImagePaths);
 }
 
 class FetchMyImage extends BioEvent {}

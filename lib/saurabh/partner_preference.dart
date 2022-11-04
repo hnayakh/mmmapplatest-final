@@ -1181,8 +1181,8 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                 child: RangeSlider(
                   values: RangeValues(minValue, maxValue),
 
-                  min: 4,
-                  max: 7,
+                  min: 4.0,
+                  max: 7.2,
                   inactiveColor: kGray,
                   activeColor: kPrimary,
                   // divisions: 5,

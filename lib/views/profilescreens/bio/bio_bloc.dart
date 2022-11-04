@@ -31,9 +31,14 @@ class BioBloc extends Bloc<BioEvent, BioState> {
     }
 
     if (event is UpdateBio) {
-      if (event.bio.length == 0) {
+      this.aboutMeMsg = event.bio;
+      this.localImagePaths = event.localImagePaths;
+      if (this.aboutMeMsg == null && this.localImagePaths.length == 0) {
+        yield OnError("please enter all mandatory details");
+      }
+      if (this.aboutMeMsg == null) {
         yield OnError("Enter Bio");
-      } else if (this.localImagePaths.length == 0) {
+      } else if (this.localImagePaths == null) {
         yield OnError("Add Images");
       } else {
         var result = await this
