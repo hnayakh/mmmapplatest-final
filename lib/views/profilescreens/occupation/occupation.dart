@@ -139,7 +139,7 @@ class _OccupationScreenState extends State<OccupationScreen> {
                         ),
                         MmmButtons.categoryButtons(
                             'Occupation',
-                            occupation != null
+                            occupation != null && occupation != ''
                                 ? '${occupation!}'
                                 : 'Select your occupation',
                             'Select your occupation',
@@ -174,7 +174,7 @@ class _OccupationScreenState extends State<OccupationScreen> {
                         ),
                         MmmButtons.categoryButtons(
                             'Highest Education',
-                            education != null
+                            education != null && education != ''
                                 ? '${education!}'
                                 : 'Select your highest education',
                             'Select your highest education',
@@ -219,7 +219,7 @@ class _OccupationScreenState extends State<OccupationScreen> {
                         ),
                         MmmButtons.categoryButtons(
                             'State',
-                            myState != null
+                            myState != null && myState!.name != ''
                                 ? '${myState!.name}'
                                 : 'Select State',
                             'Select State',
@@ -234,7 +234,9 @@ class _OccupationScreenState extends State<OccupationScreen> {
                         ),
                         MmmButtons.categoryButtons(
                             'City',
-                            city != null ? '${city!.name}' : 'Select City',
+                            city != null && city!.name != ''
+                                ? '${city!.name}'
+                                : 'Select City',
                             'Select City',
                             'images/rightArrow.svg', action: () {
                           FocusScope.of(context).requestFocus(FocusNode());
@@ -288,7 +290,8 @@ class _OccupationScreenState extends State<OccupationScreen> {
   }
 
   void initData(BuildContext context) {
-    this.education = BlocProvider.of<OccupationBloc>(context).education;
+    if (this.education == null)
+      this.education = BlocProvider.of<OccupationBloc>(context).education;
     this.occupation = BlocProvider.of<OccupationBloc>(context).occupation;
     this.countryModel = BlocProvider.of<OccupationBloc>(context).countryModel;
     this.myState = BlocProvider.of<OccupationBloc>(context).myState;
@@ -298,9 +301,10 @@ class _OccupationScreenState extends State<OccupationScreen> {
     if (BlocProvider.of<OccupationBloc>(context).profileDetails != null) {
       print(
           "EDUCATION${BlocProvider.of<OccupationBloc>(context).profileDetails!.annualIncome}");
-      this.education = BlocProvider.of<OccupationBloc>(context)
-          .profileDetails!
-          .highiestEducation;
+      if (this.education == null)
+        this.education = BlocProvider.of<OccupationBloc>(context)
+            .profileDetails!
+            .highiestEducation;
       //print("EDUCATION${this.city}");
       if (this.occupation == null)
         this.occupation =
@@ -377,6 +381,8 @@ class _OccupationScreenState extends State<OccupationScreen> {
               titleRed: titleRedEdu,
             ));
     if (result != null && result is Education) {
+      print("RESULT${result.title}");
+      this.education = result.title;
       BlocProvider.of<OccupationBloc>(context)
           .add(OnEducationSelected(result.title));
       titleRedEdu = result.title;

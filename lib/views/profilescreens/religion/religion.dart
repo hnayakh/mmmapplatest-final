@@ -59,7 +59,7 @@ class ReligionScreenState extends State<ReligionScreen> {
   late CastSubCast cast;
   SimpleMasterData? motherTongue;
   late dynamic gothra;
-  late Manglik isManglik;
+  Manglik? isManglik;
   late UserDetails userDetails;
   @override
   Widget build(BuildContext context) {
@@ -88,9 +88,9 @@ class ReligionScreenState extends State<ReligionScreen> {
                     BlocProvider.of<ReligionBloc>(context).add(UpdateReligion(
                       this.motherTongue,
                       this.gothra,
-                      this.isManglik,
+                      this.isManglik!,
                       this.religion,
-                      this.cast,
+                      this.subCaste,
                     ));
                   },
                 ),
@@ -119,6 +119,7 @@ class ReligionScreenState extends State<ReligionScreen> {
   }
 
   Widget buildForm(BuildContext context) {
+    //  print("subcast12#${this.cast.subCasts[0]}");
     return Container(
       child: Column(
         children: [
@@ -130,7 +131,7 @@ class ReligionScreenState extends State<ReligionScreen> {
               children: [
                 MmmButtons.categoryButtons(
                     'Religion',
-                    religion != null
+                    religion != null && religion!.title != ''
                         ? '${religion!.title}'
                         : 'Select your religion',
                     'Select your religion',
@@ -155,11 +156,14 @@ class ReligionScreenState extends State<ReligionScreen> {
                             ),
                             MmmButtons.categoryButtons(
                                 'Caste',
-                                cast.subCasts.length != 0
-                                    ? '${this.cast.subCasts[0]}'
+                                // cast.subCasts.length != 0
+                                this.subCaste != null &&
+                                        this.subCaste.length > 0
+                                    ? this.subCaste
                                     : 'Select your caste',
                                 'Select your caste',
                                 'images/rightArrow.svg', action: () {
+                              print("religion$religion");
                               if (religion != null) selectSubCast(context);
                             })
                           ],
@@ -171,7 +175,7 @@ class ReligionScreenState extends State<ReligionScreen> {
                 ),
                 MmmButtons.categoryButtons(
                     'Mother Tongue',
-                    motherTongue != null
+                    motherTongue != null && motherTongue!.title != ''
                         ? '${motherTongue!.title}'
                         : 'Select your mother tongue',
                     'Select your mother tongue',
@@ -187,8 +191,8 @@ class ReligionScreenState extends State<ReligionScreen> {
                           ),
                           MmmButtons.categoryButtons(
                               'Gothra',
-                              this.gothra != null
-                                  ? '${gothra}'
+                              this.gothra != null && this.gothra != ''
+                                  ? '$gothra'
                                   : 'Select your gothra',
                               'Select your gothra',
                               'images/rightArrow.svg', action: () {
@@ -219,13 +223,24 @@ class ReligionScreenState extends State<ReligionScreen> {
                               children: [
                                 Transform.scale(
                                   scale: 1.2,
-                                  child: Radio(
+                                  child: Radio<Manglik?>(
                                       activeColor: Colors.pinkAccent,
                                       value: Manglik.Yes,
                                       groupValue: this.isManglik,
-                                      onChanged: (val) {
-                                        BlocProvider.of<ReligionBloc>(context)
-                                            .add(OnMaglikChanged(Manglik.Yes));
+                                      // this.isManglik !=
+                                      //         Manglik.NotApplicable
+                                      //     ? this.isManglik
+                                      //     : Manglik.Yes,
+
+                                      onChanged: (Manglik? val) {
+                                        print("VALUE$val");
+                                        setState(() {
+                                          this.isManglik = val!;
+                                        });
+
+                                        print("VALUE$isManglik");
+                                        // BlocProvider.of<ReligionBloc>(context)
+                                        //     .add(OnMaglikChanged(Manglik.Yes));
                                       }),
                                 ),
                                 SizedBox(
@@ -241,11 +256,21 @@ class ReligionScreenState extends State<ReligionScreen> {
                                 ),
                                 Transform.scale(
                                   scale: 1.2,
-                                  child: Radio(
+                                  child: Radio<Manglik?>(
                                       activeColor: Colors.pinkAccent,
                                       value: Manglik.No,
                                       groupValue: this.isManglik,
+                                      //  this.isManglik !=
+                                      //         Manglik.NotApplicable
+                                      //     ? this.isManglik
+                                      //     : Manglik.No,
                                       onChanged: (val) {
+                                        print("VALUE$val");
+                                        setState(() {
+                                          this.isManglik = val!;
+                                        });
+
+                                        print("VALUE$isManglik");
                                         BlocProvider.of<ReligionBloc>(context)
                                             .add(OnMaglikChanged(Manglik.No));
                                       }),
@@ -304,7 +329,8 @@ class ReligionScreenState extends State<ReligionScreen> {
   }
 
   void initData() {
-    this.isManglik = BlocProvider.of<ReligionBloc>(context).isManglik;
+    if (this.isManglik == null)
+      this.isManglik = BlocProvider.of<ReligionBloc>(context).isManglik;
     this.gothra = BlocProvider.of<ReligionBloc>(context).gothra;
     this.motherTongue = BlocProvider.of<ReligionBloc>(context).motherTongue;
     this.cast = BlocProvider.of<ReligionBloc>(context).cast;
@@ -336,24 +362,23 @@ class ReligionScreenState extends State<ReligionScreen> {
         this.gothra =
             BlocProvider.of<ReligionBloc>(context).profileDetails!.gothra;
       }
-      if (BlocProvider.of<ReligionBloc>(context).profileDetails!.manglik !=
-          null) {
+      if (this.isManglik == null) {
         this.isManglik =
             BlocProvider.of<ReligionBloc>(context).profileDetails!.manglik;
       }
 
-      if (this.cast.cast == "") {
+      if (this.subCaste != null && this.subCaste.length == 0) {
         var castName =
             BlocProvider.of<ReligionBloc>(context).profileDetails!.casteName;
 
         var subCasteName =
             BlocProvider.of<ReligionBloc>(context).profileDetails!.subCasteName;
-        // var religionId =
-        //     BlocProvider.of<ReligionBloc>(context).profileDetails!.religionId;
-        print("Hello$castName");
+
+        print("Hello456$castName");
         print("Hello$subCasteName");
 
         this.cast = CastSubCast(castName, [subCasteName]);
+        this.subCaste = subCasteName;
         print("Hello${this.cast.subCasts[0]}");
       }
     }
@@ -415,6 +440,10 @@ class ReligionScreenState extends State<ReligionScreen> {
               selected: this.subCaste,
             ));
     if (result != null) {
+      print("result$result");
+      this.subCaste = result;
+      //this.cast = CastSubCast(this.religion!.title, [result]);
+      //print("this.cast${this.cast.subCasts[0]}");
       BlocProvider.of<ReligionBloc>(context).add(OnSubCastSelected(result));
     }
   }

@@ -253,6 +253,7 @@ class AppHelper {
         'Upper middle class',
         'Middle class',
         'Lower middle class'
+            'NotMentioned'
       ];
       return familyLevel[enumEntry.index];
     } else if (enumName == 'NoOfChildren') {

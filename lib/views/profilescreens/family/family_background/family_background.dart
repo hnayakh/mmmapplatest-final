@@ -159,6 +159,7 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
   }
 
   SingleChildScrollView buildUi(BuildContext context) {
+    print("object$level");
     return SingleChildScrollView(
       child: Container(
         padding: kMargin16,
@@ -183,7 +184,7 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                     this.values != null
                         ? describeEnum(this.values!)
                         : familyValuestext,
-                    familyValuestext,
+                    "  familyValuestext",
                     "images/rightArrow.svg", action: () {
                   showFamilyValuesSheet();
                 }),
@@ -335,7 +336,7 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                           ),
                           MmmButtons.categoryButtons(
                               'State',
-                              myState != null
+                              myState != null && myState!.name != ""
                                   ? '${myState!.name}'
                                   : 'Select State',
                               'Select State',
@@ -350,7 +351,9 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                           ),
                           MmmButtons.categoryButtons(
                               'City',
-                              city != null ? '${city!.name}' : 'Select City',
+                              city != null && city!.name != ""
+                                  ? '${city!.name}'
+                                  : 'Select City',
                               'Select City',
                               'images/rightArrow.svg', action: () {
                             FocusScope.of(context).requestFocus(FocusNode());

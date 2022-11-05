@@ -78,34 +78,31 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
       this.gothra = event.gothra;
       this.isManglik = event.isManglik;
       this.religion = event.religion;
-      this.cast = event.cast;
+      this.subCaste = event.subcast;
       //this.subCaste = event.subCaste;
       if (this.motherTongue == null &&
           this.gothra == null &&
           this.isManglik == null &&
           this.religion == null &&
-          this.cast.cast == '' &&
-          this.cast.subCasts.length == 0) {
+          this.subCaste == "") {
         yield OnError('Please enter all mandatory details');
       }
       if (this.religion == null) {
         yield OnError("Please select religion");
-      } else if (!casteNotAvailable() && this.cast.cast == '') {
+      } else if (!casteNotAvailable() && this.subCaste == '') {
         yield OnError("Please select sub-caste");
       } else if (this.motherTongue == null) {
         yield OnError("Please select mother tongue");
+      } else if (this.subCaste == null) {
+        yield OnError("Please select Caste");
       }
       // else if (this.religion!.title.toLowerCase().contains("hindu") &&
       //     this.gothra == null) {
       //   yield OnError("Please select Gothra");
       // }
       else {
-        var result = await this.userRepository.updateReligion(
-            this.religion!,
-            this.cast.subCasts[0],
-            this.motherTongue!,
-            this.gothra,
-            this.isManglik);
+        var result = await this.userRepository.updateReligion(this.religion!,
+            this.subCaste, this.motherTongue!, this.gothra, this.isManglik);
 
         if (result.status == AppConstants.SUCCESS) {
           this.userRepository.useDetails!.religion = this.religion!;
