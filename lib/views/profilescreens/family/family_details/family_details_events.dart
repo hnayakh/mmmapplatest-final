@@ -39,7 +39,22 @@ class ChangeNoOfBrothersMarried extends FamilyDetailsEvent {
   ChangeNoOfBrothersMarried(this.change);
 }
 
-class UpdateFamilyDetails extends FamilyDetailsEvent {}
+class UpdateFamilyDetails extends FamilyDetailsEvent {
+  final FatherOccupation? fatherOccupation;
+  final MotherOccupation? motherOccupation;
+  final int noOfBrothers;
+  final int noOfSister;
+  final int brotherMarried;
+  final int sistersMarried;
+
+  UpdateFamilyDetails(
+      this.fatherOccupation,
+      this.motherOccupation,
+      this.noOfBrothers,
+      this.noOfSister,
+      this.brotherMarried,
+      this.sistersMarried);
+}
 
 class onFamilyDetailDataLoad extends FamilyDetailsEvent {
   final String basicUserId;

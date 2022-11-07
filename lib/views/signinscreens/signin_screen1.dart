@@ -28,6 +28,7 @@ import 'package:makemymarry/views/profilescreens/profile_preference/profile_pref
 import 'package:makemymarry/views/profilescreens/religion/religion.dart';
 import 'package:makemymarry/views/signinscreens/phone%20signin/phone_screen.dart';
 import 'package:makemymarry/views/signupscreens/create_account/create_account_screen.dart';
+import 'package:makemymarry/views/signupscreens/create_account/signup_option_bottom_sheet.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class SignIn extends StatelessWidget {
@@ -238,7 +239,8 @@ class SignInScreenState extends State<SignInScreen> {
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
                                       print("tap");
-                                      navigateToRegister();
+                                      showSigninOptions(context);
+                                      //navigateToRegister();
                                     },
                                   style: MmmTextStyles.bodyMedium(
                                       textColor: kPrimary))
@@ -318,6 +320,24 @@ class SignInScreenState extends State<SignInScreen> {
         builder: (context) => SigninWithPhone(
               userRepository: userRepo,
             )));
+  }
+
+  void showSigninOptions(BuildContext context) async {
+    showModalBottomSheet(
+        context: context, builder: (context) => SignupOptionBottomSheet());
+
+    // var result = await showModalBottomSheet(
+    //     context: context,
+    //     backgroundColor: Colors.transparent,
+    //     isScrollControlled: true,
+    //     builder: (context) => DrinkStatusFilterSheet(
+    //           selectedDrinkStatus: drinkStatus,
+    //         ));
+    // if (result != null && result is SimpleMasterData) {
+    //   BlocProvider.of<FilterBloc>(context)
+    //       .add(OnReligionFilterSelected(result));
+    //   this.initCaste = 0;
+    // }
   }
 
   navigateToRegister() {

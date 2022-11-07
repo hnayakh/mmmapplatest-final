@@ -2478,7 +2478,7 @@ class MmmButtons {
 
   // signup screen==============================================================
 
-  static Container facebookSignupButton() {
+  static Container facebookSignupButton({Function()? action}) {
     return Container(
       height: 50,
       decoration: BoxDecoration(
@@ -2492,7 +2492,7 @@ class MmmButtons {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {},
+          onTap: action,
           child: Row(
             children: [
               SizedBox(
@@ -2572,7 +2572,7 @@ class MmmButtons {
     );
   }
 
-  static Container googleSignupButton() {
+  static Container googleSignupButton({Function()? action}) {
     return Container(
       height: 50,
       decoration: BoxDecoration(
@@ -2586,7 +2586,7 @@ class MmmButtons {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {},
+          onTap: action,
           child: Row(
             children: [
               SizedBox(
@@ -2620,7 +2620,7 @@ class MmmButtons {
     );
   }
 
-  static Container emailButton() {
+  static Container emailButton({Function()? action}) {
     return Container(
       height: 50,
       child: Container(
@@ -2628,7 +2628,7 @@ class MmmButtons {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () {},
+            onTap: action,
             child: Center(
               child: Row(
                 children: [

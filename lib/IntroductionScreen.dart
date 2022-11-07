@@ -86,19 +86,22 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       pages: [
         PageViewModel(
           title: "This is onboarding screen 1.",
-          body: "Talk about one of the feature of the application",
+          body:
+              "Talk about one of the feature of the application & how it will help your users.",
           //  image: _buildImage('frameUpadatedone.jpg'),
           decoration: pageDecoration,
         ),
         PageViewModel(
           title: "This is onboarding screen 2.",
-          body: "Talk about one of the feature of the application.",
+          body:
+              "Talk about one of the feature of the application & how it will help your users.",
           // image: _buildImage('frameUpadatedone.jpg'),
           decoration: pageDecoration,
         ),
         PageViewModel(
           title: "This is onboarding screen 3.",
-          body: "Talk about one of the feature of the application.",
+          body:
+              "Talk about one of the feature of the application & how it will help your users.",
           // image: _buildImage('frameUpadatedone.jpg'),
           decoration: pageDecoration,
         ),
@@ -140,14 +143,14 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
           ? const EdgeInsets.all(12.0)
           : const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
       dotsDecorator: const DotsDecorator(
-        size: Size(22.0, 10.0),
+        size: Size(22.0, 8.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(25.0)),
         ),
         spacing: EdgeInsets.all(10),
         color: Colors.grey,
         activeColor: kPrimary,
-        activeSize: Size(22.0, 10.0),
+        activeSize: Size(35.0, 8.0),
         activeShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(25.0)),
         ),

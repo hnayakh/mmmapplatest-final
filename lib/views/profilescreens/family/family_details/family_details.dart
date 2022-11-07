@@ -93,8 +93,14 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
               right: 24,
               child: InkWell(
                 onTap: () {
-                  BlocProvider.of<FamilyDetailsBloc>(context)
-                      .add(UpdateFamilyDetails());
+                  BlocProvider.of<FamilyDetailsBloc>(context).add(
+                      UpdateFamilyDetails(
+                          this.fatherOccupation,
+                          this.motherOccupation,
+                          this.noOfBrothers,
+                          this.noOfSister,
+                          this.brotherMarried,
+                          this.sistersMarried));
                 },
                 child: MmmIcons.rightArrowEnabled(),
               )),

@@ -640,7 +640,7 @@ class ProfileDetails {
       this.sistersMarried = userFamilyDetail["marriedNumberOfSisters"];
     } else {
       this.fatherOccupation = FatherOccupation.NotEmployed;
-      this.motherOccupation = MotherOccupation.NotMentioned;
+      this.motherOccupation = MotherOccupation.HomeMaker;
       this.noOfBrother = 0;
       this.brothersMarried = 0;
 

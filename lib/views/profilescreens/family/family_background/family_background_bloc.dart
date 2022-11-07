@@ -102,6 +102,12 @@ class FamilyBackgroundBloc
       }
     }
     if (event is UpdateFamilyBackground) {
+      this.level = event.level;
+      this.values = event.values;
+      this.isStayingWithParents = event.isStayingWithParents;
+      this.city = event.city;
+      this.myState = event.myState;
+
       if (this.level == null &&
           this.values == null &&
           !this.isStayingWithParents &&

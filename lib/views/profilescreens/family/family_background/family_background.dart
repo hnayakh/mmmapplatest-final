@@ -105,8 +105,13 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                 right: 24,
                 child: InkWell(
                   onTap: () {
-                    BlocProvider.of<FamilyBackgroundBloc>(context)
-                        .add(UpdateFamilyBackground());
+                    BlocProvider.of<FamilyBackgroundBloc>(context).add(
+                        UpdateFamilyBackground(
+                            this.level,
+                            this.values,
+                            this.isStayingWithParents!,
+                            this.city,
+                            this.myState));
                   },
                   child: MmmIcons.rightArrowEnabled(),
                 )),

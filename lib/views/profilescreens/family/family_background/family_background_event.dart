@@ -22,7 +22,21 @@ class OnFamilyTypeChanges extends FamilyBackgroundEvent {
   OnFamilyTypeChanges(this.familyType);
 }
 
-class UpdateFamilyBackground extends FamilyBackgroundEvent {}
+class UpdateFamilyBackground extends FamilyBackgroundEvent {
+  final FamilyAfluenceLevel? level;
+  final FamilyValues? values;
+  bool isStayingWithParents;
+  final StateModel? myState;
+  final StateModel? city;
+
+  UpdateFamilyBackground(
+    this.level,
+    this.values,
+    this.isStayingWithParents,
+    this.city,
+    this.myState,
+  );
+}
 
 class GetAllCountries extends FamilyBackgroundEvent {}
 

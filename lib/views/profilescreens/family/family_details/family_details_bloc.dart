@@ -93,6 +93,12 @@ class FamilyDetailsBloc extends Bloc<FamilyDetailsEvent, FamilyDetailState> {
       yield FamilyDetailInitialState();
     }
     if (event is UpdateFamilyDetails) {
+      this.fatherOccupation = event.fatherOccupation;
+      this.motherOccupation = event.motherOccupation;
+      this.noOfBrothers = event.noOfBrothers;
+      this.noOfSister = event.noOfSister;
+      this.brotherMarried = event.brotherMarried;
+      this.sistersMarried = event.sistersMarried;
       // print('inoncomplete3');
       // // print(familyBackgroundSaved);
       // if (globals.familyBackgroundComplete == false) {

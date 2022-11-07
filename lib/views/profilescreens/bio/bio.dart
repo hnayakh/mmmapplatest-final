@@ -63,6 +63,7 @@ class _BioScreenState extends State<BioScreen> {
     if (this.userDetails.registrationStep > 7) {
       BlocProvider.of<BioBloc>(context).add(onBioDataLoad(userDetails.id));
     }
+    print("ABOUTME${this.aboutMe}");
     return Scaffold(
         body: BlocConsumer<BioBloc, BioState>(
       listener: (context, state) {
@@ -320,7 +321,9 @@ class _BioScreenState extends State<BioScreen> {
                 keyboardType: TextInputType.multiline,
                 maxLines: 6,
                 decoration: InputDecoration(
-                  hintText: aboutMe != null ? '${this.aboutMe}' : 'About me',
+                  hintText: aboutMe != null && aboutMe != ''
+                      ? '${this.aboutMe}'
+                      : 'A little bit about me',
                   hintStyle: MmmTextStyles.bodySmall(),
                   contentPadding: EdgeInsets.zero,
                   border: InputBorder.none,
@@ -471,7 +474,7 @@ class _BioScreenState extends State<BioScreen> {
     this.localImagePaths = BlocProvider.of<BioBloc>(context).localImagePaths;
 
     // this.education = BlocProvider.of<OccupationBloc>(context).education;
-    //this.aboutMe = this.bioController.text;
+    this.aboutMe = this.bioController.text;
     if (BlocProvider.of<BioBloc>(context).profileData != null) {
       if (this.aboutMe == null) {
         this.aboutMe =
