@@ -89,7 +89,7 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
         .useDetails!;
 
     if (this.userDetails.registrationStep > 5) {
-      print("registrationStep${this.userDetails.registrationStep}");
+      print("registrationStepbackground${this.userDetails.registrationStep}");
       BlocProvider.of<FamilyBackgroundBloc>(context)
           .add(onFamilyBackgroundDataLoad(userDetails.id));
     }

@@ -120,7 +120,7 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                       CircleAvatar(
                           radius: 40,
                           backgroundImage:
-                              NetworkImage(profileDetails!.images.first)),
+                              NetworkImage(profileDetails!.images[1])),
                       SizedBox(
                         width: 20,
                       ),
@@ -150,7 +150,8 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                           GestureDetector(
                             onTap: () {
                               print("Hello");
-                              // onEdit();
+
+                              onEdit();
                             },
                             child: Row(
                               children: [
@@ -437,18 +438,23 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
   }
 
   void onEdit() {
+    var userRepo = BlocProvider.of<AccountMenuBloc>(context).userRepository;
     print("hekllo222");
+    Navigator.of(context).push(
+      MaterialPageRoute(
+          builder: (context) => MyprofileScreen(userRepository: userRepo)),
+    );
     // Navigator.of(context)
     //     .push(MaterialPageRoute(builder: (context) => AboutScreen()));
     //var userRepository = BlocProvider.of<AboutBloc>(context).userRepository;
     print("hekllo333");
-    Navigator.of(context).push(
-      MaterialPageRoute<AboutBloc>(
-        builder: (context) => BlocProvider<AboutBloc>(
-          create: (context) => AboutBloc(UserRepository()),
-          child: AboutScreen(),
-        ),
-      ),
-    );
+    // Navigator.of(context).push(
+    //   MaterialPageRoute<AboutBloc>(
+    //     builder: (context) => BlocProvider<AboutBloc>(
+    //       create: (context) => AboutBloc(UserRepository()),
+    //       child: AboutScreen(),
+    //     ),
+    //   ),
+    // );
   }
 }

@@ -149,7 +149,7 @@ class FamilyBackgroundBloc
             .userRepository
             .storageService
             .saveUserDetails(this.userRepository.useDetails!);
-        this.userRepository.updateRegistrationStep(8);
+        this.userRepository.updateRegistrationStep(5);
         print('in familybackground');
         print(
             'dobinfambackbloc=${this.userRepository.useDetails!.dateOfBirth}');

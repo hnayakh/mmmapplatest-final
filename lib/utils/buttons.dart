@@ -2434,7 +2434,7 @@ class MmmButtons {
     );
   }
 
-  static Container googleSigninButton() {
+  static Container googleSigninButton({Function()? action}) {
     return Container(
       height: 44,
       decoration: BoxDecoration(
@@ -2448,7 +2448,7 @@ class MmmButtons {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {},
+          onTap: action,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

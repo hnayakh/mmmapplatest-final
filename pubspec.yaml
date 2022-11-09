@@ -68,6 +68,7 @@ dependencies:
   scrollable_clean_calendar: 1.4.0
   share_plus: 5.0.0
   tuna_flutter_range_slider: ^1.0.0
+  google_sign_in: ^5.4.2
   
 
 dev_dependencies:

@@ -28,6 +28,7 @@ enum NoOfChildren { One, Two, ThreeOrMore }
 enum ChildrenStatus { No, YesLivingTogether, YesNotLivingTogether }
 
 enum EatingHabit {
+  Notspecified,
   Vegetarrian,
   Eggitarrian,
   Nonvegetarrian,
@@ -41,6 +42,7 @@ enum EatingHabitFilter {
 }
 
 enum SmokingHabit {
+  Notspecified,
   Smoker,
   NonSmoker,
   Occasionally,
@@ -54,6 +56,7 @@ enum SmokingHabitFilter {
 }
 
 enum DrinkingHabit {
+  Notspecified,
   Alcoholic,
   Nonalcoholic,
   Occasionally,

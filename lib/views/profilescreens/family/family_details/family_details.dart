@@ -17,6 +17,7 @@ import 'package:makemymarry/views/profilescreens/family/family_details/family_de
 import 'package:makemymarry/views/profilescreens/family/family_details/family_details_events.dart';
 import 'package:makemymarry/views/profilescreens/family/family_details/family_details_state.dart';
 import 'package:makemymarry/views/profilescreens/family/family_details/mother_occupation.dart';
+import 'package:makemymarry/views/profilescreens/habbit/habits.dart';
 
 import '../../bio/bio.dart';
 import 'father_occupation.dart';
@@ -76,7 +77,7 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
     this.userDetails =
         BlocProvider.of<FamilyDetailsBloc>(context).userRepository.useDetails!;
 
-    if (this.userDetails.registrationStep > 5) {
+    if (this.userDetails.registrationStep > 6) {
       print("registrationStep${this.userDetails.registrationStep}");
       BlocProvider.of<FamilyDetailsBloc>(context)
           .add(onFamilyDetailDataLoad(userDetails.id));
@@ -112,7 +113,7 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (ctx) => Bio(
+                            builder: (ctx) => Habit(
                                   userRepository: widget.userRepository,
                                 )));
                     // BlocProvider.of<FamilyDetailsBloc>(context)

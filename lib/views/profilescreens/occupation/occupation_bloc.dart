@@ -169,7 +169,7 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
               .userRepository
               .storageService
               .saveUserDetails(this.userRepository.useDetails!);
-          this.userRepository.updateRegistrationStep(6);
+          this.userRepository.updateRegistrationStep(4);
           print('in occu');
           print('dobinoccubloc=${this.userRepository.useDetails!.dateOfBirth}');
           print(this.userRepository.useDetails!.registrationStep);

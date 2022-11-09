@@ -20,6 +20,7 @@ import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/home/matching_profile/matching_profile_bloc.dart';
 import 'package:makemymarry/views/profilescreens/about/height_status_bottom_sheet.dart';
 import 'package:makemymarry/views/profilescreens/about/marital_status_bottom_sheet.dart';
+import 'package:makemymarry/views/profilescreens/religion/religion.dart';
 
 import '../habbit/habits.dart';
 import 'no_of_childeren_bottom_sheet.dart';
@@ -65,6 +66,7 @@ class _AboutScreenState extends State<AboutScreen> {
   Widget build(BuildContext context) {
     this.userDetails =
         BlocProvider.of<AboutBloc>(context).userRepository.useDetails!;
+    print("registrationStep${this.userDetails.registrationStep}");
     if (this.userDetails.registrationStep > 2) {
       BlocProvider.of<AboutBloc>(context).add(onAboutDataLoad(userDetails.id));
     }
@@ -90,7 +92,8 @@ class _AboutScreenState extends State<AboutScreen> {
             ));
           }
           if (state is OnNavigationToHabits) {
-            navigateToHabits();
+            navigateToReligion();
+            // navigateToHabits();
           }
         },
         builder: (context, state) {
@@ -138,7 +141,7 @@ class _AboutScreenState extends State<AboutScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        MmmButtons.appBarCurved('About', context: context),
+        MmmButtons.appBarCurved('Basic Details', context: context),
         Container(
           padding: kMargin16,
           child: Column(
@@ -174,7 +177,9 @@ class _AboutScreenState extends State<AboutScreen> {
               ),
               MmmButtons.categoryButtons(
                   'Marital Status',
-                  AppHelper.getStringFromEnum(this.maritalStatus),
+                  maritalStatus != null
+                      ? AppHelper.getStringFromEnum(this.maritalStatus)
+                      : 'Select your maritial status',
                   'Select your maritial status',
                   'images/rightArrow.svg', action: () {
                 showMaritalStatusBottomSheet();
@@ -418,6 +423,14 @@ class _AboutScreenState extends State<AboutScreen> {
       BlocProvider.of<AboutBloc>(context).add(OnHeightStatusSelected(result));
       this.heightStatus = result;
     }
+  }
+
+  void navigateToReligion() {
+    var userRepo = BlocProvider.of<AboutBloc>(context).userRepository;
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => Religion(
+              userRepository: userRepo,
+            )));
   }
 
   void navigateToHabits() {

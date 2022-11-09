@@ -1,3 +1,4 @@
+import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 
 class MasterDataResponse {
@@ -32,7 +33,11 @@ class MasterData {
     this.listGothra = json["gothra"];
     this.listMotherTongue = createSimpleMasterDataList(json["motherTongue"]);
     this.listPostedBy = createSimpleMasterDataList(json["postedBy"]);
-    this.listReligion = createSimpleMasterDataList(json["religion"]);
+    if (json["religion"] != null) {
+      this.listReligion = createSimpleMasterDataList(json["religion"]);
+    } else {
+      this.listReligion = [];
+    }
     this.listOccupation = createOccupationList(json["occupation"]);
   }
 
@@ -93,8 +98,16 @@ class SimpleMasterData {
   SimpleMasterData(this.id, this.title);
 
   SimpleMasterData.fromJson(json) {
-    this.id = json["id"];
-    this.title = json["text"];
+    if (json["id"] != null) {
+      this.id = json["id"];
+    } else {
+      this.id = "Hello1";
+    }
+    if (json["text"] != null) {
+      this.title = json["text"];
+    } else {
+      this.title = "Hello2";
+    }
   }
 }
 

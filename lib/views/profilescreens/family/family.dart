@@ -7,6 +7,7 @@ import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/profilescreens/bio/bio.dart';
+import 'package:makemymarry/views/profilescreens/habbit/habits.dart';
 
 import 'family_background/family_background.dart';
 import 'family_background/family_background_bloc.dart';
@@ -170,7 +171,7 @@ class _FamilyScreenState extends State<FamilyScreen>
       });
     } else {
       Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => Bio(
+          builder: (context) => Habit(
                 userRepository: widget.userRepository,
               )));
     }

@@ -45,13 +45,13 @@ class BioBloc extends Bloc<BioEvent, BioState> {
             .userRepository
             .updateBio(event.bio, this.localImagePaths);
         if (result.status == AppConstants.SUCCESS) {
-          this.userRepository.useDetails!.registrationStep = 9;
+          this.userRepository.useDetails!.registrationStep = 8;
           //await this.userRepository.saveUserDetails();
           await this
               .userRepository
               .storageService
               .saveUserDetails(this.userRepository.useDetails!);
-          this.userRepository.updateRegistrationStep(9);
+          this.userRepository.updateRegistrationStep(8);
 
           yield OnUpdate();
         } else {

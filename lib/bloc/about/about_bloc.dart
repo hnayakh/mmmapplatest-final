@@ -112,7 +112,7 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
               .userRepository
               .storageService
               .saveUserDetails(this.userRepository.useDetails!);
-          this.userRepository.updateRegistrationStep(3);
+          this.userRepository.updateRegistrationStep(2);
 
           yield OnNavigationToHabits();
         } else {

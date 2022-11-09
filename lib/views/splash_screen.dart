@@ -141,26 +141,45 @@ class SplashScreenState extends State<SplashScreen> {
       case 6:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-                builder: (context) => FamilyScreen(userRepository: userRepo)),
+                builder: (context) => Habit(userRepository: userRepo)),
             (route) => false);
+        // Navigator.of(context).pushAndRemoveUntil(
+        //     MaterialPageRoute(
+        //         builder: (context) => FamilyScreen(userRepository: userRepo)),
+        //     (route) => false);
         break;
       case 5:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-                builder: (context) => Occupations(userRepository: userRepo)),
+                builder: (context) => FamilyScreen(userRepository: userRepo)),
             (route) => false);
+        // Navigator.of(context).pushAndRemoveUntil(
+        //     MaterialPageRoute(
+        //         builder: (context) => Occupations(userRepository: userRepo)),
+        //     (route) => false);
         break;
       case 4:
+        print(userRepo.useDetails!.registrationStep);
+
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => Occupations(userRepository: userRepo)),
+            (route) => false);
+        // Navigator.of(context).pushAndRemoveUntil(
+        //     MaterialPageRoute(
+        //         builder: (context) => Religion(userRepository: userRepo)),
+        //     (route) => false);
+        break;
+      case 3:
+        // print(userRepo.useDetails!.registrationStep);
+        // Navigator.of(context).pushAndRemoveUntil(
+        //     MaterialPageRoute(
+        //         builder: (context) => Habit(userRepository: userRepo)),
+        //     (route) => false);
+
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => Religion(userRepository: userRepo)),
-            (route) => false);
-        break;
-      case 3:
-        print(userRepo.useDetails!.registrationStep);
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (context) => Habit(userRepository: userRepo)),
             (route) => false);
         break;
       case 2:

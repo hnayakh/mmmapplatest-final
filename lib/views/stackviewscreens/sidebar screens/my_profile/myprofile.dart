@@ -88,7 +88,7 @@ class _MyProfileState extends State<MyProfile> {
                       this.profileDetails =
                           BlocProvider.of<AccountMenuBloc>(context).profileData;
                       print('saurabh12345 ${profileDetails!.images}');
-                      print('Aaurabh12345 ${profileDetails!.aboutMe}');
+                      // print('Aaurabh12345 ${profileDetails!.aboutMe}');
                       return Stack(children: [
                         Container(
                           height: MediaQuery.of(context).size.height * 0.17,
@@ -101,7 +101,7 @@ class _MyProfileState extends State<MyProfile> {
                             radius: MediaQuery.of(context).size.width * 0.122,
                             child: ClipOval(
                               child: Image.network(
-                                profileDetails!.images[0].toString(),
+                                profileDetails!.images[1],
                                 width: double.infinity,
                                 fit: BoxFit.cover,
                                 height: double.infinity,
@@ -110,7 +110,7 @@ class _MyProfileState extends State<MyProfile> {
                           ),
                         ),
                         Positioned(
-                          bottom: 70,
+                          bottom: 55,
                           right: 25,
                           left: MediaQuery.of(context).size.width * 0.066,
                           child: InkWell(
@@ -181,14 +181,14 @@ class _MyProfileState extends State<MyProfile> {
                                 //   child: BlocConsumer<AboutBloc, AboutState>(
                                 //     listener: (context, state) {},
                                 //     builder: (context, state) {
-                                TextButton(
-                                  child: Text("Edit",
-                                      style: MmmTextStyles.bodyRegular(
-                                          textColor: kPrimary)),
-                                  onPressed: () {
-                                    onEdit();
-                                  },
-                                )
+                                // TextButton(
+                                //   child: Text("Edit",
+                                //       style: MmmTextStyles.bodyRegular(
+                                //           textColor: kPrimary)),
+                                //   onPressed: () {
+                                //     onEdit();
+                                //   },
+                                // )
                                 //     },
                                 //   ),
                                 // )
@@ -207,77 +207,1755 @@ class _MyProfileState extends State<MyProfile> {
               ),
 
               SizedBox(
-                height: 40,
+                height: 30,
               ),
               MmmButtons.verifyAccountFliterScreen(context),
-              SizedBox(
-                height: 16,
-              ),
 
               SizedBox(
-                height: 16,
+                height: 20,
               ),
-              MmmButtons.myProfileButtons('About', action: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        ABoutProfile(userRepository: widget.userRepository),
-                  ),
-                );
-              }),
-              SizedBox(
-                height: 16,
-              ),
-              MmmButtons.myProfileButtons('Edit partner preference',
-                  action: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => PartnerPrefsScreen(
-                            userRepository: widget.userRepository,
-                          )),
-                );
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //       builder: (context) => PartnerPrefsScreen(
-                //             userRepository: widget.userRepository,
-                //           )),
-                // );
-                // var userRepo =
-                //     BlocProvider.of<SignInBloc>(context).userRepository;
-                // Navigator.of(context).pushAndRemoveUntil(
-                //     MaterialPageRoute(
-                //         builder: (context) => ProfilePreference(
-                //               userRepository: userRepository,
-                //             )),
-                //     (route) => false);
-              }),
-              SizedBox(
-                height: 16,
-              ),
-              MmmButtons.myProfileButtons('Add interests ', action: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AddIterests()),
-                );
-              }),
-              SizedBox(
-                height: 16,
-              ),
-              MmmButtons.myProfileButtons('Change Status', action: () {
-                print("Hello");
-                // showStatusDilogue(context);
 
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => StatusScreen()),
-                );
-              }),
+              Container(
+                  width: 370,
+                  height: 194,
+                  child: Stack(children: <Widget>[
+                    Positioned(
+                        top: 0,
+                        left: 0,
+                        child: Container(
+                            width: 370,
+                            height: 190,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(8),
+                                topRight: Radius.circular(8),
+                                bottomLeft: Radius.circular(8),
+                                bottomRight: Radius.circular(8),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Color.fromARGB(53, 61, 75, 92),
+                                    offset: Offset(0, 4),
+                                    blurRadius: 14)
+                              ],
+                              color: Color.fromRGBO(255, 255, 255, 1),
+                              border: Border.all(
+                                color: Color.fromRGBO(240, 239, 245, 1),
+                                width: 1,
+                              ),
+                            ),
+                            child: Stack(children: <Widget>[
+                              Positioned(
+                                  top: 87,
+                                  left: 17,
+                                  child: Container(
+                                    decoration: BoxDecoration(),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Image.asset(
+                                          'images/calendar.png',
+                                          color: Color.fromARGB(141, 0, 0, 0),
+                                          height: 20,
+                                          // width: 10,
+                                        ),
+                                        SizedBox(width: 7),
+                                        Container(
+                                          decoration: BoxDecoration(),
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 0, vertical: 0),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: <Widget>[
+                                              Text(
+                                                '25yrs, 12th Nov,1996 June',
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        18, 22, 25, 1),
+                                                    fontFamily: 'Poppins',
+                                                    fontSize: 16,
+                                                    letterSpacing:
+                                                        0 /*percentages not used in flutter. defaulting to zero*/,
+                                                    // fontWeight: FontWeight.bold,
+                                                    height: 1.5714285714285714),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                              Positioned(
+                                  top: 115,
+                                  left: 15,
+                                  child: Container(
+                                    decoration: BoxDecoration(),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Image.asset(
+                                          'images/office.png',
+                                          height: 25,
+                                        ),
+                                        SizedBox(width: 5),
+                                        Container(
+                                          decoration: BoxDecoration(),
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 0, vertical: 0),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: <Widget>[
+                                              Text(
+                                                'Software Engineer',
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        18, 22, 25, 1),
+                                                    fontFamily: 'Poppins',
+                                                    fontSize: 16,
+                                                    letterSpacing:
+                                                        0 /*percentages not used in flutter. defaulting to zero*/,
+                                                    // fontWeight: FontWeight.bold,
+                                                    height: 1.5714285714285714),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                              Positioned(
+                                  top: 143,
+                                  left: 13,
+                                  child: Container(
+                                    decoration: BoxDecoration(),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Image.asset(
+                                          "images/height'.png",
+                                          height: 30,
+                                        ),
+                                        SizedBox(width: 2),
+                                        Container(
+                                          decoration: BoxDecoration(),
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 0, vertical: 0),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: <Widget>[
+                                              Text(
+                                                '5’5’’ height',
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        18, 22, 25, 1),
+                                                    fontFamily: 'Poppins',
+                                                    fontSize: 16,
+                                                    // fontWeight: FontWeight.bold,
+                                                    height: 1.5714285714285714),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                              Positioned(
+                                  top: 59,
+                                  left: 15,
+                                  child: Container(
+                                    decoration: BoxDecoration(),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Image.asset(
+                                          'images/Users1.png',
+                                          color: Color.fromARGB(192, 0, 0, 0),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Container(
+                                          decoration: BoxDecoration(),
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 0, vertical: 0),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: <Widget>[
+                                              Text(
+                                                'Profile managed by Father',
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        18, 22, 25, 1),
+                                                    fontFamily: 'Poppins',
+                                                    fontSize: 16,
+                                                    // fontWeight: FontWeight.bold,
+                                                    height: 1.5714285714285714),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                            ]))),
+                    Positioned(
+                        top: 20,
+                        left: 16,
+                        child: Container(
+                          decoration: BoxDecoration(),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Image.asset(
+                                'images/Users1.png',
+                                color: kPrimary,
+                              ),
+                              SizedBox(width: 5),
+                              Text(
+                                'Abhishek Sharma',
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    color: Color.fromRGBO(164, 19, 60, 1),
+                                    fontFamily: 'Poppins',
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    height: 1.625),
+                              ),
+                              SizedBox(width: 140),
+                              Image.asset(
+                                'images/pen.png',
+                                color: kPrimary,
+                                height: 20,
+                                // width: 10,
+                              ),
+                            ],
+                          ),
+                        )),
+                  ])),
               SizedBox(
-                height: 16,
+                height: 20,
               ),
+              Container(
+                  width: 370,
+                  height: 190,
+                  child: Stack(children: <Widget>[
+                    Positioned(
+                        top: 0,
+                        left: 0,
+                        child: Container(
+                            width: 370,
+                            height: 175,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(8),
+                                topRight: Radius.circular(8),
+                                bottomLeft: Radius.circular(8),
+                                bottomRight: Radius.circular(8),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Color.fromARGB(45, 61, 75, 92),
+                                    offset: Offset(0, 4),
+                                    blurRadius: 14)
+                              ],
+                              color: Color.fromRGBO(255, 255, 255, 1),
+                              border: Border.all(
+                                color: Color.fromRGBO(240, 239, 245, 1),
+                                width: 1,
+                              ),
+                            ),
+                            child: Stack(children: <Widget>[
+                              Positioned(
+                                  top: 20,
+                                  left: 15,
+                                  child: Container(
+                                    decoration: BoxDecoration(),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 0, vertical: 0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Image.asset(
+                                          'images/Users1.png',
+                                          color: kPrimary,
+                                        ),
+                                        SizedBox(width: 10),
+                                        Text(
+                                          'About',
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              color: Color.fromRGBO(
+                                                  164, 19, 60, 1),
+                                              fontFamily: 'Poppins',
+                                              fontSize: 18,
+                                              letterSpacing:
+                                                  0 /*percentages not used in flutter. defaulting to zero*/,
+                                              fontWeight: FontWeight.bold,
+                                              height: 1.625),
+                                        ),
+                                        SizedBox(width: 240),
+                                        Image.asset(
+                                          'images/pen.png',
+                                          color: kPrimary,
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                              Positioned(
+                                  top: 60,
+                                  left: 20,
+                                  right: 20,
+                                  child: Text(
+                                    "I come from an upper middle class family. The most important thing in my life is religion believes, moral values and respect for elders. I’m modern thinker",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(18, 22, 25, 1),
+                                        fontFamily: 'Poppins',
+                                        fontSize: 16,
+                                        letterSpacing:
+                                            1 /*percentages not used in flutter. defaulting to zero*/,
+                                        fontWeight: FontWeight.normal,
+                                        height: 1.5714285714285714),
+                                  )),
+                              Positioned(
+                                  top: 174,
+                                  left: 18,
+                                  child: Text(
+                                    ' ',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(135, 141, 150, 1),
+                                        fontFamily: 'Poppins',
+                                        fontSize: 14,
+                                        letterSpacing:
+                                            0 /*percentages not used in flutter. defaulting to zero*/,
+                                        fontWeight: FontWeight.normal,
+                                        height: 1.5714285714285714),
+                                  )),
+                              Positioned(
+                                  top: 174,
+                                  left: 133,
+                                  child: Text(
+                                    '  ',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(0, 0, 0, 1),
+                                        fontFamily: 'Poppins',
+                                        fontSize: 14,
+                                        letterSpacing:
+                                            0 /*percentages not used in flutter. defaulting to zero*/,
+                                        fontWeight: FontWeight.normal,
+                                        height: 1.5714285714285714),
+                                  )),
+                            ]))),
+                  ])),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                  width: 370,
+                  height: 566,
+                  child: Stack(children: <Widget>[
+                    Positioned(
+                        top: 0,
+                        left: 0,
+                        child: Container(
+                            width: 370,
+                            height: 566,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(8),
+                                topRight: Radius.circular(8),
+                                bottomLeft: Radius.circular(8),
+                                bottomRight: Radius.circular(8),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Color.fromRGBO(
+                                        61, 75, 92, 0.11999999731779099),
+                                    offset: Offset(0, 4),
+                                    blurRadius: 14)
+                              ],
+                              color: Color.fromRGBO(255, 255, 255, 1),
+                              border: Border.all(
+                                color: Color.fromRGBO(240, 239, 245, 1),
+                                width: 1,
+                              ),
+                            ),
+                            child: Stack(children: <Widget>[
+                              Positioned(
+                                  top: 20,
+                                  left: 15,
+                                  child: Container(
+                                    decoration: BoxDecoration(),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 0),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Image.asset(
+                                          'images/family.png',
+                                          color: kPrimary,
+                                        ),
+                                        SizedBox(width: 8),
+                                        Text(
+                                          'Family',
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              color: Color.fromRGBO(
+                                                  164, 19, 60, 1),
+                                              fontFamily: 'Poppins',
+                                              fontSize: 16,
+                                              letterSpacing:
+                                                  0 /*percentages not used in flutter. defaulting to zero*/,
+                                              fontWeight: FontWeight.bold,
+                                              height: 1.625),
+                                        ),
+                                        SizedBox(width: 230),
+                                        Image.asset(
+                                          'images/pen.png',
+                                          color: kPrimary,
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                              Positioned(top: 22, left: 310, child: Text('')),
+                            ]))),
+                    Positioned(
+                        top: 66,
+                        left: 16,
+                        child: Container(
+                            width: 84,
+                            height: 46,
+                            child: Stack(children: <Widget>[
+                              Positioned(
+                                  top: 0,
+                                  left: 15,
+                                  child: Text(
+                                    'Status',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(135, 141, 150, 1),
+                                        fontFamily: 'Poppins',
+                                        fontSize: 12,
+                                        letterSpacing:
+                                            0 /*percentages not used in flutter. defaulting to zero*/,
+                                        fontWeight: FontWeight.normal,
+                                        height: 1.6666666666666667),
+                                  )),
+                              Positioned(
+                                  top: 24,
+                                  left: 15,
+                                  child: Text(
+                                    'Kurukshetra',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(18, 22, 25, 1),
+                                        fontFamily: 'Poppins',
+                                        fontSize: 14,
+                                        letterSpacing:
+                                            0 /*percentages not used in flutter. defaulting to zero*/,
+                                        fontWeight: FontWeight.normal,
+                                        height: 1.5714285714285714),
+                                  )),
+                            ]))),
+                    Positioned(
+                        top: 128,
+                        left: 16,
+                        child: Container(
+                            width: 149,
+                            height: 46,
+                            child: Stack(children: <Widget>[
+                              Positioned(
+                                  top: 0,
+                                  left: 15,
+                                  child: Text(
+                                    'Type',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(135, 141, 150, 1),
+                                        fontFamily: 'Poppins',
+                                        fontSize: 12,
+                                        letterSpacing:
+                                            0 /*percentages not used in flutter. defaulting to zero*/,
+                                        fontWeight: FontWeight.normal,
+                                        height: 1.6666666666666667),
+                                  )),
+                              Positioned(
+                                  top: 24,
+                                  left: 15,
+                                  child: Text(
+                                    'Kurukshetra Iniversity',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(18, 22, 25, 1),
+                                        fontFamily: 'Poppins',
+                                        fontSize: 14,
+                                        letterSpacing:
+                                            0 /*percentages not used in flutter. defaulting to zero*/,
+                                        fontWeight: FontWeight.normal,
+                                        height: 1.5714285714285714),
+                                  )),
+                            ]))),
+                    Positioned(
+                        top: 438,
+                        left: 16,
+                        child: Container(
+                            width: 141,
+                            height: 46,
+                            child: Stack(children: <Widget>[
+                              Positioned(
+                                  top: 0,
+                                  left: 15,
+                                  child: Text(
+                                    'No. of Brother’s/Married',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(135, 141, 150, 1),
+                                        fontFamily: 'Poppins',
+                                        fontSize: 12,
+                                        letterSpacing:
+                                            0 /*percentages not used in flutter. defaulting to zero*/,
+                                        fontWeight: FontWeight.normal,
+                                        height: 1.6666666666666667),
+                                  )),
+                              Positioned(
+                                  top: 24,
+                                  left: 15,
+                                  child: Text(
+                                    '1 out of 2 Married',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(18, 22, 25, 1),
+                                        fontFamily: 'Poppins',
+                                        fontSize: 14,
+                                        letterSpacing:
+                                            0 /*percentages not used in flutter. defaulting to zero*/,
+                                        fontWeight: FontWeight.normal,
+                                        height: 1.5714285714285714),
+                                  )),
+                            ]))),
+                    Positioned(
+                        top: 500,
+                        left: 15,
+                        child: Container(
+                            width: 130,
+                            height: 46,
+                            child: Stack(children: <Widget>[
+                              Positioned(
+                                  top: 0,
+                                  left: 15,
+                                  child: Text(
+                                    'No. of Sister’s/Married',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(135, 141, 150, 1),
+                                        fontFamily: 'Poppins',
+                                        fontSize: 12,
+                                        letterSpacing:
+                                            0 /*percentages not used in flutter. defaulting to zero*/,
+                                        fontWeight: FontWeight.normal,
+                                        height: 1.6666666666666667),
+                                  )),
+                              Positioned(
+                                  top: 24,
+                                  left: 15,
+                                  child: Text(
+                                    '1 out of 2 Married',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(18, 22, 25, 1),
+                                        fontFamily: 'Poppins',
+                                        fontSize: 14,
+                                        letterSpacing:
+                                            0 /*percentages not used in flutter. defaulting to zero*/,
+                                        fontWeight: FontWeight.normal,
+                                        height: 1.5714285714285714),
+                                  )),
+                            ]))),
+                    Positioned(
+                        top: 190,
+                        left: 15,
+                        child: Container(
+                            width: 149,
+                            height: 46,
+                            child: Stack(children: <Widget>[
+                              Positioned(
+                                  top: 0,
+                                  left: 15,
+                                  child: Text(
+                                    'Values',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(135, 141, 150, 1),
+                                        fontFamily: 'Poppins',
+                                        fontSize: 12,
+                                        letterSpacing:
+                                            0 /*percentages not used in flutter. defaulting to zero*/,
+                                        fontWeight: FontWeight.normal,
+                                        height: 1.6666666666666667),
+                                  )),
+                              Positioned(
+                                  top: 24,
+                                  left: 15,
+                                  child: Text(
+                                    'Kurukshetra Iniversity',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(18, 22, 25, 1),
+                                        fontFamily: 'Poppins',
+                                        fontSize: 14,
+                                        letterSpacing:
+                                            0 /*percentages not used in flutter. defaulting to zero*/,
+                                        fontWeight: FontWeight.normal,
+                                        height: 1.5714285714285714),
+                                  )),
+                            ]))),
+                    Positioned(
+                        top: 252,
+                        left: 15,
+                        child: Container(
+                            width: 150,
+                            height: 46,
+                            child: Stack(children: <Widget>[
+                              Positioned(
+                                  top: 0,
+                                  left: 15,
+                                  child: Text(
+                                    'Location',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(135, 141, 150, 1),
+                                        fontFamily: 'Poppins',
+                                        fontSize: 12,
+                                        letterSpacing:
+                                            0 /*percentages not used in flutter. defaulting to zero*/,
+                                        fontWeight: FontWeight.normal,
+                                        height: 1.6666666666666667),
+                                  )),
+                              Positioned(
+                                  top: 24,
+                                  left: 15,
+                                  child: Text(
+                                    'Kurukshetra Iniversity',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(18, 22, 25, 1),
+                                        fontFamily: 'Poppins',
+                                        fontSize: 14,
+                                        letterSpacing:
+                                            0 /*percentages not used in flutter. defaulting to zero*/,
+                                        fontWeight: FontWeight.normal,
+                                        height: 1.5714285714285714),
+                                  )),
+                            ]))),
+                    Positioned(
+                        top: 314,
+                        left: 15,
+                        child: Container(
+                            width: 149,
+                            height: 46,
+                            child: Stack(children: <Widget>[
+                              Positioned(
+                                  top: 0,
+                                  left: 15,
+                                  child: Text(
+                                    'Father’s Occupation',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(135, 141, 150, 1),
+                                        fontFamily: 'Poppins',
+                                        fontSize: 12,
+                                        letterSpacing:
+                                            0 /*percentages not used in flutter. defaulting to zero*/,
+                                        fontWeight: FontWeight.normal,
+                                        height: 1.6666666666666667),
+                                  )),
+                              Positioned(
+                                  top: 24,
+                                  left: 15,
+                                  child: Text(
+                                    'Kurukshetra Iniversity',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(18, 22, 25, 1),
+                                        fontFamily: 'Poppins',
+                                        fontSize: 14,
+                                        letterSpacing:
+                                            0 /*percentages not used in flutter. defaulting to zero*/,
+                                        fontWeight: FontWeight.normal,
+                                        height: 1.5714285714285714),
+                                  )),
+                            ]))),
+                    Positioned(
+                        top: 376,
+                        left: 15,
+                        child: Container(
+                            width: 149,
+                            height: 46,
+                            child: Stack(children: <Widget>[
+                              Positioned(
+                                  top: 0,
+                                  left: 16,
+                                  child: Text(
+                                    'Mother’s Occupation',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(135, 141, 150, 1),
+                                        fontFamily: 'Poppins',
+                                        fontSize: 12,
+                                        letterSpacing:
+                                            0 /*percentages not used in flutter. defaulting to zero*/,
+                                        fontWeight: FontWeight.normal,
+                                        height: 1.6666666666666667),
+                                  )),
+                              Positioned(
+                                  top: 24,
+                                  left: 15,
+                                  child: Text(
+                                    'Kurukshetra University',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(18, 22, 25, 1),
+                                        fontFamily: 'Poppins',
+                                        fontSize: 14,
+                                        letterSpacing:
+                                            0 /*percentages not used in flutter. defaulting to zero*/,
+                                        fontWeight: FontWeight.normal,
+                                        height: 1.5714285714285714),
+                                  )),
+                            ]))),
+                  ])),
+
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                  width: 370,
+                  height: 660,
+                  child: Stack(children: <Widget>[
+                    Positioned(
+                        top: 0,
+                        left: 0,
+                        child: Container(
+                            width: 370,
+                            height: 660,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(8),
+                                topRight: Radius.circular(8),
+                                bottomLeft: Radius.circular(8),
+                                bottomRight: Radius.circular(8),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Color.fromARGB(45, 61, 75, 92),
+                                    offset: Offset(0, 4),
+                                    blurRadius: 14)
+                              ],
+                              color: Color.fromRGBO(255, 255, 255, 1),
+                              border: Border.all(
+                                color: Color.fromRGBO(240, 239, 245, 1),
+                                width: 1,
+                              ),
+                            ),
+                            child: Stack(children: <Widget>[
+                              Positioned(
+                                  top: 20,
+                                  left: 15,
+                                  child: Container(
+                                    decoration: BoxDecoration(),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        // Icon(Icons),
+                                        Icon(
+                                          Icons.favorite_border_outlined,
+                                          color: kPrimary,
+                                        ),
+                                        SizedBox(width: 10),
+                                        Text(
+                                          'Interests',
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              color: Color.fromRGBO(
+                                                  164, 19, 60, 1),
+                                              fontFamily: 'Poppins',
+                                              fontSize: 18,
+                                              letterSpacing:
+                                                  0 /*percentages not used in flutter. defaulting to zero*/,
+                                              fontWeight: FontWeight.bold,
+                                              height: 1.625),
+                                        ),
+                                        SizedBox(width: 200),
+                                        Image.asset(
+                                          'images/pen.png',
+                                          color: kPrimary,
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                              Positioned(
+                                  top: 60,
+                                  left: 16,
+                                  child: Container(
+                                      width: 250,
+                                      height: 100,
+                                      child: Stack(children: <Widget>[
+                                        Positioned(
+                                            top: 0,
+                                            left: 15,
+                                            child: Text(
+                                              'Eating',
+                                              textAlign: TextAlign.left,
+                                              style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      212, 0, 0, 0),
+                                                  fontFamily: 'Poppins',
+                                                  fontSize: 14,
+                                                  letterSpacing:
+                                                      0 /*percentages not used in flutter. defaulting to zero*/,
+                                                  fontWeight: FontWeight.normal,
+                                                  height: 1.6666666666666667),
+                                            )),
+                                        Positioned(
+                                            top: 35,
+                                            left: 15,
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(8),
+                                                  topRight: Radius.circular(8),
+                                                  bottomLeft:
+                                                      Radius.circular(8),
+                                                  bottomRight:
+                                                      Radius.circular(8),
+                                                ),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      color: Color.fromARGB(
+                                                          13, 255, 77, 110),
+                                                      offset: Offset(0, 4),
+                                                      blurRadius: 14)
+                                                ],
+                                                border: Border.all(
+                                                  color: Color.fromRGBO(
+                                                      193, 199, 205, 1),
+                                                  width: 1,
+                                                ),
+                                              ),
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 20, vertical: 12),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: <Widget>[
+                                                  Image.asset(
+                                                    'images/LeafyGreen.png',
+
+                                                    // color: kPrimary,
+                                                  ),
+                                                  SizedBox(width: 8),
+                                                  Container(
+                                                    decoration: BoxDecoration(),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 0,
+                                                            vertical: 0),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: <Widget>[
+                                                        Text(
+                                                          'Vegetarrian',
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                          style: TextStyle(
+                                                              color: Color
+                                                                  .fromRGBO(
+                                                                      18,
+                                                                      22,
+                                                                      25,
+                                                                      1),
+                                                              fontFamily:
+                                                                  'Poppins',
+                                                              fontSize: 16,
+                                                              letterSpacing:
+                                                                  0 /*percentages not used in flutter. defaulting to zero*/,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .normal,
+                                                              height: 1.625),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )),
+                                      ]))),
+                              Positioned(
+                                  top: 160,
+                                  left: 16,
+                                  child: Container(
+                                      width: 250,
+                                      height: 100,
+                                      child: Stack(children: <Widget>[
+                                        Positioned(
+                                            top: 0,
+                                            left: 15,
+                                            child: Text(
+                                              'Smoking',
+                                              textAlign: TextAlign.left,
+                                              style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      212, 0, 0, 0),
+                                                  fontFamily: 'Poppins',
+                                                  fontSize: 14,
+                                                  letterSpacing:
+                                                      0 /*percentages not used in flutter. defaulting to zero*/,
+                                                  fontWeight: FontWeight.normal,
+                                                  height: 1.6666666666666667),
+                                            )),
+                                        Positioned(
+                                            top: 35,
+                                            left: 15,
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(8),
+                                                  topRight: Radius.circular(8),
+                                                  bottomLeft:
+                                                      Radius.circular(8),
+                                                  bottomRight:
+                                                      Radius.circular(8),
+                                                ),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      color: Color.fromARGB(
+                                                          13, 255, 77, 110),
+                                                      offset: Offset(0, 4),
+                                                      blurRadius: 14)
+                                                ],
+                                                border: Border.all(
+                                                  color: Color.fromRGBO(
+                                                      193, 199, 205, 1),
+                                                  width: 1,
+                                                ),
+                                              ),
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 20, vertical: 12),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: <Widget>[
+                                                  Image.asset(
+                                                    'images/cigarette.png',
+
+                                                    // color: kPrimary,
+                                                  ),
+                                                  SizedBox(width: 8),
+                                                  Container(
+                                                    decoration: BoxDecoration(),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 0,
+                                                            vertical: 0),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: <Widget>[
+                                                        Text(
+                                                          'Regular',
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                          style: TextStyle(
+                                                              color: Color
+                                                                  .fromRGBO(
+                                                                      18,
+                                                                      22,
+                                                                      25,
+                                                                      1),
+                                                              fontFamily:
+                                                                  'Poppins',
+                                                              fontSize: 16,
+                                                              letterSpacing:
+                                                                  0 /*percentages not used in flutter. defaulting to zero*/,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .normal,
+                                                              height: 1.625),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )),
+                                      ]))),
+                              Positioned(
+                                  top: 260,
+                                  left: 16,
+                                  child: Container(
+                                      width: 250,
+                                      height: 100,
+                                      child: Stack(children: <Widget>[
+                                        Positioned(
+                                            top: 0,
+                                            left: 15,
+                                            child: Text(
+                                              'Alcoholic',
+                                              textAlign: TextAlign.left,
+                                              style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      212, 0, 0, 0),
+                                                  fontFamily: 'Poppins',
+                                                  fontSize: 14,
+                                                  letterSpacing:
+                                                      0 /*percentages not used in flutter. defaulting to zero*/,
+                                                  fontWeight: FontWeight.normal,
+                                                  height: 1.6666666666666667),
+                                            )),
+                                        Positioned(
+                                            top: 35,
+                                            left: 15,
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(8),
+                                                  topRight: Radius.circular(8),
+                                                  bottomLeft:
+                                                      Radius.circular(8),
+                                                  bottomRight:
+                                                      Radius.circular(8),
+                                                ),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      color: Color.fromARGB(
+                                                          13, 255, 77, 110),
+                                                      offset: Offset(0, 4),
+                                                      blurRadius: 14)
+                                                ],
+                                                border: Border.all(
+                                                  color: Color.fromRGBO(
+                                                      193, 199, 205, 1),
+                                                  width: 1,
+                                                ),
+                                              ),
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 20, vertical: 12),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: <Widget>[
+                                                  Image.asset(
+                                                    'images/Beer.png',
+
+                                                    // color: kPrimary,
+                                                  ),
+                                                  SizedBox(width: 8),
+                                                  Container(
+                                                    decoration: BoxDecoration(),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 0,
+                                                            vertical: 0),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: <Widget>[
+                                                        Text(
+                                                          'Regular',
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                          style: TextStyle(
+                                                              color: Color
+                                                                  .fromRGBO(
+                                                                      18,
+                                                                      22,
+                                                                      25,
+                                                                      1),
+                                                              fontFamily:
+                                                                  'Poppins',
+                                                              fontSize: 16,
+                                                              letterSpacing:
+                                                                  0 /*percentages not used in flutter. defaulting to zero*/,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .normal,
+                                                              height: 1.625),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )),
+                                      ]))),
+                              Positioned(
+                                  top: 360,
+                                  left: 16,
+                                  child: Container(
+                                      width: 400,
+                                      height: 300,
+                                      child: Stack(children: <Widget>[
+                                        Positioned(
+                                            top: 0,
+                                            left: 15,
+                                            child: Text(
+                                              'Hobbies',
+                                              textAlign: TextAlign.left,
+                                              style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      212, 0, 0, 0),
+                                                  fontFamily: 'Poppins',
+                                                  fontSize: 14,
+                                                  letterSpacing:
+                                                      0 /*percentages not used in flutter. defaulting to zero*/,
+                                                  fontWeight: FontWeight.normal,
+                                                  height: 1.6666666666666667),
+                                            )),
+                                        Positioned(
+                                            top: 35,
+                                            left: 15,
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(8),
+                                                  topRight: Radius.circular(8),
+                                                  bottomLeft:
+                                                      Radius.circular(8),
+                                                  bottomRight:
+                                                      Radius.circular(8),
+                                                ),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      color: Color.fromARGB(
+                                                          13, 255, 77, 110),
+                                                      offset: Offset(0, 4),
+                                                      blurRadius: 14)
+                                                ],
+                                                border: Border.all(
+                                                  color: Color.fromRGBO(
+                                                      193, 199, 205, 1),
+                                                  width: 1,
+                                                ),
+                                              ),
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 20, vertical: 12),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: <Widget>[
+                                                  Image.asset(
+                                                    'images/paint.png',
+
+                                                    // color: kPrimary,
+                                                  ),
+                                                  SizedBox(width: 8),
+                                                  Container(
+                                                    decoration: BoxDecoration(),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 0,
+                                                            vertical: 0),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: <Widget>[
+                                                        Text(
+                                                          'Painting',
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                          style: TextStyle(
+                                                              color: Color
+                                                                  .fromRGBO(
+                                                                      18,
+                                                                      22,
+                                                                      25,
+                                                                      1),
+                                                              fontFamily:
+                                                                  'Poppins',
+                                                              fontSize: 16,
+                                                              letterSpacing:
+                                                                  0 /*percentages not used in flutter. defaulting to zero*/,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .normal,
+                                                              height: 1.625),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )),
+                                        Positioned(
+                                            top: 35,
+                                            left: 160,
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(8),
+                                                  topRight: Radius.circular(8),
+                                                  bottomLeft:
+                                                      Radius.circular(8),
+                                                  bottomRight:
+                                                      Radius.circular(8),
+                                                ),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      color: Color.fromARGB(
+                                                          13, 255, 77, 110),
+                                                      offset: Offset(0, 4),
+                                                      blurRadius: 14)
+                                                ],
+                                                border: Border.all(
+                                                  color: Color.fromRGBO(
+                                                      193, 199, 205, 1),
+                                                  width: 1,
+                                                ),
+                                              ),
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 20, vertical: 12),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: <Widget>[
+                                                  Image.asset(
+                                                    'images/Camera.png',
+
+                                                    // color: kPrimary,
+                                                  ),
+                                                  SizedBox(width: 8),
+                                                  Container(
+                                                    decoration: BoxDecoration(),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 0,
+                                                            vertical: 0),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: <Widget>[
+                                                        Text(
+                                                          'Photography',
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                          style: TextStyle(
+                                                              color: Color
+                                                                  .fromRGBO(
+                                                                      18,
+                                                                      22,
+                                                                      25,
+                                                                      1),
+                                                              fontFamily:
+                                                                  'Poppins',
+                                                              fontSize: 16,
+                                                              letterSpacing:
+                                                                  0 /*percentages not used in flutter. defaulting to zero*/,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .normal,
+                                                              height: 1.625),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )),
+                                        Positioned(
+                                            top: 100,
+                                            left: 15,
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(8),
+                                                  topRight: Radius.circular(8),
+                                                  bottomLeft:
+                                                      Radius.circular(8),
+                                                  bottomRight:
+                                                      Radius.circular(8),
+                                                ),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      color: Color.fromARGB(
+                                                          13, 255, 77, 110),
+                                                      offset: Offset(0, 4),
+                                                      blurRadius: 14)
+                                                ],
+                                                border: Border.all(
+                                                  color: Color.fromRGBO(
+                                                      193, 199, 205, 1),
+                                                  width: 1,
+                                                ),
+                                              ),
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 20, vertical: 12),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: <Widget>[
+                                                  Image.asset(
+                                                    'images/Mountain.png',
+
+                                                    // color: kPrimary,
+                                                  ),
+                                                  SizedBox(width: 8),
+                                                  Container(
+                                                    decoration: BoxDecoration(),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 0,
+                                                            vertical: 0),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: <Widget>[
+                                                        Text(
+                                                          'Mountain Hiking',
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                          style: TextStyle(
+                                                              color: Color
+                                                                  .fromRGBO(
+                                                                      18,
+                                                                      22,
+                                                                      25,
+                                                                      1),
+                                                              fontFamily:
+                                                                  'Poppins',
+                                                              fontSize: 16,
+                                                              letterSpacing:
+                                                                  0 /*percentages not used in flutter. defaulting to zero*/,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .normal,
+                                                              height: 1.625),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )),
+                                        Positioned(
+                                            top: 165,
+                                            left: 15,
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(8),
+                                                  topRight: Radius.circular(8),
+                                                  bottomLeft:
+                                                      Radius.circular(8),
+                                                  bottomRight:
+                                                      Radius.circular(8),
+                                                ),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      color: Color.fromARGB(
+                                                          13, 255, 77, 110),
+                                                      offset: Offset(0, 4),
+                                                      blurRadius: 14)
+                                                ],
+                                                border: Border.all(
+                                                  color: Color.fromRGBO(
+                                                      193, 199, 205, 1),
+                                                  width: 1,
+                                                ),
+                                              ),
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 20, vertical: 12),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: <Widget>[
+                                                  Image.asset(
+                                                    'images/cook.png',
+
+                                                    // color: kPrimary,
+                                                  ),
+                                                  SizedBox(width: 8),
+                                                  Container(
+                                                    decoration: BoxDecoration(),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 0,
+                                                            vertical: 0),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: <Widget>[
+                                                        Text(
+                                                          'Cooking',
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                          style: TextStyle(
+                                                              color: Color
+                                                                  .fromRGBO(
+                                                                      18,
+                                                                      22,
+                                                                      25,
+                                                                      1),
+                                                              fontFamily:
+                                                                  'Poppins',
+                                                              fontSize: 16,
+                                                              letterSpacing:
+                                                                  0 /*percentages not used in flutter. defaulting to zero*/,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .normal,
+                                                              height: 1.625),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )),
+                                        Positioned(
+                                            top: 230,
+                                            left: 15,
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(8),
+                                                  topRight: Radius.circular(8),
+                                                  bottomLeft:
+                                                      Radius.circular(8),
+                                                  bottomRight:
+                                                      Radius.circular(8),
+                                                ),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      color: Color.fromARGB(
+                                                          13, 255, 77, 110),
+                                                      offset: Offset(0, 4),
+                                                      blurRadius: 14)
+                                                ],
+                                                border: Border.all(
+                                                  color: Color.fromRGBO(
+                                                      193, 199, 205, 1),
+                                                  width: 1,
+                                                ),
+                                              ),
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 20, vertical: 12),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: <Widget>[
+                                                  Image.asset(
+                                                    'images/Book.png',
+
+                                                    // color: kPrimary,
+                                                  ),
+                                                  SizedBox(width: 8),
+                                                  Container(
+                                                    decoration: BoxDecoration(),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 0,
+                                                            vertical: 0),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: <Widget>[
+                                                        Text(
+                                                          'Reading Books',
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                          style: TextStyle(
+                                                              color: Color
+                                                                  .fromRGBO(
+                                                                      18,
+                                                                      22,
+                                                                      25,
+                                                                      1),
+                                                              fontFamily:
+                                                                  'Poppins',
+                                                              fontSize: 16,
+                                                              letterSpacing:
+                                                                  0 /*percentages not used in flutter. defaulting to zero*/,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .normal,
+                                                              height: 1.625),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )),
+                                      ]))),
+                            ]))),
+                  ])),
+              SizedBox(
+                height: 20,
+              ),
+
+              Container(
+                  width: 370,
+                  height: 500,
+                  child: Stack(children: <Widget>[
+                    Positioned(
+                        top: 0,
+                        left: 0,
+                        child: Container(
+                            width: 370,
+                            height: 250,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(8),
+                                topRight: Radius.circular(8),
+                                bottomLeft: Radius.circular(8),
+                                bottomRight: Radius.circular(8),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Color.fromARGB(45, 61, 75, 92),
+                                    offset: Offset(0, 4),
+                                    blurRadius: 14)
+                              ],
+                              color: Color.fromRGBO(255, 255, 255, 1),
+                              border: Border.all(
+                                color: Color.fromRGBO(240, 239, 245, 1),
+                                width: 1,
+                              ),
+                            ),
+                            child: Stack(children: <Widget>[
+                              Positioned(
+                                  top: 20,
+                                  left: 15,
+                                  child: Container(
+                                    decoration: BoxDecoration(),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        // Icon(Icons),
+                                        Image.asset(
+                                          'images/occasionally.png',
+
+                                          // color: kPrimary,
+                                        ),
+                                        SizedBox(width: 10),
+                                        Text(
+                                          'LifeStyle',
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              color: Color.fromRGBO(
+                                                  164, 19, 60, 1),
+                                              fontFamily: 'Poppins',
+                                              fontSize: 18,
+                                              letterSpacing:
+                                                  0 /*percentages not used in flutter. defaulting to zero*/,
+                                              fontWeight: FontWeight.bold,
+                                              height: 1.625),
+                                        ),
+                                        SizedBox(width: 195),
+                                        Image.asset(
+                                          'images/pen.png',
+                                          color: kPrimary,
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                              Positioned(
+                                  top: 75,
+                                  left: 35,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(8),
+                                        topRight: Radius.circular(8),
+                                        bottomLeft: Radius.circular(8),
+                                        bottomRight: Radius.circular(8),
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: Color.fromARGB(
+                                                13, 255, 77, 110),
+                                            offset: Offset(0, 4),
+                                            blurRadius: 14)
+                                      ],
+                                      border: Border.all(
+                                        color: Color.fromRGBO(193, 199, 205, 1),
+                                        width: 1,
+                                      ),
+                                    ),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 12),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Image.asset(
+                                          'images/House.png',
+
+                                          // color: kPrimary,
+                                        ),
+                                        SizedBox(width: 8),
+                                        Container(
+                                          decoration: BoxDecoration(),
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 0, vertical: 0),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: <Widget>[
+                                              Text(
+                                                'House',
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        18, 22, 25, 1),
+                                                    fontFamily: 'Poppins',
+                                                    fontSize: 16,
+                                                    letterSpacing:
+                                                        0 /*percentages not used in flutter. defaulting to zero*/,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    height: 1.625),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                              Positioned(
+                                  top: 75,
+                                  left: 170,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(8),
+                                        topRight: Radius.circular(8),
+                                        bottomLeft: Radius.circular(8),
+                                        bottomRight: Radius.circular(8),
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: Color.fromARGB(
+                                                13, 255, 77, 110),
+                                            offset: Offset(0, 4),
+                                            blurRadius: 14)
+                                      ],
+                                      border: Border.all(
+                                        color: Color.fromRGBO(193, 199, 205, 1),
+                                        width: 1,
+                                      ),
+                                    ),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 12),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Image.asset(
+                                          'images/Factory.png',
+
+                                          // color: kPrimary,
+                                        ),
+                                        SizedBox(width: 8),
+                                        Container(
+                                          decoration: BoxDecoration(),
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 0, vertical: 0),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: <Widget>[
+                                              Text(
+                                                'Business',
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        18, 22, 25, 1),
+                                                    fontFamily: 'Poppins',
+                                                    fontSize: 16,
+                                                    letterSpacing:
+                                                        0 /*percentages not used in flutter. defaulting to zero*/,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    height: 1.625),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                              Positioned(
+                                  top: 140,
+                                  left: 35,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(8),
+                                        topRight: Radius.circular(8),
+                                        bottomLeft: Radius.circular(8),
+                                        bottomRight: Radius.circular(8),
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: Color.fromARGB(
+                                                13, 255, 77, 110),
+                                            offset: Offset(0, 4),
+                                            blurRadius: 14)
+                                      ],
+                                      border: Border.all(
+                                        color: Color.fromRGBO(193, 199, 205, 1),
+                                        width: 1,
+                                      ),
+                                    ),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 12),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Image.asset(
+                                          'images/car.png',
+
+                                          // color: kPrimary,
+                                        ),
+                                        SizedBox(width: 8),
+                                        Container(
+                                          decoration: BoxDecoration(),
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 0, vertical: 0),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: <Widget>[
+                                              Text(
+                                                'Car',
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        18, 22, 25, 1),
+                                                    fontFamily: 'Poppins',
+                                                    fontSize: 16,
+                                                    letterSpacing:
+                                                        0 /*percentages not used in flutter. defaulting to zero*/,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    height: 1.625),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                            ]))),
+                  ])),
+
               // MmmButtons.myProfileButtons('Matching Percentage', action: () {
               //   Navigator.of(context).push(
               //     MaterialPageRoute(

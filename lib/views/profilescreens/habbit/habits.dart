@@ -14,6 +14,7 @@ import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
+import 'package:makemymarry/views/profilescreens/bio/bio.dart';
 import 'package:makemymarry/views/profilescreens/religion/religion.dart';
 
 class Habit extends StatelessWidget {
@@ -46,7 +47,7 @@ class _HabitScreenState extends State<HabitScreen> {
   Widget build(BuildContext context) {
     this.userDetails =
         BlocProvider.of<HabitBloc>(context).userRepository.useDetails!;
-    if (this.userDetails.registrationStep > 3) {
+    if (this.userDetails.registrationStep > 7) {
       BlocProvider.of<HabitBloc>(context).add(onHabitDataLoad(userDetails.id));
     }
     return Scaffold(
@@ -301,7 +302,7 @@ class _HabitScreenState extends State<HabitScreen> {
   void navigateToReligion() {
     var userRepo = BlocProvider.of<HabitBloc>(context).userRepository;
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => Religion(
+        builder: (context) => Bio(
               userRepository: userRepo,
             )));
   }
@@ -311,8 +312,9 @@ class _HabitScreenState extends State<HabitScreen> {
     this.drinkingHabit = BlocProvider.of<HabitBloc>(context).drinkingHabit;
     this.smokingHabit = BlocProvider.of<HabitBloc>(context).smokingHabit;
     if (BlocProvider.of<HabitBloc>(context).profileDetails != null) {
-      this.eatingHabit =
-          BlocProvider.of<HabitBloc>(context).profileDetails!.eatingHabit;
+      if (this.eatingHabit == null)
+        this.eatingHabit =
+            BlocProvider.of<HabitBloc>(context).profileDetails!.eatingHabit;
       if (this.drinkingHabit == null)
         this.drinkingHabit =
             BlocProvider.of<HabitBloc>(context).profileDetails!.drinkingHabit;

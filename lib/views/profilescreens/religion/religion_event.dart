@@ -56,3 +56,5 @@ class onReligionDataLoad extends ReligionEvent {
 
   onReligionDataLoad(this.basicUserId);
 }
+
+class GetUserReligionMasterData extends ReligionEvent {}

@@ -38,6 +38,13 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
       }
     }
 
+    if (event is GetUserReligionMasterData) {
+      var result = await this.userRepository.getMasterData();
+      if (result.status == AppConstants.SUCCESS) {
+        this.userRepository.masterData = result.data!;
+        yield ReligionInitialState();
+      }
+    }
     if (event is OnReligionSelected) {
       if (this.religion == null) {
         this.religion = event.religion;
@@ -114,7 +121,7 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
               .userRepository
               .storageService
               .saveUserDetails(this.userRepository.useDetails!);
-          this.userRepository.updateRegistrationStep(5);
+          this.userRepository.updateRegistrationStep(3);
           print('in religion');
           print(
               'dobinreligionbloc=${this.userRepository.useDetails!.dateOfBirth}');

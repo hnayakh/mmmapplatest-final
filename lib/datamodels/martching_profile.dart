@@ -546,14 +546,23 @@ class ProfileDetails {
     } else {
       this.noOfChildren = null;
     }
-    this.abilityStatus = AbilityStatus.values[aboutMe["abilityStatus"]];
+    if (aboutMe["abilityStatus"] != null) {
+      this.abilityStatus = AbilityStatus.values[aboutMe["abilityStatus"]];
+    } else {
+      this.abilityStatus = AbilityStatus.Normal;
+    }
     this.height = (double.parse(aboutMe["height"]) / 30.48).toStringAsFixed(1);
+    if (json["userHabits"] != null && json["userHabits"].length > 0) {
+      var habit = json["userHabits"][0];
 
-    var habit = json["userHabits"][0];
-
-    this.eatingHabit = EatingHabit.values[habit["eatingHabit"]];
-    this.smokingHabit = SmokingHabit.values[habit["smokingHabit"]];
-    this.drinkingHabit = DrinkingHabit.values[habit["drinkingHabit"]];
+      this.eatingHabit = EatingHabit.values[habit["eatingHabit"]];
+      this.smokingHabit = SmokingHabit.values[habit["smokingHabit"]];
+      this.drinkingHabit = DrinkingHabit.values[habit["drinkingHabit"]];
+    } else {
+      this.eatingHabit = EatingHabit.Notspecified;
+      this.smokingHabit = SmokingHabit.Notspecified;
+      this.drinkingHabit = DrinkingHabit.Notspecified;
+    }
     if (json["userReligions"] != null && json["userReligions"].length > 0) {
       var userReligion = json["userReligions"][0];
 
@@ -562,7 +571,8 @@ class ProfileDetails {
       this.cast = userReligion["cast"];
       this.casteName = userReligion["casteName"];
       this.subCasteName = userReligion["subCasteName"];
-      this.gothra = userReligion["gothra"];
+      this.gothra =
+          userReligion["gothra"] != null ? userReligion["gothra"] : "";
       // userReligion["gothra"];
       this.motherTongue = userReligion["motherTongue"];
       this.motherTongueId = userReligion["motherTongueId"];

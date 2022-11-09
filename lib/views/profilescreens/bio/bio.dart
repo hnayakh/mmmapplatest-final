@@ -59,11 +59,12 @@ class _BioScreenState extends State<BioScreen> {
   Widget build(BuildContext context) {
     this.userDetails =
         BlocProvider.of<BioBloc>(context).userRepository.useDetails!;
-    print("STEP${userDetails.registrationStep}");
-    if (this.userDetails.registrationStep > 7) {
+    print("STEPNOW${this.userDetails.registrationStep}");
+    if (this.userDetails.registrationStep > 8) {
       BlocProvider.of<BioBloc>(context).add(onBioDataLoad(userDetails.id));
     }
     print("ABOUTME${this.aboutMe}");
+    print("IMAGEPATH${this.localImagePaths.length}");
     return Scaffold(
         body: BlocConsumer<BioBloc, BioState>(
       listener: (context, state) {
@@ -127,9 +128,10 @@ class _BioScreenState extends State<BioScreen> {
                                             crossAxisSpacing: 20,
                                             mainAxisSpacing: 20),
                                     itemBuilder: (context, index) {
+                                      print("IMAGE${this.localImagePaths}");
                                       if (this.localImagePaths.length == 0) {
                                         return addImageButton();
-                                      } else
+                                      } else {
                                         return Column(
                                           children: [
                                             Container(
@@ -204,6 +206,7 @@ class _BioScreenState extends State<BioScreen> {
                                             ),
                                           ],
                                         );
+                                      }
                                     },
                                     itemCount: this.localImagePaths.length,
                                   )),
@@ -487,6 +490,9 @@ class _BioScreenState extends State<BioScreen> {
           this.localImagePaths.add("addImage");
         print("object${BlocProvider.of<BioBloc>(context).profileData!.images}");
       }
+    } else {
+      if (!this.localImagePaths.contains("addImage"))
+        this.localImagePaths.add("addImage");
     }
   }
 
