@@ -712,7 +712,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
               ' ${AppHelper.getAgeFromDob(profileDetails.dateOfBirth)}yrs, ${AppHelper.getReadableDob(profileDetails.dateOfBirth)}'),
           MmmWidgets.rowWidget("images/office.svg", profileDetails.occupation),
           MmmWidgets.rowWidget(
-              "images/height.svg", '${profileDetails.height}"" height'),
+              "images/height.svg", '${profileDetails.height}" height'),
         ],
       ),
     );

@@ -106,8 +106,8 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
                 child: MmmIcons.rightArrowEnabled(),
               )),
           Positioned(
-              bottom: 24,
-              left: 24,
+              top: 15,
+              right: 20,
               child: InkWell(
                   onTap: () {
                     Navigator.push(
@@ -127,7 +127,7 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
                   },
                   // child: MmmIcons.rightArrowEnabled(),
                   child: Text('Skip >',
-                      style: TextStyle(color: kPrimary, fontSize: 18)))),
+                      style: TextStyle(color: kPrimary, fontSize: 15)))),
           state is OnLoading ? MmmWidgets.buildLoader(context) : Container(),
         ],
       ));

@@ -168,7 +168,9 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                         color: Colors.white.withOpacity(0.85),
                         borderRadius: BorderRadius.circular(6)),
                     child: SvgPicture.asset(
-                      this.isStack ? "images/stack.svg" : "images/stack.svg",
+                      this.isStack
+                          ? "images/stack.svg"
+                          : "images/grid_view.svg",
                       color: kShadowColorForGrid,
                     ),
                   ),
@@ -551,7 +553,7 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10)),
-                          child: Image.asset('images/icons/grid-icon.png')),
+                          child: Image.asset('images/icons/shuffle-icon.png')),
 
                       // child: Container(
                       //   height: 44,

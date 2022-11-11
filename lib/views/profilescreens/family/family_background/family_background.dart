@@ -116,8 +116,6 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                   child: MmmIcons.rightArrowEnabled(),
                 )),
             Positioned(
-                bottom: 24,
-                left: 24,
                 child: InkWell(
                     onTap: () {
                       Navigator.push(
@@ -134,8 +132,20 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                       //     cityController.text.trim()));
                     },
                     // child: MmmIcons.rightArrowEnabled(),
-                    child: Text('Skip >',
-                        style: TextStyle(color: kPrimary, fontSize: 18)))),
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '(This section is optional)',
+                            style: TextStyle(fontSize: 14),
+                          ),
+                          Text('Skip >',
+                              style: TextStyle(color: kPrimary, fontSize: 15)),
+                        ],
+                      ),
+                    ))),
             state is OnLoading ? MmmWidgets.buildLoader(context) : Container(),
           ],
         ));
@@ -172,6 +182,9 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
           children: [
             Column(
               children: [
+                SizedBox(
+                  height: 30,
+                ),
                 MmmButtons.categoryButtons(
                     'Family Status',
                     level != null

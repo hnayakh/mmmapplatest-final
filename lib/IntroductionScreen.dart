@@ -1,8 +1,11 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:makemymarry/repo/user_repo.dart';
+import 'package:makemymarry/saurabh/hexcolor.dart';
+import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/views/signinscreens/signin_screen1.dart';
 
@@ -36,35 +39,38 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   }
 
   Widget _buildImage(String assetName, [double width = 500]) {
-    return Image.asset('images/$assetName', width: 800);
+    return Container(
+      width: 420,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+          bottomRight: Radius.circular(40),
+        ),
+      ),
+      child: Image.asset(
+        'images/$assetName',
+        height: 310,
+        fit: BoxFit.fill,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     const bodyStyle = TextStyle(
-      fontSize: 18.0,
+      fontSize: 17.0,
     );
 
     const pageDecoration = const PageDecoration(
       titleTextStyle: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
       bodyTextStyle: bodyStyle,
       bodyAlignment: Alignment(0.7, 0.5),
-      //imagePadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
       pageColor: Colors.white,
-      //imageAlignment: Alignment.topCenter,
-
-      //imageFlex: 1,
-      //bodyFlex: 6,
-      //imageFlex: 6,
-
-      //  imagePadding: EdgeInsets.only(bottom: 55),
     );
 
     return IntroductionScreen(
       key: introKey,
       globalBackgroundColor: Colors.white,
       globalHeader: Align(
-        //  alignment: Alignment.bottomCenter,
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(top: 0, right: 0),
@@ -85,50 +91,46 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       // ),
       pages: [
         PageViewModel(
-          title: "This is onboarding screen 1.",
+          title: "This is  an onboarding screen 1.",
           body:
-              "Talk about one of the feature of the application & how it will help your users.",
-          //  image: _buildImage('frameUpadatedone.jpg'),
+              "Talk about one of the feature of your application & how it will help your users.",
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "This is onboarding screen 2.",
+          title: "This is an onboarding screen 2.",
           body:
-              "Talk about one of the feature of the application & how it will help your users.",
-          // image: _buildImage('frameUpadatedone.jpg'),
+              "Talk about one of your feature of the application & how it will help your users.",
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "This is onboarding screen 3.",
+          title: "This is an onboarding screen 3.",
           body:
-              "Talk about one of the feature of the application & how it will help your users.",
-          // image: _buildImage('frameUpadatedone.jpg'),
+              "Talk about one of the feature of your application & how it will help your users.",
           decoration: pageDecoration,
         ),
       ],
       onDone: () => _onIntroEnd(context),
       onSkip: () => _onIntroEnd(context),
-      // You can override onSkip callback
+
       showSkipButton: true,
       nextFlex: 0,
 
-      //rtl: true, // Display as right-to-left
-      //  back:  Icon(Icons.arrow_back),
       skip: const Text('Previous',
           style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black)),
 
       next: Container(
         height: 50,
-        width: 80,
+        width: 70,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0),
-          color: kPrimary,
-          border: Border.all(color: kPrimary),
+          color: kSecondary,
+          border: Border.all(color: Color.fromARGB(255, 255, 255, 255)),
         ),
         child: Center(
           child: Text(
             'Next',
-            style: TextStyle(color: Colors.white, fontSize: 18),
+            style: TextStyle(
+                color: Color.fromARGB(255, 255, 255, 255), fontSize: 17),
           ),
         ),
       ),
@@ -149,7 +151,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         ),
         spacing: EdgeInsets.all(10),
         color: Colors.grey,
-        activeColor: kPrimary,
+        activeColor: kSecondary,
         activeSize: Size(35.0, 8.0),
         activeShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(25.0)),

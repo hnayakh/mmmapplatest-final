@@ -14,6 +14,7 @@ import 'package:makemymarry/views/stackviewscreens/meet%20status/meet_status_scr
 import 'package:makemymarry/views/stackviewscreens/meet%20status/meet_timing/schedule_meeting_time.dart';
 import 'package:makemymarry/views/stackviewscreens/notification_list.dart';
 import 'package:makemymarry/views/stackviewscreens/search_screen.dart';
+import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/my_profile/myprofile.dart';
 import 'interests/interest_status_screen.dart';
 import 'matching_profile/matching_profile.dart';
 
@@ -169,6 +170,9 @@ class HomeScreenState extends State<HomeScreen> {
         );
       case 2:
         return
+            // MyprofileScreen(
+            //   userRepository: widget.userRepository,
+            // );
             // ScheduleMeetingTime();
             Interests(
           userRepository: widget.userRepository,

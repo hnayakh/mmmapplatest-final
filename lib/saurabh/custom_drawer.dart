@@ -119,8 +119,10 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                       ),
                       CircleAvatar(
                           radius: 40,
-                          backgroundImage:
-                              NetworkImage(profileDetails!.images[1])),
+                          backgroundImage: NetworkImage(
+                              this.profileDetails != null
+                                  ? profileDetails!.images[1]
+                                  : "")),
                       SizedBox(
                         width: 20,
                       ),
@@ -131,7 +133,9 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                           Row(
                             children: [
                               Text(
-                                profileDetails!.name,
+                                this.profileDetails != null
+                                    ? profileDetails!.name
+                                    : "",
                                 style: MmmTextStyles.heading4(
                                     textColor: Colors.white),
                               ),
@@ -143,7 +147,9 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                             ],
                           ),
                           Text(
-                            profileDetails!.mmId.toUpperCase(),
+                            this.profileDetails != null
+                                ? profileDetails!.mmId.toUpperCase()
+                                : "",
                             style: MmmTextStyles.bodyMedium(
                                 textColor: Colors.white),
                           ),

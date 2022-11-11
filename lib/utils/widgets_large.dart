@@ -295,7 +295,7 @@ class MmmWidgets {
                 height: 24,
               ),
               Container(
-                  height: 60,
+                  height: 90,
                   child: Text(
                     'your profile is created successfully on $date with ${user.displayId.toUpperCase()} id',
                     textAlign: TextAlign.center,
