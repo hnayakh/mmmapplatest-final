@@ -88,7 +88,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
   Widget buildUi(BuildContext context, CreateAccountState state) {
     return SingleChildScrollView(
         child: Container(
-      padding: EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 10),
+      padding: EdgeInsets.only(left: 12, right: 14, top: 16, bottom: 10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -282,7 +282,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                   InkWell(
                     onTap: () {},
                     child: GradientText(
-                      ' terms & conditions',
+                      'terms & conditions',
                       style: MmmTextStyles.captionBold(),
                       colors: [kPrimary, kSecondary],
                     ),
@@ -424,7 +424,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                 Navigator.of(context).pop();
               },
               child: GradientText(
-                'Sign in?',
+                'Sign in',
                 style: MmmTextStyles.bodySmall(),
                 colors: [kPrimary, kSecondary],
               ),

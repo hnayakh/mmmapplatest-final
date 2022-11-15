@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:makemymarry/bloc/about/about_bloc.dart';
 import 'package:makemymarry/bloc/about/about_state.dart';
 import 'package:makemymarry/bloc/sign_in/signin_bloc.dart';
+import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/matching_percentage/matching_percentage.dart';
 import 'package:makemymarry/repo/user_repo.dart';
@@ -21,6 +22,7 @@ import 'package:makemymarry/views/home/menu/account_menu_state.dart'
 import 'package:makemymarry/views/profilescreens/about/about.dart';
 import 'package:makemymarry/views/profilescreens/bio/bio.dart';
 import 'package:makemymarry/views/profilescreens/family/family.dart';
+import 'package:makemymarry/views/profilescreens/habbit/habits.dart';
 import 'package:makemymarry/views/profilescreens/occupation/occupation_bloc.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/sidebar_about_screen.dart';
@@ -90,7 +92,7 @@ class _MyProfileState extends State<MyProfile> {
                     BlocProvider.of<AccountMenuBloc>(context).profileData;
                 print("DDDD${this.profileDetails!.drinkingHabit.name}");
               }
-              print("Akash");
+              print("Akashj");
               print('checkimagestatus$state');
               if (state is Menu.AccountMenuInitialState) {
                 BlocProvider.of<AccountMenuBloc>(context).add(FetchMyProfile());
@@ -425,10 +427,19 @@ class _MyProfileState extends State<MyProfile> {
                                     ],
                                   ),
                                 ),
-                                Image.asset(
-                                  'images/pen.png',
-                                  color: kPrimary,
-                                  height: 20,
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) => About(
+                                                userRepository:
+                                                    widget.userRepository)));
+                                  },
+                                  child: Image.asset(
+                                    'images/pen.png',
+                                    color: kPrimary,
+                                    height: 20,
+                                  ),
                                 ),
                               ],
                             ),
@@ -491,9 +502,20 @@ class _MyProfileState extends State<MyProfile> {
                                           ],
                                         ),
                                       ),
-                                      Image.asset(
-                                        'images/pen.png',
-                                        color: kPrimary,
+                                      InkWell(
+                                        onTap: () {
+                                          print("...");
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                                  builder: (context) => Bio(
+                                                        userRepository: widget
+                                                            .userRepository,
+                                                      )));
+                                        },
+                                        child: Image.asset(
+                                          'images/pen.png',
+                                          color: kPrimary,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -575,7 +597,7 @@ class _MyProfileState extends State<MyProfile> {
                                       //SizedBox(width: 230),
                                       InkWell(
                                         onTap: () {
-                                          print("Akash");
+                                          print("Akashs");
                                           navigateToFamily(context);
                                         },
                                         child: Image.asset(
@@ -913,9 +935,20 @@ class _MyProfileState extends State<MyProfile> {
                                           ],
                                         ),
                                       ),
-                                      Image.asset(
-                                        'images/pen.png',
-                                        color: kPrimary,
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (ctx) => Habit(
+                                                        userRepository: widget
+                                                            .userRepository,
+                                                      )));
+                                        },
+                                        child: Image.asset(
+                                          'images/pen.png',
+                                          color: kPrimary,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -1790,9 +1823,9 @@ class _MyProfileState extends State<MyProfile> {
 
   void navigateToFamily(BuildContext context) {
     var userRepo = BlocProvider.of<OccupationBloc>(context).userRepository;
-    var countryModel = BlocProvider.of<OccupationBloc>(context).countryModel!;
-    var stateModel = BlocProvider.of<OccupationBloc>(context).myState!;
-    var city = BlocProvider.of<OccupationBloc>(context).city!;
+    var countryModel = BlocProvider.of<OccupationBloc>(context).countryModel;
+    var stateModel = BlocProvider.of<OccupationBloc>(context).myState;
+    var city = BlocProvider.of<OccupationBloc>(context).city;
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => FamilyScreen(
               userRepository: userRepo,

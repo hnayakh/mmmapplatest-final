@@ -115,7 +115,7 @@ class _HabitScreenState extends State<HabitScreen> {
                         height: 8,
                       ),
                       Container(
-                        height: 54,
+                        height: 50,
                         child: Row(
                           children: [
                             eatingHabit == EatingHabit.Nonvegetarrian

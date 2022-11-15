@@ -154,7 +154,7 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
             SizedBox(
               height: 24,
             ),
-            MmmButtons.categoryButtons(
+            MmmButtons.categoryButtonsNotRequired(
                 "Father's Occpation",
                 fatherOccupation != null
                     ? AppHelper.getStringFromEnum(fatherOccupation!)
@@ -166,7 +166,7 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
             SizedBox(
               height: 24,
             ),
-            MmmButtons.categoryButtons(
+            MmmButtons.categoryButtonsNotRequired(
                 "Mother's Occpation",
                 motherOccupation != null
                     ? AppHelper.getStringFromEnum(motherOccupation!)
@@ -214,7 +214,7 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
                           width: 2,
                         ),
                         Text(
-                          '*',
+                          '',
                           style: MmmTextStyles.bodySmall(textColor: kredStar),
                         )
                       ],
@@ -234,7 +234,7 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
                           width: 2,
                         ),
                         Text(
-                          '*',
+                          '',
                           style: MmmTextStyles.bodySmall(textColor: kredStar),
                         )
                       ],
@@ -409,7 +409,7 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
                           width: 2,
                         ),
                         Text(
-                          '*',
+                          '',
                           style: MmmTextStyles.bodySmall(textColor: kredStar),
                         )
                       ],
@@ -428,7 +428,7 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
                           width: 2,
                         ),
                         Text(
-                          '*',
+                          '',
                           style: MmmTextStyles.bodySmall(textColor: kredStar),
                         )
                       ],

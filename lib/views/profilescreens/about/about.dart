@@ -186,6 +186,7 @@ class _AboutScreenState extends State<AboutScreen> {
               }),
               this.maritalStatus != MaritalStatus.NeverMarried
                   ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
                           height: 24,
@@ -198,6 +199,7 @@ class _AboutScreenState extends State<AboutScreen> {
                           ),
                         ),
                         Container(
+                          margin: EdgeInsets.fromLTRB(1, 5, 0, 1),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -215,14 +217,9 @@ class _AboutScreenState extends State<AboutScreen> {
                                           ChildrenStatus.YesLivingTogether;
                                     }),
                               ),
-                              Text(
-                                'Yes Living Together',
-                                style:
-                                    MmmTextStyles.bodySmall(textColor: kDark5),
-                              ),
-                              SizedBox(
-                                width: 16,
-                              ),
+                              Text('Yes Living Together',
+                                  style:
+                                      TextStyle(fontSize: 14, color: kDark5)),
                               Transform.scale(
                                 scale: 1.2,
                                 child: Radio(
@@ -237,14 +234,61 @@ class _AboutScreenState extends State<AboutScreen> {
                                           ChildrenStatus.YesNotLivingTogether;
                                     }),
                               ),
-                              Text(
-                                'Yes Not Living \n Together',
-                                style:
-                                    MmmTextStyles.bodySmall(textColor: kDark5),
-                              ),
+                              SizedBox(width: 1),
+                              Text('Yes Not Living\nTogether',
+                                  style:
+                                      TextStyle(fontSize: 14, color: kDark5)),
                             ],
                           ),
                         ),
+                        // Container(
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.start,
+                        //     children: [
+                        //       Transform.scale(
+                        //         scale: 1.2,
+                        //         child: Radio(
+                        //             activeColor: kPrimary,
+                        //             value: ChildrenStatus.YesLivingTogether,
+                        //             groupValue: childrenStatus,
+                        //             onChanged: (val) {
+                        //               BlocProvider.of<AboutBloc>(context).add(
+                        //                   OnChildrenSelected(ChildrenStatus
+                        //                       .YesLivingTogether));
+                        //               this.childrenStatus =
+                        //                   ChildrenStatus.YesLivingTogether;
+                        //             }),
+                        //       ),
+                        //       Text(
+                        //         'Yes Living Together',
+                        //         style:
+                        //             MmmTextStyles.bodySmall(textColor: kDark5),
+                        //       ),
+                        //       SizedBox(
+                        //         width: 16,
+                        //       ),
+                        //       Transform.scale(
+                        //         scale: 1.2,
+                        //         child: Radio(
+                        //             activeColor: kPrimary,
+                        //             value: ChildrenStatus.YesNotLivingTogether,
+                        //             groupValue: childrenStatus,
+                        //             onChanged: (val) {
+                        //               BlocProvider.of<AboutBloc>(context).add(
+                        //                   OnChildrenSelected(ChildrenStatus
+                        //                       .YesNotLivingTogether));
+                        //               this.childrenStatus =
+                        //                   ChildrenStatus.YesNotLivingTogether;
+                        //             }),
+                        //       ),
+                        //       Text(
+                        //         'Yes Not Living \n Together',
+                        //         style:
+                        //             MmmTextStyles.bodySmall(textColor: kDark5),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
                         Container(
                           child: Row(
                             children: [
@@ -272,7 +316,9 @@ class _AboutScreenState extends State<AboutScreen> {
                       ],
                     )
                   : Container(),
-              this.maritalStatus != MaritalStatus.NeverMarried
+              //  this.maritalStatus != MaritalStatus.NeverMarried
+              this.maritalStatus != MaritalStatus.NeverMarried &&
+                      this.childrenStatus != ChildrenStatus.No
                   ? Column(
                       children: [
                         SizedBox(
@@ -314,7 +360,7 @@ class _AboutScreenState extends State<AboutScreen> {
                         ),
                       ),
                       Text(
-                        ' *',
+                        '',
                         style: MmmTextStyles.bodySmall(textColor: kredStar),
                       )
                     ],
@@ -324,7 +370,7 @@ class _AboutScreenState extends State<AboutScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Transform.scale(
-                          scale: 1.2,
+                          scale: 1.1,
                           child: Radio(
                               activeColor: kPrimary,
                               value: AbilityStatus.Normal,
@@ -337,13 +383,11 @@ class _AboutScreenState extends State<AboutScreen> {
                         //SizedBox(
                         // width: 8,
                         //  ),
-                        Text(
-                          'Normal    ',
-                          style: MmmTextStyles.bodySmall(textColor: kDark5),
-                        ),
+                        Text('Normal',
+                            style: TextStyle(fontSize: 15, color: kDark5)),
 
                         Transform.scale(
-                          scale: 1.2,
+                          scale: 1.1,
                           child: Radio(
                               activeColor: kPrimary,
                               value: AbilityStatus.PhysicallyChallenged,
@@ -358,10 +402,8 @@ class _AboutScreenState extends State<AboutScreen> {
                         //   width: 8,
                         // ),
 
-                        Text(
-                          'Physically Challenged',
-                          style: MmmTextStyles.bodySmall(textColor: kDark5),
-                        ),
+                        Text('Physically Challenged',
+                            style: TextStyle(fontSize: 15, color: kDark5)),
 
                         Expanded(
                           flex: 1,
@@ -372,6 +414,59 @@ class _AboutScreenState extends State<AboutScreen> {
                       ],
                     ),
                   )
+                  // Container(
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     children: [
+                  //       Transform.scale(
+                  //         scale: 1.2,
+                  //         child: Radio(
+                  //             activeColor: kPrimary,
+                  //             value: AbilityStatus.Normal,
+                  //             groupValue: abilityStatus,
+                  //             onChanged: (val) {
+                  //               BlocProvider.of<AboutBloc>(context).add(
+                  //                   OnDisabilitySelected(AbilityStatus.Normal));
+                  //             }),
+                  //       ),
+                  //       //SizedBox(
+                  //       // width: 8,
+                  //       //  ),
+                  //       Text(
+                  //         'Normal    ',
+                  //         style: MmmTextStyles.bodySmall(textColor: kDark5),
+                  //       ),
+
+                  //       Transform.scale(
+                  //         scale: 1.2,
+                  //         child: Radio(
+                  //             activeColor: kPrimary,
+                  //             value: AbilityStatus.PhysicallyChallenged,
+                  //             groupValue: abilityStatus,
+                  //             onChanged: (val) {
+                  //               BlocProvider.of<AboutBloc>(context).add(
+                  //                   OnDisabilitySelected(
+                  //                       AbilityStatus.PhysicallyChallenged));
+                  //             }),
+                  //       ),
+                  //       // SizedBox(
+                  //       //   width: 8,
+                  //       // ),
+
+                  //       Text(
+                  //         'Physically Challenged',
+                  //         style: MmmTextStyles.bodySmall(textColor: kDark5),
+                  //       ),
+
+                  //       Expanded(
+                  //         flex: 1,
+                  //         child: SizedBox(
+                  //             // width: 22,
+                  //             ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // )
                 ],
               ),
             ],

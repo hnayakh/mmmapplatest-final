@@ -58,6 +58,7 @@ class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: MmmButtons.appbarThin(),
       body: BlocConsumer<MobileVerificationBloc, MobileVerificationState>(
         listener: (context, state) {
@@ -92,7 +93,7 @@ class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
                       height: 32,
                     ),
                     Container(
-                      margin: EdgeInsets.only(left: 16),
+                      margin: EdgeInsets.only(left: 15),
                       alignment: Alignment.centerLeft,
                       child: InkWell(
                           onTap: () {
@@ -128,14 +129,14 @@ class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
                         style: MmmTextStyles.heading2(textColor: kDark5),
                       ),
                     ),
-                    SizedBox(
-                      height: 6,
-                    ),
+                    // SizedBox(
+                    //   height: 6,
+                    // ),
                     Container(
-                      margin: EdgeInsets.only(left: 16),
+                      margin: EdgeInsets.fromLTRB(15, 15, 1, 0),
                       child: Text(
                         'We have sent a 6 digit verification code on your \nregistered number +$dialCode-${phone}',
-                        style: MmmTextStyles.bodySmall(textColor: gray3),
+                        style: TextStyle(fontSize: 14),
                         textScaleFactor: 1.0,
                       ),
                     ),

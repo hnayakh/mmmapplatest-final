@@ -1289,7 +1289,7 @@ class MmmButtons {
     );
   }
 
-  static Widget categoryButtons(
+  static Widget categoryButtonsNotRequired(
       String labelText, String hintText, String newhintText, String icon,
       {Function()? action,
       bool showCancel = false,
@@ -1307,6 +1307,95 @@ class MmmButtons {
             required
                 ? Text(
                     '',
+                    style: MmmTextStyles.bodySmall(textColor: kredStar),
+                  )
+                : Container()
+          ],
+        ),
+        SizedBox(
+          height: 4,
+        ),
+        Container(
+          height: 44,
+          decoration: BoxDecoration(
+            color: kLight4,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(width: 1, color: kDark2),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: action,
+                child: Container(
+                  padding: EdgeInsets.only(left: 12, right: 12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          hintText,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textScaleFactor: 1.0,
+                          textAlign: TextAlign.start,
+                          style: newhintText == hintText
+                              ? MmmTextStyles.bodyRegular(textColor: kDark2)
+                              : MmmTextStyles.bodyRegular(textColor: kDark5),
+                        ),
+                      ),
+                      showCancel
+                          ? InkWell(
+                              onTap: cancelAction,
+                              child: Container(
+                                width: 24,
+                                height: 24,
+                                child: SvgPicture.asset(
+                                  "images/Cross.svg",
+                                  width: 24,
+                                  height: 24,
+                                  color: kPrimary,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            )
+                          : SvgPicture.asset(
+                              icon,
+                              width: 24,
+                              height: 24,
+                              color: Color(0xff878D96),
+                              fit: BoxFit.cover,
+                            ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  static Widget categoryButtons(
+      String labelText, String hintText, String newhintText, String icon,
+      {Function()? action,
+      bool showCancel = false,
+      Function()? cancelAction,
+      bool required = true}) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Text(
+              labelText,
+              textScaleFactor: 1.0,
+              style: MmmTextStyles.bodySmall(textColor: kDark5),
+            ),
+            required
+                ? Text(
+                    ' *',
                     style: MmmTextStyles.bodySmall(textColor: kredStar),
                   )
                 : Container()
@@ -2787,7 +2876,7 @@ class MmmButtons {
           child: Container(
             alignment: Alignment.center,
             height: containerheight,
-            padding: const EdgeInsets.symmetric(horizontal: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 2),
 
             // width: containerwidth,
             child: Row(

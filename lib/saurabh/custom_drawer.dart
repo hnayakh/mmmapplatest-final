@@ -29,6 +29,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/buttons.dart';
 import '../utils/text_styles.dart';
+import '../views/stackviewscreens/sidebar screens/my_profile/myprofile_menuscreen.dart';
 
 class AppDrawer extends StatelessWidget {
   final UserRepository userRepository;
@@ -188,8 +189,8 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    MyprofileScreen(userRepository: userRepo)),
+                                builder: (context) => MyprofileMenuScreen(
+                                    userRepository: userRepo)),
                           );
                           // showModalBottomSheet(
                           //     shape: const RoundedRectangleBorder(
@@ -359,18 +360,17 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                           text: "Contact Support",
                         ),
                       ),
-                      //   InkWell(
-                      //     onTap: () {
-
-                      //     },
-                      //  child: customListTile(
-                      //     leading: Icon(
-                      //       Icons.person,
-                      //       color: primaryColor,
-                      //     ),
-                      //     text: "Search by ID",
-                      //   ),
-                      //   ),
+                      InkWell(
+                        onTap: () {},
+                        child: customListTile(
+                          leading: SvgPicture.asset("images/serachById.svg"),
+                          // Icon(
+                          //   Icons.person,
+                          //   color: primaryColor,
+                          // ),
+                          text: "Search by ID",
+                        ),
+                      ),
                       InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(

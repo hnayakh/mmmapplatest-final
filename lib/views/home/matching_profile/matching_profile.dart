@@ -447,7 +447,7 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                                   borderRadius: BorderRadius.circular(20.0),
                                 ),
                                 child: Container(
-                                  height: 200,
+                                  height: 240,
                                   width: 25,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20)),
@@ -455,8 +455,40 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       iconText(
+                                          action: () {
+                                            print("Hello");
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      HomeScreen(
+                                                        userRepository: widget
+                                                            .userRepository,
+                                                        list: widget.list,
+                                                        searchList:
+                                                            widget.searchList,
+                                                        premiumList:
+                                                            widget.premiumList,
+                                                        recentViewList: widget
+                                                            .recentViewList,
+                                                        profileVisitorList: widget
+                                                            .profileVisitorList,
+                                                        onlineMembersList: widget
+                                                            .onlineMembersList,
+                                                        screenName: "",
+                                                      )),
+                                            );
+                                          },
                                           leading:
-                                              Icon(Icons.online_prediction),
+                                              // Icon(Icons.search),
+                                              SvgPicture.asset(
+                                            'images/tick.svg',
+                                            color: gray4,
+                                          ),
+                                          text: "Recommended Profile"),
+                                      iconText(
+                                          leading:
+                                              // Icon(Icons.online_prediction),
+                                              Image.asset('images/online.png'),
                                           text: "Online Members"),
                                       iconText(
                                           action: () {
@@ -484,7 +516,8 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                                             );
                                           },
                                           leading:
-                                              Icon(Icons.workspace_premium),
+                                              //Icon(Icons.workspace_premium),
+                                              Image.asset('images/crown.png'),
                                           text: "Premium Members"),
                                       iconText(
                                           action: () {
@@ -512,7 +545,10 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                                             );
                                           },
                                           leading:
-                                              Icon(Icons.visibility_outlined),
+                                              // Icon(Icons.visibility_outlined),
+                                              Image.asset(
+                                            'images/profileVisitors.png',
+                                          ),
                                           text: "Profile Visitors"),
                                       iconText(
                                           action: () {
@@ -539,7 +575,10 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
                                                       )),
                                             );
                                           },
-                                          leading: Icon(Icons.search),
+                                          leading:
+                                              //Icon(Icons.search),
+                                              Image.asset(
+                                                  'images/searchHome.png'),
                                           text: "Recently Viewed"),
                                     ],
                                   ),
@@ -712,7 +751,7 @@ class MatchingProfileScreenState extends State<MatchingProfileScreen> {
         margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
+            border: Border.all(color: Color.fromARGB(118, 158, 158, 158)),
             borderRadius: BorderRadius.circular(10)),
         child: Row(
           children: [

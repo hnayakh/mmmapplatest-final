@@ -200,7 +200,7 @@ class ReligionScreenState extends State<ReligionScreen> {
                               'Select your gothra',
                               'images/rightArrow.svg', action: () {
                             selectGothra(context);
-                          }, required: false),
+                          }, required: true),
                           SizedBox(
                             height: 24,
                           ),

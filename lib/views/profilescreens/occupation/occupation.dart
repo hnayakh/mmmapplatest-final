@@ -135,9 +135,9 @@ class _OccupationScreenState extends State<OccupationScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         SizedBox(
-                          height: 24,
+                          height: 34,
                         ),
-                        MmmButtons.categoryButtons(
+                        MmmButtons.categoryButtonsNotRequired(
                             'Occupation',
                             occupation != null && occupation != ''
                                 ? '${occupation!}'
@@ -149,7 +149,7 @@ class _OccupationScreenState extends State<OccupationScreen> {
                         SizedBox(
                           height: 24,
                         ),
-                        MmmButtons.categoryButtons(
+                        MmmButtons.categoryButtonsNotRequired(
                             'Annual Income',
                             anualIncome != null
                                 ?
@@ -172,7 +172,7 @@ class _OccupationScreenState extends State<OccupationScreen> {
                         SizedBox(
                           height: 24,
                         ),
-                        MmmButtons.categoryButtons(
+                        MmmButtons.categoryButtonsNotRequired(
                             'Highest Education',
                             education != null && education != ''
                                 ? '${education!}'
@@ -202,7 +202,7 @@ class _OccupationScreenState extends State<OccupationScreen> {
                         SizedBox(
                           height: 8,
                         ),
-                        MmmButtons.categoryButtons(
+                        MmmButtons.categoryButtonsNotRequired(
                             'Country',
                             countryModel != null
                                 ? '${countryModel!.name}'
@@ -217,7 +217,7 @@ class _OccupationScreenState extends State<OccupationScreen> {
                         SizedBox(
                           height: 24,
                         ),
-                        MmmButtons.categoryButtons(
+                        MmmButtons.categoryButtonsNotRequired(
                             'State',
                             myState != null && myState!.name != ''
                                 ? '${myState!.name}'
@@ -232,7 +232,7 @@ class _OccupationScreenState extends State<OccupationScreen> {
                         SizedBox(
                           height: 24,
                         ),
-                        MmmButtons.categoryButtons(
+                        MmmButtons.categoryButtonsNotRequired(
                             'City',
                             city != null && city!.name != ''
                                 ? '${city!.name}'
@@ -263,39 +263,69 @@ class _OccupationScreenState extends State<OccupationScreen> {
                     },
                     child: MmmIcons.rightArrowEnabled(),
                   )),
-              Positioned(
-                  top: 10,
-                  left: 15,
-                  child: InkWell(
-                      onTap: () {
-                        BlocProvider.of<OccupationBloc>(context).add(
-                            UpdateCareer(
-                                orgNameController.text.trim(),
-                                annIncomeController.text.trim(),
-                                countryController.text.trim(),
-                                stateController.text.trim(),
-                                cityController.text.trim()));
-                      },
-                      // child: MmmIcons.rightArrowEnabled(),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '(This section is optional)',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                            SizedBox(width: 155),
-                            SizedBox(
-                              height: 24,
-                            ),
-                            Text('Skip >',
-                                style:
-                                    TextStyle(color: kPrimary, fontSize: 15)),
-                          ],
-                        ),
-                      ))),
+              InkWell(
+                onTap: () {
+                  BlocProvider.of<OccupationBloc>(context).add(UpdateCareer(
+                      orgNameController.text.trim(),
+                      annIncomeController.text.trim(),
+                      countryController.text.trim(),
+                      stateController.text.trim(),
+                      cityController.text.trim()));
+                },
+                // child: MmmIcons.rightArrowEnabled(),
+
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(15, 15, 20, 1),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '(This section is optional)',
+                        style: TextStyle(fontSize: 14),
+                      ),
+                      SizedBox(
+                        height: 24,
+                      ),
+                      Text('Skip >',
+                          style: TextStyle(color: kPrimary, fontSize: 15)),
+                    ],
+                  ),
+                ),
+              ),
+              // Positioned(
+              //     top: 10,
+              //     left: 15,
+              //     child:
+              // InkWell(
+              //     onTap: () {
+              //       BlocProvider.of<OccupationBloc>(context).add(
+              //           UpdateCareer(
+              //               orgNameController.text.trim(),
+              //               annIncomeController.text.trim(),
+              //               countryController.text.trim(),
+              //               stateController.text.trim(),
+              //               cityController.text.trim()));
+              //     },
+              //     // child: MmmIcons.rightArrowEnabled(),
+              //     child: Padding(
+              //       padding: const EdgeInsets.all(12.0),
+              //       child: Row(
+              //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //         children: [
+              //           Text(
+              //             '(This section is optional)',
+              //             style: TextStyle(fontSize: 14),
+              //           ),
+              //           SizedBox(width: 155),
+              //           SizedBox(
+              //             height: 24,
+              //           ),
+              //           Text('Skip >',
+              //               style:
+              //                   TextStyle(color: kPrimary, fontSize: 15)),
+              //         ],
+              //       ),
+              //     )),
               // Positioned(
               //     bottom: 24,
               //     left: 24,

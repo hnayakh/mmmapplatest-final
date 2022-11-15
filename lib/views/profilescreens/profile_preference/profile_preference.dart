@@ -252,7 +252,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Transform.scale(
-                                    scale: 1.2,
+                                    scale: 1.1,
                                     child: Radio(
                                         activeColor: kPrimary,
                                         value: AbilityStatus.Normal,
@@ -269,13 +269,13 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
                                   // width: 8,
                                   //  ),
                                   Text(
-                                    'Normal    ',
-                                    style: MmmTextStyles.bodySmall(
-                                        textColor: kDark5),
+                                    'Normal',
+                                    style:
+                                        TextStyle(fontSize: 15, color: kDark5),
                                   ),
 
                                   Transform.scale(
-                                    scale: 1.2,
+                                    scale: 1.1,
                                     child: Radio(
                                         activeColor: kPrimary,
                                         value:
@@ -295,8 +295,8 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
                                   // ),
                                   Text(
                                     'Physically Challenged',
-                                    style: MmmTextStyles.bodySmall(
-                                        textColor: kDark5),
+                                    style:
+                                        TextStyle(fontSize: 15, color: kDark5),
                                   ),
                                   Expanded(
                                     flex: 1,
@@ -534,7 +534,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   }
 
   Widget buildMaritalStatus() {
-    return MmmButtons.categoryButtons(
+    return MmmButtons.categoryButtonsNotRequired(
         'Marital Status',
         this.maritalStatus != []
             ? getStringFrom(this.maritalStatus)
@@ -558,7 +558,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   }
 
   Widget buildCountry() {
-    return MmmButtons.categoryButtons(
+    return MmmButtons.categoryButtonsNotRequired(
         'Country',
         this.countryModel.name.length != 0
             ? '${countryModel.name}'
@@ -587,7 +587,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   }
 
   Widget buildSelectedState() {
-    return MmmButtons.categoryButtons(
+    return MmmButtons.categoryButtonsNotRequired(
         'State',
         myState.length > 0 ? getStateNames(this.myState) : 'Does not matter',
         'Select State',
@@ -647,7 +647,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   }
 
   Widget buildSelectCity() {
-    return MmmButtons.categoryButtons(
+    return MmmButtons.categoryButtonsNotRequired(
         'City',
         this.city.length > 0 ? getStateNames(city) : 'Does not matter',
         'Select City',
@@ -664,7 +664,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   }
 
   Widget buildReligion() {
-    return MmmButtons.categoryButtons(
+    return MmmButtons.categoryButtonsNotRequired(
         'Religion',
         this.religion.length > 0
             ? getReligionText(this.religion)
@@ -708,7 +708,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   Widget buildCaste() {
     return //BlocProvider.of<ProfilePreferenceBloc>(context).checkCaste()?
         Container(
-            child: MmmButtons.categoryButtons(
+            child: MmmButtons.categoryButtonsNotRequired(
                 'Caste',
                 subCaste.length > 0
                     ? getSubCasteText(subCaste)
@@ -743,7 +743,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   }
 
   Widget buildMotherTongue() {
-    return MmmButtons.categoryButtons(
+    return MmmButtons.categoryButtonsNotRequired(
         'Mother Tongue',
         motherTongue.length > 0
             ? getReligionText(motherTongue)
@@ -780,7 +780,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   }
 
   Widget buildOccupation() {
-    return MmmButtons.categoryButtons(
+    return MmmButtons.categoryButtonsNotRequired(
         'Occupation',
         occupation.length > 0
             ? getOccupationText(occupation)
@@ -798,7 +798,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   }
 
   Widget buildEducation() {
-    return MmmButtons.categoryButtons(
+    return MmmButtons.categoryButtonsNotRequired(
         'Highest Education',
         education.length > 0 ? getEducationText(education) : 'Does not matter',
         'Select your highest education',
@@ -946,7 +946,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
             width: 6,
           ),
           Expanded(
-            child: MmmButtons.categoryButtons(
+            child: MmmButtons.categoryButtonsNotRequired(
                 'Minimum',
                 this.annualIncome.length > 0
                     ? currentIncomes
@@ -967,7 +967,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
             width: 6,
           ),
           Expanded(
-              child: MmmButtons.categoryButtons(
+              child: MmmButtons.categoryButtonsNotRequired(
                   'Maximum',
                   this.annualIncomeMax.length > 0
                       ? currentMaxIncomes
@@ -1175,7 +1175,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   }
 
   Widget buildAnnualIncome() {
-    return MmmButtons.categoryButtons(
+    return MmmButtons.categoryButtonsNotRequired(
         'Annual Income',
         this.annualIncome.length > 0 ? currentIncomes : 'Does not matter',
         'Select Annual Income',
@@ -1229,7 +1229,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   }
 
   Widget buildDietryHabiits() {
-    return MmmButtons.categoryButtons(
+    return MmmButtons.categoryButtonsNotRequired(
         'Dietary Habit',
         this.eatingHabit.length > 0
             ? getStringFrom(eatingHabit)
@@ -1260,7 +1260,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   }
 
   Widget buildDrinkingHabits() {
-    return MmmButtons.categoryButtons(
+    return MmmButtons.categoryButtonsNotRequired(
         'Drinking Habit',
         this.drinkingHabit.length > 0
             ? getStringFrom(drinkingHabit)
@@ -1291,7 +1291,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   }
 
   Widget buildSmokingHabit() {
-    return MmmButtons.categoryButtons(
+    return MmmButtons.categoryButtonsNotRequired(
         'Smoking Habit',
         this.smokingHabit.length > 0
             ? getStringFrom(smokingHabit)

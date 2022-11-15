@@ -185,7 +185,7 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                 SizedBox(
                   height: 30,
                 ),
-                MmmButtons.categoryButtons(
+                MmmButtons.categoryButtonsNotRequired(
                     'Family Status',
                     level != null
                         ? AppHelper.getStringFromEnum(level!)
@@ -197,7 +197,7 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                 SizedBox(
                   height: 24,
                 ),
-                MmmButtons.categoryButtons(
+                MmmButtons.categoryButtonsNotRequired(
                     'Family Values',
                     this.values != null
                         ? describeEnum(this.values!)
@@ -304,7 +304,9 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      'Current location of groom’s family',
+                      this.userDetails.gender == 0
+                          ? 'Current location of Groom’s family'
+                          : "Current location of Bride's family",
                       style: MmmTextStyles.bodyMedium(textColor: kDark5),
                     ),
                   ],
@@ -337,7 +339,7 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                           SizedBox(
                             height: 24,
                           ),
-                          MmmButtons.categoryButtons(
+                          MmmButtons.categoryButtonsNotRequired(
                               'Country',
                               countryModel != null
                                   ? '${countryModel!.name}'
@@ -352,7 +354,7 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                           SizedBox(
                             height: 24,
                           ),
-                          MmmButtons.categoryButtons(
+                          MmmButtons.categoryButtonsNotRequired(
                               'State',
                               myState != null && myState!.name != ""
                                   ? '${myState!.name}'
@@ -367,7 +369,7 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                           SizedBox(
                             height: 24,
                           ),
-                          MmmButtons.categoryButtons(
+                          MmmButtons.categoryButtonsNotRequired(
                               'City',
                               city != null && city!.name != ""
                                   ? '${city!.name}'
