@@ -85,7 +85,7 @@ class MmmIcons {
     );
   }
 
-  static Container cancel({Function()? action}) {
+  static Container cancel({Function()? action, Function()? longAction}) {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -111,6 +111,7 @@ class MmmIcons {
           color: Colors.transparent,
           child: InkWell(
             onTap: action,
+            onLongPress: longAction,
             child: Container(
               padding: EdgeInsets.all(12),
               child: SvgPicture.asset(

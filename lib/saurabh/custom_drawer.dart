@@ -122,7 +122,7 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                           radius: 40,
                           backgroundImage: NetworkImage(
                               this.profileDetails != null
-                                  ? profileDetails!.images[1]
+                                  ? profileDetails!.images[0]
                                   : "")),
                       SizedBox(
                         width: 20,

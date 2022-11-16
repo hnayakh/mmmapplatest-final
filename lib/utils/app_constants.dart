@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 class AppConstants {
   //static const ENDPOINT = "http://192.168.0.149:3000/api/";
   static const ENDPOINT = "http://13.233.130.85:3000/api/";
@@ -36,6 +38,35 @@ class AppConstants {
   static final DATEFORMAT = 'dd MMM yyyy';
   static final SERVERDATEFORMAT = 'yyyy-MM-dd';
   static final SERVERDATETIMEFORMAT = 'yyyy-MM-dd hh:mm';
+
+  static const REFRESH_TOKEN_KEY = 'refresh_token';
+  static const BACKEND_TOKEN_KEY = 'backend_token';
+  static const GOOGLE_ISSUER = 'https://accounts.google.com';
+  static const GOOGLE_CLIENT_ID_IOS = '<IOS-CLIENT-ID>';
+  static const GOOGLE_REDIRECT_URI_IOS =
+      'com.googleusercontent.apps.<IOS-CLIENT-ID>:/oauthredirect';
+  static const GOOGLE_CLIENT_ID_ANDROID =
+      '929893628278-2ocmjecpi60uj3phsto5ctb84a101iup.apps.googleusercontent.com';
+  static const GOOGLE_REDIRECT_URI_ANDROID =
+      'com.googleusercontent.apps.929893628278-2ocmjecpi60uj3phsto5ctb84a101iup.apps.googleusercontent.com://oauthredirect';
+
+  static String clientID() {
+    if (Platform.isAndroid) {
+      return GOOGLE_CLIENT_ID_ANDROID;
+    } else if (Platform.isIOS) {
+      return GOOGLE_CLIENT_ID_IOS;
+    }
+    return '';
+  }
+
+  static String redirectUrl() {
+    if (Platform.isAndroid) {
+      return GOOGLE_REDIRECT_URI_ANDROID;
+    } else if (Platform.isIOS) {
+      return GOOGLE_REDIRECT_URI_IOS;
+    }
+    return '';
+  }
 
   static final PUBLICIMAGEBASEURL =
       "https://mmm-user-image.s3.ap-south-1.amazonaws.com/";

@@ -479,7 +479,7 @@ class ProfileDetails {
       countryCode,
       dialCode,
       name,
-      aboutMe,
+      aboutMe = "",
       dateOfBirth;
   late Gender gender;
   late Relationship relationship;

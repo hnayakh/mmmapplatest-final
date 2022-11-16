@@ -30,6 +30,7 @@ import 'package:makemymarry/views/profilescreens/habbit/habits.dart';
 import 'package:makemymarry/views/profilescreens/occupation/occupation.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference.dart';
 import 'package:makemymarry/views/profilescreens/religion/religion.dart';
+import 'package:makemymarry/views/signinscreens/authentication_service.dart';
 import 'package:makemymarry/views/signinscreens/phone%20signin/phone_screen.dart';
 import 'package:makemymarry/views/signupscreens/create_account/create_account_screen.dart';
 import 'package:makemymarry/views/signupscreens/create_account/signup_option_bottom_sheet.dart';
@@ -41,7 +42,7 @@ final Dio dio = Dio();
 GoogleSignIn _googleSignIn = GoogleSignIn(
   // Optional clientId
   clientId:
-      '479882132969-9i9aqik3jfjd7qhci1nqf0bm2g71rm1u.apps.googleusercontent.com',
+      '929893628278-2ocmjecpi60uj3phsto5ctb84a101iup.apps.googleusercontent.com',
   scopes: <String>[
     'email',
     'https://www.googleapis.com/auth/contacts.readonly',
@@ -81,8 +82,16 @@ class SignInScreenState extends State<SignInScreen> {
   GoogleSignInAccount? _currentUser;
   String _contactText = '';
 
+  bool isProgressing = false;
+  bool isLoggedIn = false;
+
+  bool _isLoggedIn = false;
+  GoogleSignInAccount? _userObj;
+  GoogleSignIn _googleSignIn = GoogleSignIn();
+
   @override
   void initState() {
+    initAuth();
     super.initState();
     _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
       setState(() {
@@ -93,6 +102,47 @@ class SignInScreenState extends State<SignInScreen> {
       }
     });
     _googleSignIn.signInSilently();
+  }
+
+  initAuth() async {
+    setLoadingState();
+    final bool isAuthenticated = await AuthService.instance.initAuth();
+    if (isAuthenticated) {
+      setAuthenticatedState();
+    } else {
+      setUnauthenticatedState();
+    }
+  }
+
+  setAuthenticatedState() {
+    setState(() {
+      isProgressing = false;
+      isLoggedIn = true;
+    });
+  }
+
+  setUnauthenticatedState() {
+    setState(() {
+      isProgressing = false;
+      isLoggedIn = false;
+    });
+  }
+
+  Future<void> loginAction() async {
+    setLoadingState();
+    final authSuccess = await AuthService.instance.login();
+    if (authSuccess) {
+      setAuthenticatedState();
+      navigateToProfileSetup();
+    } else {
+      setUnauthenticatedState();
+    }
+  }
+
+  setLoadingState() {
+    setState(() {
+      isProgressing = true;
+    });
   }
 
   Future<void> _handleGetContact(GoogleSignInAccount user) async {
@@ -181,7 +231,7 @@ class SignInScreenState extends State<SignInScreen> {
         children: <Widget>[
           const Text('You are not currently signed in.'),
           ElevatedButton(
-            onPressed: _handleSignIn,
+            onPressed: loginAction,
             child: const Text('SIGN IN'),
           ),
         ],
@@ -345,7 +395,19 @@ class SignInScreenState extends State<SignInScreen> {
                                             flex: 12,
                                             child:
                                                 MmmButtons.googleSigninButton(
-                                                    action: _handleSignIn))
+                                              action: () {
+                                                _googleSignIn
+                                                    .signIn()
+                                                    .then((userData) {
+                                                  setState(() {
+                                                    _isLoggedIn = true;
+                                                    _userObj = userData;
+                                                  });
+                                                }).catchError((e) {
+                                                  print(e);
+                                                });
+                                              },
+                                            ))
                                       ],
                                     ),
                                   ],

@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "929893628278-2duv7ifpop1ptnc0gv9rubg748e8j1fg.apps.googleusercontent.com",
+          "client_id": "929893628278-9kcn9gnrbaqgdkkntkcsg7sm102trrc2.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.irongate.makemymarry",
-            "certificate_hash": "de516546481cec2860fc91ccf2e8986ab75e4147"
+            "certificate_hash": "039880b26b8b1dacf91b3fd46bbb2483cb750b6e"
           }
         },
         {

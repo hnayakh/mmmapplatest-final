@@ -138,10 +138,15 @@ class SplashScreenState extends State<SplashScreen> {
             (route) => false);
         break;
       case 7:
-      case 6:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => Habit(userRepository: userRepo)),
+            (route) => false);
+        break;
+      case 6:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => FamilyScreen(userRepository: userRepo)),
             (route) => false);
         // Navigator.of(context).pushAndRemoveUntil(
         //     MaterialPageRoute(
