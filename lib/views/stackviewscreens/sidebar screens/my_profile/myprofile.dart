@@ -122,7 +122,7 @@ class _MyProfileState extends State<MyProfile> {
                           radius: MediaQuery.of(context).size.width * 0.122,
                           child: ClipOval(
                             child: Image.network(
-                              profileDetails!.images[1],
+                              profileDetails!.images[0],
                               width: double.infinity,
                               fit: BoxFit.cover,
                               height: double.infinity,
@@ -731,7 +731,7 @@ class _MyProfileState extends State<MyProfile> {
                                   margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
                                   child: Text(
                                     this.profileDetails != null
-                                        ? "${this.profileDetails!.city}, ${this.profileDetails!.state} "
+                                        ? "${this.profileDetails!.familyCity}, ${this.profileDetails!.familyState} "
                                         : "",
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
@@ -832,7 +832,7 @@ class _MyProfileState extends State<MyProfile> {
                                   margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
                                   child: Text(
                                     this.profileDetails != null
-                                        ? "${profileDetails!.noOfBrother} Brothers ${profileDetails!.brothersMarried} Married"
+                                        ? "${profileDetails!.noOfBrother} Brother ${profileDetails!.brothersMarried} Married"
                                         : "",
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
@@ -865,7 +865,7 @@ class _MyProfileState extends State<MyProfile> {
                                   margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
                                   child: Text(
                                     this.profileDetails != null
-                                        ? "${profileDetails!.noOfSister} Brothers ${profileDetails!.sistersMarried} Married"
+                                        ? "${profileDetails!.noOfSister} Sister ${profileDetails!.sistersMarried} Married"
                                         : "",
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
@@ -916,10 +916,13 @@ class _MyProfileState extends State<MyProfile> {
                                       Container(
                                         child: Row(
                                           children: [
-                                            Icon(
-                                              Icons.favorite_border_rounded,
-                                              color: kPrimary,
-                                            ),
+                                            Image.asset(
+                                                'images/heartSpecialpng.png',
+                                                color: kPrimary),
+                                            // Icon(
+                                            //   Icons.favorite_border_rounded,
+                                            //   color: kPrimary,
+                                            // ),
                                             SizedBox(width: 10),
                                             Text(
                                               'Interests',
@@ -1822,6 +1825,7 @@ class _MyProfileState extends State<MyProfile> {
   }
 
   void navigateToFamily(BuildContext context) {
+    // print("NAVIGATE${BlocProvider.of<OccupationBloc>(context).myState!.name}");
     var userRepo = BlocProvider.of<OccupationBloc>(context).userRepository;
     var countryModel = BlocProvider.of<OccupationBloc>(context).countryModel;
     var stateModel = BlocProvider.of<OccupationBloc>(context).myState;
@@ -1833,5 +1837,10 @@ class _MyProfileState extends State<MyProfile> {
               stateModel: stateModel,
               city: city,
             )));
+    print(
+        "objectCountry${BlocProvider.of<OccupationBloc>(context).countryModel!.name}");
+    print(
+        "objectState${BlocProvider.of<OccupationBloc>(context).myState!.name}");
+    print("objectCity${BlocProvider.of<OccupationBloc>(context).city!.name}");
   }
 }

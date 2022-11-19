@@ -76,6 +76,7 @@ class MmmIcons {
               padding: EdgeInsets.all(12),
               child: SvgPicture.asset(
                 "images/meet.svg",
+                width: 29,
                 color: gray7,
               ),
             ),

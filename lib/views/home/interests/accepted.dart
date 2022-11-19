@@ -276,7 +276,7 @@ class AcceptedScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.31,
+                      width: MediaQuery.of(context).size.width * 0.30,
                     ),
                     listAccepted[index].user.connectStatus
                         ? MmmButtons.connectButton('Call Now', action: () {})

@@ -117,7 +117,7 @@ class FamilyBackgroundBloc
             .userRepository
             .storageService
             .saveUserDetails(this.userRepository.useDetails!);
-        this.userRepository.updateRegistrationStep(8);
+        this.userRepository.updateRegistrationStep(5);
         yield OnUpdate();
         //yield OnError('Enter your family background');
       }

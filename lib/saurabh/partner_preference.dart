@@ -325,7 +325,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
     Size screenSize = MediaQuery.of(context).size;
     var primaryColor = HexColor('C9184A');
     return Scaffold(
-        appBar: customAppBar('Partner', "Reset", context: context),
+        appBar: customAppBar('Partner Preference', "Reset", context: context),
         body: BlocConsumer<ProfilePreferenceBloc, ProfilePreferenceState>(
             listener: (context, state) {
           if (state is OnGotCounties) {
@@ -1505,14 +1505,15 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
           ),
           toolbarHeight: 74.0,
           title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 title,
                 style: MmmTextStyles.heading4(textColor: kLight2),
               ),
               SizedBox(
-                width: MediaQuery.of(context!).size.width / 2,
-              ),
+                  // width: MediaQuery.of(context!).size.width / 2,
+                  ),
               Text(
                 trailText,
                 style: MmmTextStyles.bodySmall(textColor: kLight2),

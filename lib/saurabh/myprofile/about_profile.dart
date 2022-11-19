@@ -136,7 +136,7 @@ class _AboutProfileScreenState extends State<AboutProfileScreen> {
                         fillColor: Colors.white,
                         hintStyle:
                             MmmTextStyles.bodyRegular(textColor: kDark2)),
-                    maxLines: 10,
+                    maxLines: 7,
                     enabled: true,
                   ),
                   SizedBox(

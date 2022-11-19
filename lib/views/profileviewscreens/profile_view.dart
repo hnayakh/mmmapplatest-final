@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -62,6 +63,9 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
   int religionState = 0;
   int familyState = 0;
   int lifestyleState = 0;
+
+  late Animation<double> _animation;
+  late AnimationController _animationController;
 
   late final AnimationController _appBarController = AnimationController(
     duration: Duration(milliseconds: 500),
@@ -191,6 +195,14 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
 
   @override
   void initState() {
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 260),
+    );
+
+    final curvedAnimation =
+        CurvedAnimation(curve: Curves.easeInOut, parent: _animationController);
+    _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation);
     super.initState();
     _controller.addListener(() {
       if (_controller.position.pixels >=
@@ -235,6 +247,58 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
           } else if (this.profileDetails != null) {
             checkExist(profileDetails.id);
             return Scaffold(
+              resizeToAvoidBottomInset: false,
+              floatingActionButton: Container(
+                  margin: EdgeInsets.fromLTRB(1, 1, 80, 236),
+                  child: FloatingActionBubble(
+                    items: <Bubble>[
+                      Bubble(
+                        title: "",
+                        iconColor: Colors.white,
+                        bubbleColor: kPrimary,
+                        icon: Icons.call,
+                        titleStyle: TextStyle(fontSize: 0, color: kWhite),
+                        onPress: () {
+                          _animationController.reverse();
+                        },
+                      ),
+                      Bubble(
+                        title: "",
+                        iconColor: Colors.white,
+                        bubbleColor: kPrimary,
+                        icon: Icons.message,
+                        titleStyle: TextStyle(fontSize: 4, color: Colors.white),
+                        onPress: () {
+                          _animationController.reverse();
+                        },
+                      ),
+                      Bubble(
+                        title: "",
+                        iconColor: Colors.white,
+                        bubbleColor: kPrimary,
+                        icon: Icons.video_camera_back_outlined,
+                        titleStyle: TextStyle(fontSize: 0, color: Colors.white),
+                        onPress: () {
+                          //Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => Homepage()));
+                          _animationController.reverse();
+                        },
+                      ),
+                    ],
+
+                    animation: _animation,
+
+                    // On pressed change animation state
+                    onPress: () => _animationController.isCompleted
+                        ? _animationController.reverse()
+                        : _animationController.forward(),
+
+                    // Floating Action button Icon color
+                    iconColor: Colors.white,
+
+                    // Flaoting Action button Icon
+                    iconData: Icons.call,
+                    backGroundColor: kPrimary,
+                  )),
               extendBodyBehindAppBar: true,
               appBar: showAppBar
                   ? PreferredSize(
@@ -278,23 +342,23 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                           SizedBox(
                             height: 16,
                           ),
+                          buildFamilyButton(),
+                          SizedBox(
+                            height: 16,
+                          ),
                           buildHabits(context),
                           SizedBox(
                             height: 16,
                           ),
-                          buildReligion(),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          buildCarrer(),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          buildFamilyButton(),
-                          SizedBox(
-                            height: 60,
-                          ),
-                          MmmButtons.checkMatchButton(
+                          // buildReligion(),
+                          // SizedBox(
+                          //   height: 16,
+                          // ),
+                          // buildCarrer(),
+                          // SizedBox(
+                          //   height: 60,
+                          // ),
+                          MmmButtons.checkMatchButtonModified(
                               54, 'Check Match Percentage', action: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
@@ -308,6 +372,20 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                               ),
                             );
                           }),
+                          // MmmButtons.checkMatchButton(
+                          //     54, 'Check Match Percentage', action: () {
+                          //   Navigator.of(context).push(
+                          //     MaterialPageRoute(
+                          //       builder: (context) => BlocProvider(
+                          //         create: (context) => MatchingPercentageBloc(
+                          //             UserRepository(), profileDetails),
+                          //         child: MatchingPercentageScreen(
+                          //           userRepository: UserRepository(),
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   );
+                          // }),
                           SizedBox(
                             height: 16,
                           ),
@@ -380,7 +458,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                 axis: Axis.vertical,
                 axisAlignment: -1,
                 child: MmmButtons.carrerProfileView(
-                    profileDetails.employedin,
+                    // profileDetails.employedin,
                     profileDetails.occupation,
                     profileDetails.annualIncome,
                     profileDetails.city,
@@ -424,7 +502,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
         MmmButtons.profileViewButtons("images/occasionally.svg", 'Lifestyle'),
         lifestyleState == 0
             ? MmmButtons.profileViewButtons(
-                "images/occasionally.svg", 'Lifestyle', action: () {
+                "images/occasionally.svg", 'Interests', action: () {
                 showLifestyleData();
               })
             : SizeTransition(
@@ -458,7 +536,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                 child: MmmButtons.aboutProfileViewButtons(
                     "images/Users1.svg",
                     'About',
-                    profileDetails.aboutMe,
+                    profileDetails.aboutmeMsg,
                     profileDetails.maritalStatus,
                     profileDetails.abilityStatus, action: () {
                   showAboutData();
@@ -499,11 +577,11 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Expanded(flex: 20, child: SizedBox()),
-                  MmmIcons.cancel(),
-                  Expanded(
-                    flex: 1,
-                    child: SizedBox(),
-                  ),
+                  // MmmIcons.cancel(),
+                  // Expanded(
+                  //   flex: 1,
+                  //   child: SizedBox(),
+                  // ),
                   MmmIcons.meet(
                     context,
                     action: () {

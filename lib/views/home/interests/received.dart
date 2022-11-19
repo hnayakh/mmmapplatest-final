@@ -204,7 +204,7 @@ class ReceivedScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.31,
+                      width: MediaQuery.of(context).size.width * 0.30,
                     ),
                     MmmButtons.acceptInterestScreen(() {
                       BlocProvider.of<ReceivedsBloc>(context)
@@ -253,16 +253,16 @@ class ReceivedScreen extends StatelessWidget {
                   fontWeight:
                       FontWeight.bold)), // To display the title it is optional
           content: new RichText(
-              textAlign: TextAlign.center,
+              textAlign: TextAlign.left,
               text: new TextSpan(
                 // Note: Styles for TextSpans must be explicitly defined.
                 // Child text spans will inherit styles from parent
                 style: new TextStyle(
-                  fontSize: 16.0,
+                  fontSize: 14.0,
                   color: Colors.grey,
                 ),
                 children: <TextSpan>[
-                  new TextSpan(text: 'Are you want to reject his request'),
+                  new TextSpan(text: 'Are you want to reject the request?'),
                   // new TextSpan(
                   //     text: ' mmyid', style: new TextStyle(color: kPrimary)),
                   // new TextSpan(text: ' to find your perfect match.'),
@@ -271,18 +271,20 @@ class ReceivedScreen extends StatelessWidget {
           // Action widget which will provide the user to acknowledge the choice
           actions: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                MmmButtons.primaryButtonMeet("cancel", () {
+                MmmButtons.primaryButtonMeetGray("Cancel", () {
                   Navigator.of(context).pop();
                   // navigateToHome(state);
                 }),
+                SizedBox(width: 10),
                 MmmButtons.primaryButtonMeet("Confirm", () {
                   Navigator.of(context).pop();
                   // navigateToHome(state);
                 })
               ],
-            )
+            ),
+            SizedBox(height: 15)
           ],
         );
         //  AlertDialog(

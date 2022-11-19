@@ -73,7 +73,7 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
               .userRepository
               .storageService
               .saveUserDetails(this.userRepository.useDetails!);
-          this.userRepository.updateRegistrationStep(4);
+          this.userRepository.updateRegistrationStep(7);
           print('in habit');
           print(
               'dobinhabitbloc=${this.userRepository.useDetails!.dateOfBirth}');

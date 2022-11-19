@@ -534,13 +534,13 @@ class ProfileDetails {
     this.dateOfBirth = aboutMe["dateOfBirth"];
     this.maritalStatus = MaritalStatus.values[aboutMe["maritalStatus"]];
     this.childrenStatus = ChildrenStatus.values[aboutMe["childrenStatus"]];
-    if (json["userReligions"] != null && json["userReligions"].length > 0) {
-      this.religionId = json["userReligions"][0]["religionId"][0]["id"];
-      this.religionName = json["userReligions"][0]["religionId"][0]["text"];
-    } else {
-      this.religionName = "";
-      this.religionId = "";
-    }
+    // if (json["userReligions"] != null && json["userReligions"].length > 0) {
+    //   this.religionId = json["userReligions"][0]["religionId"][0]["id"];
+    //   this.religionName = json["userReligions"][0]["religionId"][0]["text"];
+    // } else {
+    //   this.religionName = "";
+    //   this.religionId = "";
+    // }
     if (aboutMe["numberOfChildren"] != null) {
       this.noOfChildren = NoOfChildren.values[aboutMe["numberOfChildren"]];
     } else {
@@ -569,13 +569,13 @@ class ProfileDetails {
       this.religion = userReligion["religion"];
       //this.religionDetails = userReligion["religion"];
       this.cast = userReligion["cast"];
-      this.casteName = userReligion["casteName"];
-      this.subCasteName = userReligion["subCasteName"];
+      // this.casteName = userReligion["casteName"];
+      // this.subCasteName = userReligion["subCasteName"];
       this.gothra =
           userReligion["gothra"] != null ? userReligion["gothra"] : "";
       // userReligion["gothra"];
       this.motherTongue = userReligion["motherTongue"];
-      this.motherTongueId = userReligion["motherTongueId"];
+      //this.motherTongueId = userReligion["motherTongueId"];
       this.manglik = Manglik.values[userReligion["isManglik"]];
     } else {
       this.religion = "";

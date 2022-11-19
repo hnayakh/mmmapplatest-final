@@ -94,7 +94,7 @@ class MmmTextStyles {
   static TextStyle bodySmall({Color textColor: kTextColor}) {
     return TextStyle(
         fontFamily: "MakeMyMarry",
-        fontSize: 16,
+        fontSize: 14,
         height: 1.57,
         color: textColor);
   }

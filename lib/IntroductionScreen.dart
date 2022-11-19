@@ -7,6 +7,7 @@ import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/saurabh/hexcolor.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
+import 'package:makemymarry/utils/view_decorations.dart';
 import 'package:makemymarry/views/signinscreens/signin_screen1.dart';
 
 class OnBoardingPage extends StatefulWidget {
@@ -57,7 +58,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   @override
   Widget build(BuildContext context) {
     const bodyStyle = TextStyle(
-      fontSize: 17.0,
+      fontSize: 16.0,
     );
 
     const pageDecoration = const PageDecoration(
@@ -121,11 +122,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       next: Container(
         height: 50,
         width: 70,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8.0),
-          color: kSecondary,
-          border: Border.all(color: Color.fromARGB(255, 255, 255, 255)),
-        ),
+        decoration: MmmDecorations.primaryButtonDecoration(),
         child: Center(
           child: Text(
             'Next',
@@ -136,8 +133,18 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       ),
       //const Icon(Icons.arrow_forward),
       //next: ElevatedButton(onPressed: () {}, child: Text("Next")),
-      done: const Text('Done',
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18)),
+      done: Container(
+        height: 50,
+        width: 90,
+        decoration: MmmDecorations.primaryButtonDecoration(),
+        child: Center(
+          child: const Text(
+            'Continue',
+            style: TextStyle(
+                color: Color.fromARGB(255, 255, 255, 255), fontSize: 16),
+          ),
+        ),
+      ),
       dotsFlex: 2,
       curve: Curves.fastLinearToSlowEaseIn,
       controlsMargin: const EdgeInsets.all(16),
@@ -145,14 +152,14 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
           ? const EdgeInsets.all(12.0)
           : const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
       dotsDecorator: const DotsDecorator(
-        size: Size(22.0, 8.0),
+        size: Size(20.0, 6.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(25.0)),
         ),
         spacing: EdgeInsets.all(10),
         color: Colors.grey,
         activeColor: kSecondary,
-        activeSize: Size(35.0, 8.0),
+        activeSize: Size(30.0, 8.0),
         activeShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(25.0)),
         ),

@@ -139,7 +139,7 @@ class FamilyDetailsBloc extends Bloc<FamilyDetailsEvent, FamilyDetailState> {
               .userRepository
               .storageService
               .saveUserDetails(this.userRepository.useDetails!);
-          this.userRepository.updateRegistrationStep(8);
+          this.userRepository.updateRegistrationStep(6);
           globals.familyBackgroundComplete = false;
           print('in familydetails');
           print(

@@ -115,7 +115,7 @@ class MAcceptedScreen extends StatelessWidget {
                                     textColor: kPrimary),
                               ),
                               SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.25,
+                                width: MediaQuery.of(context).size.width * 0.22,
                               ),
                               Container(
                                 height: 32,
@@ -199,7 +199,7 @@ class MAcceptedScreen extends StatelessWidget {
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(15.0))),
+              borderRadius: BorderRadius.all(Radius.circular(14.0))),
           backgroundColor: kWhite,
           title: Text("Cancel Request",
               textAlign: TextAlign.left,
@@ -212,11 +212,11 @@ class MAcceptedScreen extends StatelessWidget {
                 // Note: Styles for TextSpans must be explicitly defined.
                 // Child text spans will inherit styles from parent
                 style: new TextStyle(
-                  fontSize: 16.0,
+                  fontSize: 14.0,
                   color: Colors.grey,
                 ),
                 children: <TextSpan>[
-                  new TextSpan(text: 'Are you want to cancel his request'),
+                  new TextSpan(text: 'Are you want to cancel the request?'),
                   // new TextSpan(
                   //     text: ' mmyid', style: new TextStyle(color: kPrimary)),
                   // new TextSpan(text: ' to find your perfect match.'),
@@ -225,18 +225,20 @@ class MAcceptedScreen extends StatelessWidget {
           // Action widget which will provide the user to acknowledge the choice
           actions: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                MmmButtons.primaryButtonMeet("cancel", () {
+                MmmButtons.primaryButtonMeetGray("Cancel", () {
                   Navigator.of(context).pop();
                   // navigateToHome(state);
                 }),
+                SizedBox(width: 10),
                 MmmButtons.primaryButtonMeet("Confirm", () {
                   Navigator.of(context).pop();
                   // navigateToHome(state);
                 })
               ],
-            )
+            ),
+            SizedBox(height: 15)
           ],
         );
         //  AlertDialog(

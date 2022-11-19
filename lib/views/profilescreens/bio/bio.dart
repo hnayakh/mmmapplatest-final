@@ -101,7 +101,7 @@ class _BioScreenState extends State<BioScreen> {
                             children: [
                               buildAboutMeWidget(),
                               SizedBox(
-                                height: 20,
+                                height: 10,
                               ),
                               Expanded(
                                 flex: 1,
@@ -488,7 +488,9 @@ class _BioScreenState extends State<BioScreen> {
     this.localImagePaths = BlocProvider.of<BioBloc>(context).localImagePaths;
 
     // this.education = BlocProvider.of<OccupationBloc>(context).education;
-    this.aboutMe = this.bioController.text;
+    if (this.aboutMe == "") this.aboutMe = this.bioController.text;
+    // print(
+    //     "PROFILEDATA${BlocProvider.of<BioBloc>(context).profileData!.aboutMe}");
     if (BlocProvider.of<BioBloc>(context).profileData != null) {
       if (this.aboutMe == null) {
         this.aboutMe =
@@ -500,7 +502,12 @@ class _BioScreenState extends State<BioScreen> {
             BlocProvider.of<BioBloc>(context).profileData!.images;
         if (!this.localImagePaths.contains("addImage"))
           this.localImagePaths.add("addImage");
-        print("object${BlocProvider.of<BioBloc>(context).profileData!.images}");
+        //   print(
+        //       "object${BlocProvider.of<BioBloc>(context).profileData!.images[0]}");
+        // }
+      } else {
+        if (!this.localImagePaths.contains("addImage"))
+          this.localImagePaths.add("addImage");
       }
     } else {
       if (!this.localImagePaths.contains("addImage"))

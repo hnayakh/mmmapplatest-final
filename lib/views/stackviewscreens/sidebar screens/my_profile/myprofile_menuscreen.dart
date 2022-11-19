@@ -102,7 +102,7 @@ class _MyProfileMenuState extends State<MyProfileMenu> {
                             radius: MediaQuery.of(context).size.width * 0.122,
                             child: ClipOval(
                               child: Image.network(
-                                profileDetails!.images[1].toString(),
+                                profileDetails!.images[0].toString(),
                                 width: double.infinity,
                                 fit: BoxFit.cover,
                                 height: double.infinity,
@@ -218,15 +218,15 @@ class _MyProfileMenuState extends State<MyProfileMenu> {
               SizedBox(
                 height: 16,
               ),
-              MmmButtons.myProfileButtons('About', action: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        ABoutProfile(userRepository: widget.userRepository),
-                  ),
-                );
-              }),
+              // MmmButtons.myProfileButtons('Aboutttfdgdfg', action: () {
+              //   Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (context) =>
+              //           ABoutProfile(userRepository: widget.userRepository),
+              //     ),
+              //   );
+              // }),
               SizedBox(
                 height: 16,
               ),

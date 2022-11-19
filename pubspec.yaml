@@ -70,6 +70,7 @@ dependencies:
   tuna_flutter_range_slider: ^1.0.0
   google_sign_in: ^5.4.2
   flutter_appauth: ^4.2.1
+  floating_action_bubble: ^1.1.4
   
 
 dev_dependencies:

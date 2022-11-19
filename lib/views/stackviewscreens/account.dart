@@ -39,25 +39,25 @@ class _AccountState extends State<Account> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: MmmButtons.appBarCurved('Account', context: context),
+        appBar: MmmButtons.appBarCurved('Delete Account', context: context),
         body: Container(
           padding: const EdgeInsets.all(20),
           alignment: Alignment.center,
           child: Column(children: [
-            MmmButtons.changePasswordSidebarNavigation(),
-            SizedBox(height: 20),
-            MmmButtons.logoutSidebarNavigation(
-              action: () {
-                print("object");
-                _deleteAppDir()
-                    .then((value) => Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                              builder: (context) => SignIn(
-                                    userRepository: UserRepository(),
-                                  )),
-                        ));
-              },
-            ),
+            // MmmButtons.changePasswordSidebarNavigation(),
+            // SizedBox(height: 20),
+            // MmmButtons.logoutSidebarNavigation(
+            //   action: () {
+            //     print("object");
+            //     _deleteAppDir()
+            //         .then((value) => Navigator.of(context).pushReplacement(
+            //               MaterialPageRoute(
+            //                   builder: (context) => SignIn(
+            //                         userRepository: UserRepository(),
+            //                       )),
+            //             ));
+            //   },
+            // ),
             SizedBox(height: 20),
             MmmButtons.deleteAccountSidebarNavigation(action: () {
               deleteDilogue();
@@ -87,70 +87,29 @@ class _AccountState extends State<Account> {
                 textAlign: TextAlign.center,
                 text: TextSpan(
                   style: const TextStyle(
-                    fontSize: 16.0,
+                    fontSize: 14.0,
                     color: Colors.grey,
                   ),
                   children: <TextSpan>[
-                    new TextSpan(text: 'Are you want to Delete your account'),
+                    new TextSpan(text: 'Are you want to Delete your account?'),
                   ],
                 )),
             actions: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: 140,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: const Text(
-                            'Cancel',
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            primary: kPrimary,
-                            shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.circular(10), // <-- Radius
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                        width: 140,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: const Text(
-                            'Delete',
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            primary: kPrimary,
-                            shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.circular(10), // <-- Radius
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
+                  MmmButtons.primaryButtonMeetGray("Cancel", () {
+                    Navigator.of(context).pop();
+                    // navigateToHome(state);
+                  }),
+                  SizedBox(width: 10.0),
+                  MmmButtons.primaryButtonMeet("Delete", () {
+                    Navigator.of(context).pop();
+                    // navigateToHome(state);
+                  })
                 ],
-              )
+              ),
+              SizedBox(height: 15)
             ],
           );
         });
