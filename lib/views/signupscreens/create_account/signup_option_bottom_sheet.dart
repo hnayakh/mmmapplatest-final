@@ -41,69 +41,72 @@ class SignupOptionBottomSheetState extends State<SignupOptionBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: kMargin16,
-        height: 360,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            MmmButtons.backButton(context),
-            SizedBox(
-              height: 26,
+      decoration: BoxDecoration(),
+      margin: EdgeInsets.fromLTRB(20, 20, 20, 1),
+      // padding: kMargin16,
+      height: 340,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          MmmButtons.backButton(context),
+          SizedBox(
+            height: 26,
+          ),
+          MmmButtons.facebookSignupButton(
+            action: () {
+              print("Akash");
+            },
+          ),
+          SizedBox(
+            height: 26,
+          ),
+          MmmButtons.googleSignupButton(
+            action: () {
+              print("Jontyu");
+            },
+          ),
+          SizedBox(
+            height: 26,
+          ),
+          MmmButtons.emailButton(
+            action: () {
+              print("Sharma");
+              navigateToRegister(context);
+            },
+          ),
+          SizedBox(
+            height: 26,
+          ),
+          Container(
+            alignment: Alignment.center,
+            child: RichText(
+              text: TextSpan(children: [
+                TextSpan(
+                    text: "Already have an account? ",
+                    style: MmmTextStyles.bodySmall(textColor: kDark5)),
+                TextSpan(
+                    text: " Sign in",
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        Navigator.pop(context);
+                      },
+                    style: MmmTextStyles.bodyMedium(textColor: kPrimary))
+              ]),
+              textScaleFactor: 1.0,
+              textAlign: TextAlign.center,
             ),
-            MmmButtons.facebookSignupButton(
-              action: () {
-                print("Akash");
-              },
-            ),
-            SizedBox(
-              height: 26,
-            ),
-            MmmButtons.googleSignupButton(
-              action: () {
-                print("Jontyu");
-              },
-            ),
-            SizedBox(
-              height: 26,
-            ),
-            MmmButtons.emailButton(
-              action: () {
-                print("Sharma");
-                navigateToRegister(context);
-              },
-            ),
-            SizedBox(
-              height: 26,
-            ),
-            Container(
-              alignment: Alignment.center,
-              child: RichText(
-                text: TextSpan(children: [
-                  TextSpan(
-                      text: "Already have an account? ",
-                      style: MmmTextStyles.bodySmall(textColor: kDark5)),
-                  TextSpan(
-                      text: "Sign in",
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          Navigator.pop(context);
-                        },
-                      style: MmmTextStyles.bodyMedium(textColor: kPrimary))
-                ]),
-                textScaleFactor: 1.0,
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
-        ),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            )
-            // borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-            ));
+          ),
+        ],
+      ),
+      // decoration: BoxDecoration(
+      //     color: Colors.white,
+      //     borderRadius: BorderRadius.only(
+      //       topLeft: Radius.circular(20),
+      //       topRight: Radius.circular(20),
+      //     )
+      // borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      // )
+    );
   }
 
   navigateToRegister(context) {

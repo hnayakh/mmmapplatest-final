@@ -58,7 +58,7 @@ class MAcceptedScreen extends StatelessWidget {
                             style: MmmTextStyles.footer(textColor: gray3),
                           ),
                           SizedBox(
-                            height: 20,
+                            height: 5,
                           )
                         ],
                       ),
@@ -134,7 +134,7 @@ class MAcceptedScreen extends StatelessWidget {
                             ],
                           ),
                           SizedBox(
-                            height: 14,
+                            height: 10,
                           ),
                           Text(
                             'Abhishek Sharma',

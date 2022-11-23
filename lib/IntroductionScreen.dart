@@ -92,19 +92,19 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       // ),
       pages: [
         PageViewModel(
-          title: "This is  an onboarding screen 1.",
+          title: "This is  an onboarding screen 1",
           body:
               "Talk about one of the feature of your application & how it will help your users.",
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "This is an onboarding screen 2.",
+          title: "This is an onboarding screen 2",
           body:
               "Talk about one of your feature of the application & how it will help your users.",
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "This is an onboarding screen 3.",
+          title: "This is an onboarding screen 3",
           body:
               "Talk about one of the feature of your application & how it will help your users.",
           decoration: pageDecoration,
@@ -116,10 +116,14 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       showSkipButton: true,
       nextFlex: 0,
 
-      skip: const Text('Previous',
-          style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black)),
+      skip: Container(
+        margin: EdgeInsets.fromLTRB(0, 160, 0, 0),
+        child: const Text('Previous',
+            style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black)),
+      ),
 
       next: Container(
+        margin: EdgeInsets.fromLTRB(0, 160, 0, 0),
         height: 50,
         width: 70,
         decoration: MmmDecorations.primaryButtonDecoration(),
@@ -134,6 +138,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       //const Icon(Icons.arrow_forward),
       //next: ElevatedButton(onPressed: () {}, child: Text("Next")),
       done: Container(
+        margin: EdgeInsets.fromLTRB(0, 160, 0, 0),
         height: 50,
         width: 90,
         decoration: MmmDecorations.primaryButtonDecoration(),
@@ -150,13 +155,13 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       controlsMargin: const EdgeInsets.all(16),
       controlsPadding: kIsWeb
           ? const EdgeInsets.all(12.0)
-          : const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
+          : const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 20.0),
       dotsDecorator: const DotsDecorator(
         size: Size(20.0, 6.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(25.0)),
         ),
-        spacing: EdgeInsets.all(10),
+        spacing: EdgeInsets.all(5),
         color: Colors.grey,
         activeColor: kSecondary,
         activeSize: Size(30.0, 8.0),

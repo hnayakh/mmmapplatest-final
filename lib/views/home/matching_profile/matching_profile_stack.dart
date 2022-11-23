@@ -280,20 +280,32 @@ class MatchingProfileStackViewScreenState
                                                       // mainAxisAlignment:
                                                       //     MainAxisAlignment.spaceBetween,
                                                       children: [
-                                                        // Expanded(
-                                                        //     child:
+                                                        SizedBox(
+                                                          width: 8,
+                                                        ),
+                                                        Container(
+                                                          height: 10,
+                                                          width: 10,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                                  shape: BoxShape
+                                                                      .circle,
+                                                                  color:
+                                                                      kGreen),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 14,
+                                                        ),
                                                         Text(
-                                                          "${item.name}, ${AppHelper.getAgeFromDob(item.dateOfBirth)}",
-                                                          maxLines: 1,
+                                                          "${item.name}, ${AppHelper.getAgeFromDob(item.dateOfBirth)} yrs,  ${item.height}",
+                                                          maxLines: 2,
                                                           overflow: TextOverflow
                                                               .ellipsis,
                                                           style: MmmTextStyles
                                                               .heading5(
                                                                   textColor:
                                                                       gray6),
-                                                        )
-                                                        //)
-                                                        ,
+                                                        ),
                                                         SizedBox(
                                                           width: 8,
                                                         ),
@@ -325,6 +337,27 @@ class MatchingProfileStackViewScreenState
                                                                 ],
                                                               )
                                                             : Container()
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        SizedBox(
+                                                          width: 20.0,
+                                                        ),
+                                                        // Expanded(
+                                                        //     child:
+                                                        Text(
+                                                          "    ${item.religion}, ${item.motherTongue}",
+                                                          textScaleFactor: 1.0,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: MmmTextStyles
+                                                              .bodySmall(
+                                                                  textColor:
+                                                                      Colors
+                                                                          .white),
+                                                        )
+                                                        //)
                                                       ],
                                                     ),
                                                     Row(

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:makemymarry/utils/text_styles.dart';
-
 import '../../utils/buttons.dart';
 import '../hexcolor.dart';
 
@@ -39,7 +37,7 @@ class _AddIterestsState extends State<AddIterests> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   SizedBox(
-                    height: 4,
+                    height: 20,
                   ),
                   Flexible(
                     child: GridView.builder(
@@ -47,8 +45,8 @@ class _AddIterestsState extends State<AddIterests> {
                         gridDelegate:
                             const SliverGridDelegateWithMaxCrossAxisExtent(
                                 maxCrossAxisExtent: 200,
-                                childAspectRatio: 4 / 2,
-                                crossAxisSpacing: 20,
+                                childAspectRatio: 3 / 1.6,
+                                crossAxisSpacing: 15,
                                 mainAxisSpacing: 20),
                         itemCount: interestList.length,
                         itemBuilder: (BuildContext ctx, i) {
@@ -70,17 +68,10 @@ class _AddIterestsState extends State<AddIterests> {
                               child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    // SvgPicture.asset(
-                                    //   interestList[i]['icon'].toString(),
-                                    //   height: 30,
-                                    //   width: 30,
-                                    // ),
-                                    SvgPicture.asset(
-                                      "images/Veg2.svg",
-                                      fit: BoxFit.cover,
-                                    ),
+                                    Image.asset(
+                                        interestList[i]['icon'].toString()),
                                     SizedBox(
-                                      width: 20,
+                                      width: 10,
                                     ),
                                     Text(
                                       interestList[i]['name'].toString(),
@@ -95,40 +86,37 @@ class _AddIterestsState extends State<AddIterests> {
                           );
                         }),
                   ),
-                  // Column(
-                  //   children: List.generate(
-                  //       interestList.length,
-                  //       (i) => Container(
-                  //             alignment: Alignment.center,
-                  //             decoration: BoxDecoration(
-                  //                 borderRadius: BorderRadius.circular(20),
-                  //                 color: primaryColor),
-                  //             child: Row(children: [
-                  //               SvgPicture.asset(
-                  //                   interestList[i]['icon'].toString()),
-                  //               Text(interestList[i]['name'].toString())
-                  //             ]),
-                  //           )),
-                  // ),
                 ])));
   }
 }
 
 var interestList = [
-  {'icon': 'images/icons/camera.svg', 'name': "Sports", "status": true},
-  {'icon': '', 'name': "Ravel", "status": true},
-  {'icon': 'images/icons/camera.svg', 'name': "Photography", "status": true},
-  {'icon': '', 'name': "Gaming ", "status": true},
-  {'icon': 'images/icons/singing.svg', 'name': "Singing", "status": false},
-  {'icon': '', 'name': "Dance", "status": false},
-  {'icon': 'images/icons/food.svg', 'name': "Food", "status": false},
-  {'icon': 'images/icons/music.svg', 'name': "Music", "status": true},
-  {'icon': '', 'name': "Art", "status": false},
-  {'icon': '', 'name': "Cooking", "status": true},
-  {'icon': 'images/icons/fashion.svg', 'name': "Fashion", "status": true},
-  {'icon': 'images/icons/vblog.svg', 'name': "Vbolgging", "status": false},
-  {'icon': 'images/icons/animals.svg', 'name': "Animal", "status": true},
-  {'icon': 'images/icons/nature.svg', 'name': "Nature", "status": false},
-  {'icon': 'images/icons/tech.svg', 'name': "Tech", "status": true},
-  {'icon': 'images/icons/social.svg', 'name': "Social", "status": true},
+  {'icon': 'images/addinterest/sports.png', 'name': "Sports", "status": true},
+  {'icon': 'images/addinterest/travel.png', 'name': "Travel", "status": true},
+  {
+    'icon': 'images/addinterest/photo.png',
+    'name': "Photography",
+    "status": true
+  },
+  {'icon': 'images/addinterest/games.png', 'name': "Gaming ", "status": true},
+  {
+    'icon': 'images/addinterest/singing.png',
+    'name': "Singing",
+    "status": false
+  },
+  {'icon': 'images/addinterest/dance.png', 'name': "Dance", "status": false},
+  {'icon': 'images/addinterest/food.png', 'name': "Food", "status": false},
+  {'icon': 'images/addinterest/music.png', 'name': "Music", "status": true},
+  {'icon': 'images/addinterest/art.png', 'name': "Art", "status": false},
+  {'icon': 'images/addinterest/cooking.png', 'name': "Cooking", "status": true},
+  {'icon': 'images/addinterest/fashion.png', 'name': "Fashion", "status": true},
+  {
+    'icon': 'images/addinterest/vblog.png',
+    'name': "Vbolgging",
+    "status": false
+  },
+  {'icon': 'images/addinterest/animals.png', 'name': "Animal", "status": true},
+  {'icon': 'images/addinterest/nature.png', 'name': "Nature", "status": false},
+  {'icon': 'images/addinterest/tech.png', 'name': "Tech", "status": true},
+  {'icon': 'images/addinterest/social.png', 'name': "Social", "status": true},
 ];

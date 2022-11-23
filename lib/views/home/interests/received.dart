@@ -76,7 +76,7 @@ class ReceivedScreen extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              width: MediaQuery.of(context).size.width - 48,
+              width: MediaQuery.of(context).size.width - 40,
               child: Row(
                 children: [
                   ClipRRect(
@@ -89,7 +89,7 @@ class ReceivedScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    width: 16,
+                    width: 10,
                   ),
                   Expanded(
                       child: Column(
@@ -112,7 +112,7 @@ class ReceivedScreen extends StatelessWidget {
                                 ),
                                 SizedBox(
                                   width:
-                                      MediaQuery.of(context).size.width * 0.04,
+                                      MediaQuery.of(context).size.width * 0.02,
                                 ),
                                 listReceived[index].user.activationStatus ==
                                         ActivationStatus.Verified.index

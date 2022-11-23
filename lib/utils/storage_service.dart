@@ -104,7 +104,7 @@ class StorageService {
     } else {
       print('id not null');
       //var jwt = this.sharedPreferences.getString("jwt")!;
-
+      //var userId=this.sharedPreferences.getString(AppConstants.USERID);
       var displayId = this.sharedPreferences.getString(AppConstants.DISPLAYID);
       var gender = this.sharedPreferences.getInt(AppConstants.GENDER);
       var isActive = this.sharedPreferences.getBool(AppConstants.ISACTIVE);

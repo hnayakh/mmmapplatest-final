@@ -205,6 +205,31 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                           'Female',
                           style: MmmTextStyles.bodySmall(textColor: kDark5),
                         ),
+                        SizedBox(
+                          width: 12,
+                        ),
+                        Transform.scale(
+                          scale: 1.2,
+                          child: Radio(
+                              activeColor: kPrimary,
+                              value: Gender.Other,
+                              groupValue: this.gender,
+                              onChanged: (val) {
+                                if (this.profileCreatedFor ==
+                                        Relationship.Daughter ||
+                                    this.profileCreatedFor ==
+                                        Relationship.Sister) {
+                                  return;
+                                }
+                                BlocProvider.of<CreateAccountBloc>(context)
+                                    .add(OnGenderSelected(Gender.Other));
+                              }),
+                        ),
+
+                        Text(
+                          'Others',
+                          style: MmmTextStyles.bodySmall(textColor: kDark5),
+                        ),
                         //SizedBox(
                         //  width: 22,
                         // ),

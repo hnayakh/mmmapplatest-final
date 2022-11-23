@@ -1053,9 +1053,9 @@ class MmmWidgets {
 
   static Widget selectMeetWidget(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 40, left: 5),
-      height: 350,
-      width: 400,
+      margin: const EdgeInsets.only(top: 20, left: 5),
+      height: 300,
+      width: double.infinity,
       decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
         topRight: Radius.circular(20),
@@ -1064,12 +1064,12 @@ class MmmWidgets {
       child: Column(
         children: [
           const SizedBox(
-            height: 15,
+            height: 5,
           ),
 
           ClipRRect(
             child: Padding(
-              padding: const EdgeInsets.only(right: 330),
+              padding: const EdgeInsets.only(right: 350),
               child: MmmButtons.backButton(context),
             ),
           ),

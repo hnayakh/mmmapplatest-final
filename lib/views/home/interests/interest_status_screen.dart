@@ -81,7 +81,12 @@ class _InterestStatusScreenState extends State<InterestStatusScreen>
                         backgroundColor: Colors.transparent,
                         elevation: 0.0,
                       ))),
-                  decoration: BoxDecoration(color: kSecondary),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [kSecondary, kPrimary],
+                        begin: Alignment.bottomRight,
+                        end: Alignment.topLeft),
+                  ),
                 ),
                 Material(
                   color: Colors.white,

@@ -96,6 +96,7 @@ flutter:
     - images/social/
     - images/wallet/
     - images/icons/
+    - images/addinterest/
   fonts:
     - family: MakeMyMarry
       fonts:

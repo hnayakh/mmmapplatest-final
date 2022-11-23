@@ -35,7 +35,7 @@ class MmmTextStyles {
   static TextStyle heading4({Color textColor: kTextColor}) {
     return TextStyle(
       fontFamily: "MakeMyMarrySemiBold",
-      fontSize: 16,
+      fontSize: 18,
       color: textColor,
       height: 1.6,
     );
@@ -52,7 +52,7 @@ class MmmTextStyles {
   static TextStyle heading6({Color textColor: kTextColor}) {
     return TextStyle(
         fontFamily: "MakeMyMarrySemiBold",
-        fontSize: 14,
+        fontSize: 12,
         height: 1.285,
         color: textColor);
   }
@@ -103,7 +103,7 @@ class MmmTextStyles {
     return TextStyle(
       color: textColor,
       fontFamily: "MakeMyMarrySemiBold",
-      fontSize: 14,
+      fontSize: 16,
       height: 1.57,
     );
   }

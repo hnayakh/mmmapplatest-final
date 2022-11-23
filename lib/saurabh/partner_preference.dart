@@ -1525,8 +1525,12 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
           elevation: 0.0,
         ),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(bottomRight: Radius.circular(32)),
-            color: kSecondary),
+          borderRadius: BorderRadius.only(bottomRight: Radius.circular(32)),
+          gradient: LinearGradient(
+              colors: [kSecondary, kPrimary],
+              begin: Alignment.bottomRight,
+              end: Alignment.topLeft),
+        ),
       ),
       //preferredSize: Size(MediaQuery.of(context).size.width, 0.0),
     );

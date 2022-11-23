@@ -56,7 +56,7 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: Colors.grey[400],
       // navigation bar color
-      statusBarColor: kSecondary,
+      statusBarColor: Colors.transparent,
       statusBarBrightness: Brightness.dark // status bar colorr
       ));
   runApp(MyApp());

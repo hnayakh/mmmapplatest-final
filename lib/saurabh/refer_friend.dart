@@ -24,7 +24,7 @@ class ReferFriendScreenState extends State<ReferFriendScreen> {
         child: Column(
           children: [
             Container(
-              height: 450.0,
+              height: 400.0,
               width: double.infinity,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),

@@ -14,9 +14,12 @@ class MatchingProfile {
       dateOfBirth,
       aboutMe,
       city,
+      religion,
+      motherTongue,
       state,
       country,
       imageUrl;
+
   late double height;
   late int marriedNumberOfBrothers,
       age,
@@ -190,6 +193,10 @@ class MatchingProfile {
     this.imageUrl = json["imageURL"];
     this.dateOfBirth = json["dateOfBirth"];
     this.name = json["name"];
+    this.caste = json["cast"];
+    this.religion = json["religion"];
+    this.motherTongue = json["motherTongue"];
+    this.height = (double.parse(json["height"]) / 30.48).roundToDouble();
     if (json["careerCity"] != null && json["careerCity"] != Null) {
       this.city = json["careerCity"];
     }

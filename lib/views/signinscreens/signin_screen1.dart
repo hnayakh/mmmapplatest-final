@@ -369,20 +369,13 @@ class SignInScreenState extends State<SignInScreen> {
                                     SizedBox(
                                       height: 24,
                                     ),
-                                    Container(
-                                      child: MmmButtons
-                                          .enabledRedButton50bodyMedium(
-                                              'Connect via OTP', action: () {
-                                        navigateToSigninWithMobile();
-                                      }),
-                                    ),
                                     SizedBox(
-                                      height: 24,
+                                      height: 20,
                                     ),
                                     Row(
                                       children: [
                                         Expanded(
-                                            flex: 12,
+                                            flex: 10,
                                             child: MmmButtons
                                                 .facebookSigninButton()),
                                         Expanded(
@@ -409,6 +402,16 @@ class SignInScreenState extends State<SignInScreen> {
                                               },
                                             ))
                                       ],
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    Container(
+                                      child: MmmButtons
+                                          .enabledRedButton50bodyMedium(
+                                              'Connect via OTP', action: () {
+                                        navigateToSigninWithMobile();
+                                      }),
                                     ),
                                   ],
                                 ),
@@ -513,7 +516,12 @@ class SignInScreenState extends State<SignInScreen> {
 
   void showSigninOptions(BuildContext context) async {
     showModalBottomSheet(
-        context: context, builder: (context) => SignupOptionBottomSheet());
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(25), topRight: Radius.circular(25)),
+        ),
+        context: context,
+        builder: (context) => SignupOptionBottomSheet());
 
     // var result = await showModalBottomSheet(
     //     context: context,

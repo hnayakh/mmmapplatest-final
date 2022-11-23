@@ -712,6 +712,9 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
   }
 
   Widget buildBasicInfo() {
+    print("HEIGHT${profileDetails.height}");
+    print(
+        "HEIGHTTT${profileDetails.height.substring(0, 1) + "'" + profileDetails.height.substring(0, 1)}");
     return Container(
       child: Column(
         children: [
@@ -787,10 +790,10 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
           MmmWidgets.rowWidget("images/Users1.svg",
               ' Profile managed by ${getProfileManagedBy()}'),
           MmmWidgets.rowWidget("images/Calendar.svg",
-              ' ${AppHelper.getAgeFromDob(profileDetails.dateOfBirth)}yrs, ${AppHelper.getReadableDob(profileDetails.dateOfBirth)}'),
+              '${AppHelper.getAgeFromDob(profileDetails.dateOfBirth)} yrs, ${AppHelper.getReadableDob(profileDetails.dateOfBirth)}'),
           MmmWidgets.rowWidget("images/office.svg", profileDetails.occupation),
-          MmmWidgets.rowWidget(
-              "images/height.svg", '${profileDetails.height}" height'),
+          MmmWidgets.rowWidget("images/height.svg",
+              '${profileDetails.height.substring(0, 1) + "'" + " " + profileDetails.height.substring(0, 1)}" height'),
         ],
       ),
     );
@@ -798,6 +801,10 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
 
   void navigateToSelectMeet() async {
     var result = await showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(25), topRight: Radius.circular(25)),
+        ),
         context: context,
         builder: (context) => MmmWidgets.selectMeetWidget(context));
   }

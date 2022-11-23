@@ -63,6 +63,7 @@ class MmmTextFileds {
   static Widget textFiledWithLabelStar(
       String label, String hintText, TextEditingController controller,
       {TextInputType inputType: TextInputType.name,
+      onChangeFunc,
       bool isPassword: false,
       TextCapitalization textCapitalization: TextCapitalization.none}) {
     return Container(
@@ -95,6 +96,7 @@ class MmmTextFileds {
             height: 44,
             child: TextField(
               maxLength: 30,
+              onChanged: onChangeFunc,
               controller: controller,
               keyboardType: inputType,
               textCapitalization: textCapitalization,

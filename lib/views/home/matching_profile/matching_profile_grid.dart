@@ -343,7 +343,7 @@ class MatchingProfileGridViewScreenState
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "${item.name}, ${AppHelper.getAgeFromDob(item.dateOfBirth)}",
+                          "${item.name}, ${AppHelper.getAgeFromDob(item.dateOfBirth)} yrs",
                           style: MmmTextStyles.heading6(textColor: gray6),
                         ),
                         Row(

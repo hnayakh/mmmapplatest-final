@@ -2613,7 +2613,7 @@ class MmmButtons {
       child: Container(
         child: AppBar(
           leading: Container(
-            margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
+            margin: EdgeInsets.fromLTRB(20, 20, 0, 20),
             decoration: BoxDecoration(
                 color: kLight2.withOpacity(0.60),
                 borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -2654,13 +2654,16 @@ class MmmButtons {
           elevation: 0.0,
         ),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(bottomRight: Radius.circular(32)),
-            color: kSecondary
-            // gradient: LinearGradient(
-            //     colors: [kPrimary, kSecondary],
-            //     begin: Alignment.centerLeft,
-            //     end: Alignment.centerRight),
-            ),
+          borderRadius: BorderRadius.only(bottomRight: Radius.circular(32)),
+          gradient: LinearGradient(
+              colors: [kSecondary, kPrimary],
+              begin: Alignment.bottomRight,
+              end: Alignment.topLeft),
+          // gradient: LinearGradient(
+          //     colors: [kPrimary, kSecondary],
+          //     begin: Alignment.centerLeft,
+          //     end: Alignment.centerRight),
+        ),
       ),
       //preferredSize: Size(MediaQuery.of(context).size.width, 0.0),
     );
