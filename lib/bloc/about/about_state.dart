@@ -10,6 +10,8 @@ class ProfileDetailsState extends AboutState {
   ProfileDetailsState(this.profileDetails);
 }
 
+class OnNavigationToMyProfiles extends AboutState {}
+
 class OnLoading extends AboutState {}
 
 class OnError extends AboutState {

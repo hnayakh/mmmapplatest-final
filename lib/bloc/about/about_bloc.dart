@@ -20,6 +20,8 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
   DateTime? dateOfBirth;
   String? name;
   ProfileDetails? profileDetails;
+  String? basicUserId;
+
   @override
   Stream<AboutState> mapEventToState(AboutEvent event) async* {
     yield OnLoading();
@@ -112,9 +114,13 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
               .userRepository
               .storageService
               .saveUserDetails(this.userRepository.useDetails!);
-          this.userRepository.updateRegistrationStep(2);
+          if (!event.isAnUpdate) {
+            this.userRepository.updateRegistrationStep(2);
+          }
 
-          yield OnNavigationToHabits();
+          yield event.isAnUpdate
+              ? OnNavigationToMyProfiles()
+              : OnNavigationToHabits();
         } else {
           yield OnError(result.message);
         }

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:makemymarry/bloc/about/about_bloc.dart';
+import 'package:makemymarry/bloc/about/about_event.dart';
 import 'package:makemymarry/bloc/about/about_state.dart';
 import 'package:makemymarry/bloc/sign_in/signin_bloc.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
@@ -12,6 +13,7 @@ import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/saurabh/myprofile/add_interest.dart';
 import 'package:makemymarry/saurabh/filter_preference.dart';
 import 'package:makemymarry/saurabh/partner_preference.dart';
+import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
@@ -27,6 +29,7 @@ import 'package:makemymarry/views/profilescreens/occupation/occupation_bloc.dart
 import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/sidebar_about_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/status_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../datamodels/martching_profile.dart';
 import '../../../../saurabh/myprofile/about_profile.dart';
@@ -44,20 +47,21 @@ class MyprofileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => BioBloc(userRepository),
-        ),
-        BlocProvider(
-          create: (context) => OccupationBloc(userRepository),
-        ),
-        BlocProvider(
-          create: (context) => AccountMenuBloc(userRepository),
-        ),
-      ],
-      child: MyProfile(userRepository: userRepository),
-    );
+    // return MultiBlocProvider(
+    //   providers: [
+    //     BlocProvider(
+    //       create: (context) => BioBloc(userRepository),
+    //     ),
+    //     BlocProvider(
+    //       create: (context) => OccupationBloc(userRepository),
+    //     ),
+    //     BlocProvider(
+    //       create: (context) => AccountMenuBloc(userRepository),
+    //     ),
+    //   ],
+    //   child: MyProfile(userRepository: userRepository),
+    // );
+    return MyProfile(userRepository: userRepository);
   }
 }
 
@@ -72,6 +76,16 @@ class MyProfile extends StatefulWidget {
 class _MyProfileState extends State<MyProfile> {
   // UserRepository userRepository = UserRepository();
   ProfileDetails? profileDetails;
+  String? basicUserId;
+  @override
+  void initState() {
+    super.initState();
+    SharedPreferences.getInstance().then((prefValue) => {
+          setState(() {
+            basicUserId = prefValue.getString(AppConstants.USERID);
+          })
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,28 +96,39 @@ class _MyProfileState extends State<MyProfile> {
       body: SingleChildScrollView(
         child: Container(
           padding: kMargin16,
-          child: BlocConsumer<AccountMenuBloc, Menu.AccountMenuState>(
+          child: BlocConsumer<AboutBloc, AboutState>(
             listener: (context, state) {
               // TODO: implement listener
             },
             builder: (context, state) {
-              if (state is accountMenuState.OnGotProfile) {
-                this.profileDetails =
-                    BlocProvider.of<AccountMenuBloc>(context).profileData;
-                print("DDDD${this.profileDetails!.drinkingHabit.name}");
-              }
+              // if (state is OnNavigationToMyProfiles) {
+              //   this.profileDetails =
+              //       BlocProvider.of<AboutBloc>(context).profileDetails;
+              //   // BlocProvider.of<AboutBloc>(context)
+              //   //     .add(onAboutDataLoad(this.profileDetails!.id));
+              //   // print("DDDD${this.profileDetails!.drinkingHabit.name}");
+              // }
               print("Akashj");
               print('checkimagestatus$state');
-              if (state is Menu.AccountMenuInitialState) {
-                BlocProvider.of<AccountMenuBloc>(context).add(FetchMyProfile());
+
+              if (state is OnNavigationToMyProfiles) {
+                BlocProvider.of<AboutBloc>(context)
+                    .add(onAboutDataLoad(basicUserId!));
               }
               if (state is OnLoading) {
                 return Scaffold(
                   body: MmmWidgets.buildLoader2(context),
                 );
-              } else if (state is Menu.OnGotProfile) {
+              }
+              if (this.profileDetails == null) {
+                print("this.profileDetails == null block");
+                BlocProvider.of<AboutBloc>(context)
+                    .add(onAboutDataLoad(basicUserId!));
+              }
+              if (state is ProfileDetailsState) {
+                print("ProfileDetailsState ................");
                 this.profileDetails =
-                    BlocProvider.of<AccountMenuBloc>(context).profileData;
+                    BlocProvider.of<AboutBloc>(context).profileDetails;
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
