@@ -18,9 +18,13 @@ import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/home/matching_profile/matching_profile_bloc.dart';
+import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
 import 'package:makemymarry/views/profilescreens/about/height_status_bottom_sheet.dart';
 import 'package:makemymarry/views/profilescreens/about/marital_status_bottom_sheet.dart';
+import 'package:makemymarry/views/profilescreens/bio/bio_bloc.dart';
+import 'package:makemymarry/views/profilescreens/occupation/occupation_bloc.dart';
 import 'package:makemymarry/views/profilescreens/religion/religion.dart';
+import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/my_profile/myprofile.dart';
 
 import '../habbit/habits.dart';
 import 'no_of_childeren_bottom_sheet.dart';
@@ -48,6 +52,7 @@ class AboutScreen extends StatefulWidget {
 
 class _AboutScreenState extends State<AboutScreen> {
   TextEditingController namecontroller = TextEditingController();
+  TextEditingController editNamecontroller = TextEditingController();
   ChildrenStatus? childrenStatus;
   AbilityStatus? abilityStatus;
 
@@ -95,6 +100,10 @@ class _AboutScreenState extends State<AboutScreen> {
             navigateToReligion();
             // navigateToHabits();
           }
+          if (state is OnNavigationToMyProfiles) {
+            navigateToMyProfile();
+            // navigateToHabits();
+          }
         },
         builder: (context, state) {
           initData();
@@ -112,13 +121,13 @@ class _AboutScreenState extends State<AboutScreen> {
                   child: InkWell(
                     onTap: () {
                       BlocProvider.of<AboutBloc>(context).add(OnAboutDone(
-                        namecontroller.text.trim(),
-                        this.maritalStatus!,
-                        this.heightStatus!,
-                        this.childrenStatus!,
-                        this.dobHintText!,
-                        this.abilityStatus!,
-                      ));
+                          namecontroller.text.trim(),
+                          this.maritalStatus!,
+                          this.heightStatus!,
+                          this.childrenStatus!,
+                          this.dobHintText!,
+                          this.abilityStatus!,
+                          this.userDetails.registrationStep > 2));
                     },
                     child: MmmIcons.rightArrowEnabled(),
                   )),
@@ -157,8 +166,11 @@ class _AboutScreenState extends State<AboutScreen> {
                   userDetails.relationship == Relationship.Self
                       ? "Enter Name"
                       : 'Enter Name of ${describeEnum(userDetails.relationship)}',
-                  namecontroller,
-                  textCapitalization: TextCapitalization.words),
+                  editNamecontroller.text != ""
+                      ? editNamecontroller
+                      : namecontroller, onTextChange: (value) {
+                editNamecontroller.text = value;
+              }, textCapitalization: TextCapitalization.words),
               SizedBox(
                 height: 24,
               ),
@@ -536,6 +548,26 @@ class _AboutScreenState extends State<AboutScreen> {
             )));
   }
 
+  void navigateToMyProfile() {
+    var userRepo = BlocProvider.of<AboutBloc>(context).userRepository;
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                    create: (context) => AboutBloc(userRepo),
+                  ),
+                  BlocProvider(
+                    create: (context) => OccupationBloc(userRepo),
+                  ),
+                  BlocProvider(
+                    create: (context) => AccountMenuBloc(userRepo),
+                  ),
+                ],
+                child: MyprofileScreen(
+                  userRepository: userRepo,
+                ))));
+  }
+
   void initData() {
     this.maritalStatus = BlocProvider.of<AboutBloc>(context).maritalStatus;
     this.heightStatus = BlocProvider.of<AboutBloc>(context).heightStatus;
@@ -544,8 +576,11 @@ class _AboutScreenState extends State<AboutScreen> {
     this.noOfChildren = BlocProvider.of<AboutBloc>(context).noOfChildren;
     this.dobHintText = BlocProvider.of<AboutBloc>(context).dateOfBirth;
     if (BlocProvider.of<AboutBloc>(context).profileDetails != null) {
-      this.namecontroller.text =
-          BlocProvider.of<AboutBloc>(context).profileDetails!.name;
+      if (this.editNamecontroller.text == "") {
+        this.namecontroller.text =
+            BlocProvider.of<AboutBloc>(context).profileDetails!.name;
+      }
+
       if (this.dobHintText == null)
         this.dobHintText = DateTime.parse(
             BlocProvider.of<AboutBloc>(context).profileDetails!.dateOfBirth);

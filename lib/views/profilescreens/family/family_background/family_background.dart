@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:makemymarry/bloc/about/about_bloc.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/repo/user_repo.dart';
@@ -13,9 +14,12 @@ import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
+import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
 import 'package:makemymarry/views/profilescreens/bio/bio_bloc.dart';
 import 'package:makemymarry/views/profilescreens/family/family_background/family_background_event.dart';
 import 'package:makemymarry/views/profilescreens/family/family_background/family_background_state.dart';
+import 'package:makemymarry/views/profilescreens/occupation/occupation_bloc.dart';
+import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/my_profile/myprofile.dart';
 
 import '../../bio/bio.dart';
 import '../../select_city_state.dart';
@@ -111,7 +115,8 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                             this.values,
                             this.isStayingWithParents!,
                             this.city,
-                            this.myState));
+                            this.myState,
+                            this.userDetails.registrationStep > 5));
                   },
                   child: MmmIcons.rightArrowEnabled(),
                 )),
@@ -168,6 +173,10 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
         }
         if (state is OnUpdate) {
           widget.onComplete();
+        }
+        if (state is OnNavigationToMyProfiles) {
+          navigateToMyProfile();
+          // navigateToHabits();
         }
       },
     );
@@ -507,5 +516,26 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
       BlocProvider.of<FamilyBackgroundBloc>(context)
           .add(OnFamilyValueSelected(result));
     }
+  }
+
+  void navigateToMyProfile() {
+    var userRepo =
+        BlocProvider.of<FamilyBackgroundBloc>(context).userRepository;
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                    create: (context) => AboutBloc(userRepo),
+                  ),
+                  BlocProvider(
+                    create: (context) => OccupationBloc(userRepo),
+                  ),
+                  BlocProvider(
+                    create: (context) => AccountMenuBloc(userRepo),
+                  ),
+                ],
+                child: MyprofileScreen(
+                  userRepository: userRepo,
+                ))));
   }
 }

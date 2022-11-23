@@ -16,6 +16,8 @@ class FamilyBackgroundInitialState extends FamilyBackgroundState {}
 
 class OnUpdate extends FamilyBackgroundState {}
 
+class OnNavigationToMyProfiles extends FamilyBackgroundState {}
+
 class OnGotCounties extends FamilyBackgroundState {
   final List<CountryModel> list;
 

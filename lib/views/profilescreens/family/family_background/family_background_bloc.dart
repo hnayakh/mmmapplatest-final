@@ -154,7 +154,10 @@ class FamilyBackgroundBloc
         print(
             'dobinfambackbloc=${this.userRepository.useDetails!.dateOfBirth}');
         print(this.userRepository.useDetails!.registrationStep);
-        yield OnUpdate();
+        if (!event.isAnUpdate) {
+          this.userRepository.updateRegistrationStep(5);
+        }
+        yield event.isAnUpdate ? OnNavigationToMyProfiles() : OnUpdate();
       } else {
         yield OnError(result.message);
       }

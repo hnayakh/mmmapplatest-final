@@ -70,6 +70,7 @@ class _SigninWithPhoneScreenState extends State<SigninWithPhoneScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: MmmButtons.appbarThin(),
       body: BlocConsumer<PhoneSigninBloc, PhoneSigninState>(
         listener: (context, state) {

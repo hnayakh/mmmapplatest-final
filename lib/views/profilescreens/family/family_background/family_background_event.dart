@@ -28,14 +28,10 @@ class UpdateFamilyBackground extends FamilyBackgroundEvent {
   bool isStayingWithParents;
   final StateModel? myState;
   final StateModel? city;
+  bool isAnUpdate;
 
-  UpdateFamilyBackground(
-    this.level,
-    this.values,
-    this.isStayingWithParents,
-    this.city,
-    this.myState,
-  );
+  UpdateFamilyBackground(this.level, this.values, this.isStayingWithParents,
+      this.city, this.myState, this.isAnUpdate);
 }
 
 class GetAllCountries extends FamilyBackgroundEvent {}

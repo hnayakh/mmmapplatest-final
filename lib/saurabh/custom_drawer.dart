@@ -23,6 +23,8 @@ import 'package:makemymarry/views/home/menu/account_menu_event.dart';
 import 'package:makemymarry/views/home/menu/account_menu_state.dart';
 import 'package:makemymarry/views/home/menu/wallet/wallet_main.dart';
 import 'package:makemymarry/views/profilescreens/about/about.dart';
+import 'package:makemymarry/views/profilescreens/bio/bio_bloc.dart';
+import 'package:makemymarry/views/profilescreens/occupation/occupation_bloc.dart';
 import 'package:makemymarry/views/signinscreens/signin_screen1.dart';
 import 'package:makemymarry/views/stackviewscreens/connect/chat_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/connect/connect.dart';
@@ -479,6 +481,19 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
     print("basicUserId${this.basicUserId}");
     var userRepo = BlocProvider.of<AccountMenuBloc>(context).userRepository;
     print("hekllo222");
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => MultiBlocProvider(providers: [
+        BlocProvider(
+          create: (context) => AboutBloc(userRepo),
+        ),
+        BlocProvider(
+          create: (context) => OccupationBloc(userRepo),
+        ),
+        BlocProvider(
+          create: (context) => AccountMenuBloc(userRepo),
+        ),
+      ], child: MyprofileScreen(userRepository: userRepo)),
+    ));
     // BlocProvider.of<AboutBloc>(context).add(onAboutDataLoad(this.basicUserId!));
 
     Navigator.of(context).push(
