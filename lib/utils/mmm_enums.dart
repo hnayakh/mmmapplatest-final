@@ -128,11 +128,11 @@ enum LifecycleStatus {
 enum RegistrationSteps {
   Basic,
   About,
-  Habit,
   Religion,
   Career,
   FamilyBackground,
   FamilyDetail,
+  Habit,
   BioWithImages,
   PendingVerification,
   Completed,

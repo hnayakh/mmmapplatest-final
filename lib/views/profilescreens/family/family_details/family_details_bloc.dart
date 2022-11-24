@@ -145,7 +145,12 @@ class FamilyDetailsBloc extends Bloc<FamilyDetailsEvent, FamilyDetailState> {
           print(
               'dobinfamDetailsbloc=${this.userRepository.useDetails!.dateOfBirth}');
           print(this.userRepository.useDetails!.registrationStep);
-          yield OnFamilyDetailsUpdated();
+          if (!event.isAnUpdate) {
+            this.userRepository.updateRegistrationStep(6);
+          }
+          yield event.isAnUpdate
+              ? OnNavigationToMyProfiles()
+              : OnFamilyDetailsUpdated();
         } else {
           yield OnError(result.message);
         }

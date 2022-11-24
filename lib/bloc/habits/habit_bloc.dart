@@ -78,7 +78,12 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
           print(
               'dobinhabitbloc=${this.userRepository.useDetails!.dateOfBirth}');
           print(this.userRepository.useDetails!.registrationStep);
-          yield NavigationToReligion();
+          if (!event.isAnUpdate) {
+            this.userRepository.updateRegistrationStep(7);
+          }
+          yield event.isAnUpdate
+              ? OnNavigationToMyProfiles()
+              : NavigationToReligion();
         } else {
           yield OnError(result.message);
         }

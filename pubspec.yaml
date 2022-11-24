@@ -71,6 +71,7 @@ dependencies:
   google_sign_in: ^5.4.2
   flutter_appauth: ^4.2.1
   floating_action_bubble: ^1.1.4
+  flutter_slidable: ^2.0.0
   
 
 dev_dependencies:

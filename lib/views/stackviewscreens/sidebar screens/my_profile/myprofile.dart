@@ -5,6 +5,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:makemymarry/bloc/about/about_bloc.dart';
 import 'package:makemymarry/bloc/about/about_event.dart';
 import 'package:makemymarry/bloc/about/about_state.dart';
+import 'package:makemymarry/bloc/habits/habit_bloc.dart';
+import 'package:makemymarry/bloc/habits/habit_event.dart';
+import 'package:makemymarry/bloc/habits/habit_state.dart' as habitState;
 import 'package:makemymarry/bloc/sign_in/signin_bloc.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
@@ -28,6 +31,10 @@ import 'package:makemymarry/views/profilescreens/family/family_background/family
 import 'package:makemymarry/views/profilescreens/family/family_background/family_background_event.dart';
 import 'package:makemymarry/views/profilescreens/family/family_background/family_background_state.dart'
     as familyBackgroundState;
+import 'package:makemymarry/views/profilescreens/family/family_details/family_details_bloc.dart';
+import 'package:makemymarry/views/profilescreens/family/family_details/family_details_events.dart';
+import 'package:makemymarry/views/profilescreens/family/family_details/family_details_state.dart'
+    as familyDetailsState;
 import 'package:makemymarry/views/profilescreens/habbit/habits.dart';
 import 'package:makemymarry/views/profilescreens/occupation/occupation_bloc.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference.dart';
@@ -65,6 +72,12 @@ class MyprofileScreen extends StatelessWidget {
         BlocProvider(
           create: (context) => FamilyBackgroundBloc(userRepository,
               CountryModel(), StateModel("", 0), StateModel("", 0)),
+        ),
+        BlocProvider(
+          create: (context) => FamilyDetailsBloc(userRepository),
+        ),
+        BlocProvider(
+          create: (context) => HabitBloc(userRepository),
         ),
       ],
       child: MyProfile(userRepository: userRepository),
@@ -233,23 +246,6 @@ class _MyProfileState extends State<MyProfile> {
                                   style: MmmTextStyles.bodyRegular(
                                       textColor: gray3),
                                 ),
-                                // BlocProvider(
-                                //   create: (context) =>
-                                //       AboutBloc(widget.userRepository),
-                                //   child: BlocConsumer<AboutBloc, AboutState>(
-                                //     listener: (context, state) {},
-                                //     builder: (context, state) {
-                                // TextButton(
-                                //   child: Text("Edit",
-                                //       style: MmmTextStyles.bodyRegular(
-                                //           textColor: kPrimary)),
-                                //   onPressed: () {
-                                //     onEdit();
-                                //   },
-                                // )
-                                //     },
-                                //   ),
-                                // )
                               ],
                             ))
                       ]),
@@ -590,11 +586,11 @@ class _MyProfileState extends State<MyProfile> {
                         if (state is familyBackgroundState
                             .familyBackgroundDataState) {
                           this.profileDetails =
-                              BlocProvider.of<AboutBloc>(context)
+                              BlocProvider.of<FamilyBackgroundBloc>(context)
                                   .profileDetails;
                           return Container(
                               width: 350,
-                              height: 500,
+                              height: 480,
                               child: Stack(children: <Widget>[
                                 Container(
                                     margin: EdgeInsets.only(left: 1),
@@ -814,154 +810,186 @@ class _MyProfileState extends State<MyProfile> {
                                         ),
                                       ),
                                     ])),
-                                Container(
-                                    margin: EdgeInsets.fromLTRB(20, 250, 0, 0),
-                                    width: 149,
-                                    height: 46,
-                                    child: Stack(children: <Widget>[
-                                      Text(
-                                        'Father’s Occupation',
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                            color: Color.fromRGBO(
-                                                135, 141, 150, 1),
-                                            fontFamily: 'Poppins',
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.normal,
-                                            height: 1.6666666666666667),
-                                      ),
+                                BlocConsumer<FamilyDetailsBloc,
+                                        familyDetailsState.FamilyDetailState>(
+                                    listener: (context, state) {
+                                  // TODO: implement listener
+                                }, builder: (context, state) {
+                                  if (state is familyDetailsState
+                                      .FamilyDetailInitialState) {
+                                    BlocProvider.of<FamilyDetailsBloc>(context)
+                                        .add(onFamilyDetailDataLoad(
+                                            basicUserId!));
+                                  }
+                                  if (state is familyDetailsState
+                                      .familyDetailsDataState) {
+                                    this.profileDetails =
+                                        BlocProvider.of<FamilyDetailsBloc>(
+                                                context)
+                                            .profileDetails;
+                                    return Column(children: [
                                       Container(
-                                        margin:
-                                            EdgeInsets.fromLTRB(0, 20, 0, 0),
-                                        child: Text(
-                                          this.profileDetails != null
-                                              ? profileDetails!
-                                                  .fatherOccupation.name
-                                              : "",
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                              color:
-                                                  Color.fromRGBO(18, 22, 25, 1),
-                                              fontFamily: 'Poppins',
-                                              fontSize: 14,
-                                              letterSpacing:
-                                                  0 /*percentages not used in flutter. defaulting to zero*/,
-                                              fontWeight: FontWeight.normal,
-                                              height: 1.5714285714285714),
-                                        ),
-                                      ),
-                                    ])),
-                                Container(
-                                    margin: EdgeInsets.fromLTRB(20, 300, 0, 0),
-                                    width: 149,
-                                    height: 46,
-                                    child: Stack(children: <Widget>[
-                                      Text(
-                                        'Mother’s Occupation',
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                            color: Color.fromRGBO(
-                                                135, 141, 150, 1),
-                                            fontFamily: 'Poppins',
-                                            fontSize: 12,
-                                            letterSpacing:
-                                                0 /*percentages not used in flutter. defaulting to zero*/,
-                                            fontWeight: FontWeight.normal,
-                                            height: 1.6666666666666667),
-                                      ),
+                                          margin: EdgeInsets.fromLTRB(
+                                              20, 250, 0, 0),
+                                          width: 149,
+                                          height: 46,
+                                          child: Stack(children: <Widget>[
+                                            Text(
+                                              'Father’s Occupation',
+                                              textAlign: TextAlign.left,
+                                              style: TextStyle(
+                                                  color: Color.fromRGBO(
+                                                      135, 141, 150, 1),
+                                                  fontFamily: 'Poppins',
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.normal,
+                                                  height: 1.6666666666666667),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.fromLTRB(
+                                                  0, 20, 0, 0),
+                                              child: Text(
+                                                this.profileDetails != null
+                                                    ? profileDetails!
+                                                        .fatherOccupation.name
+                                                    : "",
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        18, 22, 25, 1),
+                                                    fontFamily: 'Poppins',
+                                                    fontSize: 14,
+                                                    letterSpacing:
+                                                        0 /*percentages not used in flutter. defaulting to zero*/,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    height: 1.5714285714285714),
+                                              ),
+                                            ),
+                                          ])),
                                       Container(
-                                        margin:
-                                            EdgeInsets.fromLTRB(0, 20, 0, 0),
-                                        child: Text(
-                                          this.profileDetails != null
-                                              ? profileDetails!
-                                                  .motherOccupation.name
-                                              : "",
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                              color:
-                                                  Color.fromRGBO(18, 22, 25, 1),
-                                              fontFamily: 'Poppins',
-                                              fontSize: 14,
-                                              letterSpacing:
-                                                  0 /*percentages not used in flutter. defaulting to zero*/,
-                                              fontWeight: FontWeight.normal,
-                                              height: 1.5714285714285714),
-                                        ),
-                                      ),
-                                    ])),
-                                Container(
-                                    margin: EdgeInsets.fromLTRB(20, 350, 0, 0),
-                                    width: 130,
-                                    height: 46,
-                                    child: Stack(children: <Widget>[
+                                          margin:
+                                              EdgeInsets.fromLTRB(20, 5, 0, 0),
+                                          width: 149,
+                                          height: 46,
+                                          child: Stack(children: <Widget>[
+                                            Text(
+                                              'Mother’s Occupation',
+                                              textAlign: TextAlign.left,
+                                              style: TextStyle(
+                                                  color: Color.fromRGBO(
+                                                      135, 141, 150, 1),
+                                                  fontFamily: 'Poppins',
+                                                  fontSize: 12,
+                                                  letterSpacing:
+                                                      0 /*percentages not used in flutter. defaulting to zero*/,
+                                                  fontWeight: FontWeight.normal,
+                                                  height: 1.6666666666666667),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.fromLTRB(
+                                                  0, 20, 0, 0),
+                                              child: Text(
+                                                this.profileDetails != null
+                                                    ? profileDetails!
+                                                        .motherOccupation.name
+                                                    : "",
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        18, 22, 25, 1),
+                                                    fontFamily: 'Poppins',
+                                                    fontSize: 14,
+                                                    letterSpacing:
+                                                        0 /*percentages not used in flutter. defaulting to zero*/,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    height: 1.5714285714285714),
+                                              ),
+                                            ),
+                                          ])),
                                       Container(
-                                        child: Text(
-                                          'No. of Brother’s/Married',
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                              color: Color.fromRGBO(
-                                                  135, 141, 150, 1),
-                                              fontFamily: 'Poppins',
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.normal,
-                                              height: 1.6666666666666667),
-                                        ),
-                                      ),
+                                          margin:
+                                              EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                          width: 130,
+                                          height: 46,
+                                          child: Stack(children: <Widget>[
+                                            Container(
+                                              child: Text(
+                                                'No. of Brother’s/Married',
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        135, 141, 150, 1),
+                                                    fontFamily: 'Poppins',
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    height: 1.6666666666666667),
+                                              ),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.fromLTRB(
+                                                  0, 20, 0, 0),
+                                              child: Text(
+                                                this.profileDetails != null
+                                                    ? "${profileDetails!.noOfBrother} Brother ${profileDetails!.brothersMarried} Married"
+                                                    : "",
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        18, 22, 25, 1),
+                                                    fontFamily: 'Poppins',
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    height: 1.5714285714285714),
+                                              ),
+                                            ),
+                                          ])),
                                       Container(
-                                        margin:
-                                            EdgeInsets.fromLTRB(0, 20, 0, 0),
-                                        child: Text(
-                                          this.profileDetails != null
-                                              ? "${profileDetails!.noOfBrother} Brother ${profileDetails!.brothersMarried} Married"
-                                              : "",
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                              color:
-                                                  Color.fromRGBO(18, 22, 25, 1),
-                                              fontFamily: 'Poppins',
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.normal,
-                                              height: 1.5714285714285714),
-                                        ),
-                                      ),
-                                    ])),
-                                Container(
-                                    margin: EdgeInsets.fromLTRB(20, 400, 0, 0),
-                                    width: 130,
-                                    height: 46,
-                                    child: Stack(children: <Widget>[
-                                      Container(
-                                        child: Text(
-                                          'No. of Sister’s/Married',
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                              color: Color.fromRGBO(
-                                                  135, 141, 150, 1),
-                                              fontFamily: 'Poppins',
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.normal,
-                                              height: 1.6666666666666667),
-                                        ),
-                                      ),
-                                      Container(
-                                        margin:
-                                            EdgeInsets.fromLTRB(0, 20, 0, 0),
-                                        child: Text(
-                                          this.profileDetails != null
-                                              ? "${profileDetails!.noOfSister} Sister ${profileDetails!.sistersMarried} Married"
-                                              : "",
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                              color:
-                                                  Color.fromRGBO(18, 22, 25, 1),
-                                              fontFamily: 'Poppins',
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.normal,
-                                              height: 1.5714285714285714),
-                                        ),
-                                      ),
-                                    ])),
+                                          margin:
+                                              EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                          width: 130,
+                                          height: 46,
+                                          child: Stack(children: <Widget>[
+                                            Container(
+                                              child: Text(
+                                                'No. of Sister’s/Married',
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        135, 141, 150, 1),
+                                                    fontFamily: 'Poppins',
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    height: 1.6666666666666667),
+                                              ),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.fromLTRB(
+                                                  0, 20, 0, 0),
+                                              child: Text(
+                                                this.profileDetails != null
+                                                    ? "${profileDetails!.noOfSister} Sister ${profileDetails!.sistersMarried} Married"
+                                                    : "",
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        18, 22, 25, 1),
+                                                    fontFamily: 'Poppins',
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    height: 1.5714285714285714),
+                                              ),
+                                            ),
+                                          ])),
+                                    ]);
+                                  } else
+                                    return Column();
+                                })
                               ]));
                         } else
                           return Container();
@@ -995,349 +1023,461 @@ class _MyProfileState extends State<MyProfile> {
                                   ),
                                 ),
                                 child: Stack(children: <Widget>[
-                                  Container(
-                                    margin: EdgeInsets.fromLTRB(10, 10, 30, 0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Container(
-                                          child: Row(
-                                            children: [
-                                              Image.asset(
-                                                  'images/heartSpecialpng.png',
-                                                  color: kPrimary),
-                                              // Icon(
-                                              //   Icons.favorite_border_rounded,
-                                              //   color: kPrimary,
-                                              // ),
-                                              SizedBox(width: 10),
-                                              Text(
-                                                'Interests',
-                                                textAlign: TextAlign.left,
-                                                style: TextStyle(
-                                                    color: Color.fromRGBO(
-                                                        164, 19, 60, 1),
-                                                    fontFamily: 'Poppins',
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.bold,
-                                                    height: 1.625),
+                                  BlocConsumer<HabitBloc,
+                                      habitState.HabitState>(
+                                    listener: (context, state) {
+                                      // TODO: implement listener
+                                    },
+                                    builder: (context, state) {
+                                      if (state
+                                          is habitState.HabitInitialState) {
+                                        BlocProvider.of<HabitBloc>(context)
+                                            .add(onHabitDataLoad(basicUserId!));
+                                      }
+                                      if (state
+                                          is habitState.HabitDetailsState) {
+                                        this.profileDetails =
+                                            BlocProvider.of<HabitBloc>(context)
+                                                .profileDetails;
+                                        return Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              margin: EdgeInsets.fromLTRB(
+                                                  10, 10, 30, 0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Container(
+                                                    child: Row(
+                                                      children: [
+                                                        Image.asset(
+                                                            'images/heartSpecialpng.png',
+                                                            color: kPrimary),
+                                                        // Icon(
+                                                        //   Icons.favorite_border_rounded,
+                                                        //   color: kPrimary,
+                                                        // ),
+                                                        SizedBox(width: 10),
+                                                        Text(
+                                                          'Interests',
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                          style: TextStyle(
+                                                              color: Color
+                                                                  .fromRGBO(
+                                                                      164,
+                                                                      19,
+                                                                      60,
+                                                                      1),
+                                                              fontFamily:
+                                                                  'Poppins',
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              height: 1.625),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder:
+                                                                  (ctx) =>
+                                                                      Habit(
+                                                                        userRepository:
+                                                                            widget.userRepository,
+                                                                      )));
+                                                    },
+                                                    child: Image.asset(
+                                                      'images/pen.png',
+                                                      color: kPrimary,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            ],
-                                          ),
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (ctx) => Habit(
-                                                          userRepository: widget
-                                                              .userRepository,
-                                                        )));
-                                          },
-                                          child: Image.asset(
-                                            'images/pen.png',
-                                            color: kPrimary,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                      margin:
-                                          EdgeInsets.fromLTRB(15, 50, 20, 0),
-                                      width: 250,
-                                      height: 100,
-                                      child: Stack(children: <Widget>[
-                                        Text(
-                                          'Eating',
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                              color:
-                                                  Color.fromARGB(212, 0, 0, 0),
-                                              fontFamily: 'Poppins',
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.normal,
-                                              height: 1.6666666666666667),
-                                        ),
-                                        Container(
-                                          margin:
-                                              EdgeInsets.fromLTRB(0, 30, 20, 0),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(8),
-                                              topRight: Radius.circular(8),
-                                              bottomLeft: Radius.circular(8),
-                                              bottomRight: Radius.circular(8),
                                             ),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                  color: Color.fromARGB(
-                                                      13, 255, 77, 110),
-                                                  offset: Offset(0, 4),
-                                                  blurRadius: 14)
-                                            ],
-                                            border: Border.all(
-                                              color: Color.fromRGBO(
-                                                  193, 199, 205, 1),
-                                              width: 1,
-                                            ),
-                                          ),
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 20, vertical: 12),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: <Widget>[
-                                              Image.asset(
-                                                this.profileDetails != null
-                                                    ? profileDetails!
-                                                                .eatingHabit
-                                                                .name ==
-                                                            "Vegetarrian"
-                                                        ? 'images/LeafyGreen.png'
-                                                        : profileDetails!
-                                                                    .eatingHabit
-                                                                    .name ==
-                                                                "Nonvegetarrian"
-                                                            ? 'images/chicken.png'
-                                                            : profileDetails!
+                                            Container(
+                                                margin: EdgeInsets.fromLTRB(
+                                                    20, 10, 0, 0),
+                                                // width: 250,
+                                                // height: 100,
+                                                child: Stack(children: <Widget>[
+                                                  Text(
+                                                    'Eating',
+                                                    textAlign: TextAlign.left,
+                                                    style: TextStyle(
+                                                        color: Color.fromARGB(
+                                                            212, 0, 0, 0),
+                                                        fontFamily: 'Poppins',
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                        height:
+                                                            1.6666666666666667),
+                                                  ),
+                                                  Container(
+                                                    margin: EdgeInsets.fromLTRB(
+                                                        0, 30, 0, 0),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                        topLeft:
+                                                            Radius.circular(8),
+                                                        topRight:
+                                                            Radius.circular(8),
+                                                        bottomLeft:
+                                                            Radius.circular(8),
+                                                        bottomRight:
+                                                            Radius.circular(8),
+                                                      ),
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    13,
+                                                                    255,
+                                                                    77,
+                                                                    110),
+                                                            offset:
+                                                                Offset(0, 4),
+                                                            blurRadius: 14)
+                                                      ],
+                                                      border: Border.all(
+                                                        color: Color.fromRGBO(
+                                                            193, 199, 205, 1),
+                                                        width: 1,
+                                                      ),
+                                                    ),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 20,
+                                                            vertical: 12),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: <Widget>[
+                                                        Image.asset(
+                                                          this.profileDetails !=
+                                                                  null
+                                                              ? profileDetails!
+                                                                          .eatingHabit
+                                                                          .name ==
+                                                                      "Vegetarrian"
+                                                                  ? 'images/LeafyGreen.png'
+                                                                  : profileDetails!
+                                                                              .eatingHabit
+                                                                              .name ==
+                                                                          "Nonvegetarrian"
+                                                                      ? 'images/chicken.png'
+                                                                      : profileDetails!.eatingHabit.name ==
+                                                                              "Eggitarrian"
+                                                                          ? 'images/egggg.png'
+                                                                          : ""
+                                                              : "",
+                                                          height: 28,
+                                                          width: 28,
+                                                        ),
+                                                        SizedBox(width: 8),
+                                                        Container(
+                                                          decoration:
+                                                              BoxDecoration(),
+                                                          child: Row(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            children: <Widget>[
+                                                              Text(
+                                                                this.profileDetails !=
+                                                                        null
+                                                                    ? profileDetails!
                                                                         .eatingHabit
-                                                                        .name ==
-                                                                    "Eggitarrian"
-                                                                ? 'images/egggg.png'
-                                                                : ""
-                                                    : "",
-                                                height: 28,
-                                                width: 28,
-                                              ),
-                                              SizedBox(width: 8),
-                                              Container(
-                                                decoration: BoxDecoration(),
-                                                child: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: <Widget>[
-                                                    Text(
-                                                      this.profileDetails !=
-                                                              null
-                                                          ? profileDetails!
-                                                              .eatingHabit.name
-                                                          : "",
-                                                      textAlign: TextAlign.left,
-                                                      style: TextStyle(
-                                                          color: Color.fromRGBO(
-                                                              18, 22, 25, 1),
-                                                          fontFamily: 'Poppins',
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                          height: 1.625),
+                                                                        .name
+                                                                    : "",
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .left,
+                                                                style: TextStyle(
+                                                                    color: Color
+                                                                        .fromRGBO(
+                                                                            18,
+                                                                            22,
+                                                                            25,
+                                                                            1),
+                                                                    fontFamily:
+                                                                        'Poppins',
+                                                                    fontSize:
+                                                                        16,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .normal,
+                                                                    height:
+                                                                        1.625),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ])),
-                                  Container(
-                                      margin:
-                                          EdgeInsets.fromLTRB(15, 150, 20, 0),
-                                      width: 250,
-                                      height: 100,
-                                      child: Stack(children: <Widget>[
-                                        Text(
-                                          'Smoking',
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                              color:
-                                                  Color.fromARGB(212, 0, 0, 0),
-                                              fontFamily: 'Poppins',
-                                              fontSize: 14,
-                                              letterSpacing:
-                                                  0 /*percentages not used in flutter. defaulting to zero*/,
-                                              fontWeight: FontWeight.normal,
-                                              height: 1.6666666666666667),
-                                        ),
-                                        Container(
-                                          margin:
-                                              EdgeInsets.fromLTRB(0, 30, 20, 0),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(8),
-                                              topRight: Radius.circular(8),
-                                              bottomLeft: Radius.circular(8),
-                                              bottomRight: Radius.circular(8),
-                                            ),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                  color: Color.fromARGB(
-                                                      13, 255, 77, 110),
-                                                  offset: Offset(0, 4),
-                                                  blurRadius: 14)
-                                            ],
-                                            border: Border.all(
-                                              color: Color.fromRGBO(
-                                                  193, 199, 205, 1),
-                                              width: 1,
-                                            ),
-                                          ),
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 20, vertical: 12),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: <Widget>[
-                                              Image.asset(
-                                                  this.profileDetails != null
-                                                      ? profileDetails!
-                                                                  .smokingHabit
-                                                                  .name ==
-                                                              "Smoker"
-                                                          ? 'images/cigarette.png'
-                                                          : profileDetails!
-                                                                      .smokingHabit
-                                                                      .name ==
-                                                                  "NonSmoker"
-                                                              ? 'images/nonsmokerr.png'
-                                                              : profileDetails!
-                                                                          .smokingHabit
-                                                                          .name ==
-                                                                      "Occasionally"
-                                                                  ? 'images/cigarette.png'
-                                                                  : ""
-                                                      : "",
-                                                  height: 28,
-                                                  width: 28),
-                                              SizedBox(width: 8),
-                                              Container(
-                                                decoration: BoxDecoration(),
-                                                child: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: <Widget>[
-                                                    Text(
-                                                      this.profileDetails !=
-                                                              null
-                                                          ? profileDetails!
-                                                              .smokingHabit.name
-                                                          : "",
-                                                      textAlign: TextAlign.left,
-                                                      style: TextStyle(
-                                                          color: Color.fromRGBO(
-                                                              18, 22, 25, 1),
-                                                          fontFamily: 'Poppins',
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                          height: 1.625),
+                                                  ),
+                                                ])),
+                                            Container(
+                                                margin: EdgeInsets.fromLTRB(
+                                                    20, 10, 0, 0),
+                                                // width: 250,
+                                                // height: 100,
+                                                child: Stack(children: <Widget>[
+                                                  Text(
+                                                    'Smoking',
+                                                    textAlign: TextAlign.left,
+                                                    style: TextStyle(
+                                                        color: Color.fromARGB(
+                                                            212, 0, 0, 0),
+                                                        fontFamily: 'Poppins',
+                                                        fontSize: 14,
+                                                        letterSpacing:
+                                                            0 /*percentages not used in flutter. defaulting to zero*/,
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                        height:
+                                                            1.6666666666666667),
+                                                  ),
+                                                  Container(
+                                                    margin: EdgeInsets.fromLTRB(
+                                                        0, 30, 20, 0),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                        topLeft:
+                                                            Radius.circular(8),
+                                                        topRight:
+                                                            Radius.circular(8),
+                                                        bottomLeft:
+                                                            Radius.circular(8),
+                                                        bottomRight:
+                                                            Radius.circular(8),
+                                                      ),
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    13,
+                                                                    255,
+                                                                    77,
+                                                                    110),
+                                                            offset:
+                                                                Offset(0, 4),
+                                                            blurRadius: 14)
+                                                      ],
+                                                      border: Border.all(
+                                                        color: Color.fromRGBO(
+                                                            193, 199, 205, 1),
+                                                        width: 1,
+                                                      ),
                                                     ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ])),
-                                  Container(
-                                      margin:
-                                          EdgeInsets.fromLTRB(5, 250, 20, 0),
-                                      width: 250,
-                                      height: 100,
-                                      child: Stack(children: <Widget>[
-                                        Positioned(
-                                            top: 0,
-                                            left: 15,
-                                            child: Text(
-                                              'Alcoholic',
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                  color: Color.fromARGB(
-                                                      212, 0, 0, 0),
-                                                  fontFamily: 'Poppins',
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.normal,
-                                                  height: 1.6666666666666667),
-                                            )),
-                                        Container(
-                                          margin: EdgeInsets.fromLTRB(
-                                              10, 30, 20, 0),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(8),
-                                              topRight: Radius.circular(8),
-                                              bottomLeft: Radius.circular(8),
-                                              bottomRight: Radius.circular(8),
-                                            ),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                  color: Color.fromARGB(
-                                                      13, 255, 77, 110),
-                                                  offset: Offset(0, 4),
-                                                  blurRadius: 14)
-                                            ],
-                                            border: Border.all(
-                                              color: Color.fromRGBO(
-                                                  193, 199, 205, 1),
-                                              width: 1,
-                                            ),
-                                          ),
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 20, vertical: 12),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: <Widget>[
-                                              Image.asset(
-                                                  this.profileDetails != null
-                                                      ? profileDetails!
-                                                                  .drinkingHabit
-                                                                  .name ==
-                                                              "Alcoholic"
-                                                          ? 'images/Beer.png'
-                                                          : profileDetails!
-                                                                      .smokingHabit
-                                                                      .name ==
-                                                                  "Nonalcoholic"
-                                                              ? 'images/nonalcoholiya.png'
-                                                              : profileDetails!
-                                                                          .smokingHabit
-                                                                          .name ==
-                                                                      "Occasionally"
-                                                                  ? 'images/cigarette.png'
-                                                                  : ""
-                                                      : "",
-                                                  height: 28,
-                                                  width: 28),
-                                              SizedBox(width: 8),
-                                              Container(
-                                                child: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: <Widget>[
-                                                    Text(
-                                                      this.profileDetails !=
-                                                              null
-                                                          ? profileDetails!
-                                                              .drinkingHabit
-                                                              .name
-                                                          : "",
-                                                      textAlign: TextAlign.left,
-                                                      style: TextStyle(
-                                                          color: Color.fromRGBO(
-                                                              18, 22, 25, 1),
-                                                          fontFamily: 'Poppins',
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                          height: 1.625),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 20,
+                                                            vertical: 12),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: <Widget>[
+                                                        Image.asset(
+                                                            this.profileDetails !=
+                                                                    null
+                                                                ? profileDetails!
+                                                                            .smokingHabit
+                                                                            .name ==
+                                                                        "Smoker"
+                                                                    ? 'images/cigarette.png'
+                                                                    : profileDetails!.smokingHabit.name ==
+                                                                            "NonSmoker"
+                                                                        ? 'images/nonsmokerr.png'
+                                                                        : profileDetails!.smokingHabit.name ==
+                                                                                "Occasionally"
+                                                                            ? 'images/cigarette.png'
+                                                                            : ""
+                                                                : "",
+                                                            height: 28,
+                                                            width: 28),
+                                                        SizedBox(width: 8),
+                                                        Container(
+                                                          decoration:
+                                                              BoxDecoration(),
+                                                          child: Row(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            children: <Widget>[
+                                                              Text(
+                                                                this.profileDetails !=
+                                                                        null
+                                                                    ? profileDetails!
+                                                                        .smokingHabit
+                                                                        .name
+                                                                    : "",
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .left,
+                                                                style: TextStyle(
+                                                                    color: Color
+                                                                        .fromRGBO(
+                                                                            18,
+                                                                            22,
+                                                                            25,
+                                                                            1),
+                                                                    fontFamily:
+                                                                        'Poppins',
+                                                                    fontSize:
+                                                                        16,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .normal,
+                                                                    height:
+                                                                        1.625),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ])),
+                                                  ),
+                                                ])),
+                                            Container(
+                                                margin: EdgeInsets.fromLTRB(
+                                                    20, 10, 0, 0),
+                                                // width: 250,
+                                                // height: 100,
+                                                child: Stack(children: <Widget>[
+                                                  Text(
+                                                    'Alcoholic',
+                                                    textAlign: TextAlign.left,
+                                                    style: TextStyle(
+                                                        color: Color.fromARGB(
+                                                            212, 0, 0, 0),
+                                                        fontFamily: 'Poppins',
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                        height:
+                                                            1.6666666666666667),
+                                                  ),
+                                                  Container(
+                                                    margin: EdgeInsets.fromLTRB(
+                                                        0, 30, 0, 0),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                        topLeft:
+                                                            Radius.circular(8),
+                                                        topRight:
+                                                            Radius.circular(8),
+                                                        bottomLeft:
+                                                            Radius.circular(8),
+                                                        bottomRight:
+                                                            Radius.circular(8),
+                                                      ),
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    13,
+                                                                    255,
+                                                                    77,
+                                                                    110),
+                                                            offset:
+                                                                Offset(0, 4),
+                                                            blurRadius: 14)
+                                                      ],
+                                                      border: Border.all(
+                                                        color: Color.fromRGBO(
+                                                            193, 199, 205, 1),
+                                                        width: 1,
+                                                      ),
+                                                    ),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 20,
+                                                            vertical: 12),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: <Widget>[
+                                                        Image.asset(
+                                                            this.profileDetails !=
+                                                                    null
+                                                                ? profileDetails!
+                                                                            .drinkingHabit
+                                                                            .name ==
+                                                                        "Alcoholic"
+                                                                    ? 'images/Beer.png'
+                                                                    : profileDetails!.drinkingHabit.name ==
+                                                                            "Nonalcoholic"
+                                                                        ? 'images/nonalcoholiya.png'
+                                                                        : profileDetails!.drinkingHabit.name ==
+                                                                                "Occasionally"
+                                                                            ? 'images/Beer.png'
+                                                                            : ""
+                                                                : "",
+                                                            height: 28,
+                                                            width: 28),
+                                                        SizedBox(width: 8),
+                                                        Container(
+                                                          child: Row(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            children: <Widget>[
+                                                              Text(
+                                                                this.profileDetails !=
+                                                                        null
+                                                                    ? profileDetails!
+                                                                        .drinkingHabit
+                                                                        .name
+                                                                    : "",
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .left,
+                                                                style: TextStyle(
+                                                                    color: Color
+                                                                        .fromRGBO(
+                                                                            18,
+                                                                            22,
+                                                                            25,
+                                                                            1),
+                                                                    fontFamily:
+                                                                        'Poppins',
+                                                                    fontSize:
+                                                                        16,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .normal,
+                                                                    height:
+                                                                        1.625),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ])),
+                                          ],
+                                        );
+                                      } else
+                                        return Column();
+                                    },
+                                  ),
                                   Container(
                                       margin:
                                           EdgeInsets.fromLTRB(15, 350, 0, 0),

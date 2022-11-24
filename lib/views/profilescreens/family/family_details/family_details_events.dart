@@ -46,6 +46,7 @@ class UpdateFamilyDetails extends FamilyDetailsEvent {
   final int noOfSister;
   final int brotherMarried;
   final int sistersMarried;
+  bool isAnUpdate;
 
   UpdateFamilyDetails(
       this.fatherOccupation,
@@ -53,7 +54,8 @@ class UpdateFamilyDetails extends FamilyDetailsEvent {
       this.noOfBrothers,
       this.noOfSister,
       this.brotherMarried,
-      this.sistersMarried);
+      this.sistersMarried,
+      this.isAnUpdate);
 }
 
 class onFamilyDetailDataLoad extends FamilyDetailsEvent {

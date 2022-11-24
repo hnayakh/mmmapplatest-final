@@ -29,7 +29,7 @@ class _ChatScreenUIState extends State<ChatScreenUi> {
       appBar: AppBar(
         actions: <Widget>[
           Row(
-            //mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
                 child: Image.asset(
@@ -40,7 +40,7 @@ class _ChatScreenUIState extends State<ChatScreenUi> {
                 ),
               ),
               const SizedBox(
-                width: 20,
+                width: 10,
               ),
               Container(
                 child: Image.asset(
@@ -59,7 +59,7 @@ class _ChatScreenUIState extends State<ChatScreenUi> {
                 ),
               ),
               const SizedBox(
-                width: 40,
+                width: 30,
               ),
               Container(
                 child: Image.asset(

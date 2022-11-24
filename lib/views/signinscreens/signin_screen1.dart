@@ -72,6 +72,7 @@ class SignInScreen extends StatefulWidget {
 }
 
 class SignInScreenState extends State<SignInScreen> {
+  String currentText = "";
   FocusNode emailFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
   TextEditingController emailController = TextEditingController();
@@ -282,12 +283,66 @@ class SignInScreenState extends State<SignInScreen> {
                                   crossAxisAlignment:
                                       CrossAxisAlignment.stretch,
                                   children: [
-                                    MmmTextFileds.textFiledWithLabel(
-                                      "Email",
-                                      _hint,
-                                      emailController,
-                                      inputType: TextInputType.emailAddress,
+                                    //MmmTextFileds.textFiledWithLabel(
+                                    //   "Email",
+                                    //   _hint,
+                                    //   emailController,
+                                    //   inputType: TextInputType.emailAddress,
+                                    // ),
+                                    Container(
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            'Email',
+                                            textScaleFactor: 1.0,
+                                            style: MmmTextStyles.bodySmall(
+                                                textColor: kDark5),
+                                          ),
+                                        ],
+                                      ),
                                     ),
+                                    Container(
+                                      height: 50,
+                                      child: TextField(
+                                        onChanged: (value) {
+                                          setState(() {
+                                            currentText = value;
+                                          });
+                                        },
+                                        keyboardType:
+                                            TextInputType.emailAddress,
+                                        controller: emailController,
+                                        style: MmmTextStyles.bodyRegular(
+                                            textColor: kDark5),
+                                        cursorColor: kDark5,
+                                        obscureText: false,
+                                        decoration: InputDecoration(
+                                            border: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: kDark2, width: 1),
+                                                borderRadius:
+                                                    BorderRadius.circular(8)),
+                                            focusedBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(8)),
+                                                borderSide: BorderSide(
+                                                    color: kInputBorder,
+                                                    width: 1)),
+                                            contentPadding:
+                                                const EdgeInsets.symmetric(
+                                                    horizontal: 20,
+                                                    vertical: 14),
+                                            hintText: 'Enter email id',
+                                            isDense: true,
+                                            filled: true,
+                                            fillColor: kLight4,
+                                            hintStyle:
+                                                MmmTextStyles.bodyRegular(
+                                                    textColor: kDark2)),
+                                      ),
+                                    ),
+
+                                    //
                                     SizedBox(
                                       height: 16,
                                     ),
@@ -321,17 +376,22 @@ class SignInScreenState extends State<SignInScreen> {
                                       height: 24,
                                     ),
                                     Container(
-                                        child: MmmButtons
-                                            .enabledRedButtonbodyMedium(
-                                                44, 'Sign In', action: () {
-                                      FocusScope.of(context)
-                                          .requestFocus(FocusNode());
-                                      BlocProvider.of<SignInBloc>(context)
-                                          .add(ValidateAndSignin(
-                                        emailController.text.trim(),
-                                        passwordController.text.trim(),
-                                      ));
-                                    })),
+                                        child: currentText.length < 8
+                                            ? MmmButtons.disabledGreyButton(
+                                                50, 'Sign in')
+                                            : MmmButtons
+                                                .enabledRedButtonbodyMedium(
+                                                    44, 'Sign In', action: () {
+                                                FocusScope.of(context)
+                                                    .requestFocus(FocusNode());
+                                                BlocProvider.of<SignInBloc>(
+                                                        context)
+                                                    .add(ValidateAndSignin(
+                                                  emailController.text.trim(),
+                                                  passwordController.text
+                                                      .trim(),
+                                                ));
+                                              })),
                                     SizedBox(
                                       height: 24,
                                     ),
@@ -369,9 +429,6 @@ class SignInScreenState extends State<SignInScreen> {
                                     SizedBox(
                                       height: 24,
                                     ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
                                     Row(
                                       children: [
                                         Expanded(
@@ -404,7 +461,7 @@ class SignInScreenState extends State<SignInScreen> {
                                       ],
                                     ),
                                     SizedBox(
-                                      height: 15,
+                                      height: 24,
                                     ),
                                     Container(
                                       child: MmmButtons
@@ -412,6 +469,9 @@ class SignInScreenState extends State<SignInScreen> {
                                               'Connect via OTP', action: () {
                                         navigateToSigninWithMobile();
                                       }),
+                                    ),
+                                    SizedBox(
+                                      height: 24,
                                     ),
                                   ],
                                 ),
@@ -516,12 +576,7 @@ class SignInScreenState extends State<SignInScreen> {
 
   void showSigninOptions(BuildContext context) async {
     showModalBottomSheet(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(25), topRight: Radius.circular(25)),
-        ),
-        context: context,
-        builder: (context) => SignupOptionBottomSheet());
+        context: context, builder: (context) => SignupOptionBottomSheet());
 
     // var result = await showModalBottomSheet(
     //     context: context,

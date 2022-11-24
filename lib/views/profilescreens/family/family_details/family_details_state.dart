@@ -5,6 +5,8 @@ class FamilyDetailState extends BaseEventState {}
 
 class FamilyDetailInitialState extends FamilyDetailState {}
 
+class OnNavigationToMyProfiles extends FamilyDetailState {}
+
 class OnLoading extends FamilyDetailState {}
 
 class OnError extends FamilyDetailState {

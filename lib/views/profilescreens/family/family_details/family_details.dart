@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:makemymarry/bloc/about/about_bloc.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_helper.dart';
@@ -13,11 +14,14 @@ import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
+import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
 import 'package:makemymarry/views/profilescreens/family/family_details/family_details_bloc.dart';
 import 'package:makemymarry/views/profilescreens/family/family_details/family_details_events.dart';
 import 'package:makemymarry/views/profilescreens/family/family_details/family_details_state.dart';
 import 'package:makemymarry/views/profilescreens/family/family_details/mother_occupation.dart';
 import 'package:makemymarry/views/profilescreens/habbit/habits.dart';
+import 'package:makemymarry/views/profilescreens/occupation/occupation_bloc.dart';
+import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/my_profile/myprofile.dart';
 
 import '../../bio/bio.dart';
 import 'father_occupation.dart';
@@ -101,7 +105,8 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
                           this.noOfBrothers,
                           this.noOfSister,
                           this.brotherMarried,
-                          this.sistersMarried));
+                          this.sistersMarried,
+                          this.userDetails.registrationStep > 6));
                 },
                 child: MmmIcons.rightArrowEnabled(),
               )),
@@ -140,6 +145,10 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
       }
       if (state is OnFamilyDetailsUpdated) {
         widget.onComplete();
+      }
+      if (state is OnNavigationToMyProfiles) {
+        navigateToMyProfile();
+        // navigateToHabits();
       }
     });
   }
@@ -639,5 +648,25 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
             .profileDetails!
             .sistersMarried;
     }
+  }
+
+  void navigateToMyProfile() {
+    var userRepo = BlocProvider.of<FamilyDetailsBloc>(context).userRepository;
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                    create: (context) => AboutBloc(userRepo),
+                  ),
+                  BlocProvider(
+                    create: (context) => OccupationBloc(userRepo),
+                  ),
+                  BlocProvider(
+                    create: (context) => AccountMenuBloc(userRepo),
+                  ),
+                ],
+                child: MyprofileScreen(
+                  userRepository: userRepo,
+                ))));
   }
 }

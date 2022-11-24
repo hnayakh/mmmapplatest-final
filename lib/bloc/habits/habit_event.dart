@@ -29,8 +29,10 @@ class UpdateHabit extends HabitEvent {
   late final EatingHabit eatingHabit;
   late final SmokingHabit smokingHabit;
   late final DrinkingHabit drinkingHabit;
+  bool isAnUpdate;
 
-  UpdateHabit(this.eatingHabit, this.drinkingHabit, this.smokingHabit);
+  UpdateHabit(
+      this.eatingHabit, this.drinkingHabit, this.smokingHabit, this.isAnUpdate);
 }
 
 class onHabitDataLoad extends HabitEvent {

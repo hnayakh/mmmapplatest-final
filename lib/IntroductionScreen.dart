@@ -117,7 +117,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       nextFlex: 0,
 
       skip: Container(
-        margin: EdgeInsets.fromLTRB(0, 160, 0, 0),
+        margin: EdgeInsets.fromLTRB(0, 170, 0, 0),
         child: const Text('Previous',
             style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black)),
       ),

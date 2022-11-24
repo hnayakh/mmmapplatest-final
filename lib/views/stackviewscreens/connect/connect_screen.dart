@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:makemymarry/utils/colors.dart';
-import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
-import 'package:makemymarry/utils/widgets_large.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class ConnectScreen extends StatefulWidget {
   const ConnectScreen({Key? key}) : super(key: key);
@@ -20,53 +19,756 @@ class _ConnectScreenState extends State<ConnectScreen> {
       body: Container(
         child: Column(
           children: [
-            Expanded(
-              child: ListView.separated(
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    leading: CircleAvatar(
-                      radius: 25,
-                      child: ClipOval(
-                        child: Image.asset(
-                          'images/stackviewImage.jpg',
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    trailing: Column(
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: Color.fromARGB(192, 221, 225, 230),
+                  width: 1,
+                ),
+              ),
+              child: ListView(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                children: [
+                  Slidable(
+                    key: UniqueKey(),
+                    endActionPane: ActionPane(
+                      motion: ScrollMotion(),
                       children: [
-                        CircleAvatar(
-                          radius: 8,
-                          backgroundColor: kPrimary,
-                          child: Text(
-                            '1',
-                            textAlign: TextAlign.center,
-                            style: MmmTextStyles.caption(textColor: kWhite),
-                          ),
-                        ),
-                        Text(
-                          '8m ago',
-                          style: MmmTextStyles.caption(textColor: gray1),
-                        ),
+                        Container(
+                            decoration: BoxDecoration(
+                                color: Color.fromARGB(83, 233, 30, 98)),
+                            child: Row(
+                              children: [
+                                SizedBox(width: 10),
+                                Image.asset(
+                                  'images/addinterest/videocall.png',
+                                  width: 20,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(1, 1, 1, 30),
+                                  child: CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor: kPrimary,
+                                    child: Text(
+                                      '1',
+                                      textAlign: TextAlign.center,
+                                      style: MmmTextStyles.caption(
+                                          textColor: kWhite),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 10),
+                                Image.asset(
+                                  'images/addinterest/vcall.png',
+                                  width: 20,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(1, 1, 1, 30),
+                                  child: CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor: kPrimary,
+                                    child: Text(
+                                      '1',
+                                      textAlign: TextAlign.center,
+                                      style: MmmTextStyles.caption(
+                                          textColor: kWhite),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ))
                       ],
                     ),
-                    title: Text(
-                      'Header',
-                      style: MmmTextStyles.heading5(),
+                    child: Container(
+                      margin: EdgeInsets.only(left: 10),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 30,
+                            child: ClipOval(
+                                child: Image.asset(
+                              'images/stackviewImage.jpg',
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            )),
+                          ),
+                          SizedBox(width: 10),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Jacob Jones',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(width: 120),
+                                    CircleAvatar(
+                                      radius: 8,
+                                      backgroundColor: kPrimary,
+                                      child: Text(
+                                        '1',
+                                        textAlign: TextAlign.center,
+                                        style: MmmTextStyles.caption(
+                                            textColor: kWhite),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Text('can you tag me on that ?'),
+                                  SizedBox(width: 50),
+                                  Text(
+                                    '8m ago',
+                                    style:
+                                        MmmTextStyles.caption(textColor: gray1),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                    subtitle: Text(
-                      "He'll want to use your yacht, and I don't want this thing smelling",
-                      style: MmmTextStyles.bodySmall(),
-                    ),
-                  );
-                },
-                itemCount: 8,
-                separatorBuilder: (BuildContext context, int index) {
-                  return Divider();
-                },
+                  ),
+                ],
               ),
             ),
+            Container(
+              decoration: BoxDecoration(
+                // color: Color(0xffF0EFF5),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: Color.fromARGB(192, 221, 225, 230),
+                  width: 1,
+                ),
+              ),
+              child: ListView(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                children: [
+                  Slidable(
+                    key: UniqueKey(),
+                    endActionPane: ActionPane(
+                      motion: ScrollMotion(),
+                      children: [
+                        Container(
+                            decoration: BoxDecoration(
+                                color: Color.fromARGB(83, 233, 30, 98)),
+                            child: Row(
+                              children: [
+                                SizedBox(width: 10),
+                                Image.asset(
+                                  'images/addinterest/videocall.png',
+                                  width: 20,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(1, 1, 1, 30),
+                                  child: CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor: kPrimary,
+                                    child: Text(
+                                      '1',
+                                      textAlign: TextAlign.center,
+                                      style: MmmTextStyles.caption(
+                                          textColor: kWhite),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 20),
+                                Image.asset(
+                                  'images/addinterest/vcall.png',
+                                  width: 20,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(1, 1, 1, 30),
+                                  child: CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor: kPrimary,
+                                    child: Text(
+                                      '1',
+                                      textAlign: TextAlign.center,
+                                      style: MmmTextStyles.caption(
+                                          textColor: kWhite),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ))
+                      ],
+                    ),
+                    child: Container(
+                      margin: EdgeInsets.only(left: 10),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 30,
+                            child: ClipOval(
+                                child: Image.asset(
+                              'images/stackviewImage.jpg',
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            )),
+                          ),
+                          SizedBox(width: 10),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Jacob Jones',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(width: 120),
+                                    CircleAvatar(
+                                      radius: 8,
+                                      backgroundColor: kPrimary,
+                                      child: Text(
+                                        '1',
+                                        textAlign: TextAlign.center,
+                                        style: MmmTextStyles.caption(
+                                            textColor: kWhite),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Text('Available talk time '),
+                                  Text(
+                                    '30 mins',
+                                    style: TextStyle(color: kSecondary),
+                                  ),
+                                  SizedBox(width: 40),
+                                  Text(
+                                    '8m ago',
+                                    style:
+                                        MmmTextStyles.caption(textColor: gray1),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                // color: Color(0xffF0EFF5),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: Color.fromARGB(192, 221, 225, 230),
+                  width: 1,
+                ),
+              ),
+              child: ListView(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                children: [
+                  Slidable(
+                    key: UniqueKey(),
+                    endActionPane: ActionPane(
+                      motion: ScrollMotion(),
+                      children: [
+                        Container(
+                            decoration: BoxDecoration(
+                                color: Color.fromARGB(83, 233, 30, 98)),
+                            child: Row(
+                              children: [
+                                SizedBox(width: 10),
+                                Image.asset(
+                                  'images/addinterest/videocall.png',
+                                  width: 20,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(1, 1, 1, 30),
+                                  child: CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor: kPrimary,
+                                    child: Text(
+                                      '1',
+                                      textAlign: TextAlign.center,
+                                      style: MmmTextStyles.caption(
+                                          textColor: kWhite),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 20),
+                                Image.asset(
+                                  'images/addinterest/vcall.png',
+                                  width: 20,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(1, 1, 1, 30),
+                                  child: CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor: kPrimary,
+                                    child: Text(
+                                      '1',
+                                      textAlign: TextAlign.center,
+                                      style: MmmTextStyles.caption(
+                                          textColor: kWhite),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ))
+                      ],
+                    ),
+                    child: Container(
+                      margin: EdgeInsets.only(left: 10),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 30,
+                            child: ClipOval(
+                                child: Image.asset(
+                              'images/stackviewImage.jpg',
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            )),
+                          ),
+                          SizedBox(width: 10),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Jacob Jones',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(width: 120),
+                                    CircleAvatar(
+                                      radius: 8,
+                                      backgroundColor: kPrimary,
+                                      child: Text(
+                                        '1',
+                                        textAlign: TextAlign.center,
+                                        style: MmmTextStyles.caption(
+                                            textColor: kWhite),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Text('Full talk time'),
+                                  SizedBox(width: 140),
+                                  Text(
+                                    '8m ago',
+                                    style:
+                                        MmmTextStyles.caption(textColor: gray1),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                // color: Color(0xffF0EFF5),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: Color.fromARGB(192, 221, 225, 230),
+                  width: 1,
+                ),
+              ),
+              child: ListView(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                children: [
+                  Slidable(
+                    key: UniqueKey(),
+                    endActionPane: ActionPane(
+                      motion: ScrollMotion(),
+                      children: [
+                        Container(
+                            decoration: BoxDecoration(
+                                color: Color.fromARGB(83, 233, 30, 98)),
+                            child: Row(
+                              children: [
+                                SizedBox(width: 10),
+                                Image.asset(
+                                  'images/addinterest/videocall.png',
+                                  width: 20,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(1, 1, 1, 30),
+                                  child: CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor: kPrimary,
+                                    child: Text(
+                                      '1',
+                                      textAlign: TextAlign.center,
+                                      style: MmmTextStyles.caption(
+                                          textColor: kWhite),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 20),
+                                Image.asset(
+                                  'images/addinterest/vcall.png',
+                                  width: 20,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(1, 1, 1, 30),
+                                  child: CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor: kPrimary,
+                                    child: Text(
+                                      '1',
+                                      textAlign: TextAlign.center,
+                                      style: MmmTextStyles.caption(
+                                          textColor: kWhite),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ))
+                      ],
+                    ),
+                    child: Container(
+                      margin: EdgeInsets.only(left: 10),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 30,
+                            child: ClipOval(
+                                child: Image.asset(
+                              'images/stackviewImage.jpg',
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            )),
+                          ),
+                          SizedBox(width: 10),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Jacob Jones',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(width: 120),
+                                    CircleAvatar(
+                                      radius: 8,
+                                      backgroundColor: kPrimary,
+                                      child: Text(
+                                        '1',
+                                        textAlign: TextAlign.center,
+                                        style: MmmTextStyles.caption(
+                                            textColor: kWhite),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Text('can you tag me on that ?'),
+                                  SizedBox(width: 50),
+                                  Text(
+                                    '8m ago',
+                                    style:
+                                        MmmTextStyles.caption(textColor: gray1),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                // color: Color(0xffF0EFF5),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: Color.fromARGB(192, 221, 225, 230),
+                  width: 1,
+                ),
+              ),
+              child: ListView(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                children: [
+                  Slidable(
+                    key: UniqueKey(),
+                    endActionPane: ActionPane(
+                      motion: ScrollMotion(),
+                      children: [
+                        Container(
+                            decoration: BoxDecoration(
+                                color: Color.fromARGB(83, 233, 30, 98)),
+                            child: Row(
+                              children: [
+                                SizedBox(width: 10),
+                                Image.asset(
+                                  'images/addinterest/videocall.png',
+                                  width: 20,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(1, 1, 1, 30),
+                                  child: CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor: kPrimary,
+                                    child: Text(
+                                      '1',
+                                      textAlign: TextAlign.center,
+                                      style: MmmTextStyles.caption(
+                                          textColor: kWhite),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 20),
+                                Image.asset(
+                                  'images/addinterest/vcall.png',
+                                  width: 20,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(1, 1, 1, 30),
+                                  child: CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor: kPrimary,
+                                    child: Text(
+                                      '1',
+                                      textAlign: TextAlign.center,
+                                      style: MmmTextStyles.caption(
+                                          textColor: kWhite),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ))
+                      ],
+                    ),
+                    child: Container(
+                      margin: EdgeInsets.only(left: 10),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 30,
+                            child: ClipOval(
+                                child: Image.asset(
+                              'images/stackviewImage.jpg',
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            )),
+                          ),
+                          SizedBox(width: 10),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Jacob Jones',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(width: 120),
+                                    CircleAvatar(
+                                      radius: 8,
+                                      backgroundColor: kPrimary,
+                                      child: Text(
+                                        '1',
+                                        textAlign: TextAlign.center,
+                                        style: MmmTextStyles.caption(
+                                            textColor: kWhite),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Text('can you tag me on that ?'),
+                                  SizedBox(width: 50),
+                                  Text(
+                                    '8m ago',
+                                    style:
+                                        MmmTextStyles.caption(textColor: gray1),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                // color: Color(0xffF0EFF5),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: Color.fromARGB(192, 221, 225, 230),
+                  width: 1,
+                ),
+              ),
+              child: ListView(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                children: [
+                  Slidable(
+                    key: UniqueKey(),
+                    endActionPane: ActionPane(
+                      motion: ScrollMotion(),
+                      children: [
+                        Container(
+                            decoration: BoxDecoration(
+                                color: Color.fromARGB(83, 233, 30, 98)),
+                            child: Row(
+                              children: [
+                                SizedBox(width: 10),
+                                Image.asset(
+                                  'images/addinterest/videocall.png',
+                                  width: 20,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(1, 1, 1, 30),
+                                  child: CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor: kPrimary,
+                                    child: Text(
+                                      '1',
+                                      textAlign: TextAlign.center,
+                                      style: MmmTextStyles.caption(
+                                          textColor: kWhite),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 10),
+                                Image.asset(
+                                  'images/addinterest/vcall.png',
+                                  width: 20,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(1, 1, 1, 30),
+                                  child: CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor: kPrimary,
+                                    child: Text(
+                                      '1',
+                                      textAlign: TextAlign.center,
+                                      style: MmmTextStyles.caption(
+                                          textColor: kWhite),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ))
+                      ],
+                    ),
+                    child: Container(
+                      margin: EdgeInsets.only(left: 10),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 30,
+                            child: ClipOval(
+                                child: Image.asset(
+                              'images/stackviewImage.jpg',
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            )),
+                          ),
+                          SizedBox(width: 10),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Jacob Jones',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(width: 120),
+                                    CircleAvatar(
+                                      radius: 8,
+                                      backgroundColor: kPrimary,
+                                      child: Text(
+                                        '1',
+                                        textAlign: TextAlign.center,
+                                        style: MmmTextStyles.caption(
+                                            textColor: kWhite),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Text('can you tag me on that ?'),
+                                  SizedBox(width: 50),
+                                  Text(
+                                    '8m ago',
+                                    style:
+                                        MmmTextStyles.caption(textColor: gray1),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            //Old Codes
+
             // Row(
             //   children: [
             //     Expanded(

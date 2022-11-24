@@ -16,6 +16,8 @@ class OnError extends HabitState {
 
 class NavigationToReligion extends HabitState {}
 
+class OnNavigationToMyProfiles extends HabitState {}
+
 class HabitDetailsState extends HabitState {
   late final ProfileDetails profileDetails;
   HabitDetailsState(this.profileDetails);
