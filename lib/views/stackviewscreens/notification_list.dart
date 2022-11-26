@@ -52,7 +52,7 @@ class _NotificationsState extends State<Notifications> {
       // ),
 
       //  ),
-      appBar: MmmButtons.appBarCurved('Notifications', context: context),
+      appBar: MmmButtons.appBarCurved('Notifications'),
       body: Container(
         child: Padding(
           padding: const EdgeInsets.only(top: 30),

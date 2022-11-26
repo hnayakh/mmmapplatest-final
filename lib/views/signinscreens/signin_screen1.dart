@@ -576,7 +576,11 @@ class SignInScreenState extends State<SignInScreen> {
 
   void showSigninOptions(BuildContext context) async {
     showModalBottomSheet(
-        context: context, builder: (context) => SignupOptionBottomSheet());
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+        context: context,
+        builder: (context) => SignupOptionBottomSheet());
 
     // var result = await showModalBottomSheet(
     //     context: context,

@@ -206,7 +206,7 @@ class SentScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: 16,
+                  width: 14,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -219,7 +219,7 @@ class SentScreen extends StatelessWidget {
                           style: MmmTextStyles.bodyRegular(textColor: kPrimary),
                         ),
                         SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.04,
+                          width: MediaQuery.of(context).size.width * 0.03,
                         ),
                         listSent[index].user.activationStatus ==
                                 ActivationStatus.Verified.index

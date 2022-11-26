@@ -131,7 +131,7 @@ class _SigninWithPhoneScreenState extends State<SigninWithPhoneScreen> {
                           prefixIcon: countrySelector()),
                     )),
                     SizedBox(
-                      height: 24,
+                      height: 20,
                     ),
                     currentText.length < 10
                         ? MmmButtons.disabledGreyButton(44, 'Send OTP')
@@ -141,7 +141,7 @@ class _SigninWithPhoneScreenState extends State<SigninWithPhoneScreen> {
                                 .add(GenerateOtp(phoneController.text.trim()));
                           }),
                     SizedBox(
-                      height: 24,
+                      height: 20,
                     ),
                     Row(
                       children: [
@@ -174,7 +174,7 @@ class _SigninWithPhoneScreenState extends State<SigninWithPhoneScreen> {
                       ],
                     ),
                     SizedBox(
-                      height: 24,
+                      height: 20,
                     ),
                     Row(
                       children: [
@@ -191,7 +191,7 @@ class _SigninWithPhoneScreenState extends State<SigninWithPhoneScreen> {
                       ],
                     ),
                     SizedBox(
-                      height: 8,
+                      height: 15,
                     ),
                     Container(
                       child: MmmButtons.enabledRedButtonbodyMedium(

@@ -8,6 +8,7 @@ import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
+import 'package:makemymarry/views/stackviewscreens/connect/chat_screen_ui.dart';
 
 import 'received_bloc/received_bloc.dart';
 import 'received_bloc/received_events.dart';
@@ -127,19 +128,158 @@ class ReceivedScreen extends StatelessWidget {
                           Container(
                             child: Stack(
                               children: [
-                                Container(
-                                  width: 40,
-                                  height: 40,
+                                InkWell(
+                                  onTap: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            content: Container(
+                                              height: 350,
+                                              width: 400,
+                                              decoration: const BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                Radius.circular(20),
+                                              )),
+                                              child: Column(
+                                                children: [
+                                                  Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        const SizedBox(
+                                                          height: 70,
+                                                        ),
+                                                        Container(
+                                                          child: const Text(
+                                                            'Abhishek Sharma',
+                                                            style: TextStyle(
+                                                              fontSize: 22,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        ClipOval(
+                                                          child: Image.asset(
+                                                            'images/sheild.png',
+                                                            height: 20,
+                                                            width: 20,
+                                                          ),
+                                                        ),
+                                                      ]),
+                                                  Container(
+                                                    child: ClipRect(
+                                                      child: Image.asset(
+                                                        'images/profile.png',
+                                                        height: 100,
+                                                        width: 80,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    child: const SizedBox(
+                                                        width: 300,
+                                                        child: Text(
+                                                            'Please accept the request to read a message',
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: TextStyle(
+                                                                fontSize: 17))),
+                                                  ),
+                                                  MmmButtons.primaryButton(
+                                                      'Confirm',
+                                                      () =>
+                                                          Navigator.of(context)
+                                                              .push(
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        ChatScreenUi()),
+                                                          )),
+                                                  Container(
+                                                    child: InkWell(
+                                                      onTap: (() {
+                                                        Navigator.pop(context);
+                                                      }),
+                                                      child: Container(
+                                                        height: 40,
+                                                        width: 240,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius.only(
+                                                            topLeft:
+                                                                Radius.circular(
+                                                                    10),
+                                                            topRight:
+                                                                Radius.circular(
+                                                                    10),
+                                                            bottomLeft:
+                                                                Radius.circular(
+                                                                    10),
+                                                            bottomRight:
+                                                                Radius.circular(
+                                                                    10),
+                                                          ),
+                                                          boxShadow: [
+                                                            BoxShadow(
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        73,
+                                                                        61,
+                                                                        75,
+                                                                        92),
+                                                                offset: Offset(
+                                                                    0, 4),
+                                                                blurRadius: 14)
+                                                          ],
+                                                          color: Color.fromRGBO(
+                                                              255, 255, 255, 1),
+                                                          border: Border.all(
+                                                            color: gray3,
+                                                            width: 1,
+                                                          ),
+                                                        ),
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Text(
+                                                          'Decline',
+                                                          textScaleFactor: 1.0,
+                                                          style: MmmTextStyles
+                                                              .heading6(
+                                                                  textColor:
+                                                                      gray3),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        });
+                                  },
                                   child: Container(
-                                    height: 32,
-                                    width: 32,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle, color: kLight4),
-                                    child: SvgPicture.asset(
-                                      'images/chat.svg',
-                                      height: 18,
-                                      color: kNotify,
+                                    width: 40,
+                                    height: 40,
+                                    child: Container(
+                                      height: 32,
+                                      width: 32,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: kLight4),
+                                      child: SvgPicture.asset(
+                                        'images/chat.svg',
+                                        height: 18,
+                                        color: kNotify,
+                                      ),
                                     ),
                                   ),
                                 ),
