@@ -86,6 +86,7 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
       BlocProvider.of<FamilyDetailsBloc>(context)
           .add(onFamilyDetailDataLoad(userDetails.id));
     }
+    print("RESTSTEP${this.userDetails.registrationStep}");
     return BlocConsumer<FamilyDetailsBloc, FamilyDetailState>(
         builder: (context, state) {
       initData();

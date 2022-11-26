@@ -256,7 +256,7 @@ class MmmWidgets {
         contentPadding: EdgeInsets.all(0),
         content: Container(
           //width: 328,
-          height: 393,
+          height: 380,
           padding: kMargin12,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
@@ -272,7 +272,7 @@ class MmmWidgets {
               ),
               Container(
                 width: double.infinity,
-                height: 163,
+                height: 173,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: Image.asset(
@@ -282,7 +282,7 @@ class MmmWidgets {
                 ),
               ),
               SizedBox(
-                height: 24,
+                height: 20,
               ),
               Container(
                 child: Text(
@@ -292,17 +292,41 @@ class MmmWidgets {
                 ),
               ),
               SizedBox(
-                height: 24,
+                height: 18,
               ),
               Container(
-                  height: 90,
-                  child: Text(
-                    'your profile is created successfully on $date with ${user.displayId.toUpperCase()} id',
+                  height: 70,
+                  // child: Text(
+                  //   'your profile is created successfully on $date with  ${user.displayId.toUpperCase()}  id',
+                  //   textAlign: TextAlign.center,
+                  //   style: MmmTextStyles.bodySmall(textColor: kDark5),
+                  // )
+                  child: RichText(
                     textAlign: TextAlign.center,
-                    style: MmmTextStyles.bodySmall(textColor: kDark5),
+                    text: TextSpan(
+                      // Note: Styles for TextSpans must be explicitly defined.
+                      // Child text spans will inherit styles from parent
+                      style: new TextStyle(
+                        fontSize: 14.0,
+                        color: Colors.black,
+                      ),
+                      children: <TextSpan>[
+                        new TextSpan(
+                            text:
+                                'Your profile is created successfully on  $date with'),
+                        new TextSpan(
+                            text: ' ${user.displayId.toUpperCase()} ',
+                            style: new TextStyle(
+                                color: kPrimary, fontWeight: FontWeight.bold)),
+                        new TextSpan(text: 'id'),
+                      ],
+                    ),
                   )),
+              // SizedBox(
+              //   height: 18,
+              // ),
               Container(
-                height: 42,
+                height: 32,
                 child: Container(
                   decoration: MmmDecorations.primaryButtonDecoration(),
                   child: ClipRRect(
@@ -1069,14 +1093,14 @@ class MmmWidgets {
 
           ClipRRect(
             child: Padding(
-              padding: const EdgeInsets.only(right: 350),
+              padding: const EdgeInsets.only(right: 330),
               child: MmmButtons.backButton(context),
             ),
           ),
 
           // Choose Your Type
           const SizedBox(
-            width: 360,
+            width: 340,
             child: Text(
               'Choose your type of meet',
               // textAlign: TextAlign.start,
@@ -1088,65 +1112,82 @@ class MmmWidgets {
               ),
             ),
           ),
-
+          SizedBox(height: 30),
           Column(
+            // crossAxisAlignment: CrossAxisAlignment.start,
+            // mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              Container(
+                  height: 40,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      width: 1,
+                    ),
+                  ),
+                  width: 340,
+                  child: MmmButtons.primaryButtonMeetGray('Virtual Meet', () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => BookYourDate()),
+                    );
+                  })),
               const SizedBox(
-                height: 30,
-                width: 15,
+                height: 20,
               ),
               Container(
-                  width: 365,
-                  height: 55,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => BookYourDate()));
-                    },
-                    // ignore: sort_child_properties_last
-                    child: const Text(
-                      'Virtual meet',
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      shadowColor: kPrimary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10), // <-- Radius
-                      ),
-                      side: const BorderSide(
-                        width: 1.0,
-                      ),
-                    ),
-                  )),
-              const SizedBox(
-                height: 15,
-              ),
-              Container(
-                  width: 365,
-                  height: 55,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    // ignore: sort_child_properties_last
-                    child: const Text(
-                      'Meet in Person',
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      shadowColor: kPrimary, //  Color Cose #C9184A
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10), // <-- Radius
-                      ),
-                      side: const BorderSide(
-                        width: 1.0,
-                      ),
-                    ),
-                  )),
+                  width: 340,
+                  child: MmmButtons.primaryButtonMeet(
+                      'Meet in Person', () => null)),
+              // Container(
+              //     width: 365,
+              //     height: 55,
+              //     child: ElevatedButton(
+              //       onPressed: () {
+              //         Navigator.of(context).push(MaterialPageRoute(
+              //             builder: (context) => BookYourDate()));
+              //       },
+              //       // ignore: sort_child_properties_last
+              //       child: const Text(
+              //         'Virtual meet',
+              //         style: TextStyle(
+              //             fontSize: 18,
+              //             color: Colors.white,
+              //             fontWeight: FontWeight.bold),
+              //       ),
+              //       style: ElevatedButton.styleFrom(
+              //         shadowColor: kPrimary,
+              //         shape: RoundedRectangleBorder(
+              //           borderRadius: BorderRadius.circular(10), // <-- Radius
+              //         ),
+              //         side: const BorderSide(
+              //           width: 1.0,
+              //         ),
+              //       ),
+              //     )),
+
+              // Container(
+              //     width: 365,
+              //     height: 55,
+              //     child: ElevatedButton(
+              //       onPressed: () {},
+              //       // ignore: sort_child_properties_last
+              //       child: const Text(
+              //         'Meet in Person',
+              //         style: TextStyle(
+              //             fontSize: 18,
+              //             fontWeight: FontWeight.bold,
+              //             color: Colors.white),
+              //       ),
+              //       style: ElevatedButton.styleFrom(
+              //         shadowColor: kPrimary, //  Color Cose #C9184A
+              //         shape: RoundedRectangleBorder(
+              //           borderRadius: BorderRadius.circular(10), // <-- Radius
+              //         ),
+              //         side: const BorderSide(
+              //           width: 1.0,
+              //         ),
+              //       ),
+              //     )),
             ],
           )
         ],

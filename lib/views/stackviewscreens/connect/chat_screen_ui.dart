@@ -1,6 +1,7 @@
 import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:makemymarry/utils/colors.dart';
 
 class ChatScreenUi extends StatefulWidget {
   const ChatScreenUi({Key? key}) : super(key: key);
@@ -27,63 +28,74 @@ class _ChatScreenUIState extends State<ChatScreenUi> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(bottomRight: Radius.circular(100)),
+            gradient: LinearGradient(
+                colors: [kSecondary, kPrimary],
+                begin: Alignment.bottomRight,
+                end: Alignment.topLeft),
+          ),
+        ),
         actions: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                child: Image.asset(
-                  'images/arrowchat.png',
-                  width: 0,
-                  // height: 35,
-                  color: Colors.white,
+          Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  child: Image.asset(
+                    'images/arrowchat.png',
+                    width: 0,
+                    // height: 35,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Container(
-                child: Image.asset(
-                  'images/face.png',
-                  width: 60,
-                  height: 60,
+                const SizedBox(
+                  width: 10,
                 ),
-              ),
-              const SizedBox(
-                width: 15,
-              ),
-              Container(
-                child: const Text(
-                  'Jacab Joney',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                Container(
+                  child: Image.asset(
+                    'images/face.png',
+                    width: 60,
+                    height: 60,
+                  ),
                 ),
-              ),
-              const SizedBox(
-                width: 30,
-              ),
-              Container(
-                child: Image.asset(
-                  'images/video.png',
-                  // width: 30,
-                  height: 40,
-                  color: Colors.white,
+                const SizedBox(
+                  width: 15,
                 ),
-              ),
-              const SizedBox(
-                width: 20,
-              ),
-              Container(
-                child: Image.asset(
-                  'images/audio.png',
-                  width: 35,
-                  height: 40,
-                  color: Colors.white,
+                Container(
+                  child: const Text(
+                    'Jacab Joney',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-              const SizedBox(
-                width: 20,
-              ),
-            ],
+                const SizedBox(
+                  width: 30,
+                ),
+                Container(
+                  child: Image.asset(
+                    'images/video.png',
+                    // width: 30,
+                    height: 40,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                Container(
+                  child: Image.asset(
+                    'images/audio.png',
+                    width: 35,
+                    height: 40,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+              ],
+            ),
           ),
         ],
         toolbarHeight: 180,
@@ -162,15 +174,16 @@ class _ChatScreenUIState extends State<ChatScreenUi> {
                           borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(20),
                             topRight: Radius.circular(20),
-                            bottomRight: Radius.circular(20),
+                            bottomRight: Radius.circular(0),
+                            bottomLeft: Radius.circular(20),
                           )),
                       padding: const EdgeInsets.only(
-                        left: 10,
+                        left: 20,
                         right: 10,
                         top: 10,
                         bottom: 10,
                       ),
-                      margin: const EdgeInsets.fromLTRB(5.0, 1.0, 1.0, 5.0),
+                      margin: const EdgeInsets.fromLTRB(5.0, 1.0, 10, 5.0),
                       // ignore: prefer_const_constructors
                       child: Center(
                         child: const Text("i'm good. what about you?",
@@ -207,7 +220,7 @@ class _ChatScreenUIState extends State<ChatScreenUi> {
                   Align(
                     alignment: Alignment.topLeft,
                     child: Container(
-                      constraints: BoxConstraints(minWidth: 1, maxWidth: 200),
+                      constraints: BoxConstraints(minWidth: 1, maxWidth: 300),
                       decoration: BoxDecoration(
                           color: secondarycolor,
                           border: Border.all(color: Colors.white),
@@ -217,21 +230,23 @@ class _ChatScreenUIState extends State<ChatScreenUi> {
                             bottomRight: Radius.circular(20),
                           )),
                       padding: const EdgeInsets.only(
-                        left: 10,
-                        right: 10,
+                        left: 20,
+                        right: 20,
                         top: 10,
                         bottom: 10,
                       ),
-                      margin: const EdgeInsets.fromLTRB(5.0, 1.0, 1.0, 5.0),
-                      // ignore: prefer_const_constructors
+                      margin: const EdgeInsets.fromLTRB(10, 1.0, 1.0, 5.0),
                       child: Center(
-                        child: const Text(
-                            "Let's meet for coffee , what do you say ?",
-                            maxLines: 100,
-                            style: TextStyle(
-                              height: 2,
-                              fontSize: 18.0,
-                            )),
+                        child: Container(
+                          // height: 100,
+                          child: const Text(
+                              "Let's meet for coffee , what do you say ?",
+                              //maxLines: 100,
+                              style: TextStyle(
+                                height: 2,
+                                fontSize: 18.0,
+                              )),
+                        ),
                       ),
                     ),
                   ),

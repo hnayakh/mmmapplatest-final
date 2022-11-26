@@ -488,7 +488,8 @@ class _BioScreenState extends State<BioScreen> {
     this.localImagePaths = BlocProvider.of<BioBloc>(context).localImagePaths;
 
     // this.education = BlocProvider.of<OccupationBloc>(context).education;
-    if (this.aboutMe == "") this.aboutMe = this.bioController.text;
+    // if (this.aboutMe == "")
+    this.aboutMe = this.bioController.text;
     // print(
     //     "PROFILEDATA${BlocProvider.of<BioBloc>(context).profileData!.aboutMe}");
     if (BlocProvider.of<BioBloc>(context).profileData != null) {

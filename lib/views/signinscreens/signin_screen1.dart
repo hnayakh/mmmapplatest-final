@@ -626,28 +626,30 @@ class SignInScreenState extends State<SignInScreen> {
             (route) => false);
         break;
       case 7:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => Habit(userRepository: userRepo)),
+            (route) => false);
+        break;
       case 6:
+        break;
+      case 5:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => FamilyScreen(userRepository: userRepo)),
             (route) => false);
         break;
-      case 5:
+      case 4:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => Occupations(userRepository: userRepo)),
             (route) => false);
-        break;
-      case 4:
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (context) => Religion(userRepository: userRepo)),
-            (route) => false);
+
         break;
       case 3:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-                builder: (context) => Habit(userRepository: userRepo)),
+                builder: (context) => Religion(userRepository: userRepo)),
             (route) => false);
         break;
       case 2:
