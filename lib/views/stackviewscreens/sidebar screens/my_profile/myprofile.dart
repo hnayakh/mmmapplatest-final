@@ -171,13 +171,14 @@ class _MyProfileState extends State<MyProfile> {
                           child: CircleAvatar(
                             radius: MediaQuery.of(context).size.width * 0.122,
                             child: ClipOval(
-                              child: Image.network(
-                                profileDetails!.images[0],
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                                height: double.infinity,
-                              ),
-                            ),
+                                child: profileDetails!.images.length > 0
+                                    ? Image.network(
+                                        profileDetails!.images[0],
+                                        width: double.infinity,
+                                        fit: BoxFit.cover,
+                                        height: double.infinity,
+                                      )
+                                    : Image.asset('images/human.jpg')),
                           ),
                         ),
                         Positioned(

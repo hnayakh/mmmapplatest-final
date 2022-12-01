@@ -81,8 +81,10 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
           if (!event.isAnUpdate) {
             this.userRepository.updateRegistrationStep(7);
           }
+          print('event.isAnUpdate$event.isAnUpdate');
           yield event.isAnUpdate
-              ? OnNavigationToMyProfiles()
+              ? NavigationToBio()
+              //OnNavigationToMyProfiles()
               : NavigationToReligion();
         } else {
           yield OnError(result.message);

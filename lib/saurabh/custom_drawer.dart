@@ -29,6 +29,7 @@ import 'package:makemymarry/views/signinscreens/signin_screen1.dart';
 import 'package:makemymarry/views/stackviewscreens/connect/chat_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/connect/connect.dart';
 import 'package:makemymarry/views/stackviewscreens/meet%20status/meet_status_screen.dart';
+import 'package:makemymarry/views/stackviewscreens/search_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/my_profile/myprofile.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/setting_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/sidebar_contactsupport_screen.dart';
@@ -91,7 +92,7 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
     Size screenSize = MediaQuery.of(context).size;
     return BlocConsumer<AccountMenuBloc, AccountMenuState>(
       listener: (context, state) {
-        // TODO: implement listener
+        // TO DO: implement listener
       },
       builder: (context, state) {
         var userRepo = BlocProvider.of<AccountMenuBloc>(context).userRepository;
@@ -144,7 +145,7 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                               radius: 40,
                               backgroundImage: NetworkImage(
                                   this.profileDetails != null
-                                      ? profileDetails!.images[0]
+                                      ? profileDetails!.images[1]
                                       : "")),
                           SizedBox(
                             width: 20,
@@ -394,7 +395,19 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                             ),
                           ),
                           InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //     builder: (context) => SearchScreen(
+                              //           list: [],
+                              //           onlineMembersList: [],
+                              //           premiumList: [],
+                              //           profileVisitorList: [],
+                              //           recentViewList: [],
+                              //           searchList: [],
+                              //           userRepository: userRepo,
+                              //           // key: Key,
+                              //         )));
+                            },
                             child: customListTile(
                               leading:
                                   SvgPicture.asset("images/serachById.svg"),

@@ -16,6 +16,8 @@ class OnError extends HabitState {
 
 class NavigationToReligion extends HabitState {}
 
+class NavigationToBio extends HabitState {}
+
 class OnNavigationToMyProfiles extends HabitState {}
 
 class HabitDetailsState extends HabitState {

@@ -39,12 +39,21 @@ class ApplyCouponScreenState extends State<ApplyCouponScreen> {
     return BlocConsumer<ApplyCouponBloc, ApplyCouponState>(
         builder: (context, state) {
       return Container(
-          padding: kMargin12,
-          height: 600,
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
+            ),
           ),
+          padding: kMargin12,
+          //height: 600,
+          // decoration: BoxDecoration(
+          //   // color: Colors.white,
+          //   // borderRadius: BorderRadius.only(
+          //   //     topLeft: Radius.circular(10), topRight: Radius.circular(30))
+          //   //borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+          // ),
           child: Column(
             children: [
               Expanded(

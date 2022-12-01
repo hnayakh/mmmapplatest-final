@@ -136,228 +136,220 @@ class _RechargeConnectScreenState extends State<RechargeConnectScreen> {
       children: [
         Container(
           padding: kMargin16,
-          child: Column(
-            children: [
-              Expanded(
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                    Text(
-                      'Select your connects:',
-                      style: MmmTextStyles.bodyMedium(textColor: kDark5),
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Divider(),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              height: MediaQuery.of(context).size.height * 0.16,
-                              width: MediaQuery.of(context).size.width * 0.72,
-                              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16),
-                                gradient:
-                                    MmmDecorations.primaryGradientOpacity(),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  MmmButtons.plusMinusButton(
-                                      context, 'images/minus.svg', action: () {
-                                    BlocProvider.of<RechargeConnectBloc>(
-                                            context)
-                                        .add(ChangeConnectCount(-1));
-                                  }),
-                                  Container(
-                                    width: 48,
-                                    // color: Colors.white,
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      '$connectCounts',
-                                      style: MmmTextStyles.heading2(
-                                          textColor: kDark5),
-                                    ),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Text(
+                    'Select your connects:',
+                    style: MmmTextStyles.bodyMedium(textColor: kDark5),
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Divider(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            height: MediaQuery.of(context).size.height * 0.16,
+                            width: MediaQuery.of(context).size.width * 0.72,
+                            padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                              gradient: MmmDecorations.primaryGradientOpacity(),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                MmmButtons.plusMinusButton(
+                                    context, 'images/minus.svg', action: () {
+                                  BlocProvider.of<RechargeConnectBloc>(context)
+                                      .add(ChangeConnectCount(-1));
+                                }),
+                                Container(
+                                  width: 48,
+                                  // color: Colors.white,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    '$connectCounts',
+                                    style: MmmTextStyles.heading2(
+                                        textColor: kDark5),
                                   ),
-                                  MmmButtons.plusMinusButton(
-                                      context, 'images/plus.svg', action: () {
-                                    BlocProvider.of<RechargeConnectBloc>(
-                                            context)
-                                        .add(ChangeConnectCount(1));
-                                  })
+                                ),
+                                MmmButtons.plusMinusButton(
+                                    context, 'images/plus.svg', action: () {
+                                  BlocProvider.of<RechargeConnectBloc>(context)
+                                      .add(ChangeConnectCount(1));
+                                })
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '*you can connect with $connectCounts people',
+                            textScaleFactor: 1.0,
+                            style: MmmTextStyles.bodySmall(textColor: gray3),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Divider(),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      this.couponDetails != null
+                          ? buildCouponWidget()
+                          : MmmButtons.walletButtons('Have Coupons?',
+                              action: () {
+                              navigateToCoupon();
+                            }),
+                      SizedBox(
+                        height: 60,
+                      ),
+                      Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text(
+                              'Total Amount',
+                              textScaleFactor: 1.0,
+                              style: MmmTextStyles.heading5(textColor: kDark5),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 24),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Item Total',
+                                        textScaleFactor: 1.0,
+                                        style: MmmTextStyles.bodySmall(
+                                            textColor: kDark5),
+                                      ),
+                                      Text(
+                                        '\u{20B9}${totalAmount.toStringAsFixed(2)}',
+                                        textScaleFactor: 1.0,
+                                        style: MmmTextStyles.bodySmall(
+                                            textColor: kDark5),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 8,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'GST (18%)',
+                                        textScaleFactor: 1.0,
+                                        style: MmmTextStyles.bodySmall(
+                                            textColor: kDark5),
+                                      ),
+                                      Text(
+                                        '\u{20B9}${tax.toStringAsFixed(2)}',
+                                        textScaleFactor: 1.0,
+                                        style: MmmTextStyles.bodySmall(
+                                            textColor: kDark5),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 8,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        this.couponDetails != null
+                                            ? 'Promo Discount'
+                                            : 'General Discount',
+                                        textScaleFactor: 1.0,
+                                        style: MmmTextStyles.bodySmall(
+                                            textColor: kDark5),
+                                      ),
+                                      Text(
+                                        '- \u{20B9}${promoDiscount.toStringAsFixed(2)}',
+                                        textScaleFactor: 1.0,
+                                        style: MmmTextStyles.bodySmall(
+                                            textColor: kDark5),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 12,
+                                  ),
                                 ],
                               ),
                             ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              '*you can connect with $connectCounts people',
-                              textScaleFactor: 1.0,
-                              style: MmmTextStyles.bodySmall(textColor: gray3),
+                            Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 24),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Grand Total',
+                                    textScaleFactor: 1.0,
+                                    style: MmmTextStyles.bodyMedium(
+                                        textColor: kDark5),
+                                  ),
+                                  Text(
+                                    '\u{20B9}${totalPayable.toStringAsFixed(2)}',
+                                    textScaleFactor: 1.0,
+                                    style: MmmTextStyles.bodyMedium(
+                                        textColor: kPrimary),
+                                  ),
+                                ],
+                              ),
+                              height: 50,
+                              decoration: MmmDecorations.whiteBgBottomShadow(),
                             )
                           ],
                         ),
-                        SizedBox(
-                          height: 24,
-                        ),
-                        Divider(),
-                        SizedBox(
-                          height: 24,
-                        ),
-                        this.couponDetails != null
-                            ? buildCouponWidget()
-                            : MmmButtons.walletButtons('Have Coupons?',
-                                action: () {
-                                navigateToCoupon();
-                              }),
-                        SizedBox(
-                          height: 70,
-                        ),
-                        Container(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Text(
-                                'Total Amount',
-                                textScaleFactor: 1.0,
-                                style:
-                                    MmmTextStyles.heading5(textColor: kDark5),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Container(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 24),
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'Item Total',
-                                          textScaleFactor: 1.0,
-                                          style: MmmTextStyles.bodySmall(
-                                              textColor: kDark5),
-                                        ),
-                                        Text(
-                                          '\u{20B9}${totalAmount.toStringAsFixed(2)}',
-                                          textScaleFactor: 1.0,
-                                          style: MmmTextStyles.bodySmall(
-                                              textColor: kDark5),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'GST (18%)',
-                                          textScaleFactor: 1.0,
-                                          style: MmmTextStyles.bodySmall(
-                                              textColor: kDark5),
-                                        ),
-                                        Text(
-                                          '\u{20B9}${tax.toStringAsFixed(2)}',
-                                          textScaleFactor: 1.0,
-                                          style: MmmTextStyles.bodySmall(
-                                              textColor: kDark5),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          this.couponDetails != null
-                                              ? 'Promo Discount'
-                                              : 'General Discount',
-                                          textScaleFactor: 1.0,
-                                          style: MmmTextStyles.bodySmall(
-                                              textColor: kDark5),
-                                        ),
-                                        Text(
-                                          '- \u{20B9}${promoDiscount.toStringAsFixed(2)}',
-                                          textScaleFactor: 1.0,
-                                          style: MmmTextStyles.bodySmall(
-                                              textColor: kDark5),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 12,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 24),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Grand Total',
-                                      textScaleFactor: 1.0,
-                                      style: MmmTextStyles.bodyMedium(
-                                          textColor: kDark5),
-                                    ),
-                                    Text(
-                                      '\u{20B9}${totalPayable.toStringAsFixed(2)}',
-                                      textScaleFactor: 1.0,
-                                      style: MmmTextStyles.bodyMedium(
-                                          textColor: kPrimary),
-                                    ),
-                                  ],
-                                ),
-                                height: 60,
-                                decoration:
-                                    MmmDecorations.whiteBgBottomShadow(),
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 24,
-                    ),
-                  ])),
-              SizedBox(
-                height: 15,
-              ),
-              MmmButtons.enabledRedButtonbodyMedium(50, 'Proceed to buy',
-                  action: () {
-                openCheckout();
-                // navigateTopay();
-              })
-            ],
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                ]),
+                SizedBox(
+                  height: 45,
+                ),
+                MmmButtons.enabledRedButtonbodyMedium(50, 'Proceed to buy',
+                    action: () {
+                  openCheckout();
+                  // navigateTopay();
+                })
+              ],
+            ),
           ),
         ),
         state is OnLoading ? MmmWidgets.buildLoader2(context) : Container(),

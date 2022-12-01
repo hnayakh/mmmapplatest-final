@@ -207,23 +207,23 @@ class ReceivedScreen extends StatelessWidget {
                                                       }),
                                                       child: Container(
                                                         height: 40,
-                                                        width: 240,
+                                                        width: 230,
                                                         decoration:
                                                             BoxDecoration(
                                                           borderRadius:
                                                               BorderRadius.only(
                                                             topLeft:
                                                                 Radius.circular(
-                                                                    10),
+                                                                    8),
                                                             topRight:
                                                                 Radius.circular(
-                                                                    10),
+                                                                    8),
                                                             bottomLeft:
                                                                 Radius.circular(
-                                                                    10),
+                                                                    8),
                                                             bottomRight:
                                                                 Radius.circular(
-                                                                    10),
+                                                                    8),
                                                           ),
                                                           boxShadow: [
                                                             BoxShadow(

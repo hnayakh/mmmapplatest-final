@@ -18,6 +18,7 @@ import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
 import 'package:makemymarry/views/profilescreens/bio/bio_bloc.dart';
 import 'package:makemymarry/views/profilescreens/family/family_background/family_background_event.dart';
 import 'package:makemymarry/views/profilescreens/family/family_background/family_background_state.dart';
+import 'package:makemymarry/views/profilescreens/habbit/habits.dart';
 import 'package:makemymarry/views/profilescreens/occupation/occupation_bloc.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/my_profile/myprofile.dart';
 
@@ -126,9 +127,12 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (ctx) => Bio(
-                                    userRepository: widget.userRepository,
-                                  )));
+                            builder: (ctx) =>
+                                Habit(userRepository: widget.userRepository),
+                            // Bio(
+                            //       userRepository: widget.userRepository,
+                            //     )
+                          ));
                       // BlocProvider.of<OccupationBloc>(context).add(UpdateCareer(
                       //     orgNameController.text.trim(),
                       //     annIncomeController.text.trim(),
@@ -515,6 +519,7 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
     if (result != null && result is FamilyValues) {
       BlocProvider.of<FamilyBackgroundBloc>(context)
           .add(OnFamilyValueSelected(result));
+      this.values = result;
     }
   }
 

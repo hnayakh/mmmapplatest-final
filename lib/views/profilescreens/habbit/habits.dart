@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/bloc/about/about_bloc.dart';
-
 import 'package:makemymarry/bloc/habits/habit_bloc.dart';
 import 'package:makemymarry/bloc/habits/habit_event.dart';
 import 'package:makemymarry/bloc/habits/habit_state.dart';
@@ -10,7 +9,6 @@ import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
-
 import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
@@ -18,7 +16,6 @@ import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
 import 'package:makemymarry/views/profilescreens/bio/bio.dart';
 import 'package:makemymarry/views/profilescreens/occupation/occupation_bloc.dart';
-import 'package:makemymarry/views/profilescreens/religion/religion.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/my_profile/myprofile.dart';
 
 class Habit extends StatelessWidget {
@@ -51,6 +48,8 @@ class _HabitScreenState extends State<HabitScreen> {
   Widget build(BuildContext context) {
     this.userDetails =
         BlocProvider.of<HabitBloc>(context).userRepository.useDetails!;
+    print(
+        "this.userDetails.registrationStep ${this.userDetails.registrationStep}");
     if (this.userDetails.registrationStep > 7) {
       BlocProvider.of<HabitBloc>(context).add(onHabitDataLoad(userDetails.id));
     }
@@ -256,7 +255,7 @@ class _HabitScreenState extends State<HabitScreen> {
                         this.eatingHabit!,
                         this.drinkingHabit!,
                         this.smokingHabit!,
-                        this.userDetails.registrationStep > 7));
+                        this.userDetails.registrationStep > 8));
                   },
                   child: MmmIcons.rightArrowEnabled(),
                 )),
