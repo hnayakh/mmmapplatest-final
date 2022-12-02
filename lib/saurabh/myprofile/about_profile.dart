@@ -181,15 +181,20 @@ class _AboutProfileScreenState extends State<AboutProfileScreen> {
                                 child: Stack(
                                   children: [
                                     ClipRRect(
-                                      child: Image.network(
-                                        this.localImagePaths[index],
-                                        fit: BoxFit.cover,
-                                        width: (MediaQuery.of(context)
-                                                .size
-                                                .width) /
-                                            2,
-                                        height: 120,
-                                      ),
+                                      child: this.localImagePaths.length > 0 &&
+                                              !this
+                                                  .localImagePaths[index]
+                                                  .contains("addImage")
+                                          ? Image.network(
+                                              this.localImagePaths[index],
+                                              fit: BoxFit.cover,
+                                              width: (MediaQuery.of(context)
+                                                      .size
+                                                      .width) /
+                                                  2,
+                                              height: 120,
+                                            )
+                                          : Image.asset('images/human.jpg'),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     // Positioned(

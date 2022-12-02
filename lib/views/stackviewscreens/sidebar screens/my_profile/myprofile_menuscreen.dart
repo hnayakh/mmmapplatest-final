@@ -102,7 +102,7 @@ class _MyProfileMenuState extends State<MyProfileMenu> {
                             radius: MediaQuery.of(context).size.width * 0.122,
                             child: ClipOval(
                               child: Image.network(
-                                profileDetails!.images[0].toString(),
+                                profileDetails!.images[1].toString(),
                                 width: double.infinity,
                                 fit: BoxFit.cover,
                                 height: double.infinity,

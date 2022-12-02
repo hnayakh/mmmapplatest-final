@@ -135,18 +135,19 @@ class _BioScreenState extends State<BioScreen> {
                                               0) {
                                             return addImageButton();
                                           } else {
+                                            var image =
+                                                this.localImagePaths[index];
+                                            print("image $image");
                                             return Column(
                                               children: [
                                                 Container(
                                                   child: Stack(
                                                     children: [
                                                       ClipRRect(
-                                                        child: this.localImagePaths[
-                                                                    index] !=
-                                                                "addImage"
+                                                        child: image !=
+                                                                "file:///addImage"
                                                             ? Image.network(
-                                                                this.localImagePaths[
-                                                                    index],
+                                                                image,
                                                                 fit: BoxFit
                                                                     .cover,
                                                                 width: (MediaQuery.of(

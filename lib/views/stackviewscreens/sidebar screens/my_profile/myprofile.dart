@@ -171,9 +171,20 @@ class _MyProfileState extends State<MyProfile> {
                           child: CircleAvatar(
                             radius: MediaQuery.of(context).size.width * 0.122,
                             child: ClipOval(
-                                child: profileDetails!.images.length > 0
+                                // child: Image.network(
+                                //   profileDetails!.images[1],
+                                //   width: double.infinity,
+                                //   fit: BoxFit.cover,
+                                //   height: double.infinity,
+                                // ),
+                                //  )
+
+                                child: profileDetails != null &&
+                                        profileDetails!.images.length > 0 &&
+                                        !profileDetails!.images[1]
+                                            .contains("addImage")
                                     ? Image.network(
-                                        profileDetails!.images[0],
+                                        profileDetails!.images[1],
                                         width: double.infinity,
                                         fit: BoxFit.cover,
                                         height: double.infinity,
