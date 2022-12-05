@@ -191,12 +191,26 @@ class MatchingProfile {
     this.email = json["email"];
     this.gender = Gender.values[json["gender"]];
     this.imageUrl = json["imageURL"];
-    this.dateOfBirth = json["dateOfBirth"];
-    this.name = json["name"];
+    if (json["dateOfBirth"] != null) {
+      this.dateOfBirth = json["dateOfBirth"];
+    } else {
+      this.dateOfBirth = "";
+    }
+    if (json["name"] != null) {
+      this.name = json["name"];
+    } else {
+      this.name = "";
+    }
+    // this.name = json["name"];
     this.caste = json["cast"];
     this.religion = json["religion"];
     this.motherTongue = json["motherTongue"];
-    this.height = (double.parse(json["height"]) / 30.48).roundToDouble();
+    if (json["height"] != null) {
+      this.height = (double.parse(json["height"]) / 30.48).roundToDouble();
+    } else {
+      this.height = 0.0;
+    }
+    // this.height = (double.parse(json["height"]) / 30.48).roundToDouble();
     if (json["careerCity"] != null && json["careerCity"] != Null) {
       this.city = json["careerCity"];
     }

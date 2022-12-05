@@ -93,10 +93,7 @@ class _SearchScreenState extends State<SearchScreen> {
           // ));
         }
         return Scaffold(
-          appBar: MmmButtons.appBarCurved(
-            'Search',
-            // context: context
-          ),
+          appBar: MmmButtons.appBarCurved('Search', context: context),
           body: SingleChildScrollView(
             child: Column(
               children: [
@@ -203,7 +200,16 @@ class _SearchScreenState extends State<SearchScreen> {
                               child: Material(
                                   color: Colors.transparent,
                                   child: InkWell(
-                                      onTap: () {},
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  FilterPrefsScreen(
+                                                    userRepository:
+                                                        widget.userRepository,
+                                                  )),
+                                        );
+                                      },
                                       child: Container(
                                         padding: EdgeInsets.all(15),
                                         child: SvgPicture.asset(

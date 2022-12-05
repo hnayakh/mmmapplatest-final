@@ -145,7 +145,7 @@ class _BioScreenState extends State<BioScreen> {
                                                     children: [
                                                       ClipRRect(
                                                         child: image !=
-                                                                "file:///addImage"
+                                                                "addImage"
                                                             ? Image.network(
                                                                 image,
                                                                 fit: BoxFit

@@ -25,6 +25,7 @@ import 'package:makemymarry/views/home/menu/wallet/wallet_main.dart';
 import 'package:makemymarry/views/profilescreens/about/about.dart';
 import 'package:makemymarry/views/profilescreens/bio/bio_bloc.dart';
 import 'package:makemymarry/views/profilescreens/occupation/occupation_bloc.dart';
+import 'package:makemymarry/views/profileviewscreens/profile_view_bloc.dart';
 import 'package:makemymarry/views/signinscreens/signin_screen1.dart';
 import 'package:makemymarry/views/stackviewscreens/connect/chat_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/connect/connect.dart';
@@ -209,113 +210,21 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                       child: ListView(
                         shrinkWrap: true,
                         children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (context) => MyprofileMenuScreen(
-                                        userRepository: userRepo)),
-                              );
-                              // showModalBottomSheet(
-                              //     shape: const RoundedRectangleBorder(
-                              //       borderRadius: BorderRadius.only(
-                              //         topLeft: Radius.circular(30.0),
-                              //         topRight: Radius.circular(30.0),
-                              //       ),
-                              //     ),
-                              //     // isScrollControlled: true,
-                              //     // backgroundColor: Colors.transparent,
-                              //     context: context,
-                              //     builder: (context) {
-                              //       return Container(
-                              //         height: 300,
-                              //         decoration: BoxDecoration(
-                              //             borderRadius:
-                              //                 BorderRadius.only(
-                              //                     topLeft:
-                              //                         Radius.circular(
-                              //                             30),
-                              //                     topRight:
-                              //                         Radius.circular(
-                              //                             30))),
-                              //         child: Container(
-                              //             child: Column(
-                              //           crossAxisAlignment:
-                              //               CrossAxisAlignment.start,
-                              //           children: [
-                              //             SizedBox(
-                              //               height: 10,
-                              //             ),
-                              //             IconButton(
-                              //                 onPressed: () {
-                              //                   Navigator.pop(context);
-                              //                 },
-                              //                 icon: Icon(
-                              //                   Icons.arrow_back,
-                              //                   color: primaryColor,
-                              //                 )),
-                              //             SizedBox(
-                              //               height: 20,
-                              //             ),
-                              //             Padding(
-                              //               padding: const EdgeInsets
-                              //                       .symmetric(
-                              //                   horizontal: 20,
-                              //                   vertical: 10),
-                              //               child: Container(
-                              //                 height: 55,
-                              //                 child: TextField(
-                              //                   decoration:
-                              //                       InputDecoration(
-                              //                     hintText:
-                              //                         "Enter coupon code",
-                              //                     border:
-                              //                         OutlineInputBorder(
-                              //                             borderSide:
-                              //                                 // BorderSide.none,
-                              //                                 //
-                              //                                 BorderSide(
-                              //                                     width:
-                              //                                         2,
-                              //                                     color: Colors
-                              //                                         .blueGrey),
-                              //                             borderRadius:
-                              //                                 BorderRadius
-                              //                                     .circular(
-                              //                                         10)),
-                              //                   ),
-                              //                 ),
-                              //               ),
-                              //             ),
-                              //             Padding(
-                              //               padding: const EdgeInsets
-                              //                       .symmetric(
-                              //                   horizontal: 20,
-                              //                   vertical: 0),
-                              //               child: Text(
-                              //                 "Promo code MMM20 is invalid. Please try another code",
-                              //                 style:
-                              //                     MmmTextStyles.caption(
-                              //                         textColor: Colors
-                              //                             .redAccent),
-                              //               ),
-                              //             ),
-                              //             SizedBox(
-                              //               height: 30,
-                              //             ),
-                              //             MmmButtons.primaryButton(
-                              //                 "Apply", () {})
-                              //           ],
-                              //         )),
-                              //       );
-                              //     });
-                            },
-                            child: customListTile(
-                              leading: SvgPicture.asset(
-                                  "images/clarityavatarsolid.svg"),
-                              text: "My Profile",
-                            ),
-                          ),
+                          // InkWell(
+                          //   onTap: () {
+                          //     Navigator.of(context).push(
+                          //       MaterialPageRoute(
+                          //           builder: (context) => MyprofileMenuScreen(
+                          //               userRepository: userRepo)),
+                          //     );
+
+                          //   },
+                          //   child: customListTile(
+                          //     leading: SvgPicture.asset(
+                          //         "images/clarityavatarsolid.svg"),
+                          //     text: "My Profile",
+                          //   ),
+                          // ),
                           InkWell(
                             onTap: () {
                               Navigator.push(
@@ -396,17 +305,21 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                           ),
                           InkWell(
                             onTap: () {
-                              // Navigator.of(context).push(MaterialPageRoute(
-                              //     builder: (context) => SearchScreen(
-                              //           list: [],
-                              //           onlineMembersList: [],
-                              //           premiumList: [],
-                              //           profileVisitorList: [],
-                              //           recentViewList: [],
-                              //           searchList: [],
-                              //           userRepository: userRepo,
-                              //           // key: Key,
-                              //         )));
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => BlocProvider(
+                                        create: (context) => ProfileViewBloc(
+                                            UserRepository(), ProfileDetails()),
+                                        child: SearchScreen(
+                                          list: [],
+                                          onlineMembersList: [],
+                                          premiumList: [],
+                                          profileVisitorList: [],
+                                          recentViewList: [],
+                                          searchList: [],
+                                          userRepository: userRepo,
+                                          // key: Key,
+                                        ),
+                                      )));
                             },
                             child: customListTile(
                               leading:

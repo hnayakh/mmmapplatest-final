@@ -331,10 +331,10 @@ class _FilterPrefsState extends State<FilterPrefs> {
                   style:
                       MmmTextStyles.bodyMediumSmall(textColor: Colors.black87),
                 ),
-                SizedBox(
-                  height: 10,
-                ),
-                MmmButtons.myProfileButtons('Employeed in ', action: () {}),
+                // SizedBox(
+                //   height: 10,
+                // ),
+                // MmmButtons.myProfileButtons('Employeed in ', action: () {}),
                 SizedBox(
                   height: 10,
                 ),

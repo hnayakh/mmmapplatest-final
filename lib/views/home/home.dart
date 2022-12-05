@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/saurabh/custom_drawer.dart';
+import 'package:makemymarry/saurabh/partner_preference.dart';
 import 'package:makemymarry/saurabh/profile_detail.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
@@ -168,6 +169,9 @@ class HomeScreenState extends State<HomeScreen> {
             onlineMembersList: widget.onlineMembersList,
           ),
         );
+      //     PartnerPrefsScreen(
+      //   userRepository: widget.userRepository,
+      // );
       case 2:
         return
             // MyprofileScreen(

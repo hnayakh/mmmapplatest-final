@@ -1,7 +1,7 @@
 import 'dart:io' show Platform;
 
 class AppConstants {
-  // static const ENDPOINT = "http://192.168.0.149:3000/api/";
+  //static const ENDPOINT = "http://192.168.0.149:3000/api/";
   static const ENDPOINT = "http://13.233.130.85:3000/api/";
   static const HASOPENEDBEFORE = "ISFIRSTTIME";
 
