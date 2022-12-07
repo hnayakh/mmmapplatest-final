@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
@@ -40,14 +41,21 @@ class VerifyAccountScreen extends StatefulWidget {
 
 class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
   IdProofType? idProof;
-
+  late UserDetails? userDetails;
   @override
   Widget build(BuildContext context) {
+    this.userDetails =
+        BlocProvider.of<VerifyBloc>(context).userRepository.useDetails;
+    print("USEDETAILS${this.userDetails}");
     return Scaffold(
       appBar: MmmButtons.appBarCurved('Verify your account', context: context),
       body: BlocConsumer<VerifyBloc, VerifyState>(
         listener: (context, state) {
           // TODO: implement listener
+          if (state is AddDocumentImage) {
+            //navigate to profile screen
+            print('Docs setup completed');
+          }
         },
         builder: (context, state) {
           initData();
@@ -72,6 +80,7 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
                 ),
                 InkWell(
                   onTap: () {
+                    print("Hello");
                     showImagePickerDialog();
                   },
                   child: Container(
@@ -135,7 +144,7 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
       imageQuality: 60,
     );
     if (file != null) {
-      //BlocProvider.of<BioBloc>(context).add(AddImage(file.path));
+      BlocProvider.of<VerifyBloc>(context).add(AddDocumentImage(file.path));
     }
   }
 

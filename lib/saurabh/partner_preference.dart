@@ -183,6 +183,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
     this.abilityStatus =
         BlocProvider.of<ProfilePreferenceBloc>(context).abilityStatus;
     this.gothra = BlocProvider.of<ProfilePreferenceBloc>(context).gothra;
+    print("GOTHARA${this.gothra}");
     this.disabilityPreference =
         BlocProvider.of<FilterBloc>(context).disabilityType;
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:makemymarry/bloc/about/about_bloc.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/repo/user_repo.dart';
@@ -10,12 +11,15 @@ import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
+import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
 import 'package:makemymarry/views/profilescreens/occupation/occupation.dart';
+import 'package:makemymarry/views/profilescreens/occupation/occupation_bloc.dart';
 
 import 'package:makemymarry/views/profilescreens/religion/religion_bloc.dart';
 import 'package:makemymarry/views/profilescreens/religion/religion_bottom_sheet.dart';
 import 'package:makemymarry/views/profilescreens/religion/religion_event.dart';
 import 'package:makemymarry/views/profilescreens/religion/subcast_bottom_sheet.dart';
+import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/my_profile/myprofile.dart';
 
 import 'cast_bottom_sheet.dart';
 import 'gothra_bottom_sheet.dart';
@@ -89,12 +93,12 @@ class ReligionScreenState extends State<ReligionScreen> {
                   child: MmmIcons.rightArrowEnabled(),
                   onTap: () {
                     BlocProvider.of<ReligionBloc>(context).add(UpdateReligion(
-                      this.motherTongue,
-                      this.gothra,
-                      this.isManglik!,
-                      this.religion,
-                      this.subCaste,
-                    ));
+                        this.motherTongue,
+                        this.gothra,
+                        this.isManglik!,
+                        this.religion,
+                        this.subCaste,
+                        this.userDetails.registrationStep > 3));
                   },
                 ),
                 bottom: 24,
@@ -115,6 +119,10 @@ class ReligionScreenState extends State<ReligionScreen> {
           }
           if (state is MoveToCarrer) {
             navigateToCarrer();
+          }
+          if (state is OnNavigationToMyProfiles) {
+            navigateToMyProfile();
+            // navigateToHabits();
           }
         },
       ),
@@ -329,6 +337,26 @@ class ReligionScreenState extends State<ReligionScreen> {
         builder: (context) => Occupations(
               userRepository: userRepo,
             )));
+  }
+
+  void navigateToMyProfile() {
+    var userRepo = BlocProvider.of<ReligionBloc>(context).userRepository;
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                    create: (context) => AboutBloc(userRepo),
+                  ),
+                  BlocProvider(
+                    create: (context) => OccupationBloc(userRepo),
+                  ),
+                  BlocProvider(
+                    create: (context) => AccountMenuBloc(userRepo),
+                  ),
+                ],
+                child: MyprofileScreen(
+                  userRepository: userRepo,
+                ))));
   }
 
   void initData() {

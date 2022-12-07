@@ -46,9 +46,10 @@ class UpdateReligion extends ReligionEvent {
   final Manglik isManglik;
   final SimpleMasterData? religion;
   final String subcast;
+  bool isAnUpdate;
 
   UpdateReligion(this.motherTongue, this.gothra, this.isManglik, this.religion,
-      this.subcast);
+      this.subcast, this.isAnUpdate);
 }
 
 class onReligionDataLoad extends ReligionEvent {

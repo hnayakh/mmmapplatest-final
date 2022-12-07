@@ -39,7 +39,7 @@ class _EducationPreferenceSheetState extends State<EducationPreferenceSheet> {
               height: 24,
             ),
             Text(
-              'Select religion:',
+              'Select education:',
               style: MmmTextStyles.bodyMedium(textColor: kDark5),
             ),
             SizedBox(

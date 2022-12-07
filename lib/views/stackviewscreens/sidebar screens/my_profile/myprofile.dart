@@ -36,8 +36,16 @@ import 'package:makemymarry/views/profilescreens/family/family_details/family_de
 import 'package:makemymarry/views/profilescreens/family/family_details/family_details_state.dart'
     as familyDetailsState;
 import 'package:makemymarry/views/profilescreens/habbit/habits.dart';
+import 'package:makemymarry/views/profilescreens/occupation/occupation.dart';
 import 'package:makemymarry/views/profilescreens/occupation/occupation_bloc.dart';
+import 'package:makemymarry/views/profilescreens/occupation/occupation_event.dart';
+import 'package:makemymarry/views/profilescreens/occupation/occupation_state.dart'
+    as occupationState;
 import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference.dart';
+import 'package:makemymarry/views/profilescreens/religion/religion.dart';
+import 'package:makemymarry/views/profilescreens/religion/religion_bloc.dart';
+import 'package:makemymarry/views/profilescreens/religion/religion_event.dart';
+import 'package:makemymarry/views/profilescreens/religion/religion_state.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/sidebar_about_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/status_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -78,6 +86,9 @@ class MyprofileScreen extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => HabitBloc(userRepository),
+        ),
+        BlocProvider(
+          create: (context) => ReligionBloc(userRepository),
         ),
       ],
       child: MyProfile(userRepository: userRepository),
@@ -131,7 +142,7 @@ class _MyProfileState extends State<MyProfile> {
         //       .add(onAboutDataLoad(basicUserId!));
         // }
         if (state is ProfileDetailsState) {
-          print("ProfileDetailsState ................");
+          print("ProfileDetailsState.................");
           this.profileDetails =
               BlocProvider.of<AboutBloc>(context).profileDetails;
           return Scaffold(
@@ -181,10 +192,10 @@ class _MyProfileState extends State<MyProfile> {
 
                                 child: profileDetails != null &&
                                         profileDetails!.images.length > 0 &&
-                                        !profileDetails!.images[1]
+                                        !profileDetails!.images[0]
                                             .contains("addImage")
                                     ? Image.network(
-                                        profileDetails!.images[1],
+                                        profileDetails!.images[0],
                                         width: double.infinity,
                                         fit: BoxFit.cover,
                                         height: double.infinity,
@@ -1006,6 +1017,523 @@ class _MyProfileState extends State<MyProfile> {
                         } else
                           return Container();
                       }),
+                      SizedBox(height: 20),
+                      BlocConsumer<OccupationBloc,
+                              occupationState.OccupationState>(
+                          listener: (context, state) {
+                        // TODO: implement listener
+                      }, builder: (context, state) {
+                        if (state is occupationState.OccupationInitialState) {
+                          BlocProvider.of<OccupationBloc>(context)
+                              .add(onOccupationDataLoad(basicUserId!));
+                        }
+                        if (state is occupationState.OccupationDetailsState) {
+                          this.profileDetails =
+                              BlocProvider.of<OccupationBloc>(context)
+                                  .profileDetails;
+                          return Container(
+                              width: 350,
+                              height: 300,
+                              child: Stack(children: <Widget>[
+                                Container(
+                                    margin: EdgeInsets.only(left: 1),
+                                    width: 350,
+                                    height: 566,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(8),
+                                        topRight: Radius.circular(8),
+                                        bottomLeft: Radius.circular(8),
+                                        bottomRight: Radius.circular(8),
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color:
+                                                Color.fromARGB(53, 61, 75, 92),
+                                            offset: Offset(0, 4),
+                                            blurRadius: 14)
+                                      ],
+                                      color: Color.fromRGBO(255, 255, 255, 1),
+                                      border: Border.all(
+                                        color: Color.fromRGBO(240, 239, 245, 1),
+                                        width: 1,
+                                      ),
+                                    ),
+                                    child: Stack(children: <Widget>[
+                                      Container(
+                                        margin:
+                                            EdgeInsets.fromLTRB(10, 10, 30, 0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Container(
+                                              child: Row(
+                                                children: [
+                                                  Image.asset(
+                                                    'images/family.png',
+                                                    color: kPrimary,
+                                                  ),
+                                                  SizedBox(width: 8),
+                                                  Text(
+                                                    'Career',
+                                                    textAlign: TextAlign.left,
+                                                    style: TextStyle(
+                                                        color: Color.fromRGBO(
+                                                            164, 19, 60, 1),
+                                                        fontFamily: 'Poppins',
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        height: 1.625),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            //SizedBox(width: 230),
+                                            InkWell(
+                                              onTap: () {
+                                                print("Akashs");
+                                                navigateToCarrer(context);
+                                              },
+                                              child: Image.asset(
+                                                'images/pen.png',
+                                                color: kPrimary,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Positioned(
+                                          top: 22, left: 310, child: Text('')),
+                                    ])),
+                                Container(
+                                    margin: EdgeInsets.fromLTRB(20, 50, 0, 0),
+                                    width: 84,
+                                    height: 46,
+                                    child: Stack(children: <Widget>[
+                                      Text(
+                                        'Occupation',
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            color: Color.fromRGBO(
+                                                135, 141, 150, 1),
+                                            fontFamily: 'Poppins',
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.normal,
+                                            height: 1.6666666666666667),
+                                      ),
+                                      Container(
+                                        margin:
+                                            EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                        child: Text(
+                                          this.profileDetails != null
+                                              ? profileDetails!.occupation
+                                              : "",
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              color:
+                                                  Color.fromRGBO(18, 22, 25, 1),
+                                              fontFamily: 'Poppins',
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.normal,
+                                              height: 1.5714285714285714),
+                                        ),
+                                      ),
+                                    ])),
+                                Container(
+                                    margin: EdgeInsets.fromLTRB(20, 100, 0, 0),
+                                    width: 149,
+                                    height: 46,
+                                    child: Stack(children: <Widget>[
+                                      Text(
+                                        'Annual Income',
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            color: Color.fromRGBO(
+                                                135, 141, 150, 1),
+                                            fontFamily: 'Poppins',
+                                            fontSize: 12,
+                                            letterSpacing:
+                                                0 /*percentages not used in flutter. defaulting to zero*/,
+                                            fontWeight: FontWeight.normal,
+                                            height: 1.6666666666666667),
+                                      ),
+                                      Container(
+                                        margin:
+                                            EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                        child: Text(
+                                          this.profileDetails != null
+                                              ? profileDetails!
+                                                  .annualIncome.name
+                                              : "",
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              color:
+                                                  Color.fromRGBO(18, 22, 25, 1),
+                                              fontFamily: 'Poppins',
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.normal,
+                                              height: 1.5714285714285714),
+                                        ),
+                                      ),
+                                    ])),
+                                Container(
+                                    margin: EdgeInsets.fromLTRB(20, 150, 0, 0),
+                                    width: 149,
+                                    height: 46,
+                                    child: Stack(children: <Widget>[
+                                      Text(
+                                        'Highest Education',
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            color: Color.fromRGBO(
+                                                135, 141, 150, 1),
+                                            fontFamily: 'Poppins',
+                                            fontSize: 12,
+                                            letterSpacing:
+                                                0 /*percentages not used in flutter. defaulting to zero*/,
+                                            fontWeight: FontWeight.normal,
+                                            height: 1.6666666666666667),
+                                      ),
+                                      Container(
+                                        margin:
+                                            EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                        child: Text(
+                                          this.profileDetails != null
+                                              ? profileDetails!
+                                                  .highiestEducation
+                                              : "",
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              color:
+                                                  Color.fromRGBO(18, 22, 25, 1),
+                                              fontFamily: 'Poppins',
+                                              fontSize: 14,
+                                              letterSpacing:
+                                                  0 /*percentages not used in flutter. defaulting to zero*/,
+                                              fontWeight: FontWeight.normal,
+                                              height: 1.5714285714285714),
+                                        ),
+                                      ),
+                                    ])),
+                                Container(
+                                    margin: EdgeInsets.fromLTRB(20, 200, 0, 0),
+                                    width: 150,
+                                    height: 46,
+                                    child: Stack(children: <Widget>[
+                                      Text(
+                                        'Current Location',
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            color: Color.fromRGBO(
+                                                135, 141, 150, 1),
+                                            fontFamily: 'Poppins',
+                                            fontSize: 12,
+                                            letterSpacing:
+                                                0 /*percentages not used in flutter. defaulting to zero*/,
+                                            fontWeight: FontWeight.normal,
+                                            height: 1.6666666666666667),
+                                      ),
+                                      Container(
+                                        margin:
+                                            EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                        child: Text(
+                                          this.profileDetails != null
+                                              ? "${this.profileDetails!.city}, ${this.profileDetails!.state} "
+                                              : "",
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              color:
+                                                  Color.fromRGBO(18, 22, 25, 1),
+                                              fontFamily: 'Poppins',
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.normal,
+                                              height: 1.5714285714285714),
+                                        ),
+                                      ),
+                                    ])),
+                              ]));
+                        } else
+                          return Container();
+                      }),
+                      SizedBox(height: 20),
+                      BlocConsumer<ReligionBloc, ReligionState>(
+                          listener: (context, state) {
+                        // TODO: implement listener
+                      }, builder: (context, state) {
+                        if (state is ReligionInitialState) {
+                          BlocProvider.of<ReligionBloc>(context)
+                              .add(onReligionDataLoad(basicUserId!));
+                        }
+                        if (state is ReligionDetailsState) {
+                          this.profileDetails =
+                              BlocProvider.of<ReligionBloc>(context)
+                                  .profileDetails;
+                          return Container(
+                              width: 350,
+                              height: 320,
+                              child: Stack(children: <Widget>[
+                                Container(
+                                    margin: EdgeInsets.only(left: 1),
+                                    width: 350,
+                                    height: 566,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(8),
+                                        topRight: Radius.circular(8),
+                                        bottomLeft: Radius.circular(8),
+                                        bottomRight: Radius.circular(8),
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color:
+                                                Color.fromARGB(53, 61, 75, 92),
+                                            offset: Offset(0, 4),
+                                            blurRadius: 14)
+                                      ],
+                                      color: Color.fromRGBO(255, 255, 255, 1),
+                                      border: Border.all(
+                                        color: Color.fromRGBO(240, 239, 245, 1),
+                                        width: 1,
+                                      ),
+                                    ),
+                                    child: Stack(children: <Widget>[
+                                      Container(
+                                        margin:
+                                            EdgeInsets.fromLTRB(10, 10, 30, 0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Container(
+                                              child: Row(
+                                                children: [
+                                                  Image.asset(
+                                                    'images/family.png',
+                                                    color: kPrimary,
+                                                  ),
+                                                  SizedBox(width: 8),
+                                                  Text(
+                                                    'Religion',
+                                                    textAlign: TextAlign.left,
+                                                    style: TextStyle(
+                                                        color: Color.fromRGBO(
+                                                            164, 19, 60, 1),
+                                                        fontFamily: 'Poppins',
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        height: 1.625),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            //SizedBox(width: 230),
+                                            InkWell(
+                                              onTap: () {
+                                                print("Akashs");
+                                                OnNavigateToReligion(context);
+                                              },
+                                              child: Image.asset(
+                                                'images/pen.png',
+                                                color: kPrimary,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Positioned(
+                                          top: 22, left: 310, child: Text('')),
+                                    ])),
+                                Container(
+                                    margin: EdgeInsets.fromLTRB(20, 50, 0, 0),
+                                    width: 84,
+                                    height: 46,
+                                    child: Stack(children: <Widget>[
+                                      Text(
+                                        'Religion',
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            color: Color.fromRGBO(
+                                                135, 141, 150, 1),
+                                            fontFamily: 'Poppins',
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.normal,
+                                            height: 1.6666666666666667),
+                                      ),
+                                      Container(
+                                        margin:
+                                            EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                        child: Text(
+                                          this.profileDetails != null
+                                              ? profileDetails!.religion
+                                              : "",
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              color:
+                                                  Color.fromRGBO(18, 22, 25, 1),
+                                              fontFamily: 'Poppins',
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.normal,
+                                              height: 1.5714285714285714),
+                                        ),
+                                      ),
+                                    ])),
+                                Container(
+                                    margin: EdgeInsets.fromLTRB(20, 100, 0, 0),
+                                    width: 149,
+                                    height: 46,
+                                    child: Stack(children: <Widget>[
+                                      Text(
+                                        'Caste',
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            color: Color.fromRGBO(
+                                                135, 141, 150, 1),
+                                            fontFamily: 'Poppins',
+                                            fontSize: 12,
+                                            letterSpacing:
+                                                0 /*percentages not used in flutter. defaulting to zero*/,
+                                            fontWeight: FontWeight.normal,
+                                            height: 1.6666666666666667),
+                                      ),
+                                      Container(
+                                        margin:
+                                            EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                        child: Text(
+                                          this.profileDetails != null
+                                              ? profileDetails!.cast
+                                              : "",
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              color:
+                                                  Color.fromRGBO(18, 22, 25, 1),
+                                              fontFamily: 'Poppins',
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.normal,
+                                              height: 1.5714285714285714),
+                                        ),
+                                      ),
+                                    ])),
+                                Container(
+                                    margin: EdgeInsets.fromLTRB(20, 150, 0, 0),
+                                    width: 149,
+                                    height: 46,
+                                    child: Stack(children: <Widget>[
+                                      Text(
+                                        'Mother Tongue',
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            color: Color.fromRGBO(
+                                                135, 141, 150, 1),
+                                            fontFamily: 'Poppins',
+                                            fontSize: 12,
+                                            letterSpacing:
+                                                0 /*percentages not used in flutter. defaulting to zero*/,
+                                            fontWeight: FontWeight.normal,
+                                            height: 1.6666666666666667),
+                                      ),
+                                      Container(
+                                        margin:
+                                            EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                        child: Text(
+                                          this.profileDetails != null
+                                              ? profileDetails!.motherTongue
+                                              : "",
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              color:
+                                                  Color.fromRGBO(18, 22, 25, 1),
+                                              fontFamily: 'Poppins',
+                                              fontSize: 14,
+                                              letterSpacing:
+                                                  0 /*percentages not used in flutter. defaulting to zero*/,
+                                              fontWeight: FontWeight.normal,
+                                              height: 1.5714285714285714),
+                                        ),
+                                      ),
+                                    ])),
+                                Container(
+                                    margin: EdgeInsets.fromLTRB(20, 200, 0, 0),
+                                    width: 150,
+                                    height: 46,
+                                    child: Stack(children: <Widget>[
+                                      Text(
+                                        'Gothra',
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            color: Color.fromRGBO(
+                                                135, 141, 150, 1),
+                                            fontFamily: 'Poppins',
+                                            fontSize: 12,
+                                            letterSpacing:
+                                                0 /*percentages not used in flutter. defaulting to zero*/,
+                                            fontWeight: FontWeight.normal,
+                                            height: 1.6666666666666667),
+                                      ),
+                                      Container(
+                                        margin:
+                                            EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                        child: Text(
+                                          this.profileDetails != null
+                                              ? profileDetails!.gothra
+                                              : "",
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              color:
+                                                  Color.fromRGBO(18, 22, 25, 1),
+                                              fontFamily: 'Poppins',
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.normal,
+                                              height: 1.5714285714285714),
+                                        ),
+                                      ),
+                                    ])),
+                                SizedBox(
+                                  height: 50,
+                                ),
+                                Container(
+                                    margin: EdgeInsets.fromLTRB(20, 250, 0, 0),
+                                    width: 150,
+                                    height: 46,
+                                    child: Stack(children: <Widget>[
+                                      Text(
+                                        'Manglik',
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            color: Color.fromRGBO(
+                                                135, 141, 150, 1),
+                                            fontFamily: 'Poppins',
+                                            fontSize: 12,
+                                            letterSpacing:
+                                                0 /*percentages not used in flutter. defaulting to zero*/,
+                                            fontWeight: FontWeight.normal,
+                                            height: 1.6666666666666667),
+                                      ),
+                                      Container(
+                                        margin:
+                                            EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                        child: Text(
+                                          this.profileDetails != null
+                                              ? profileDetails!.manglik.name
+                                              : "",
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              color:
+                                                  Color.fromRGBO(18, 22, 25, 1),
+                                              fontFamily: 'Poppins',
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.normal,
+                                              height: 1.5714285714285714),
+                                        ),
+                                      ),
+                                    ])),
+                              ]));
+                        } else
+                          return Container();
+                      }),
+                      SizedBox(height: 20),
                       SizedBox(height: 20),
                       Container(
                           width: 350,
@@ -2103,5 +2631,54 @@ class _MyProfileState extends State<MyProfile> {
     print(
         "objectState${BlocProvider.of<OccupationBloc>(context).myState!.name}");
     print("objectCity${BlocProvider.of<OccupationBloc>(context).city!.name}");
+  }
+
+  void OnNavigateToReligion(BuildContext context) {
+    // print("NAVIGATE${BlocProvider.of<OccupationBloc>(context).myState!.name}");
+    // var userRepo = BlocProvider.of<OccupationBloc>(context).userRepository;
+    // var countryModel = BlocProvider.of<OccupationBloc>(context).countryModel;
+    // var stateModel = BlocProvider.of<OccupationBloc>(context).myState;
+    // var city = BlocProvider.of<OccupationBloc>(context).city;
+    // Navigator.of(context).push(MaterialPageRoute(
+    //     builder: (context) => FamilyScreen(
+    //           userRepository: userRepo,
+    //           countryModel: countryModel,
+    //           stateModel: stateModel,
+    //           city: city,
+    //         )));
+    // print(
+    //     "objectCountry${BlocProvider.of<OccupationBloc>(context).countryModel!.name}");
+    // print(
+    //     "objectState${BlocProvider.of<OccupationBloc>(context).myState!.name}");
+    // print("objectCity${BlocProvider.of<OccupationBloc>(context).city!.name}");
+
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => Religion(
+              userRepository: widget.userRepository,
+            )));
+  }
+
+  void navigateToCarrer(BuildContext context) {
+    // print("NAVIGATE${BlocProvider.of<OccupationBloc>(context).myState!.name}");
+    // var userRepo = BlocProvider.of<OccupationBloc>(context).userRepository;
+    // var countryModel = BlocProvider.of<OccupationBloc>(context).countryModel;
+    // var stateModel = BlocProvider.of<OccupationBloc>(context).myState;
+    // var city = BlocProvider.of<OccupationBloc>(context).city;
+    // Navigator.of(context).push(MaterialPageRoute(
+    //     builder: (context) => FamilyScreen(
+    //           userRepository: userRepo,
+    //           countryModel: countryModel,
+    //           stateModel: stateModel,
+    //           city: city,
+    //         )));
+    // print(
+    //     "objectCountry${BlocProvider.of<OccupationBloc>(context).countryModel!.name}");
+    // print(
+    //     "objectState${BlocProvider.of<OccupationBloc>(context).myState!.name}");
+    // print("objectCity${BlocProvider.of<OccupationBloc>(context).city!.name}");
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => Occupations(
+              userRepository: widget.userRepository,
+            )));
   }
 }

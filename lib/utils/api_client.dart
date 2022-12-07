@@ -785,6 +785,29 @@ class ApiClient {
     }
   }
 
+  Future<String?> uploadDocImage(String id, String images) async {
+    print("Akash Doc  uplaod");
+    try {
+      var length = await File(images).length();
+      var file = MultipartFile(File(images).openRead(), length);
+      var resposne = await this.dio.post(
+          AppConstants.ENDPOINT + "users/docsImages/$id",
+          data: FormData.fromMap(
+              {"files": await MultipartFile.fromFile(images)}));
+      print(resposne.data);
+      if (resposne.statusCode == 200 || resposne.statusCode == 201) {
+        if (resposne.data["data"].length > 0) {
+          return resposne.data["data"][0];
+        }
+      }
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      return null;
+    }
+  }
+
   Future<SimpleResponse> completePreference(
       double maxHeight,
       double minHeight,

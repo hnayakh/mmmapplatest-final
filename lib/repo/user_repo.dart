@@ -219,6 +219,11 @@ class UserRepository {
     return apiClient.uploadImage(useDetails!.id, images);
   }
 
+  Future<String?> uploadDocImage(String images) async {
+    print("saurabh uplaod${useDetails!.id}");
+    return apiClient.uploadDocImage(useDetails!.id, images);
+  }
+
   // Future<String?> uploadDocument(String images) async {
   //   print("Akash uplaod");
   //   return apiClient.uploadImage(useDetails!.id, images);

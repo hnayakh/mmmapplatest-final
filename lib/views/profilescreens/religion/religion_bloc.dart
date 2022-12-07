@@ -121,12 +121,16 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
               .userRepository
               .storageService
               .saveUserDetails(this.userRepository.useDetails!);
-          this.userRepository.updateRegistrationStep(3);
+          if (!event.isAnUpdate) {
+            this.userRepository.updateRegistrationStep(3);
+          }
+
           print('in religion');
           print(
               'dobinreligionbloc=${this.userRepository.useDetails!.dateOfBirth}');
           print(this.userRepository.useDetails!.registrationStep);
-          yield MoveToCarrer();
+
+          yield event.isAnUpdate ? OnNavigationToMyProfiles() : MoveToCarrer();
         } else {
           yield OnError(result.message);
         }

@@ -15,6 +15,8 @@ class ReligionInitialState extends ReligionState {}
 
 class MoveToCarrer extends ReligionState {}
 
+class OnNavigationToMyProfiles extends ReligionState {}
+
 class ReligionDetailsState extends ReligionState {
   late final ProfileDetails profileDetails;
   ReligionDetailsState(this.profileDetails);

@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/profile%20screens/verify%20account%20screens/verify_event.dart';
@@ -7,7 +8,8 @@ import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/profile%20s
 class VerifyBloc extends Bloc<VerifyEvent, VerifyState> {
   late final UserRepository userRepository;
   IdProofType? idProof;
-  List<String> localImagePaths = [];
+  List<String> localDocImagePaths = [];
+  ProfileDetails? profileData;
 
   VerifyBloc(this.userRepository) : super(VerifyInitialState());
 
@@ -18,11 +20,12 @@ class VerifyBloc extends Bloc<VerifyEvent, VerifyState> {
       this.idProof = event.idProof;
       yield VerifyInitialState();
     }
-    if (event is IdVerificationEvent) {
-      var result = await this.userRepository.uploadImage(event.image);
+
+    if (event is AddDocumentImage) {
+      var result = await this.userRepository.uploadDocImage(event.docImages);
       print(result);
       if (result != null) {
-        this.localImagePaths.add(event.image);
+        this.localDocImagePaths.add(event.docImages);
         yield VerifyInitialState();
       } else {
         yield OnError('Couldnot upload document');

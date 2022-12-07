@@ -83,9 +83,9 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
           }
           print('event.isAnUpdate$event.isAnUpdate');
           yield event.isAnUpdate
-              ? NavigationToBio()
-              //OnNavigationToMyProfiles()
+              ? OnNavigationToMyProfiles()
               : NavigationToReligion();
+          // : NavigationToReligion();
         } else {
           yield OnError(result.message);
         }

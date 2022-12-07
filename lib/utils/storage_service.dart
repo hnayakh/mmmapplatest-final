@@ -87,6 +87,7 @@ class StorageService {
     this
         .sharedPreferences
         .setInt(AppConstants.REGISTRATIONSTEP, userDetails.registrationStep);
+    print("REGISTRATIONSTEP${userDetails.registrationStep}");
     this.sharedPreferences.setBool(AppConstants.ISACTIVE, userDetails.isActive);
     // this.sharedPreferences.setString('secretToken', userDetails.secretToken);
 // To save the value, use this:

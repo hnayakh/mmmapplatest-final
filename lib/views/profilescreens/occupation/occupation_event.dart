@@ -23,19 +23,22 @@ class OnEducationSelected extends OccupationEvent {
 }
 
 class UpdateCareer extends OccupationEvent {
-  final String name;
-  final String income;
-  final String country;
-  final String stateName;
-  final String city;
+  final String occupation;
+  final AnualIncome anualIncome;
+  final String education;
+  final StateModel myState;
+  final StateModel city;
+  // final String name;
+  // final String income;
+  // final String country;
+  // final String stateName;
+  // final String city;
+  bool isAnUpdate;
 
-  UpdateCareer(
-    this.name,
-    this.income,
-    this.country,
-    this.stateName,
-    this.city,
-  );
+  // UpdateCareer(this.name, this.income, this.country, this.stateName, this.city,
+  //     this.isAnUpdate);
+  UpdateCareer(this.occupation, this.anualIncome, this.education, this.myState,
+      this.city, this.isAnUpdate);
 }
 
 class GetAllCountries extends OccupationEvent {}

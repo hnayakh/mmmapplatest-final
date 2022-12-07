@@ -8,6 +8,12 @@ class OnSelectIdProof extends VerifyEvent {
   OnSelectIdProof(this.idProof);
 }
 
+class AddDocumentImage extends VerifyEvent {
+  final String docImages;
+
+  AddDocumentImage(this.docImages);
+}
+
 class IdVerificationEvent extends VerifyEvent {
   final String image;
   IdVerificationEvent(this.image);

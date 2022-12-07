@@ -109,8 +109,14 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
     }
     if (event is UpdateCareer) {
       // this.nameOfOrg = event.name;
-      this.income = event.income;
+      this.occupation = event.occupation;
+      this.anualIncome = event.anualIncome;
+      this.education = event.education;
+      this.myState = event.myState;
+      this.city = event.city;
+
       if (
+
           // this.nameOfOrg == '' &&
           // this.anualIncome == null &&
           //     this.myState == null &&
@@ -169,11 +175,14 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
               .userRepository
               .storageService
               .saveUserDetails(this.userRepository.useDetails!);
-          this.userRepository.updateRegistrationStep(4);
+          if (!event.isAnUpdate) {
+            this.userRepository.updateRegistrationStep(4);
+          }
+
           print('in occu');
           print('dobinoccubloc=${this.userRepository.useDetails!.dateOfBirth}');
           print(this.userRepository.useDetails!.registrationStep);
-          yield MoveToFamily();
+          yield event.isAnUpdate ? OnNavigationToMyProfiles() : MoveToFamily();
         } else {
           yield OnError(result.message);
         }

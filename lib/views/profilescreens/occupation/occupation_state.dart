@@ -16,6 +16,8 @@ class OccupationInitialState extends OccupationState {}
 
 class MoveToFamily extends OccupationState {}
 
+class OnNavigationToMyProfiles extends OccupationState {}
+
 class MoveToFamilyTo extends OccupationState {}
 
 class OnGotCounties extends OccupationState {
