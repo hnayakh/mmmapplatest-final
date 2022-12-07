@@ -46,6 +46,7 @@ import 'package:makemymarry/views/profilescreens/religion/religion.dart';
 import 'package:makemymarry/views/profilescreens/religion/religion_bloc.dart';
 import 'package:makemymarry/views/profilescreens/religion/religion_event.dart';
 import 'package:makemymarry/views/profilescreens/religion/religion_state.dart';
+import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/profile%20screens/verify%20account%20screens/verify_account.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/sidebar_about_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/status_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -275,7 +276,17 @@ class _MyProfileState extends State<MyProfile> {
                       SizedBox(
                         height: 30,
                       ),
-                      MmmButtons.verifyAccountFliterScreen(context),
+                      MmmButtons.verifyAccountFliterScreen(
+                        context,
+                        action: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => VerifyAccount(
+                                      userRepository: widget.userRepository,
+                                    )),
+                          );
+                        },
+                      ),
                       SizedBox(
                         height: 20,
                       ),

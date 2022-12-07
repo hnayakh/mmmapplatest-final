@@ -1,3 +1,9 @@
 {
-    "dart.flutterSdkPath": "E:\\development\\projects\\Makemymarry_main\\.fvm\\flutter_sdk"
+    "dart.flutterSdkPath": "E:\\development\\projects\\Makemymarry_main\\.fvm\\flutter_sdk",
+    "dart.debugExternalLibraries": true,
+    "dart.debugSdkLibraries": true,
+
+
+    
+   
 }

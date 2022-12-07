@@ -635,8 +635,8 @@ class SignInScreenState extends State<SignInScreen> {
                 builder: (context) => Habit(userRepository: userRepo)),
             (route) => false);
         break;
-      case 6:
-        break;
+      // case 6:
+      //   break;
       case 5:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(

@@ -11,3 +11,5 @@ class OnError extends VerifyState {
 
   OnError(this.message);
 }
+
+class OnUpdateDoc extends VerifyState {}

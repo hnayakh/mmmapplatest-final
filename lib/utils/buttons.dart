@@ -4596,7 +4596,7 @@ class MmmButtons {
   }
 
   //fliter screen===========================================================
-  static Container verifyAccountFliterScreen(context) {
+  static Container verifyAccountFliterScreen(context, {Function()? action}) {
     return Container(
       decoration: BoxDecoration(
         color: Color(0xffF0EFF5),
@@ -4611,14 +4611,7 @@ class MmmButtons {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () {
-              print("Here...VerifyAccount");
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                    builder: (context) =>
-                        VerifyAccount(userRepository: UserRepository())),
-              );
-            },
+            onTap: action,
             child: Container(
               alignment: Alignment.center,
               height: 87,

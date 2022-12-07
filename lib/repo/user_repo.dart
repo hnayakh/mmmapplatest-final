@@ -123,6 +123,11 @@ class UserRepository {
     return apiClient.updateBio(aboutMe, images, useDetails!.id);
   }
 
+  Future<SigninResponse> updateDoc(
+      IdProofType idProof, List<String> images) async {
+    return apiClient.updateDoc(idProof, images, useDetails!.id);
+  }
+
   Future<SigninResponse> career(
       // String nameOfOrg,
       String? occupation,
@@ -219,9 +224,9 @@ class UserRepository {
     return apiClient.uploadImage(useDetails!.id, images);
   }
 
-  Future<String?> uploadDocImage(String images) async {
-    print("saurabh uplaod${useDetails!.id}");
-    return apiClient.uploadDocImage(useDetails!.id, images);
+  Future<String?> uploadDocImage(String images, String userBasicId) async {
+    print("saurabh uplaod$userBasicId");
+    return apiClient.uploadDocImage(userBasicId, images);
   }
 
   // Future<String?> uploadDocument(String images) async {

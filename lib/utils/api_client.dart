@@ -364,6 +364,33 @@ class ApiClient {
     }
   }
 
+  Future<SigninResponse> updateDoc(
+      IdProofType idProof, List<String> images, String id) async {
+    try {
+      Response response =
+          await this.dio.post(AppConstants.ENDPOINT + "users/docs", data: {
+        "userBasicId": id,
+        "idProof": idProof.toString(),
+        "userDocImages": images
+            .map((e) => {
+                  "imageUrl": e,
+                  "isDefault": images.indexOf(e) == 0 ? true : false
+                })
+            .toList()
+      });
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return SigninResponse.fromJson(response.data);
+      } else {
+        return SigninResponse.fromError("Error Occurred. Please try again.");
+      }
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      return SigninResponse.fromError("Error Occurred. Please try again.");
+    }
+  }
+
   Future<SigninResponse> careerVerification(
       // String nameOfOrg,
       String? occupation,

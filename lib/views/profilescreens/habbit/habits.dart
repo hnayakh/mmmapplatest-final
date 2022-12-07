@@ -255,7 +255,7 @@ class _HabitScreenState extends State<HabitScreen> {
                         this.eatingHabit!,
                         this.drinkingHabit!,
                         this.smokingHabit!,
-                        this.userDetails.registrationStep > 8));
+                        this.userDetails.registrationStep > 7));
                   },
                   child: MmmIcons.rightArrowEnabled(),
                 )),
