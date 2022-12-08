@@ -370,11 +370,12 @@ class ReligionScreenState extends State<ReligionScreen> {
     if (BlocProvider.of<ReligionBloc>(context).profileDetails != null) {
       if (this.religion == null) {
         var religionName =
-            BlocProvider.of<ReligionBloc>(context).profileDetails!.religionName;
+            BlocProvider.of<ReligionBloc>(context).profileDetails!.religion;
         var religionId =
             BlocProvider.of<ReligionBloc>(context).profileDetails!.religionId;
 
         this.religion = SimpleMasterData(religionId, religionName);
+        print("RELIGION${this.religion}");
       }
       if (this.motherTongue == null) {
         var motherTongueName =
@@ -387,6 +388,7 @@ class ReligionScreenState extends State<ReligionScreen> {
         //     BlocProvider.of<ReligionBloc>(context).profileDetails!.religionId;
 
         this.motherTongue = SimpleMasterData(motherTongueId, motherTongueName);
+        print("Mother${this.motherTongue!.title}");
       }
 
       if (this.gothra == null || this.gothra == "") {

@@ -260,6 +260,7 @@ class _OccupationScreenState extends State<OccupationScreen> {
                   bottom: 15,
                   right: 24,
                   child: InkWell(
+                    child: MmmIcons.rightArrowEnabled(),
                     onTap: () {
                       // BlocProvider.of<OccupationBloc>(context).add(UpdateCareer(
                       //     orgNameController.text.trim(),
@@ -276,7 +277,6 @@ class _OccupationScreenState extends State<OccupationScreen> {
                           this.city!,
                           this.userDetails.registrationStep > 4));
                     },
-                    child: MmmIcons.rightArrowEnabled(),
                   )),
               InkWell(
                 onTap: () {

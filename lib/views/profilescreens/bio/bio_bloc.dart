@@ -41,9 +41,12 @@ class BioBloc extends Bloc<BioEvent, BioState> {
       } else if (this.localImagePaths == null) {
         yield OnError("Add Images");
       } else {
-        var result = await this
-            .userRepository
-            .updateBio(event.bio, this.localImagePaths);
+        var result = await this.userRepository.updateBio(
+            event.bio,
+            this
+                .localImagePaths
+                .where((element) => element != "addImage")
+                .toList());
         if (result.status == AppConstants.SUCCESS) {
           this.userRepository.useDetails!.registrationStep = 8;
           //await this.userRepository.saveUserDetails();

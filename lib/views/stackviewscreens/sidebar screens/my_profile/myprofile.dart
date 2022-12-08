@@ -15,6 +15,7 @@ import 'package:makemymarry/matching_percentage/matching_percentage.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/saurabh/myprofile/add_interest.dart';
 import 'package:makemymarry/saurabh/filter_preference.dart';
+import 'package:makemymarry/saurabh/myprofile/profile_photo_video.dart';
 import 'package:makemymarry/saurabh/partner_preference.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/buttons.dart';
@@ -210,7 +211,11 @@ class _MyProfileState extends State<MyProfile> {
                           left: MediaQuery.of(context).size.width * 0.066,
                           child: InkWell(
                             onTap: () {
-                              showImagePickerDialog();
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => (MmmPhotovideos(
+                                        userRepository: widget.userRepository,
+                                      ))));
+                              //showImagePickerDialog();
                             },
                             child: Container(
                               height: MediaQuery.of(context).size.width * 0.1,
@@ -574,12 +579,12 @@ class _MyProfileState extends State<MyProfile> {
                                         InkWell(
                                           onTap: () {
                                             print("...");
-                                            Navigator.of(context)
-                                                .push(MaterialPageRoute(
-                                                    builder: (context) => Bio(
-                                                          userRepository: widget
-                                                              .userRepository,
-                                                        )));
+                                            // Navigator.of(context)
+                                            //     .push(MaterialPageRoute(
+                                            //         builder: (context) => Bio(
+                                            //               userRepository: widget
+                                            //                   .userRepository,
+                                            //             )));
                                           },
                                           child: Image.asset(
                                             'images/pen.png',
@@ -1042,6 +1047,8 @@ class _MyProfileState extends State<MyProfile> {
                           this.profileDetails =
                               BlocProvider.of<OccupationBloc>(context)
                                   .profileDetails;
+                          print(
+                              "PROFILEDETAILS${BlocProvider.of<OccupationBloc>(context).occupation}");
                           return Container(
                               width: 350,
                               height: 300,
@@ -1120,8 +1127,8 @@ class _MyProfileState extends State<MyProfile> {
                                     ])),
                                 Container(
                                     margin: EdgeInsets.fromLTRB(20, 50, 0, 0),
-                                    width: 84,
-                                    height: 46,
+                                    // width: 150,
+                                    height: 70,
                                     child: Stack(children: <Widget>[
                                       Text(
                                         'Occupation',
@@ -1135,20 +1142,23 @@ class _MyProfileState extends State<MyProfile> {
                                             height: 1.6666666666666667),
                                       ),
                                       Container(
+                                        width: 149,
+                                        height: 90,
                                         margin:
-                                            EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                            EdgeInsets.fromLTRB(0, 20, 20, 0),
                                         child: Text(
                                           this.profileDetails != null
                                               ? profileDetails!.occupation
                                               : "",
                                           textAlign: TextAlign.left,
                                           style: TextStyle(
-                                              color:
-                                                  Color.fromRGBO(18, 22, 25, 1),
-                                              fontFamily: 'Poppins',
-                                              fontSize: 9,
-                                              fontWeight: FontWeight.normal,
-                                              height: 1.5714285714285714),
+                                            color:
+                                                Color.fromRGBO(18, 22, 25, 1),
+                                            fontFamily: 'Poppins',
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.normal,
+                                            height: 1.5,
+                                          ),
                                         ),
                                       ),
                                     ])),

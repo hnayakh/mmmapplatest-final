@@ -39,6 +39,6 @@ class OnGotStates extends OccupationState {
 }
 
 class OccupationDetailsState extends OccupationState {
-  late final ProfileDetails profileDetails;
+  final ProfileDetails profileDetails;
   OccupationDetailsState(this.profileDetails);
 }

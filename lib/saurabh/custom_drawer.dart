@@ -390,6 +390,7 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
 
   customListTile({leading, String? text}) {
     return ListTile(
+        visualDensity: VisualDensity(horizontal: -4, vertical: -2.2),
         leading: leading,
         title: Text(
           text!,

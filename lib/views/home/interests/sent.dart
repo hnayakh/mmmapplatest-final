@@ -243,13 +243,13 @@ class SentScreen extends StatelessWidget {
                     ),
                     Text(
                       "${AppHelper.getAgeFromDob(listSent[index].user.dateOfBirth)} Years, "
-                      "${listSent[index].user.height}', ${listSent[index].user.highestEducation}",
+                      "${listSent[index].user.height}  ${listSent[index].user.highestEducation}",
                       textScaleFactor: 1.0,
                       maxLines: 2,
                       style: MmmTextStyles.footer(textColor: gray3),
                     ),
                     Text(
-                      "${listSent[index].user.careerCity}, ${listSent[index].user.careerState}, ${listSent[index].user.careerCountry}",
+                      "${listSent[index].user.careerCity} ${listSent[index].user.careerState}  ${listSent[index].user.careerCountry}",
                       textScaleFactor: 1.0,
                       maxLines: 2,
                       style: MmmTextStyles.footer(textColor: gray3),

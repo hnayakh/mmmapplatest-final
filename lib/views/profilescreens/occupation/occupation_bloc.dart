@@ -123,19 +123,19 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
           //     this.city == null &&
           //     this.occupation == null &&
           //     this.education == null) {
-          this.anualIncome == null ||
-              this.myState == null ||
-              this.city == null ||
-              this.occupation == null ||
+          this.anualIncome == null &&
+              this.myState == null &&
+              this.city == null &&
+              this.occupation == null &&
               this.education == null) {
         print('test from null');
-        //  yield OnError('Please enter all mandatory career details');
-        await this
-            .userRepository
-            .storageService
-            .saveUserDetails(this.userRepository.useDetails!);
-        this.userRepository.updateRegistrationStep(4);
-        yield MoveToFamilyTo();
+        yield OnError('Please enter all mandatory career details');
+        // await this
+        //     .userRepository
+        //     .storageService
+        //     .saveUserDetails(this.userRepository.useDetails!);
+        // this.userRepository.updateRegistrationStep(4);
+        // yield MoveToFamilyTo();
       }
 
       // if (this.nameOfOrg == '') {
