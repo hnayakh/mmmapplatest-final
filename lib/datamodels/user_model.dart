@@ -192,6 +192,23 @@ class CheckEmailResponse {
   }
 }
 
+class DocumentUploadResponse {
+  late String message, status;
+  late String id, idProof;
+
+  DocumentUploadResponse.fromJson(json) {
+    this.status = json["type"];
+    this.message = json["message"];
+    this.id = json["data"]["id"];
+    this.idProof = json["data"]["idProof"];
+  }
+
+  DocumentUploadResponse.fromError(String error) {
+    this.message = error;
+    this.status = AppConstants.FAILURE;
+  }
+}
+
 class PreSignUrlResponse {
   late String status, message;
   String? imageUrl;

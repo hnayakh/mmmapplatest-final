@@ -364,7 +364,7 @@ class ApiClient {
     }
   }
 
-  Future<SigninResponse> updateDoc(
+  Future<DocumentUploadResponse> updateDoc(
       IdProofType idProof, List<String> images, String id) async {
     try {
       Response response =
@@ -379,15 +379,17 @@ class ApiClient {
             .toList()
       });
       if (response.statusCode == 200 || response.statusCode == 201) {
-        return SigninResponse.fromJson(response.data);
+        return DocumentUploadResponse.fromJson(response.data);
       } else {
-        return SigninResponse.fromError("Error Occurred. Please try again.");
+        return DocumentUploadResponse.fromError(
+            "Error Occurred. Please try again.");
       }
     } catch (error) {
       if (error is DioError) {
         print(error.message);
       }
-      return SigninResponse.fromError("Error Occurred. Please try again.");
+      return DocumentUploadResponse.fromError(
+          "Error Occurred. Please try again.");
     }
   }
 

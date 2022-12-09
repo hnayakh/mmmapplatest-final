@@ -57,10 +57,19 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
       appBar: MmmButtons.appBarCurved('Verify your account', context: context),
       body: BlocConsumer<VerifyBloc, VerifyState>(
         listener: (context, state) {
+          if (state is OnError) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(state.message),
+              backgroundColor: kError,
+            ));
+          }
           // TODO: implement listener
-          if (state is AddDocumentImage) {
-            //navigate to profile screen
-            print('Docs setup completed');
+
+          if (state is OnError) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(state.message),
+              backgroundColor: kError,
+            ));
           }
         },
         builder: (context, state) {
@@ -188,8 +197,10 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
                 SizedBox(
                   height: 40,
                 ),
-                MmmButtons.enabledRedButtonbodyMedium(50, 'Verify',
-                    action: () {})
+                MmmButtons.enabledRedButtonbodyMedium(50, 'Verify', action: () {
+                  BlocProvider.of<VerifyBloc>(context)
+                      .add(UpdateDoc(this.idProof!, localImagePaths));
+                })
               ],
             ),
             //  ),

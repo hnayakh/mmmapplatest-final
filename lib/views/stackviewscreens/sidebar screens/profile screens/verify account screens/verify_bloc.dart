@@ -42,6 +42,9 @@ class VerifyBloc extends Bloc<VerifyEvent, VerifyState> {
     }
 
     if (event is UpdateDoc) {
+      if (this.localDocImagePaths.length == 0) {
+        yield OnError("Please pick an image for IDproof");
+      }
       this.idProof = event.idProof;
       this.localDocImagePaths = event.localDocImagePaths;
 

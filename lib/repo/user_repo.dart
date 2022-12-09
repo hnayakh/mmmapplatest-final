@@ -123,7 +123,7 @@ class UserRepository {
     return apiClient.updateBio(aboutMe, images, useDetails!.id);
   }
 
-  Future<SigninResponse> updateDoc(
+  Future<DocumentUploadResponse> updateDoc(
       IdProofType idProof, List<String> images) async {
     return apiClient.updateDoc(idProof, images, useDetails!.id);
   }
