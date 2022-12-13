@@ -1,7 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/colors.dart';
@@ -10,8 +8,6 @@ import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/home/home.dart';
 import 'package:makemymarry/views/profile_loader/profile_loader_bloc.dart';
 import 'package:makemymarry/views/profile_loader/profile_loader_state.dart';
-import 'package:makemymarry/views/stackviewscreens/stackview/stack_view.dart';
-
 import 'profile_loader_event.dart';
 
 class ProfileLoader extends StatelessWidget {
@@ -88,6 +84,7 @@ class ProfileLoaderScreenState extends State<ProfileLoaderScreen>
             // BlocProvider.of<ProfileLoaderBloc>(context)
             //     .add(GetPremiumMembers());
           }
+
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,

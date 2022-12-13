@@ -107,6 +107,8 @@ class _AboutScreenState extends State<AboutScreen> {
         },
         builder: (context, state) {
           initData();
+
+          print("this.userDetails ${this.userDetails.registrationStep}");
           // FocusScope.of(context).unfocus();
           return Stack(
             children: [
@@ -118,19 +120,33 @@ class _AboutScreenState extends State<AboutScreen> {
               Positioned(
                   bottom: 24,
                   right: 24,
-                  child: InkWell(
-                    onTap: () {
-                      BlocProvider.of<AboutBloc>(context).add(OnAboutDone(
-                          namecontroller.text.trim(),
-                          this.maritalStatus!,
-                          this.heightStatus!,
-                          this.childrenStatus!,
-                          this.dobHintText!,
-                          this.abilityStatus!,
-                          this.userDetails.registrationStep > 2));
-                    },
-                    child: MmmIcons.rightArrowEnabled(),
-                  )),
+                  child: this.userDetails.registrationStep > 2
+                      ? InkWell(
+                          onTap: () {
+                            BlocProvider.of<AboutBloc>(context).add(OnAboutDone(
+                                namecontroller.text.trim(),
+                                this.maritalStatus!,
+                                this.heightStatus!,
+                                this.childrenStatus!,
+                                this.dobHintText!,
+                                this.abilityStatus!,
+                                this.userDetails.registrationStep > 2));
+                          },
+                          child: MmmIcons.saveIcon(),
+                        )
+                      : InkWell(
+                          onTap: () {
+                            BlocProvider.of<AboutBloc>(context).add(OnAboutDone(
+                                namecontroller.text.trim(),
+                                this.maritalStatus!,
+                                this.heightStatus!,
+                                this.childrenStatus!,
+                                this.dobHintText!,
+                                this.abilityStatus!,
+                                this.userDetails.registrationStep > 2));
+                          },
+                          child: MmmIcons.rightArrowEnabled(),
+                        )),
               state is OnLoading ? MmmWidgets.buildLoader(context) : Container()
             ],
           );

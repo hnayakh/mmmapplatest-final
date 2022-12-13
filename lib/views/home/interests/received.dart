@@ -201,64 +201,72 @@ class ReceivedScreen extends StatelessWidget {
                                                                         ChatScreenUi()),
                                                           )),
                                                   Container(
-                                                    child: InkWell(
-                                                      onTap: (() {
-                                                        Navigator.pop(context);
-                                                      }),
-                                                      child: Container(
-                                                        height: 40,
-                                                        width: 230,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius.only(
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    8),
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    8),
-                                                            bottomLeft:
-                                                                Radius.circular(
-                                                                    8),
-                                                            bottomRight:
-                                                                Radius.circular(
-                                                                    8),
-                                                          ),
-                                                          boxShadow: [
-                                                            BoxShadow(
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        73,
-                                                                        61,
-                                                                        75,
-                                                                        92),
-                                                                offset: Offset(
-                                                                    0, 4),
-                                                                blurRadius: 14)
-                                                          ],
-                                                          color: Color.fromRGBO(
-                                                              255, 255, 255, 1),
-                                                          border: Border.all(
-                                                            color: gray3,
-                                                            width: 1,
-                                                          ),
-                                                        ),
-                                                        alignment:
-                                                            Alignment.center,
-                                                        child: Text(
-                                                          'Decline',
-                                                          textScaleFactor: 1.0,
-                                                          style: MmmTextStyles
-                                                              .heading6(
-                                                                  textColor:
-                                                                      gray3),
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                        ),
-                                                      ),
-                                                    ),
+                                                    width: 240,
+                                                    child: MmmButtons
+                                                        .primaryButtonMeetGray(
+                                                            'Declion',
+                                                            () => Navigator.pop(
+                                                                context)),
                                                   )
+                                                  // Container(
+                                                  //   child: InkWell(
+                                                  //     onTap: (() {
+                                                  //       Navigator.pop(context);
+                                                  //     }),
+                                                  //     child: Container(
+                                                  //       height: 40,
+                                                  //       width: 230,
+                                                  //       decoration:
+                                                  //           BoxDecoration(
+                                                  //         borderRadius:
+                                                  //             BorderRadius.only(
+                                                  //           topLeft:
+                                                  //               Radius.circular(
+                                                  //                   8),
+                                                  //           topRight:
+                                                  //               Radius.circular(
+                                                  //                   8),
+                                                  //           bottomLeft:
+                                                  //               Radius.circular(
+                                                  //                   8),
+                                                  //           bottomRight:
+                                                  //               Radius.circular(
+                                                  //                   8),
+                                                  //         ),
+                                                  //         boxShadow: [
+                                                  //           BoxShadow(
+                                                  //               color: Color
+                                                  //                   .fromARGB(
+                                                  //                       73,
+                                                  //                       61,
+                                                  //                       75,
+                                                  //                       92),
+                                                  //               offset: Offset(
+                                                  //                   0, 4),
+                                                  //               blurRadius: 14)
+                                                  //         ],
+                                                  //         color: Color.fromRGBO(
+                                                  //             255, 255, 255, 1),
+                                                  //         border: Border.all(
+                                                  //           color: gray3,
+                                                  //           width: 1,
+                                                  //         ),
+                                                  //       ),
+                                                  //       alignment:
+                                                  //           Alignment.center,
+                                                  //       child: Text(
+                                                  //         'Decline',
+                                                  //         textScaleFactor: 1.0,
+                                                  //         style: MmmTextStyles
+                                                  //             .heading6(
+                                                  //                 textColor:
+                                                  //                     gray3),
+                                                  //         textAlign:
+                                                  //             TextAlign.center,
+                                                  //       ),
+                                                  //     ),
+                                                  //   ),
+                                                  // )
                                                 ],
                                               ),
                                             ),

@@ -98,7 +98,7 @@ class _ChatScreenUIState extends State<ChatScreenUi> {
             ),
           ),
         ],
-        toolbarHeight: 180,
+        toolbarHeight: 120,
         backgroundColor: primaryColor,
         shape: const ContinuousRectangleBorder(
             borderRadius: BorderRadius.only(

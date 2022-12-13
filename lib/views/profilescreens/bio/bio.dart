@@ -105,132 +105,148 @@ class _BioScreenState extends State<BioScreen> {
                               ),
                               Expanded(
                                 flex: 1,
-                                child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      Text(
-                                        'Photo',
-                                        style: MmmTextStyles.bodyRegular(
-                                            textColor: kDark5),
-                                      ),
-                                      SizedBox(
-                                        height: 4,
-                                      ),
-                                      Expanded(
-                                          child: GridView.builder(
-                                        gridDelegate:
-                                            SliverGridDelegateWithMaxCrossAxisExtent(
-                                                maxCrossAxisExtent:
-                                                    (MediaQuery.of(context)
-                                                            .size
-                                                            .width) /
-                                                        2,
-                                                mainAxisExtent: 120,
-                                                crossAxisSpacing: 20,
-                                                mainAxisSpacing: 20),
-                                        itemBuilder: (context, index) {
-                                          print("IMAGE${this.localImagePaths}");
-                                          if (this.localImagePaths.length ==
-                                              0) {
-                                            return addImageButton();
-                                          } else {
-                                            var image =
-                                                this.localImagePaths[index];
-                                            print("image $image");
-                                            return Column(
-                                              children: [
-                                                Container(
-                                                  child: Stack(
+                                child: this.userDetails.registrationStep > 8
+                                    ? Container()
+                                    : Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.stretch,
+                                        children: [
+                                            Text(
+                                              'Photo',
+                                              style: MmmTextStyles.bodyRegular(
+                                                  textColor: kDark5),
+                                            ),
+                                            SizedBox(
+                                              height: 4,
+                                            ),
+                                            Expanded(
+                                                child: GridView.builder(
+                                              gridDelegate:
+                                                  SliverGridDelegateWithMaxCrossAxisExtent(
+                                                      maxCrossAxisExtent:
+                                                          (MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width) /
+                                                              2,
+                                                      mainAxisExtent: 120,
+                                                      crossAxisSpacing: 20,
+                                                      mainAxisSpacing: 20),
+                                              itemBuilder: (context, index) {
+                                                print(
+                                                    "IMAGE${this.localImagePaths}");
+                                                if (this
+                                                        .localImagePaths
+                                                        .length ==
+                                                    0) {
+                                                  return addImageButton();
+                                                } else {
+                                                  var image = this
+                                                      .localImagePaths[index];
+                                                  print("image $image");
+                                                  return Column(
                                                     children: [
-                                                      ClipRRect(
-                                                        child: image !=
-                                                                "addImage"
-                                                            ? Image.network(
-                                                                image,
-                                                                fit: BoxFit
-                                                                    .cover,
-                                                                width: (MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .width) /
-                                                                    2,
-                                                                height: 120,
-                                                              )
-                                                            : addImageButton(),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8),
+                                                      Container(
+                                                        child: Stack(
+                                                          children: [
+                                                            ClipRRect(
+                                                              child: image !=
+                                                                      "addImage"
+                                                                  ? Image
+                                                                      .network(
+                                                                      image,
+                                                                      fit: BoxFit
+                                                                          .cover,
+                                                                      width: (MediaQuery.of(context)
+                                                                              .size
+                                                                              .width) /
+                                                                          2,
+                                                                      height:
+                                                                          120,
+                                                                    )
+                                                                  : addImageButton(),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          8),
+                                                            ),
+                                                            this.localImagePaths[
+                                                                        index] !=
+                                                                    "addImage"
+                                                                ? Positioned(
+                                                                    top: 8,
+                                                                    right: 8,
+                                                                    child:
+                                                                        InkWell(
+                                                                      onTap:
+                                                                          () {
+                                                                        BlocProvider.of<BioBloc>(context)
+                                                                            .add(RemoveImage(index));
+                                                                      },
+                                                                      child:
+                                                                          Container(
+                                                                        child: SvgPicture
+                                                                            .asset(
+                                                                          "images/Cross.svg",
+                                                                          color:
+                                                                              Colors.white,
+                                                                        ),
+                                                                        width:
+                                                                            18,
+                                                                        height:
+                                                                            18,
+                                                                        padding:
+                                                                            const EdgeInsets.all(2),
+                                                                        decoration: BoxDecoration(
+                                                                            gradient:
+                                                                                MmmDecorations.primaryGradient(),
+                                                                            borderRadius: BorderRadius.circular(9)),
+                                                                      ),
+                                                                    ))
+                                                                : Container()
+                                                          ],
+                                                        ),
+                                                        decoration: BoxDecoration(
+                                                            boxShadow: [
+                                                              MmmShadow.elevation3(
+                                                                  shadowColor:
+                                                                      kShadow)
+                                                            ],
+                                                            color: Colors.white,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8)),
                                                       ),
-                                                      this.localImagePaths[
-                                                                  index] !=
-                                                              "addImage"
-                                                          ? Positioned(
-                                                              top: 8,
-                                                              right: 8,
-                                                              child: InkWell(
-                                                                onTap: () {
-                                                                  BlocProvider.of<
-                                                                              BioBloc>(
-                                                                          context)
-                                                                      .add(RemoveImage(
-                                                                          index));
-                                                                },
-                                                                child:
-                                                                    Container(
-                                                                  child:
-                                                                      SvgPicture
-                                                                          .asset(
-                                                                    "images/Cross.svg",
-                                                                    color: Colors
-                                                                        .white,
-                                                                  ),
-                                                                  width: 18,
-                                                                  height: 18,
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                          .all(2),
-                                                                  decoration: BoxDecoration(
-                                                                      gradient:
-                                                                          MmmDecorations
-                                                                              .primaryGradient(),
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              9)),
-                                                                ),
-                                                              ))
-                                                          : Container()
                                                     ],
-                                                  ),
-                                                  decoration: BoxDecoration(
-                                                      boxShadow: [
-                                                        MmmShadow.elevation3(
-                                                            shadowColor:
-                                                                kShadow)
-                                                      ],
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8)),
-                                                ),
-                                              ],
-                                            );
-                                          }
-                                        },
-                                        itemCount: this.localImagePaths.length,
-                                      )),
-                                    ]),
+                                                  );
+                                                }
+                                              },
+                                              itemCount:
+                                                  this.localImagePaths.length,
+                                            )),
+                                          ]),
                               ),
                               SizedBox(
                                 height: 20,
                               ),
-                              MmmButtons.enabledRedButtonbodyMedium(
-                                  50, 'Submit your details', action: () {
-                                FocusScope.of(context)
-                                    .requestFocus(FocusNode());
-                                BlocProvider.of<BioBloc>(context).add(UpdateBio(
-                                    this.aboutMe!, this.localImagePaths));
-                              })
+                              this.userDetails.registrationStep > 8
+                                  ? MmmButtons.enabledRedButtonbodyMedium(
+                                      50, 'Save', action: () {
+                                      FocusScope.of(context)
+                                          .requestFocus(FocusNode());
+                                      BlocProvider.of<BioBloc>(context).add(
+                                          UpdateBio(this.aboutMe!,
+                                              this.localImagePaths));
+                                    })
+                                  : MmmButtons.enabledRedButtonbodyMedium(
+                                      50, 'Submit your details', action: () {
+                                      FocusScope.of(context)
+                                          .requestFocus(FocusNode());
+                                      BlocProvider.of<BioBloc>(context).add(
+                                          UpdateBio(this.aboutMe!,
+                                              this.localImagePaths));
+                                    })
                             ],
                           ),
                         ),
@@ -332,10 +348,12 @@ class _BioScreenState extends State<BioScreen> {
                 borderRadius: BorderRadius.circular(8)),
             child: TextField(
                 controller: bioController,
+
                 // maxLength: 200,
                 keyboardType: TextInputType.multiline,
                 maxLines: 6,
                 decoration: InputDecoration(
+                  // hintText: aboutMe,
                   hintText: aboutMe != null && aboutMe != ''
                       ? '${this.aboutMe}'
                       : 'A little bit about me',
@@ -488,14 +506,14 @@ class _BioScreenState extends State<BioScreen> {
   void initData(BuildContext context) {
     this.localImagePaths = BlocProvider.of<BioBloc>(context).localImagePaths;
 
-    // this.education = BlocProvider.of<OccupationBloc>(context).education;
     this.aboutMe = this.bioController.text;
-    // print(
-    //     "PROFILEDATA${BlocProvider.of<BioBloc>(context).profileData!.aboutMe}");
+
     if (BlocProvider.of<BioBloc>(context).profileData != null) {
-      if (this.aboutMe == null) {
+      print("aboutMe  ${this.aboutMe}");
+      if (this.aboutMe == null || this.aboutMe == '') {
         this.aboutMe =
             BlocProvider.of<BioBloc>(context).profileData!.aboutmeMsg;
+
         print("object123${this.aboutMe}");
       }
       if (this.localImagePaths.length == 0) {
@@ -503,9 +521,6 @@ class _BioScreenState extends State<BioScreen> {
             BlocProvider.of<BioBloc>(context).profileData!.images;
         if (!this.localImagePaths.contains("addImage"))
           this.localImagePaths.add("addImage");
-        //   print(
-        //       "object${BlocProvider.of<BioBloc>(context).profileData!.images[0]}");
-        // }
       } else {
         if (!this.localImagePaths.contains("addImage"))
           this.localImagePaths.add("addImage");

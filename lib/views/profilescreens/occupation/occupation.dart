@@ -17,6 +17,8 @@ import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
 import 'package:makemymarry/views/profilescreens/family/family.dart';
+import 'package:makemymarry/views/profilescreens/family/family_details/family_details.dart';
+import 'package:makemymarry/views/profilescreens/habbit/habits.dart';
 import 'package:makemymarry/views/profilescreens/occupation/anual_income_bottom_sheet.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/my_profile/myprofile.dart';
 
@@ -259,37 +261,66 @@ class _OccupationScreenState extends State<OccupationScreen> {
               Positioned(
                   bottom: 15,
                   right: 24,
-                  child: InkWell(
-                    child: MmmIcons.rightArrowEnabled(),
-                    onTap: () {
-                      // BlocProvider.of<OccupationBloc>(context).add(UpdateCareer(
-                      //     orgNameController.text.trim(),
-                      //     annIncomeController.text.trim(),
-                      //     countryController.text.trim(),
-                      //     stateController.text.trim(),
-                      //     cityController.text.trim(),
-                      //     this.userDetails.registrationStep > 4));
-                      BlocProvider.of<OccupationBloc>(context).add(UpdateCareer(
-                          this.occupation!,
-                          this.anualIncome!,
-                          this.education!,
-                          this.myState!,
-                          this.city!,
-                          this.userDetails.registrationStep > 4));
-                    },
-                  )),
+                  child: this.userDetails.registrationStep > 4
+                      ? InkWell(
+                          onTap: () {
+                            // BlocProvider.of<OccupationBloc>(context).add(UpdateCareer(
+                            //     orgNameController.text.trim(),
+                            //     annIncomeController.text.trim(),
+                            //     countryController.text.trim(),
+                            //     stateController.text.trim(),
+                            //     cityController.text.trim(),
+                            //     this.userDetails.registrationStep > 4));
+                            BlocProvider.of<OccupationBloc>(context).add(
+                                UpdateCareer(
+                                    this.occupation!,
+                                    this.anualIncome!,
+                                    this.education!,
+                                    this.myState!,
+                                    this.city!,
+                                    this.userDetails.registrationStep > 4));
+                          },
+                          child: MmmIcons.saveIcon(),
+                        )
+                      : InkWell(
+                          onTap: () {
+                            // BlocProvider.of<OccupationBloc>(context).add(UpdateCareer(
+                            //     orgNameController.text.trim(),
+                            //     annIncomeController.text.trim(),
+                            //     countryController.text.trim(),
+                            //     stateController.text.trim(),
+                            //     cityController.text.trim(),
+                            //     this.userDetails.registrationStep > 4));
+                            BlocProvider.of<OccupationBloc>(context).add(
+                                UpdateCareer(
+                                    this.occupation!,
+                                    this.anualIncome!,
+                                    this.education!,
+                                    this.myState!,
+                                    this.city!,
+                                    this.userDetails.registrationStep > 4));
+                          },
+                          child: MmmIcons.rightArrowEnabled(),
+                        )),
               InkWell(
                 onTap: () {
-                  // BlocProvider.of<OccupationBloc>(context).add(UpdateCareer(
-                  //     orgNameController.text.trim(),
-                  //     annIncomeController.text.trim(),
-                  //     countryController.text.trim(),
-                  //     stateController.text.trim(),
-                  //     cityController.text.trim(),
-                  //     this.userDetails.registrationStep > 4));
-                },
-                // child: MmmIcons.rightArrowEnabled(),
+                  BlocProvider.of<OccupationBloc>(context).add(UpdateCareer(
+                      this.occupation!,
+                      this.anualIncome!,
+                      this.education!,
+                      this.myState!,
+                      this.city!,
+                      this.userDetails.registrationStep > 4));
 
+                  // var userRepo =
+                  //     BlocProvider.of<OccupationBloc>(context).userRepository;
+
+                  // Navigator.of(context).push(
+                  //   MaterialPageRoute(
+                  //       builder: (_) => FamilyDetails(
+                  //           userRepository: userRepo, onComplete: onComplete)),
+                  // );
+                },
                 child: Container(
                   margin: EdgeInsets.fromLTRB(15, 15, 20, 1),
                   child: Row(
@@ -314,13 +345,14 @@ class _OccupationScreenState extends State<OccupationScreen> {
               //     child:
               // InkWell(
               //     onTap: () {
-              //       BlocProvider.of<OccupationBloc>(context).add(
-              //           UpdateCareer(
-              //               orgNameController.text.trim(),
-              //               annIncomeController.text.trim(),
-              //               countryController.text.trim(),
-              //               stateController.text.trim(),
-              //               cityController.text.trim()));
+              // BlocProvider.of<OccupationBloc>(context).add(
+              //     UpdateCareer(
+
+              // orgNameController.text.trim(),
+              // annIncomeController.text.trim(),
+              // countryController.text.trim(),
+              // stateController.text.trim(),
+              // cityController.text.trim()));
               //     },
               //     // child: MmmIcons.rightArrowEnabled(),
               //     child: Padding(
@@ -346,15 +378,15 @@ class _OccupationScreenState extends State<OccupationScreen> {
               //     bottom: 24,
               //     left: 24,
               //     child: InkWell(
-              //         onTap: () {
-              //           BlocProvider.of<OccupationBloc>(context).add(
-              //               UpdateCareer(
-              //                   orgNameController.text.trim(),
-              //                   annIncomeController.text.trim(),
-              //                   countryController.text.trim(),
-              //                   stateController.text.trim(),
-              //                   cityController.text.trim()));
-              //         },
+              // onTap: () {
+              //   BlocProvider.of<OccupationBloc>(context).add(
+              //       UpdateCareer(
+              //           orgNameController.text.trim(),
+              //           annIncomeController.text.trim(),
+              //           countryController.text.trim(),
+              //           stateController.text.trim(),
+              //           cityController.text.trim()));
+              // },
               //         // child: MmmIcons.rightArrowEnabled(),
               //         child: Text('Skip >',
               //             style: TextStyle(color: kPrimary, fontSize: 18)))),

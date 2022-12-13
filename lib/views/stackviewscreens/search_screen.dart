@@ -93,7 +93,7 @@ class _SearchScreenState extends State<SearchScreen> {
           // ));
         }
         return Scaffold(
-          appBar: MmmButtons.appBarCurved('Search', context: context),
+          appBar: MmmButtons.appBarCurved('Search'),
           body: SingleChildScrollView(
             child: Column(
               children: [

@@ -268,7 +268,7 @@ class _BioScreenState extends State<BioScreen> {
             width: double.infinity,
             height: 292,
             child: Image.asset(
-              'images/profilePhoto.png',
+              'images/pp.png',
               fit: BoxFit.cover,
             )),
       ],

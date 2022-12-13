@@ -249,16 +249,27 @@ class _HabitScreenState extends State<HabitScreen> {
             Positioned(
                 bottom: 24,
                 right: 24,
-                child: InkWell(
-                  onTap: () {
-                    BlocProvider.of<HabitBloc>(context).add(UpdateHabit(
-                        this.eatingHabit!,
-                        this.drinkingHabit!,
-                        this.smokingHabit!,
-                        this.userDetails.registrationStep > 7));
-                  },
-                  child: MmmIcons.rightArrowEnabled(),
-                )),
+                child: this.userDetails.registrationStep > 7
+                    ? InkWell(
+                        onTap: () {
+                          BlocProvider.of<HabitBloc>(context).add(UpdateHabit(
+                              this.eatingHabit!,
+                              this.drinkingHabit!,
+                              this.smokingHabit!,
+                              this.userDetails.registrationStep > 7));
+                        },
+                        child: MmmIcons.saveIcon(),
+                      )
+                    : InkWell(
+                        onTap: () {
+                          BlocProvider.of<HabitBloc>(context).add(UpdateHabit(
+                              this.eatingHabit!,
+                              this.drinkingHabit!,
+                              this.smokingHabit!,
+                              this.userDetails.registrationStep > 7));
+                        },
+                        child: MmmIcons.rightArrowEnabled(),
+                      )),
             state is OnLoading ? MmmWidgets.buildLoader(context) : Container()
           ]));
         },

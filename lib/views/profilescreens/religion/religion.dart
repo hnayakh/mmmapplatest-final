@@ -14,7 +14,6 @@ import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
 import 'package:makemymarry/views/profilescreens/occupation/occupation.dart';
 import 'package:makemymarry/views/profilescreens/occupation/occupation_bloc.dart';
-
 import 'package:makemymarry/views/profilescreens/religion/religion_bloc.dart';
 import 'package:makemymarry/views/profilescreens/religion/religion_bottom_sheet.dart';
 import 'package:makemymarry/views/profilescreens/religion/religion_event.dart';
@@ -89,18 +88,33 @@ class ReligionScreenState extends State<ReligionScreen> {
                 ),
               ),
               Positioned(
-                child: InkWell(
-                  child: MmmIcons.rightArrowEnabled(),
-                  onTap: () {
-                    BlocProvider.of<ReligionBloc>(context).add(UpdateReligion(
-                        this.motherTongue,
-                        this.gothra,
-                        this.isManglik!,
-                        this.religion,
-                        this.subCaste,
-                        this.userDetails.registrationStep > 3));
-                  },
-                ),
+                child: this.userDetails.registrationStep > 3
+                    ? InkWell(
+                        onTap: () {
+                          BlocProvider.of<ReligionBloc>(context).add(
+                              UpdateReligion(
+                                  this.motherTongue,
+                                  this.gothra,
+                                  this.isManglik!,
+                                  this.religion,
+                                  this.subCaste,
+                                  this.userDetails.registrationStep > 3));
+                        },
+                        child: MmmIcons.saveIcon(),
+                      )
+                    : InkWell(
+                        onTap: () {
+                          BlocProvider.of<ReligionBloc>(context).add(
+                              UpdateReligion(
+                                  this.motherTongue,
+                                  this.gothra,
+                                  this.isManglik!,
+                                  this.religion,
+                                  this.subCaste,
+                                  this.userDetails.registrationStep > 3));
+                        },
+                        child: MmmIcons.rightArrowEnabled(),
+                      ),
                 bottom: 24,
                 right: 24,
               ),

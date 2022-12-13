@@ -578,13 +578,13 @@ class _MyProfileState extends State<MyProfile> {
                                         ),
                                         InkWell(
                                           onTap: () {
-                                            print("...");
-                                            // Navigator.of(context)
-                                            //     .push(MaterialPageRoute(
-                                            //         builder: (context) => Bio(
-                                            //               userRepository: widget
-                                            //                   .userRepository,
-                                            //             )));
+                                            print("Bio Screen Edit");
+                                            Navigator.of(context)
+                                                .push(MaterialPageRoute(
+                                                    builder: (context) => Bio(
+                                                          userRepository: widget
+                                                              .userRepository,
+                                                        )));
                                           },
                                           child: Image.asset(
                                             'images/pen.png',

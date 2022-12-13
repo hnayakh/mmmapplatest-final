@@ -203,8 +203,8 @@ class MatchingProfile {
     }
     // this.name = json["name"];
     this.caste = json["cast"];
-    this.religion = json["religion"];
-    this.motherTongue = json["motherTongue"];
+    if (json["religion"] != null) this.religion = json["religion"];
+    if (json["motherTongue"] != null) this.motherTongue = json["motherTongue"];
     if (json["height"] != null) {
       this.height = (double.parse(json["height"]) / 30.48).roundToDouble();
     } else {

@@ -20,6 +20,12 @@ class UpdateBio extends BioEvent {
   UpdateBio(this.bio, this.localImagePaths);
 }
 
+class UpdateBioText extends BioEvent {
+  final String bio;
+
+  UpdateBioText(this.bio);
+}
+
 class UpdateBioImage extends BioEvent {
   final List<String> localImagePaths;
   UpdateBioImage(this.localImagePaths);

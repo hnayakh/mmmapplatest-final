@@ -97,20 +97,35 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
           Positioned(
               bottom: 24,
               right: 24,
-              child: InkWell(
-                onTap: () {
-                  BlocProvider.of<FamilyDetailsBloc>(context).add(
-                      UpdateFamilyDetails(
-                          this.fatherOccupation,
-                          this.motherOccupation,
-                          this.noOfBrothers,
-                          this.noOfSister,
-                          this.brotherMarried,
-                          this.sistersMarried,
-                          this.userDetails.registrationStep > 6));
-                },
-                child: MmmIcons.rightArrowEnabled(),
-              )),
+              child: this.userDetails.registrationStep > 6
+                  ? InkWell(
+                      onTap: () {
+                        BlocProvider.of<FamilyDetailsBloc>(context).add(
+                            UpdateFamilyDetails(
+                                this.fatherOccupation,
+                                this.motherOccupation,
+                                this.noOfBrothers,
+                                this.noOfSister,
+                                this.brotherMarried,
+                                this.sistersMarried,
+                                this.userDetails.registrationStep > 6));
+                      },
+                      child: MmmIcons.saveIcon(),
+                    )
+                  : InkWell(
+                      onTap: () {
+                        BlocProvider.of<FamilyDetailsBloc>(context).add(
+                            UpdateFamilyDetails(
+                                this.fatherOccupation,
+                                this.motherOccupation,
+                                this.noOfBrothers,
+                                this.noOfSister,
+                                this.brotherMarried,
+                                this.sistersMarried,
+                                this.userDetails.registrationStep > 6));
+                      },
+                      child: MmmIcons.rightArrowEnabled(),
+                    )),
           Positioned(
               top: 15,
               right: 20,

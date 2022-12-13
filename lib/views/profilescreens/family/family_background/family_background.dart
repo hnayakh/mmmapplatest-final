@@ -108,19 +108,33 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
             Positioned(
                 bottom: 24,
                 right: 24,
-                child: InkWell(
-                  onTap: () {
-                    BlocProvider.of<FamilyBackgroundBloc>(context).add(
-                        UpdateFamilyBackground(
-                            this.level,
-                            this.values,
-                            this.isStayingWithParents!,
-                            this.city,
-                            this.myState,
-                            this.userDetails.registrationStep > 5));
-                  },
-                  child: MmmIcons.rightArrowEnabled(),
-                )),
+                child: this.userDetails.registrationStep > 5
+                    ? InkWell(
+                        onTap: () {
+                          BlocProvider.of<FamilyBackgroundBloc>(context).add(
+                              UpdateFamilyBackground(
+                                  this.level,
+                                  this.values,
+                                  this.isStayingWithParents!,
+                                  this.city,
+                                  this.myState,
+                                  this.userDetails.registrationStep > 5));
+                        },
+                        child: MmmIcons.saveIcon(),
+                      )
+                    : InkWell(
+                        onTap: () {
+                          BlocProvider.of<FamilyBackgroundBloc>(context).add(
+                              UpdateFamilyBackground(
+                                  this.level,
+                                  this.values,
+                                  this.isStayingWithParents!,
+                                  this.city,
+                                  this.myState,
+                                  this.userDetails.registrationStep > 5));
+                        },
+                        child: MmmIcons.rightArrowEnabled(),
+                      )),
             Positioned(
                 child: InkWell(
                     onTap: () {

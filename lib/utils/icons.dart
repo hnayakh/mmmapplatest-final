@@ -327,4 +327,33 @@ class MmmIcons {
       ),
     );
   }
+
+  //Save Icons
+
+  static Container saveIcon() {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+            colors: [kPrimary, kSecondary],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight),
+        shape: BoxShape.circle,
+      ),
+      child: ClipOval(
+        child: Material(
+          color: Colors.transparent,
+          child: Container(
+            height: 50,
+            width: 50,
+            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+            child: Center(
+                child: Icon(
+              Icons.save,
+              color: gray5,
+            )),
+          ),
+        ),
+      ),
+    );
+  }
 }
