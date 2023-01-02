@@ -9,9 +9,9 @@ import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/saurabh/profile_detail.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/dimens.dart';
-import 'package:makemymarry/views/home/matching_profile/matching_profile_bloc.dart';
+import 'package:makemymarry/views/home/matching_profile/bloc/matching_profile_bloc.dart';
 import 'package:makemymarry/views/home/my_connects/my_connects_screen.dart';
-import 'package:makemymarry/views/signinscreens/signin_screen1.dart';
+import 'package:makemymarry/views/signinscreens/signin_page.dart';
 import 'package:makemymarry/views/stackviewscreens/search_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/my_profile/myprofile.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/setting_screen.dart';
@@ -206,7 +206,7 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
         print("Profile ahead");
         Navigator.of(context).push(
           MaterialPageRoute(
-              builder: (context) => MyprofileScreen(userRepository: userRepo)),
+              builder: (context) => MyProfileScreen(userRepository: userRepo)),
         );
         break;
       case 1:
@@ -260,10 +260,7 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
         _deleteCacheDir();
 
         _deleteAppDir().then((value) => Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                  builder: (context) => SignIn(
-                        userRepository: userRepo,
-                      )),
+             SignInPage.getRoute()
             ));
 
         break;

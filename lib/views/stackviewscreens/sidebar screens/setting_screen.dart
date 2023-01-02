@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:makemymarry/repo/user_repo.dart';
-import 'package:makemymarry/saurabh/success_stories.dart';
 import 'package:makemymarry/utils/buttons.dart';
-import 'package:makemymarry/views/signinscreens/signin_screen1.dart';
+import 'package:makemymarry/views/signinscreens/signin_page.dart';
 import 'package:makemymarry/views/stackviewscreens/account.dart';
 import 'package:makemymarry/views/stackviewscreens/notification.dart';
 import 'package:makemymarry/views/stackviewscreens/privacy.dart';
-import 'package:makemymarry/views/stackviewscreens/search_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/hide.dart';
-import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/sidebar_about_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/sidebar_change_screen.dart';
-import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/sidebar_contactsupport_screen.dart';
 
 class SettingScreen extends StatelessWidget {
   final UserRepository userRepository;
@@ -71,39 +67,9 @@ class SettingScreen extends StatelessWidget {
           }),
           MmmButtons.searchScreenButton('Log Out', action: () {
             Navigator.of(context).push(
-              MaterialPageRoute(
-                  builder: (context) => SignIn(userRepository: userRepository)),
-            );
+                SignInPage.getRoute());
+
           }),
-          // MmmButtons.searchScreenButton('Account', action: () {
-          //   Navigator.of(context).push(
-          //     MaterialPageRoute(
-          //         builder: (context) =>
-          //             Account(userRepository: userRepository)),
-          //   );
-          // }),
-          // MmmButtons.searchScreenButton('Success Story', action: () {
-          //   Navigator.of(context).push(
-          //     MaterialPageRoute(builder: (context) => SuccessStories()),
-          //   );
-          // }),
-          // // MmmButtons.searchScreenButton('Leave us a review', action: () {}),
-          // // MmmButtons.searchScreenButton('FAQ', action: () {}),
-          // // MmmButtons.searchScreenButton('Terms and Conditions', action: () {}),
-          // MmmButtons.searchScreenButton('Contact Support', action: () {
-          //   Navigator.of(context).push(
-          //     MaterialPageRoute(
-          //         builder: (context) =>
-          //             ContactSupportScreen(userRepository: userRepository)),
-          //   );
-          // }),
-          // MmmButtons.searchScreenButton('About', action: () {
-          //   Navigator.of(context).push(
-          //     MaterialPageRoute(
-          //         builder: (context) =>
-          //             SidebarAboutScreen(userRepository: userRepository)),
-          //   );
-          // }),
         ],
       ),
     );

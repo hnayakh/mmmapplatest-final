@@ -11,7 +11,5 @@ class InAppCallBloc extends Bloc<InAppCallEvent,InAppCallState>{
 
   @override
   Stream<InAppCallState> mapEventToState(InAppCallEvent event)async* {
-
   }
-
 }

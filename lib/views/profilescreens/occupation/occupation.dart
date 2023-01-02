@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:makemymarry/bloc/about/about_bloc.dart';
+import 'package:makemymarry/views/profilescreens/about/about_bloc.dart';
 
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
@@ -562,7 +562,7 @@ class _OccupationScreenState extends State<OccupationScreen> {
                     create: (context) => AccountMenuBloc(userRepo),
                   ),
                 ],
-                child: MyprofileScreen(
+                child: MyProfileScreen(
                   userRepository: userRepo,
                 ))));
   }

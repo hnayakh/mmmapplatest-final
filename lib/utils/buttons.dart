@@ -3827,6 +3827,49 @@ class MmmButtons {
     );
   }
 
+  static Widget lifeStyleChip(
+      double height, double width, String icon, String text, bool isActive, void Function() onToggle) {
+    return InkWell(
+      onTap: (){
+        onToggle.call();
+      },
+      child: Container(
+        margin:  EdgeInsets.all(12.0),
+        padding:  EdgeInsets.symmetric(horizontal: 12.0),
+        decoration: BoxDecoration(
+            color: isActive ? Color(0xffFF4D6D) : Color(0xffF0EFF5),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: Color(0xffF0EFF5),
+              width: 1,
+            ),
+        ),
+
+        height: height,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SvgPicture.asset(
+              icon,
+              color: isActive ? Color(0xffFCFCFD) : Color(0xff121619),
+              fit: BoxFit.cover,
+            ),
+            SizedBox(
+              width: 8,
+            ),
+            Text(
+              text,
+              textAlign: TextAlign.center,
+              textScaleFactor: 1.0,
+              style: MmmTextStyles.bodyRegular(textColor: isActive ? gray7 : kDark5),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   static Container habitsDisabled(
       double containerheight, double containerwidth, String icon, String text,
       {Function()? action}) {

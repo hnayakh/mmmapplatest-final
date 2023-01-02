@@ -3,12 +3,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:makemymarry/bloc/sign_in/signin_bloc.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:makemymarry/views/signinscreens/signin_bloc.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
-import 'package:makemymarry/utils/dimens.dart';
-import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/signupscreens/create_account/create_account_screen.dart';
 
@@ -61,8 +60,16 @@ class SignupOptionBottomSheetState extends State<SignupOptionBottomSheet> {
             height: 26,
           ),
           MmmButtons.googleSignupButton(
-            action: () {
-              print("Jontyu");
+            action: () async {
+              GoogleSignIn _googleSignIn = GoogleSignIn();
+              await _googleSignIn.signOut();
+            _googleSignIn
+                .signIn()
+                .then((userData) {
+              navigateToRegister(context,email: userData?.email ?? ""  );
+            }).catchError((e) {
+              print(e);
+            });
             },
           ),
           SizedBox(
@@ -70,8 +77,7 @@ class SignupOptionBottomSheetState extends State<SignupOptionBottomSheet> {
           ),
           MmmButtons.emailButton(
             action: () {
-              print("Sharma");
-              navigateToRegister(context);
+              navigateToRegister(context,  );
             },
           ),
           SizedBox(
@@ -109,11 +115,12 @@ class SignupOptionBottomSheetState extends State<SignupOptionBottomSheet> {
     );
   }
 
-  navigateToRegister(context) {
+  navigateToRegister(context, {String? email}) {
     // var userRepo = BlocProvider.of<SignInBloc>(context).userRepository;
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => CreateAccount(
               userRepository: UserRepository(),
+                email: email ?? ""
             )));
   }
 }

@@ -1,4 +1,4 @@
-import 'package:makemymarry/bloc/base_event_state.dart';
+import 'package:makemymarry/base_event_state.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 

@@ -4,6 +4,30 @@ enum Gender {
   Other,
 }
 
+
+enum CallType {
+  audioCall,
+  videoCall
+}
+
+extension CallTypeExtension on CallType {
+
+
+  String get label {
+    switch(this){
+
+      case CallType.audioCall:
+        {
+          return "Audio";
+        }
+      case CallType.videoCall:
+        {
+          return "Video";
+        }
+    }
+  }
+}
+
 enum Relationship { Self, Son, Daughter, Sister, Brother, Friend, Relative }
 
 enum MaritalStatus { NeverMarried, Divorced, Widowed, AwaitingDivorce }

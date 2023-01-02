@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:makemymarry/bloc/about/about_bloc.dart';
-import 'package:makemymarry/bloc/about/about_state.dart';
-import 'package:makemymarry/bloc/sign_in/signin_bloc.dart';
-import 'package:makemymarry/matching_percentage/matching_percentage.dart';
+import 'package:makemymarry/views/profilescreens/about/about_bloc.dart';
+import 'package:makemymarry/views/signinscreens/signin_bloc.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/saurabh/myprofile/add_interest.dart';
 import 'package:makemymarry/saurabh/filter_preference.dart';
@@ -81,7 +79,7 @@ class _MyProfileMenuState extends State<MyProfileMenu> {
                       BlocProvider.of<AccountMenuBloc>(context)
                           .add(FetchMyProfile());
                     }
-                    if (state is OnLoading) {
+                    if (state is Menu.OnLoading) {
                       return Scaffold(
                         body: MmmWidgets.buildLoader2(context),
                       );

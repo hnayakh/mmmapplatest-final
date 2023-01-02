@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
-import 'package:makemymarry/premium_members/premium_members.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/saurabh/custom_drawer.dart';
 import 'package:makemymarry/saurabh/filter_preference.dart';
@@ -20,8 +19,7 @@ import 'package:makemymarry/views/profileviewscreens/profile_view_event.dart';
 import 'package:makemymarry/views/profileviewscreens/profile_view_state.dart';
 import 'package:makemymarry/views/stackviewscreens/notification_list.dart';
 
-import '../home/matching_profile/matching_profile_bloc.dart';
-import '../home/matching_profile/matching_profile_event.dart';
+import '../home/matching_profile/bloc/matching_profile_bloc.dart';
 
 class SearchScreen extends StatefulWidget {
   final UserRepository userRepository;

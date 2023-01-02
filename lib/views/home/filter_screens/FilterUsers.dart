@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
-import 'package:makemymarry/views/home/matching_profile/matching_profile.dart';
+import 'package:makemymarry/views/home/matching_profile/views/matching_profile.dart';
 
 class FilterUsers extends StatelessWidget {
   final UserRepository userRepository;

@@ -27,84 +27,84 @@ class _ChatScreenUIState extends State<ChatScreenUi> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(bottomRight: Radius.circular(100)),
-            gradient: LinearGradient(
-                colors: [kSecondary, kPrimary],
-                begin: Alignment.bottomRight,
-                end: Alignment.topLeft),
-          ),
-        ),
-        actions: <Widget>[
-          Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  child: Image.asset(
-                    'images/arrowchat.png',
-                    width: 0,
-                    // height: 35,
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Container(
-                  child: Image.asset(
-                    'images/face.png',
-                    width: 60,
-                    height: 60,
-                  ),
-                ),
-                const SizedBox(
-                  width: 15,
-                ),
-                Container(
-                  child: const Text(
-                    'Jacab Joney',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                const SizedBox(
-                  width: 30,
-                ),
-                Container(
-                  child: Image.asset(
-                    'images/video.png',
-                    // width: 30,
-                    height: 40,
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                Container(
-                  child: Image.asset(
-                    'images/audio.png',
-                    width: 35,
-                    height: 40,
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-              ],
-            ),
-          ),
-        ],
-        toolbarHeight: 120,
-        backgroundColor: primaryColor,
-        shape: const ContinuousRectangleBorder(
-            borderRadius: BorderRadius.only(
-                //bottomLeft: Radius.circular(30),
-                bottomRight: Radius.circular(100))),
-      ),
+      // appBar: AppBar(
+      //   flexibleSpace: Container(
+      //     decoration: BoxDecoration(
+      //       borderRadius: BorderRadius.only(bottomRight: Radius.circular(100)),
+      //       gradient: LinearGradient(
+      //           colors: [kSecondary, kPrimary],
+      //           begin: Alignment.bottomRight,
+      //           end: Alignment.topLeft),
+      //     ),
+      //   ),
+      //   actions: <Widget>[
+      //     Container(
+      //       child: Row(
+      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //         children: [
+      //           Container(
+      //             child: Image.asset(
+      //               'images/arrowchat.png',
+      //               width: 0,
+      //               // height: 35,
+      //               color: Colors.white,
+      //             ),
+      //           ),
+      //           const SizedBox(
+      //             width: 10,
+      //           ),
+      //           Container(
+      //             child: Image.asset(
+      //               'images/face.png',
+      //               width: 60,
+      //               height: 60,
+      //             ),
+      //           ),
+      //           const SizedBox(
+      //             width: 15,
+      //           ),
+      //           Container(
+      //             child: const Text(
+      //               'Jacab Joney',
+      //               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      //             ),
+      //           ),
+      //           const SizedBox(
+      //             width: 30,
+      //           ),
+      //           Container(
+      //             child: Image.asset(
+      //               'images/video.png',
+      //               // width: 30,
+      //               height: 40,
+      //               color: Colors.white,
+      //             ),
+      //           ),
+      //           const SizedBox(
+      //             width: 20,
+      //           ),
+      //           Container(
+      //             child: Image.asset(
+      //               'images/audio.png',
+      //               width: 35,
+      //               height: 40,
+      //               color: Colors.white,
+      //             ),
+      //           ),
+      //           const SizedBox(
+      //             width: 20,
+      //           ),
+      //         ],
+      //       ),
+      //     ),
+      //   ],
+      //   toolbarHeight: 120,
+      //   backgroundColor: primaryColor,
+      //   shape: const ContinuousRectangleBorder(
+      //       borderRadius: BorderRadius.only(
+      //           //bottomLeft: Radius.circular(30),
+      //           bottomRight: Radius.circular(100))),
+      // ),
       body: Column(
         children: [
           Expanded(

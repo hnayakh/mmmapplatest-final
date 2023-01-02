@@ -24,19 +24,26 @@ import 'create_account_state.dart';
 class CreateAccount extends StatelessWidget {
   final UserRepository userRepository;
 
-  const CreateAccount({Key? key, required this.userRepository})
+  const CreateAccount({Key? key, required this.userRepository, required this.email})
       : super(key: key);
+
+  final String email;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => CreateAccountBloc(userRepository),
-      child: CreateAccountScreen(),
+      child: CreateAccountScreen(email: email),
     );
   }
 }
 
 class CreateAccountScreen extends StatefulWidget {
+
+  final String email;
+
+  const CreateAccountScreen({super.key, required this.email});
+
   @override
   State<StatefulWidget> createState() {
     return CreateAccountScreenState();
@@ -56,6 +63,11 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
   late Relationship profileCreatedFor;
 
   String hintText = 'Select profile created for';
+
+
+  initState(){
+    emailController.text = widget.email;
+  }
 
   @override
   Widget build(BuildContext context) {

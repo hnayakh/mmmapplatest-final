@@ -1,13 +1,10 @@
-import 'dart:io';
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:makemymarry/bloc/about/about_bloc.dart';
-import 'package:makemymarry/bloc/about/about_event.dart';
+import 'package:makemymarry/views/profilescreens/about/about_bloc.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/saurabh/hexcolor.dart';
@@ -15,19 +12,16 @@ import 'package:makemymarry/saurabh/partner_preference.dart';
 import 'package:makemymarry/saurabh/refer_friend.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/colors.dart';
+import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/home/interests/interest_status_screen.dart';
-import 'package:makemymarry/views/home/matching_profile/matching_profile_bloc.dart';
 import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
 import 'package:makemymarry/views/home/menu/account_menu_event.dart';
 import 'package:makemymarry/views/home/menu/account_menu_state.dart';
 import 'package:makemymarry/views/home/menu/wallet/wallet_main.dart';
-import 'package:makemymarry/views/profilescreens/about/about.dart';
-import 'package:makemymarry/views/profilescreens/bio/bio_bloc.dart';
 import 'package:makemymarry/views/profilescreens/occupation/occupation_bloc.dart';
 import 'package:makemymarry/views/profileviewscreens/profile_view_bloc.dart';
-import 'package:makemymarry/views/signinscreens/signin_screen1.dart';
-import 'package:makemymarry/views/stackviewscreens/connect/chat_screen.dart';
+import 'package:makemymarry/views/signinscreens/signin_page.dart';
 import 'package:makemymarry/views/stackviewscreens/connect/connect.dart';
 import 'package:makemymarry/views/stackviewscreens/meet%20status/meet_status_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/search_screen.dart';
@@ -36,9 +30,7 @@ import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/setting_scr
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/sidebar_contactsupport_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../utils/buttons.dart';
 import '../utils/text_styles.dart';
-import '../views/stackviewscreens/sidebar screens/my_profile/myprofile_menuscreen.dart';
 
 class AppDrawer extends StatelessWidget {
   final UserRepository userRepository;
@@ -143,11 +135,12 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                             width: 20,
                           ),
                           CircleAvatar(
-                              radius: 40,
-                              backgroundImage: NetworkImage(
-                                  this.profileDetails != null
-                                      ? profileDetails!.images[0]
-                                      : "")),
+                            radius: 40,
+                            backgroundImage: ((this.profileDetails != null &&
+                                    profileDetails!.images.isNotNullEmpty)
+                                ? NetworkImage(profileDetails!.images.first)
+                                : AssetImage('images/app_icon.png',)) as ImageProvider,
+                          ),
                           SizedBox(
                             width: 20,
                           ),
@@ -367,10 +360,7 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                             onTap: () {
                               _deleteAppDir().then((value) =>
                                   Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                        builder: (context) => SignIn(
-                                              userRepository: userRepo,
-                                            )),
+                                    SignInPage.getRoute()
                                   ));
                             },
                             child: customListTile(
@@ -419,7 +409,7 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
         BlocProvider(
           create: (context) => AccountMenuBloc(userRepo),
         ),
-      ], child: MyprofileScreen(userRepository: userRepo)),
+      ], child: MyProfileScreen(userRepository: userRepo)),
     ));
     // BlocProvider.of<AboutBloc>(context).add(onAboutDataLoad(this.basicUserId!));
 
@@ -427,7 +417,7 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
       MaterialPageRoute(
           builder: (context) => BlocProvider(
                 create: (context) => AboutBloc(userRepo),
-                child: MyprofileScreen(userRepository: userRepo),
+                child: MyProfileScreen(userRepository: userRepo),
               )),
     );
 

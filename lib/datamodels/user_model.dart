@@ -109,7 +109,7 @@ class UserDetails {
 
   UserDetails.fromJson(json) {
     this.displayId = json["displayId"];
-
+    this.name =  json["name"] ?? "";
     this.id = json["id"];
     this.email = json["email"];
     this.mobile = json["phoneNumber"];
@@ -126,6 +126,7 @@ class UserDetails {
   UserDetails.fromStorage(
     this.displayId,
     this.id,
+    this.name,
     this.mobile,
     this.dialCode,
     this.email,

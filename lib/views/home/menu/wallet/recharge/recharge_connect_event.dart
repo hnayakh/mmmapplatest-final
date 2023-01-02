@@ -1,4 +1,4 @@
-import 'package:makemymarry/bloc/base_event_state.dart';
+import 'package:makemymarry/base_event_state.dart';
 import 'package:makemymarry/datamodels/recharge.dart';
 
 class RechargeConnectEvent extends BaseEventState {}

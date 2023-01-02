@@ -1,4 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:makemymarry/locator.dart';
+import 'package:makemymarry/repo/chat_repo.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/views/profile_loader/profile_loader_event.dart';
@@ -23,13 +25,8 @@ class ProfileLoaderBloc extends Bloc<ProfileLoaderEvent, ProfileLoaderState> {
       // var onlineMembersList = await this.userRepository.getOnlineMembers();
       if (result.status == AppConstants.SUCCESS) {
         this.userRepository.updateRegistrationStep(10);
-        // await this
-        //     .userRepository
-        //     .storageService
-        //     .saveUserDetails(this.userRepository.useDetails!);
-        print('in profileloader');
-        print(this.userRepository.useDetails!.registrationStep);
-        print(result.list);
+        var userDetails  = (await this.userRepository.getUserDetails())!;
+        getIt<ChatRepo>().updateChatUser(id: userDetails.id, fullName: userDetails.name, imageUrl: "");
         yield OnGotProfiles(result.list, [], [], [], [], []);
       } else {
         yield OnError(result.message);

@@ -2,6 +2,9 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:makemymarry/datamodels/agora_token_response.dart';
 import 'package:makemymarry/socket_io/StreamSocket.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:dio/dio.dart';
@@ -15,7 +18,7 @@ import 'package:makemymarry/datamodels/recharge.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
-import 'package:makemymarry/views/home/matching_profile/matching_profile.dart';
+import 'package:makemymarry/views/home/matching_profile/views/matching_profile.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
 import 'app_helper.dart';
@@ -36,11 +39,13 @@ class ApiClient {
       Gender? gender,
       String password) async {
     try {
+      var fcmToken = await FirebaseMessaging.instance.getToken();
       Response response =
           await this.dio.post(AppConstants.ENDPOINT + "users/basic", data: {
         "email": email,
         "gender": gender!.index,
         "countryCode": phoneCode,
+        'fireBaseToken': fcmToken,
         "phoneNumber": mobile,
         "password": password,
         "relationship": profileCreatedFor
@@ -62,9 +67,14 @@ class ApiClient {
 
   Future<SigninResponse> signinUser(String email, String password) async {
     try {
-      Response response = await this.dio.post(
-          AppConstants.ENDPOINT + "auth/login",
-          data: {"email": email, "password": password});
+      var fcmToken = await FirebaseMessaging.instance.getToken();
+      Response response = await this
+          .dio
+          .post(AppConstants.ENDPOINT + "auth/login", data: {
+        "email": email,
+        "password": password,
+        'fireBaseToken': fcmToken
+      });
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SigninResponse.fromJson(response.data);
       } else {
@@ -78,6 +88,35 @@ class ApiClient {
       }
       print(error);
       return SigninResponse.fromError("Error Occurred. Please try again.");
+    }
+  }
+
+  Future<AgoraTokenResponse> generateAgoraToken(
+      {required String calleUserId,
+      required String callerUserId,
+      required CallType type}) async {
+    try {
+      Response response = await this
+          .dio
+          .post(AppConstants.ENDPOINT + "auth/generateAGoraToken", data: {
+        "receiverId": calleUserId,
+        "senderId": callerUserId,
+        "callType": type.label
+      });
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return AgoraTokenResponse.fromJson(response.data);
+      } else {
+        print('error1');
+        return AgoraTokenResponse.fromError(
+            "Error Occurred. Please try again.");
+      }
+    } catch (error) {
+      if (error is DioError) {
+        print('error2');
+        return AgoraTokenResponse.fromError(error.response!.data["message"]);
+      }
+      print(error);
+      return AgoraTokenResponse.fromError("Error Occurred. Please try again.");
     }
   }
 
@@ -197,11 +236,13 @@ class ApiClient {
   Future<SigninResponse> verifyOtp(
       String dialCode, String mobile, OtpType otpType, String otp) async {
     try {
+      var fcmToken = await FirebaseMessaging.instance.getToken();
       Response response =
           await this.dio.post(AppConstants.ENDPOINT + "auth/verifyOtp", data: {
         "countryCode": "+$dialCode",
         "phoneNumber": mobile,
         "type": otpType.index,
+        'fireBaseToken': fcmToken,
         "email": "",
         "otp": otp
       });
@@ -608,7 +649,7 @@ class ApiClient {
       }
       return MatchingProfileResponse.fromError(
           "Error Occurred. Please try again.");
-    } catch (error) {
+    } catch (error, stacktrace) {
       if (error is DioError) {
         print(error.message);
       }

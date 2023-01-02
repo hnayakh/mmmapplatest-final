@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:makemymarry/bloc/about/about_bloc.dart';
-import 'package:makemymarry/bloc/about/about_event.dart';
-import 'package:makemymarry/bloc/about/about_state.dart';
-import 'package:makemymarry/bloc/habits/habit_bloc.dart';
-import 'package:makemymarry/bloc/habits/habit_event.dart';
-import 'package:makemymarry/bloc/habits/habit_state.dart' as habitState;
-import 'package:makemymarry/bloc/sign_in/signin_bloc.dart';
+import 'package:makemymarry/views/profilescreens/about/about_bloc.dart';
+import 'package:makemymarry/views/profilescreens/about/about_event.dart';
+import 'package:makemymarry/views/profilescreens/habbit/habit_bloc.dart';
+import 'package:makemymarry/views/profilescreens/habbit/habit_event.dart';
+import 'package:makemymarry/views/profilescreens/habbit/habit_state.dart' as habitState;
+import 'package:makemymarry/views/signinscreens/signin_bloc.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
-import 'package:makemymarry/matching_percentage/matching_percentage.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/saurabh/myprofile/add_interest.dart';
 import 'package:makemymarry/saurabh/filter_preference.dart';
@@ -21,6 +19,7 @@ import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
+import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
 import 'package:makemymarry/views/home/menu/account_menu_state.dart'
@@ -57,13 +56,15 @@ import '../../../../saurabh/myprofile/about_profile.dart';
 import '../../../../utils/widgets_large.dart';
 import '../../../home/menu/account_menu_event.dart';
 import '../../../home/menu/account_menu_state.dart' as Menu;
+import '../../../profilescreens/about/about_state.dart';
 import '../../../profilescreens/bio/bio_bloc.dart';
 import '../../../profilescreens/bio/bio_event.dart';
 import '../../../profilescreens/bio/image_picker_dialog.dart';
+import '../../../profilescreens/lifestyle/lifestyle_details_view.dart';
 
-class MyprofileScreen extends StatelessWidget {
+class MyProfileScreen extends StatelessWidget {
   final UserRepository userRepository;
-  const MyprofileScreen({Key? key, required this.userRepository})
+  const MyProfileScreen({Key? key, required this.userRepository})
       : super(key: key);
 
   @override
@@ -2394,9 +2395,16 @@ class _MyProfileState extends State<MyProfile> {
                                             ],
                                           ),
                                         ),
-                                        Image.asset(
-                                          'images/pen.png',
-                                          color: kPrimary,
+                                        InkWell(
+                                          onTap: (){
+                                            context.navigate.push(
+                                              MaterialPageRoute(builder: (context) => LifeStyleView())
+                                            );
+                                          },
+                                          child: Image.asset(
+                                            'images/pen.png',
+                                            color: kPrimary,
+                                          ),
                                         ),
                                       ],
                                     ),

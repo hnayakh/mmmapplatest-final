@@ -117,6 +117,7 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
             this.userRepository.useDetails = UserDetails.fromStorage(
               "",
               "",
+              "",
               mobile,
               countryModel.phoneCode.toString(),
               // selectedCountry.phoneCode,

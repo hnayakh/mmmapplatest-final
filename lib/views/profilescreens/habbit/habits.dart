@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:makemymarry/bloc/about/about_bloc.dart';
-import 'package:makemymarry/bloc/habits/habit_bloc.dart';
-import 'package:makemymarry/bloc/habits/habit_event.dart';
-import 'package:makemymarry/bloc/habits/habit_state.dart';
+import 'package:makemymarry/views/profilescreens/about/about_bloc.dart';
+import 'package:makemymarry/views/profilescreens/habbit/habit_bloc.dart';
+import 'package:makemymarry/views/profilescreens/habbit/habit_event.dart';
+import 'package:makemymarry/views/profilescreens/habbit/habit_state.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
@@ -357,7 +357,7 @@ class _HabitScreenState extends State<HabitScreen> {
                     create: (context) => AccountMenuBloc(userRepo),
                   ),
                 ],
-                child: MyprofileScreen(
+                child: MyProfileScreen(
                   userRepository: userRepo,
                 ))));
   }

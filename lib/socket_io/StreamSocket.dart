@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:makemymarry/datamodels/martching_profile.dart';
-import 'package:makemymarry/matching_percentage/matching_percentage_event.dart';
 import 'package:rxdart/rxdart.dart';
 
 // STEP1:  Stream setup

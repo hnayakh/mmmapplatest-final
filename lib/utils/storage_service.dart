@@ -56,6 +56,7 @@ class StorageService {
     this
         .sharedPreferences
         .setString(AppConstants.RELIGIONID, userDetails.religion.id);
+   this.sharedPreferences.setString(AppConstants.NAME, userDetails.name);
     this
         .sharedPreferences
         .setString(AppConstants.RELIGIONTITLE, userDetails.religion.title);
@@ -107,6 +108,7 @@ class StorageService {
       //var jwt = this.sharedPreferences.getString("jwt")!;
       //var userId=this.sharedPreferences.getString(AppConstants.USERID);
       var displayId = this.sharedPreferences.getString(AppConstants.DISPLAYID);
+      var name = this.sharedPreferences.getString(AppConstants.NAME) ?? "";
       var gender = this.sharedPreferences.getInt(AppConstants.GENDER);
       var isActive = this.sharedPreferences.getBool(AppConstants.ISACTIVE);
       var mobile = this.sharedPreferences.getString(AppConstants.MOBILE);
@@ -153,7 +155,7 @@ class StorageService {
       return UserDetails.fromStorage(
         displayId!,
         id,
-        // jwt,
+        name,
         mobile!,
         dialCode!,
         email!,

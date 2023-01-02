@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_helper.dart';
 
@@ -187,7 +188,17 @@ class _SigninWithPhoneScreenState extends State<SigninWithPhoneScreen> {
                               ),
                         ),
                         Expanded(
-                            flex: 12, child: MmmButtons.googleSigninButton())
+                          flex: 12,
+                          child: MmmButtons.googleSigninButton(
+                            action: () async {
+                              GoogleSignIn _googleSignIn = GoogleSignIn();
+                              await _googleSignIn.signOut();
+                              _googleSignIn.signIn().then((userData) {
+                                Navigator.of(context).pop(userData?.email ?? "");
+                              });
+                            },
+                          ),
+                        ),
                       ],
                     ),
                     SizedBox(
@@ -282,7 +293,10 @@ class _SigninWithPhoneScreenState extends State<SigninWithPhoneScreen> {
   navigateToRegister() {
     var userRepo = BlocProvider.of<PhoneSigninBloc>(context).userRepository;
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => CreateAccount(userRepository: userRepo)));
+        builder: (context) => CreateAccount(
+              userRepository: userRepo,
+              email: "",
+            )));
   }
 
   void navigateToOtp() {

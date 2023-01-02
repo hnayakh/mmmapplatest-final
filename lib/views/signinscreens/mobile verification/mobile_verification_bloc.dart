@@ -28,7 +28,7 @@ class MobileVerificationBloc
     if (event is GenerateOtp) {
       var result = await this
           .userRepository
-          .sendOtp(this.dialCode, this.mobile, OtpType.Login);
+          .sendOtp(this.dialCode, this.mobile, this.otpType);
       if (result.status == AppConstants.SUCCESS) {
         yield OnOtpGenerated();
       } else {

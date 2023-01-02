@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:makemymarry/datamodels/agora_token_response.dart';
 import 'package:makemymarry/datamodels/connect.dart';
 import 'package:makemymarry/datamodels/interests_model.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
@@ -9,7 +10,7 @@ import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/utils/api_client.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/storage_service.dart';
-import 'package:makemymarry/views/home/matching_profile/matching_profile.dart';
+import 'package:makemymarry/views/home/matching_profile/views/matching_profile.dart';
 
 class UserRepository {
   late StorageService storageService;
@@ -40,6 +41,14 @@ class UserRepository {
 
   Future<SigninResponse> login(String email, String password) async {
     return this.apiClient.signinUser(email, password);
+  }
+
+
+
+  Future<AgoraTokenResponse> generateAgoraToken(String callerId, CallType type) async {
+    var currentUser = await getUserDetails();
+    var id = currentUser!.id;
+    return this.apiClient.generateAgoraToken(type: type, calleUserId: id, callerUserId: callerId);
   }
 
   Future updateRegistartionStep(String basicUserId, int step) async {

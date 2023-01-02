@@ -190,7 +190,7 @@ class MatchingProfile {
     this.id = json["id"];
     this.email = json["email"];
     this.gender = Gender.values[json["gender"]];
-    this.imageUrl = json["imageURL"];
+    this.imageUrl = json["imageURL"] ?? "https://i.pravatar.cc/300";
     if (json["dateOfBirth"] != null) {
       this.dateOfBirth = json["dateOfBirth"];
     } else {

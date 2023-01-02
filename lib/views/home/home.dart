@@ -7,7 +7,7 @@ import 'package:makemymarry/saurabh/partner_preference.dart';
 import 'package:makemymarry/saurabh/profile_detail.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
-import 'package:makemymarry/views/home/matching_profile/matching_profile_bloc.dart';
+import 'package:makemymarry/views/home/matching_profile/bloc/matching_profile_bloc.dart';
 import 'package:makemymarry/views/home/menu/sidebar_account_screen.dart';
 import 'package:makemymarry/views/home/my_connects/my_connects_screen.dart';
 import 'package:makemymarry/views/profileviewscreens/profile_view_bloc.dart';
@@ -17,7 +17,7 @@ import 'package:makemymarry/views/stackviewscreens/notification_list.dart';
 import 'package:makemymarry/views/stackviewscreens/search_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/my_profile/myprofile.dart';
 import 'interests/interest_status_screen.dart';
-import 'matching_profile/matching_profile.dart';
+import 'matching_profile/views/matching_profile.dart';
 
 class HomeScreen extends StatefulWidget {
   final UserRepository userRepository;

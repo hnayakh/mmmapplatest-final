@@ -1,11 +1,13 @@
-import 'package:agora_rtc_engine/rtc_engine.dart';
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/views/connect_pages/call/in_app_call_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
-import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
+
+import '../components/log_sink.dart';
+// import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
+// import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 
 class InAppCall extends StatelessWidget {
   final String name, destinationUserId, image;
@@ -37,7 +39,7 @@ class InAppCallScreen extends StatefulWidget {
 }
 
 class InAppCallScreenState extends State<InAppCallScreen> {
-  bool _joined = false;
+  bool    isJoined  = false;
   int? _remoteUid = 0;
   bool _switch = false;
   bool _localUserJoined = false;
@@ -51,41 +53,45 @@ class InAppCallScreenState extends State<InAppCallScreen> {
   @override
   void initState() {
     super.initState();
-    initAgora();
+    _initEngine();
   }
 
-  Future<void> initAgora() async {
-    // retrieve permissions
-    await [Permission.microphone, Permission.camera].request();
 
-    //create the engine
-    _engine = await RtcEngine.create(APP_ID);
-    await _engine.enableVideo();
-    _engine.setEventHandler(
-      RtcEngineEventHandler(
-        joinChannelSuccess: (String channel, int uid, int elapsed) {
-          print("local user $uid joined");
-          setState(() {
-            _localUserJoined = true;
-          });
-        },
-        userJoined: (int uid, int elapsed) {
-          print("remote user $uid joined");
-          setState(() {
-            _remoteUid = uid;
-          });
-        },
-        userOffline: (int uid, UserOfflineReason reason) {
-          print("remote user $uid left channel");
-          setState(() {
-            _remoteUid = null;
-          });
-        },
-      ),
+  Future<void> _initEngine() async {
+    _engine = createAgoraRtcEngine();
+    await _engine.initialize(RtcEngineContext(
+      appId: APP_ID,
+    ));
+
+    _engine.registerEventHandler(RtcEngineEventHandler(
+      onError: (ErrorCodeType err, String msg) {
+        logSink.log('[onError] err: $err, msg: $msg');
+      },
+      onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
+        logSink.log(
+            '[onJoinChannelSuccess] connection: ${connection.toJson()} elapsed: $elapsed');
+        setState(() {
+          isJoined = true;
+        });
+      },
+      onLeaveChannel: (RtcConnection connection, RtcStats stats) {
+        logSink.log(
+            '[onLeaveChannel] connection: ${connection.toJson()} stats: ${stats.toJson()}');
+        setState(() {
+          isJoined = false;
+        });
+      },
+    ));
+
+    await _engine.enableAudio();
+    await _engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
+    await _engine.setAudioProfile(
+      profile: AudioProfileType.audioProfileDefault,
+      scenario: AudioScenarioType.audioScenarioGameStreaming,
     );
-
-    await _engine.joinChannel(Token, "12345", null, 0);
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +102,7 @@ class InAppCallScreenState extends State<InAppCallScreen> {
       body: Stack(
         children: [
           Center(
-            child: _switch ? _renderRemoteVideo() : _renderLocalPreview(),
+            // child: _switch ? _renderRemoteVideo() : _renderLocalPreview(),
           ),
           Align(
             alignment: Alignment.topLeft,
@@ -111,7 +117,7 @@ class InAppCallScreenState extends State<InAppCallScreen> {
                   });
                 },
                 child: Center(
-                  child: _switch ? _renderLocalPreview() : _renderRemoteVideo(),
+                  // child: _switch ? _renderLocalPreview() : _renderRemoteVideo(),
                 ),
               ),
             ),
@@ -121,30 +127,30 @@ class InAppCallScreenState extends State<InAppCallScreen> {
     );
   }
 
-  // Local preview
-  Widget _renderLocalPreview() {
-    if (_joined) {
-      return RtcLocalView.SurfaceView();
-    } else {
-      return Text(
-        'Please join channel first',
-        textAlign: TextAlign.center,
-      );
-    }
-  }
-
-  // Remote preview
-  Widget _renderRemoteVideo() {
-    if (_remoteUid != 0) {
-      return RtcRemoteView.SurfaceView(
-        uid: _remoteUid!,
-        channelId: "1234",
-      );
-    } else {
-      return Text(
-        'Please wait remote user join',
-        textAlign: TextAlign.center,
-      );
-    }
-  }
+  // // Local preview
+  // Widget _renderLocalPreview() {
+  //   if (_joined) {
+  //     return RtcLocalView.SurfaceView();
+  //   } else {
+  //     return Text(
+  //       'Please join channel first',
+  //       textAlign: TextAlign.center,
+  //     );
+  //   }
+  // }
+  //
+  // // Remote preview
+  // Widget _renderRemoteVideo() {
+  //   if (_remoteUid != 0) {
+  //     return SurfaceView(
+  //       uid: _remoteUid!,
+  //       channelId: "1234",
+  //     );
+  //   } else {
+  //     return Text(
+  //       'Please wait remote user join',
+  //       textAlign: TextAlign.center,
+  //     );
+  //   }
+  // }
 }
