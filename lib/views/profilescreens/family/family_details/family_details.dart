@@ -126,19 +126,18 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
                       },
                       child: MmmIcons.rightArrowEnabled(),
                     )),
-          Positioned(
-              top: 15,
-              right: 20,
+          this.userDetails.registrationStep > 5 ? SizedBox() :Positioned(
               child: InkWell(
                   onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (ctx) => Habit(
-                                  userRepository: widget.userRepository,
-                                )));
-                    // BlocProvider.of<FamilyDetailsBloc>(context)
-                    //     .add(UpdateFamilyDetails());
+                          builder: (ctx) =>
+                              Habit(userRepository: widget.userRepository),
+                          // Bio(
+                          //       userRepository: widget.userRepository,
+                          //     )
+                        ));
                     // BlocProvider.of<OccupationBloc>(context).add(UpdateCareer(
                     //     orgNameController.text.trim(),
                     //     annIncomeController.text.trim(),
@@ -147,8 +146,20 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
                     //     cityController.text.trim()));
                   },
                   // child: MmmIcons.rightArrowEnabled(),
-                  child: Text('Skip >',
-                      style: TextStyle(color: kPrimary, fontSize: 15)))),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '(This section is optional)',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        Text('Skip >',
+                            style: TextStyle(color: kPrimary, fontSize: 15)),
+                      ],
+                    ),
+                  ))),
           state is OnLoading ? MmmWidgets.buildLoader(context) : Container(),
         ],
       ));
@@ -175,7 +186,7 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
         padding: kMargin16,
         child: Column(
           children: [
-            Text('(This section is optional)'),
+
             SizedBox(
               height: 24,
             ),

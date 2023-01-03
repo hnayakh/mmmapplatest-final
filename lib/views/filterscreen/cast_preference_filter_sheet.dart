@@ -22,8 +22,9 @@ class _CastFilterBottomSheetState extends State<CastFilterBottomSheet> {
 
   @override
   void initState() {
-    filtered = widget.list;
     super.initState();
+    filtered = widget.list;
+
   }
 
   @override

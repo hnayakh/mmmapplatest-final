@@ -48,7 +48,7 @@ class UserRepository {
   Future<AgoraTokenResponse> generateAgoraToken(String callerId, CallType type) async {
     var currentUser = await getUserDetails();
     var id = currentUser!.id;
-    return this.apiClient.generateAgoraToken(type: type, calleUserId: id, callerUserId: callerId);
+    return this.apiClient.generateAgoraToken(type: type, calleUserId: callerId, callerUserId: id);
   }
 
   Future updateRegistartionStep(String basicUserId, int step) async {
@@ -219,7 +219,8 @@ class UserRepository {
 
   Future<ProfileDetailsResponse> getOtheruserDetails(
       String id, ProfileActivationStatus activationStatus) async {
-    return apiClient.getOtherUserDetails(id, activationStatus);
+    var details =  await getUserDetails();
+    return apiClient.getOtherUserDetails(id, activationStatus, userId: details!.id);
   }
 
   Future<ProfileDetailsResponse> getOtherUserDetailsByDisplayId(

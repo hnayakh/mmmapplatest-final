@@ -12,10 +12,10 @@ import 'chat_body.dart';
 import 'chat_cubit.dart';
 
 class ChatPage extends StatefulWidget {
+
   const ChatPage({
     required this.room,
     required this.userRepo,
-
   });
 
   final types.Room room;
@@ -41,6 +41,7 @@ class _ChatPageState extends State<ChatPage> {
         builder: (context) {
           var primaryColor = HexColor('#EB5884');
           return Scaffold(
+            extendBodyBehindAppBar: true,
             appBar: AppBar(
               flexibleSpace: Container(
                   decoration: BoxDecoration(

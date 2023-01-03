@@ -22,8 +22,9 @@ class _GothraFilterBottomSheetState extends State<GothraFilterBottomSheet> {
 
   @override
   void initState() {
-    filtered = widget.list;
     super.initState();
+    filtered = widget.list;
+
   }
 
   @override

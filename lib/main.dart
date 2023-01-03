@@ -3,7 +3,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:makemymarry/datamodels/agora_token_response.dart';
 import 'package:makemymarry/locator.dart';
+import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/saurabh/myprofile/about_profile.dart';
 import 'package:makemymarry/saurabh/myprofile/add_interest.dart';
 import 'package:makemymarry/saurabh/filter_preference.dart';
@@ -11,6 +13,8 @@ import 'package:makemymarry/socket_io/StreamSocket.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_styles.dart';
+import 'package:makemymarry/views/connects/views/audio_call.dart';
+import 'package:makemymarry/views/connects/views/video_call.dart';
 import 'package:makemymarry/views/splash/splash_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/connect/message_screen.dart';
 import 'package:makemymarry/views/widget_views.dart';
@@ -50,6 +54,7 @@ class SimpleObserver extends BlocObserver {
   }
 }
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -61,15 +66,48 @@ void main() async {
       statusBarColor: Colors.transparent,
       statusBarBrightness: Brightness.dark // status bar colorr
       ));
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    print('Got a message whilst in the foreground!');
-    print('Message data: ${message.data}');
-
-    if (message.notification != null) {
-      print('Message also contained a notification: ${message.notification}');
-    }
-  });
+  await FirebaseMessaging.instance.setAutoInitEnabled(true);
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+      alert: true, sound: true, badge: true);
+  FirebaseMessaging.onMessageOpenedApp.listen(handleNotificationData);
+  FirebaseMessaging.onMessage.listen(handleNotificationData);
   runApp(MyApp());
+}
+void handleNotificationData(RemoteMessage message) {
+  print('Got a message whilst in the foreground!');
+  print('Message data: ${message.data}');
+  if (message.notification != null) {
+    print('Message also contained a notification: ${message.notification}');
+  }
+  var token = AgoraToken.fromJson(message.data);
+
+  if(message.notification != null) {
+    if (message.notification!.title != "Video Call") {
+      navigatorKey.currentState!.push(
+        MaterialPageRoute(
+          builder: (context) =>
+              AudioCallView(
+                uid: '',
+                imageUrl: token.profileImage,
+                userRepo: getIt<UserRepository>(),
+                agoraToken: token,
+              ),
+        ),
+      );
+    }
+    else {
+      navigatorKey.currentState!.push(
+        MaterialPageRoute(
+          builder: (context) =>
+              VideoCallView(
+                uid: '',
+                imageUrl: token.profileImage,
+                agoraToken: token,
+              ),
+        ),
+      );
+    }
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -77,6 +115,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       title: 'Make My Marry',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

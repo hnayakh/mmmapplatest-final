@@ -26,6 +26,8 @@ import 'package:makemymarry/views/profileviewscreens/profile_view_event.dart';
 import 'package:makemymarry/views/profileviewscreens/profile_view_state.dart';
 import 'package:makemymarry/views/stackviewscreens/meet%20status/meet_status_screen.dart';
 
+import '../../utils/view_decorations.dart';
+
 class ProfileView extends StatelessWidget {
   final UserRepository userRepository;
   final ProfileDetails profileDetails;
@@ -189,16 +191,19 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
   @override
   void dispose() {
     super.dispose();
-    _aboutController.dispose();
-    _careerController.dispose();
-    _interestController.dispose();
-    _religionController.dispose();
-    _lifestyleController.dispose();
-    _familyController.dispose();
+    // this._aboutController.dispose();
+    // this._careerController.dispose();
+    // this._interestController.dispose();
+    // this._religionController.dispose();
+    // this._lifestyleController.dispose();
+    // this._familyController.dispose();
+    // this._animationController.dispose();
+    // this._controller.dispose();
   }
 
   @override
   void initState() {
+    super.initState();
     _animationController = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 260),
@@ -207,7 +212,6 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
     final curvedAnimation =
         CurvedAnimation(curve: Curves.easeInOut, parent: _animationController);
     _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation);
-    super.initState();
     _controller.addListener(() {
       _animationController.reverse();
       if (_controller.position.pixels >=
@@ -265,7 +269,11 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                           child: MmmButtons.appBarCurvedProfile(
                               profileDetails.name,
                               context,
-                              this.profileDetails.images.isEmpty ? "https://i.pravatar.cc/300" :this.profileDetails.images[selectedImagePos])),
+                              this.profileDetails.images.isEmpty
+                                  ? "https://i.pravatar.cc/300"
+                                  : this
+                                      .profileDetails
+                                      .images[selectedImagePos])),
                     )
                   : null,
               body: SingleChildScrollView(
@@ -509,141 +517,266 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
             borderRadius:
                 BorderRadius.only(bottomRight: Radius.circular(23.3813)),
             child: Image.network(
-              profileDetails.images.isEmpty ? "https://i.pravatar.cc/300" : profileDetails.images[selectedImagePos],
+              profileDetails.images.isEmpty
+                  ? "https://i.pravatar.cc/300"
+                  : profileDetails.images[selectedImagePos],
               // height: 453.01,
               height: MediaQuery.of(context).size.height * 0.665,
               width: double.infinity,
               fit: BoxFit.cover,
             ),
           ),
-          Positioned(
-            top: MediaQuery.of(context).size.height * 0.1,
-            right: MediaQuery.of(context).size.width * 0.05,
-            child: Column(
-              children: createImageThumbNails(),
+          if (profileDetails.connectStatus == ConnectStatus.Accepted) ...[
+            Positioned(
+              top: MediaQuery.of(context).size.height * 0.1,
+              right: MediaQuery.of(context).size.width * 0.05,
+              child: Column(
+                children: createImageThumbNails(),
+              ),
             ),
-          ),
-          Positioned(
-            right: MediaQuery.of(context).size.width * 0.1,
-            bottom: 0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Container(
-                    height: 248,
-                    width: 100,
-                    child: FloatingActionBubble(
-                      items: <Bubble>[
-                        Bubble(
-                          title: "",
-                          iconColor: Colors.white,
-                          bubbleColor: kPrimary,
-                          icon: Icons.call,
-                          titleStyle: TextStyle(fontSize: 0, color: kWhite),
-                          onPress: () async {
-                            var bloc = BlocProvider.of<ProfileViewBloc>(context);
-                            _animationController.reverse();
-                            context.navigate.push(
-                              MaterialPageRoute(
-                                builder: (context) => AudioCallView(
-                                  uid: '',
-                                  imageUrl: profileDetails.images.first,
-                                  userRepo: bloc.userRepository,
+            Positioned(
+              right: MediaQuery.of(context).size.width * 0.1,
+              bottom: 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Container(
+                      height: 248,
+                      width: 100,
+                      child: FloatingActionBubble(
+                        items: <Bubble>[
+                          Bubble(
+                            title: "",
+                            iconColor: Colors.white,
+                            bubbleColor: kPrimary,
+                            icon: Icons.call,
+                            titleStyle: TextStyle(fontSize: 0, color: kWhite),
+                            onPress: () async {
+                              var bloc =
+                                  BlocProvider.of<ProfileViewBloc>(context);
+                              _animationController.reverse();
+                              context.navigate.push(
+                                MaterialPageRoute(
+                                  builder: (context) => AudioCallView(
+                                    uid: '',
+                                    imageUrl: profileDetails.images.first,
+                                    userRepo: bloc.userRepository,
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
-                        ),
-                        Bubble(
-                          title: "",
-                          iconColor: Colors.white,
-                          bubbleColor: kPrimary,
-                          icon: Icons.message,
-                          titleStyle:
-                              TextStyle(fontSize: 4, color: Colors.white),
-                          onPress: () async {
-                            var userDetails =
-                                await UserRepository().getUserDetails();
-                            var repo = ChatRepo(
-                                firestore: FirebaseFirestore.instance,
-                                chatService: FirebaseChatCore.instance);
-                            var user;
-                            try {
-                              user =
-                                  await repo.getChatUser(id: profileDetails.id);
-                            } catch (e) {
-                              if (e.toString() ==
-                                  "Exception: Chat User does not exist") {
+                              );
+                            },
+                          ),
+                          Bubble(
+                            title: "",
+                            iconColor: Colors.white,
+                            bubbleColor: kPrimary,
+                            icon: Icons.message,
+                            titleStyle:
+                                TextStyle(fontSize: 4, color: Colors.white),
+                            onPress: () async {
+                              var userDetails =
+                                  await UserRepository().getUserDetails();
+                              var repo = ChatRepo(
+                                  firestore: FirebaseFirestore.instance,
+                                  chatService: FirebaseChatCore.instance);
+                              var user;
+                              try {
                                 await repo.updateChatUser(
                                     id: profileDetails.id,
                                     fullName: profileDetails.name,
                                     imageUrl: profileDetails.images.first);
                                 user = await repo.getChatUser(
                                     id: profileDetails.id);
-                              } else {
-                                rethrow;
+                              } catch (e) {
+                                if (e.toString() ==
+                                    "Exception: Chat User does not exist") {
+                                  await repo.updateChatUser(
+                                      id: profileDetails.id,
+                                      fullName: profileDetails.name,
+                                      imageUrl: profileDetails.images.first);
+                                  user = await repo.getChatUser(
+                                      id: profileDetails.id);
+                                } else {
+                                  rethrow;
+                                }
                               }
-                            }
-                            var room = await repo.getChatRoom(
-                                userDetails?.id ?? "", user);
-                            _animationController.reverse();
-                            var bloc = BlocProvider.of<ProfileViewBloc>(context);
-                            context.navigate.push(MaterialPageRoute(
-                                builder: (context) => ChatPage(room: room,userRepo: bloc.userRepository,)));
-                          },
-                        ),
-                        Bubble(
-                          title: "",
-                          iconColor: Colors.white,
-                          bubbleColor: kPrimary,
-                          icon: Icons.video_camera_back_outlined,
-                          titleStyle:
-                              TextStyle(fontSize: 0, color: Colors.white),
-                          onPress: () {
-                            //Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => Homepage()));
-                            _animationController.reverse();
-                            context.navigate.push(
-                              MaterialPageRoute(
-                                builder: (context) => VideoCallView(
-                                  uid: '',
-                                  imageUrl: profileDetails.images.first ,
+                              var room = await repo.getChatRoom(
+                                  userDetails?.id ?? "", user);
+                              _animationController.reverse();
+                              var bloc =
+                                  BlocProvider.of<ProfileViewBloc>(context);
+                              context.navigate.push(MaterialPageRoute(
+                                  builder: (context) => ChatPage(
+                                        room: room,
+                                        userRepo: bloc.userRepository,
+                                      )));
+                            },
+                          ),
+                          Bubble(
+                            title: "",
+                            iconColor: Colors.white,
+                            bubbleColor: kPrimary,
+                            icon: Icons.video_camera_back_outlined,
+                            titleStyle:
+                                TextStyle(fontSize: 0, color: Colors.white),
+                            onPress: () {
+                              //Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => Homepage()));
+                              _animationController.reverse();
+                              context.navigate.push(
+                                MaterialPageRoute(
+                                  builder: (context) => VideoCallView(
+                                    uid: '',
+                                    imageUrl: profileDetails.images.first,
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
+                              );
+                            },
+                          ),
+                        ],
 
-                      animation: _animation,
+                        animation: _animation,
 
-                      // On pressed change animation state
-                      onPress: () => _animationController.isCompleted
-                          ? _animationController.reverse()
-                          : _animationController.forward(),
+                        // On pressed change animation state
+                        onPress: () => _animationController.isCompleted
+                            ? _animationController.reverse()
+                            : _animationController.forward(),
 
-                      // Floating Action button Icon color
-                      iconColor: Colors.white,
+                        // Floating Action button Icon color
+                        iconColor: Colors.white,
 
-                      // Flaoting Action button Icon
-                      iconData: Icons.call,
-                      backGroundColor: kPrimary,
-                    )),
-                SizedBox(
-                  width: 12,
-                ),
-                MmmIcons.meet(
-                  context,
-                  action: () {
-                    // Navigator.of(context).push(MaterialPageRoute(
-                    //     builder: (context) => MeetStatusScreen()));
-                    navigateToSelectMeet();
-                    // print("gfchfdgfcbfbfxbfx");
-                  },
-                ),
-              ],
+                        // Flaoting Action button Icon
+                        iconData: Icons.call,
+                        backGroundColor: kPrimary,
+                      )),
+                  SizedBox(
+                    width: 12,
+                  ),
+                  MmmIcons.meet(
+                    context,
+                    action: () {
+                      // Navigator.of(context).push(MaterialPageRoute(
+                      //     builder: (context) => MeetStatusScreen()));
+                      navigateToSelectMeet();
+                      // print("gfchfdgfcbfbfxbfx");
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
+          ] else if (profileDetails.connectStatus == ConnectStatus.Reverted ||
+              profileDetails.connectStatus == null) ...[
+            Positioned(
+              right: MediaQuery.of(context).size.width * 0.1,
+              bottom: 0,
+              child: InkWell(
+                  onTap: () {
+                    // BlocProvider.of<MatchingProfileBloc>(context)
+                    //     .add(IsLikedAEvent(index));
+                  },
+                  child: Stack(
+                    children: [
+                      Container(
+                        height: 62,
+                        width: 62,
+                        child: Center(
+                          child: SvgPicture.asset(
+                            "images/heart.svg",
+                            color: Colors.white,
+                            height: 32,
+                            width: 32,
+                          ),
+                        ),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: MmmDecorations.primaryGradient(),
+                            border: Border.all(color: Colors.white, width: 1.2)),
+                      ),
+                      Container(
+                          height: 62,
+                          width: 62,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: kPrimary.withAlpha(50),
+                              border:
+                                  Border.all(color: Colors.white, width: 1.2)))
+                    ],
+                  )),
+            )
+          ] else if (profileDetails.connectStatus == ConnectStatus.Sent) ...[
+            Positioned(
+              right: MediaQuery.of(context).size.width * 0.1,
+              bottom: 0,
+              child: InkWell(
+                onTap: () {
+                  // BlocProvider.of<MatchingProfileBloc>(context)
+                  //     .add(IsLikedAEvent(index));
+                },
+                child: Row(
+                  children: [
+                    Stack(
+                      children: [
+                        Container(
+                          height: 62,
+                          width: 62,
+                          child: Center(
+                            child: SvgPicture.asset(
+                              "images/cancel.svg",
+                              color: Colors.white,
+                              height: 32,
+                              width: 32,
+                            ),
+                          ),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: MmmDecorations.primaryGradient(),
+                              border:
+                                  Border.all(color: Colors.white, width: 1.2)),
+                        ),
+                        Container(
+                            height: 62,
+                            width: 62,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: kPrimary.withAlpha(50),
+                                border:
+                                    Border.all(color: Colors.white, width: 1.2)))
+                      ],
+                    ),
+                    Stack(
+                      children: [
+                        Container(
+                          height: 62,
+                          width: 62,
+                          child: Center(
+                            child: SvgPicture.asset(
+                              "images/heart.svg",
+                              color: Colors.white,
+                              height: 32,
+                              width: 32,
+                            ),
+                          ),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: MmmDecorations.primaryGradient(),
+                              border:
+                                  Border.all(color: Colors.white, width: 1.2)),
+                        ),
+                        Container(
+                            height: 62,
+                            width: 62,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: kGreen.withAlpha(50),
+                                border:
+                                    Border.all(color: Colors.white, width: 1.2)))
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );

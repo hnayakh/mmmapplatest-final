@@ -618,6 +618,12 @@ class SignInScreenState extends State<SignInScreen> {
                 builder: (context) => ProfileLoader(userRepository: userRepo)),
             (route) => false);
         break;
+      case 11:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => ProfileLoader(userRepository: userRepo)),
+                (route) => false);
+        break;
       case 9:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(

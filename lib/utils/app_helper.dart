@@ -80,7 +80,7 @@ class AppHelper {
 
   static String getAgeFromDob(String dateOfBirth) {
     DateFormat dateFormat = DateFormat(AppConstants.SERVERDATEFORMAT);
-    var date = dateFormat.parse(dateOfBirth);
+    var date = dateFormat.parse(dateOfBirth.isEmpty ? "2000-01-01" : dateOfBirth);
     return (DateTime.now().difference(date).inDays / 365).round().toString();
   }
 
@@ -252,8 +252,8 @@ class AppHelper {
         'Rich',
         'Upper middle class',
         'Middle class',
-        'Lower middle class'
-            'NotMentioned'
+        'Lower middle class',
+        'NotMentioned'
       ];
       return familyLevel[enumEntry.index];
     } else if (enumName == 'NoOfChildren') {

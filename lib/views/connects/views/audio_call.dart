@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:makemymarry/datamodels/agora_token_response.dart';
 import 'package:makemymarry/locator.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
@@ -14,11 +15,12 @@ import 'package:permission_handler/permission_handler.dart';
 /// JoinChannelAudio Example
 class AudioCallView extends StatefulWidget {
   /// Construct the [AudioCallView]
-  const AudioCallView({Key? key, required this.uid, required this.imageUrl, required this.userRepo}) : super(key: key);
+  const AudioCallView({Key? key, required this.uid, required this.imageUrl, required this.userRepo, this.agoraToken}) : super(key: key);
 
   final String uid;
   final String imageUrl;
   final UserRepository userRepo;
+  final AgoraToken? agoraToken;
   @override
   State<StatefulWidget> createState() => _State();
 }
@@ -100,20 +102,27 @@ class _State extends State<AudioCallView> {
       profile: AudioProfileType.audioProfileDefault,
       scenario: AudioScenarioType.audioScenarioGameStreaming,
     );
-    var res = widget.userRepo.generateAgoraToken(widget.uid, CallType.audioCall);
-    res.then((value) async {
-      if(value.status == AppConstants.SUCCESS){
-        _joinChannel(value.token!.agoraToken, value.token!.channelName);
-      }else{
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("ERROR!!!!")));
+    if(widget.agoraToken != null){
+      _joinChannel(widget.agoraToken!.agoraToken, widget.agoraToken!.channelName);
+    }else {
+      var res = widget.userRepo.generateAgoraToken(
+          widget.uid, CallType.audioCall);
+      res.then((value) async {
+        if (value.status == AppConstants.SUCCESS) {
+          _joinChannel(value.token!.agoraToken, value.token!.channelName);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("ERROR!!!!")));
+          await Future.delayed(Duration(seconds: 2));
+          Navigator.of(context).pop();
+        }
+      }).onError((error, stackTrace) async {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("ERROR!!!!")));
         await Future.delayed(Duration(seconds: 2));
         Navigator.of(context).pop();
-      }
-    }).onError((error, stackTrace) async {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("ERROR!!!!")));
-      await Future.delayed(Duration(seconds: 2));
-      Navigator.of(context).pop();
-    });
+      });
+    }
 
   }
 

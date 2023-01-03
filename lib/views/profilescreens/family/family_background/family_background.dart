@@ -135,7 +135,7 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                         },
                         child: MmmIcons.rightArrowEnabled(),
                       )),
-            Positioned(
+            this.userDetails.registrationStep > 5 ? SizedBox() :Positioned(
                 child: InkWell(
                     onTap: () {
                       Navigator.push(

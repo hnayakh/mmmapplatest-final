@@ -66,6 +66,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
 
 
   initState(){
+    super.initState();
     emailController.text = widget.email;
   }
 

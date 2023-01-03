@@ -203,58 +203,67 @@ class SentScreen extends StatelessWidget {
                     height: MediaQuery.of(context).size.width * 0.28,
                     width: MediaQuery.of(context).size.width * 0.28,
                     fit: BoxFit.cover,
+                    errorBuilder: (context, obj, str) => Container(
+                      color: Colors.grey,
+                        height: MediaQuery.of(context).size.width * 0.28,
+                        width: MediaQuery.of(context).size.width * 0.28,
+                        child: Icon(Icons.error)),
                   ),
                 ),
                 SizedBox(
                   width: 14,
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          listSent[index].user.displayId.toUpperCase(),
-                          textScaleFactor: 1.0,
-                          style: MmmTextStyles.bodyRegular(textColor: kPrimary),
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.03,
-                        ),
-                        listSent[index].user.activationStatus ==
-                                ActivationStatus.Verified.index
-                            ? SvgPicture.asset(
-                                'images/Verified.svg',
-                                color: kPrimary,
-                              )
-                            : Container()
-                      ],
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Text(
-                      listSent[index].user.name,
-                      textScaleFactor: 1.0,
-                      style: MmmTextStyles.heading5(textColor: Colors.red),
-                    ),
-                    SizedBox(
-                      height: 4,
-                    ),
-                    Text(
-                      "${AppHelper.getAgeFromDob(listSent[index].user.dateOfBirth)} Years, "
-                      "${listSent[index].user.height}  ${listSent[index].user.highestEducation}",
-                      textScaleFactor: 1.0,
-                      maxLines: 2,
-                      style: MmmTextStyles.footer(textColor: gray3),
-                    ),
-                    Text(
-                      "${listSent[index].user.careerCity} ${listSent[index].user.careerState}  ${listSent[index].user.careerCountry}",
-                      textScaleFactor: 1.0,
-                      maxLines: 2,
-                      style: MmmTextStyles.footer(textColor: gray3),
-                    )
-                  ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            listSent[index].user.displayId.toUpperCase(),
+                            textScaleFactor: 1.0,
+                            style: MmmTextStyles.bodyRegular(textColor: kPrimary),
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.03,
+                          ),
+                          listSent[index].user.activationStatus ==
+                                  ActivationStatus.Verified.index
+                              ? SvgPicture.asset(
+                                  'images/Verified.svg',
+                                  color: kPrimary,
+                                )
+                              : Container()
+                        ],
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        listSent[index].user.name,
+                        textScaleFactor: 1.0,
+                        style: MmmTextStyles.heading5(textColor: Colors.red),
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Text(
+                        "${AppHelper.getAgeFromDob(listSent[index].user.dateOfBirth)} Years, "
+                        "${listSent[index].user.height}  ${listSent[index].user.highestEducation}",
+                        textScaleFactor: 1.0,
+                        maxLines: 2,
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                        style: MmmTextStyles.footer(textColor: gray3),
+                      ),
+                      Text(
+                        "${listSent[index].user.careerCity} ${listSent[index].user.careerState}  ${listSent[index].user.careerCountry}",
+                        textScaleFactor: 1.0,
+                        maxLines: 2,
+                        style: MmmTextStyles.footer(textColor: gray3),
+                      )
+                    ],
+                  ),
                 ),
               ],
             ),

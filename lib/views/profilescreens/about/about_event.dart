@@ -22,10 +22,10 @@ class OnChildrenSelected extends AboutEvent {
   OnChildrenSelected(this.childrenStatus);
 }
 
-class onAboutDataLoad extends AboutEvent {
+class OnAboutDataLoad extends AboutEvent {
   final String basicUserId;
 
-  onAboutDataLoad(this.basicUserId);
+  OnAboutDataLoad(this.basicUserId);
 }
 
 class OnDisabilitySelected extends AboutEvent {

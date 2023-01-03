@@ -25,7 +25,7 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
   @override
   Stream<AboutState> mapEventToState(AboutEvent event) async* {
     yield OnLoading();
-    if (event is onAboutDataLoad) {
+    if (event is OnAboutDataLoad) {
       var result = await this.userRepository.getOtheruserDetails(
           event.basicUserId, ProfileActivationStatus.Verified);
 

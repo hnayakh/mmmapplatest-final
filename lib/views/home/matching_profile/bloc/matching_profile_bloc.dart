@@ -76,7 +76,6 @@ class MatchingProfileBloc
       var result =
           await this.userRepository.setLikeStatus(likedUserId, likedByUserId);
       if (result.status == AppConstants.SUCCESS) {
-        list.removeAt(event.index);
         yield MatchingProfileInitialState();
       } else {
         yield OnError(result.message);

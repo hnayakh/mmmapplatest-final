@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:makemymarry/datamodels/agora_token_response.dart';
+import 'package:makemymarry/locator.dart';
 import 'package:makemymarry/socket_io/StreamSocket.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:dio/dio.dart';
@@ -790,10 +791,13 @@ class ApiClient {
   }
 
   Future<ProfileDetailsResponse> getOtherUserDetails(
-      String id, ProfileActivationStatus activationStatus) async {
+      String id, ProfileActivationStatus activationStatus, {String? userId}) async {
     // try {
+
     var response =
-        await this.dio.get("${AppConstants.ENDPOINT}users/basic/$id");
+        await this.dio.post("${AppConstants.ENDPOINT}users/basic/$id",data: userId == null ? null : {
+          "myBasicId":userId
+        });
 
     print("sresponse${response.data['data']}");
     if (response.statusCode == 200 || response.statusCode == 201) {

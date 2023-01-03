@@ -47,12 +47,12 @@ class ChatBody extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween, // added line
                 mainAxisSize: MainAxisSize.min, // added line
                 children: <Widget>[
-                  IconButton(
-                    color: Colors.black38,
-                    onPressed: () {},
-                    // ignore: prefer_const_constructors
-                    icon: Icon(Icons.camera_alt_outlined, size: 36.0),
-                  ),
+                  // IconButton(
+                  //   color: Colors.black38,
+                  //   onPressed: () {},
+                  //   // ignore: prefer_const_constructors
+                  //   icon: Icon(Icons.camera_alt_outlined, size: 36.0),
+                  // ),
                   IconButton(
                     color: Colors.black38,
                     onPressed: () {
@@ -73,43 +73,8 @@ class ChatBody extends StatelessWidget {
             ),
           ),
         ),
-        // customMessageBuilder: (types.CustomMessage message, {required int messageWidth})  {
-        //  switch (message.type) {
-        //    case types.MessageType.audio:
-        //    // TODO: Handle this case.
-        //      break;
-        //    case types.MessageType.custom:
-        //    // TODO: Handle this case.
-        //      break;
-        //    case types.MessageType.file:
-        //    // TODO: Handle this case.
-        //      break;
-        //    case types.MessageType.image:
-        //    // TODO: Handle this case.
-        //      break;
-        //    case types.MessageType.system:
-        //    // TODO: Handle this case.
-        //      break;
-        //    case types.MessageType.text:
-        //     {
-        //       var text = (message as types.TextMessage)
-        //       return ui.TextMessage(emojiEnlargementBehavior: ui.EmojiEnlargementBehavior.single,hideBackgroundOnEmojiMessages: true,message: text,showName: true,usePreviewData: false,);
-        //
-        //     }
-        //    case types.MessageType.unsupported:
-        //    // TODO: Handle this case.
-        //      break;
-        //    case types.MessageType.video:
-        //    // TODO: Handle this case.
-        //      break;
-        //  }
-        //  return Container();
-        //
-        // },
         onSendPressed: context.read<ChatCubit>().handleSendPressed,
         onMessageTap: context.read<ChatCubit>().handleMessageTap,
-        onPreviewDataFetched:
-            context.read<ChatCubit>().handlePreviewDataFetched,
         user: types.User(id: context.read<ChatCubit>().chatRoom.users.first.id),
       ),
     );

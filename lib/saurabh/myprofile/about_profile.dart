@@ -244,7 +244,7 @@ class _AboutProfileScreenState extends State<AboutProfileScreen> {
                       50, 'Submit your details', action: () {
                     FocusScope.of(context).requestFocus(FocusNode());
                     BlocProvider.of<BioBloc>(context).add(UpdateBio(
-                        this.bioController.text, this.localImagePaths));
+                        this.bioController.text, this.localImagePaths, false));
                   })
                   // Row(
                   //   // crossAxisAlignment: WrapCrossAlignment.start,

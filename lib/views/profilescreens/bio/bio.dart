@@ -80,12 +80,16 @@ class _BioScreenState extends State<BioScreen> {
               ));
             }
             if (state is OnUpdate) {
-              navigateToProfilePreference();
+              if(this.userDetails.registrationStep > 8 ){
+                Navigator.of(context).pop();
+              }else {
+                navigateToProfilePreference();
+              }
             }
           },
           builder: (context, state) {
             initData(context);
-            print("Akashh...$state");
+
 
             return Stack(
               children: [
@@ -236,8 +240,8 @@ class _BioScreenState extends State<BioScreen> {
                                       FocusScope.of(context)
                                           .requestFocus(FocusNode());
                                       BlocProvider.of<BioBloc>(context).add(
-                                          UpdateBio(this.aboutMe!,
-                                              this.localImagePaths));
+                                          UpdateBio(this.aboutMe!, this.localImagePaths, this.userDetails.registrationStep > 8
+                                              ));
                                     })
                                   : MmmButtons.enabledRedButtonbodyMedium(
                                       50, 'Submit your details', action: () {
@@ -245,7 +249,7 @@ class _BioScreenState extends State<BioScreen> {
                                           .requestFocus(FocusNode());
                                       BlocProvider.of<BioBloc>(context).add(
                                           UpdateBio(this.aboutMe!,
-                                              this.localImagePaths));
+                                              this.localImagePaths, this.userDetails.registrationStep > 8));
                                     })
                             ],
                           ),
@@ -354,9 +358,7 @@ class _BioScreenState extends State<BioScreen> {
                 maxLines: 6,
                 decoration: InputDecoration(
                   // hintText: aboutMe,
-                  hintText: aboutMe != null && aboutMe != ''
-                      ? '${this.aboutMe}'
-                      : 'A little bit about me',
+                  hintText: 'A little bit about me',
                   hintStyle: MmmTextStyles.bodySmall(),
                   contentPadding: EdgeInsets.zero,
                   border: InputBorder.none,
@@ -515,6 +517,7 @@ class _BioScreenState extends State<BioScreen> {
             BlocProvider.of<BioBloc>(context).profileData!.aboutmeMsg;
 
         print("object123${this.aboutMe}");
+        this.bioController.text = this.aboutMe ?? "";
       }
       if (this.localImagePaths.length == 0) {
         this.localImagePaths =

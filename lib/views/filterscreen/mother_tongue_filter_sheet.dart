@@ -24,8 +24,9 @@ class _MotherTongueFilterBottomSheetState
 
   @override
   void initState() {
-    filtered = widget.list;
     super.initState();
+    filtered = widget.list;
+
   }
 
   @override

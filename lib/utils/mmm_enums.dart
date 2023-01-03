@@ -50,6 +50,7 @@ enum AbilityStatus {
 enum NoOfChildren { One, Two, ThreeOrMore }
 
 enum ChildrenStatus { No, YesLivingTogether, YesNotLivingTogether }
+enum ConnectStatus { Sent, Accepted, Rejected, Reverted }
 
 enum EatingHabit {
   Notspecified,

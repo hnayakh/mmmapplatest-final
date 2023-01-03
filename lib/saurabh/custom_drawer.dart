@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -139,7 +138,9 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                             backgroundImage: ((this.profileDetails != null &&
                                     profileDetails!.images.isNotNullEmpty)
                                 ? NetworkImage(profileDetails!.images.first)
-                                : AssetImage('images/app_icon.png',)) as ImageProvider,
+                                : AssetImage(
+                                    'images/app_icon.png',
+                                  )) as ImageProvider,
                           ),
                           SizedBox(
                             width: 20,
@@ -174,8 +175,6 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  print("Hello");
-
                                   onEdit(this.basicUserId);
                                 },
                                 child: Row(
@@ -359,9 +358,8 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                           InkWell(
                             onTap: () {
                               _deleteAppDir().then((value) =>
-                                  Navigator.of(context).pushReplacement(
-                                    SignInPage.getRoute()
-                                  ));
+                                  Navigator.of(context)
+                                      .pushReplacement(SignInPage.getRoute()));
                             },
                             child: customListTile(
                               leading: SvgPicture.asset("images/logout.svg"),
@@ -397,41 +395,10 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
   void onEdit(basicUserId) {
     print("basicUserId${this.basicUserId}");
     var userRepo = BlocProvider.of<AccountMenuBloc>(context).userRepository;
-    print("hekllo222");
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => MultiBlocProvider(providers: [
-        BlocProvider(
-          create: (context) => AboutBloc(userRepo),
-        ),
-        BlocProvider(
-          create: (context) => OccupationBloc(userRepo),
-        ),
-        BlocProvider(
-          create: (context) => AccountMenuBloc(userRepo),
-        ),
-      ], child: MyProfileScreen(userRepository: userRepo)),
-    ));
-    // BlocProvider.of<AboutBloc>(context).add(onAboutDataLoad(this.basicUserId!));
-
     Navigator.of(context).push(
       MaterialPageRoute(
-          builder: (context) => BlocProvider(
-                create: (context) => AboutBloc(userRepo),
-                child: MyProfileScreen(userRepository: userRepo),
-              )),
+        builder: (context) =>  MyProfileScreen(userRepository: userRepo),
+      ),
     );
-
-    // Navigator.of(context)
-    //     .push(MaterialPageRoute(builder: (context) => AboutScreen()));
-    //var userRepository = BlocProvider.of<AboutBloc>(context).userRepository;
-    print("hekllo333");
-    // Navigator.of(context).push(
-    //   MaterialPageRoute<AboutBloc>(
-    //     builder: (context) => BlocProvider<AboutBloc>(
-    //       create: (context) => AboutBloc(UserRepository()),
-    //       child: AboutScreen(),
-    //     ),
-    //   ),
-    // );
   }
 }

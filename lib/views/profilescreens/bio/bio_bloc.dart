@@ -48,14 +48,15 @@ class BioBloc extends Bloc<BioEvent, BioState> {
                 .where((element) => element != "addImage")
                 .toList());
         if (result.status == AppConstants.SUCCESS) {
-          this.userRepository.useDetails!.registrationStep = 8;
-          //await this.userRepository.saveUserDetails();
-          await this
-              .userRepository
-              .storageService
-              .saveUserDetails(this.userRepository.useDetails!);
-          this.userRepository.updateRegistrationStep(8);
-
+          if(!event.toUpdate) {
+            this.userRepository.useDetails!.registrationStep = 8;
+            //await this.userRepository.saveUserDetails();
+            await this
+                .userRepository
+                .storageService
+                .saveUserDetails(this.userRepository.useDetails!);
+            this.userRepository.updateRegistrationStep(8);
+          }
           yield OnUpdate();
         } else {
           yield OnError(result.message);

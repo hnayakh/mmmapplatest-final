@@ -106,8 +106,8 @@ class ChatRepo {
           id: roomQuery.docs.first.id,
           type: types.RoomType.direct,
           users: [userDetails, otherUserDetails],
-          name: data['name'],
-          imageUrl: data['imageUrl']
+            name: (otherUser.firstName ?? "") + " " +(otherUser.lastName ?? ""),
+            imageUrl: otherUser.imageUrl ?? ""
         );
         return room;
       } else {
@@ -127,7 +127,7 @@ class ChatRepo {
           id: generatedRoom.id,
           type: types.RoomType.direct,
           users: [userDetails, otherUserDetails],
-            name: (otherUser.firstName ?? "") + (otherUser.lastName ?? ""),
+            name: (otherUser.firstName ?? "") + " " + (otherUser.lastName ?? ""),
             imageUrl: otherUser.imageUrl ?? ""
         );
         return room;

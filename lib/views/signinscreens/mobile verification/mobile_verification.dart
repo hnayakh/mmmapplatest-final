@@ -62,7 +62,9 @@ class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
       appBar: MmmButtons.appbarThin(),
       body: BlocConsumer<MobileVerificationBloc, MobileVerificationState>(
         listener: (context, state) {
-          if (state is OnSignIn) {}
+          if (state is OnSignIn) {
+            navigateToProfileSetup();
+          }
           if (state is OnRegister) {
             navigateToProfileSetup();
           }

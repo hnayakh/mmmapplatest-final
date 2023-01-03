@@ -72,21 +72,10 @@ class _AboutScreenState extends State<AboutScreen> {
         BlocProvider.of<AboutBloc>(context).userRepository.useDetails!;
     print("registrationStep${this.userDetails.registrationStep}");
     if (this.userDetails.registrationStep > 2) {
-      BlocProvider.of<AboutBloc>(context).add(onAboutDataLoad(userDetails.id));
+      BlocProvider.of<AboutBloc>(context).add(OnAboutDataLoad(userDetails.id));
     }
-    return Scaffold(
-      // appBar: MmmButtons.appBarCurved('About'),
 
-      //preferredSize: Size(MediaQuery.of(context).size.width, 0.0),
-      // floatingActionButton: FloatingActionButton(
-      //   child: MmmIcons.rightArrowDisabled(),
-      //   onPressed: () {
-      //     BlocProvider.of<AboutBloc>(context).add(OnAboutDone(
-      //       namecontroller.text.trim(),
-      //     ));
-      //   },
-      //   backgroundColor: gray5,
-      // ),
+    return Scaffold(
       body: BlocConsumer<AboutBloc, AboutState>(
         listener: (context, state) {
           if (state is OnError) {
@@ -94,6 +83,9 @@ class _AboutScreenState extends State<AboutScreen> {
               content: Text(state.message),
               backgroundColor: kError,
             ));
+          }
+          if(state is ProfileDetailsState){
+            initData();
           }
           if (state is OnNavigationToHabits) {
             navigateToReligion();
@@ -105,10 +97,6 @@ class _AboutScreenState extends State<AboutScreen> {
           }
         },
         builder: (context, state) {
-          initData();
-
-          print("this.userDetails ${this.userDetails.registrationStep}");
-          // FocusScope.of(context).unfocus();
           return Stack(
             children: [
               SingleChildScrollView(
@@ -117,35 +105,36 @@ class _AboutScreenState extends State<AboutScreen> {
                 ),
               ),
               Positioned(
-                  bottom: 24,
-                  right: 24,
-                  child: this.userDetails.registrationStep > 2
-                      ? InkWell(
-                          onTap: () {
-                            BlocProvider.of<AboutBloc>(context).add(OnAboutDone(
-                                namecontroller.text.trim(),
-                                this.maritalStatus!,
-                                this.heightStatus!,
-                                this.childrenStatus!,
-                                this.dobHintText!,
-                                this.abilityStatus!,
-                                this.userDetails.registrationStep > 2));
-                          },
-                          child: MmmIcons.saveIcon(),
-                        )
-                      : InkWell(
-                          onTap: () {
-                            BlocProvider.of<AboutBloc>(context).add(OnAboutDone(
-                                namecontroller.text.trim(),
-                                this.maritalStatus!,
-                                this.heightStatus!,
-                                this.childrenStatus!,
-                                this.dobHintText!,
-                                this.abilityStatus!,
-                                this.userDetails.registrationStep > 2));
-                          },
-                          child: MmmIcons.rightArrowEnabled(),
-                        )),
+                bottom: 24,
+                right: 24,
+                child: this.userDetails.registrationStep > 2
+                    ? InkWell(
+                        onTap: () {
+                          BlocProvider.of<AboutBloc>(context).add(OnAboutDone(
+                              namecontroller.text.trim(),
+                              this.maritalStatus!,
+                              this.heightStatus!,
+                              this.childrenStatus ?? ChildrenStatus.No,
+                              this.dobHintText!,
+                              this.abilityStatus!,
+                              this.userDetails.registrationStep > 2));
+                        },
+                        child: MmmIcons.saveIcon(),
+                      )
+                    : InkWell(
+                        onTap: () {
+                          BlocProvider.of<AboutBloc>(context).add(OnAboutDone(
+                              namecontroller.text.trim(),
+                              this.maritalStatus!,
+                              this.heightStatus!,
+                              this.childrenStatus ?? ChildrenStatus.No,
+                              this.dobHintText!,
+                              this.abilityStatus!,
+                              this.userDetails.registrationStep > 2));
+                        },
+                        child: MmmIcons.rightArrowEnabled(),
+                      ),
+              ),
               state is OnLoading ? MmmWidgets.buildLoader(context) : Container()
             ],
           );
@@ -206,8 +195,8 @@ class _AboutScreenState extends State<AboutScreen> {
                   'Marital Status',
                   maritalStatus != null
                       ? AppHelper.getStringFromEnum(this.maritalStatus)
-                      : 'Select your maritial status',
-                  'Select your maritial status',
+                      : 'Select your marital status',
+                  'Select your marital status',
                   'images/rightArrow.svg', action: () {
                 showMaritalStatusBottomSheet();
               }),
@@ -235,13 +224,14 @@ class _AboutScreenState extends State<AboutScreen> {
                                 child: Radio(
                                     activeColor: kPrimary,
                                     value: ChildrenStatus.YesLivingTogether,
-                                    groupValue: childrenStatus,
+                                    groupValue: this.childrenStatus,
                                     onChanged: (val) {
                                       BlocProvider.of<AboutBloc>(context).add(
                                           OnChildrenSelected(ChildrenStatus
                                               .YesLivingTogether));
                                       this.childrenStatus =
                                           ChildrenStatus.YesLivingTogether;
+
                                     }),
                               ),
                               Text('Yes Living Together',
@@ -268,54 +258,6 @@ class _AboutScreenState extends State<AboutScreen> {
                             ],
                           ),
                         ),
-                        // Container(
-                        //   child: Row(
-                        //     mainAxisAlignment: MainAxisAlignment.start,
-                        //     children: [
-                        //       Transform.scale(
-                        //         scale: 1.2,
-                        //         child: Radio(
-                        //             activeColor: kPrimary,
-                        //             value: ChildrenStatus.YesLivingTogether,
-                        //             groupValue: childrenStatus,
-                        //             onChanged: (val) {
-                        //               BlocProvider.of<AboutBloc>(context).add(
-                        //                   OnChildrenSelected(ChildrenStatus
-                        //                       .YesLivingTogether));
-                        //               this.childrenStatus =
-                        //                   ChildrenStatus.YesLivingTogether;
-                        //             }),
-                        //       ),
-                        //       Text(
-                        //         'Yes Living Together',
-                        //         style:
-                        //             MmmTextStyles.bodySmall(textColor: kDark5),
-                        //       ),
-                        //       SizedBox(
-                        //         width: 16,
-                        //       ),
-                        //       Transform.scale(
-                        //         scale: 1.2,
-                        //         child: Radio(
-                        //             activeColor: kPrimary,
-                        //             value: ChildrenStatus.YesNotLivingTogether,
-                        //             groupValue: childrenStatus,
-                        //             onChanged: (val) {
-                        //               BlocProvider.of<AboutBloc>(context).add(
-                        //                   OnChildrenSelected(ChildrenStatus
-                        //                       .YesNotLivingTogether));
-                        //               this.childrenStatus =
-                        //                   ChildrenStatus.YesNotLivingTogether;
-                        //             }),
-                        //       ),
-                        //       Text(
-                        //         'Yes Not Living \n Together',
-                        //         style:
-                        //             MmmTextStyles.bodySmall(textColor: kDark5),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
                         Container(
                           child: Row(
                             children: [
@@ -377,20 +319,9 @@ class _AboutScreenState extends State<AboutScreen> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(left: 8),
-                        child: Text(
-                          'Disability',
-                          style: MmmTextStyles.bodyRegular(textColor: kDark5),
-                        ),
-                      ),
-                      Text(
-                        '',
-                        style: MmmTextStyles.bodySmall(textColor: kredStar),
-                      )
-                    ],
+                  Text(
+                    'Disability',
+                    style: MmmTextStyles.bodyRegular(textColor: kDark5),
                   ),
                   Container(
                     child: Row(
@@ -405,6 +336,7 @@ class _AboutScreenState extends State<AboutScreen> {
                               onChanged: (val) {
                                 BlocProvider.of<AboutBloc>(context).add(
                                     OnDisabilitySelected(AbilityStatus.Normal));
+                                this.abilityStatus = AbilityStatus.Normal;
                               }),
                         ),
                         //SizedBox(
@@ -423,15 +355,11 @@ class _AboutScreenState extends State<AboutScreen> {
                                 BlocProvider.of<AboutBloc>(context).add(
                                     OnDisabilitySelected(
                                         AbilityStatus.PhysicallyChallenged));
+                                this.abilityStatus = AbilityStatus.PhysicallyChallenged;
                               }),
                         ),
-                        // SizedBox(
-                        //   width: 8,
-                        // ),
-
                         Text('Physically Challenged',
                             style: TextStyle(fontSize: 15, color: kDark5)),
-
                         Expanded(
                           flex: 1,
                           child: SizedBox(
@@ -517,12 +445,13 @@ class _AboutScreenState extends State<AboutScreen> {
 
   void showMaritalStatusBottomSheet() async {
     var result = await showModalBottomSheet(
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        context: context,
-        builder: (context) => MaritalStatusBottomSheet(
-              selectedMaritalStatus: maritalStatus,
-            ));
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (context) => MaritalStatusBottomSheet(
+        selectedMaritalStatus: maritalStatus,
+      ),
+    );
 
     if (result != null && result is MaritalStatus) {
       // this.maritalStatusHintText = describeEnum(result);
@@ -565,22 +494,26 @@ class _AboutScreenState extends State<AboutScreen> {
 
   void navigateToMyProfile() {
     var userRepo = BlocProvider.of<AboutBloc>(context).userRepository;
-    Navigator.of(context).push(MaterialPageRoute(
+    Navigator.of(context).push(
+      MaterialPageRoute(
         builder: (context) => MultiBlocProvider(
-                providers: [
-                  BlocProvider(
-                    create: (context) => AboutBloc(userRepo),
-                  ),
-                  BlocProvider(
-                    create: (context) => OccupationBloc(userRepo),
-                  ),
-                  BlocProvider(
-                    create: (context) => AccountMenuBloc(userRepo),
-                  ),
-                ],
-                child: MyProfileScreen(
-                  userRepository: userRepo,
-                ))));
+          providers: [
+            BlocProvider(
+              create: (context) => AboutBloc(userRepo),
+            ),
+            BlocProvider(
+              create: (context) => OccupationBloc(userRepo),
+            ),
+            BlocProvider(
+              create: (context) => AccountMenuBloc(userRepo),
+            ),
+          ],
+          child: MyProfileScreen(
+            userRepository: userRepo,
+          ),
+        ),
+      ),
+    );
   }
 
   void initData() {

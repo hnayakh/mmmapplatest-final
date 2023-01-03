@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:makemymarry/datamodels/agora_token_response.dart';
 import 'package:makemymarry/locator.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
@@ -14,9 +15,10 @@ import 'package:permission_handler/permission_handler.dart';
 /// JoinChannelAudio Example
 class VideoCallView extends StatefulWidget {
   /// Construct the [VideoCallView]
-  const VideoCallView({Key? key, required this.uid, required this.imageUrl})
+  const VideoCallView({Key? key, required this.uid, required this.imageUrl,  this.agoraToken})
       : super(key: key);
 
+  final AgoraToken? agoraToken;
   final String uid;
   final String imageUrl;
   @override
@@ -68,20 +70,23 @@ class _State extends State<VideoCallView> {
       appId: '2408d5882f0445ec82566323785cfb66',
     ));
 
+
     _engine.registerEventHandler(RtcEngineEventHandler(
       onError: (ErrorCodeType err, String msg) {
         UtilityService.cprint('[onError] err: $err, msg: $msg');
       },
       onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
         UtilityService.cprint(
-            '[onJoinChannelSuccess] connection: ${connection.toJson()} elapsed: $elapsed');
+            '[onJoinChannelSuccess] connection: ${connection
+                .toJson()} elapsed: $elapsed');
         setState(() {
           isJoined = true;
         });
       },
       onUserJoined: (RtcConnection connection, int rUid, int elapsed) {
         UtilityService.cprint(
-            '[onUserJoined] connection: ${connection.toJson()} remoteUid: $rUid elapsed: $elapsed');
+            '[onUserJoined] connection: ${connection
+                .toJson()} remoteUid: $rUid elapsed: $elapsed');
         setState(() {
           remoteUid.add(rUid);
         });
@@ -89,14 +94,16 @@ class _State extends State<VideoCallView> {
       onUserOffline:
           (RtcConnection connection, int rUid, UserOfflineReasonType reason) {
         UtilityService.cprint(
-            '[onUserOffline] connection: ${connection.toJson()}  rUid: $rUid reason: $reason');
+            '[onUserOffline] connection: ${connection
+                .toJson()}  rUid: $rUid reason: $reason');
         setState(() {
           remoteUid.removeWhere((element) => element == rUid);
         });
       },
       onLeaveChannel: (RtcConnection connection, RtcStats stats) {
         UtilityService.cprint(
-            '[onLeaveChannel] connection: ${connection.toJson()} stats: ${stats.toJson()}');
+            '[onLeaveChannel] connection: ${connection.toJson()} stats: ${stats
+                .toJson()}');
         setState(() {
           isJoined = false;
           remoteUid.clear();
@@ -119,25 +126,32 @@ class _State extends State<VideoCallView> {
     setState(() {
       _isReadyPreview = true;
     });
-    var res = getIt<UserRepository>()
-        .generateAgoraToken(widget.uid, CallType.videoCall);
-    res.then((value) async {
-      if (value.status == AppConstants.SUCCESS) {
-        _joinChannel(
-            value.token!.agoraToken,
-            value.token!.channelName);
-      } else {
+    if (widget.agoraToken == null) {
+      var res = getIt<UserRepository>()
+          .generateAgoraToken(widget.uid, CallType.videoCall);
+      res.then((value) async {
+        if (value.status == AppConstants.SUCCESS) {
+          _joinChannel(
+              value.token!.agoraToken,
+              value.token!.channelName);
+        } else {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text("ERROR!!!!")));
+          await Future.delayed(Duration(seconds: 2));
+          Navigator.of(context).pop();
+        }
+      }).onError((error, stackTrace) async {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text("ERROR!!!!")));
         await Future.delayed(Duration(seconds: 2));
         Navigator.of(context).pop();
-      }
-    }).onError((error, stackTrace) async {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("ERROR!!!!")));
-      await Future.delayed(Duration(seconds: 2));
-      Navigator.of(context).pop();
-    });
+      });
+    }
+    else{
+      _joinChannel(
+          widget.agoraToken!.agoraToken,
+          widget.agoraToken!.channelName);
+    }
   }
 
   Future<void> _joinChannel(String token, String channelId) async {
