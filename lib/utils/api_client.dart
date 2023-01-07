@@ -149,7 +149,7 @@ class ApiClient {
         "maritalStatus": maritalStatus!.index,
         "childrenStatus": childrenStatus!.index,
         "abilityStatus": abilityStatus!.index,
-        "height": double.parse(AppHelper.getHeights()[heightStatus]) * 30.48,
+        "height": heightCm,
         "numberOfChildren": noOfChildren == null ? null : noOfChildren.index
       });
       if (response.statusCode == 200 || response.statusCode == 201) {

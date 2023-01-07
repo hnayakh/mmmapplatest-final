@@ -10,7 +10,6 @@ import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/utils/api_client.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/storage_service.dart';
-import 'package:makemymarry/views/home/matching_profile/views/matching_profile.dart';
 
 class UserRepository {
   late StorageService storageService;

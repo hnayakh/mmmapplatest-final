@@ -44,6 +44,7 @@ class MyProfileBloc extends Bloc<ProfileEvent, MyProfileState> {
   @override
   Stream<MyProfileState> mapEventToState(ProfileEvent event) async* {
     if (event is MyProfileFetched) {
+      yield MyProfileInitialState();
       yield OnProfileFetched(
         userDetails: event.userDetails,
       );

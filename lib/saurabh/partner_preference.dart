@@ -23,7 +23,7 @@ import 'package:makemymarry/views/profilescreens/profile_preference/profile_pref
     as profilepreferenceEvent;
 import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference_events.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/smoking_prefs.dart';
-import 'package:makemymarry/views/profilescreens/religion/religion_event.dart'
+import 'package:makemymarry/views/profilescreens/religion/bloc/religion_event.dart'
     as religionEvent;
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/sidebar_contactsupport_screen.dart';
 
@@ -38,17 +38,17 @@ import '../utils/elevations.dart';
 import '../utils/mmm_enums.dart';
 import '../utils/text_styles.dart';
 import '../utils/view_decorations.dart';
-import '../views/profilescreens/occupation/anual_income_bottom_sheet.dart';
-import '../views/profilescreens/occupation/occupation_bloc.dart';
-import '../views/profilescreens/occupation/occupation_event.dart';
+import '../views/profilescreens/occupation/views/anual_income_bottom_sheet.dart';
+import '../views/profilescreens/occupation/bloc/occupation_bloc.dart';
+import '../views/profilescreens/occupation/bloc/occupation_event.dart';
 import '../views/profilescreens/profile_preference/marital_status_preference.dart';
 
 import '../views/profilescreens/profile_preference/profile_preference_bloc.dart';
 import '../views/profilescreens/profile_preference/profile_preference_state.dart';
 import '../views/profilescreens/profile_preference/religion_preference_sheet.dart';
 import '../views/profilescreens/profile_preference/subcast_preference_sheet.dart';
-import '../views/profilescreens/religion/gothra_bottom_sheet.dart';
-import '../views/profilescreens/religion/religion_bloc.dart';
+import '../views/profilescreens/religion/views/gothra_bottom_sheet.dart';
+import '../views/profilescreens/religion/bloc/religion_bloc.dart';
 
 import 'hexcolor.dart';
 

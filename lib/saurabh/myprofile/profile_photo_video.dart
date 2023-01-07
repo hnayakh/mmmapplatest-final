@@ -6,10 +6,9 @@ import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
-import 'package:makemymarry/views/profilescreens/bio/bio_bloc.dart';
-import 'package:makemymarry/views/profilescreens/bio/bio_event.dart';
-import 'package:makemymarry/views/profilescreens/bio/bio_state.dart';
-import 'package:makemymarry/views/profilescreens/bio/image_picker_dialog.dart';
+import 'package:makemymarry/views/profilescreens/bio/bloc/bio_bloc.dart';
+import 'package:makemymarry/views/profilescreens/bio/bloc/bio_state.dart';
+import 'package:makemymarry/views/profilescreens/bio/views/image_picker_dialog.dart';
 import 'dart:async';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
@@ -17,6 +16,8 @@ import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference.dart';
+
+import '../../views/profilescreens/bio/bloc/bio_event.dart';
 
 class MmmPhotovideos extends StatelessWidget {
   final UserRepository userRepository;

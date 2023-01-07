@@ -78,7 +78,7 @@ class _SearchScreenState extends State<SearchScreen> {
         if (state is OnGotProfileDetails) {
           var profileDetails =
               BlocProvider.of<ProfileViewBloc>(context).profileDetails;
-          showOptionsSearchThroughId(profileDetails);
+          showOptionsSearchThroughId(profileDetails!);
         }
       },
       builder: (context, state) {

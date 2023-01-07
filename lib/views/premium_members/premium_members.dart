@@ -4,15 +4,13 @@ import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
-import 'package:makemymarry/views/home/interests/interest_status_screen.dart';
 import 'package:makemymarry/views/home/matching_profile/views/matching_profile.dart';
 import 'package:makemymarry/views/home/matching_profile/bloc/matching_profile_bloc.dart';
-import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
 import 'package:makemymarry/views/home/menu/sidebar_account_screen.dart';
-import 'package:makemymarry/views/home/my_connects/my_connects_screen.dart';
-import 'package:makemymarry/views/stackviewscreens/meet%20status/meet_status_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/notification_list.dart';
 import 'package:makemymarry/views/stackviewscreens/search_screen.dart';
+
+import '../home/interests/views/interest_status_screen.dart';
 
 class PremiumMembersScreen extends StatefulWidget {
   final UserRepository userRepository;

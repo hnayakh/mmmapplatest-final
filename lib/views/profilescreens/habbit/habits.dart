@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:makemymarry/views/profilescreens/about/about_bloc.dart';
+import 'package:makemymarry/views/profilescreens/about/bloc/about_bloc.dart';
 import 'package:makemymarry/views/profilescreens/habbit/habit_bloc.dart';
 import 'package:makemymarry/views/profilescreens/habbit/habit_event.dart';
 import 'package:makemymarry/views/profilescreens/habbit/habit_state.dart';
@@ -14,8 +14,8 @@ import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
-import 'package:makemymarry/views/profilescreens/bio/bio.dart';
-import 'package:makemymarry/views/profilescreens/occupation/occupation_bloc.dart';
+import 'package:makemymarry/views/profilescreens/bio/views/bio.dart';
+import 'package:makemymarry/views/profilescreens/occupation/bloc/occupation_bloc.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/my_profile/myprofile.dart';
 
 class Habit extends StatelessWidget {
@@ -343,22 +343,10 @@ class _HabitScreenState extends State<HabitScreen> {
   }
 
   void navigateToMyProfile() {
-    var userRepo = BlocProvider.of<HabitBloc>(context).userRepository;
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => MultiBlocProvider(
-                providers: [
-                  BlocProvider(
-                    create: (context) => AboutBloc(userRepo),
-                  ),
-                  BlocProvider(
-                    create: (context) => OccupationBloc(userRepo),
-                  ),
-                  BlocProvider(
-                    create: (context) => AccountMenuBloc(userRepo),
-                  ),
-                ],
-                child: MyProfileScreen(
-                  userRepository: userRepo,
-                ))));
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => MyProfileScreen(),
+      ),
+    );
   }
 }

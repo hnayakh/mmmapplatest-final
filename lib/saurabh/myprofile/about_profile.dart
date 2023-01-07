@@ -13,10 +13,10 @@ import '../../utils/buttons.dart';
 import '../../utils/elevations.dart';
 import '../../utils/text_styles.dart';
 import '../../utils/view_decorations.dart';
-import '../../views/profilescreens/bio/bio_bloc.dart';
-import '../../views/profilescreens/bio/bio_event.dart';
-import '../../views/profilescreens/bio/bio_state.dart';
-import '../../views/profilescreens/bio/image_picker_dialog.dart';
+import '../../views/profilescreens/bio/bloc/bio_bloc.dart';
+import '../../views/profilescreens/bio/bloc/bio_event.dart';
+import '../../views/profilescreens/bio/bloc/bio_state.dart';
+import '../../views/profilescreens/bio/views/image_picker_dialog.dart';
 import '../hexcolor.dart';
 
 class ABoutProfile extends StatelessWidget {

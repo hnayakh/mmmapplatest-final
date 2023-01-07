@@ -14,10 +14,10 @@ import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/profile_loader/profile_loader.dart';
-import 'package:makemymarry/views/profilescreens/family/family_details/family_details_bloc.dart';
-import 'package:makemymarry/views/profilescreens/family/family_details/family_details_events.dart';
-import 'package:makemymarry/views/profilescreens/occupation/education_bottom_sheet.dart';
-import 'package:makemymarry/views/profilescreens/occupation/occupation_bottom_sheet.dart';
+import 'package:makemymarry/views/profilescreens/family/family_details/bloc/family_details_bloc.dart';
+import 'package:makemymarry/views/profilescreens/family/family_details/bloc/family_details_events.dart';
+import 'package:makemymarry/views/profilescreens/occupation/views/education_bottom_sheet.dart';
+import 'package:makemymarry/views/profilescreens/occupation/views/occupation_bottom_sheet.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/annual_income_preference.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/annual_max_income_preference.dart';
 
@@ -34,7 +34,7 @@ import 'package:makemymarry/views/profilescreens/profile_preference/profile_pref
 import 'package:makemymarry/views/profilescreens/profile_preference/religion_preference_sheet.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/state_preference_sheet.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/subcast_preference_sheet.dart';
-import 'package:makemymarry/views/profilescreens/religion/mother_tongue_bottom_sheet.dart';
+import 'package:makemymarry/views/profilescreens/religion/views/mother_tongue_bottom_sheet.dart';
 
 import 'eating_prefs.dart';
 import 'smoking_prefs.dart';

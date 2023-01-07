@@ -3,7 +3,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:makemymarry/views/profilescreens/about/about_bloc.dart';
+import 'package:makemymarry/views/profilescreens/about/bloc/about_bloc.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/saurabh/hexcolor.dart';
@@ -13,12 +13,12 @@ import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
-import 'package:makemymarry/views/home/interests/interest_status_screen.dart';
+import 'package:makemymarry/views/home/interests/views/interest_status_screen.dart';
 import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
 import 'package:makemymarry/views/home/menu/account_menu_event.dart';
 import 'package:makemymarry/views/home/menu/account_menu_state.dart';
 import 'package:makemymarry/views/home/menu/wallet/wallet_main.dart';
-import 'package:makemymarry/views/profilescreens/occupation/occupation_bloc.dart';
+import 'package:makemymarry/views/profilescreens/occupation/bloc/occupation_bloc.dart';
 import 'package:makemymarry/views/profileviewscreens/profile_view_bloc.dart';
 import 'package:makemymarry/views/signinscreens/signin_page.dart';
 import 'package:makemymarry/views/stackviewscreens/connect/connect.dart';
@@ -397,7 +397,7 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
     var userRepo = BlocProvider.of<AccountMenuBloc>(context).userRepository;
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) =>  MyProfileScreen(userRepository: userRepo),
+        builder: (context) =>  MyProfileScreen(),
       ),
     );
   }

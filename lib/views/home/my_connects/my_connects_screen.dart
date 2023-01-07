@@ -6,7 +6,7 @@ import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
-import 'package:makemymarry/views/home/interests/interests_bloc.dart';
+import 'package:makemymarry/views/home/interests/bloc/interests_bloc.dart';
 import 'package:makemymarry/views/home/my_connects/chats.dart';
 import 'package:makemymarry/views/home/my_connects/my_connects_bloc.dart';
 import 'package:makemymarry/views/home/my_connects/my_connects_event.dart';

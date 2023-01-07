@@ -6,12 +6,12 @@ import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
-import 'package:makemymarry/views/profilescreens/bio/bio.dart';
+import 'package:makemymarry/views/profilescreens/bio/views/bio.dart';
 import 'package:makemymarry/views/profilescreens/habbit/habits.dart';
 
-import 'family_background/family_background.dart';
-import 'family_background/family_background_bloc.dart';
-import 'family_details/family_details.dart';
+import 'family_background/views/family_background.dart';
+import 'family_background/bloc/family_background_bloc.dart';
+import 'family_details/views/family_details.dart';
 import 'globals.dart' as globals;
 
 class FamilyScreen extends StatefulWidget {
@@ -101,8 +101,7 @@ class _FamilyScreenState extends State<FamilyScreen>
                     end: Alignment.centerRight),
               ),
             ),
-            // IgnorePointer(
-            //     child:
+
             TabBar(
               controller: tabController,
               onTap: (pos) {
@@ -169,11 +168,24 @@ class _FamilyScreenState extends State<FamilyScreen>
         globals.familyBackgroundComplete = true;
         this.tabController.index = 1;
       });
-    } else {
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => Habit(
-                userRepository: widget.userRepository,
-              )));
+    } else if (this.tabController.index == 1) {
+      setState(() {
+        globals.familyDetailsComplete = true;
+        this.tabController.index = 0;
+      });
+    }
+    if (globals.familyDetailsComplete && globals.familyBackgroundComplete) {
+      if (widget.userRepository.useDetails!.registrationStep > 6) {
+        Navigator.of(context).pop();
+      } else {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => Habit(
+              userRepository: widget.userRepository,
+            ),
+          ),
+        );
+      }
     }
   }
 }

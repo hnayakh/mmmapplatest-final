@@ -203,8 +203,9 @@ class MatchingProfile {
     }
     // this.name = json["name"];
     this.caste = json["cast"];
-    this.religion = json["religion"] != null ?  json["religion"] : "" ;
-    this.motherTongue = json["motherTongue"] != null ?  json["motherTongue"] : "" ;
+    this.religion = json["religion"] != null ? json["religion"] : "";
+    this.motherTongue =
+        json["motherTongue"] != null ? json["motherTongue"] : "";
     if (json["height"] != null) {
       this.height = (double.parse(json["height"]) / 30.48).roundToDouble();
     } else {
@@ -557,7 +558,10 @@ class ProfileDetails {
     this.dateOfBirth = aboutMe["dateOfBirth"];
     this.maritalStatus = MaritalStatus.values[aboutMe["maritalStatus"]];
     this.childrenStatus = ChildrenStatus.values[aboutMe["childrenStatus"]];
-    this.connectStatus =json['UserRequestStatus'].isNotEmpty ?   ConnectStatus.values[json['UserRequestStatus'][0]['userRequestStatus']] : null;
+    this.connectStatus = json['UserRequestStatus'].isNotEmpty
+        ? ConnectStatus
+            .values[json['UserRequestStatus'][0]['userRequestStatus']]
+        : null;
     // if (json["userReligions"] != null && json["userReligions"].length > 0) {
     //   this.religionId = json["userReligions"][0]["religionId"][0]["id"];
     //   this.religionName = json["userReligions"][0]["religionId"][0]["text"];
@@ -575,7 +579,9 @@ class ProfileDetails {
     } else {
       this.abilityStatus = AbilityStatus.Normal;
     }
-    this.height = (double.parse(aboutMe["height"]) / 30.48).toStringAsFixed(2);
+    this.height =
+        (double.parse(aboutMe["height"]) ~/ 30.48).toStringAsFixed(0) + "'"+
+            ((double.parse(aboutMe["height"]) ~/ 2.54) % 12 + 1).toStringAsFixed(0) ;
     if (json["userHabits"] != null && json["userHabits"].length > 0) {
       var habit = json["userHabits"][0];
 

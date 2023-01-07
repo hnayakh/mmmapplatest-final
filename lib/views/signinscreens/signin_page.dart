@@ -20,19 +20,20 @@ import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/forgotpasswordscreens/forgot_password.dart';
 import 'package:makemymarry/views/profile_loader/profile_loader.dart';
-import 'package:makemymarry/views/profilescreens/about/about.dart';
-import 'package:makemymarry/views/profilescreens/bio/bio.dart';
+import 'package:makemymarry/views/profilescreens/about/views/about.dart';
+import 'package:makemymarry/views/profilescreens/bio/views/bio.dart';
 import 'package:makemymarry/views/profilescreens/family/family.dart';
 import 'package:makemymarry/views/profilescreens/habbit/habits.dart';
-import 'package:makemymarry/views/profilescreens/occupation/occupation.dart';
+import 'package:makemymarry/views/profilescreens/occupation/views/occupation.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference.dart';
-import 'package:makemymarry/views/profilescreens/religion/religion.dart';
 import 'package:makemymarry/views/signinscreens/authentication_service.dart';
 import 'package:makemymarry/views/signinscreens/phone%20signin/phone_screen.dart';
 import 'package:makemymarry/views/signupscreens/create_account/create_account_screen.dart';
 import 'package:makemymarry/views/signupscreens/create_account/signup_option_bottom_sheet.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:http/http.dart' as http;
+
+import '../profilescreens/religion/views/religion.dart';
 
 final Dio dio = Dio();
 

@@ -18,11 +18,11 @@ import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/setting_scr
 import 'package:path_provider/path_provider.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
-import 'package:makemymarry/views/home/interests/interest_status_screen.dart';
+import 'package:makemymarry/views/home/interests/views/interest_status_screen.dart';
 import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
 import 'package:makemymarry/views/home/menu/account_menu_event.dart';
 import 'package:makemymarry/views/home/menu/account_menu_state.dart';
-import 'package:makemymarry/views/profilescreens/bio/bio.dart';
+import 'package:makemymarry/views/profilescreens/bio/views/bio.dart';
 import 'package:makemymarry/views/signinscreens/phone%20signin/phone_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -206,7 +206,7 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
         print("Profile ahead");
         Navigator.of(context).push(
           MaterialPageRoute(
-              builder: (context) => MyProfileScreen(userRepository: userRepo)),
+              builder: (context) => MyProfileScreen()),
         );
         break;
       case 1:

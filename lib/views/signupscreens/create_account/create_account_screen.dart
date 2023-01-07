@@ -12,7 +12,7 @@ import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/preference_helper.dart';
 import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
-import 'package:makemymarry/views/profilescreens/about/about.dart';
+import 'package:makemymarry/views/profilescreens/about/views/about.dart';
 import 'package:makemymarry/views/signinscreens/mobile%20verification/mobile_verification.dart';
 import 'package:makemymarry/views/signupscreens/create_account/create_account_bloc.dart';
 import 'package:makemymarry/views/signupscreens/create_account/create_account_event.dart';

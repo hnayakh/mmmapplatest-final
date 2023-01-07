@@ -10,7 +10,7 @@ import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
-import 'package:makemymarry/views/profilescreens/about/about.dart';
+import 'package:makemymarry/views/profilescreens/about/views/about.dart';
 
 import 'package:pin_code_fields/pin_code_fields.dart';
 

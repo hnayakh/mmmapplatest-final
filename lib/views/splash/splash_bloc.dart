@@ -1,4 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:makemymarry/app/bloc/app_bloc.dart';
+import 'package:makemymarry/app/bloc/app_event.dart';
 import 'package:makemymarry/views/splash/splash_event.dart';
 import 'package:makemymarry/views/splash/splash_state.dart';
 import 'package:makemymarry/locator.dart';
@@ -24,6 +26,7 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
         // } else {
         var userDetails = await this.userRepository.getUserDetails();
 
+        getIt<UserRepository>().useDetails = userDetails;
         this.userRepository.useDetails = userDetails;
         //print(this.userRepository.useDetails!.id);
         //testing only
@@ -46,6 +49,7 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
 
           emit(MoveToLogin());
         } else {
+          BlocProvider.of<AppBloc>(navigatorKey.currentContext!).add(SignInEvent(userDetails: this.userRepository.useDetails!));
           print('movetohome from splash');
           print(this.userRepository.useDetails!.registrationStep);
 

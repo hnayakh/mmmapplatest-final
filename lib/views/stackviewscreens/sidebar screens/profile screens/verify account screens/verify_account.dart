@@ -15,7 +15,7 @@ import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
-import 'package:makemymarry/views/profilescreens/bio/image_picker_dialog.dart';
+import 'package:makemymarry/views/profilescreens/bio/views/image_picker_dialog.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/profile%20screens/verify%20account%20screens/select_idproof_bottom_sheet.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/profile%20screens/verify%20account%20screens/verify_bloc.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/profile%20screens/verify%20account%20screens/verify_event.dart';

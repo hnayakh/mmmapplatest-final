@@ -16,7 +16,7 @@ import 'package:makemymarry/views/stackviewscreens/meet%20status/meet_timing/sch
 import 'package:makemymarry/views/stackviewscreens/notification_list.dart';
 import 'package:makemymarry/views/stackviewscreens/search_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/my_profile/myprofile.dart';
-import 'interests/interest_status_screen.dart';
+import 'interests/views/interest_status_screen.dart';
 import 'matching_profile/views/matching_profile.dart';
 
 class HomeScreen extends StatefulWidget {

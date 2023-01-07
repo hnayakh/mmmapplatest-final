@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/locator.dart';
 import 'package:makemymarry/utils/helper.dart';
-import 'package:makemymarry/views/profilescreens/about/about_bloc.dart';
+import 'package:makemymarry/views/profilescreens/about/bloc/about_bloc.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/saurabh/myprofile/profile_photo_video.dart';
@@ -13,70 +13,27 @@ import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
-import 'package:makemymarry/views/profilescreens/about/about.dart';
-import 'package:makemymarry/views/profilescreens/bio/bio.dart';
+import 'package:makemymarry/views/profilescreens/about/views/about.dart';
+import 'package:makemymarry/views/profilescreens/bio/views/bio.dart';
 import 'package:makemymarry/views/profilescreens/family/family.dart';
-import 'package:makemymarry/views/profilescreens/family/family_details/family_details_bloc.dart';
+import 'package:makemymarry/views/profilescreens/family/family_details/bloc/family_details_bloc.dart';
 import 'package:makemymarry/views/profilescreens/habbit/habit_bloc.dart';
-import 'package:makemymarry/views/profilescreens/occupation/occupation.dart';
-import 'package:makemymarry/views/profilescreens/occupation/occupation_bloc.dart';
-import 'package:makemymarry/views/profilescreens/religion/religion_bloc.dart';
+import 'package:makemymarry/views/profilescreens/occupation/views/occupation.dart';
+import 'package:makemymarry/views/profilescreens/occupation/bloc/occupation_bloc.dart';
+import 'package:makemymarry/views/profilescreens/religion/bloc/religion_bloc.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/my_profile/myprofile_bloc.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/my_profile/myprofile_event.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/my_profile/myprofile_state.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/profile%20screens/verify%20account%20screens/verify_account.dart';
 import '../../../../utils/widgets_large.dart';
-import '../../../profilescreens/bio/bio_bloc.dart';
-import '../../../profilescreens/family/family_background/family_background_bloc.dart';
+import '../../../profilescreens/bio/bloc/bio_bloc.dart';
+import '../../../profilescreens/family/family_background/bloc/family_background_bloc.dart';
 import '../../../profilescreens/habbit/habits.dart';
 import '../../../profilescreens/lifestyle/lifestyle_details_view.dart';
-import '../../../profilescreens/religion/religion.dart';
+import '../../../profilescreens/religion/views/religion.dart';
 
 class MyProfileScreen extends StatelessWidget {
-  final UserRepository userRepository;
-  const MyProfileScreen({Key? key, required this.userRepository})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => BioBloc(userRepository),
-        ),
-        BlocProvider(
-          create: (context) => OccupationBloc(userRepository),
-        ),
-        BlocProvider(
-          create: (context) => AccountMenuBloc(userRepository),
-        ),
-        BlocProvider(
-          create: (context) => FamilyBackgroundBloc(userRepository,
-              CountryModel(), StateModel("", 0), StateModel("", 0)),
-        ),
-        BlocProvider(
-          create: (context) => FamilyDetailsBloc(userRepository),
-        ),
-        BlocProvider(
-          create: (context) => HabitBloc(userRepository),
-        ),
-        BlocProvider(
-          create: (context) => ReligionBloc(userRepository),
-        ),
-        BlocProvider(
-          create: (context) => AboutBloc(userRepository),
-        ),
-      ],
-      child: Builder(builder: (context) {
-        return MyProfile();
-      }),
-    );
-    // return MyProfile(userRepository: userRepository);
-  }
-}
-
-class MyProfile extends StatelessWidget {
-  const MyProfile({Key? key}) : super(key: key);
+  const MyProfileScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -243,9 +200,7 @@ class MyProfileBody extends StatelessWidget {
                 SizedBox(height: 20),
                 InterestInfoCard(profileDetails: profileDetails),
                 SizedBox(height: 20),
-
-                // LifestyleInfoCard(),
-
+                LifestyleInfoCard(),
               ],
             ),
           ));
@@ -291,8 +246,7 @@ class LifestyleInfoCard extends StatelessWidget {
           Container(
             margin: EdgeInsets.fromLTRB(10, 10, 30, 0),
             child: Row(
-              mainAxisAlignment:
-              MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Container(
                   child: Row(
@@ -305,8 +259,7 @@ class LifestyleInfoCard extends StatelessWidget {
                         'LifeStyle',
                         textAlign: TextAlign.left,
                         style: TextStyle(
-                            color: Color.fromRGBO(
-                                164, 19, 60, 1),
+                            color: Color.fromRGBO(164, 19, 60, 1),
                             fontFamily: 'Poppins',
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -318,8 +271,7 @@ class LifestyleInfoCard extends StatelessWidget {
                 InkWell(
                   onTap: () {
                     context.navigate.push(MaterialPageRoute(
-                        builder: (context) =>
-                            LifeStyleView()));
+                        builder: (context) => LifeStyleView()));
                   },
                   child: Image.asset(
                     'images/pen.png',
@@ -349,8 +301,7 @@ class LifestyleInfoCard extends StatelessWidget {
                 width: 1,
               ),
             ),
-            padding: EdgeInsets.symmetric(
-                horizontal: 20, vertical: 12),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -360,16 +311,14 @@ class LifestyleInfoCard extends StatelessWidget {
                 SizedBox(width: 8),
                 Container(
                   decoration: BoxDecoration(),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 0, vertical: 0),
+                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
                   child: Row(
                     children: <Widget>[
                       Text(
                         'House',
                         textAlign: TextAlign.left,
                         style: TextStyle(
-                            color:
-                            Color.fromRGBO(18, 22, 25, 1),
+                            color: Color.fromRGBO(18, 22, 25, 1),
                             fontFamily: 'Poppins',
                             fontSize: 16,
                             fontWeight: FontWeight.normal,
@@ -401,8 +350,7 @@ class LifestyleInfoCard extends StatelessWidget {
                 width: 1,
               ),
             ),
-            padding: EdgeInsets.symmetric(
-                horizontal: 20, vertical: 12),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -412,16 +360,14 @@ class LifestyleInfoCard extends StatelessWidget {
                 SizedBox(width: 8),
                 Container(
                   decoration: BoxDecoration(),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 0, vertical: 0),
+                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
                   child: Row(
                     children: <Widget>[
                       Text(
                         'Business',
                         textAlign: TextAlign.left,
                         style: TextStyle(
-                            color:
-                            Color.fromRGBO(18, 22, 25, 1),
+                            color: Color.fromRGBO(18, 22, 25, 1),
                             fontFamily: 'Poppins',
                             fontSize: 16,
                             fontWeight: FontWeight.normal,
@@ -453,8 +399,7 @@ class LifestyleInfoCard extends StatelessWidget {
                 width: 1,
               ),
             ),
-            padding: EdgeInsets.symmetric(
-                horizontal: 20, vertical: 12),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -464,16 +409,14 @@ class LifestyleInfoCard extends StatelessWidget {
                 SizedBox(width: 8),
                 Container(
                   decoration: BoxDecoration(),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 0, vertical: 0),
+                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
                   child: Row(
                     children: <Widget>[
                       Text(
                         'Car',
                         textAlign: TextAlign.left,
                         style: TextStyle(
-                            color:
-                            Color.fromRGBO(18, 22, 25, 1),
+                            color: Color.fromRGBO(18, 22, 25, 1),
                             fontFamily: 'Poppins',
                             fontSize: 16,
                             fontWeight: FontWeight.normal,
@@ -532,14 +475,12 @@ class InterestInfoCard extends StatelessWidget {
               Container(
                 margin: EdgeInsets.fromLTRB(10, 10, 30, 0),
                 child: Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Container(
                       child: Row(
                         children: [
-                          Image.asset(
-                              'images/heartSpecialpng.png',
+                          Image.asset('images/heartSpecialpng.png',
                               color: kPrimary),
                           // Icon(
                           //   Icons.favorite_border_rounded,
@@ -550,8 +491,7 @@ class InterestInfoCard extends StatelessWidget {
                             'Interests',
                             textAlign: TextAlign.left,
                             style: TextStyle(
-                                color: Color.fromRGBO(
-                                    164, 19, 60, 1),
+                                color: Color.fromRGBO(164, 19, 60, 1),
                                 fontFamily: 'Poppins',
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -565,9 +505,8 @@ class InterestInfoCard extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (ctx) => Habit(
-                                userRepository:
-                                    getIt<UserRepository>()),
+                            builder: (ctx) =>
+                                Habit(userRepository: getIt<UserRepository>()),
                           ),
                         );
                       },
@@ -595,8 +534,7 @@ class InterestInfoCard extends StatelessWidget {
                           height: 1.6666666666666667),
                     ),
                     Container(
-                      margin:
-                          EdgeInsets.fromLTRB(0, 30, 0, 0),
+                      margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(8),
@@ -606,36 +544,29 @@ class InterestInfoCard extends StatelessWidget {
                         ),
                         boxShadow: [
                           BoxShadow(
-                              color: Color.fromARGB(
-                                  13, 255, 77, 110),
+                              color: Color.fromARGB(13, 255, 77, 110),
                               offset: Offset(0, 4),
                               blurRadius: 14)
                         ],
                         border: Border.all(
-                          color: Color.fromRGBO(
-                              193, 199, 205, 1),
+                          color: Color.fromRGBO(193, 199, 205, 1),
                           width: 1,
                         ),
                       ),
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 12),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           Image.asset(
                             profileDetails != null
-                                ? profileDetails!.eatingHabit
-                                            .name ==
+                                ? profileDetails!.eatingHabit.name ==
                                         "Vegetarrian"
                                     ? 'images/LeafyGreen.png'
-                                    : profileDetails!
-                                                .eatingHabit
-                                                .name ==
+                                    : profileDetails!.eatingHabit.name ==
                                             "Nonvegetarrian"
                                         ? 'images/chicken.png'
-                                        : profileDetails!
-                                                    .eatingHabit
-                                                    .name ==
+                                        : profileDetails!.eatingHabit.name ==
                                                 "Eggitarrian"
                                             ? 'images/egggg.png'
                                             : ""
@@ -651,17 +582,14 @@ class InterestInfoCard extends StatelessWidget {
                               children: <Widget>[
                                 Text(
                                   profileDetails != null
-                                      ? profileDetails!
-                                          .eatingHabit.name
+                                      ? profileDetails!.eatingHabit.name
                                       : "",
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
-                                      color: Color.fromRGBO(
-                                          18, 22, 25, 1),
+                                      color: Color.fromRGBO(18, 22, 25, 1),
                                       fontFamily: 'Poppins',
                                       fontSize: 16,
-                                      fontWeight:
-                                          FontWeight.normal,
+                                      fontWeight: FontWeight.normal,
                                       height: 1.625),
                                 ),
                               ],
@@ -689,8 +617,7 @@ class InterestInfoCard extends StatelessWidget {
                           height: 1.6666666666666667),
                     ),
                     Container(
-                      margin:
-                          EdgeInsets.fromLTRB(0, 30, 20, 0),
+                      margin: EdgeInsets.fromLTRB(0, 30, 20, 0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(8),
@@ -700,37 +627,29 @@ class InterestInfoCard extends StatelessWidget {
                         ),
                         boxShadow: [
                           BoxShadow(
-                              color: Color.fromARGB(
-                                  13, 255, 77, 110),
+                              color: Color.fromARGB(13, 255, 77, 110),
                               offset: Offset(0, 4),
                               blurRadius: 14)
                         ],
                         border: Border.all(
-                          color: Color.fromRGBO(
-                              193, 199, 205, 1),
+                          color: Color.fromRGBO(193, 199, 205, 1),
                           width: 1,
                         ),
                       ),
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 12),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           Image.asset(
                               profileDetails != null
-                                  ? profileDetails!
-                                              .smokingHabit
-                                              .name ==
+                                  ? profileDetails!.smokingHabit.name ==
                                           "Smoker"
                                       ? 'images/cigarette.png'
-                                      : profileDetails!
-                                                  .smokingHabit
-                                                  .name ==
+                                      : profileDetails!.smokingHabit.name ==
                                               "NonSmoker"
                                           ? 'images/nonsmokerr.png'
-                                          : profileDetails!
-                                                      .smokingHabit
-                                                      .name ==
+                                          : profileDetails!.smokingHabit.name ==
                                                   "Occasionally"
                                               ? 'images/cigarette.png'
                                               : ""
@@ -745,17 +664,14 @@ class InterestInfoCard extends StatelessWidget {
                               children: <Widget>[
                                 Text(
                                   profileDetails != null
-                                      ? profileDetails!
-                                          .smokingHabit.name
+                                      ? profileDetails!.smokingHabit.name
                                       : "",
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
-                                      color: Color.fromRGBO(
-                                          18, 22, 25, 1),
+                                      color: Color.fromRGBO(18, 22, 25, 1),
                                       fontFamily: 'Poppins',
                                       fontSize: 16,
-                                      fontWeight:
-                                          FontWeight.normal,
+                                      fontWeight: FontWeight.normal,
                                       height: 1.625),
                                 ),
                               ],
@@ -781,8 +697,7 @@ class InterestInfoCard extends StatelessWidget {
                           height: 1.6666666666666667),
                     ),
                     Container(
-                      margin:
-                          EdgeInsets.fromLTRB(0, 30, 0, 0),
+                      margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(8),
@@ -792,37 +707,30 @@ class InterestInfoCard extends StatelessWidget {
                         ),
                         boxShadow: [
                           BoxShadow(
-                              color: Color.fromARGB(
-                                  13, 255, 77, 110),
+                              color: Color.fromARGB(13, 255, 77, 110),
                               offset: Offset(0, 4),
                               blurRadius: 14)
                         ],
                         border: Border.all(
-                          color: Color.fromRGBO(
-                              193, 199, 205, 1),
+                          color: Color.fromRGBO(193, 199, 205, 1),
                           width: 1,
                         ),
                       ),
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 12),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           Image.asset(
                               profileDetails != null
-                                  ? profileDetails!
-                                              .drinkingHabit
-                                              .name ==
+                                  ? profileDetails!.drinkingHabit.name ==
                                           "Alcoholic"
                                       ? 'images/Beer.png'
-                                      : profileDetails!
-                                                  .drinkingHabit
-                                                  .name ==
+                                      : profileDetails!.drinkingHabit.name ==
                                               "Nonalcoholic"
                                           ? 'images/nonalcoholiya.png'
                                           : profileDetails!
-                                                      .drinkingHabit
-                                                      .name ==
+                                                      .drinkingHabit.name ==
                                                   "Occasionally"
                                               ? 'images/Beer.png'
                                               : ""
@@ -836,17 +744,14 @@ class InterestInfoCard extends StatelessWidget {
                               children: <Widget>[
                                 Text(
                                   profileDetails != null
-                                      ? profileDetails!
-                                          .drinkingHabit.name
+                                      ? profileDetails!.drinkingHabit.name
                                       : "",
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
-                                      color: Color.fromRGBO(
-                                          18, 22, 25, 1),
+                                      color: Color.fromRGBO(18, 22, 25, 1),
                                       fontFamily: 'Poppins',
                                       fontSize: 16,
-                                      fontWeight:
-                                          FontWeight.normal,
+                                      fontWeight: FontWeight.normal,
                                       height: 1.625),
                                 ),
                               ],
@@ -884,8 +789,7 @@ class InterestInfoCard extends StatelessWidget {
                     ),
                     boxShadow: [
                       BoxShadow(
-                          color: Color.fromARGB(
-                              13, 255, 77, 110),
+                          color: Color.fromARGB(13, 255, 77, 110),
                           offset: Offset(0, 4),
                           blurRadius: 14)
                     ],
@@ -894,8 +798,7 @@ class InterestInfoCard extends StatelessWidget {
                       width: 1,
                     ),
                   ),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 20, vertical: 12),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
@@ -911,12 +814,10 @@ class InterestInfoCard extends StatelessWidget {
                               'Painting',
                               textAlign: TextAlign.left,
                               style: TextStyle(
-                                  color: Color.fromRGBO(
-                                      18, 22, 25, 1),
+                                  color: Color.fromRGBO(18, 22, 25, 1),
                                   fontFamily: 'Poppins',
                                   fontSize: 16,
-                                  fontWeight:
-                                      FontWeight.normal,
+                                  fontWeight: FontWeight.normal,
                                   height: 1.625),
                             ),
                           ],
@@ -936,8 +837,7 @@ class InterestInfoCard extends StatelessWidget {
                     ),
                     boxShadow: [
                       BoxShadow(
-                          color: Color.fromARGB(
-                              13, 255, 77, 110),
+                          color: Color.fromARGB(13, 255, 77, 110),
                           offset: Offset(0, 4),
                           blurRadius: 14)
                     ],
@@ -946,8 +846,7 @@ class InterestInfoCard extends StatelessWidget {
                       width: 1,
                     ),
                   ),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 20, vertical: 12),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
@@ -963,12 +862,10 @@ class InterestInfoCard extends StatelessWidget {
                               'Photography',
                               textAlign: TextAlign.left,
                               style: TextStyle(
-                                  color: Color.fromRGBO(
-                                      18, 22, 25, 1),
+                                  color: Color.fromRGBO(18, 22, 25, 1),
                                   fontFamily: 'Poppins',
                                   fontSize: 16,
-                                  fontWeight:
-                                      FontWeight.normal,
+                                  fontWeight: FontWeight.normal,
                                   height: 1.625),
                             ),
                           ],
@@ -988,8 +885,7 @@ class InterestInfoCard extends StatelessWidget {
                     ),
                     boxShadow: [
                       BoxShadow(
-                          color: Color.fromARGB(
-                              13, 255, 77, 110),
+                          color: Color.fromARGB(13, 255, 77, 110),
                           offset: Offset(0, 4),
                           blurRadius: 14)
                     ],
@@ -998,8 +894,7 @@ class InterestInfoCard extends StatelessWidget {
                       width: 1,
                     ),
                   ),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 20, vertical: 12),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
@@ -1015,14 +910,12 @@ class InterestInfoCard extends StatelessWidget {
                               'Mountain Hiking',
                               textAlign: TextAlign.left,
                               style: TextStyle(
-                                  color: Color.fromRGBO(
-                                      18, 22, 25, 1),
+                                  color: Color.fromRGBO(18, 22, 25, 1),
                                   fontFamily: 'Poppins',
                                   fontSize: 16,
                                   letterSpacing:
                                       0 /*percentages not used in flutter. defaulting to zero*/,
-                                  fontWeight:
-                                      FontWeight.normal,
+                                  fontWeight: FontWeight.normal,
                                   height: 1.625),
                             ),
                           ],
@@ -1042,8 +935,7 @@ class InterestInfoCard extends StatelessWidget {
                     ),
                     boxShadow: [
                       BoxShadow(
-                          color: Color.fromARGB(
-                              13, 255, 77, 110),
+                          color: Color.fromARGB(13, 255, 77, 110),
                           offset: Offset(0, 4),
                           blurRadius: 14)
                     ],
@@ -1052,8 +944,7 @@ class InterestInfoCard extends StatelessWidget {
                       width: 1,
                     ),
                   ),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 20, vertical: 12),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
@@ -1069,14 +960,12 @@ class InterestInfoCard extends StatelessWidget {
                               'Cooking',
                               textAlign: TextAlign.left,
                               style: TextStyle(
-                                  color: Color.fromRGBO(
-                                      18, 22, 25, 1),
+                                  color: Color.fromRGBO(18, 22, 25, 1),
                                   fontFamily: 'Poppins',
                                   fontSize: 16,
                                   letterSpacing:
                                       0 /*percentages not used in flutter. defaulting to zero*/,
-                                  fontWeight:
-                                      FontWeight.normal,
+                                  fontWeight: FontWeight.normal,
                                   height: 1.625),
                             ),
                           ],
@@ -1096,8 +985,7 @@ class InterestInfoCard extends StatelessWidget {
                     ),
                     boxShadow: [
                       BoxShadow(
-                          color: Color.fromARGB(
-                              13, 255, 77, 110),
+                          color: Color.fromARGB(13, 255, 77, 110),
                           offset: Offset(0, 4),
                           blurRadius: 14)
                     ],
@@ -1106,8 +994,7 @@ class InterestInfoCard extends StatelessWidget {
                       width: 1,
                     ),
                   ),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 20, vertical: 12),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
@@ -1123,12 +1010,10 @@ class InterestInfoCard extends StatelessWidget {
                               'Reading Books',
                               textAlign: TextAlign.left,
                               style: TextStyle(
-                                  color: Color.fromRGBO(
-                                      18, 22, 25, 1),
+                                  color: Color.fromRGBO(18, 22, 25, 1),
                                   fontFamily: 'Poppins',
                                   fontSize: 16,
-                                  fontWeight:
-                                      FontWeight.normal,
+                                  fontWeight: FontWeight.normal,
                                   height: 1.625),
                             ),
                           ],
@@ -1169,8 +1054,7 @@ class ReligionInfoCard extends StatelessWidget {
                 ),
                 boxShadow: [
                   BoxShadow(
-                      color:
-                      Color.fromARGB(53, 61, 75, 92),
+                      color: Color.fromARGB(53, 61, 75, 92),
                       offset: Offset(0, 4),
                       blurRadius: 14)
                 ],
@@ -1182,11 +1066,9 @@ class ReligionInfoCard extends StatelessWidget {
               ),
               child: Stack(children: <Widget>[
                 Container(
-                  margin:
-                  EdgeInsets.fromLTRB(10, 10, 30, 0),
+                  margin: EdgeInsets.fromLTRB(10, 10, 30, 0),
                   child: Row(
-                    mainAxisAlignment:
-                    MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
                         child: Row(
@@ -1200,12 +1082,10 @@ class ReligionInfoCard extends StatelessWidget {
                               'Religion',
                               textAlign: TextAlign.left,
                               style: TextStyle(
-                                  color: Color.fromRGBO(
-                                      164, 19, 60, 1),
+                                  color: Color.fromRGBO(164, 19, 60, 1),
                                   fontFamily: 'Poppins',
                                   fontSize: 16,
-                                  fontWeight:
-                                  FontWeight.bold,
+                                  fontWeight: FontWeight.bold,
                                   height: 1.625),
                             ),
                           ],
@@ -1225,8 +1105,7 @@ class ReligionInfoCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                Positioned(
-                    top: 22, left: 310, child: Text('')),
+                Positioned(top: 22, left: 310, child: Text('')),
               ])),
           Container(
               margin: EdgeInsets.fromLTRB(20, 50, 0, 0),
@@ -1237,24 +1116,19 @@ class ReligionInfoCard extends StatelessWidget {
                   'Religion',
                   textAlign: TextAlign.left,
                   style: TextStyle(
-                      color: Color.fromRGBO(
-                          135, 141, 150, 1),
+                      color: Color.fromRGBO(135, 141, 150, 1),
                       fontFamily: 'Poppins',
                       fontSize: 12,
                       fontWeight: FontWeight.normal,
                       height: 1.6666666666666667),
                 ),
                 Container(
-                  margin:
-                  EdgeInsets.fromLTRB(0, 20, 0, 0),
+                  margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
                   child: Text(
-                    profileDetails != null
-                        ? profileDetails!.religion
-                        : "",
+                    profileDetails != null ? profileDetails!.religion : "",
                     textAlign: TextAlign.left,
                     style: TextStyle(
-                        color:
-                        Color.fromRGBO(18, 22, 25, 1),
+                        color: Color.fromRGBO(18, 22, 25, 1),
                         fontFamily: 'Poppins',
                         fontSize: 14,
                         fontWeight: FontWeight.normal,
@@ -1271,26 +1145,21 @@ class ReligionInfoCard extends StatelessWidget {
                   'Caste',
                   textAlign: TextAlign.left,
                   style: TextStyle(
-                      color: Color.fromRGBO(
-                          135, 141, 150, 1),
+                      color: Color.fromRGBO(135, 141, 150, 1),
                       fontFamily: 'Poppins',
                       fontSize: 12,
                       letterSpacing:
-                      0 /*percentages not used in flutter. defaulting to zero*/,
+                          0 /*percentages not used in flutter. defaulting to zero*/,
                       fontWeight: FontWeight.normal,
                       height: 1.6666666666666667),
                 ),
                 Container(
-                  margin:
-                  EdgeInsets.fromLTRB(0, 20, 0, 0),
+                  margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
                   child: Text(
-                    profileDetails != null
-                        ? profileDetails!.cast
-                        : "",
+                    profileDetails != null ? profileDetails!.cast : "",
                     textAlign: TextAlign.left,
                     style: TextStyle(
-                        color:
-                        Color.fromRGBO(18, 22, 25, 1),
+                        color: Color.fromRGBO(18, 22, 25, 1),
                         fontFamily: 'Poppins',
                         fontSize: 14,
                         fontWeight: FontWeight.normal,
@@ -1307,29 +1176,25 @@ class ReligionInfoCard extends StatelessWidget {
                   'Mother Tongue',
                   textAlign: TextAlign.left,
                   style: TextStyle(
-                      color: Color.fromRGBO(
-                          135, 141, 150, 1),
+                      color: Color.fromRGBO(135, 141, 150, 1),
                       fontFamily: 'Poppins',
                       fontSize: 12,
                       letterSpacing:
-                      0 /*percentages not used in flutter. defaulting to zero*/,
+                          0 /*percentages not used in flutter. defaulting to zero*/,
                       fontWeight: FontWeight.normal,
                       height: 1.6666666666666667),
                 ),
                 Container(
-                  margin:
-                  EdgeInsets.fromLTRB(0, 20, 0, 0),
-                  child: Text(profileDetails != null
-                      ? profileDetails!.motherTongue
-                      : "",
+                  margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                  child: Text(
+                    profileDetails != null ? profileDetails!.motherTongue : "",
                     textAlign: TextAlign.left,
                     style: TextStyle(
-                        color:
-                        Color.fromRGBO(18, 22, 25, 1),
+                        color: Color.fromRGBO(18, 22, 25, 1),
                         fontFamily: 'Poppins',
                         fontSize: 14,
                         letterSpacing:
-                        0 /*percentages not used in flutter. defaulting to zero*/,
+                            0 /*percentages not used in flutter. defaulting to zero*/,
                         fontWeight: FontWeight.normal,
                         height: 1.5714285714285714),
                   ),
@@ -1344,26 +1209,21 @@ class ReligionInfoCard extends StatelessWidget {
                   'Gothra',
                   textAlign: TextAlign.left,
                   style: TextStyle(
-                      color: Color.fromRGBO(
-                          135, 141, 150, 1),
+                      color: Color.fromRGBO(135, 141, 150, 1),
                       fontFamily: 'Poppins',
                       fontSize: 12,
                       letterSpacing:
-                      0 /*percentages not used in flutter. defaulting to zero*/,
+                          0 /*percentages not used in flutter. defaulting to zero*/,
                       fontWeight: FontWeight.normal,
                       height: 1.6666666666666667),
                 ),
                 Container(
-                  margin:
-                  EdgeInsets.fromLTRB(0, 20, 0, 0),
+                  margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
                   child: Text(
-                    profileDetails != null
-                        ? profileDetails!.gothra
-                        : "",
+                    profileDetails != null ? profileDetails!.gothra : "",
                     textAlign: TextAlign.left,
                     style: TextStyle(
-                        color:
-                        Color.fromRGBO(18, 22, 25, 1),
+                        color: Color.fromRGBO(18, 22, 25, 1),
                         fontFamily: 'Poppins',
                         fontSize: 14,
                         fontWeight: FontWeight.normal,
@@ -1383,26 +1243,21 @@ class ReligionInfoCard extends StatelessWidget {
                   'Manglik',
                   textAlign: TextAlign.left,
                   style: TextStyle(
-                      color: Color.fromRGBO(
-                          135, 141, 150, 1),
+                      color: Color.fromRGBO(135, 141, 150, 1),
                       fontFamily: 'Poppins',
                       fontSize: 12,
                       letterSpacing:
-                      0 /*percentages not used in flutter. defaulting to zero*/,
+                          0 /*percentages not used in flutter. defaulting to zero*/,
                       fontWeight: FontWeight.normal,
                       height: 1.6666666666666667),
                 ),
                 Container(
-                  margin:
-                  EdgeInsets.fromLTRB(0, 20, 0, 0),
+                  margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
                   child: Text(
-                    profileDetails != null
-                        ? profileDetails!.manglik.name
-                        : "",
+                    profileDetails != null ? profileDetails!.manglik.name : "",
                     textAlign: TextAlign.left,
                     style: TextStyle(
-                        color:
-                        Color.fromRGBO(18, 22, 25, 1),
+                        color: Color.fromRGBO(18, 22, 25, 1),
                         fontFamily: 'Poppins',
                         fontSize: 14,
                         fontWeight: FontWeight.normal,
@@ -1456,8 +1311,7 @@ class CareerInfoCard extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.fromLTRB(10, 10, 30, 0),
                   child: Row(
-                    mainAxisAlignment:
-                    MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
                         child: Row(
@@ -1471,8 +1325,7 @@ class CareerInfoCard extends StatelessWidget {
                               'Career',
                               textAlign: TextAlign.left,
                               style: TextStyle(
-                                  color: Color.fromRGBO(
-                                      164, 19, 60, 1),
+                                  color: Color.fromRGBO(164, 19, 60, 1),
                                   fontFamily: 'Poppins',
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -1484,7 +1337,6 @@ class CareerInfoCard extends StatelessWidget {
                       //SizedBox(width: 230),
                       InkWell(
                         onTap: () {
-
                           navigateToCareer(context);
                         },
                         child: Image.asset(
@@ -1517,9 +1369,7 @@ class CareerInfoCard extends StatelessWidget {
                   height: 90,
                   margin: EdgeInsets.fromLTRB(0, 20, 20, 0),
                   child: Text(
-                    profileDetails != null
-                        ? profileDetails!.occupation
-                        : "",
+                    profileDetails != null ? profileDetails!.occupation : "",
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       color: Color.fromRGBO(18, 22, 25, 1),
@@ -1535,35 +1385,38 @@ class CareerInfoCard extends StatelessWidget {
             margin: EdgeInsets.fromLTRB(20, 100, 0, 0),
             width: 149,
             height: 46,
-            child: Stack(children: <Widget>[
-              Text(
-                'Annual Income',
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                    color: Color.fromRGBO(135, 141, 150, 1),
-                    fontFamily: 'Poppins',
-                    fontSize: 12,
-                    letterSpacing:
-                    0 /*percentages not used in flutter. defaulting to zero*/,
-                    fontWeight: FontWeight.normal,
-                    height: 1.6666666666666667),
-              ),
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                child: Text(
-                  profileDetails != null
-                      ? profileDetails!.annualIncome.name
-                      : "",
+            child: Stack(
+              children: <Widget>[
+                Text(
+                  'Annual Income',
                   textAlign: TextAlign.left,
                   style: TextStyle(
-                      color: Color.fromRGBO(18, 22, 25, 1),
+                      color: Color.fromRGBO(135, 141, 150, 1),
                       fontFamily: 'Poppins',
-                      fontSize: 14,
+                      fontSize: 12,
+                      letterSpacing:
+                          0 /*percentages not used in flutter. defaulting to zero*/,
                       fontWeight: FontWeight.normal,
-                      height: 1.5714285714285714),
+                      height: 1.6666666666666667),
                 ),
-              ),
-            ],),),
+                Container(
+                  margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                  child: Text(
+                    profileDetails != null
+                        ? profileDetails!.annualIncome.name
+                        : "",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        color: Color.fromRGBO(18, 22, 25, 1),
+                        fontFamily: 'Poppins',
+                        fontSize: 14,
+                        fontWeight: FontWeight.normal,
+                        height: 1.5714285714285714),
+                  ),
+                ),
+              ],
+            ),
+          ),
           Container(
               margin: EdgeInsets.fromLTRB(20, 150, 0, 0),
               width: 149,
@@ -1577,7 +1430,7 @@ class CareerInfoCard extends StatelessWidget {
                       fontFamily: 'Poppins',
                       fontSize: 12,
                       letterSpacing:
-                      0 /*percentages not used in flutter. defaulting to zero*/,
+                          0 /*percentages not used in flutter. defaulting to zero*/,
                       fontWeight: FontWeight.normal,
                       height: 1.6666666666666667),
                 ),
@@ -1593,7 +1446,7 @@ class CareerInfoCard extends StatelessWidget {
                         fontFamily: 'Poppins',
                         fontSize: 14,
                         letterSpacing:
-                        0 /*percentages not used in flutter. defaulting to zero*/,
+                            0 /*percentages not used in flutter. defaulting to zero*/,
                         fontWeight: FontWeight.normal,
                         height: 1.5714285714285714),
                   ),
@@ -1613,7 +1466,7 @@ class CareerInfoCard extends StatelessWidget {
                       fontFamily: 'Poppins',
                       fontSize: 12,
                       letterSpacing:
-                      0 /*percentages not used in flutter. defaulting to zero*/,
+                          0 /*percentages not used in flutter. defaulting to zero*/,
                       fontWeight: FontWeight.normal,
                       height: 1.6666666666666667),
                 ),
@@ -1682,8 +1535,7 @@ class FamilyInfoCard extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.fromLTRB(10, 10, 30, 0),
                   child: Row(
-                    mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
                         child: Row(
@@ -1697,8 +1549,7 @@ class FamilyInfoCard extends StatelessWidget {
                               'Family',
                               textAlign: TextAlign.left,
                               style: TextStyle(
-                                  color: Color.fromRGBO(
-                                      164, 19, 60, 1),
+                                  color: Color.fromRGBO(164, 19, 60, 1),
                                   fontFamily: 'Poppins',
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -1858,6 +1709,142 @@ class FamilyInfoCard extends StatelessWidget {
                   ),
                 ),
               ])),
+          Column(children: [
+            Container(
+                margin: EdgeInsets.fromLTRB(20, 250, 0, 0),
+                width: 149,
+                height: 46,
+                child: Stack(children: <Widget>[
+                  Text(
+                    'Father’s Occupation',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        color: Color.fromRGBO(135, 141, 150, 1),
+                        fontFamily: 'Poppins',
+                        fontSize: 12,
+                        fontWeight: FontWeight.normal,
+                        height: 1.6666666666666667),
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                    child: Text(
+                      this.profileDetails != null
+                          ? profileDetails!.fatherOccupation.name
+                          : "",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          color: Color.fromRGBO(18, 22, 25, 1),
+                          fontFamily: 'Poppins',
+                          fontSize: 14,
+                          letterSpacing:
+                              0 /*percentages not used in flutter. defaulting to zero*/,
+                          fontWeight: FontWeight.normal,
+                          height: 1.5714285714285714),
+                    ),
+                  ),
+                ])),
+            Container(
+                margin: EdgeInsets.fromLTRB(20, 5, 0, 0),
+                width: 149,
+                height: 46,
+                child: Stack(children: <Widget>[
+                  Text(
+                    'Mother’s Occupation',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        color: Color.fromRGBO(135, 141, 150, 1),
+                        fontFamily: 'Poppins',
+                        fontSize: 12,
+                        letterSpacing:
+                            0 /*percentages not used in flutter. defaulting to zero*/,
+                        fontWeight: FontWeight.normal,
+                        height: 1.6666666666666667),
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                    child: Text(
+                      this.profileDetails != null
+                          ? profileDetails!.motherOccupation.name
+                          : "",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          color: Color.fromRGBO(18, 22, 25, 1),
+                          fontFamily: 'Poppins',
+                          fontSize: 14,
+                          letterSpacing:
+                              0 /*percentages not used in flutter. defaulting to zero*/,
+                          fontWeight: FontWeight.normal,
+                          height: 1.5714285714285714),
+                    ),
+                  ),
+                ])),
+            Container(
+                margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                width: 130,
+                height: 46,
+                child: Stack(children: <Widget>[
+                  Container(
+                    child: Text(
+                      'No. of Brother’s/Married',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          color: Color.fromRGBO(135, 141, 150, 1),
+                          fontFamily: 'Poppins',
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                          height: 1.6666666666666667),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                    child: Text(
+                      this.profileDetails != null
+                          ? "${profileDetails!.noOfBrother} Brother ${profileDetails!.brothersMarried} Married"
+                          : "",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          color: Color.fromRGBO(18, 22, 25, 1),
+                          fontFamily: 'Poppins',
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                          height: 1.5714285714285714),
+                    ),
+                  ),
+                ])),
+            Container(
+                margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                width: 130,
+                height: 46,
+                child: Stack(children: <Widget>[
+                  Container(
+                    child: Text(
+                      'No. of Sister’s/Married',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          color: Color.fromRGBO(135, 141, 150, 1),
+                          fontFamily: 'Poppins',
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                          height: 1.6666666666666667),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                    child: Text(
+                      this.profileDetails != null
+                          ? "${profileDetails!.noOfSister} Sister ${profileDetails!.sistersMarried} Married"
+                          : "",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          color: Color.fromRGBO(18, 22, 25, 1),
+                          fontFamily: 'Poppins',
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                          height: 1.5714285714285714),
+                    ),
+                  ),
+                ])),
+          ]),
         ]));
   }
 }
@@ -1899,8 +1886,7 @@ class AboutCard extends StatelessWidget {
           Container(
             margin: EdgeInsets.fromLTRB(10, 10, 30, 0),
             child: Row(
-              mainAxisAlignment:
-              MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Container(
                   child: Row(
@@ -1914,8 +1900,7 @@ class AboutCard extends StatelessWidget {
                         'About',
                         textAlign: TextAlign.left,
                         style: TextStyle(
-                            color: Color.fromRGBO(
-                                164, 19, 60, 1),
+                            color: Color.fromRGBO(164, 19, 60, 1),
                             fontFamily: 'Poppins',
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -1925,13 +1910,12 @@ class AboutCard extends StatelessWidget {
                   ),
                 ),
                 InkWell(
-                  onTap: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(
+                  onTap: () async {
+                    await Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => Bio(
-                          userRepository:
-                          getIt<UserRepository>(),
-                        )));
+                              userRepository: getIt<UserRepository>(),
+                            )));
+                    BlocProvider.of<MyProfileBloc>(context).loadMyData();
                   },
                   child: Image.asset(
                     'images/pen.png',
@@ -1968,6 +1952,7 @@ class BasicInfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(profileDetails.occupation);
     return Container(
         width: 350,
         height: 194,
@@ -2010,8 +1995,8 @@ class BasicInfoCard extends StatelessWidget {
                       SizedBox(width: 7),
                       Container(
                         decoration: BoxDecoration(),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 0, vertical: 0),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 0, vertical: 0),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
@@ -2021,8 +2006,7 @@ class BasicInfoCard extends StatelessWidget {
                                   : "",
                               textAlign: TextAlign.left,
                               style: TextStyle(
-                                  color:
-                                      Color.fromRGBO(18, 22, 25, 1),
+                                  color: Color.fromRGBO(18, 22, 25, 1),
                                   fontFamily: 'Poppins',
                                   fontSize: 16,
                                   letterSpacing:
@@ -2050,13 +2034,10 @@ class BasicInfoCard extends StatelessWidget {
                         child: Row(
                           children: <Widget>[
                             Text(
-                              profileDetails != null
-                                  ? profileDetails!.occupation
-                                  : "",
+                              profileDetails.occupation,
                               textAlign: TextAlign.left,
                               style: TextStyle(
-                                  color:
-                                      Color.fromRGBO(18, 22, 25, 1),
+                                  color: Color.fromRGBO(18, 22, 25, 1),
                                   fontFamily: 'Poppins',
                                   fontSize: 16,
                                   letterSpacing:
@@ -2086,13 +2067,10 @@ class BasicInfoCard extends StatelessWidget {
                           children: <Widget>[
                             Text(
                               // '5’5’’ height',
-                              profileDetails!.height +
-                                  '"' +
-                                  'inches',
+                              profileDetails!.height + '"' + 'inches',
                               textAlign: TextAlign.left,
                               style: TextStyle(
-                                  color:
-                                      Color.fromRGBO(18, 22, 25, 1),
+                                  color: Color.fromRGBO(18, 22, 25, 1),
                                   fontFamily: 'Poppins',
                                   fontSize: 16,
                                   // fontWeight: FontWeight.bold,
@@ -2115,8 +2093,8 @@ class BasicInfoCard extends StatelessWidget {
                       SizedBox(width: 5),
                       Container(
                         decoration: BoxDecoration(),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 0, vertical: 0),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 0, vertical: 0),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
@@ -2126,8 +2104,7 @@ class BasicInfoCard extends StatelessWidget {
                                   : "",
                               textAlign: TextAlign.left,
                               style: TextStyle(
-                                  color:
-                                      Color.fromRGBO(18, 22, 25, 1),
+                                  color: Color.fromRGBO(18, 22, 25, 1),
                                   fontFamily: 'Poppins',
                                   fontSize: 16,
                                   // fontWeight: FontWeight.bold,
@@ -2155,9 +2132,7 @@ class BasicInfoCard extends StatelessWidget {
                       ),
                       SizedBox(width: 5),
                       Text(
-                        profileDetails != null
-                            ? profileDetails!.name
-                            : "",
+                        profileDetails != null ? profileDetails!.name : "",
                         textAlign: TextAlign.left,
                         style: TextStyle(
                             color: Color.fromRGBO(164, 19, 60, 1),
@@ -2170,12 +2145,12 @@ class BasicInfoCard extends StatelessWidget {
                   ),
                 ),
                 InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
+                  onTap: () async {
+                    await Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => About(
-                              userRepository:
-                                  getIt<UserRepository>(),
+                              userRepository: getIt<UserRepository>(),
                             )));
+                    BlocProvider.of<MyProfileBloc>(context).loadMyData();
                   },
                   child: Image.asset(
                     'images/pen.png',
@@ -2190,32 +2165,34 @@ class BasicInfoCard extends StatelessWidget {
   }
 }
 
-
-void OnNavigateToReligion(BuildContext context) {
-
-  Navigator.of(context).push(MaterialPageRoute(
+void OnNavigateToReligion(BuildContext context) async {
+  await Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => Religion(
-        userRepository: getIt<UserRepository>(),
-      )));
+            userRepository: getIt<UserRepository>(),
+          )));
+  BlocProvider.of<MyProfileBloc>(context).loadMyData();
 }
-void navigateToCareer(BuildContext context) {
-  Navigator.of(context).push(MaterialPageRoute(
+
+void navigateToCareer(BuildContext context) async {
+  await Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => Occupations(
             userRepository: getIt<UserRepository>(),
           )));
+  BlocProvider.of<MyProfileBloc>(context).loadMyData();
 }
 
-void navigateToFamily(BuildContext context) {
+void navigateToFamily(BuildContext context) async {
   // print("NAVIGATE${BlocProvider.of<OccupationBloc>(context).myState!.name}");
-  var userRepo = BlocProvider.of<OccupationBloc>(context).userRepository;
-  var countryModel = BlocProvider.of<OccupationBloc>(context).countryModel;
-  var stateModel = BlocProvider.of<OccupationBloc>(context).myState;
-  var city = BlocProvider.of<OccupationBloc>(context).city;
-  Navigator.of(context).push(MaterialPageRoute(
+  // var userRepo = BlocProvider.of<OccupationBloc>(context).userRepository;
+  // var countryModel = BlocProvider.of<OccupationBloc>(context).countryModel;
+  // var stateModel = BlocProvider.of<OccupationBloc>(context).myState;
+  // var city = BlocProvider.of<OccupationBloc>(context).city;
+  await Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => FamilyScreen(
-            userRepository: userRepo,
-            countryModel: countryModel,
-            stateModel: stateModel,
-            city: city,
+            userRepository: getIt<UserRepository>(),
+            countryModel: null,
+            stateModel: null,
+            city: null,
           )));
+  BlocProvider.of<MyProfileBloc>(context).loadMyData();
 }

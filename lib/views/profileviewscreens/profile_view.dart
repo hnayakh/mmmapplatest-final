@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:makemymarry/app/bloc/app_bloc.dart';
+import 'package:makemymarry/app/bloc/app_state.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
+import 'package:makemymarry/locator.dart';
 import 'package:makemymarry/repo/chat_repo.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_helper.dart';
@@ -41,14 +44,13 @@ class ProfileView extends StatelessWidget {
     return MultiBlocProvider(providers: [
       BlocProvider<ProfileViewBloc>(
         create: (BuildContext context) =>
-            ProfileViewBloc(userRepository, profileDetails),
+            ProfileViewBloc(userRepository, profileDetails, ),
       ),
       BlocProvider<MatchingPercentageBloc>(
         create: (BuildContext context) =>
             MatchingPercentageBloc(userRepository, profileDetails),
       )
-    ], child: ProfileViewScreen());
-    //return
+    ], child: ProfileViewScreen());//return
   }
 }
 
@@ -247,7 +249,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
           //   print("MESSAGE${this.message}");
           // }
           this.profileDetails =
-              BlocProvider.of<ProfileViewBloc>(context).profileDetails;
+              BlocProvider.of<ProfileViewBloc>(context).profileDetails!;
 
           if (state is OnLoading) {
             return Scaffold(
@@ -559,7 +561,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                               context.navigate.push(
                                 MaterialPageRoute(
                                   builder: (context) => AudioCallView(
-                                    uid: '',
+                                    uid: profileDetails.id,
                                     imageUrl: profileDetails.images.first,
                                     userRepo: bloc.userRepository,
                                   ),
@@ -626,7 +628,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                               context.navigate.push(
                                 MaterialPageRoute(
                                   builder: (context) => VideoCallView(
-                                    uid: '',
+                                    uid: profileDetails.id,
                                     imageUrl: profileDetails.images.first,
                                   ),
                                 ),
@@ -913,33 +915,10 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                     ),
                   ),
                 ),
-                exist!
-                    ? StreamBuilder<DocumentSnapshot>(
-                        stream: FirebaseFirestore.instance
-                            .collection('userStatus')
-                            .doc(profileDetails.id)
-                            .snapshots(),
-                        builder: (context, snapshot) {
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              //Expanded(
-                              // child:
-                              Container(
-                                height: 8,
-                                width: 8,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: snapshot.data!['status'] == 'Online'
-                                        ? kGreen
-                                        : kError),
-                              ),
-                              // ),
-                              Expanded(child: SizedBox())
-                            ],
-                          );
-                        })
-                    : Column(
+                StreamBuilder<bool>(
+                    stream: getIt<ChatRepo>().getOnlineStatus(profileDetails.id),
+                    builder: (context, snapshot) {
+                      return Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           //Expanded(
@@ -948,12 +927,16 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                             height: 8,
                             width: 8,
                             decoration: BoxDecoration(
-                                shape: BoxShape.circle, color: kGray),
+                                shape: BoxShape.circle,
+                                color: snapshot.data == null? kGray : snapshot.data!
+                                    ? kGreen
+                                    : kError),
                           ),
                           // ),
                           Expanded(child: SizedBox())
                         ],
-                      ),
+                      );
+                    }),
                 profileDetails.activationStatus ==
                         ProfileActivationStatus.Verified
                     ? SvgPicture.asset(

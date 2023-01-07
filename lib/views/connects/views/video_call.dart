@@ -111,7 +111,6 @@ class _State extends State<VideoCallView> {
       },
     ));
 
-    await _engine.enableVideo();
 
     await _engine.setVideoEncoderConfiguration(
       const VideoEncoderConfiguration(
@@ -120,6 +119,9 @@ class _State extends State<VideoCallView> {
         bitrate: 0,
       ),
     );
+
+    await _engine.enableVideo();
+
 
     await _engine.startPreview();
 
@@ -131,6 +133,7 @@ class _State extends State<VideoCallView> {
           .generateAgoraToken(widget.uid, CallType.videoCall);
       res.then((value) async {
         if (value.status == AppConstants.SUCCESS) {
+          channelId = value.token!.channelName;
           _joinChannel(
               value.token!.agoraToken,
               value.token!.channelName);
@@ -148,6 +151,7 @@ class _State extends State<VideoCallView> {
       });
     }
     else{
+      channelId = widget.agoraToken!.channelName;
       _joinChannel(
           widget.agoraToken!.agoraToken,
           widget.agoraToken!.channelName);

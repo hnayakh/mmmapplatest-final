@@ -6,6 +6,7 @@ import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:makemymarry/utils/utility_service.dart';
 
 class ChatRepo {
+
   final FirebaseFirestore firestore;
   final FirebaseChatCore chatService;
   ChatRepo({required this.firestore, required this.chatService});
@@ -103,33 +104,34 @@ class ChatRepo {
         var userDetails = await getChatUser(id: userId);
         var otherUserDetails = otherUser;
         var room = types.Room(
-          id: roomQuery.docs.first.id,
-          type: types.RoomType.direct,
-          users: [userDetails, otherUserDetails],
-            name: (otherUser.firstName ?? "") + " " +(otherUser.lastName ?? ""),
-            imageUrl: otherUser.imageUrl ?? ""
-        );
+            id: roomQuery.docs.first.id,
+            type: types.RoomType.direct,
+            users: [userDetails, otherUserDetails],
+            name:
+                (otherUser.firstName ?? "") + " " + (otherUser.lastName ?? ""),
+            imageUrl: otherUser.imageUrl ?? "");
         return room;
       } else {
         var generatedRoom = await firestore.collection('rooms').add({
           'createdAt': FieldValue.serverTimestamp(),
           'imageUrl': otherUser.imageUrl ?? "",
           'metadata': null,
-          'name': (otherUser.firstName ?? "") +" " +(otherUser.lastName ?? ""),
+          'name':
+              (otherUser.firstName ?? "") + " " + (otherUser.lastName ?? ""),
           'type': types.RoomType.direct.toShortString(),
           'updatedAt': FieldValue.serverTimestamp(),
           'userIds': userIds,
           'userRoles': null,
         });
         var userDetails = await getChatUser(id: userId);
-        var otherUserDetails =otherUser;
+        var otherUserDetails = otherUser;
         var room = types.Room(
-          id: generatedRoom.id,
-          type: types.RoomType.direct,
-          users: [userDetails, otherUserDetails],
-            name: (otherUser.firstName ?? "") + " " + (otherUser.lastName ?? ""),
-            imageUrl: otherUser.imageUrl ?? ""
-        );
+            id: generatedRoom.id,
+            type: types.RoomType.direct,
+            users: [userDetails, otherUserDetails],
+            name:
+                (otherUser.firstName ?? "") + " " + (otherUser.lastName ?? ""),
+            imageUrl: otherUser.imageUrl ?? "");
         return room;
       }
     } catch (e, stackTrace) {
@@ -186,5 +188,83 @@ class ChatRepo {
             .update({'updatedAt': FieldValue.serverTimestamp()});
       }
     } catch (e) {}
+  }
+
+  Future<void> updateOnlineStatus(
+      {required bool isOnline, required String userId}) async {
+    try {
+      var docRef = await firestore.collection('users').doc(userId).get();
+      if (docRef.exists) {
+        if (isOnline) {
+          await docRef.reference.update({
+            'metadata': {'onlineStatus': isOnline}
+          });
+        } else {
+          await docRef.reference.update({
+            'metadata': {'onlineStatus': isOnline},
+            'lastSeen': DateTime.now().millisecondsSinceEpoch
+          });
+        }
+        print("userId $userId's online status ==>> $isOnline updated");
+      }
+    } catch (e, stacktrace) {
+      UtilityService.cprint(e.toString(), stackTrace: stacktrace);
+    }
+  }
+
+  Stream<List<String>> getOnlineUsers() {
+    try {
+      var docRef = firestore
+          .collection('users')
+          .where('metadata', isEqualTo: {'onlineStatus': true});
+      return docRef
+          .snapshots()
+          .asyncMap((query) => query.docs.map((e) => e.id).toList())
+          .asBroadcastStream();
+    } catch (e, stacktrace) {
+      UtilityService.cprint(e.toString(), stackTrace: stacktrace);
+      rethrow;
+    }
+  }
+
+  Stream<bool> getOnlineStatus(String userId) {
+    try {
+      var docRef = firestore.collection('users').doc(userId);
+
+      print(userId);
+      print("---------------------- >>>>");
+      return docRef.snapshots().asyncMap(
+          (event) async => (await event.get('metadata'))['onlineStatus']);
+    } catch (e, stacktrace) {
+      print("---------------------- >>>>");
+      UtilityService.cprint(e.toString(), stackTrace: stacktrace);
+      rethrow;
+    }
+  }
+
+  Future<int> getMessageCount(
+      {required String userId, required String otherUser}) async {
+    try {
+      final userIds = [userId, otherUser]..sort();
+
+      final roomQuery = await firestore
+          .collection('rooms')
+          .where('type', isEqualTo: types.RoomType.direct.toShortString())
+          .where('userIds', isEqualTo: userIds)
+          .limit(1)
+          .get();
+      if (roomQuery.docs.isNotEmpty) {
+        return (await roomQuery.docs.first.reference
+                .collection('messages')
+                .count()
+                .get())
+            .count;
+      } else {
+        return 0;
+      }
+    } catch (e, stacktrace) {
+      UtilityService.cprint(e.toString(), stackTrace: stacktrace);
+      rethrow;
+    }
   }
 }
