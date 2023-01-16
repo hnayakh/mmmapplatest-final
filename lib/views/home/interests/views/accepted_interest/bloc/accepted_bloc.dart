@@ -1,8 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/datamodels/interests_model.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
+import 'package:makemymarry/views/chat_room/chat_page.dart';
 
+import '../../../../../../locator.dart';
+import '../../../../../../repo/chat_repo.dart';
 import 'accepted_events.dart';
 import 'accepted_states.dart';
 
@@ -49,6 +53,19 @@ class AcceptedBloc extends Bloc<AcceptedEvents, AcceptedStates> {
       } else {
         yield OnError(result.message);
       }
+      var otherUser =
+      await getIt<ChatRepo>().getChatUser(id: event.userId);
+      var chatRoom =
+      await getIt<ChatRepo>().getChatRoom(this.userRepository.useDetails!.id, otherUser);
+      navigatorKey.currentState!.push(
+        MaterialPageRoute(
+          builder: (context) => ChatPage(
+            room: chatRoom,
+            userRepo: getIt<UserRepository>(),
+            allowCalls: false,
+          ),
+        ),
+      );
     }
   }
 }

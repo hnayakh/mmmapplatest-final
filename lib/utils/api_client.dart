@@ -406,6 +406,47 @@ class ApiClient {
     }
   }
 
+  Future<SigninResponse> updateLifeStyle(
+      String uid, List<String> lifeStyles,) async {
+    try {
+      Response response =
+          await this.dio.post(AppConstants.ENDPOINT + "users/lifestyle", data: {
+        "userBasicId": uid,
+        "lifestyle": lifeStyles.join(", "),
+      });
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return SigninResponse.fromJson(response.data);
+      } else {
+        return SigninResponse.fromError("Error Occurred. Please try again.");
+      }
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      return SigninResponse.fromError("Error Occurred. Please try again.");
+    }
+  }
+ Future<SigninResponse> updateHobby(
+      String uid, List<String> hobbies,) async {
+    try {
+      Response response =
+          await this.dio.post(AppConstants.ENDPOINT + "users/hobbies", data: {
+        "userBasicId": uid,
+        "hobbies": hobbies.join(", "),
+      });
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return SigninResponse.fromJson(response.data);
+      } else {
+        return SigninResponse.fromError("Error Occurred. Please try again.");
+      }
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      return SigninResponse.fromError("Error Occurred. Please try again.");
+    }
+  }
+
   Future<DocumentUploadResponse> updateDoc(
       IdProofType idProof, List<String> images, String id) async {
     try {
@@ -922,9 +963,9 @@ class ApiClient {
         "occupation": occupation.map((e) => e!).toList(),
         "maxIncome": annualIncome.map((e) => e.index).toList(),
         "minIncome": annualIncome.map((e) => e.index).toList(),
-        "dietaryHabits": annualIncome.map((e) => e.index).toList(),
-        "drinkingHabits": annualIncome.map((e) => e.index).toList(),
-        "smokingHabits": annualIncome.map((e) => e.index).toList(),
+        "dietaryHabits": eatingHabit.map((e) => e.index).toList(),
+        "drinkingHabits": drinkingHabit.map((e) => e.index).toList(),
+        "smokingHabits": smokingHabit.map((e) => e.index).toList(),
         "challenged": abilityStatus.index
       });
       if (response.statusCode == 200 || response.statusCode == 201) {

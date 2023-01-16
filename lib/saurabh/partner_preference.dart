@@ -433,7 +433,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                   height: 20,
                 ),
                 Text(
-                  "Personal Peference",
+                  "Personal Preference",
                   style:
                       MmmTextStyles.bodyMediumSmall(textColor: Colors.black87),
                 ),
@@ -539,11 +539,11 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                 SizedBox(
                   height: 10,
                 ),
-                MmmButtons.myProfileButtons("Sub-Cast", action: () {}),
+                // MmmButtons.myProfileButtons("Sub-Cast", action: () {}),
                 // buildCaste(),
-                SizedBox(
-                  height: 10,
-                ),
+                // SizedBox(
+                //   height: 10,
+                // ),
                 // MmmButtons.myProfileButtons("Mother Tongue", action: () {}),
                 buildMotherTongue(),
                 SizedBox(
@@ -554,9 +554,9 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                 //   height: 10,
                 // ),
                 // MmmButtons.myProfileButtons("Manglink", action: () {}),
-                SizedBox(
-                  height: 24,
-                ),
+                // SizedBox(
+                //   height: 24,
+                // ),
                 MmmButtons.categoryButtons(
                     'Gothra',
                     this.gothra.length != 0 ? gothra : 'Select your gothra',
@@ -849,7 +849,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
     String value = "";
     print("Hello$interestFilter");
     for (var i = 0; i < interestFilter.length; i++) {
-      value = AppHelper.getStringFromEnum(interestFilter[i]);
+      value = value + AppHelper.getStringFromEnum(interestFilter[i]);
       if (i < interestFilter.length - 1) {
         value = value + ", ";
       }
@@ -877,7 +877,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
             ));
     if (result != null && result is List<EatingHabit>) {
       BlocProvider.of<ProfilePreferenceBloc>(context)
-          .add(profilepreferenceEvent.DietrySelected(result));
+          .add(profilepreferenceEvent.DietarySelected(result));
     }
   }
 
@@ -885,7 +885,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
     String value = "";
     print("Hello$eatingStatus");
     for (var i = 0; i < eatingStatus.length; i++) {
-      value = AppHelper.getStringFromEnum(eatingStatus[i]);
+      value = value + AppHelper.getStringFromEnum(eatingStatus[i]);
       if (i < eatingStatus.length - 1) {
         value = value + ", ";
       }
@@ -921,7 +921,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
     String value = "";
     print("Hello$smokingStatus");
     for (var i = 0; i < smokingStatus.length; i++) {
-      value = AppHelper.getStringFromEnum(smokingStatus[i]);
+      value = value + AppHelper.getStringFromEnum(smokingStatus[i]);
       if (i < smokingStatus.length - 1) {
         value = value + ", ";
       }
@@ -957,7 +957,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
     String value = "";
     print("Hello$drinkingStatus");
     for (var i = 0; i < drinkingStatus.length; i++) {
-      value = AppHelper.getStringFromEnum(drinkingStatus[i]);
+      value = value + AppHelper.getStringFromEnum(drinkingStatus[i]);
       if (i < drinkingStatus.length - 1) {
         value = value + ", ";
       }
@@ -967,20 +967,18 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
 
   Widget buildOccupation() {
     return MmmButtons.categoryButtons(
-        'Occupation',
-        occupation.length > 0
-            ? getOccupationText(occupation)
-            : 'Does not matter',
-        'Select your occupation',
-        'images/rightArrow.svg',
-        action: () {
-          selectOccupation(context);
-        },
-        showCancel: occupation.length > 0,
-        cancelAction: () {
-          BlocProvider.of<ProfilePreferenceBloc>(context)
-              .add(RemoveOccupation());
-        });
+      'Occupation',
+      occupation.length > 0 ? getOccupationText(occupation) : 'Does not matter',
+      'Select your occupation',
+      'images/rightArrow.svg',
+      action: () {
+        selectOccupation(context);
+      },
+      showCancel: occupation.length > 0,
+      cancelAction: () {
+        BlocProvider.of<ProfilePreferenceBloc>(context).add(RemoveOccupation());
+      },
+    );
   }
 
   void selectOccupation(BuildContext context) async {
@@ -989,15 +987,15 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
         .masterData
         .listOccupation;
     var result = await showModalBottomSheet(
-        context: context,
-        backgroundColor: Colors.transparent,
-        isScrollControlled: true,
-        builder: (context) => OccupationPreferenceSheet(
-              list: list,
-              selected: this.occupation,
-            ));
-
-    if (result != null && result is List<String>) {
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) => OccupationPreferenceSheet(
+        list: list,
+        selected: this.occupation,
+      ),
+    );
+    if (result != null && result is List<String?>) {
       BlocProvider.of<ProfilePreferenceBloc>(context)
           .add(profilepreferenceEvent.OnOccupationSelected(result));
     }
@@ -1007,7 +1005,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
     String value = "";
     for (var i = 0; i < occupation.length; i++) {
       value = value + occupation[i]!;
-      if (i < subCaste.length - 1) {
+      if (i < occupation.length - 1) {
         value = value + ", ";
       }
     }
@@ -1256,13 +1254,17 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
   Widget buildMaritalStatus() {
     return MmmButtons.categoryButtons(
         'Marital Status',
-        this.maritalStatus != []
+        this.maritalStatus.isNotEmpty
             ? getStringFrom(this.maritalStatus)
-            : 'Select your marital status',
+            : 'Does not matter',
         'Select your marital status',
         'images/rightArrow.svg', action: () {
       showMaritalStatusBottomSheet();
-    });
+    }, showCancel: maritalStatus.length > 0,
+        cancelAction: () {
+          BlocProvider.of<ProfilePreferenceBloc>(context)
+              .add(RemoveMaritalStatus());
+        });
   }
 
   void showMaritalStatusBottomSheet() async {

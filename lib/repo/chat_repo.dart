@@ -202,7 +202,7 @@ class ChatRepo {
         } else {
           await docRef.reference.update({
             'metadata': {'onlineStatus': isOnline},
-            'lastSeen': DateTime.now().millisecondsSinceEpoch
+            'lastSeen': FieldValue.serverTimestamp()
           });
         }
         print("userId $userId's online status ==>> $isOnline updated");

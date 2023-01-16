@@ -52,6 +52,27 @@ class _InterestStatusScreenState extends State<InterestStatusScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(74),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [kSecondary, kPrimary],
+              begin: Alignment.bottomRight,
+              end: Alignment.topLeft,
+            ),
+          ),
+          child: AppBar(
+            toolbarHeight: 74,
+            title: Text(
+              "Interests",
+              style: MmmTextStyles.heading4(textColor: kLight2),
+            ),
+            backgroundColor: Colors.transparent,
+            elevation: 0.0,
+          ),
+        ),
+      ),
       body: BlocConsumer<InterestsBloc, InterestStates>(
         builder: (context, state) {
           initData();
@@ -65,75 +86,50 @@ class _InterestStatusScreenState extends State<InterestStatusScreen>
               ),
             );
           }
-          return Container(
-            child: Column(
-              children: [
-                Container(
-                  child: PreferredSize(
-                      preferredSize: Size.fromHeight(74),
-                      child: Container(
-                          child: AppBar(
-                        toolbarHeight: 74,
-                        title: Text(
-                          "Interests",
-                          style: MmmTextStyles.heading4(textColor: kLight2),
-                        ),
-                        backgroundColor: Colors.transparent,
-                        elevation: 0.0,
-                      ))),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [kSecondary, kPrimary],
-                        begin: Alignment.bottomRight,
-                        end: Alignment.topLeft),
+          return Column(
+            children: [
+              TabBar(
+                controller: tabController,
+                indicator: UnderlineTabIndicator(
+                    borderSide: BorderSide(
+                      width: 4.0,
+                      color: kPrimary,
+                    ),
+                    insets: EdgeInsets.symmetric(horizontal: 16.0)),
+                automaticIndicatorColorAdjustment: true,
+                labelColor: kPrimary,
+                labelStyle: MmmTextStyles.heading6(),
+                unselectedLabelColor: kDark5,
+                unselectedLabelStyle: MmmTextStyles.heading6(),
+                tabs: [
+                  Tab(
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Sent',
+                      ),
+                    ),
                   ),
-                ),
-                Material(
-                  color: Colors.white,
-                  child: TabBar(
-                    controller: tabController,
-                    indicator: UnderlineTabIndicator(
-                        borderSide: BorderSide(
-                          width: 4.0,
-                          color: kPrimary,
-                        ),
-                        insets: EdgeInsets.symmetric(horizontal: 16.0)),
-                    automaticIndicatorColorAdjustment: true,
-                    labelColor: kPrimary,
-                    labelStyle: MmmTextStyles.heading6(),
-                    unselectedLabelColor: kDark5,
-                    unselectedLabelStyle: MmmTextStyles.heading6(),
-                    tabs: [
-                      Tab(
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Sent',
-                          ),
-                        ),
+                  Tab(
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Received',
                       ),
-                      Tab(
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Received',
-                          ),
-                        ),
-                      ),
-                      Tab(
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Accepted',
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                  elevation: 4,
-                ),
-                Expanded(
-                    child: TabBarView(
+                  Tab(
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Accepted',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: TabBarView(
                   controller: tabController,
                   physics: NeverScrollableScrollPhysics(),
                   children: [
@@ -152,17 +148,19 @@ class _InterestStatusScreenState extends State<InterestStatusScreen>
                         userRepository: BlocProvider.of<InterestsBloc>(context)
                             .userRepository)
                   ],
-                ))
-              ],
-            ),
+                ),
+              ),
+            ],
           );
         },
         listener: (context, state) {
           if (state is OnError) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(state.message),
-              backgroundColor: kError,
-            ));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+                backgroundColor: kError,
+              ),
+            );
           }
         },
       ),

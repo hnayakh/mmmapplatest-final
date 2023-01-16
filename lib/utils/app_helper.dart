@@ -80,7 +80,8 @@ class AppHelper {
 
   static String getAgeFromDob(String dateOfBirth) {
     DateFormat dateFormat = DateFormat(AppConstants.SERVERDATEFORMAT);
-    var date = dateFormat.parse(dateOfBirth.isEmpty ? "2000-01-01" : dateOfBirth);
+    var date =
+        dateFormat.parse(dateOfBirth.isEmpty ? "2000-01-01" : dateOfBirth);
     return (DateTime.now().difference(date).inDays / 365).round().toString();
   }
 
@@ -169,6 +170,27 @@ class AppHelper {
         'Social'
       ];
       return interestFilter[enumEntry.index];
+    } else if (enumName == 'InterestFilter') {
+      List<String> interestFilter = [
+        'Does not Matter',
+        'Sports',
+        'Travel',
+        'Photography',
+        'Gaming',
+        'Singing',
+        'Dance',
+        'Food',
+        'Music',
+        'Art',
+        'Cooking',
+        'Fashion',
+        'vlogging',
+        'Animals',
+        'Nature',
+        'Tech',
+        'Social'
+      ];
+      return interestFilter[enumEntry.index];
     } else if (enumName == 'AbilityStatus') {
       List<String> abilityStatus = [
         'Normal',
@@ -184,21 +206,23 @@ class AppHelper {
       return childrenStatus[enumEntry.index];
     } else if (enumName == 'EatingHabit') {
       List<String> eatingStatus = [
-        'Vegetarrian',
-        'Eggitarrian',
-        'Nonvegetarrian',
+        'Not Specified',
+        'Vegetarian',
+        'Eggetarian',
+        'Non Vegetarian',
       ];
       return eatingStatus[enumEntry.index];
     } else if (enumName == 'EatingHabitFilter') {
       List<String> eatingFilterStatus = [
-        'Doesnot matter'
-            'Vegetarrian',
-        'Eggitarrian',
-        'Nonvegetarrian',
+        'Does not matter',
+        'Vegetarian',
+        'Eggetarian',
+        'Non Vegetarian',
       ];
       return eatingFilterStatus[enumEntry.index];
     } else if (enumName == 'SmokingHabit') {
       List<String> smokingStatus = [
+        'Not Specified',
         'Smoker',
         'NonSmoker',
         'Occasionally',
@@ -206,14 +230,15 @@ class AppHelper {
       return smokingStatus[enumEntry.index];
     } else if (enumName == 'SmokingHabitFilter') {
       List<String> smokingFilterStatus = [
-        'Doesnot matter'
-            'Smoker',
+        'Does not matter',
+        'Smoker',
         'NonSmoker',
         'Occasionally',
       ];
       return smokingFilterStatus[enumEntry.index];
     } else if (enumName == 'DrinkingHabit') {
       List<String> drinkingStatus = [
+        'Not Specified',
         'Alcoholic',
         'Non alcoholic',
         'Occasionally',
@@ -221,8 +246,8 @@ class AppHelper {
       return drinkingStatus[enumEntry.index];
     } else if (enumName == 'DrinkingHabitFilter') {
       List<String> drinkingFilterStatus = [
-        'Doesnot matter'
-            'Alcoholic',
+        'Does not matter',
+        'Alcoholic',
         'Non alcoholic',
         'Occasionally',
       ];

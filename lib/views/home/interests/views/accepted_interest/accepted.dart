@@ -10,8 +10,14 @@ import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/connect_pages/call/in_app_call.dart';
+import '../../../../../app/bloc/app_bloc.dart';
+import '../../../../../app/bloc/app_event.dart';
+import '../../../../../app/bloc/app_state.dart';
 import '../../../../../locator.dart';
+import '../../../../../repo/chat_repo.dart';
+import '../../../../chat_room/chat_page.dart';
 import '../../../../profileviewscreens/profile_view.dart';
+import '../../../menu/wallet/recharge/recharge_connect_screen.dart';
 import 'bloc/accepted_bloc.dart';
 import 'bloc/accepted_events.dart';
 import 'bloc/accepted_states.dart';
@@ -223,24 +229,22 @@ class AcceptedScreen extends StatelessWidget {
                     Row(
                       children: [
                         InkWell(
-                          onTap: () async{
+                          onTap: () async {
                             var data = await getIt<UserRepository>()
                                 .getOtheruserDetails(
-                                listAccepted[index].user.id,
-                                ProfileActivationStatus.Verified);
-                            Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (context) => ProfileView(
-                                      userRepository:
-                                      getIt<UserRepository>(),
-                                      profileDetails:
-                                      data.profileDetails,
+                                    listAccepted[index].user.id,
+                                    ProfileActivationStatus.Verified);
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => ProfileView(
+                                      userRepository: getIt<UserRepository>(),
+                                      profileDetails: data.profileDetails,
                                     )));
                           },
                           child: Text(
                             listAccepted[index].user.displayId.toUpperCase(),
                             textScaleFactor: 1.0,
-                            style: MmmTextStyles.bodyRegular(textColor: kPrimary),
+                            style:
+                                MmmTextStyles.bodyRegular(textColor: kPrimary),
                           ),
                         ),
                         SizedBox(
@@ -295,14 +299,74 @@ class AcceptedScreen extends StatelessWidget {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.30,
                     ),
-                    listAccepted[index].user.connectStatus
-                        ? MmmButtons.connectButton('Call Now', action: () {})
-                        : MmmButtons.connectButton('Connect Now', action: () {
-                            BlocProvider.of<AcceptedBloc>(context)
-                                .add(ConnectNow(listAccepted[index].user.id));
-                            // var user = listAccepted[index].user;
-                            // navigateToInAppCall(context, user);
-                          }),
+                    // listAccepted[index].user.connectStatus
+                    //     ? MmmButtons.connectButton('Call Now', action: () {})
+                    //     :
+                    MmmButtons.connectButton(
+                      'Connect Now',
+                      action: () async {
+                        if (listAccepted[index].user.connectStatus) {
+                          var otherUser = await getIt<ChatRepo>().getChatUser(
+                              id: listAccepted[index].requestedUserBasicId);
+                          var chatRoom = await getIt<ChatRepo>().getChatRoom(
+                              listAccepted[index].requestingUserBasicId,
+                              otherUser);
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ChatPage(
+                                room: chatRoom,
+                                userRepo: getIt<UserRepository>(),
+                              ),
+                            ),
+                          );
+                        } else {
+                          var appBloc = BlocProvider.of<AppBloc>(context);
+                          appBloc.add(RefreshWalletCount());
+                          if ((appBloc.state as AppLoggedInState).connectCount >
+                              0) {
+                            var bloc = BlocProvider.of<AcceptedBloc>(context);
+                            await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return MmmWidgets.requestConnectWidget(
+                                  name: listAccepted[index].user.name,
+                                  imageUrl: listAccepted[index].user.imageURL,
+                                  isVerified:
+                                      listAccepted[index].user.isActive == 1,
+                                  onConfirm: () {
+                                    // bloc.add(ConnectNow(
+                                    // connectById: listAccepted[index]
+                                    //     .requestingUserBasicId,
+                                    // connectToId: listAccepted[index]
+                                    //     .requestedUserBasicId));
+                                  },
+                                );
+                              },
+                            );
+                            appBloc.add(RefreshWalletCount());
+                          } else {
+                            await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return MmmWidgets.lowBalanceWidget(
+                                  onConfirm: () {
+                                    Navigator.of(context).pop();
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => RechargeConnect(
+                                          userRepository:
+                                              getIt<UserRepository>(),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            );
+                          }
+                        }
+                      },
+                    ),
                   ],
                 )
               ],

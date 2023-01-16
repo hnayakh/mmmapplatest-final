@@ -18,6 +18,7 @@ import 'package:makemymarry/views/profilescreens/bio/views/bio.dart';
 import 'package:makemymarry/views/profilescreens/family/family.dart';
 import 'package:makemymarry/views/profilescreens/family/family_details/bloc/family_details_bloc.dart';
 import 'package:makemymarry/views/profilescreens/habbit/habit_bloc.dart';
+import 'package:makemymarry/views/profilescreens/hobbies/hobby_details_view.dart';
 import 'package:makemymarry/views/profilescreens/occupation/views/occupation.dart';
 import 'package:makemymarry/views/profilescreens/occupation/bloc/occupation_bloc.dart';
 import 'package:makemymarry/views/profilescreens/religion/bloc/religion_bloc.dart';
@@ -200,7 +201,7 @@ class MyProfileBody extends StatelessWidget {
                 SizedBox(height: 20),
                 InterestInfoCard(profileDetails: profileDetails),
                 SizedBox(height: 20),
-                LifestyleInfoCard(),
+                LifestyleInfoCard(profileDetails: profileDetails),
               ],
             ),
           ));
@@ -215,13 +216,15 @@ class MyProfileBody extends StatelessWidget {
 class LifestyleInfoCard extends StatelessWidget {
   const LifestyleInfoCard({
     Key? key,
+    required this.profileDetails,
   }) : super(key: key);
 
+  final ProfileDetails profileDetails;
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 350,
-      height: 250,
+
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(8),
@@ -241,7 +244,8 @@ class LifestyleInfoCard extends StatelessWidget {
           width: 1,
         ),
       ),
-      child: Stack(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
             margin: EdgeInsets.fromLTRB(10, 10, 30, 0),
@@ -281,149 +285,76 @@ class LifestyleInfoCard extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            margin: EdgeInsets.fromLTRB(15, 60, 20, 0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(8),
-                topRight: Radius.circular(8),
-                bottomLeft: Radius.circular(8),
-                bottomRight: Radius.circular(8),
-              ),
-              boxShadow: [
-                BoxShadow(
-                    color: Color.fromARGB(13, 255, 77, 110),
-                    offset: Offset(0, 4),
-                    blurRadius: 14)
-              ],
-              border: Border.all(
-                color: Color.fromRGBO(193, 199, 205, 1),
-                width: 1,
-              ),
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Image.asset(
-                  'images/House.png',
-                ),
-                SizedBox(width: 8),
-                Container(
-                  decoration: BoxDecoration(),
-                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                  child: Row(
-                    children: <Widget>[
-                      Text(
-                        'House',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                            color: Color.fromRGBO(18, 22, 25, 1),
-                            fontFamily: 'Poppins',
-                            fontSize: 16,
-                            fontWeight: FontWeight.normal,
-                            height: 1.625),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+          Wrap(
+            crossAxisAlignment: WrapCrossAlignment.start,
+            runAlignment: WrapAlignment.start,
+            alignment: WrapAlignment.start,
+            children: <Widget>[
+              ...(profileDetails.lifeStyle
+                  ?.map(
+                    (e) => LifeStyleTile(
+                    lifestyle: LifeStyleType.values
+                        .where((element) => element.name == e)
+                        .first),
+              )
+                  .toList() ??
+                  <Widget>[]),
+            ],
           ),
-          Container(
-            margin: EdgeInsets.fromLTRB(155, 60, 20, 0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(8),
-                topRight: Radius.circular(8),
-                bottomLeft: Radius.circular(8),
-                bottomRight: Radius.circular(8),
-              ),
-              boxShadow: [
-                BoxShadow(
-                    color: Color.fromARGB(13, 255, 77, 110),
-                    offset: Offset(0, 4),
-                    blurRadius: 14)
-              ],
-              border: Border.all(
-                color: Color.fromRGBO(193, 199, 205, 1),
-                width: 1,
-              ),
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Image.asset(
-                  'images/Factory.png',
-                ),
-                SizedBox(width: 8),
-                Container(
-                  decoration: BoxDecoration(),
-                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                  child: Row(
-                    children: <Widget>[
-                      Text(
-                        'Business',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                            color: Color.fromRGBO(18, 22, 25, 1),
-                            fontFamily: 'Poppins',
-                            fontSize: 16,
-                            fontWeight: FontWeight.normal,
-                            height: 1.625),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+        ],
+      ),
+    );
+  }
+}
+
+class LifeStyleTile extends StatelessWidget {
+  const LifeStyleTile({
+    Key? key,
+    required this.lifestyle,
+  }) : super(key: key);
+
+  final LifeStyleType lifestyle;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(20, 8, 8, 0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(
+          8
+        ),
+        boxShadow: [
+          BoxShadow(
+              color: Color.fromARGB(13, 255, 77, 110),
+              offset: Offset(0, 4),
+              blurRadius: 14)
+        ],
+        border: Border.all(
+          color: Color.fromRGBO(193, 199, 205, 1),
+          width: 1,
+        ),
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          SvgPicture.asset(
+            lifestyle.asset,
           ),
+          SizedBox(width: 8),
           Container(
-            margin: EdgeInsets.fromLTRB(15, 130, 20, 0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(8),
-                topRight: Radius.circular(8),
-                bottomLeft: Radius.circular(8),
-                bottomRight: Radius.circular(8),
-              ),
-              boxShadow: [
-                BoxShadow(
-                    color: Color.fromARGB(13, 255, 77, 110),
-                    offset: Offset(0, 4),
-                    blurRadius: 14)
-              ],
-              border: Border.all(
-                color: Color.fromRGBO(193, 199, 205, 1),
-                width: 1,
-              ),
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            decoration: BoxDecoration(),
+            padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
             child: Row(
-              mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Image.asset(
-                  'images/car.png',
-                ),
-                SizedBox(width: 8),
-                Container(
-                  decoration: BoxDecoration(),
-                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                  child: Row(
-                    children: <Widget>[
-                      Text(
-                        'Car',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                            color: Color.fromRGBO(18, 22, 25, 1),
-                            fontFamily: 'Poppins',
-                            fontSize: 16,
-                            fontWeight: FontWeight.normal,
-                            height: 1.625),
-                      ),
-                    ],
-                  ),
+                Text(
+                  lifestyle.label,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                      color: Color.fromRGBO(18, 22, 25, 1),
+                      fontFamily: 'Poppins',
+                      fontSize: 16,
+                      fontWeight: FontWeight.normal,
+                      height: 1.625),
                 ),
               ],
             ),
@@ -445,29 +376,29 @@ class InterestInfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.fromLTRB(1, 0, 0, 0),
-        width: 350,
-        height: 660,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(8),
-            topRight: Radius.circular(8),
-            bottomLeft: Radius.circular(8),
-            bottomRight: Radius.circular(8),
-          ),
-          boxShadow: [
-            BoxShadow(
-                color: Color.fromARGB(53, 61, 75, 92),
-                offset: Offset(0, 4),
-                blurRadius: 14)
-          ],
-          color: Color.fromRGBO(255, 255, 255, 1),
-          border: Border.all(
-            color: Color.fromRGBO(240, 239, 245, 1),
-            width: 1,
-          ),
+      margin: EdgeInsets.fromLTRB(1, 0, 0, 0),
+      width: 350,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(8),
+          topRight: Radius.circular(8),
+          bottomLeft: Radius.circular(8),
+          bottomRight: Radius.circular(8),
         ),
-        child: Stack(children: <Widget>[
+        boxShadow: [
+          BoxShadow(
+              color: Color.fromARGB(53, 61, 75, 92),
+              offset: Offset(0, 4),
+              blurRadius: 14)
+        ],
+        color: Color.fromRGBO(255, 255, 255, 1),
+        border: Border.all(
+          color: Color.fromRGBO(240, 239, 245, 1),
+          width: 1,
+        ),
+      ),
+      child: Column(
+        children: <Widget>[
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -682,10 +613,11 @@ class InterestInfoCard extends StatelessWidget {
                     ),
                   ])),
               Container(
-                  margin: EdgeInsets.fromLTRB(20, 10, 0, 0),
-                  // width: 250,
-                  // height: 100,
-                  child: Stack(children: <Widget>[
+                margin: EdgeInsets.fromLTRB(20, 10, 0, 0),
+                // width: 250,
+                // height: 100,
+                child: Stack(
+                  children: <Widget>[
                     Text(
                       'Alcoholic',
                       textAlign: TextAlign.left,
@@ -760,14 +692,17 @@ class InterestInfoCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                  ])),
+                  ],
+                ),
+              ),
             ],
           ),
           Container(
-              margin: EdgeInsets.fromLTRB(15, 350, 0, 0),
-              width: 400,
-              height: 320,
-              child: Stack(children: <Widget>[
+            margin: EdgeInsets.fromLTRB(15, 0, 0, 0),
+            width: 400,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 Text(
                   'Hobbies',
                   textAlign: TextAlign.left,
@@ -778,252 +713,86 @@ class InterestInfoCard extends StatelessWidget {
                       fontWeight: FontWeight.normal,
                       height: 1.6666666666666667),
                 ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(8),
-                      topRight: Radius.circular(8),
-                      bottomLeft: Radius.circular(8),
-                      bottomRight: Radius.circular(8),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Color.fromARGB(13, 255, 77, 110),
-                          offset: Offset(0, 4),
-                          blurRadius: 14)
-                    ],
-                    border: Border.all(
-                      color: Color.fromRGBO(193, 199, 205, 1),
-                      width: 1,
-                    ),
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Image.asset(
-                        'images/paint.png',
-                      ),
-                      SizedBox(width: 8),
-                      Container(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Text(
-                              'Painting',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  color: Color.fromRGBO(18, 22, 25, 1),
-                                  fontFamily: 'Poppins',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.normal,
-                                  height: 1.625),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.start,
+                  runAlignment: WrapAlignment.start,
+                  alignment: WrapAlignment.start,
+                  children: <Widget>[
+                    ...(profileDetails.hobbies
+                            ?.map(
+                              (e) => ProfileHobbyTile(
+                                  hobby: HobbyType.values
+                                      .where((element) => element.name == e)
+                                      .first),
+                            )
+                            .toList() ??
+                        <Widget>[]),
+                  ],
                 ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(140, 30, 0, 0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(8),
-                      topRight: Radius.circular(8),
-                      bottomLeft: Radius.circular(8),
-                      bottomRight: Radius.circular(8),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Color.fromARGB(13, 255, 77, 110),
-                          offset: Offset(0, 4),
-                          blurRadius: 14)
-                    ],
-                    border: Border.all(
-                      color: Color.fromRGBO(193, 199, 205, 1),
-                      width: 1,
-                    ),
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Image.asset(
-                        'images/Camera.png',
-                      ),
-                      SizedBox(width: 8),
-                      Container(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Text(
-                              'Photography',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  color: Color.fromRGBO(18, 22, 25, 1),
-                                  fontFamily: 'Poppins',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.normal,
-                                  height: 1.625),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 18,
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class ProfileHobbyTile extends StatelessWidget {
+  const ProfileHobbyTile({
+    Key? key,
+    required this.hobby,
+  }) : super(key: key);
+
+  final HobbyType hobby;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(8, 8, 8, 0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.0),
+        boxShadow: [
+          BoxShadow(
+              color: Color.fromARGB(13, 255, 77, 110),
+              offset: Offset(0, 4),
+              blurRadius: 14)
+        ],
+        border: Border.all(
+          color: Color.fromRGBO(193, 199, 205, 1),
+          width: 1,
+        ),
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          SvgPicture.asset(
+            hobby.asset,
+          ),
+          SizedBox(width: 8),
+          Container(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  hobby.label,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                      color: Color.fromRGBO(18, 22, 25, 1),
+                      fontFamily: 'Poppins',
+                      fontSize: 16,
+                      fontWeight: FontWeight.normal,
+                      height: 1.625),
                 ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(0, 100, 20, 0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(8),
-                      topRight: Radius.circular(8),
-                      bottomLeft: Radius.circular(8),
-                      bottomRight: Radius.circular(8),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Color.fromARGB(13, 255, 77, 110),
-                          offset: Offset(0, 4),
-                          blurRadius: 14)
-                    ],
-                    border: Border.all(
-                      color: Color.fromRGBO(193, 199, 205, 1),
-                      width: 1,
-                    ),
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Image.asset(
-                        'images/Mountain.png',
-                      ),
-                      SizedBox(width: 8),
-                      Container(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Text(
-                              'Mountain Hiking',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  color: Color.fromRGBO(18, 22, 25, 1),
-                                  fontFamily: 'Poppins',
-                                  fontSize: 16,
-                                  letterSpacing:
-                                      0 /*percentages not used in flutter. defaulting to zero*/,
-                                  fontWeight: FontWeight.normal,
-                                  height: 1.625),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(0, 170, 0, 0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(8),
-                      topRight: Radius.circular(8),
-                      bottomLeft: Radius.circular(8),
-                      bottomRight: Radius.circular(8),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Color.fromARGB(13, 255, 77, 110),
-                          offset: Offset(0, 4),
-                          blurRadius: 14)
-                    ],
-                    border: Border.all(
-                      color: Color.fromRGBO(193, 199, 205, 1),
-                      width: 1,
-                    ),
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Image.asset(
-                        'images/cook.png',
-                      ),
-                      SizedBox(width: 8),
-                      Container(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Text(
-                              'Cooking',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  color: Color.fromRGBO(18, 22, 25, 1),
-                                  fontFamily: 'Poppins',
-                                  fontSize: 16,
-                                  letterSpacing:
-                                      0 /*percentages not used in flutter. defaulting to zero*/,
-                                  fontWeight: FontWeight.normal,
-                                  height: 1.625),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(0, 240, 20, 0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(8),
-                      topRight: Radius.circular(8),
-                      bottomLeft: Radius.circular(8),
-                      bottomRight: Radius.circular(8),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Color.fromARGB(13, 255, 77, 110),
-                          offset: Offset(0, 4),
-                          blurRadius: 14)
-                    ],
-                    border: Border.all(
-                      color: Color.fromRGBO(193, 199, 205, 1),
-                      width: 1,
-                    ),
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Image.asset(
-                        'images/Book.png',
-                      ),
-                      SizedBox(width: 8),
-                      Container(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Text(
-                              'Reading Books',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  color: Color.fromRGBO(18, 22, 25, 1),
-                                  fontFamily: 'Poppins',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.normal,
-                                  height: 1.625),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ])),
-        ]));
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 

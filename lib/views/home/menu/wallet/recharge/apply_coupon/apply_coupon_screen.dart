@@ -39,9 +39,9 @@ class ApplyCouponScreenState extends State<ApplyCouponScreen> {
     return BlocConsumer<ApplyCouponBloc, ApplyCouponState>(
         builder: (context, state) {
       return Container(
-          margin: EdgeInsets.only(left: 10),
-          //padding: kMargin12,
-          height: 300,
+
+          padding: kMargin12,
+          height: 350,
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(

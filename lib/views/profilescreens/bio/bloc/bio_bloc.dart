@@ -13,7 +13,7 @@ class BioBloc extends Bloc<BioEvent, BioState> {
   BioBloc(this.userRepository) : super(BioInitialState());
   List<String> localImagePaths = [];
   String aboutMeMsg = "";
-
+  String profileImage = "";
   @override
   Stream<BioState> mapEventToState(BioEvent event) async* {
     yield OnLoading();
@@ -27,6 +27,38 @@ class BioBloc extends Bloc<BioEvent, BioState> {
         yield BioDataState(result.profileDetails);
       } else {
         yield OnError(result.message);
+      }
+    }
+    if (event is UpdateBioImage) {
+
+      this.localImagePaths = event.localImagePaths;
+      this.localImagePaths
+          .removeWhere((element) => element == "addImage");
+
+      this.localImagePaths
+          .removeWhere((element) => element == this.profileImage);
+      this.localImagePaths.insert(0, this.profileImage);
+
+      if (this.localImagePaths.isEmpty) {
+        yield OnError("Please add at least one Image");
+      } else {
+        var result = await this.userRepository.updateBio(
+            this.profileData?.aboutmeMsg ?? "",
+            this.localImagePaths,
+        );
+        if (result.status == AppConstants.SUCCESS) {
+          if(!event.toUpdate) {
+            this.userRepository.useDetails!.registrationStep = 8;
+            await this
+                .userRepository
+                .storageService
+                .saveUserDetails(this.userRepository.useDetails!);
+            this.userRepository.updateRegistrationStep(8);
+          }
+          yield OnUpdate();
+        } else {
+          yield OnError(result.message);
+        }
       }
     }
 
@@ -64,11 +96,15 @@ class BioBloc extends Bloc<BioEvent, BioState> {
     if (event is AddImage) {
       var result = await this.userRepository.uploadImage(event.images);
       if (result != null) {
-        this.localImagePaths.add(result);
+        this.localImagePaths.insert((this.localImagePaths.length - 1), result);
         yield BioInitialState();
       } else {
         yield OnError('Couldnot upload image');
       }
+    }
+    if (event is ChangeProfilePic) {
+      this.profileImage = event.image;
+      yield BioInitialState();
     }
     if (event is RemoveImage) {
       this.localImagePaths.removeAt(event.pos);

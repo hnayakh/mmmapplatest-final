@@ -130,7 +130,8 @@ class AnnualMaxIncomePreferenceScreen extends State<AnnualMaxIncomePreference> {
                     },
                   );
                 },
-                itemCount: AnualIncome.values.length,
+                itemCount:  incomes.sublist(
+                    this.minimumSelectedIndex).length,
                 // separatorBuilder: (context, index) {
                 //   return Divider(
                 //     color: kLight4,

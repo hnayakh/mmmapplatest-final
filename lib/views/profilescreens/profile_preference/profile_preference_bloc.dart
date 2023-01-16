@@ -208,6 +208,9 @@ class ProfilePreferenceBloc
     if (event is RemoveEducation) {
       this.education = [];
       yield ProfilePreferenceInitialState();
+    }if (event is RemoveMaritalStatus) {
+      this.maritalStatus = [];
+      yield ProfilePreferenceInitialState();
     }
     if (event is RemoveReligion) {
       this.religion = [];
@@ -254,7 +257,7 @@ class ProfilePreferenceBloc
       this.drinkingHabit = [];
       yield ProfilePreferenceInitialState();
     }
-    if (event is DietrySelected) {
+    if (event is DietarySelected) {
       this.eatingHabit = event.eatingHabit;
       yield ProfilePreferenceInitialState();
     }
@@ -297,23 +300,15 @@ class ProfilePreferenceBloc
           this.smokingHabit,
           this.abilityStatus);
       if (result.status == AppConstants.SUCCESS) {
-        print('profilepreference');
-        print(minHeight);
-        print(maxHeight);
-        this.userRepository.updateRegistrationStep(10);
-        this.userRepository.useDetails!.registrationStep = 10;
-        await this.userRepository.saveUserDetails();
-        var response = await this
-            .userRepository
-            .updateRegistartionStep(this.userRepository.useDetails!.id, 10);
-        // await this
-        //     .userRepository
-        //     .storageService
-        //     .saveUserDetails(this.userRepository.useDetails!);
-        print('in profilepreference');
-        print(this.userRepository.useDetails!.registrationStep);
-
-        yield ProfilePreferenceComplete();
+       if(userRepository.useDetails!.registrationStep < 10){
+         this.userRepository.updateRegistrationStep(10);
+         this.userRepository.useDetails!.registrationStep = 10;
+         await this.userRepository.saveUserDetails();
+         var response = await this
+             .userRepository
+             .updateRegistartionStep(this.userRepository.useDetails!.id, 10);
+       }
+       yield ProfilePreferenceComplete();
       } else {
         yield OnError(result.message);
       }

@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:makemymarry/datamodels/connect.dart';
-// import 'package:flutter_tindercard/flutter_tindercard.dart';
 
 import 'package:makemymarry/datamodels/martching_profile.dart';
+import 'package:makemymarry/locator.dart';
+import 'package:makemymarry/repo/chat_repo.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
@@ -19,7 +19,6 @@ import 'package:makemymarry/views/home/matching_profile/bloc/matching_profile_bl
 import 'package:makemymarry/views/home/matching_profile/bloc/matching_profile_event.dart';
 import 'package:makemymarry/views/home/matching_profile/bloc/matching_profile_state.dart';
 import 'package:makemymarry/views/profileviewscreens/profile_view.dart';
-
 
 class MatchingProfileStackView extends StatelessWidget {
   final UserRepository userRepository;
@@ -283,16 +282,25 @@ class MatchingProfileStackViewScreenState
                                                         SizedBox(
                                                           width: 8,
                                                         ),
-                                                        Container(
-                                                          height: 10,
-                                                          width: 10,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                                  shape: BoxShape
-                                                                      .circle,
-                                                                  color:
-                                                                      kGreen),
-                                                        ),
+                                                        StreamBuilder<bool>(
+                                                            stream: getIt<
+                                                                    ChatRepo>()
+                                                                .getOnlineStatus(
+                                                                    item.id),
+                                                            builder: (context,
+                                                                snapshot) {
+                                                              return Container(
+                                                                height: 8,
+                                                                width: 8,
+                                                                decoration: BoxDecoration(
+                                                                    shape: BoxShape.circle,
+                                                                    color: snapshot.data == null
+                                                                        ? kGray
+                                                                        : snapshot.data!
+                                                                            ? kGreen
+                                                                            : kError),
+                                                              );
+                                                            }),
                                                         SizedBox(
                                                           width: 14,
                                                         ),
@@ -458,71 +466,73 @@ class MatchingProfileStackViewScreenState
                     ? this.profileVisitorList[index]
                     : this.list[index];
     if (item.requestStatus == InterestRequest.Accepted) {
-      buildConnect(context, index);
-    } else if (item.requestStatus == InterestRequest.Sent) {
+      return buildConnect(context, index);
+    }
+    else if (item.requestStatus == InterestRequest.Sent) {
       return InkWell(
-          onTap: () {
-            BlocProvider.of<MatchingProfileBloc>(context)
-                .add(IsLikedAEvent(index));
-          },
-          child: Row(
-            children: [
-              Stack(
-                children: [
-                  Container(
+        onTap: () {
+          BlocProvider.of<MatchingProfileBloc>(context)
+              .add(IsLikedAEvent(index));
+        },
+        child: Row(
+          children: [
+            Stack(
+              children: [
+                Container(
+                  height: 62,
+                  width: 62,
+                  child: Center(
+                    child: SvgPicture.asset(
+                      "images/cancel.svg",
+                      color: Colors.white,
+                      height: 32,
+                      width: 32,
+                    ),
+                  ),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: MmmDecorations.primaryGradient(),
+                      border: Border.all(color: Colors.white, width: 1.2)),
+                ),
+                Container(
                     height: 62,
                     width: 62,
-                    child: Center(
-                      child: SvgPicture.asset(
-                        "images/cancel.svg",
-                        color: Colors.white,
-                        height: 32,
-                        width: 32,
-                      ),
-                    ),
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        gradient: MmmDecorations.primaryGradient(),
-                        border: Border.all(color: Colors.white, width: 1.2)),
+                        color: kPrimary.withAlpha(50),
+                        border: Border.all(color: Colors.white, width: 1.2)))
+              ],
+            ),
+            Stack(
+              children: [
+                Container(
+                  height: 62,
+                  width: 62,
+                  child: Center(
+                    child: SvgPicture.asset(
+                      "images/heart.svg",
+                      color: Colors.white,
+                      height: 32,
+                      width: 32,
+                    ),
                   ),
-                  Container(
-                      height: 62,
-                      width: 62,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: kPrimary.withAlpha(50),
-                          border: Border.all(color: Colors.white, width: 1.2)))
-                ],
-              ),
-              Stack(
-                children: [
-                  Container(
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: MmmDecorations.primaryGradient(),
+                      border: Border.all(color: Colors.white, width: 1.2)),
+                ),
+                Container(
                     height: 62,
                     width: 62,
-                    child: Center(
-                      child: SvgPicture.asset(
-                        "images/heart.svg",
-                        color: Colors.white,
-                        height: 32,
-                        width: 32,
-                      ),
-                    ),
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        gradient: MmmDecorations.primaryGradient(),
-                        border: Border.all(color: Colors.white, width: 1.2)),
-                  ),
-                  Container(
-                      height: 62,
-                      width: 62,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: kGreen.withAlpha(50),
-                          border: Border.all(color: Colors.white, width: 1.2)))
-                ],
-              )
-            ],
-          ));
+                        color: kGreen.withAlpha(50),
+                        border: Border.all(color: Colors.white, width: 1.2)))
+              ],
+            )
+          ],
+        ),
+      );
     } else if (item.requestStatus == InterestRequest.Received) {
       return InkWell(
           onTap: () {
@@ -651,7 +661,7 @@ class MatchingProfileStackViewScreenState
                 width: 62,
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: kGreen.withAlpha(50),
+                    color: Colors.white.withAlpha(50),
                     border: Border.all(color: Colors.white, width: 1.2)))
           ],
         ));

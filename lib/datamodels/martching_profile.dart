@@ -506,6 +506,7 @@ class ProfileDetails {
   late Gender gender;
   late Relationship relationship;
   late ConnectStatus? connectStatus;
+  late String? connectRequestId;
   late MaritalStatus maritalStatus;
   late ChildrenStatus childrenStatus;
   late NoOfChildren? noOfChildren;
@@ -523,6 +524,8 @@ class ProfileDetails {
   late SimpleMasterData religionDetails;
   late String religion, cast, gothra;
   late String motherTongue = "";
+  late List<String>? lifeStyle;
+  late List<String>? hobbies;
   late String motherTongueName = "", motherTongueId = "";
   late Manglik manglik;
   late String occupation, employedin, city, state, country, highiestEducation;
@@ -553,6 +556,12 @@ class ProfileDetails {
     if (json["userBios"] != null && json["userBios"].length > 0) {
       this.aboutmeMsg = json["userBios"][0]["aboutMe"];
     }
+    if (json["userLifestyle"] != null && json["userLifestyle"].length > 0) {
+      this.lifeStyle = json["userLifestyle"][0]["lifestyle"].split(", ");
+    }
+    if (json["userHobbies"] != null && json["userHobbies"].length > 0) {
+      this.hobbies = json["userHobbies"][0]["hobbies"].split(", ");
+    }
     var aboutMe = json["userAbouts"][0];
     this.name = aboutMe["name"];
     this.dateOfBirth = aboutMe["dateOfBirth"];
@@ -561,6 +570,9 @@ class ProfileDetails {
     this.connectStatus = json['UserRequestStatus'].isNotEmpty
         ? ConnectStatus
             .values[json['UserRequestStatus'][0]['userRequestStatus']]
+        : null;
+    this.connectRequestId = json['UserRequestStatus'].isNotEmpty
+        ? json['UserRequestStatus'][0]['id']
         : null;
     // if (json["userReligions"] != null && json["userReligions"].length > 0) {
     //   this.religionId = json["userReligions"][0]["religionId"][0]["id"];
@@ -689,7 +701,13 @@ class ProfileDetails {
     }
     var userImages = json["userImages"];
     for (var item in userImages) {
-      this.images.add(item["imageURL"]);
+      if(!this.images.contains(item["imageURL"])) {
+        if(item["isDefault"] == true){
+          this.images.insert(0, item["imageURL"]);
+        }else {
+          this.images.add(item["imageURL"]);
+        }
+      }
     }
   }
 }

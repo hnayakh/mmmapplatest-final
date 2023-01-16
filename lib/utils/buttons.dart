@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_helper.dart';
@@ -12,7 +14,13 @@ import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
+import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/profile%20screens/verify%20account%20screens/verify_account.dart';
+
+import '../locator.dart';
+import '../repo/chat_repo.dart';
+import '../views/profileviewscreens/profile_view_bloc.dart';
+import '../views/profileviewscreens/profile_view_event.dart';
 
 class MmmButtons {
   static Widget walletApps(String title, String icon) {
@@ -2396,7 +2404,7 @@ class MmmButtons {
   }
 
   static Widget appBarCurvedProfile(
-      String title, BuildContext context, String image) {
+      String title, BuildContext context, String image, String uid,ConnectStatus?  connectStatus ) {
     return PreferredSize(
       //preferredSize: Size.fromHeight(120),
       preferredSize: Size.fromHeight(MediaQuery.of(context).size.height * 0.17),
@@ -2474,32 +2482,24 @@ class MmmButtons {
                       ),
                     ),
                     Positioned(
-                      right: 0,
-                      child: Stack(
-                        children: [
-                          Container(
-                            width: 12,
-                            height: 12,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: kWhite,
-                            ),
-                          ),
-                          Positioned(
-                            top: 2,
-                            bottom: 2,
-                            right: 2,
-                            left: 2,
-                            child: Container(
-                                width: 8,
-                                height: 8,
-                                decoration: BoxDecoration(
+                      right: 2,
+                      top: 2,
+                      child: StreamBuilder<bool>(
+                          stream:
+                          getIt<ChatRepo>().getOnlineStatus(uid),
+                          builder: (context, snapshot) {
+                            return Container(
+                              height: 8,
+                              width: 8,
+                              decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: kGreen,
-                                )),
-                          )
-                        ],
-                      ),
+                                  color: snapshot.data == null
+                                      ? kGray
+                                      : snapshot.data!
+                                      ? kGreen
+                                      : kError),
+                            );
+                          }),
                     )
                   ],
                 ),
@@ -2519,15 +2519,268 @@ class MmmButtons {
             shadowColor: Colors.transparent,
             elevation: 0.0,
           ),
-          Positioned(
+          if (connectStatus == ConnectStatus.Accepted) ...[
+
+            Positioned(
+              right: MediaQuery.of(context).size.width * 0.1,
               bottom: 0,
-              //right: 80,
-              right: MediaQuery.of(context).size.width * 0.2,
-              child: Transform.scale(scale: 0.9, child: MmmIcons.cancel())),
-          Positioned(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  // Container(
+                  //     height: 248,
+                  //     width: 100,
+                  //     child: FloatingActionBubble(
+                  //       items: <Bubble>[
+                  //         Bubble(
+                  //           title: "",
+                  //           iconColor: Colors.white,
+                  //           bubbleColor: kPrimary,
+                  //           icon: Icons.call,
+                  //           titleStyle: TextStyle(fontSize: 0, color: kWhite),
+                  //           onPress: () async {
+                  //             var bloc =
+                  //             BlocProvider.of<ProfileViewBloc>(context);
+                  //             _animationController.reverse();
+                  //             context.navigate.push(
+                  //               MaterialPageRoute(
+                  //                 builder: (context) => AudioCallView(
+                  //                   uid: profileDetails.id,
+                  //                   imageUrl: profileDetails.images.first,
+                  //                   userRepo: bloc.userRepository,
+                  //                 ),
+                  //               ),
+                  //             );
+                  //           },
+                  //         ),
+                  //         Bubble(
+                  //           title: "",
+                  //           iconColor: Colors.white,
+                  //           bubbleColor: kPrimary,
+                  //           icon: Icons.message,
+                  //           titleStyle:
+                  //           TextStyle(fontSize: 4, color: Colors.white),
+                  //           onPress: () async {
+                  //             var userDetails =
+                  //             await UserRepository().getUserDetails();
+                  //             var repo = ChatRepo(
+                  //                 firestore: FirebaseFirestore.instance,
+                  //                 chatService: FirebaseChatCore.instance);
+                  //             var user;
+                  //             try {
+                  //               await repo.updateChatUser(
+                  //                   id: profileDetails.id,
+                  //                   fullName: profileDetails.name,
+                  //                   imageUrl: profileDetails.images.first);
+                  //               user = await repo.getChatUser(
+                  //                   id: profileDetails.id);
+                  //             } catch (e) {
+                  //               if (e.toString() ==
+                  //                   "Exception: Chat User does not exist") {
+                  //                 await repo.updateChatUser(
+                  //                     id: profileDetails.id,
+                  //                     fullName: profileDetails.name,
+                  //                     imageUrl: profileDetails.images.first);
+                  //                 user = await repo.getChatUser(
+                  //                     id: profileDetails.id);
+                  //               } else {
+                  //                 rethrow;
+                  //               }
+                  //             }
+                  //             var room = await repo.getChatRoom(
+                  //                 userDetails?.id ?? "", user);
+                  //             _animationController.reverse();
+                  //             var bloc =
+                  //             BlocProvider.of<ProfileViewBloc>(context);
+                  //             context.navigate.push(MaterialPageRoute(
+                  //                 builder: (context) => ChatPage(
+                  //                   room: room,
+                  //                   userRepo: bloc.userRepository,
+                  //                 )));
+                  //           },
+                  //         ),
+                  //         Bubble(
+                  //           title: "",
+                  //           iconColor: Colors.white,
+                  //           bubbleColor: kPrimary,
+                  //           icon: Icons.video_camera_back_outlined,
+                  //           titleStyle:
+                  //           TextStyle(fontSize: 0, color: Colors.white),
+                  //           onPress: () {
+                  //             //Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => Homepage()));
+                  //             _animationController.reverse();
+                  //             context.navigate.push(
+                  //               MaterialPageRoute(
+                  //                 builder: (context) => VideoCallView(
+                  //                   uid: profileDetails.id,
+                  //                   imageUrl: profileDetails.images.first,
+                  //                 ),
+                  //               ),
+                  //             );
+                  //           },
+                  //         ),
+                  //       ],
+                  //
+                  //       animation: _animation,
+                  //
+                  //       // On pressed change animation state
+                  //       onPress: () => _animationController.isCompleted
+                  //           ? _animationController.reverse()
+                  //           : _animationController.forward(),
+                  //
+                  //       // Floating Action button Icon color
+                  //       iconColor: Colors.white,
+                  //
+                  //       // Flaoting Action button Icon
+                  //       iconData: Icons.call,
+                  //       backGroundColor: kPrimary,
+                  //     )),
+                  // SizedBox(
+                  //   width: 12,
+                  // ),
+                  MmmIcons.meet(
+                    context,
+                    action: () async {
+
+                      await showModalBottomSheet(
+                          shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(25), topRight: Radius.circular(25)),
+                      ),
+                      context: context,
+                      builder: (context) => MmmWidgets.selectMeetWidget(context));
+                      // print("gfchfdgfcbfbfxbfx");
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ] else if (connectStatus == ConnectStatus.Reverted ||
+              connectStatus == ConnectStatus.Rejected ||
+              connectStatus == null) ...[
+            Positioned(
+              right: MediaQuery.of(context).size.width * 0.1,
               bottom: 0,
-              right: MediaQuery.of(context).size.width * 0.06,
-              child: Transform.scale(scale: 0.9, child: MmmIcons.meet(context)))
+              child: InkWell(
+                  onTap: () {
+                    BlocProvider.of<ProfileViewBloc>(context)
+                        .add(SendLikeRequest());
+                  },
+                  child: Stack(
+                    children: [
+                      Container(
+                        height: 48,
+                        width: 48,
+                        child: Center(
+                          child: SvgPicture.asset(
+                            "images/heart.svg",
+                            color: Colors.white,
+                            height: 24,
+                            width: 24,
+                          ),
+                        ),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: MmmDecorations.primaryGradient(),
+                            border:
+                            Border.all(color: Colors.white, width: 1.2)),
+                      ),
+                      Container(
+                          height: 48,
+                          width: 48,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: kPrimary.withAlpha(50),
+                              border:
+                              Border.all(color: Colors.white, width: 1.2)))
+                    ],
+                  )),
+            )
+          ] else if (connectStatus == ConnectStatus.Sent) ...[
+            Positioned(
+              right: MediaQuery.of(context).size.width * 0.1,
+              bottom: 0,
+              child: Row(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      BlocProvider.of<ProfileViewBloc>(context)
+                          .add(CancelLikeRequest());
+                    },
+                    child: Stack(
+                      children: [
+                        Container(
+                          height: 48,
+                          width: 48,
+                          child: Center(
+                            child: SvgPicture.asset(
+                              "images/cancel.svg",
+                              color: Colors.white,
+                              height: 24,
+                              width: 24,
+                            ),
+                          ),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: MmmDecorations.primaryGradient(),
+                              border:
+                              Border.all(color: Colors.white, width: 1.2)),
+                        ),
+                        Container(
+                            height: 48,
+                            width: 48,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: kPrimary.withAlpha(50),
+                                border: Border.all(
+                                    color: Colors.white, width: 1.2)))
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 6),
+                  Stack(
+                    children: [
+                      Container(
+                        height: 48,
+                        width: 48,
+                        child: Center(
+                          child: SvgPicture.asset(
+                            "images/chat.svg",
+                            color: Colors.white,
+                            height: 24,
+                            width: 24,
+                          ),
+                        ),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: MmmDecorations.primaryGradient(),
+                            border:
+                            Border.all(color: Colors.white, width: 1.2)),
+                      ),
+                      Container(
+                          height: 48,
+                          width: 48,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: kPrimary.withAlpha(50),
+                              border: Border.all(
+                                  color: Colors.white, width: 1.2)))
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+          // Positioned(
+          //     bottom: 0,
+          //     //right: 80,
+          //     right: MediaQuery.of(context).size.width * 0.2,
+          //     child: Transform.scale(scale: 0.9, child: MmmIcons.cancel())),
+          // Positioned(
+          //     bottom: 0,
+          //     right: MediaQuery.of(context).size.width * 0.06,
+          //     child: Transform.scale(scale: 0.9, child: MmmIcons.meet(context)))
         ],
       ),
     );

@@ -8,3 +8,9 @@ class GetProfileViewDetails extends ProfileViewEvent {
   final String displayId;
   GetProfileViewDetails(this.displayId);
 }
+
+class SendLikeRequest extends ProfileViewEvent{
+
+}class CancelLikeRequest extends ProfileViewEvent{
+
+}

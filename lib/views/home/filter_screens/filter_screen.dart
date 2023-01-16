@@ -994,7 +994,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
             ));
     if (result != null && result is List<EatingHabit>) {
       BlocProvider.of<ProfilePreferenceBloc>(context)
-          .add(DietrySelected(result));
+          .add(DietarySelected(result));
     }
   }
 

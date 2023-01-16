@@ -26,10 +26,10 @@ class RechargeConnectBloc
       if (response.status == AppConstants.SUCCESS) {
         connectPriceDetails = response.couponDetails!;
         this.totalAmount = connectPriceDetails.connectPrice;
-        promoDiscount = (connectPriceDetails.connectPrice *
-                connectPriceDetails.discount /
-                100)
-            .toDouble();
+        // promoDiscount = (connectPriceDetails.connectPrice *
+        //         (connectPriceDetails.discount /
+        //         100))
+        //     .toDouble();
         this.tax = (this.totalAmount * 18 / 100).roundToDouble();
         this.totalPayable = this.totalAmount + this.tax - this.promoDiscount;
       }
@@ -44,7 +44,7 @@ class RechargeConnectBloc
         this.connectCount += 1;
       }
       this.totalAmount = connectPriceDetails.connectPrice * this.connectCount;
-      this.tax = (this.totalAmount * 18 / 100 * connectCount).roundToDouble();
+      this.tax = (this.totalAmount * 18 / 100);
       if (this.couponDetails != null) {
         if (this.couponDetails!.discountType == 1)
           promoDiscount = (connectPriceDetails.connectPrice *
@@ -56,9 +56,8 @@ class RechargeConnectBloc
           promoDiscount = couponDetails!.discount;
         }
       } else
-        promoDiscount = (connectPriceDetails.connectPrice *
-                connectPriceDetails.discount /
-                100 *
+        promoDiscount = ((connectPriceDetails.connectPrice *
+                    (connectPriceDetails.discount / 100)) *
                 connectCount)
             .toDouble();
       this.totalPayable = this.totalAmount + this.tax - this.promoDiscount;

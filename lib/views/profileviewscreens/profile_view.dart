@@ -43,14 +43,16 @@ class ProfileView extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(providers: [
       BlocProvider<ProfileViewBloc>(
-        create: (BuildContext context) =>
-            ProfileViewBloc(userRepository, profileDetails, ),
+        create: (BuildContext context) => ProfileViewBloc(
+          userRepository,
+          profileDetails,
+        ),
       ),
       BlocProvider<MatchingPercentageBloc>(
         create: (BuildContext context) =>
             MatchingPercentageBloc(userRepository, profileDetails),
       )
-    ], child: ProfileViewScreen());//return
+    ], child: ProfileViewScreen()); //return
   }
 }
 
@@ -275,7 +277,9 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                                   ? "https://i.pravatar.cc/300"
                                   : this
                                       .profileDetails
-                                      .images[selectedImagePos])),
+                                      .images[selectedImagePos],
+                              profileDetails.id,
+                              profileDetails.connectStatus)),
                     )
                   : null,
               body: SingleChildScrollView(
@@ -667,14 +671,15 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
               ),
             ),
           ] else if (profileDetails.connectStatus == ConnectStatus.Reverted ||
+              profileDetails.connectStatus == ConnectStatus.Rejected ||
               profileDetails.connectStatus == null) ...[
             Positioned(
               right: MediaQuery.of(context).size.width * 0.1,
               bottom: 0,
               child: InkWell(
                   onTap: () {
-                    // BlocProvider.of<MatchingProfileBloc>(context)
-                    //     .add(IsLikedAEvent(index));
+                    BlocProvider.of<ProfileViewBloc>(context)
+                        .add(SendLikeRequest());
                   },
                   child: Stack(
                     children: [
@@ -692,7 +697,8 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             gradient: MmmDecorations.primaryGradient(),
-                            border: Border.all(color: Colors.white, width: 1.2)),
+                            border:
+                                Border.all(color: Colors.white, width: 1.2)),
                       ),
                       Container(
                           height: 62,
@@ -709,18 +715,18 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
             Positioned(
               right: MediaQuery.of(context).size.width * 0.1,
               bottom: 0,
-              child: InkWell(
-                onTap: () {
-                  // BlocProvider.of<MatchingProfileBloc>(context)
-                  //     .add(IsLikedAEvent(index));
-                },
-                child: Row(
-                  children: [
-                    Stack(
+              child: Row(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      BlocProvider.of<ProfileViewBloc>(context)
+                          .add(CancelLikeRequest());
+                    },
+                    child: Stack(
                       children: [
                         Container(
-                          height: 62,
-                          width: 62,
+                          height: 64,
+                          width: 64,
                           child: Center(
                             child: SvgPicture.asset(
                               "images/cancel.svg",
@@ -736,46 +742,51 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                                   Border.all(color: Colors.white, width: 1.2)),
                         ),
                         Container(
-                            height: 62,
-                            width: 62,
+                            height: 64,
+                            width: 64,
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: kPrimary.withAlpha(50),
-                                border:
-                                    Border.all(color: Colors.white, width: 1.2)))
+                                border: Border.all(
+                                    color: Colors.white, width: 1.2)))
                       ],
                     ),
-                    Stack(
-                      children: [
-                        Container(
-                          height: 62,
-                          width: 62,
-                          child: Center(
-                            child: SvgPicture.asset(
-                              "images/heart.svg",
-                              color: Colors.white,
-                              height: 32,
-                              width: 32,
-                            ),
+                  ),
+                  SizedBox(width: 6),
+                  Stack(
+                    children: [
+                      Container(
+                        height: 64,
+                        width: 64,
+                        child: Center(
+                          child: SvgPicture.asset(
+                            "images/chat.svg",
+                            color: Colors.white,
+                            height: 32,
+                            width: 32,
                           ),
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              gradient: MmmDecorations.primaryGradient(),
-                              border:
-                                  Border.all(color: Colors.white, width: 1.2)),
                         ),
-                        Container(
-                            height: 62,
-                            width: 62,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: kGreen.withAlpha(50),
-                                border:
-                                    Border.all(color: Colors.white, width: 1.2)))
-                      ],
-                    ),
-                  ],
-                ),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: MmmDecorations.primaryGradient(),
+                            border:
+                                Border.all(color: Colors.white, width: 1.2)),
+                      ),
+                      Container(
+                        height: 64,
+                        width: 64,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: kPrimary.withAlpha(50),
+                          border: Border.all(
+                            color: Colors.white,
+                            width: 1.2,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ],
@@ -916,7 +927,8 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                   ),
                 ),
                 StreamBuilder<bool>(
-                    stream: getIt<ChatRepo>().getOnlineStatus(profileDetails.id),
+                    stream:
+                        getIt<ChatRepo>().getOnlineStatus(profileDetails.id),
                     builder: (context, snapshot) {
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -928,9 +940,11 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                             width: 8,
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: snapshot.data == null? kGray : snapshot.data!
-                                    ? kGreen
-                                    : kError),
+                                color: snapshot.data == null
+                                    ? kGray
+                                    : snapshot.data!
+                                        ? kGreen
+                                        : kError),
                           ),
                           // ),
                           Expanded(child: SizedBox())

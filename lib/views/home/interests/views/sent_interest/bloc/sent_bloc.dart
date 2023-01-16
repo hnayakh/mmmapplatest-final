@@ -1,7 +1,12 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/datamodels/interests_model.dart';
+import 'package:makemymarry/locator.dart';
+import 'package:makemymarry/repo/chat_repo.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
+import 'package:makemymarry/views/chat_room/chat_page.dart';
 
 import 'sent_events.dart';
 import 'sent_states.dart';
@@ -36,8 +41,6 @@ class SentBloc extends Bloc<SentEvents, SentStates> {
       }
     }
     if (event is ConnectNow) {
-      print("Connect By ----> ${event.connectById}");
-      print("Connect To ----> ${event.connectToId}");
       var result = await this
           .userRepository
           .connectUsers(event.connectById, event.connectToId);
@@ -47,10 +50,24 @@ class SentBloc extends Bloc<SentEvents, SentStates> {
             element.requestedUserBasicId == event.connectToId);
         result.user.connectStatus = true;
         result.user.connectId = result.id;
+
         yield SentInitialState();
       } else {
         yield OnError(result.message);
       }
+      var otherUser =
+          await getIt<ChatRepo>().getChatUser(id: event.connectToId);
+      var chatRoom =
+          await getIt<ChatRepo>().getChatRoom(event.connectById, otherUser);
+      navigatorKey.currentState!.push(
+        MaterialPageRoute(
+          builder: (context) => ChatPage(
+            room: chatRoom,
+            userRepo: getIt<UserRepository>(),
+            allowCalls: false,
+          ),
+        ),
+      );
     }
   }
 }

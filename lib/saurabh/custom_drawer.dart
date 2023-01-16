@@ -3,6 +3,8 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:makemymarry/app/bloc/app_bloc.dart';
+import 'package:makemymarry/app/bloc/app_event.dart';
 import 'package:makemymarry/views/profilescreens/about/bloc/about_bloc.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
@@ -202,21 +204,7 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                       child: ListView(
                         shrinkWrap: true,
                         children: [
-                          // InkWell(
-                          //   onTap: () {
-                          //     Navigator.of(context).push(
-                          //       MaterialPageRoute(
-                          //           builder: (context) => MyprofileMenuScreen(
-                          //               userRepository: userRepo)),
-                          //     );
 
-                          //   },
-                          //   child: customListTile(
-                          //     leading: SvgPicture.asset(
-                          //         "images/clarityavatarsolid.svg"),
-                          //     text: "My Profile",
-                          //   ),
-                          // ),
                           InkWell(
                             onTap: () {
                               Navigator.push(
@@ -357,6 +345,10 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                           ),
                           InkWell(
                             onTap: () {
+                              BlocProvider.of<AppBloc>(context)
+                                  .updateOnlineStatus(false);
+                              BlocProvider.of<AppBloc>(context)
+                                  .add(SignOutEvent());
                               _deleteAppDir().then((value) =>
                                   Navigator.of(context)
                                       .pushReplacement(SignInPage.getRoute()));
@@ -397,7 +389,7 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
     var userRepo = BlocProvider.of<AccountMenuBloc>(context).userRepository;
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) =>  MyProfileScreen(),
+        builder: (context) => MyProfileScreen(),
       ),
     );
   }

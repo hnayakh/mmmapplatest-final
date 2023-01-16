@@ -1,6 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:makemymarry/app/bloc/app_bloc.dart';
+import 'package:makemymarry/app/bloc/app_event.dart';
+import 'package:makemymarry/app/bloc/app_state.dart';
 import 'package:makemymarry/datamodels/interests_model.dart';
 import 'package:makemymarry/locator.dart';
 import 'package:makemymarry/repo/user_repo.dart';
@@ -10,8 +14,11 @@ import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
+import 'package:makemymarry/views/chat_room/chat_page.dart';
 import 'package:makemymarry/views/connect_pages/call/in_app_call.dart';
+import 'package:makemymarry/views/home/menu/wallet/recharge/recharge_connect_screen.dart';
 
+import '../../../../../repo/chat_repo.dart';
 import '../../../../profileviewscreens/profile_view.dart';
 import 'bloc/sent_bloc.dart';
 import 'bloc/sent_events.dart';
@@ -223,9 +230,8 @@ class SentScreen extends StatelessWidget {
                         children: [
                           InkWell(
                             onTap: () async {
-                              var data =
-                                  await getIt<UserRepository>().getOtheruserDetails(
-                                      listSent[index].user.id,
+                              var data = await getIt<UserRepository>()
+                                  .getOtheruserDetails(listSent[index].user.id,
                                       ProfileActivationStatus.Verified);
                               Navigator.of(context).push(
                                 MaterialPageRoute(
@@ -297,17 +303,73 @@ class SentScreen extends StatelessWidget {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.30,
                     ),
-                    listSent[index].user.connectStatus
-                        ? MmmButtons.connectButton('Call Now', action: () {})
-                        : MmmButtons.connectButton('Connect Now', action: () {
-                            BlocProvider.of<SentBloc>(context).add(ConnectNow(
-                                connectById:
-                                    listSent[index].requestingUserBasicId,
-                                connectToId:
-                                    listSent[index].requestedUserBasicId));
-                            // navigateToInAppCall(
-                            //     context, listSent[index].requestedUserDeatails);
-                          }),
+                    // listSent[index].user.connectStatus
+                    //     ? MmmButtons.connectButton('Call Now', action: () {})
+                    //     :
+                    MmmButtons.connectButton(
+                      'Connect Now',
+                      action: () async {
+                        if (listSent[index].user.connectStatus) {
+                          var otherUser = await getIt<ChatRepo>().getChatUser(
+                              id: listSent[index].requestedUserBasicId);
+                          var chatRoom = await getIt<ChatRepo>().getChatRoom(
+                              listSent[index].requestingUserBasicId, otherUser);
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ChatPage(
+                                room: chatRoom,
+                                userRepo: getIt<UserRepository>(),
+                              ),
+                            ),
+                          );
+                        } else {
+                          var appBloc = BlocProvider.of<AppBloc>(context);
+                          appBloc.add(RefreshWalletCount());
+                          if ((appBloc.state as AppLoggedInState).connectCount >
+                              0) {
+                            var bloc = BlocProvider.of<SentBloc>(context);
+                            await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return MmmWidgets.requestConnectWidget(
+                                  name: listSent[index].user.name,
+                                  imageUrl: listSent[index].user.imageURL,
+                                  isVerified:
+                                  listSent[index].user.isActive == 1,
+                                  onConfirm: () {
+                                    bloc.add(ConnectNow(
+                                        connectById: listSent[index]
+                                            .requestingUserBasicId,
+                                        connectToId: listSent[index]
+                                            .requestedUserBasicId));
+                                  },
+                                );
+                              },
+                            );
+                            appBloc.add(RefreshWalletCount());
+                          } else {
+                            await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return MmmWidgets.lowBalanceWidget(
+                                  onConfirm: () {
+                                    Navigator.of(context).pop();
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => RechargeConnect(
+                                          userRepository:
+                                          getIt<UserRepository>(),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            );
+                          }
+                        }
+                      },
+                    ),
                     SizedBox(
                       width: 5,
                     ),

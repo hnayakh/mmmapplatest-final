@@ -12,9 +12,8 @@ import 'package:makemymarry/utils/preference_helper.dart';
 class SplashBloc extends Bloc<SplashEvent, SplashState> {
   final UserRepository userRepository;
 
-
-
-  SplashBloc({required this.userRepository}) : super(SplashScreenInitialState()){
+  SplashBloc({required this.userRepository})
+      : super(SplashScreenInitialState()) {
     on<GetUserEvent>((event, emit) async {
       var result = await this.userRepository.getMasterData();
       if (result.status == AppConstants.SUCCESS) {
@@ -49,7 +48,8 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
 
           emit(MoveToLogin());
         } else {
-          BlocProvider.of<AppBloc>(navigatorKey.currentContext!).add(SignInEvent(userDetails: this.userRepository.useDetails!));
+          BlocProvider.of<AppBloc>(navigatorKey.currentContext!)
+              .add(SignInEvent(userDetails: this.userRepository.useDetails!));
           print('movetohome from splash');
           print(this.userRepository.useDetails!.registrationStep);
 
@@ -59,11 +59,11 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
           //   this.userRepository.listProfileDetails =
           //       profiles.listProfileDetails;
           // }
-           emit(MoveToHome());
+          emit(MoveToHome());
           //   }
         }
       } else {
-         emit(OnResult(result.status, result.message));
+        emit(OnResult(result.status, result.message));
       }
     });
   }

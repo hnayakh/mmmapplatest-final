@@ -7,6 +7,11 @@ class AddImage extends BioEvent {
 
   AddImage(this.images);
 }
+class ChangeProfilePic extends BioEvent {
+  final String image;
+
+  ChangeProfilePic(this.image);
+}
 
 class RemoveImage extends BioEvent {
   final int pos;
@@ -28,8 +33,9 @@ class UpdateBioText extends BioEvent {
 }
 
 class UpdateBioImage extends BioEvent {
+  final bool toUpdate;
   final List<String> localImagePaths;
-  UpdateBioImage(this.localImagePaths);
+  UpdateBioImage(this.localImagePaths, this.toUpdate);
 }
 
 class FetchMyImage extends BioEvent {}

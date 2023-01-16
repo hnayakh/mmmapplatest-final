@@ -16,10 +16,12 @@ class ChatPage extends StatefulWidget {
   const ChatPage({
     required this.room,
     required this.userRepo,
+    this.allowCalls = false
   });
 
   final types.Room room;
   final UserRepository userRepo;
+  final bool allowCalls;
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -87,7 +89,7 @@ class _ChatPageState extends State<ChatPage> {
                   ),
                 ],
               ),
-              actions: <Widget>[
+              actions: !widget.allowCalls ? null : <Widget>[
                 Container(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -72,10 +72,10 @@ class RemoveIncome extends ProfilePreferenceEvent {}
 
 class RemoveMaxIncome extends ProfilePreferenceEvent {}
 
-class DietrySelected extends ProfilePreferenceEvent {
+class DietarySelected extends ProfilePreferenceEvent {
   final List<EatingHabit> eatingHabit;
 
-  DietrySelected(this.eatingHabit);
+  DietarySelected(this.eatingHabit);
 }
 
 class InterestSelected extends ProfilePreferenceEvent {
@@ -162,6 +162,8 @@ class GetCasteList extends ProfilePreferenceEvent {}
 class RemoveCaste extends ProfilePreferenceEvent {}
 
 class RemoveEducation extends ProfilePreferenceEvent {}
+
+class RemoveMaritalStatus extends ProfilePreferenceEvent {}
 
 class RemoveOccupation extends ProfilePreferenceEvent {}
 

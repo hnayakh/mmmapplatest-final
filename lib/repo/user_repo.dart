@@ -42,6 +42,14 @@ class UserRepository {
     return this.apiClient.signinUser(email, password);
   }
 
+  Future<SigninResponse> updateLifeStyle(String uid, List<String> data) async {
+    return this.apiClient.updateLifeStyle(uid, data);
+  }
+
+ Future<SigninResponse> updateHobby(String uid, List<String> data) async {
+    return this.apiClient.updateHobby(uid, data);
+  }
+
 
 
   Future<AgoraTokenResponse> generateAgoraToken(String callerId, CallType type) async {
@@ -408,4 +416,6 @@ class UserRepository {
     //     "39222b1b-07e4-46a6-a504-9a521380d099",
     //     "a6e1b1af-a3d4-47cd-b4e0-88070996cd61");
   }
+
+
 }

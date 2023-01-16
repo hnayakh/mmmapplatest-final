@@ -1061,7 +1061,7 @@ class _FilterPrefsState extends State<FilterPrefs> {
             ));
     if (result != null && result is List<EatingHabit>) {
       BlocProvider.of<ProfilePreferenceBloc>(context)
-          .add(profilepreferenceEvent.DietrySelected(result));
+          .add(profilepreferenceEvent.DietarySelected(result));
     }
   }
 

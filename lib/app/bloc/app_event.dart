@@ -7,6 +7,8 @@ class AppEvent extends BaseEventState{}
 
 class SignOutEvent extends AppEvent{}
 
+class RefreshWalletCount extends AppEvent{}
+
 class SignInEvent extends AppEvent{
 
   final UserDetails userDetails;

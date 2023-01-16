@@ -108,6 +108,7 @@ flutter:
     - images/wallet/
     - images/icons/
     - images/icons/lifestyle/
+    - images/icons/hobbies/
     - images/addinterest/
   fonts:
     - family: MakeMyMarry

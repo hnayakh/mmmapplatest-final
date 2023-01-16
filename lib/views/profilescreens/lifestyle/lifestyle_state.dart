@@ -3,7 +3,8 @@ import 'package:makemymarry/datamodels/martching_profile.dart';
 import '../../../base_event_state.dart';
 import 'lifestyle_event.dart';
 
-class LifeStyleState extends BaseEventState {}
+class LifeStyleState  {}
+
 
 class LifeStyleIdleState extends LifeStyleState {
   final LifeStyleData data;
@@ -39,4 +40,4 @@ class NavigationToReligion extends LifeStyleState {}
 
 class NavigationToBio extends LifeStyleState {}
 
-class OnNavigationToMyProfiles extends LifeStyleState {}
+class NavigateToMyProfile extends LifeStyleState {}
