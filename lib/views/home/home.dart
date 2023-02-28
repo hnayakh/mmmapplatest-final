@@ -3,19 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/saurabh/custom_drawer.dart';
-import 'package:makemymarry/saurabh/partner_preference.dart';
-import 'package:makemymarry/saurabh/profile_detail.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
-import 'package:makemymarry/views/home/matching_profile/bloc/matching_profile_bloc.dart';
-import 'package:makemymarry/views/home/menu/sidebar_account_screen.dart';
-import 'package:makemymarry/views/home/my_connects/my_connects_screen.dart';
-import 'package:makemymarry/views/profileviewscreens/profile_view_bloc.dart';
-import 'package:makemymarry/views/stackviewscreens/meet%20status/meet_status_screen.dart';
-import 'package:makemymarry/views/stackviewscreens/meet%20status/meet_timing/schedule_meeting_time.dart';
 import 'package:makemymarry/views/stackviewscreens/notification_list.dart';
 import 'package:makemymarry/views/stackviewscreens/search_screen.dart';
-import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/my_profile/myprofile.dart';
+import '../profile_detail_view/profile_view_bloc.dart';
 import 'interests/views/interest_status_screen.dart';
 import 'matching_profile/views/matching_profile.dart';
 
@@ -111,48 +103,14 @@ class HomeScreenState extends State<HomeScreen> {
   Widget getContent() {
     switch (index) {
       case -1:
-        return BlocProvider<MatchingProfileBloc>(
-            create: (context) => MatchingProfileBloc(
-                widget.userRepository,
-                widget.list,
-                widget.searchList,
-                widget.premiumList,
-                widget.recentViewList,
-                widget.profileVisitorList,
-                widget.onlineMembersList),
-            child: Builder(builder: (context) {
-              return MatchingProfileScreen(
-                  userRepository: widget.userRepository,
-                  list: widget.list,
-                  searchList: widget.searchList,
-                  screenName: "",
-                  premiumList: widget.premiumList,
-                  recentViewList: widget.recentViewList,
-                  profileVisitorList: widget.profileVisitorList,
-                  onlineMembersList: widget.onlineMembersList);
-            }));
+        return MatchingProfileScreen(
+          list: widget.list,
+        );
 
       case 0:
-        return BlocProvider<MatchingProfileBloc>(
-            create: (context) => MatchingProfileBloc(
-                widget.userRepository,
-                widget.list,
-                widget.searchList,
-                widget.premiumList,
-                widget.recentViewList,
-                widget.profileVisitorList,
-                widget.onlineMembersList),
-            child: Builder(builder: (context) {
-              return MatchingProfileScreen(
-                  userRepository: widget.userRepository,
-                  list: widget.list,
-                  searchList: widget.searchList,
-                  screenName: widget.screenName,
-                  premiumList: widget.premiumList,
-                  recentViewList: widget.recentViewList,
-                  profileVisitorList: widget.profileVisitorList,
-                  onlineMembersList: widget.onlineMembersList);
-            }));
+        return MatchingProfileScreen(
+          list: widget.list,
+        );
       case 1:
         return
             // ScheduleMeetingTime();

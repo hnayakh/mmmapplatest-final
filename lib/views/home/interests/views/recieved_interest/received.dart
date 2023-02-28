@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:makemymarry/app/bloc/app_bloc.dart';
 import 'package:makemymarry/datamodels/interests_model.dart';
 import 'package:makemymarry/locator.dart';
 import 'package:makemymarry/repo/user_repo.dart';
@@ -9,9 +10,10 @@ import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
+import 'package:makemymarry/views/chat_room/chat_page.dart';
 import 'package:makemymarry/views/stackviewscreens/connect/chat_screen_ui.dart';
 
-import '../../../../profileviewscreens/profile_view.dart';
+import '../../../../profile_detail_view/profile_view.dart';
 import 'bloc/received_bloc.dart';
 import 'bloc/received_events.dart';
 import 'bloc/received_states.dart';
@@ -84,12 +86,12 @@ class ReceivedScreen extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(12),
-                    child: Image.network(
-                      listReceived[index].user.imageURL,
-                      height: MediaQuery.of(context).size.width * 0.28,
-                      width: MediaQuery.of(context).size.width * 0.28,
-                      fit: BoxFit.cover,
-                    ),
+                    child: Image.network(listReceived[index].user.imageURL,
+                        height: MediaQuery.of(context).size.width * 0.28,
+                        width: MediaQuery.of(context).size.width * 0.28,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, obj, str) => Container(
+                            color: Colors.grey, child: Icon(Icons.error))),
                   ),
                   SizedBox(
                     width: 10,
@@ -150,147 +152,12 @@ class ReceivedScreen extends StatelessWidget {
                                 InkWell(
                                   onTap: () {
                                     showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            content: Container(
-                                              height: 350,
-                                              width: 400,
-                                              decoration: const BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                Radius.circular(20),
-                                              )),
-                                              child: Column(
-                                                children: [
-                                                  Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        const SizedBox(
-                                                          height: 70,
-                                                        ),
-                                                        Container(
-                                                          child: const Text(
-                                                            'Abhishek Sharma',
-                                                            style: TextStyle(
-                                                              fontSize: 22,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        ClipOval(
-                                                          child: Image.asset(
-                                                            'images/sheild.png',
-                                                            height: 20,
-                                                            width: 20,
-                                                          ),
-                                                        ),
-                                                      ]),
-                                                  Container(
-                                                    child: ClipRect(
-                                                      child: Image.asset(
-                                                        'images/profile.png',
-                                                        height: 100,
-                                                        width: 80,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    child: const SizedBox(
-                                                        width: 300,
-                                                        child: Text(
-                                                            'Please accept the request to read a message',
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: TextStyle(
-                                                                fontSize: 17))),
-                                                  ),
-                                                  MmmButtons.primaryButton(
-                                                      'Confirm',
-                                                      () =>
-                                                          Navigator.of(context)
-                                                              .push(
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        ChatScreenUi()),
-                                                          )),
-                                                  Container(
-                                                    width: 240,
-                                                    child: MmmButtons
-                                                        .primaryButtonMeetGray(
-                                                            'Declion',
-                                                            () => Navigator.pop(
-                                                                context)),
-                                                  )
-                                                  // Container(
-                                                  //   child: InkWell(
-                                                  //     onTap: (() {
-                                                  //       Navigator.pop(context);
-                                                  //     }),
-                                                  //     child: Container(
-                                                  //       height: 40,
-                                                  //       width: 230,
-                                                  //       decoration:
-                                                  //           BoxDecoration(
-                                                  //         borderRadius:
-                                                  //             BorderRadius.only(
-                                                  //           topLeft:
-                                                  //               Radius.circular(
-                                                  //                   8),
-                                                  //           topRight:
-                                                  //               Radius.circular(
-                                                  //                   8),
-                                                  //           bottomLeft:
-                                                  //               Radius.circular(
-                                                  //                   8),
-                                                  //           bottomRight:
-                                                  //               Radius.circular(
-                                                  //                   8),
-                                                  //         ),
-                                                  //         boxShadow: [
-                                                  //           BoxShadow(
-                                                  //               color: Color
-                                                  //                   .fromARGB(
-                                                  //                       73,
-                                                  //                       61,
-                                                  //                       75,
-                                                  //                       92),
-                                                  //               offset: Offset(
-                                                  //                   0, 4),
-                                                  //               blurRadius: 14)
-                                                  //         ],
-                                                  //         color: Color.fromRGBO(
-                                                  //             255, 255, 255, 1),
-                                                  //         border: Border.all(
-                                                  //           color: gray3,
-                                                  //           width: 1,
-                                                  //         ),
-                                                  //       ),
-                                                  //       alignment:
-                                                  //           Alignment.center,
-                                                  //       child: Text(
-                                                  //         'Decline',
-                                                  //         textScaleFactor: 1.0,
-                                                  //         style: MmmTextStyles
-                                                  //             .heading6(
-                                                  //                 textColor:
-                                                  //                     gray3),
-                                                  //         textAlign:
-                                                  //             TextAlign.center,
-                                                  //       ),
-                                                  //     ),
-                                                  //   ),
-                                                  // )
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        });
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AcceptRequestDialog(
+                                            user: listReceived[index].user, requestId: listReceived[index].id,);
+                                      },
+                                    );
                                   },
                                   child: Container(
                                     width: 40,
@@ -467,6 +334,144 @@ class ReceivedScreen extends StatelessWidget {
         //   ],
         // );
       },
+    );
+  }
+}
+
+class AcceptRequestDialog extends StatelessWidget {
+  const AcceptRequestDialog(
+      {Key? key, required this.user, required this.requestId})
+      : super(key: key);
+  final InterestUser user;
+  final String requestId;
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      content: Container(
+        height: 350,
+        width: 400,
+        decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(
+          Radius.circular(20),
+        )),
+        child: Column(
+          children: [
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              const SizedBox(
+                height: 70,
+              ),
+              Container(
+                child: Text(
+                  user.name,
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              if (user.activationStatus == 1)
+                ClipOval(
+                  child: Image.asset(
+                    'images/sheild.png',
+                    height: 20,
+                    width: 20,
+                  ),
+                ),
+            ]),
+            Container(
+              child: ClipRect(
+                child: Image.network(
+                  user.imageURL,
+                  height: 100,
+                  width: 80,
+                  errorBuilder: (a, b, c) => Icon(Icons.error),
+                ),
+              ),
+            ),
+            Container(
+              child: const SizedBox(
+                  width: 300,
+                  child: Text('Please accept the request to read a message',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 17))),
+            ),
+            MmmButtons.primaryButton('Confirm', () async {
+              context.read<AppBloc>().acceptProposal(
+                  otherUserId: user.id,
+                  requestId: requestId,
+                  onDone: () async {
+                    Navigator.of(context)
+                        .push((await ChatPage.getRoute(context, user.id)));
+                  },
+                  onError: () async {});
+            }),
+            Container(
+              width: 240,
+              child: MmmButtons.primaryButtonMeetGray(
+                  'Decline', () => Navigator.pop(context)),
+            )
+            // Container(
+            //   child: InkWell(
+            //     onTap: (() {
+            //       Navigator.pop(context);
+            //     }),
+            //     child: Container(
+            //       height: 40,
+            //       width: 230,
+            //       decoration:
+            //           BoxDecoration(
+            //         borderRadius:
+            //             BorderRadius.only(
+            //           topLeft:
+            //               Radius.circular(
+            //                   8),
+            //           topRight:
+            //               Radius.circular(
+            //                   8),
+            //           bottomLeft:
+            //               Radius.circular(
+            //                   8),
+            //           bottomRight:
+            //               Radius.circular(
+            //                   8),
+            //         ),
+            //         boxShadow: [
+            //           BoxShadow(
+            //               color: Color
+            //                   .fromARGB(
+            //                       73,
+            //                       61,
+            //                       75,
+            //                       92),
+            //               offset: Offset(
+            //                   0, 4),
+            //               blurRadius: 14)
+            //         ],
+            //         color: Color.fromRGBO(
+            //             255, 255, 255, 1),
+            //         border: Border.all(
+            //           color: gray3,
+            //           width: 1,
+            //         ),
+            //       ),
+            //       alignment:
+            //           Alignment.center,
+            //       child: Text(
+            //         'Decline',
+            //         textScaleFactor: 1.0,
+            //         style: MmmTextStyles
+            //             .heading6(
+            //                 textColor:
+            //                     gray3),
+            //         textAlign:
+            //             TextAlign.center,
+            //       ),
+            //     ),
+            //   ),
+            // )
+          ],
+        ),
+      ),
     );
   }
 }

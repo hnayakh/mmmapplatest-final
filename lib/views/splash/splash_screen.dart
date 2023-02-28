@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:makemymarry/saurabh/partner_preference.dart';
 import 'package:makemymarry/views/splash/IntroductionScreen.dart';
 import 'package:makemymarry/views/splash/splash_bloc.dart';
 import 'package:makemymarry/locator.dart';
@@ -22,7 +23,6 @@ import 'package:makemymarry/views/splash/splash_event.dart';
 import 'package:makemymarry/views/splash/splash_state.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
-import '../intro.dart';
 import '../profilescreens/occupation/views/occupation.dart';
 import '../profilescreens/religion/views/religion.dart';
 
@@ -104,7 +104,6 @@ class SplashScreenState extends State<SplashScreen> {
 
   void checkRegistrationStepAndNavigate() {
     var userRepo = BlocProvider.of<SplashBloc>(context).userRepository;
-
     switch (userRepo.useDetails!.registrationStep) {
       case 10:
         {
@@ -120,7 +119,7 @@ class SplashScreenState extends State<SplashScreen> {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                 builder: (context) =>
-                    ProfilePreference(userRepository: userRepo),
+                    PartnerPrefsScreen(userRepository: userRepo),
               ),
               (route) => false);
           break;

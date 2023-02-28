@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:makemymarry/locator.dart';
 import 'package:makemymarry/views/profilescreens/about/bloc/about_bloc.dart';
 import 'package:makemymarry/views/profilescreens/about/bloc/about_event.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
@@ -50,9 +51,10 @@ class _AboutScreenState extends State<AboutScreen> {
   Widget build(BuildContext context) {
     this.userDetails =
         BlocProvider.of<AboutBloc>(context).userRepository.useDetails!;
-    print("registrationStep${this.userDetails.registrationStep}");
+
     if (this.userDetails.registrationStep > 2) {
-      BlocProvider.of<AboutBloc>(context).editNameController.text = userDetails.name;
+      BlocProvider.of<AboutBloc>(context).editNameController.text =
+          userDetails.name;
       BlocProvider.of<AboutBloc>(context).add(OnAboutDataLoad(userDetails.id));
     }
 
@@ -76,8 +78,6 @@ class _AboutScreenState extends State<AboutScreen> {
           if (state is OnLoading) {
             return MmmWidgets.buildLoader(context);
           } else if (state is AboutIdleState) {
-            print("ui   updated ===================================");
-            print(state.childrenStatus);
             return Container(
               height: MediaQuery.of(context).size.height,
               child: Stack(
@@ -93,7 +93,6 @@ class _AboutScreenState extends State<AboutScreen> {
                     child: this.userDetails.registrationStep > 2
                         ? InkWell(
                             onTap: () {
-
                               BlocProvider.of<AboutBloc>(context).add(
                                   OnAboutDone(
                                       this.userDetails.registrationStep > 2));
@@ -102,7 +101,6 @@ class _AboutScreenState extends State<AboutScreen> {
                           )
                         : InkWell(
                             onTap: () {
-
                               BlocProvider.of<AboutBloc>(context).add(
                                   OnAboutDone(
                                       this.userDetails.registrationStep > 2));
@@ -122,9 +120,8 @@ class _AboutScreenState extends State<AboutScreen> {
   }
 
   Widget buildForm(AboutIdleState state) {
-
     var hintText = state.heightStatus != null
-        ? AppHelper.getHeight(state.heightStatus)
+        ? AppHelper.getHeight(state.heightStatus ?? 0)
         : 'Select your height';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -145,13 +142,12 @@ class _AboutScreenState extends State<AboutScreen> {
                 userDetails.relationship == Relationship.Self
                     ? "Enter Name"
                     : 'Enter Name of ${describeEnum(userDetails.relationship)}',
-                BlocProvider.of<AboutBloc>(context).editNameController.text != ""
+                BlocProvider.of<AboutBloc>(context).editNameController.text !=
+                        ""
                     ? BlocProvider.of<AboutBloc>(context).editNameController
                     : BlocProvider.of<AboutBloc>(context).nameController,
                 onTextChange: (value) {
-                  BlocProvider.of<AboutBloc>(context)
-                      .add(OnNameChanged(value));
-
+                  BlocProvider.of<AboutBloc>(context).add(OnNameChanged(value));
                 },
                 textCapitalization: TextCapitalization.words,
               ),
@@ -159,13 +155,14 @@ class _AboutScreenState extends State<AboutScreen> {
                 height: 24,
               ),
               MmmButtons.categoryButtons(
-                  'Date of birth',
+                  'Date of Birth',
                   state.dateOfBirth != null
                       ? AppHelper.getReadableDob(
                           AppHelper.serverFormatDate(state.dateOfBirth!))
                       : 'dd MMM yyyy',
                   'dd MMM yyyy',
                   'images/Calendar.svg', action: () {
+                FocusManager.instance.primaryFocus?.unfocus();
                 showDate(context);
               }),
               SizedBox(
@@ -178,6 +175,7 @@ class _AboutScreenState extends State<AboutScreen> {
                       : 'Select your marital status',
                   'Select your marital status',
                   'images/rightArrow.svg', action: () {
+                FocusManager.instance.primaryFocus?.unfocus();
                 showMaritalStatusBottomSheet(state.maritalStatus);
               }),
               state.maritalStatus != MaritalStatus.NeverMarried
@@ -206,6 +204,8 @@ class _AboutScreenState extends State<AboutScreen> {
                                     value: ChildrenStatus.YesLivingTogether,
                                     groupValue: state.childrenStatus,
                                     onChanged: (val) {
+                                      FocusManager.instance.primaryFocus
+                                          ?.unfocus();
                                       BlocProvider.of<AboutBloc>(context).add(
                                           OnChildrenSelected(ChildrenStatus
                                               .YesLivingTogether));
@@ -221,6 +221,8 @@ class _AboutScreenState extends State<AboutScreen> {
                                     value: ChildrenStatus.YesNotLivingTogether,
                                     groupValue: state.childrenStatus,
                                     onChanged: (val) {
+                                      FocusManager.instance.primaryFocus
+                                          ?.unfocus();
                                       BlocProvider.of<AboutBloc>(context).add(
                                           OnChildrenSelected(ChildrenStatus
                                               .YesNotLivingTogether));
@@ -243,6 +245,8 @@ class _AboutScreenState extends State<AboutScreen> {
                                     value: ChildrenStatus.No,
                                     groupValue: state.childrenStatus,
                                     onChanged: (val) {
+                                      FocusManager.instance.primaryFocus
+                                          ?.unfocus();
                                       BlocProvider.of<AboutBloc>(context).add(
                                           OnChildrenSelected(
                                               ChildrenStatus.No));
@@ -275,6 +279,7 @@ class _AboutScreenState extends State<AboutScreen> {
                                 : 'Select number of children',
                             'Select number of children',
                             'images/rightArrow.svg', action: () {
+                          FocusManager.instance.primaryFocus?.unfocus();
                           showChildrenBottomSheet(state.noOfChildren);
                         })
                       ],
@@ -285,6 +290,7 @@ class _AboutScreenState extends State<AboutScreen> {
               ),
               MmmButtons.categoryButtons("Height", hintText,
                   'Select your height', 'images/rightArrow.svg', action: () {
+                FocusManager.instance.primaryFocus?.unfocus();
                 showHeightStatusBottomSheet(state.heightStatus);
               }),
               SizedBox(
@@ -308,6 +314,7 @@ class _AboutScreenState extends State<AboutScreen> {
                               value: AbilityStatus.Normal,
                               groupValue: state.abilityStatus,
                               onChanged: (val) {
+                                FocusManager.instance.primaryFocus?.unfocus();
                                 BlocProvider.of<AboutBloc>(context).add(
                                     OnDisabilitySelected(AbilityStatus.Normal));
                               }),
@@ -325,6 +332,7 @@ class _AboutScreenState extends State<AboutScreen> {
                               value: AbilityStatus.PhysicallyChallenged,
                               groupValue: state.abilityStatus,
                               onChanged: (val) {
+                                FocusManager.instance.primaryFocus?.unfocus();
                                 BlocProvider.of<AboutBloc>(context).add(
                                     OnDisabilitySelected(
                                         AbilityStatus.PhysicallyChallenged));
@@ -351,11 +359,16 @@ class _AboutScreenState extends State<AboutScreen> {
   }
 
   Future showDate(BuildContext context) async {
+    DateTime currentTime = DateTime.now();
+    var lastDate = this.userDetails.gender == Gender.Male.index
+        ? DateTime(currentTime.year - 21, currentTime.month, currentTime.day)
+        : DateTime(currentTime.year - 18, currentTime.month, currentTime.day);
     var newDate = await showDatePicker(
-        context: context,
-        initialDate: DateTime(2001, 1, 1),
-        firstDate: DateTime(1970),
-        lastDate: DateTime(2001));
+      context: context,
+      initialDate: lastDate,
+      firstDate: DateTime(1970),
+      lastDate: lastDate,
+    );
     if (newDate != null) {
       BlocProvider.of<AboutBloc>(context).add(OnDOBSelected(newDate));
     }
@@ -392,10 +405,13 @@ class _AboutScreenState extends State<AboutScreen> {
 
   void navigateToReligion() {
     var userRepo = BlocProvider.of<AboutBloc>(context).userRepository;
-    Navigator.of(context).push(MaterialPageRoute(
+    Navigator.of(context).push(
+      MaterialPageRoute(
         builder: (context) => Religion(
-              userRepository: userRepo,
-            )));
+          userRepository: userRepo,
+        ),
+      ),
+    );
   }
 
   void navigateToMyProfile() {

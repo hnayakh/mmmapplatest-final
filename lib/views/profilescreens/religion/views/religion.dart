@@ -69,8 +69,7 @@ class ReligionScreenState extends State<ReligionScreen> {
     BlocProvider.of<ReligionBloc>(context).add(GetUserReligionMasterData());
     this.userDetails =
         BlocProvider.of<ReligionBloc>(context).userRepository.useDetails!;
-    print("this.userDetails${this.userDetails.religion.id}");
-    print("registrationStep${this.userDetails.registrationStep}");
+
     if (this.userDetails.registrationStep > 3) {
       BlocProvider.of<ReligionBloc>(context)
           .add(onReligionDataLoad(userDetails.id));
@@ -144,7 +143,6 @@ class ReligionScreenState extends State<ReligionScreen> {
   }
 
   Widget buildForm(BuildContext context) {
-    //  print("subcast12#${this.cast.subCasts[0]}");
     return Container(
       child: Column(
         children: [

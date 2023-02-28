@@ -24,11 +24,11 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 
   void _onIntroEnd(context) {
     Navigator.of(context).push(
-      MaterialPageRoute(
-          builder: (_) => SignInPage()),
+      MaterialPageRoute(builder: (_) => SignInPage()),
     );
   }
 
+ int  pageIndex  = 0 ;
   Widget _buildFullscreenImage() {
     return Image.asset(
       'images/bio.jpg',
@@ -71,6 +71,11 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
     return IntroductionScreen(
       key: introKey,
       globalBackgroundColor: Colors.white,
+     onChange: (index) {
+        setState(() {
+          pageIndex = index;
+        });
+     },
       globalHeader: Align(
         child: SafeArea(
           child: Padding(
@@ -79,17 +84,6 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
           ),
         ),
       ),
-      // globalFooter: SizedBox(
-      //   width: double.infinity,
-      //   height: 60,
-      //   child: ElevatedButton(
-      //     child: const Text(
-      //       'Let\'s go right away!',
-      //       style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-      //     ),
-      //     onPressed: () => _onIntroEnd(context),
-      //   ),
-      // ),
       pages: [
         PageViewModel(
           title: "This is  an onboarding screen 1",
@@ -113,10 +107,13 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       onDone: () => _onIntroEnd(context),
       onSkip: () => _onIntroEnd(context),
 
-      showSkipButton: true,
+      showBackButton: true,
+
       nextFlex: 0,
 
-      skip: Container(
+      skipOrBackFlex: 2,
+
+      back: Container(
         margin: EdgeInsets.fromLTRB(0, 170, 0, 0),
         child: const Text('Previous',
             style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black)),

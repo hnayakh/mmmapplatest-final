@@ -35,7 +35,7 @@ class SigninResponse {
           if (extraData[0]["height"] != null) {
             userDetails!.height = double.parse(extraData[0]["height"]);
           } else {
-            userDetails!.height = 4.6;
+            userDetails!.height = 64;
           }
           if (extraData[0]["maritalStatus"] != null) {
             userDetails!.maritalStatus =
@@ -50,10 +50,7 @@ class SigninResponse {
               ..name = extraData[0]["careerCountry"]
               ..shortName = extraData[0]["careerCountry"];
           } else {
-            // userDetails!.countryModel = CountryModel()
-            //   ..id = 101
-            //   ..name = 'India'
-            //   ..shortName = 'IN';
+
 
             for (var country in PreferenceHelper.countryList) {
               if (json["data"]["userBasic"]["countryCode"] ==
@@ -94,7 +91,7 @@ class SigninResponse {
 }
 
 class UserDetails {
-  late String id, email, mobile, dialCode, displayId, name;
+  late String id, email, mobile, dialCode, displayId, name, imageUrl;
   late bool isActive;
   late int gender, registrationStep, lifecycleStatus, activationStatus;
   late Relationship relationship;
@@ -110,6 +107,7 @@ class UserDetails {
   UserDetails.fromJson(json) {
     this.displayId = json["displayId"];
     this.name =  json["name"] ?? "";
+    this.imageUrl =  json["imageUrl"] ?? "";
     this.id = json["id"];
     this.email = json["email"];
     this.mobile = json["phoneNumber"];
@@ -143,6 +141,7 @@ class UserDetails {
     this.countryModel,
     this.religion,
     this.motherTongue,
+    this.imageUrl,
   );
 }
 

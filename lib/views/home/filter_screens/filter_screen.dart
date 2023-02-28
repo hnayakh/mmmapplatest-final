@@ -45,7 +45,7 @@ class Filter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ProfilePreferenceBloc(userRepository),
+      create: (context) => ProfilePreferenceBloc(userRepository, forFilters: true),
       child: ProfilePreferenceScreen(),
     );
   }
@@ -334,10 +334,12 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
           //   navigateToFetchProfile();
           // }
           if (state is OnError) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(state.message),
-              backgroundColor: kError,
-            ));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+                backgroundColor: kError,
+              ),
+            );
           }
           if (state is ProfileFilterComplete) {
             Navigator.of(context).pop(state.list);

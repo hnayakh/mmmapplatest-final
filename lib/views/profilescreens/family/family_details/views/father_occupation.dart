@@ -58,10 +58,11 @@ class FatherOccupationBottomSheetState
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(describeEnum(FatherOccupation.values[index]),
+                          Text(
+                              // describeEnum(FatherOccupation.values[index]),
                               //added by me gray issue
-                              // AppHelper.getStringFromEnum(
-                              //     FatherOccupation.values[index]),
+                              AppHelper.getStringFromEnum(
+                                  FatherOccupation.values[index]),
                               style: MmmTextStyles.bodyMediumSmall(
                                   textColor: this.widget.occupation ==
                                           FatherOccupation.values[index]
@@ -81,7 +82,7 @@ class FatherOccupationBottomSheetState
                     },
                   );
                 },
-                itemCount: FatherOccupation.values.length,
+                itemCount: FatherOccupation.values.length - 1,
                 // separatorBuilder: (context, index) {
                 //   return Divider(
                 //     color: kLight4,

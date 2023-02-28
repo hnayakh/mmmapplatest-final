@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:makemymarry/app/bloc/app_bloc.dart';
 import 'package:makemymarry/app/bloc/app_event.dart';
+import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/views/profilescreens/about/bloc/about_bloc.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
@@ -20,8 +21,6 @@ import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
 import 'package:makemymarry/views/home/menu/account_menu_event.dart';
 import 'package:makemymarry/views/home/menu/account_menu_state.dart';
 import 'package:makemymarry/views/home/menu/wallet/wallet_main.dart';
-import 'package:makemymarry/views/profilescreens/occupation/bloc/occupation_bloc.dart';
-import 'package:makemymarry/views/profileviewscreens/profile_view_bloc.dart';
 import 'package:makemymarry/views/signinscreens/signin_page.dart';
 import 'package:makemymarry/views/stackviewscreens/connect/connect.dart';
 import 'package:makemymarry/views/stackviewscreens/meet%20status/meet_status_screen.dart';
@@ -32,6 +31,7 @@ import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/sidebar_con
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/text_styles.dart';
+import '../views/profile_detail_view/profile_view_bloc.dart';
 
 class AppDrawer extends StatelessWidget {
   final UserRepository userRepository;
@@ -86,7 +86,6 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
     Size screenSize = MediaQuery.of(context).size;
     return BlocConsumer<AccountMenuBloc, AccountMenuState>(
       listener: (context, state) {
-        // TO DO: implement listener
       },
       builder: (context, state) {
         var userRepo = BlocProvider.of<AccountMenuBloc>(context).userRepository;
@@ -100,8 +99,7 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
         } else if (state is OnGotProfile) {
           this.profileDetails =
               BlocProvider.of<AccountMenuBloc>(context).profileData;
-          print("this.profileDetails");
-          print(this.profileDetails);
+
           return Drawer(
               width: 350,
               child: SafeArea(
@@ -161,11 +159,12 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                                       textColor: Colors.white,
                                     ),
                                   ),
+                                  this.profileDetails != null && this.profileDetails?.activationStatus == ProfileActivationStatus.Verified ?
                                   Icon(
                                     Icons.verified_user,
                                     size: 22,
                                     color: Colors.white,
-                                  )
+                                  ): SizedBox()
                                 ],
                               ),
                               Text(

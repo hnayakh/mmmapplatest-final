@@ -1,30 +1,27 @@
 import 'package:makemymarry/base_event_state.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
+import 'package:makemymarry/views/home/matching_profile/views/matching_profile.dart';
 
-class MatchingProfileState extends BaseEventState {}
+class MatchingProfileState  {
 
-class MatchingProfileInitialState extends MatchingProfileState {}
+  final bool isStack;
+  final ProfilesFilter currentFilter;
+
+  MatchingProfileState({this.isStack = false, this.currentFilter = ProfilesFilter.recommendedProfile});
+}
+
+class MatchingProfileInitialState extends MatchingProfileState {
+
+  final List<MatchingProfile> list;
+  MatchingProfileInitialState(this.list);
+
+}
 
 class OnLoading extends MatchingProfileState {}
 
-class OnGotPremium extends MatchingProfileState {
+class OnGotProfiles extends MatchingProfileState {
   final List<MatchingProfile> list;
-  OnGotPremium(this.list);
-}
-
-class OnGotRecentView extends MatchingProfileState {
-  final List<MatchingProfile> list;
-  OnGotRecentView(this.list);
-}
-
-class onGotProfileVisitors extends MatchingProfileState {
-  final List<MatchingProfile> list;
-  onGotProfileVisitors(this.list);
-}
-
-class onGotOnlineMembers extends MatchingProfileState {
-  final List<MatchingProfile> list;
-  onGotOnlineMembers(this.list);
+  OnGotProfiles(this.list, bool isStack,ProfilesFilter currentFilter):super(isStack: isStack,currentFilter: currentFilter) ;
 }
 
 class OnError extends MatchingProfileState {
@@ -33,13 +30,8 @@ class OnError extends MatchingProfileState {
   OnError(this.message);
 }
 
+
 class OnMMIDSearch extends MatchingProfileState {
   final searchList;
   OnMMIDSearch(this.searchList);
-}
-
-class OnGotProfileDetails extends MatchingProfileState {
-  final ProfileDetails profileDetails;
-
-  OnGotProfileDetails(this.profileDetails);
 }

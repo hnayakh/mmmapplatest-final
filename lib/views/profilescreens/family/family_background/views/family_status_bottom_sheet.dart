@@ -56,10 +56,11 @@ class FamilyStatusBottomSheetState extends State<FamilyStatusBottomSheet> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(describeEnum(FamilyAfluenceLevel.values[index]),
+                          Text(
+                              // describeEnum(FamilyAfluenceLevel.values[index]),
                               //Changed by me gray issue
-                              // AppHelper.getStringFromEnum(
-                              //     FamilyAfluenceLevel.values[index]),
+                              AppHelper.getStringFromEnum(
+                                  FamilyAfluenceLevel.values[index]),
                               style: MmmTextStyles.bodyMediumSmall(
                                   textColor: this.widget.level ==
                                           FamilyAfluenceLevel.values[index]
@@ -80,7 +81,7 @@ class FamilyStatusBottomSheetState extends State<FamilyStatusBottomSheet> {
                     },
                   );
                 },
-                itemCount: FamilyAfluenceLevel.values.length,
+                itemCount: FamilyAfluenceLevel.values.length - 1,
                 // separatorBuilder: (context, index) {
                 //   return Divider(
                 //     color: kLight4,

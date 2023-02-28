@@ -66,26 +66,21 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
             );
 
         if (result.status == AppConstants.SUCCESS) {
-          //await this.userRepository.saveUserDetails();
           this.userRepository.useDetails!.registrationStep =
               result.userDetails!.registrationStep;
           await this
               .userRepository
               .storageService
               .saveUserDetails(this.userRepository.useDetails!);
-          this.userRepository.updateRegistrationStep(7);
-          print('in habit');
-          print(
-              'dobinhabitbloc=${this.userRepository.useDetails!.dateOfBirth}');
-          print(this.userRepository.useDetails!.registrationStep);
           if (!event.isAnUpdate) {
-            this.userRepository.updateRegistrationStep(7);
+            await this
+                .userRepository
+                .updateRegistartionStep(this.userRepository.useDetails!.id, 8);
+            this.userRepository.updateRegistrationStep(8);
           }
-          print('event.isAnUpdate$event.isAnUpdate');
           yield event.isAnUpdate
               ? OnNavigationToMyProfiles()
               : NavigationToReligion();
-          // : NavigationToReligion();
         } else {
           yield OnError(result.message);
         }

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
@@ -55,7 +56,8 @@ class FamilyValuesBottomSheetState extends State<FamilyValuesBottomSheet> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(describeEnum(FamilyValues.values[index]),
+                          Text( AppHelper.getStringFromEnum(
+                              FamilyValues.values[index]),
                               style: MmmTextStyles.bodyMediumSmall(
                                   textColor: this.widget.level ==
                                           FamilyValues.values[index]
@@ -75,7 +77,7 @@ class FamilyValuesBottomSheetState extends State<FamilyValuesBottomSheet> {
                     },
                   );
                 },
-                itemCount: FamilyValues.values.length,
+                itemCount: FamilyValues.values.length - 1,
                 // separatorBuilder: (context, index) {
                 //   return Divider(
                 //     color: kLight4,

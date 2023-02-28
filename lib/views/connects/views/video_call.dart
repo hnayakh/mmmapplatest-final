@@ -15,7 +15,8 @@ import 'package:permission_handler/permission_handler.dart';
 /// JoinChannelAudio Example
 class VideoCallView extends StatefulWidget {
   /// Construct the [VideoCallView]
-  const VideoCallView({Key? key, required this.uid, required this.imageUrl,  this.agoraToken})
+  const VideoCallView(
+      {Key? key, required this.uid, required this.imageUrl, this.agoraToken})
       : super(key: key);
 
   final AgoraToken? agoraToken;
@@ -70,47 +71,43 @@ class _State extends State<VideoCallView> {
       appId: '2408d5882f0445ec82566323785cfb66',
     ));
 
-
     _engine.registerEventHandler(RtcEngineEventHandler(
       onError: (ErrorCodeType err, String msg) {
         UtilityService.cprint('[onError] err: $err, msg: $msg');
       },
       onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
         UtilityService.cprint(
-            '[onJoinChannelSuccess] connection: ${connection
-                .toJson()} elapsed: $elapsed');
+            '[onJoinChannelSuccess] connection: ${connection.toJson()} elapsed: $elapsed');
         setState(() {
           isJoined = true;
         });
       },
       onUserJoined: (RtcConnection connection, int rUid, int elapsed) {
         UtilityService.cprint(
-            '[onUserJoined] connection: ${connection
-                .toJson()} remoteUid: $rUid elapsed: $elapsed');
+            '[onUserJoined] connection: ${connection.toJson()} remoteUid: $rUid elapsed: $elapsed');
         setState(() {
           remoteUid.add(rUid);
         });
       },
       onUserOffline:
           (RtcConnection connection, int rUid, UserOfflineReasonType reason) {
-        UtilityService.cprint(
-            '[onUserOffline] connection: ${connection
-                .toJson()}  rUid: $rUid reason: $reason');
         setState(() {
           remoteUid.removeWhere((element) => element == rUid);
         });
+        if (reason == UserOfflineReasonType.userOfflineQuit ||
+            reason == UserOfflineReasonType.userOfflineDropped) {
+          _leaveChannel();
+        }
       },
       onLeaveChannel: (RtcConnection connection, RtcStats stats) {
         UtilityService.cprint(
-            '[onLeaveChannel] connection: ${connection.toJson()} stats: ${stats
-                .toJson()}');
+            '[onLeaveChannel] connection: ${connection.toJson()} stats: ${stats.toJson()}');
         setState(() {
           isJoined = false;
           remoteUid.clear();
         });
       },
     ));
-
 
     await _engine.setVideoEncoderConfiguration(
       const VideoEncoderConfiguration(
@@ -121,7 +118,6 @@ class _State extends State<VideoCallView> {
     );
 
     await _engine.enableVideo();
-
 
     await _engine.startPreview();
 
@@ -134,9 +130,7 @@ class _State extends State<VideoCallView> {
       res.then((value) async {
         if (value.status == AppConstants.SUCCESS) {
           channelId = value.token!.channelName;
-          _joinChannel(
-              value.token!.agoraToken,
-              value.token!.channelName);
+          _joinChannel(value.token!.agoraToken, value.token!.channelName);
         } else {
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text("ERROR!!!!")));
@@ -149,12 +143,10 @@ class _State extends State<VideoCallView> {
         await Future.delayed(Duration(seconds: 2));
         Navigator.of(context).pop();
       });
-    }
-    else{
+    } else {
       channelId = widget.agoraToken!.channelName;
       _joinChannel(
-          widget.agoraToken!.agoraToken,
-          widget.agoraToken!.channelName);
+          widget.agoraToken!.agoraToken, widget.agoraToken!.channelName);
     }
   }
 

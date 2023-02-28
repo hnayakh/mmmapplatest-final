@@ -33,6 +33,7 @@ import 'package:makemymarry/views/signupscreens/create_account/signup_option_bot
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:http/http.dart' as http;
 
+import '../../saurabh/partner_preference.dart';
 import '../profilescreens/religion/views/religion.dart';
 
 final Dio dio = Dio();
@@ -532,32 +533,7 @@ class SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  // void navigateToHome(
-  //     List<MatchingProfile> list, List<MatchingProfile> seachList) {
-  //   var userRepo = BlocProvider.of<ProfileLoaderBloc>(context).userRepository;
-  //   Navigator.of(context).push(
-  //       MaterialPageRoute(
-  //           builder: (context) => HomeScreen(
-  //               userRepository: userRepo, list: list, searchList: seachList)),
-  //   )
-  // }
-  // void navigateToHome(
-  //     List<MatchingProfile> list, List<MatchingProfile> seachList) {
-  //   print("Home");
-  //   var userRepo = BlocProvider.of<SignInBloc>(context).userRepository;
-  //   Navigator.of(context).push(MaterialPageRoute(
-  //       builder: (context) => HomeScreen(
-  //           userRepository: userRepo, list: list, searchList: seachList)));
-  // }
 
-  // void navigateToHome() {
-  //   var userRepo = BlocProvider.of<SignInBloc>(context).userRepository;
-  //   Navigator.of(context).push(MaterialPageRoute(
-  //       builder: (context) => HomeScreen(
-  //             userRepository: userRepo,
-  //              list: list, searchList: seachList
-  //           )));
-  // }
   void navigateToForgotPassword() {
     var userRepo = BlocProvider.of<SignInBloc>(context).userRepository;
     Navigator.of(context).push(MaterialPageRoute(
@@ -585,18 +561,7 @@ class SignInScreenState extends State<SignInScreen> {
         context: context,
         builder: (context) => SignupOptionBottomSheet());
 
-    // var result = await showModalBottomSheet(
-    //     context: context,
-    //     backgroundColor: Colors.transparent,
-    //     isScrollControlled: true,
-    //     builder: (context) => DrinkStatusFilterSheet(
-    //           selectedDrinkStatus: drinkStatus,
-    //         ));
-    // if (result != null && result is SimpleMasterData) {
-    //   BlocProvider.of<FilterBloc>(context)
-    //       .add(OnReligionFilterSelected(result));
-    //   this.initCaste = 0;
-    // }
+
   }
 
   navigateToRegister() {
@@ -628,7 +593,7 @@ class SignInScreenState extends State<SignInScreen> {
       case 9:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-                builder: (context) => ProfilePreference(
+                builder: (context) => PartnerPrefsScreen(
                       userRepository: userRepo,
                     )),
             (route) => false);

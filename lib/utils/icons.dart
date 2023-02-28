@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:makemymarry/locator.dart';
 import 'package:makemymarry/utils/colors.dart';
+import 'package:makemymarry/utils/view_decorations.dart';
 import 'package:makemymarry/views/stackviewscreens/meet%20status/meet_status_screen.dart';
+
+import '../views/chat_room/chat_page.dart';
 
 class MmmIcons {
   static Container heart(Color color, {Function()? action}) {
@@ -85,8 +89,35 @@ class MmmIcons {
       ),
     );
   }
+  static Widget largeConnect({Function()? action, bool isHalf = false}) {
+    return InkWell(
+      onTap: () {
+        action?.call();
+      },
+      child: Container(
+        height: isHalf ? 56 : 64,
+        width: isHalf ? 56 :64,
+        child: Center(
+          child: SvgPicture.asset(
+            "images/connect.svg",
+            color: Colors.white,
+            height: 32,
+            width: 32,
+          ),
+        ),
+        foregroundDecoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: kPrimary.withAlpha(50),
+            border: Border.all(color: Colors.white, width: 1.2)),
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: MmmDecorations.primaryGradient(),
+            border: Border.all(color: Colors.white, width: 1.2)),
+      ),
+    );
+  }
 
-  static Container cancel({Function()? action, Function()? longAction}) {
+  static Container cancel({Function()? action,Function()? longAction,}) {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -122,6 +153,118 @@ class MmmIcons {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  static Widget largeCancel({required Function() action,bool isHalf = false}) {
+    return InkWell(
+      onTap: () {
+        action.call();
+      },
+      child: Container(
+        height: isHalf ? 56 : 64,
+        width: isHalf ? 56 :64,
+        child: Center(
+          child: SvgPicture.asset(
+            "images/cancel.svg",
+            color: Colors.white,
+            height: 32,
+            width: 32,
+          ),
+        ),
+        foregroundDecoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: kPrimary.withAlpha(50),
+            border: Border.all(color: Colors.white, width: 1.2)),
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: MmmDecorations.primaryGradient(),
+            border: Border.all(color: Colors.white, width: 1.2)),
+      ),
+    );
+  }
+
+  static Widget largeAccept({required Function() action,bool isHalf = false}) {
+    return InkWell(
+      onTap: () {
+        action.call();
+      },
+      child: Container(
+        height: isHalf ? 56 : 64,
+        width: isHalf ? 56 : 64,
+        child: Center(
+          child: SvgPicture.asset(
+            "images/Check.svg",
+            color: Colors.white,
+            height: 32,
+            width: 32,
+          ),
+        ),
+        foregroundDecoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: kGreen.withAlpha(50),
+            border: Border.all(color: Colors.white, width: 1.2)),
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: kGreen,
+            // gradient: MmmDecorations.primaryGradient(),
+            border: Border.all(color: Colors.white, width: 1.2)),
+      ),
+    );
+  }
+  static Widget largeReject({required Function() action,bool isHalf = false}) {
+    return InkWell(
+      onTap: () {
+        action.call();
+      },
+      child: Container(
+        height: isHalf ? 56 : 64,
+        width: isHalf ? 56 :64,
+        child: Center(
+          child: SvgPicture.asset(
+            "images/Cross.svg",
+            color: Colors.white,
+            height: 32,
+            width: 32,
+          ),
+        ),
+        foregroundDecoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: kGray.withAlpha(50),
+            border: Border.all(color: Colors.white, width: 1.2)),
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: kGray,
+            // gradient: MmmDecorations.primaryGradient(),
+            border: Border.all(color: Colors.white, width: 1.2)),
+      ),
+    );
+  }
+  static Widget largeHeart({required Function() action,bool isHalf = false}) {
+    return InkWell(
+      onTap: () {
+        action.call();
+      },
+      child: Container(
+        height: isHalf ? 32 : 64,
+        width: isHalf ? 32 :64,
+        child: Center(
+          child: SvgPicture.asset(
+            "images/heart.svg",
+            color: Colors.white,
+            height: 32,
+            width: 32,
+          ),
+        ),
+        foregroundDecoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: kPrimary.withAlpha(50),
+            border: Border.all(color: Colors.white, width: 1.2)),
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: MmmDecorations.primaryGradient(),
+            border: Border.all(color: Colors.white, width: 1.2)),
       ),
     );
   }
@@ -165,7 +308,7 @@ class MmmIcons {
     );
   }
 
-  static Container video() {
+  static Container video(Future<void> Function() onPress) {
     return Container(
       decoration: BoxDecoration(
         color: Color(0xffFF758F),
@@ -187,7 +330,9 @@ class MmmIcons {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () {},
+            onTap: () async {
+              await onPress.call();
+            },
             child: Container(
               height: 34,
               width: 34,
@@ -203,7 +348,7 @@ class MmmIcons {
     );
   }
 
-  static Container chat() {
+  static Container chat(BuildContext context,String userId, Future<void> Function() onTap) {
     return Container(
       decoration: BoxDecoration(
         color: Color(0xffFF758F),
@@ -225,7 +370,11 @@ class MmmIcons {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () {},
+            onTap: () async {
+              await onTap.call();
+              navigatorKey.currentState
+                  ?.push((await ChatPage.getRoute(context, userId)));
+            },
             child: Container(
               height: 34,
               width: 34,
@@ -241,7 +390,36 @@ class MmmIcons {
     );
   }
 
-  static Container call() {
+  static Widget largeChat(BuildContext context,String userId, Future<void> Function() onTap,
+      {bool isHalf = false}) {
+    return InkWell(
+        onTap: () async {
+          await onTap.call();
+          // navigatorKey.currentState?.push((await ChatPage.getRoute(context, userId)));
+        },
+        child: Container(
+          height: isHalf ? 56 : 64,
+          width: isHalf ? 56 : 64,
+          child: Center(
+            child: SvgPicture.asset(
+              "images/chat.svg",
+              color: Colors.white,
+              height: 32,
+              width: 32,
+            ),
+          ),
+          foregroundDecoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: kPrimary.withAlpha(50),
+              border: Border.all(color: Colors.white, width: 1.2)),
+          decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: MmmDecorations.primaryGradient(),
+              border: Border.all(color: Colors.white, width: 1.2)),
+        ));
+  }
+
+  static Container call(Future<void> Function() onPress) {
     return Container(
       decoration: BoxDecoration(
         color: Color(0xffFF758F),
@@ -263,7 +441,9 @@ class MmmIcons {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () {},
+            onTap: () async {
+              await onPress.call();
+            },
             child: Container(
               height: 34,
               width: 34,

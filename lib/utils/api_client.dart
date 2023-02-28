@@ -2,10 +2,8 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:makemymarry/datamodels/agora_token_response.dart';
-import 'package:makemymarry/locator.dart';
 import 'package:makemymarry/socket_io/StreamSocket.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:dio/dio.dart';
@@ -19,10 +17,7 @@ import 'package:makemymarry/datamodels/recharge.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
-import 'package:makemymarry/views/home/matching_profile/views/matching_profile.dart';
 import 'package:socket_io_client/socket_io_client.dart';
-
-import 'app_helper.dart';
 
 class ApiClient {
   final Dio dio = Dio();
@@ -33,12 +28,13 @@ class ApiClient {
   }
 
   Future<RegistrationResponse> registerUser(
-      int? profileCreatedFor,
-      String email,
-      String phoneCode,
-      String mobile,
-      Gender? gender,
-      String password) async {
+    int? profileCreatedFor,
+    String email,
+    String phoneCode,
+    String mobile,
+    Gender? gender,
+    String password,
+  ) async {
     try {
       var fcmToken = await FirebaseMessaging.instance.getToken();
       Response response =
@@ -135,11 +131,7 @@ class ApiClient {
       String? name,
       String userId) async {
     try {
-      double heightCm =
-          double.parse(AppHelper.getHeights()[heightStatus!].split(".")[0]) *
-                  30.48 +
-              double.parse(AppHelper.getHeights()[heightStatus].split(".")[1]) *
-                  2.54;
+      int heightCm = 48 + (heightStatus ?? 0);
 
       Response response =
           await this.dio.post(AppConstants.ENDPOINT + "users/about", data: {
@@ -155,13 +147,13 @@ class ApiClient {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SigninResponse.fromJson(response.data);
       } else {
-        return SigninResponse.fromError("Error Occurred. Please try againa.");
+        return SigninResponse.fromError("Error Occurred. Please try again.");
       }
     } catch (error) {
       if (error is DioError) {
         print(error.message);
       }
-      return SigninResponse.fromError("Error Occurred. Please try againa.");
+      return SigninResponse.fromError("Error Occurred. Please try again.");
     }
   }
 
@@ -171,7 +163,6 @@ class ApiClient {
           AppConstants.ENDPOINT + "masters/profile-raw-data",
           queryParameters: userId != null ? {"userBasicId": userId} : {},
           options: Options(receiveTimeout: 0));
-      print('response.statusCode');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         return MasterDataResponse.fromJson(response.data);
@@ -180,10 +171,7 @@ class ApiClient {
             "Error Occurred. Please try againa.");
       }
     } catch (error) {
-      if (error is DioError) {
-        print('error is');
-        print(error.message);
-      }
+      if (error is DioError) {}
       return MasterDataResponse.fromError("Error Occurred. Please try againa.");
     }
   }
@@ -407,7 +395,9 @@ class ApiClient {
   }
 
   Future<SigninResponse> updateLifeStyle(
-      String uid, List<String> lifeStyles,) async {
+    String uid,
+    List<String> lifeStyles,
+  ) async {
     try {
       Response response =
           await this.dio.post(AppConstants.ENDPOINT + "users/lifestyle", data: {
@@ -426,8 +416,11 @@ class ApiClient {
       return SigninResponse.fromError("Error Occurred. Please try again.");
     }
   }
- Future<SigninResponse> updateHobby(
-      String uid, List<String> hobbies,) async {
+
+  Future<SigninResponse> updateHobby(
+    String uid,
+    List<String> hobbies,
+  ) async {
     try {
       Response response =
           await this.dio.post(AppConstants.ENDPOINT + "users/hobbies", data: {
@@ -832,35 +825,39 @@ class ApiClient {
   }
 
   Future<ProfileDetailsResponse> getOtherUserDetails(
-      String id, ProfileActivationStatus activationStatus, {String? userId}) async {
-    // try {
+      String id, ProfileActivationStatus activationStatus,
+      {String? userId}) async {
+    var response = await this.dio.post(
+        "${AppConstants.ENDPOINT}users/basic/$id",
+        data: userId == null ? null : {"myBasicId": userId});
 
-    var response =
-        await this.dio.post("${AppConstants.ENDPOINT}users/basic/$id",data: userId == null ? null : {
-          "myBasicId":userId
-        });
-
-    print("sresponse${response.data['data']}");
     if (response.statusCode == 200 || response.statusCode == 201) {
       return ProfileDetailsResponse.fromJson(response.data, activationStatus);
     }
     return ProfileDetailsResponse.fromError(
         "Error Occurred. Please try again.");
-    // } catch (error) {
-    //   if (error is DioError) {
-    //     print(error.message);
-    //   }
-    //   return ProfileDetailsResponse.fromError(
-    //       "Error Occurred. Please try again.");
-    // }
+  }
+
+  Future<PartnerPreferenceResponse> getPartnerPreference(
+      {required String userId}) async {
+    var response =
+        await this.dio.get("${AppConstants.ENDPOINT}users/preference/$userId");
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return PartnerPreferenceResponse.fromJson(response.data);
+    }
+    return PartnerPreferenceResponse.fromError(
+        "Error Occurred. Please try again.");
   }
 
   Future<ProfileDetailsResponse> getOtherUserDetailsByDisplayId(
-      String displayId, ProfileActivationStatus activationStatus) async {
+      String displayId,
+      ProfileActivationStatus activationStatus,
+      String? userId) async {
     // try {
-    var response = await this
-        .dio
-        .get("${AppConstants.ENDPOINT}users/displaybasic/$displayId");
+    var response = await this.dio.post(
+        "${AppConstants.ENDPOINT}users/displaybasic/$displayId",
+        data: userId == null ? null : {"myBasicId": userId});
 
     print("sresponse${response.data['data']}");
     if (response.statusCode == 200 || response.statusCode == 201) {
@@ -950,8 +947,8 @@ class ApiClient {
         "userBasicId": id,
         "minAge": minAge,
         "maxAge": maxAge,
-        "minHeight": minHeight * 30.48,
-        "maxHeight": maxHeight * 30.48,
+        "minHeight": minHeight,
+        "maxHeight": maxHeight,
         "maritalStatus": maritalStatus.map((e) => e.index).toList(),
         "country": [countryModel.id],
         "state": myState.map((e) => e!.id).toList(),
@@ -966,7 +963,7 @@ class ApiClient {
         "dietaryHabits": eatingHabit.map((e) => e.index).toList(),
         "drinkingHabits": drinkingHabit.map((e) => e.index).toList(),
         "smokingHabits": smokingHabit.map((e) => e.index).toList(),
-        "challenged": abilityStatus.index
+        "challenged": abilityStatus.index,
       });
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SimpleResponse.fromJson(response.data);
@@ -1040,17 +1037,14 @@ class ApiClient {
   }
 
   Future<LikeStatusResponse> setLikeStatus(
-      String likedUserId, String likedByUserId) async {
-    print('set like');
-    print(likedByUserId);
-    print(likedUserId);
+      String likedUserId, String likedByUserId, String? requestId) async {
     try {
       var response = await this
           .dio
           .post(AppConstants.ENDPOINT + 'connects/user_request', data: {
         "requestingUserBasicId": likedByUserId,
         "requestedUserBasicId": likedUserId,
-        "userRequestId": "",
+        "userRequestId": requestId ?? "",
         "operation": 0
       });
       return LikeStatusResponse.fromJson(response.data);
@@ -1205,15 +1199,29 @@ class ApiClient {
     print(reponse);
   }
 
-  Future<ConnectHistoryResponse> getConnectHistory(String id) async {
-    // try {
-    var response = await this.dio.get(
-          AppConstants.ENDPOINT + 'connects/connect_transaction/$id',
+  Future blockProfile(String blockBy, blockTo) {
+    return this.dio.get(
+          AppConstants.ENDPOINT + "users/block_user/$blockBy/$blockTo",
         );
-    return ConnectHistoryResponse.fromJson(response.data);
-    // } catch (error) {
-    //   return ConnectHistoryResponse.fromError("Something went wrong");
-    // }
+  }
+
+  Future unblockProfile(
+    String blockId,
+  ) {
+    return this.dio.delete(
+          AppConstants.ENDPOINT + "users/unblock_user/$blockId",
+        );
+  }
+
+  Future<ConnectHistoryResponse> getConnectHistory(String id) async {
+    try {
+      var response = await this.dio.get(
+            AppConstants.ENDPOINT + 'connects/connect_transaction/$id',
+          );
+      return ConnectHistoryResponse.fromJson(response.data);
+    } catch (error) {
+      return ConnectHistoryResponse.fromError("Something went wrong");
+    }
   }
 
   Future<MySearchResponse> getConnectThroughMMId(

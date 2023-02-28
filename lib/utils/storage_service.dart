@@ -24,11 +24,9 @@ class StorageService {
   }
 
   Future saveUserDetails(UserDetails userDetails) async {
-    // print('UserDetail------');
-    // print(userDetails.secretToken);
     await initPrefs();
-    //ifelse all
     this.sharedPreferences.setString(AppConstants.USERID, userDetails.id);
+    this.sharedPreferences.setString(AppConstants.IMAGE_URL, userDetails.imageUrl);
     this
         .sharedPreferences
         .setString(AppConstants.DISPLAYID, userDetails.displayId);
@@ -46,13 +44,6 @@ class StorageService {
     this
         .sharedPreferences
         .setInt(AppConstants.ABILITYSTATUS, userDetails.abilityStatus.index);
-    // this.sharedPreferences.setString(
-    //     AppConstants.COUNTRYMODELNAME, userDetails.countryModel.name);
-    // this.sharedPreferences.setString(
-    //     AppConstants.COUNTRYMODELSHORTNAME, userDetails.countryModel.shortName);
-    // this
-    //     .sharedPreferences
-    //     .setInt(AppConstants.COUNTRYMODELID, userDetails.countryModel.id);
     this
         .sharedPreferences
         .setString(AppConstants.RELIGIONID, userDetails.religion.id);
@@ -88,27 +79,20 @@ class StorageService {
     this
         .sharedPreferences
         .setInt(AppConstants.REGISTRATIONSTEP, userDetails.registrationStep);
-    print("REGISTRATIONSTEP${userDetails.registrationStep}");
-    this.sharedPreferences.setBool(AppConstants.ISACTIVE, userDetails.isActive);
-    // this.sharedPreferences.setString('secretToken', userDetails.secretToken);
-// To save the value, use this:
-    //await storage.write(key: "my-secure-jwt", value: myJwt);
 
-    //this.sharedPreferences.setString("jwt", userDetails.jwt);
+    this.sharedPreferences.setBool(AppConstants.ISACTIVE, userDetails.isActive);
+
   }
 
   Future<UserDetails?> getUserDetails() async {
     await initPrefs();
     var id = this.sharedPreferences.getString(AppConstants.USERID);
     if (id == null) {
-      print('id is null');
       return null;
     } else {
-      print('id not null');
-      //var jwt = this.sharedPreferences.getString("jwt")!;
-      //var userId=this.sharedPreferences.getString(AppConstants.USERID);
       var displayId = this.sharedPreferences.getString(AppConstants.DISPLAYID);
       var name = this.sharedPreferences.getString(AppConstants.NAME) ?? "";
+      var imageUrl = this.sharedPreferences.getString(AppConstants.IMAGE_URL) ?? "";
       var gender = this.sharedPreferences.getInt(AppConstants.GENDER);
       var isActive = this.sharedPreferences.getBool(AppConstants.ISACTIVE);
       var mobile = this.sharedPreferences.getString(AppConstants.MOBILE);
@@ -129,8 +113,6 @@ class StorageService {
           .values[this.sharedPreferences.getInt(AppConstants.MARITALSTATUS)!];
       var abilityStatus = AbilityStatus
           .values[this.sharedPreferences.getInt(AppConstants.ABILITYSTATUS)!];
-      print('instorage');
-
       CountryModel countryModel = CountryModel();
       countryModel.id =
           this.sharedPreferences.getInt(AppConstants.COUNTRYMODELID)!;
@@ -149,8 +131,6 @@ class StorageService {
       motherTongue.title =
           this.sharedPreferences.getString(AppConstants.MOTHERTONGUETITLE)!;
 
-      print(religion.id);
-      print(motherTongue.id);
 
       return UserDetails.fromStorage(
         displayId!,
@@ -172,6 +152,7 @@ class StorageService {
         countryModel,
         religion,
         motherTongue,
+          imageUrl
       );
     }
   }

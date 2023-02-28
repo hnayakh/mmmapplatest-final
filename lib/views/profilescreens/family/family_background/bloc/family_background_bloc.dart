@@ -145,7 +145,10 @@ class FamilyBackgroundBloc
               .saveUserDetails(this.userRepository.useDetails!);
 
           if (!event.isAnUpdate) {
-            this.userRepository.updateRegistrationStep(5);
+            await this
+                .userRepository
+                .updateRegistartionStep(this.userRepository.useDetails!.id, 6);
+            this.userRepository.updateRegistrationStep(6);
           }
           yield OnUpdate();
         } else {

@@ -38,11 +38,11 @@ class OnGotCities extends ProfilePreferenceState {
 
 class OnGotCasteList extends ProfilePreferenceState {
   final List<CastSubCast> caste;
-
   OnGotCasteList(this.caste);
 }
 
 class ProfilePreferenceComplete extends ProfilePreferenceState {}
+class ProfilePreferenceUpdated extends ProfilePreferenceState {}
 
 class ProfileFilterComplete extends ProfilePreferenceState {
   final List<MatchingProfile> list;

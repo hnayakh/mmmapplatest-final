@@ -50,7 +50,7 @@ enum AbilityStatus {
 enum NoOfChildren { One, Two, ThreeOrMore }
 
 enum ChildrenStatus { No, YesLivingTogether, YesNotLivingTogether }
-enum ConnectStatus { Sent, Accepted, Rejected, Reverted }
+enum ProposalStatus { Sent, Accepted, Rejected, Reverted, Received }
 
 enum EatingHabit {
   Notspecified,
@@ -98,7 +98,7 @@ enum IdProofType { Passport, VoterIdCard, AadharCard, DrivingLicence, PanCard }
 
 enum FamilyType { Nuclear, Joint, Other, Notmentioned }
 
-enum FamilyValues { Traditional, Moderate, Liberal, NotMentioned }
+enum FamilyValues {Orthodox ,  Conservative, Moderate, Liberal, NotMentioned }
 
 enum FamilyAfluenceLevel {
   Rich,

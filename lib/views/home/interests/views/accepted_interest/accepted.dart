@@ -16,7 +16,7 @@ import '../../../../../app/bloc/app_state.dart';
 import '../../../../../locator.dart';
 import '../../../../../repo/chat_repo.dart';
 import '../../../../chat_room/chat_page.dart';
-import '../../../../profileviewscreens/profile_view.dart';
+import '../../../../profile_detail_view/profile_view.dart';
 import '../../../menu/wallet/recharge/recharge_connect_screen.dart';
 import 'bloc/accepted_bloc.dart';
 import 'bloc/accepted_events.dart';
@@ -218,6 +218,10 @@ class AcceptedScreen extends StatelessWidget {
                     height: MediaQuery.of(context).size.width * 0.28,
                     width: MediaQuery.of(context).size.width * 0.28,
                     fit: BoxFit.cover,
+                      errorBuilder: (context, obj, str) => Container(
+                          color: Colors.grey,
+                          child: Icon(Icons.error))
+
                   ),
                 ),
                 SizedBox(
@@ -320,50 +324,15 @@ class AcceptedScreen extends StatelessWidget {
                             ),
                           );
                         } else {
-                          var appBloc = BlocProvider.of<AppBloc>(context);
-                          appBloc.add(RefreshWalletCount());
-                          if ((appBloc.state as AppLoggedInState).connectCount >
-                              0) {
-                            var bloc = BlocProvider.of<AcceptedBloc>(context);
-                            await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return MmmWidgets.requestConnectWidget(
-                                  name: listAccepted[index].user.name,
-                                  imageUrl: listAccepted[index].user.imageURL,
-                                  isVerified:
-                                      listAccepted[index].user.isActive == 1,
-                                  onConfirm: () {
-                                    // bloc.add(ConnectNow(
-                                    // connectById: listAccepted[index]
-                                    //     .requestingUserBasicId,
-                                    // connectToId: listAccepted[index]
-                                    //     .requestedUserBasicId));
-                                  },
-                                );
+                          BlocProvider.of<AppBloc>(navigatorKey.currentContext!).connectNow(
+                              otherUserId: listAccepted[index].requestedUserBasicId,
+                              onDone: () async {
+                                navigatorKey.currentState?.push((await ChatPage.getRoute(
+                                    navigatorKey.currentContext!, listAccepted[index].requestedUserBasicId)));
                               },
-                            );
-                            appBloc.add(RefreshWalletCount());
-                          } else {
-                            await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return MmmWidgets.lowBalanceWidget(
-                                  onConfirm: () {
-                                    Navigator.of(context).pop();
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => RechargeConnect(
-                                          userRepository:
-                                              getIt<UserRepository>(),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                            );
-                          }
+                              onError: () async {},
+                              profileDetails: listAccepted[index],
+                              context: navigatorKey.currentContext!);
                         }
                       },
                     ),

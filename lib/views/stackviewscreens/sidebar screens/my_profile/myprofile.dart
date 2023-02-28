@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/locator.dart';
+import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/helper.dart';
+import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/views/profilescreens/about/bloc/about_bloc.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/repo/user_repo.dart';
@@ -79,24 +81,18 @@ class MyProfileBody extends StatelessWidget {
                     child: CircleAvatar(
                       radius: MediaQuery.of(context).size.width * 0.122,
                       child: ClipOval(
-                          // child: Image.network(
-                          //   profileDetails!.images[1],
-                          //   width: double.infinity,
-                          //   fit: BoxFit.cover,
-                          //   height: double.infinity,
-                          // ),
-                          //  )
-
                           child: profileDetails != null &&
                                   profileDetails!.images.length > 0 &&
                                   !profileDetails!.images[0]
                                       .contains("addImage")
-                              ? Image.network(
-                                  profileDetails!.images[0],
+                              ? Image.network(profileDetails!.images[0],
                                   width: double.infinity,
                                   fit: BoxFit.cover,
                                   height: double.infinity,
-                                )
+                                  errorBuilder: (context, obj, str) =>
+                                      Container(
+                                          color: Colors.grey,
+                                          child: Icon(Icons.error)))
                               : Image.asset('images/human.jpg')),
                     ),
                   ),
@@ -224,7 +220,6 @@ class LifestyleInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 350,
-
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(8),
@@ -273,9 +268,11 @@ class LifestyleInfoCard extends StatelessWidget {
                   ),
                 ),
                 InkWell(
-                  onTap: () {
-                    context.navigate.push(MaterialPageRoute(
+                  onTap: () async {
+                    await context.navigate.push(MaterialPageRoute(
                         builder: (context) => LifeStyleView()));
+                    BlocProvider.of<MyProfileBloc>(context).loadMyData();
+
                   },
                   child: Image.asset(
                     'images/pen.png',
@@ -291,16 +288,17 @@ class LifestyleInfoCard extends StatelessWidget {
             alignment: WrapAlignment.start,
             children: <Widget>[
               ...(profileDetails.lifeStyle
-                  ?.map(
-                    (e) => LifeStyleTile(
-                    lifestyle: LifeStyleType.values
-                        .where((element) => element.name == e)
-                        .first),
-              )
-                  .toList() ??
+                      ?.map(
+                        (e) => LifeStyleTile(
+                            lifestyle: LifeStyleType.values
+                                .where((element) => element.name == e)
+                                .first),
+                      )
+                      .toList() ??
                   <Widget>[]),
             ],
           ),
+          SizedBox(height: 12,)
         ],
       ),
     );
@@ -319,9 +317,7 @@ class LifeStyleTile extends StatelessWidget {
     return Container(
       margin: EdgeInsets.fromLTRB(20, 8, 8, 0),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
-          8
-        ),
+        borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
               color: Color.fromARGB(13, 255, 77, 110),
@@ -339,6 +335,7 @@ class LifeStyleTile extends StatelessWidget {
         children: <Widget>[
           SvgPicture.asset(
             lifestyle.asset,
+            color: Colors.black,
           ),
           SizedBox(width: 8),
           Container(
@@ -432,14 +429,16 @@ class InterestInfoCard extends StatelessWidget {
                       ),
                     ),
                     InkWell(
-                      onTap: () {
-                        Navigator.push(
+                      onTap: () async {
+                      await   Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (ctx) =>
                                 Habit(userRepository: getIt<UserRepository>()),
+
                           ),
                         );
+                      BlocProvider.of<MyProfileBloc>(context).loadMyData();
                       },
                       child: Image.asset(
                         'images/pen.png',
@@ -697,41 +696,42 @@ class InterestInfoCard extends StatelessWidget {
               ),
             ],
           ),
-          Container(
-            margin: EdgeInsets.fromLTRB(15, 0, 0, 0),
-            width: 400,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Hobbies',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      color: Color.fromARGB(212, 0, 0, 0),
-                      fontFamily: 'Poppins',
-                      fontSize: 14,
-                      fontWeight: FontWeight.normal,
-                      height: 1.6666666666666667),
-                ),
-                Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.start,
-                  runAlignment: WrapAlignment.start,
-                  alignment: WrapAlignment.start,
-                  children: <Widget>[
-                    ...(profileDetails.hobbies
-                            ?.map(
-                              (e) => ProfileHobbyTile(
-                                  hobby: HobbyType.values
-                                      .where((element) => element.name == e)
-                                      .first),
-                            )
-                            .toList() ??
-                        <Widget>[]),
-                  ],
-                ),
-              ],
+          if (profileDetails.hobbies.isNotNullEmpty)
+            Container(
+              margin: EdgeInsets.fromLTRB(15, 0, 0, 0),
+              width: 400,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Hobbies',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        color: Color.fromARGB(212, 0, 0, 0),
+                        fontFamily: 'Poppins',
+                        fontSize: 14,
+                        fontWeight: FontWeight.normal,
+                        height: 1.6666666666666667),
+                  ),
+                  Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.start,
+                    runAlignment: WrapAlignment.start,
+                    alignment: WrapAlignment.start,
+                    children: <Widget>[
+                      ...(profileDetails.hobbies
+                              ?.map(
+                                (e) => ProfileHobbyTile(
+                                    hobby: HobbyType.values
+                                        .where((element) => element.name == e)
+                                        .first),
+                              )
+                              .toList() ??
+                          <Widget>[]),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
           SizedBox(
             height: 18,
           )
@@ -1361,9 +1361,8 @@ class FamilyInfoCard extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
                   child: Text(
-                    profileDetails != null
-                        ? profileDetails!.familyAfluenceLevel.name
-                        : "",
+                    AppHelper.getStringFromEnum(
+                        profileDetails.familyAfluenceLevel),
                     textAlign: TextAlign.left,
                     style: TextStyle(
                         color: Color.fromRGBO(18, 22, 25, 1),
@@ -1394,9 +1393,7 @@ class FamilyInfoCard extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
                   child: Text(
-                    profileDetails != null
-                        ? profileDetails!.familyType.name
-                        : "",
+                    AppHelper.getStringFromEnum(profileDetails.familyType),
                     textAlign: TextAlign.left,
                     style: TextStyle(
                         color: Color.fromRGBO(18, 22, 25, 1),
@@ -1428,9 +1425,7 @@ class FamilyInfoCard extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
                   child: Text(
-                    profileDetails != null
-                        ? profileDetails!.familyValues.name
-                        : "",
+                    AppHelper.getStringFromEnum(profileDetails.familyValues),
                     textAlign: TextAlign.left,
                     style: TextStyle(
                         color: Color.fromRGBO(18, 22, 25, 1),
@@ -1445,39 +1440,41 @@ class FamilyInfoCard extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-              margin: EdgeInsets.fromLTRB(20, 200, 0, 0),
-              width: 150,
-              height: 46,
-              child: Stack(children: <Widget>[
-                Text(
-                  'Location',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      color: Color.fromRGBO(135, 141, 150, 1),
-                      fontFamily: 'Poppins',
-                      fontSize: 12,
-                      letterSpacing:
-                          0 /*percentages not used in flutter. defaulting to zero*/,
-                      fontWeight: FontWeight.normal,
-                      height: 1.6666666666666667),
-                ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                  child: Text(
-                    profileDetails != null
-                        ? "${profileDetails!.familyCity}, ${profileDetails!.familyState} "
-                        : "",
+          if ((profileDetails.familyCity + profileDetails.familyState)
+              .isNotEmpty)
+            Container(
+                margin: EdgeInsets.fromLTRB(20, 200, 0, 0),
+                width: 150,
+                height: 46,
+                child: Stack(children: <Widget>[
+                  Text(
+                    'Location',
                     textAlign: TextAlign.left,
                     style: TextStyle(
-                        color: Color.fromRGBO(18, 22, 25, 1),
+                        color: Color.fromRGBO(135, 141, 150, 1),
                         fontFamily: 'Poppins',
-                        fontSize: 14,
+                        fontSize: 12,
+                        letterSpacing:
+                            0 /*percentages not used in flutter. defaulting to zero*/,
                         fontWeight: FontWeight.normal,
-                        height: 1.5714285714285714),
+                        height: 1.6666666666666667),
                   ),
-                ),
-              ])),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                    child: Text(
+                      profileDetails != null
+                          ? "${profileDetails!.familyCity}, ${profileDetails!.familyState} "
+                          : "",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          color: Color.fromRGBO(18, 22, 25, 1),
+                          fontFamily: 'Poppins',
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                          height: 1.5714285714285714),
+                    ),
+                  ),
+                ])),
           Column(children: [
             Container(
                 margin: EdgeInsets.fromLTRB(20, 250, 0, 0),
@@ -1497,9 +1494,7 @@ class FamilyInfoCard extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
                     child: Text(
-                      this.profileDetails != null
-                          ? profileDetails!.fatherOccupation.name
-                          : "",
+                      AppHelper.getStringFromEnum(profileDetails.fatherOccupation),
                       textAlign: TextAlign.left,
                       style: TextStyle(
                           color: Color.fromRGBO(18, 22, 25, 1),
@@ -1532,9 +1527,7 @@ class FamilyInfoCard extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
                     child: Text(
-                      this.profileDetails != null
-                          ? profileDetails!.motherOccupation.name
-                          : "",
+                      AppHelper.getStringFromEnum(profileDetails.motherOccupation),
                       textAlign: TextAlign.left,
                       style: TextStyle(
                           color: Color.fromRGBO(18, 22, 25, 1),
@@ -1835,8 +1828,7 @@ class BasicInfoCard extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             Text(
-                              // '5’5’’ height',
-                              profileDetails!.height + '"' + 'inches',
+                             AppHelper.heightString(profileDetails.height)  + ' inches',
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                   color: Color.fromRGBO(18, 22, 25, 1),
@@ -1869,7 +1861,7 @@ class BasicInfoCard extends StatelessWidget {
                           children: <Widget>[
                             Text(
                               profileDetails != null
-                                  ? 'Profile managed by ${profileDetails!.relationship.name}'
+                                  ? 'Profile managed by ${getProfileManagedBy(profileDetails!.relationship)}'
                                   : "",
                               textAlign: TextAlign.left,
                               style: TextStyle(
@@ -1931,6 +1923,23 @@ class BasicInfoCard extends StatelessWidget {
             ),
           ),
         ]));
+  }
+
+  String getProfileManagedBy(Relationship relationship) {
+    switch (relationship) {
+      case Relationship.Self:
+        return "Self";
+      case Relationship.Son:
+      case Relationship.Daughter:
+        return "Parents";
+      case Relationship.Sister:
+      case Relationship.Brother:
+        return "Siblings";
+      case Relationship.Friend:
+        return "Friend";
+      case Relationship.Relative:
+        return "Relative";
+    }
   }
 }
 

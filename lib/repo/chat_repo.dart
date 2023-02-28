@@ -78,7 +78,6 @@ class ChatRepo {
         userData['id'] = id;
         userData['lastSeen'] = userData['lastSeen']?.millisecondsSinceEpoch;
         userData['updatedAt'] = userData['updatedAt']?.millisecondsSinceEpoch;
-
         return types.User.fromJson(userData);
       } else {
         throw Exception("Chat User does not exist");
@@ -231,8 +230,7 @@ class ChatRepo {
     try {
       var docRef = firestore.collection('users').doc(userId);
 
-      print(userId);
-      print("---------------------- >>>>");
+
       return docRef.snapshots().asyncMap(
           (event) async => (await event.get('metadata'))['onlineStatus']);
     } catch (e, stacktrace) {

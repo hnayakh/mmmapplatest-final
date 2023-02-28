@@ -10,16 +10,15 @@ import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
-import 'package:makemymarry/utils/widgets_large.dart';
-import 'package:makemymarry/views/home/home.dart';
-import 'package:makemymarry/views/home/my_connects/my_connects_screen.dart';
-import 'package:makemymarry/views/profileviewscreens/profile_view.dart';
-import 'package:makemymarry/views/profileviewscreens/profile_view_bloc.dart';
-import 'package:makemymarry/views/profileviewscreens/profile_view_event.dart';
-import 'package:makemymarry/views/profileviewscreens/profile_view_state.dart';
 import 'package:makemymarry/views/stackviewscreens/notification_list.dart';
 
+import '../../saurabh/partner_preference.dart';
 import '../home/matching_profile/bloc/matching_profile_bloc.dart';
+import '../home/matching_profile/views/matching_profile.dart';
+import '../profile_detail_view/profile_view.dart';
+import '../profile_detail_view/profile_view_bloc.dart';
+import '../profile_detail_view/profile_view_event.dart';
+import '../profile_detail_view/profile_view_state.dart';
 
 class SearchScreen extends StatefulWidget {
   final UserRepository userRepository;
@@ -78,7 +77,7 @@ class _SearchScreenState extends State<SearchScreen> {
         if (state is OnGotProfileDetails) {
           var profileDetails =
               BlocProvider.of<ProfileViewBloc>(context).profileDetails;
-          showOptionsSearchThroughId(profileDetails!);
+          showOptionsSearchThroughId(profileDetails);
         }
       },
       builder: (context, state) {
@@ -91,7 +90,7 @@ class _SearchScreenState extends State<SearchScreen> {
           // ));
         }
         return Scaffold(
-          appBar: MmmButtons.appBarCurved('Search'),
+          appBar: MmmButtons.appBarCurved('Search', isTopLevel: true),
           body: SingleChildScrollView(
             child: Column(
               children: [
@@ -201,11 +200,13 @@ class _SearchScreenState extends State<SearchScreen> {
                                       onTap: () {
                                         Navigator.of(context).push(
                                           MaterialPageRoute(
-                                              builder: (context) =>
-                                                  FilterPrefsScreen(
-                                                    userRepository:
-                                                        widget.userRepository,
-                                                  )),
+                                            builder: (context) =>
+                                                PartnerPrefsScreen(
+                                              userRepository:
+                                                  widget.userRepository,
+                                                  forFilters: true
+                                            ),
+                                          ),
                                         );
                                       },
                                       child: Container(
@@ -230,26 +231,27 @@ class _SearchScreenState extends State<SearchScreen> {
                                           fontWeight: FontWeight
                                               .bold)), // To display the title it is optional
                                   content: new RichText(
-                                      textAlign: TextAlign.center,
-                                      text: new TextSpan(
-                                        // Note: Styles for TextSpans must be explicitly defined.
-                                        // Child text spans will inherit styles from parent
-                                        style: new TextStyle(
-                                          fontSize: 14.0,
-                                          color: Colors.black,
-                                        ),
-                                        children: <TextSpan>[
-                                          new TextSpan(
-                                              text: 'Please enter correct'),
-                                          new TextSpan(
-                                              text: ' mmyid',
-                                              style: new TextStyle(
-                                                  color: kPrimary)),
-                                          new TextSpan(
-                                              text:
-                                                  ' to find your perfect match.'),
-                                        ],
-                                      )),
+                                    textAlign: TextAlign.center,
+                                    text: new TextSpan(
+                                      // Note: Styles for TextSpans must be explicitly defined.
+                                      // Child text spans will inherit styles from parent
+                                      style: new TextStyle(
+                                        fontSize: 14.0,
+                                        color: Colors.black,
+                                      ),
+                                      children: <TextSpan>[
+                                        new TextSpan(
+                                            text: 'Please enter correct'),
+                                        new TextSpan(
+                                            text: ' mmyid',
+                                            style:
+                                                new TextStyle(color: kPrimary)),
+                                        new TextSpan(
+                                            text:
+                                                ' to find your perfect match.'),
+                                      ],
+                                    ),
+                                  ),
                                   // Action widget which will provide the user to acknowledge the choice
                                   actions: [
                                     MmmButtons.primaryButton("Ok", () {
@@ -265,38 +267,31 @@ class _SearchScreenState extends State<SearchScreen> {
                               height: 5,
                             ),
                       MmmButtons.searchButtons(
-                          'images/online.svg', 'Online Members', action: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => HomeScreen(
-                                    userRepository: widget.userRepository,
-                                    list: widget.list,
-                                    searchList: widget.searchList,
-                                    premiumList: widget.premiumList,
-                                    recentViewList: widget.recentViewList,
-                                    profileVisitorList:
-                                        widget.profileVisitorList,
-                                    onlineMembersList: widget.onlineMembersList,
-                                    screenName: "OnlineMembers",
-                                  )),
-                        );
-                      }),
+                        'images/online.svg',
+                        'Online Members',
+                        action: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => MatchingProfileScreen(
+                                list: widget.list,
+                                filter: ProfilesFilter.onlineMembers,
+                                isTopLevel: false,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                       SizedBox(height: 5),
                       MmmButtons.searchButtons(
                           'images/online.svg', 'Premium Members', action: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                              builder: (context) => HomeScreen(
-                                    userRepository: widget.userRepository,
-                                    list: widget.list,
-                                    searchList: widget.searchList,
-                                    premiumList: widget.premiumList,
-                                    recentViewList: widget.recentViewList,
-                                    profileVisitorList:
-                                        widget.profileVisitorList,
-                                    onlineMembersList: widget.onlineMembersList,
-                                    screenName: "PremiumMembers",
-                                  )),
+                            builder: (context) => MatchingProfileScreen(
+                              list: widget.list,
+                              filter: ProfilesFilter.premiumMembers,
+                              isTopLevel: false,
+                            ),
+                          ),
                         );
                       }),
                       SizedBox(height: 5),
@@ -305,17 +300,12 @@ class _SearchScreenState extends State<SearchScreen> {
                           action: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                              builder: (context) => HomeScreen(
-                                    userRepository: widget.userRepository,
-                                    list: widget.list,
-                                    searchList: widget.searchList,
-                                    premiumList: widget.premiumList,
-                                    recentViewList: widget.recentViewList,
-                                    profileVisitorList:
-                                        widget.profileVisitorList,
-                                    onlineMembersList: widget.onlineMembersList,
-                                    screenName: "ProfileViewedBy",
-                                  )),
+                            builder: (context) => MatchingProfileScreen(
+                              list: widget.list,
+                              filter: ProfilesFilter.profileVisitor,
+                              isTopLevel: false,
+                            ),
+                          ),
                         );
                       }),
                       SizedBox(height: 5),
@@ -324,17 +314,12 @@ class _SearchScreenState extends State<SearchScreen> {
                           action: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                              builder: (context) => HomeScreen(
-                                    userRepository: widget.userRepository,
-                                    list: widget.list,
-                                    searchList: widget.searchList,
-                                    premiumList: widget.premiumList,
-                                    recentViewList: widget.recentViewList,
-                                    profileVisitorList:
-                                        widget.profileVisitorList,
-                                    onlineMembersList: widget.onlineMembersList,
-                                    screenName: "ProfileRecentlyViewed",
-                                  )),
+                            builder: (context) => MatchingProfileScreen(
+                              list: widget.list,
+                              filter: ProfilesFilter.recentlyViewed,
+                              isTopLevel: false,
+                            ),
+                          ),
                         );
                       }),
                       SizedBox(height: 5),
@@ -343,17 +328,12 @@ class _SearchScreenState extends State<SearchScreen> {
                           action: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                              builder: (context) => HomeScreen(
-                                    userRepository: widget.userRepository,
-                                    list: widget.list,
-                                    searchList: widget.searchList,
-                                    premiumList: widget.premiumList,
-                                    recentViewList: widget.recentViewList,
-                                    profileVisitorList:
-                                        widget.profileVisitorList,
-                                    onlineMembersList: widget.onlineMembersList,
-                                    screenName: "RecomendedProfile",
-                                  )),
+                            builder: (context) => MatchingProfileScreen(
+                              list: widget.list,
+                              filter: ProfilesFilter.recommendedProfile,
+                              isTopLevel: false,
+                            ),
+                          ),
                         );
                       }),
                     ],

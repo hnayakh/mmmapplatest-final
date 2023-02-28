@@ -10,6 +10,7 @@ import 'package:makemymarry/saurabh/profile_detail.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/views/home/matching_profile/bloc/matching_profile_bloc.dart';
+import 'package:makemymarry/views/home/matching_profile/views/matching_profile.dart';
 import 'package:makemymarry/views/home/my_connects/my_connects_screen.dart';
 import 'package:makemymarry/views/signinscreens/signin_page.dart';
 import 'package:makemymarry/views/stackviewscreens/search_screen.dart';
@@ -59,11 +60,8 @@ class SidebarAccount extends StatelessWidget {
           create: (context) => MatchingProfileBloc(
               userRepository,
               list,
-              searchList,
-              premiumList,
-              recentViewList,
-              profileVisitorList,
-              onlineMembersList),
+            ProfilesFilter.recommendedProfile
+             ),
         ),
       ],
       child: SidebarAccountScreen(),
@@ -79,29 +77,11 @@ Future<void> _deleteCacheDir() async {
   }
 }
 
-// Future<void> _deleteAppDir() async {
-//   var sharedPreferences = await SharedPreferences.getInstance();
-//   // Directory appDocDir = await getApplicationDocumentsDirectory();
-//   sharedPreferences.setString('secretToken', '');
-//   var appDir = (await getTemporaryDirectory()).path;
-//   new Directory(appDir).delete(recursive: true);
-
-//   // if (appDocDir.existsSync()) {
-//   //   appDocDir.deleteSync(recursive: true);
-//   // }
-// }
 Future<void> _deleteAppDir() async {
-  //var sharedPreferences = await SharedPreferences.getInstance();
-  // Directory appDocDir = await getApplicationDocumentsDirectory();
-  //sharedPreferences.setString('secretToken', '');
-  //var appDir = (await getTemporaryDirectory()).path;
-  //new Directory(appDir).delete(recursive: true);
+
   final pref = await SharedPreferences.getInstance();
   await pref.clear();
 
-  // if (appDocDir.existsSync()) {
-  //   appDocDir.deleteSync(recursive: true);
-  // }
 }
 
 class SidebarAccountScreen extends StatefulWidget {
@@ -116,7 +96,6 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('Profffile ddddd--$profileDetails');
     return BlocConsumer<AccountMenuBloc, AccountMenuState>(
       builder: (context, state) {
         if (state is AccountMenuInitialState) {
@@ -129,8 +108,7 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
         } else if (state is OnGotProfile) {
           this.profileDetails =
               BlocProvider.of<AccountMenuBloc>(context).profileData;
-          print("this.profileDetails");
-          print(this.profileDetails);
+
           return Scaffold(
             appBar: MmmButtons.appBarAccountBar(profileDetails!.name,
                 profileDetails!.images.first, profileDetails!.activationStatus,
@@ -216,19 +194,16 @@ class SidebarAccountScreenState extends State<SidebarAccountScreen> {
                     create: (context) => MatchingProfileBloc(
                         userRepo,
                         list,
-                        searchList,
-                        premiumList,
-                        recentViewList,
-                        profileVisitorList,
-                        onlineMembersList),
+                      ProfilesFilter.recommendedProfile
+                        ),
                     child: SearchScreen(
                       userRepository: userRepo,
-                      list: list,
-                      searchList: searchList,
-                      premiumList: premiumList,
-                      recentViewList: recentViewList,
-                      profileVisitorList: profileVisitorList,
-                      onlineMembersList: onlineMembersList,
+                      list: list!,
+                      searchList: searchList!,
+                      premiumList: premiumList!,
+                      recentViewList: recentViewList!,
+                      profileVisitorList: profileVisitorList!,
+                      onlineMembersList: onlineMembersList!,
                     ),
                   )),
         );

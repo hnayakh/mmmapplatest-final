@@ -77,6 +77,10 @@ class ConnectHistoryScreenState extends State<ConnectHistoryScreen> {
                         list[index].thumbnailURL,
                         width: 38,
                         height: 38,
+              errorBuilder: (context, obj, str) => Container(
+                  color: Colors.grey,
+                  child: Icon(Icons.error))
+
                       )),
                     )
                   : Container(

@@ -41,13 +41,10 @@ class FamilyBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (context) => FamilyBackgroundBloc(
-            userRepository, countryModel, stateModel, city),
-        child: FamilyBackgroundScreen(
-          onComplete: onComplete,
-          userRepository: userRepository,
-        ));
+    return FamilyBackgroundScreen(
+        onComplete: onComplete,
+        userRepository: userRepository,
+      );
   }
 }
 
@@ -88,7 +85,7 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
         .useDetails!;
 
     if (this.userDetails.registrationStep > 5) {
-      print("registrationStepbackground${this.userDetails.registrationStep}");
+
       BlocProvider.of<FamilyBackgroundBloc>(context)
           .add(onFamilyBackgroundDataLoad(userDetails.id));
     }
@@ -96,61 +93,58 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
       builder: (context, state) {
         initData();
         return Container(
-            child: Stack(
-          children: [
-            buildUi(context),
-            Positioned(
+          child: Stack(
+            children: [
+              buildUi(context),
+              Positioned(
                 bottom: 24,
                 right: 24,
                 child: this.userDetails.registrationStep > 5
                     ? InkWell(
                         onTap: () {
                           BlocProvider.of<FamilyBackgroundBloc>(context).add(
-                              UpdateFamilyBackground(
-                                  this.level,
-                                  this.values,
-                                  this.isStayingWithParents!,
-                                  this.city,
-                                  this.myState,
-                                  this.userDetails.registrationStep > 5,
-                                this.type
-                              ));
+                            UpdateFamilyBackground(
+                              this.level,
+                              this.values,
+                              this.isStayingWithParents!,
+                              this.city,
+                              this.myState,
+                              this.userDetails.registrationStep > 5,
+                              this.type,
+                            ),
+                          );
                         },
                         child: MmmIcons.saveIcon(),
                       )
                     : InkWell(
                         onTap: () {
                           BlocProvider.of<FamilyBackgroundBloc>(context).add(
-                              UpdateFamilyBackground(
-                                  this.level,
-                                  this.values,
-                                  this.isStayingWithParents!,
-                                  this.city,
-                                  this.myState,
-                                  this.userDetails.registrationStep > 5, this.type));
+                            UpdateFamilyBackground(
+                              this.level,
+                              this.values,
+                              this.isStayingWithParents!,
+                              this.city,
+                              this.myState,
+                              this.userDetails.registrationStep > 5,
+                              this.type,
+                            ),
+                          );
                         },
                         child: MmmIcons.rightArrowEnabled(),
-                      )),
-            this.userDetails.registrationStep > 5
-                ? SizedBox()
-                : Positioned(
-                    child: InkWell(
+                      ),
+              ),
+              this.userDetails.registrationStep > 5
+                  ? SizedBox()
+                  : Positioned(
+                      child: InkWell(
                         onTap: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (ctx) => Habit(
-                                    userRepository: widget.userRepository),
-                                // Bio(
-                                //       userRepository: widget.userRepository,
-                                //     )
-                              ));
-                          // BlocProvider.of<OccupationBloc>(context).add(UpdateCareer(
-                          //     orgNameController.text.trim(),
-                          //     annIncomeController.text.trim(),
-                          //     countryController.text.trim(),
-                          //     stateController.text.trim(),
-                          //     cityController.text.trim()));
+                            context,
+                            MaterialPageRoute(
+                              builder: (ctx) =>
+                                  Habit(userRepository: widget.userRepository),
+                            ),
+                          );
                         },
                         // child: MmmIcons.rightArrowEnabled(),
                         child: Padding(
@@ -167,10 +161,15 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                                       TextStyle(color: kPrimary, fontSize: 15)),
                             ],
                           ),
-                        ))),
-            state is OnLoading ? MmmWidgets.buildLoader(context) : Container(),
-          ],
-        ));
+                        ),
+                      ),
+                    ),
+              state is OnLoading
+                  ? MmmWidgets.buildLoader(context)
+                  : Container(),
+            ],
+          ),
+        );
       },
       listener: (context, state) {
         if (state is OnGotCounties) {
@@ -200,7 +199,6 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
   }
 
   SingleChildScrollView buildUi(BuildContext context) {
-    print("object$level");
     return SingleChildScrollView(
       child: Container(
         padding: kMargin16,
@@ -226,7 +224,7 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                 MmmButtons.categoryButtonsNotRequired(
                     'Family Values',
                     this.values != null
-                        ? describeEnum(this.values!)
+                        ? AppHelper.getStringFromEnum(this.values!)
                         : familyValuestext,
                     "  familyValuestext",
                     "images/rightArrow.svg", action: () {

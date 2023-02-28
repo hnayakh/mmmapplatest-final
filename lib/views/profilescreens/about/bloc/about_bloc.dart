@@ -18,7 +18,7 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
             maritalStatus: MaritalStatus.NeverMarried,
             abilityStatus: AbilityStatus.Normal,
             childrenStatus: ChildrenStatus.No,
-            noOfChildren: NoOfChildren.ThreeOrMore,
+            noOfChildren: NoOfChildren.One,
             heightStatus: 0,
             dateOfBirth: null,
             name: null));
@@ -81,6 +81,7 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
       yield (state as AboutIdleState).copyWith(dateOfBirth: event.dob);
     }
     if (event is OnAboutDone) {
+      var state = this.state;
       if ((state as AboutIdleState).name == '' &&
           (state as AboutIdleState).maritalStatus == null &&
           (state as AboutIdleState).heightStatus == null &&
@@ -115,21 +116,21 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
           this.userRepository.useDetails!.dateOfBirth =
               AppHelper.serverFormatDate(
                   (state as AboutIdleState).dateOfBirth!);
-
           this.userRepository.useDetails!.maritalStatus =
               (state as AboutIdleState).maritalStatus!;
           this.userRepository.useDetails!.height = double.parse(
               AppHelper.getHeights()[(state as AboutIdleState).heightStatus!]);
           this.userRepository.useDetails!.abilityStatus =
               (state as AboutIdleState).abilityStatus!;
-
-          // await this.userRepository.saveUserDetails();
           await this
               .userRepository
               .storageService
               .saveUserDetails(this.userRepository.useDetails!);
           if (!event.isAnUpdate) {
-            this.userRepository.updateRegistrationStep(2);
+            await this
+                .userRepository
+                .updateRegistartionStep(this.userRepository.useDetails!.id, 3);
+            this.userRepository.updateRegistrationStep(3);
           }
           yield event.isAnUpdate
               ? OnNavigationToMyProfiles()
@@ -138,6 +139,7 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
           yield OnError(result.message);
         }
       }
+      yield state;
     }
   }
 }

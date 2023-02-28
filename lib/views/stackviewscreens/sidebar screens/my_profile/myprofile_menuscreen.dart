@@ -104,6 +104,10 @@ class _MyProfileMenuState extends State<MyProfileMenu> {
                                 width: double.infinity,
                                 fit: BoxFit.cover,
                                 height: double.infinity,
+                    errorBuilder: (context, obj, str) => Container(
+                    color: Colors.grey,
+                    child: Icon(Icons.error))
+
                               ),
                             ),
                           ),

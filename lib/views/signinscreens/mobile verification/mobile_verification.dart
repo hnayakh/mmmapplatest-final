@@ -3,17 +3,28 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:http/http.dart';
+import 'package:makemymarry/locator.dart';
 import 'package:makemymarry/repo/user_repo.dart';
+import 'package:makemymarry/saurabh/partner_preference.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
+import 'package:makemymarry/views/profile_loader/profile_loader.dart';
 import 'package:makemymarry/views/profilescreens/about/views/about.dart';
+import 'package:makemymarry/views/profilescreens/bio/views/bio.dart';
+import 'package:makemymarry/views/profilescreens/habbit/habits.dart';
+import 'package:makemymarry/views/profilescreens/occupation/views/occupation.dart';
+import 'package:makemymarry/views/profilescreens/religion/views/religion.dart';
+import 'package:makemymarry/views/signinscreens/signin_page.dart';
 
 import 'package:pin_code_fields/pin_code_fields.dart';
 
+import '../../profilescreens/family/family.dart';
+import '../signin_bloc.dart';
 import 'mobile_verification_bloc.dart';
 import 'mobile_verification_event.dart';
 import 'mobile_verification_state.dart';
@@ -212,12 +223,73 @@ class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
   }
 
   void navigateToProfileSetup() {
-    var userRepo =
-        BlocProvider.of<MobileVerificationBloc>(context).userRepository;
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => About(
-              userRepository: userRepo,
-            )));
+    var userRepo = getIt<UserRepository>();
+    switch (userRepo.useDetails!.registrationStep) {
+      case 10:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => ProfileLoader(userRepository: userRepo)),
+                (route) => false);
+        break;
+      case 11:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => ProfileLoader(userRepository: userRepo)),
+                (route) => false);
+        break;
+      case 9:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => PartnerPrefsScreen(
+                  userRepository: userRepo,
+                )),
+                (route) => false);
+        break;
+      case 8:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => Bio(userRepository: userRepo)),
+                (route) => false);
+        break;
+      case 7:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => Habit(userRepository: userRepo)),
+                (route) => false);
+        break;
+    // case 6:
+    //   break;
+      case 5:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => FamilyScreen(userRepository: userRepo)),
+                (route) => false);
+        break;
+      case 4:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => Occupations(userRepository: userRepo)),
+                (route) => false);
+
+        break;
+      case 3:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => Religion(userRepository: userRepo)),
+                (route) => false);
+        break;
+      case 2:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => About(userRepository: userRepo)),
+                (route) => false);
+        break;
+      default:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => SignInPage()),
+                (route) => false);
+        break;
+    }
   }
 
   Timer? timer;

@@ -34,8 +34,7 @@ class FamilyDetailsBloc extends Bloc<FamilyDetailsEvent, FamilyDetailState> {
         yield OnError(result.message);
       }
     }
-    print('infamildetailsbloc');
-    //print(familyBackgroundSaved);
+
     if (event is OnFathersOccupationSelected) {
       this.fatherOccupation = event.occupation;
       yield FamilyDetailInitialState();
@@ -129,7 +128,10 @@ class FamilyDetailsBloc extends Bloc<FamilyDetailsEvent, FamilyDetailState> {
               .saveUserDetails(this.userRepository.useDetails!);
 
           if (!event.isAnUpdate) {
-            this.userRepository.updateRegistrationStep(6);
+            await this
+                .userRepository
+                .updateRegistartionStep(this.userRepository.useDetails!.id, 7);
+            this.userRepository.updateRegistrationStep(7);
           }
           yield OnFamilyDetailsUpdated();
         } else {

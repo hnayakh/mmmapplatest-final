@@ -3,6 +3,8 @@ import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/preference_helper.dart';
 
+import 'master_data.dart';
+
 class ProfilePercent {
   late int percent;
 
@@ -32,3 +34,7 @@ class MatchingPercentageResponse {
     this.message = message;
   }
 }
+
+
+
+

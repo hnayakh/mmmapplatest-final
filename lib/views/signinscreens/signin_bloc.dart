@@ -1,4 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:makemymarry/utils/helper.dart';
+import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/views/signinscreens/signin_event.dart';
 import 'package:makemymarry/views/signinscreens/signin_state.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
@@ -33,7 +35,20 @@ class SignInBloc extends Bloc<SignInEvent, SigninState> {
           yield OnValidationFail('Entered email and password is incorrect.');
         } else if (result.status == AppConstants.SUCCESS) {
           this.userRepository.useDetails = result.userDetails;
-          //await this.userRepository.saveUserDetails();
+          var res = await this.userRepository.getOtheruserDetails(
+              this.userRepository.useDetails!.id,
+              ProfileActivationStatus
+                  .values[userRepository.useDetails!.activationStatus]);
+          if(res.status == AppConstants.SUCCESS){
+            this.userRepository.useDetails?.dateOfBirth = res.profileDetails.dateOfBirth;
+            this.userRepository.useDetails?.name = res.profileDetails.name;
+            this.userRepository.useDetails?.height = res.profileDetails.height;
+            this.userRepository.useDetails?.gender = res.profileDetails.gender.index;
+            this.userRepository.useDetails?.maritalStatus = res.profileDetails.maritalStatus;
+            this.userRepository.useDetails?.abilityStatus = res.profileDetails.abilityStatus;
+            this.userRepository.useDetails?.activationStatus = res.profileDetails.activationStatus.index;
+            this.userRepository.useDetails?.imageUrl = res.profileDetails.images.isNotNullEmpty ? res.profileDetails.images.first : "";
+          }
           await this
               .userRepository
               .storageService

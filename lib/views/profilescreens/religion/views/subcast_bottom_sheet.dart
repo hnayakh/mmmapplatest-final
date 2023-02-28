@@ -67,7 +67,7 @@ class SubCastBottomSheetState extends State<SubCastBottomSheet> {
                       borderSide: BorderSide(color: kInputBorder, width: 1)),
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                  hintText: "Search Religion",
+                  hintText: "Search Caste",
                   isDense: true,
                   filled: true,
                   fillColor: kLight4,

@@ -13,7 +13,7 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
   final UserRepository userRepository;
 
   late String email = '', password = '', confirmPassword = '', mobile = '';
-  Gender? gender = Gender.Male;
+  Gender? gender = Gender.Other;
   late Country selectedCountry = Country.parse("india");
   late bool acceptTerms = false;
   Relationship? profileCreatedFor = Relationship.Self;
@@ -42,6 +42,8 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
       } else if (event.pos == Relationship.Daughter ||
           event.pos == Relationship.Sister) {
         this.gender = Gender.Female;
+      }else{
+        this.gender = Gender.Other;
       }
       yield CreateAccountInitialState();
     }
@@ -114,6 +116,7 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
             SimpleMasterData motherTongue = SimpleMasterData("", "");
             motherTongue.id = 'unknown';
             motherTongue.title = 'UNK';
+
             this.userRepository.useDetails = UserDetails.fromStorage(
               "",
               "",
@@ -135,6 +138,7 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
               countryModel,
               religion,
               motherTongue,
+              ""
             );
             this.userRepository.useDetails!.relationship =
                 this.profileCreatedFor!;

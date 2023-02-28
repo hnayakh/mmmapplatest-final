@@ -45,7 +45,7 @@ class UpdateReligion extends ReligionEvent {
   final dynamic gothra;
   final Manglik isManglik;
   final SimpleMasterData? religion;
-  final String subcast;
+  final String? subcast;
   bool isAnUpdate;
 
   UpdateReligion(this.motherTongue, this.gothra, this.isManglik, this.religion,

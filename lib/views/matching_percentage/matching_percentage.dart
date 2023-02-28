@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:makemymarry/repo/user_repo.dart';
+import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
@@ -29,7 +30,6 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    context.read<MatchingPercentageBloc>().add(MatchProfile());
     return Scaffold(
         appBar:
             MmmButtons.appBarCurved('Matching Percentage', context: context),
@@ -50,19 +50,32 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
               var differentFieldList =
                   BlocProvider.of<MatchingPercentageBloc>(context)
                       .differentFieldList;
-              // print("percent$percent");
-              // print("percent$image");
-              // print("percent$matchingFieldList");
-              // print("percent$differentFieldList");
 
-              // get enum data for matchingFieldList>>>>>
               for (int j = 0; j < matchingFieldList.length; j++) {
                 if (matchingFieldList[j]['filed'] == 'challenged') {
                   var aStr = matchingFieldList[j]['value']
                       .replaceAll(new RegExp(r'[^0-9]'), '');
-                  int value = int.parse(aStr);
+                  int value;
+                  try {
+                    value = int.parse(aStr);
+                  } catch (e) {
+                    value = 0;
+                  }
                   var val = AbilityStatus.values[value];
                   matchingFieldList[j]['value'] = val.toString().split('.')[1];
+                }
+                if (matchingFieldList[j]['filed'] == 'maritalStatus') {
+                  var aStr = matchingFieldList[j]['value']
+                      .replaceAll(new RegExp(r'[^0-9]'), '');
+                  int value;
+                  try {
+                    value = int.parse(aStr);
+                  } catch (e) {
+                    value = 0;
+                  }
+                  var val =
+                      AppHelper.getStringFromEnum(MaritalStatus.values[value]);
+                  matchingFieldList[j]['value'] = val.toString().split('.')[0];
                 }
               }
               // get enum data for differentFieldList>>>>>
@@ -98,79 +111,111 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                   var val = AnualIncome.values[value];
                   differentFieldList[j]['value'] = val.toString().split('.')[1];
                 }
+                if (differentFieldList[j]['filed'] == 'maritalStatus') {
+                  var aStr = differentFieldList[j]['value']
+                      .replaceAll(new RegExp(r'[^0-9]'), '');
+                  int value;
+                  try {
+                    value = int.parse(aStr);
+                  } catch (e) {
+                    value = 0;
+                  }
+                  var val =
+                      AppHelper.getStringFromEnum(MaritalStatus.values[value]);
+                  differentFieldList[j]['value'] = val.toString().split('.')[0];
+                }
+                if (differentFieldList[j]['filed'] == 'challenged') {
+                  var aStr = differentFieldList[j]['value']
+                      .replaceAll(new RegExp(r'[^0-9]'), '');
+                  int value;
+                  try {
+                    value = int.parse(aStr);
+                  } catch (e) {
+                    value = 0;
+                  }
+                  var val = AbilityStatus.values[value];
+                  differentFieldList[j]['value'] = val.toString().split('.')[1];
+                }
               }
 
               return Container(
                 padding: kMargin16,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    SizedBox(
-                      width: double.infinity,
+                    Stack(
+                      children: [
+                        Container(
+                          height:  MediaQuery.of(context).size.width * 0.244,
+                          width: MediaQuery.of(context).size.width * 0.90,
+                          //color: Colors.orangeAccent,
+                        ),
+                        Positioned(
+                          left: 68,
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                radius:
+                                    MediaQuery.of(context).size.width * 0.122,
+                                child: Container(
+                                  decoration:
+                                      BoxDecoration(shape: BoxShape.circle),
+                                  clipBehavior: Clip.hardEdge,
+                                  child: Image.network(userImage,
+                                      height:
+                                          MediaQuery.of(context).size.width *
+                                              0.244,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.244,
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (context, obj, str) =>
+                                          Container(
+                                              color: Colors.grey,
+                                              child: Icon(Icons.error))),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 24,
+                              ),
+                              CircleAvatar(
+                                radius:
+                                    MediaQuery.of(context).size.width * 0.122,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle
+                                  ),
+                                  clipBehavior: Clip.hardEdge,
+                                  child: Image.network('$image',
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                      fit: BoxFit.fill,
+                                      errorBuilder: (context, obj, str) =>
+                                          Container(
+                                              color: Colors.grey,
+                                              child: Icon(Icons.error))),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          height:  MediaQuery.of(context).size.width * 0.244,
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Container(
+                              child: SvgPicture.asset(
+                                "images/heart.svg",
+                                color: Colors.pinkAccent,
+                                height: 65,
+                                width: 65,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    Stack(children: [
-                      Container(
-                        height: MediaQuery.of(context).size.height * 0.15,
-                        width: MediaQuery.of(context).size.width * 0.90,
-                        //color: Colors.orangeAccent,
-                      ),
-                      // Row(
-                      //   crossAxisAlignment: CrossAxisAlignment.end,
-                      //   verticalDirection: VerticalDirection.down,
-                      //   mainAxisAlignment: MainAxisAlignment.center,
-                      //   // mainAxisAlignment: MainAxisAlignment.end,
-                      //   children: [
-                      // SizedBox(height: 10),
-                      //SizedBox(width: 80),
-                      Positioned(
-                        left: 68,
-                        child: CircleAvatar(
-                          radius: MediaQuery.of(context).size.width * 0.122,
-                          child: ClipOval(
-                            child: Image.network(
-                              userImage,
-                              // 'images/stackviewImage.jpg',
-                              width: double.infinity,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                      ),
-
-                      //  SizedBox(width: 20),
-                      Positioned(
-                        left: 188,
-                        child: CircleAvatar(
-                          radius: MediaQuery.of(context).size.width * 0.122,
-                          child: ClipOval(
-                            child: Image.network(
-                              '$image',
-                              width: double.infinity,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 148,
-                        top: 30,
-                        child: Container(
-                          child: SvgPicture.asset(
-                            "images/heart.svg",
-                            color: Colors.pinkAccent,
-                            height: 65,
-                            width: 65,
-                          ),
-                        ),
-                      ),
-                      //  SizedBox(width: 80),
-                      //],
-                      //),
-                    ]),
-                    //  SizedBox(height: 10),
                     Container(
                       alignment: Alignment.center,
-                      height: 70.0,
                       // width: 900.0,
                       margin: const EdgeInsets.all(20.0),
                       padding: const EdgeInsets.all(3.0),
@@ -208,34 +253,18 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                     SizedBox(
                       height: 10,
                     ),
-                    // ListTile(
-                    //   title: Text("ok"),
-                    //   subtitle: Text("ok"),
-                    // ),
-                    // if (matchingFieldList.isEmpty && differentFieldList.isEmpty)
-                    //   Center(
-                    //     child: Padding(
-                    //       padding: const EdgeInsets.all(50.0),
-                    //       child: Text(
-                    //         "No information available!",
-                    //         style: MmmTextStyles.heading4(),
-                    //       ),
-                    //     ),
-                    //   ),
                     if (matchingFieldList.isNotEmpty)
                       Column(
                         children: List.generate(matchingFieldList.length, (i) {
                           return TextFormField(
-                            // autovalidateMode: AutovalidateMode.disabled,
                             enabled: false,
-                            // autofocus: false,
                             readOnly: true,
                             initialValue:
                                 matchingFieldList[i]['value'].toString(),
                             decoration: InputDecoration(
                               border: UnderlineInputBorder(),
-                              labelText:
-                                  matchingFieldList[i]['filed'].toString(),
+                              labelText: AppHelper.getLabelOfComparitiveField(
+                                  matchingFieldList[i]['filed'].toString()),
                               suffixIcon: Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: SvgPicture.asset(
@@ -254,25 +283,27 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
 
                     if (differentFieldList.isNotEmpty)
                       Column(
-                        children: List.generate(differentFieldList.length, (i) {
-                          return TextFormField(
-                            // autovalidateMode: AutovalidateMode.disabled,
-                            enabled: false,
-                            // autofocus: false,
-                            readOnly: true,
-                            initialValue:
-                                differentFieldList[i]['value'].toString(),
-                            decoration: InputDecoration(
+                        children: List.generate(
+                          differentFieldList.length,
+                          (i) {
+                            return TextFormField(
+                              enabled: false,
+                              readOnly: true,
+                              initialValue:
+                                  differentFieldList[i]['value'].toString(),
+                              decoration: InputDecoration(
                                 border: UnderlineInputBorder(),
-                                labelText:
-                                    differentFieldList[i]['filed'].toString(),
+                                labelText: AppHelper.getLabelOfComparitiveField(
+                                    differentFieldList[i]['filed'].toString()),
                                 suffixIcon: Icon(
                                   Icons.cancel_outlined,
                                   color: Colors.red,
                                   size: 28,
-                                )),
-                          );
-                        }),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     // SizedBox(
                     //   height: 20,

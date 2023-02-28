@@ -22,16 +22,10 @@ class AccountMenuBloc extends Bloc<AccountMenuEvent, AccountMenuState> {
           userRepository.useDetails!.id,
           ProfileActivationStatus
               .values[userRepository.useDetails!.activationStatus]);
-      print('saurabh 1${response.profileDetails.images}');
-
-      print(response);
       if (response.status == AppConstants.SUCCESS) {
         this.profileData = response.profileDetails;
-        print('saurabh 2$profileData.}');
         yield OnGotProfile(this.profileData!);
       } else {
-        print('etywgfyuegtwqyuetwqetwquyteuywqteuy');
-        print(response);
         yield OnError(response.message);
       }
     }

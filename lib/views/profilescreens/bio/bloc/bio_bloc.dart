@@ -30,12 +30,11 @@ class BioBloc extends Bloc<BioEvent, BioState> {
       }
     }
     if (event is UpdateBioImage) {
-
       this.localImagePaths = event.localImagePaths;
-      this.localImagePaths
-          .removeWhere((element) => element == "addImage");
+      this.localImagePaths.removeWhere((element) => element == "addImage");
 
-      this.localImagePaths
+      this
+          .localImagePaths
           .removeWhere((element) => element == this.profileImage);
       this.localImagePaths.insert(0, this.profileImage);
 
@@ -43,12 +42,14 @@ class BioBloc extends Bloc<BioEvent, BioState> {
         yield OnError("Please add at least one Image");
       } else {
         var result = await this.userRepository.updateBio(
-            this.profileData?.aboutmeMsg ?? "",
-            this.localImagePaths,
-        );
+              this.profileData?.aboutmeMsg ?? "",
+              this.localImagePaths,
+            );
         if (result.status == AppConstants.SUCCESS) {
-          if(!event.toUpdate) {
+          if (!event.toUpdate) {
             this.userRepository.useDetails!.registrationStep = 8;
+            this.userRepository.useDetails?.imageUrl =
+                this.localImagePaths.first;
             await this
                 .userRepository
                 .storageService
@@ -65,27 +66,36 @@ class BioBloc extends Bloc<BioEvent, BioState> {
     if (event is UpdateBio) {
       this.aboutMeMsg = event.bio;
       this.localImagePaths = event.localImagePaths;
-      if (this.aboutMeMsg == null && this.localImagePaths.length == 0) {
+      if (this.aboutMeMsg.isEmpty && this.localImagePaths.length <= 1) {
         yield OnError("please enter all mandatory details");
       }
-      if (this.aboutMeMsg == null) {
+      if (this.aboutMeMsg.isEmpty) {
         yield OnError("Enter Bio");
-      } else if (this.localImagePaths == null) {
-        yield OnError("Add Images");
+      } else if (this.localImagePaths.length <= 1) {
+        yield OnError("Please add at least one image");
       } else {
         var result = await this.userRepository.updateBio(
             event.bio,
-            this.localImagePaths
+            this
+                .localImagePaths
                 .where((element) => element != "addImage")
                 .toList());
         if (result.status == AppConstants.SUCCESS) {
-          if(!event.toUpdate) {
+          if (!event.toUpdate) {
             this.userRepository.useDetails!.registrationStep = 8;
+            this.userRepository.useDetails?.imageUrl = this
+                .localImagePaths
+                .where((element) => element != "addImage")
+                .toList()
+                .first;
             await this
                 .userRepository
                 .storageService
                 .saveUserDetails(this.userRepository.useDetails!);
-            this.userRepository.updateRegistrationStep(8);
+            await this
+                .userRepository
+                .updateRegistartionStep(this.userRepository.useDetails!.id, 9);
+            this.userRepository.updateRegistrationStep(9);
           }
           yield OnUpdate();
         } else {
@@ -115,18 +125,12 @@ class BioBloc extends Bloc<BioEvent, BioState> {
           userRepository.useDetails!.id,
           ProfileActivationStatus
               .values[userRepository.useDetails!.activationStatus]);
-      print('saurabh 1${response.profileDetails.images}');
-      print('Akash123${response.profileDetails}');
 
-      print(response);
       if (response.status == AppConstants.SUCCESS) {
         this.profileData = response.profileDetails;
         this.aboutMeMsg = response.profileDetails.aboutMe;
-        print('ABOUT 2${this.aboutMeMsg}');
         yield OnGotProfileandImages(this.profileData!);
       } else {
-        print('etywgfyuegtwqyuetwqetwquyteuywqteuy');
-        print(response);
         yield OnError(response.message);
       }
     }

@@ -15,7 +15,13 @@ import 'package:permission_handler/permission_handler.dart';
 /// JoinChannelAudio Example
 class AudioCallView extends StatefulWidget {
   /// Construct the [AudioCallView]
-  const AudioCallView({Key? key, required this.uid, required this.imageUrl, required this.userRepo, this.agoraToken}) : super(key: key);
+  const AudioCallView(
+      {Key? key,
+      required this.uid,
+      required this.imageUrl,
+      required this.userRepo,
+      this.agoraToken})
+      : super(key: key);
 
   final String uid;
   final String imageUrl;
@@ -74,27 +80,29 @@ class _State extends State<AudioCallView> {
       appId: '2408d5882f0445ec82566323785cfb66',
     ));
 
-    _engine.registerEventHandler(RtcEngineEventHandler(
-      onError: (ErrorCodeType err, String msg) {
-        UtilityService.cprint(msg);
-      },
-      onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
-        UtilityService.cprint(
-            '[onJoinChannelSuccess] connection: ${connection.toJson()} elapsed: $elapsed');
+    _engine.registerEventHandler(
+        RtcEngineEventHandler(onError: (ErrorCodeType err, String msg) {
+      UtilityService.cprint(msg);
+    }, onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
+      UtilityService.cprint(
+          '[onJoinChannelSuccess] connection: ${connection.toJson()} elapsed: $elapsed');
 
-        setState(() {
-          isJoined = true;
-        });
-      },
-      onLeaveChannel: (RtcConnection connection, RtcStats stats) {
-        UtilityService.cprint(
-            '[onLeaveChannel] connection: ${connection.toJson()} stats: ${stats.toJson()}');
+      setState(() {
+        isJoined = true;
+      });
+    }, onLeaveChannel: (RtcConnection connection, RtcStats stats) {
+      UtilityService.cprint(
+          '[onLeaveChannel] connection: ${connection.toJson()} stats: ${stats.toJson()}');
 
-        setState(() {
-          isJoined = false;
-        });
-      },
-    ));
+      setState(() {
+        isJoined = false;
+      });
+    }, onUserOffline: (connection, uid, reason) {
+      if (reason == UserOfflineReasonType.userOfflineQuit ||
+          reason == UserOfflineReasonType.userOfflineDropped) {
+        _leaveChannel();
+      }
+    }));
 
     await _engine.enableAudio();
     await _engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
@@ -102,28 +110,28 @@ class _State extends State<AudioCallView> {
       profile: AudioProfileType.audioProfileDefault,
       scenario: AudioScenarioType.audioScenarioGameStreaming,
     );
-    if(widget.agoraToken != null){
-      _joinChannel(widget.agoraToken!.agoraToken, widget.agoraToken!.channelName);
-    }else {
-      var res = widget.userRepo.generateAgoraToken(
-          widget.uid, CallType.audioCall);
+    if (widget.agoraToken != null) {
+      _joinChannel(
+          widget.agoraToken!.agoraToken, widget.agoraToken!.channelName);
+    } else {
+      var res =
+          widget.userRepo.generateAgoraToken(widget.uid, CallType.audioCall);
       res.then((value) async {
         if (value.status == AppConstants.SUCCESS) {
           _joinChannel(value.token!.agoraToken, value.token!.channelName);
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("ERROR!!!!")));
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text("ERROR!!!!")));
           await Future.delayed(Duration(seconds: 2));
           Navigator.of(context).pop();
         }
       }).onError((error, stackTrace) async {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("ERROR!!!!")));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("ERROR!!!!")));
         await Future.delayed(Duration(seconds: 2));
         Navigator.of(context).pop();
       });
     }
-
   }
 
   _joinChannel(String token, String channelId) async {
@@ -162,23 +170,29 @@ class _State extends State<AudioCallView> {
 
   _switchSpeakerphone() async {
     await _engine.setEnableSpeakerphone(!enableSpeakerphone);
-    setState(() {
-      enableSpeakerphone = !enableSpeakerphone;
-    });
+    setState(
+      () {
+        enableSpeakerphone = !enableSpeakerphone;
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-       decoration: BoxDecoration(
-         image: DecorationImage(image: NetworkImage(widget.imageUrl),opacity: 0.4, fit: BoxFit.cover)
-       ),
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: NetworkImage(widget.imageUrl),
+                opacity: 0.4,
+                fit: BoxFit.cover)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Spacer(flex: 2,),
+            Spacer(
+              flex: 2,
+            ),
             Text(
               "${(timeLeft ~/ 60).toString().padLeft(2, "0")}:${(timeLeft % 60).toString().padLeft(2, "0")}",
               textAlign: TextAlign.center,
@@ -195,12 +209,19 @@ class _State extends State<AudioCallView> {
               children: [
                 Spacer(),
                 _buildIconButton(
-                    onTap: _leaveChannel, icon: Icons.call_end_rounded, bgColor: Colors.red, iconColor: Colors.white),
-                SizedBox(width: 12,),
+                    onTap: _leaveChannel,
+                    icon: Icons.call_end_rounded,
+                    bgColor: Colors.red,
+                    iconColor: Colors.white),
+                SizedBox(
+                  width: 12,
+                ),
                 _buildIconButton(
                     onTap: _switchMicrophone,
                     icon: openMicrophone ? Icons.mic : Icons.mic_off_rounded),
-                SizedBox(width: 12,),
+                SizedBox(
+                  width: 12,
+                ),
                 _buildIconButton(
                     onTap: _switchSpeakerphone,
                     icon: enableSpeakerphone

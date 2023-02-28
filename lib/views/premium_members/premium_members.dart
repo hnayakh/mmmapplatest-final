@@ -148,33 +148,9 @@ class PremiumMembersScreenState extends State<PremiumMembersScreen> {
   }
 
   Widget getContent() {
-    print("SCREENNAME");
-    print(widget.screenName);
-    print('object');
-    print(index);
     switch (index) {
       case 0:
-        return BlocProvider<MatchingProfileBloc>(
-            create: (context) => MatchingProfileBloc(
-                widget.userRepository,
-                widget.list,
-                widget.searchList,
-                widget.premiumList,
-                widget.recentViewList,
-                widget.profileVisitorList,
-                widget.onlineMembersList),
-            child: Builder(builder: (context) {
-              return MatchingProfileScreen(
-                  userRepository: widget.userRepository,
-                  list: widget.list,
-                  searchList: widget.searchList,
-                  premiumList: widget.premiumList,
-                  recentViewList: widget.recentViewList,
-                  screenName: widget.screenName,
-                  profileVisitorList: widget.profileVisitorList,
-                  onlineMembersList: widget.onlineMembersList,
-                  searchTextNew: widget.searchText);
-            }));
+        return MatchingProfileScreen(list: widget.list,);
       case 1:
         return
             // ScheduleMeetingTime();

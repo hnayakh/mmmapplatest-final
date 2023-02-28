@@ -1,11 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:makemymarry/app/bloc/app_bloc.dart';
-import 'package:makemymarry/app/bloc/app_state.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/locator.dart';
 import 'package:makemymarry/repo/chat_repo.dart';
@@ -14,22 +11,19 @@ import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
+import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
-import 'package:makemymarry/views/chat_room/chat_page.dart';
 import 'package:makemymarry/views/connects/views/audio_call.dart';
 import 'package:makemymarry/views/connects/views/video_call.dart';
 import 'package:makemymarry/views/matching_percentage/matching_percentage.dart';
 import 'package:makemymarry/views/matching_percentage/matching_percentage_bloc.dart';
-import 'package:makemymarry/views/profileviewscreens/profile_view_bloc.dart';
-import 'package:makemymarry/views/profileviewscreens/profile_view_event.dart';
-import 'package:makemymarry/views/profileviewscreens/profile_view_state.dart';
-import 'package:makemymarry/views/stackviewscreens/meet%20status/meet_status_screen.dart';
-
-import '../../utils/view_decorations.dart';
+import 'package:makemymarry/views/profile_detail_view/profile_view_bloc.dart';
+import 'package:makemymarry/views/profile_detail_view/profile_view_event.dart';
+import 'package:makemymarry/views/profile_detail_view/profile_view_state.dart';
 
 class ProfileView extends StatelessWidget {
   final UserRepository userRepository;
@@ -169,8 +163,6 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
         });
     });
 
-  static var appBarState = 0;
-
   int selectedImagePos = 0;
 
   bool? exist = false;
@@ -187,7 +179,6 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
       });
       return exist!;
     } catch (e) {
-      // If any error
       return false;
     }
   }
@@ -195,14 +186,6 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
   @override
   void dispose() {
     super.dispose();
-    // this._aboutController.dispose();
-    // this._careerController.dispose();
-    // this._interestController.dispose();
-    // this._religionController.dispose();
-    // this._lifestyleController.dispose();
-    // this._familyController.dispose();
-    // this._animationController.dispose();
-    // this._controller.dispose();
   }
 
   @override
@@ -219,9 +202,8 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
     _controller.addListener(() {
       _animationController.reverse();
       if (_controller.position.pixels >=
-          MediaQuery.of(context).size.height * 0.66) {
+          MediaQuery.of(context).size.height * 0.50) {
         setState(() {
-          //showAppBar = true;
           if (_appBarController.isAnimating == false) {
             _appBarController..forward();
           }
@@ -230,7 +212,6 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
       if (_controller.position.pixels <
           MediaQuery.of(context).size.height * 0.66) {
         setState(() {
-          //showAppBar = false;
           if (_appBarController.isAnimating == false) {
             _appBarController..reverse();
           }
@@ -246,87 +227,81 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
           if (state is ProfileViewInitialState) {
             BlocProvider.of<ProfileViewBloc>(context).add(VisitProfile());
           }
-          // if (state is OnErrorView) {
-          //   this.message = BlocProvider.of<ProfileViewBloc>(context).message;
-          //   print("MESSAGE${this.message}");
-          // }
           this.profileDetails =
-              BlocProvider.of<ProfileViewBloc>(context).profileDetails!;
-
+              BlocProvider.of<ProfileViewBloc>(context).profileDetails;
           if (state is OnLoading) {
             return Scaffold(
               body: MmmWidgets.buildLoader2(context),
             );
-          } else if (this.profileDetails != null) {
-            checkExist(profileDetails.id);
-            return Scaffold(
-              resizeToAvoidBottomInset: false,
-              extendBodyBehindAppBar: true,
-              appBar: showAppBar
-                  ? PreferredSize(
-                      preferredSize: Size.fromHeight(
-                          MediaQuery.of(context).size.height * 0.17),
-                      child: SizeTransition(
-                          sizeFactor: _appBarAnimation,
-                          axis: Axis.vertical,
-                          //axisAlignment: -1,
-                          child: MmmButtons.appBarCurvedProfile(
-                              profileDetails.name,
-                              context,
-                              this.profileDetails.images.isEmpty
-                                  ? "https://i.pravatar.cc/300"
-                                  : this
-                                      .profileDetails
-                                      .images[selectedImagePos],
-                              profileDetails.id,
-                              profileDetails.connectStatus)),
-                    )
-                  : null,
-              body: SingleChildScrollView(
-                controller: _controller,
-                child:
-                    // BlocConsumer<MatchingPercentageBloc,
-                    //     MatchingPercentageState>(
-                    //   listener: (context, state) {
-                    //     if (state is MatchingPercentageInitialState) {
-                    //       BlocProvider.of<MatchingPercentageBloc>(context)
-                    //           .add(MatchProfile());
-                    //     }
-                    //     // TODO: implement listener
-                    //   },
-                    //  builder: (context, state) {
-                    Column(
-                  children: [
-                    buildImages(context),
-                    Container(
-                      padding: kMargin16,
-                      child: Column(
-                        children: [
-                          buildBasicInfo(),
-                          SizedBox(
-                            height: 33,
-                          ),
-                          buildAboutMe(),
-                          SizedBox(
-                            height: 16,
-                          ),
+          }
+          return Scaffold(
+            resizeToAvoidBottomInset: false,
+            extendBodyBehindAppBar: true,
+            appBar: showAppBar
+                ? PreferredSize(
+                    preferredSize: Size.fromHeight(
+                        MediaQuery.of(context).size.height * 0.15),
+                    child: SizeTransition(
+                      sizeFactor: _appBarAnimation,
+                      axis: Axis.vertical,
+                      child: MmmButtons.appBarCurvedProfile(
+                        profileDetails.name,
+                        context,
+                        this.profileDetails.images.isEmpty
+                            ? "https://i.pravatar.cc/300"
+                            : this.profileDetails.images[selectedImagePos],
+                        profileDetails.id,
+                        profileDetails.proposalStatus,
+                        profileDetails,
+                      ),
+                    ),
+                  )
+                : null,
+            body: SingleChildScrollView(
+              controller: _controller,
+              child: Column(
+                children: [
+                  buildImages(context),
+                  Container(
+                    padding: kMargin16,
+                    child: Column(
+                      children: [
+                        buildBasicInfo(),
+                        SizedBox(
+                          height: 33,
+                        ),
+                        buildAboutMe(),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        if (profileDetails.familyType !=
+                            FamilyType.Notmentioned) ...[
                           buildFamilyButton(),
                           SizedBox(
                             height: 16,
                           ),
-                          buildHabits(context),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          // buildReligion(),
-                          // SizedBox(
-                          //   height: 16,
-                          // ),
-                          // buildCarrer(),
-                          // SizedBox(
-                          //   height: 60,
-                          // ),
-                          MmmButtons.checkMatchButtonModified(
+                        ],
+                        buildReligion(),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        buildCarrer(),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        buildHabits(context),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        if(profileDetails.lifeStyle.isNotNullEmpty) ... [
+                        buildLifeStyle(context),
+                        SizedBox(
+                          height: 16,
+                        )],
+                        BlocProvider<MatchingPercentageBloc>(
+                          create: (context) => MatchingPercentageBloc(
+                              UserRepository(), profileDetails),
+                          child: MmmButtons.checkMatchButtonModified(
                               54, 'Check Match Percentage', action: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
@@ -340,41 +315,42 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                               ),
                             );
                           }),
-                          // MmmButtons.checkMatchButton(
-                          //     54, 'Check Match Percentage', action: () {
-                          //   Navigator.of(context).push(
-                          //     MaterialPageRoute(
-                          //       builder: (context) => BlocProvider(
-                          //         create: (context) => MatchingPercentageBloc(
-                          //             UserRepository(), profileDetails),
-                          //         child: MatchingPercentageScreen(
-                          //           userRepository: UserRepository(),
-                          //         ),
-                          //       ),
-                          //     ),
-                          //   );
-                          // }),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          Text(
-                            'Blocked Profile',
-                            style:
-                                MmmTextStyles.bodyRegular(textColor: kPrimary),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                  //   );
-                  // },
-                ),
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        !profileDetails.isBlocked
+                            ? InkWell(
+                                onTap: () {
+                                  context
+                                      .read<ProfileViewBloc>()
+                                      .add(BlockProfile());
+                                },
+                                child: Text(
+                                  'Block Profile',
+                                  style: MmmTextStyles.bodyRegular(
+                                      textColor: kPrimary),
+                                ),
+                              )
+                            : InkWell(
+                                onTap: () {
+                                  context
+                                      .read<ProfileViewBloc>()
+                                      .add(UnBlockProfile());
+                                },
+                                child: Text(
+                                  'Unblock Profile',
+                                  style: MmmTextStyles.bodyRegular(
+                                      textColor: kPrimary),
+                                ),
+                              ),
+                      ],
+                    ),
+                  )
+                ],
               ),
-            );
-          } else
-            return Scaffold(
-              body: Container(),
-            );
+            ),
+          );
         },
         listener: (context, state) {});
   }
@@ -444,10 +420,13 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
       children: [
         MmmButtons.profileViewButtons("images/religion.svg", 'Religion'),
         religionState == 0
-            ? MmmButtons.profileViewButtons("images/religion.svg", 'Religion',
+            ? MmmButtons.profileViewButtons(
+                "images/religion.svg",
+                'Religion',
                 action: () {
-                showReligionData();
-              })
+                  showReligionData();
+                },
+              )
             : SizeTransition(
                 sizeFactor: _religionAnimation,
                 axis: Axis.vertical,
@@ -467,23 +446,58 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
   Stack buildHabits(BuildContext context) {
     return Stack(
       children: [
-        MmmButtons.profileViewButtons("images/occasionally.svg", 'Lifestyle'),
+        MmmButtons.profileViewButtons("images/occasionally.svg", 'Interests'),
+        interestState == 0
+            ? MmmButtons.profileViewButtons(
+                "images/occasionally.svg",
+                'Interests',
+                action: () {
+                  showInterestData();
+                },
+              )
+            : SizeTransition(
+                sizeFactor: _interestAnimation,
+                axis: Axis.vertical,
+                axisAlignment: -1,
+                child: MmmButtons.interestsProfileViewButtons(
+                  context,
+                  profileDetails.eatingHabit,
+                  profileDetails.drinkingHabit,
+                  profileDetails.smokingHabit,
+                  profileDetails.hobbies,
+                  action: () {
+                    showInterestData();
+                  },
+                ),
+              ),
+      ],
+    );
+  }
+
+  Stack buildLifeStyle(BuildContext context) {
+    return Stack(
+      children: [
+        MmmButtons.profileViewButtons("images/lifestyle.svg", 'LifeStyle'),
         lifestyleState == 0
             ? MmmButtons.profileViewButtons(
-                "images/occasionally.svg", 'Interests', action: () {
-                showLifestyleData();
-              })
+                "images/lifestyle.svg",
+                'LifeStyle',
+                action: () {
+                  showLifestyleData();
+                },
+              )
             : SizeTransition(
                 sizeFactor: _lifestyleAnimation,
                 axis: Axis.vertical,
                 axisAlignment: -1,
-                child: MmmButtons.interestsProfileViewButtons(
-                    context,
-                    profileDetails.eatingHabit,
-                    profileDetails.drinkingHabit,
-                    profileDetails.smokingHabit, action: () {
-                  showLifestyleData();
-                })),
+                child: MmmButtons.lifestyleProfileViewButtons(
+                  context,
+                  profileDetails.lifeStyle,
+                  action: () {
+                    showLifestyleData();
+                  },
+                ),
+              ),
       ],
     );
   }
@@ -502,18 +516,22 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                 axis: Axis.vertical,
                 axisAlignment: -1,
                 child: MmmButtons.aboutProfileViewButtons(
-                    "images/Users1.svg",
-                    'About',
-                    profileDetails.aboutmeMsg,
-                    profileDetails.maritalStatus,
-                    profileDetails.abilityStatus, action: () {
-                  showAboutData();
-                })),
+                  "images/Users1.svg",
+                  'About',
+                  profileDetails.aboutmeMsg,
+                  profileDetails.maritalStatus,
+                  profileDetails.abilityStatus,
+                  action: () {
+                    showAboutData();
+                  },
+                ),
+              ),
       ],
     );
   }
 
   Container buildImages(BuildContext context) {
+    ValueNotifier<bool> isDialOpen = ValueNotifier(false);
     return Container(
       width: double.infinity,
       height: MediaQuery.of(context).size.height * 0.7,
@@ -523,23 +541,62 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
             borderRadius:
                 BorderRadius.only(bottomRight: Radius.circular(23.3813)),
             child: Image.network(
-              profileDetails.images.isEmpty
-                  ? "https://i.pravatar.cc/300"
-                  : profileDetails.images[selectedImagePos],
-              // height: 453.01,
-              height: MediaQuery.of(context).size.height * 0.665,
-              width: double.infinity,
-              fit: BoxFit.cover,
-            ),
+                profileDetails.images.isEmpty
+                    ? "https://i.pravatar.cc/300"
+                    : profileDetails.images[selectedImagePos],
+                // height: 453.01,
+                height: MediaQuery.of(context).size.height * 0.665,
+                width: double.infinity,
+                fit: BoxFit.cover,
+                errorBuilder: (context, obj, str) =>
+                    Container(color: Colors.grey, child: Icon(Icons.error))),
           ),
-          if (profileDetails.connectStatus == ConnectStatus.Accepted) ...[
-            Positioned(
-              top: MediaQuery.of(context).size.height * 0.1,
-              right: MediaQuery.of(context).size.width * 0.05,
-              child: Column(
-                children: createImageThumbNails(),
+          Positioned(
+            left: 24,
+            top: 56,
+            child: Container(
+              width: 44,
+              height: 44,
+              margin: EdgeInsets.fromLTRB(0, 0, 10, 20),
+              decoration: BoxDecoration(
+                  color: kLight2.withOpacity(0.60),
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  boxShadow: [
+                    MmmShadow.elevationbBackButton(
+                        shadowColor: kShadowColorForWhite)
+                  ]),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () {
+                      //if (context != null) {
+                      Navigator.of(context).pop();
+                      // }
+                    },
+                    child: Container(
+                        height: 32,
+                        width: 24,
+                        alignment: Alignment.center,
+                        child: SvgPicture.asset(
+                          'images/arrowLeft.svg',
+                          height: 17.45,
+                          color: gray3,
+                        )),
+                  ),
+                ),
               ),
             ),
+          ),
+          Positioned(
+            top: MediaQuery.of(context).size.height * 0.1,
+            right: MediaQuery.of(context).size.width * 0.05,
+            child: Column(
+              children: createImageThumbNails(),
+            ),
+          ),
+          if (profileDetails.proposalStatus == ProposalStatus.Accepted) ...[
             Positioned(
               right: MediaQuery.of(context).size.width * 0.1,
               bottom: 0,
@@ -547,244 +604,78 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Container(
-                      height: 248,
-                      width: 100,
-                      child: FloatingActionBubble(
-                        items: <Bubble>[
-                          Bubble(
-                            title: "",
-                            iconColor: Colors.white,
-                            bubbleColor: kPrimary,
-                            icon: Icons.call,
-                            titleStyle: TextStyle(fontSize: 0, color: kWhite),
-                            onPress: () async {
-                              var bloc =
-                                  BlocProvider.of<ProfileViewBloc>(context);
-                              _animationController.reverse();
-                              context.navigate.push(
-                                MaterialPageRoute(
-                                  builder: (context) => AudioCallView(
-                                    uid: profileDetails.id,
-                                    imageUrl: profileDetails.images.first,
-                                    userRepo: bloc.userRepository,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                          Bubble(
-                            title: "",
-                            iconColor: Colors.white,
-                            bubbleColor: kPrimary,
-                            icon: Icons.message,
-                            titleStyle:
-                                TextStyle(fontSize: 4, color: Colors.white),
-                            onPress: () async {
-                              var userDetails =
-                                  await UserRepository().getUserDetails();
-                              var repo = ChatRepo(
-                                  firestore: FirebaseFirestore.instance,
-                                  chatService: FirebaseChatCore.instance);
-                              var user;
-                              try {
-                                await repo.updateChatUser(
-                                    id: profileDetails.id,
-                                    fullName: profileDetails.name,
-                                    imageUrl: profileDetails.images.first);
-                                user = await repo.getChatUser(
-                                    id: profileDetails.id);
-                              } catch (e) {
-                                if (e.toString() ==
-                                    "Exception: Chat User does not exist") {
-                                  await repo.updateChatUser(
-                                      id: profileDetails.id,
-                                      fullName: profileDetails.name,
-                                      imageUrl: profileDetails.images.first);
-                                  user = await repo.getChatUser(
-                                      id: profileDetails.id);
-                                } else {
-                                  rethrow;
-                                }
-                              }
-                              var room = await repo.getChatRoom(
-                                  userDetails?.id ?? "", user);
-                              _animationController.reverse();
-                              var bloc =
-                                  BlocProvider.of<ProfileViewBloc>(context);
-                              context.navigate.push(MaterialPageRoute(
-                                  builder: (context) => ChatPage(
-                                        room: room,
-                                        userRepo: bloc.userRepository,
-                                      )));
-                            },
-                          ),
-                          Bubble(
-                            title: "",
-                            iconColor: Colors.white,
-                            bubbleColor: kPrimary,
-                            icon: Icons.video_camera_back_outlined,
-                            titleStyle:
-                                TextStyle(fontSize: 0, color: Colors.white),
-                            onPress: () {
-                              //Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => Homepage()));
-                              _animationController.reverse();
-                              context.navigate.push(
-                                MaterialPageRoute(
-                                  builder: (context) => VideoCallView(
-                                    uid: profileDetails.id,
-                                    imageUrl: profileDetails.images.first,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-
-                        animation: _animation,
-
-                        // On pressed change animation state
-                        onPress: () => _animationController.isCompleted
-                            ? _animationController.reverse()
-                            : _animationController.forward(),
-
-                        // Floating Action button Icon color
-                        iconColor: Colors.white,
-
-                        // Flaoting Action button Icon
-                        iconData: Icons.call,
-                        backGroundColor: kPrimary,
-                      )),
+                  ConnectWidget(
+                    isDialOpen: isDialOpen,
+                    profileDetails: profileDetails,
+                  ),
                   SizedBox(
                     width: 12,
                   ),
                   MmmIcons.meet(
                     context,
                     action: () {
-                      // Navigator.of(context).push(MaterialPageRoute(
-                      //     builder: (context) => MeetStatusScreen()));
                       navigateToSelectMeet();
-                      // print("gfchfdgfcbfbfxbfx");
                     },
                   ),
                 ],
               ),
             ),
-          ] else if (profileDetails.connectStatus == ConnectStatus.Reverted ||
-              profileDetails.connectStatus == ConnectStatus.Rejected ||
-              profileDetails.connectStatus == null) ...[
+          ] else if (profileDetails.proposalStatus == ProposalStatus.Reverted ||
+              profileDetails.proposalStatus == ProposalStatus.Rejected ||
+              profileDetails.proposalStatus == null) ...[
             Positioned(
               right: MediaQuery.of(context).size.width * 0.1,
               bottom: 0,
-              child: InkWell(
-                  onTap: () {
-                    BlocProvider.of<ProfileViewBloc>(context)
-                        .add(SendLikeRequest());
-                  },
-                  child: Stack(
-                    children: [
-                      Container(
-                        height: 62,
-                        width: 62,
-                        child: Center(
-                          child: SvgPicture.asset(
-                            "images/heart.svg",
-                            color: Colors.white,
-                            height: 32,
-                            width: 32,
-                          ),
-                        ),
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: MmmDecorations.primaryGradient(),
-                            border:
-                                Border.all(color: Colors.white, width: 1.2)),
-                      ),
-                      Container(
-                          height: 62,
-                          width: 62,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: kPrimary.withAlpha(50),
-                              border:
-                                  Border.all(color: Colors.white, width: 1.2)))
-                    ],
-                  )),
-            )
-          ] else if (profileDetails.connectStatus == ConnectStatus.Sent) ...[
+              child: MmmIcons.largeHeart(
+                action: () {
+                  BlocProvider.of<ProfileViewBloc>(context)
+                      .add(SendLikeRequest());
+                },
+              ),
+            ),
+          ] else if (profileDetails.proposalStatus == ProposalStatus.Sent) ...[
             Positioned(
               right: MediaQuery.of(context).size.width * 0.1,
               bottom: 0,
               child: Row(
                 children: [
-                  InkWell(
-                    onTap: () {
+                  MmmIcons.largeCancel(
+                    action: () {
                       BlocProvider.of<ProfileViewBloc>(context)
                           .add(CancelLikeRequest());
                     },
-                    child: Stack(
-                      children: [
-                        Container(
-                          height: 64,
-                          width: 64,
-                          child: Center(
-                            child: SvgPicture.asset(
-                              "images/cancel.svg",
-                              color: Colors.white,
-                              height: 32,
-                              width: 32,
-                            ),
-                          ),
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              gradient: MmmDecorations.primaryGradient(),
-                              border:
-                                  Border.all(color: Colors.white, width: 1.2)),
-                        ),
-                        Container(
-                            height: 64,
-                            width: 64,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: kPrimary.withAlpha(50),
-                                border: Border.all(
-                                    color: Colors.white, width: 1.2)))
-                      ],
-                    ),
                   ),
                   SizedBox(width: 6),
-                  Stack(
-                    children: [
-                      Container(
-                        height: 64,
-                        width: 64,
-                        child: Center(
-                          child: SvgPicture.asset(
-                            "images/chat.svg",
-                            color: Colors.white,
-                            height: 32,
-                            width: 32,
-                          ),
-                        ),
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: MmmDecorations.primaryGradient(),
-                            border:
-                                Border.all(color: Colors.white, width: 1.2)),
-                      ),
-                      Container(
-                        height: 64,
-                        width: 64,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: kPrimary.withAlpha(50),
-                          border: Border.all(
-                            color: Colors.white,
-                            width: 1.2,
-                          ),
-                        ),
-                      ),
-                    ],
+                  MmmIcons.largeChat(
+                    context,
+                    profileDetails.id,
+                    () async {
+                      BlocProvider.of<ProfileViewBloc>(context)
+                          .add(MakeConnectRequest());
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ] else if (profileDetails.proposalStatus ==
+              ProposalStatus.Received) ...[
+            Positioned(
+              right: MediaQuery.of(context).size.width * 0.1,
+              bottom: 0,
+              child: Row(
+                children: [
+                  MmmIcons.largeReject(
+                    action: () {
+                      BlocProvider.of<ProfileViewBloc>(context)
+                          .add(RejectLikeRequest());
+                    },
+                  ),
+                  SizedBox(width: 6),
+                  MmmIcons.largeAccept(
+                    action: () {
+                      BlocProvider.of<ProfileViewBloc>(context)
+                          .add(AcceptLikeRequest());
+                    },
                   ),
                 ],
               ),
@@ -892,12 +783,10 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
         return "Self";
       case Relationship.Son:
       case Relationship.Daughter:
-        return "Father";
+        return "Parents";
       case Relationship.Sister:
-
       case Relationship.Brother:
-        return "Brother";
-
+        return "Siblings";
       case Relationship.Friend:
         return "Friend";
       case Relationship.Relative:
@@ -906,9 +795,6 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
   }
 
   Widget buildBasicInfo() {
-    print("HEIGHT${profileDetails.height}");
-    print(
-        "HEIGHTTT${profileDetails.height.substring(0, 1) + "'" + profileDetails.height.substring(0, 1)}");
     return Container(
       child: Column(
         children: [
@@ -971,7 +857,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
               '${AppHelper.getAgeFromDob(profileDetails.dateOfBirth)} yrs, ${AppHelper.getReadableDob(profileDetails.dateOfBirth)}'),
           MmmWidgets.rowWidget("images/office.svg", profileDetails.occupation),
           MmmWidgets.rowWidget("images/height.svg",
-              '${profileDetails.height.substring(0, 1) + "'" + " " + profileDetails.height.substring(0, 1)}" height'),
+              AppHelper.heightString(profileDetails.height) + 'inches'),
         ],
       ),
     );
@@ -985,5 +871,92 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
         ),
         context: context,
         builder: (context) => MmmWidgets.selectMeetWidget(context));
+  }
+}
+
+class ConnectWidget extends StatelessWidget {
+  const ConnectWidget({
+    Key? key,
+    required this.isDialOpen,
+    required this.profileDetails,
+    this.direction = SpeedDialDirection.up,
+  }) : super(key: key);
+
+  final ValueNotifier<bool> isDialOpen;
+  final dynamic profileDetails;
+  final SpeedDialDirection direction;
+
+  @override
+  Widget build(BuildContext context) {
+    return SpeedDial(
+      elevation: 0,
+      overlayColor: Colors.transparent,
+      overlayOpacity: 0.0,
+      openCloseDial: isDialOpen,
+      spaceBetweenChildren: 0,
+      spacing: 0,
+
+      buttonSize: Size(54.0, 54.0),
+      childPadding: EdgeInsets.zero,
+      // childMargin: EdgeInsets.zero,
+      childrenButtonSize: Size(54.0, 44.0),
+      direction: direction,
+      child: MmmIcons.largeConnect(
+        action: () {
+          isDialOpen.value = !isDialOpen.value;
+          // navigateToSelectMeet();
+        },
+      ),
+      children: [
+        SpeedDialChild(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          child: MmmIcons.chat(
+            context,
+            profileDetails.id,
+            () async {
+              isDialOpen.value = !isDialOpen.value;
+              // profileDetails.connectStatus
+            },
+          ),
+        ),
+        SpeedDialChild(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          child: MmmIcons.call(
+            () async {
+              isDialOpen.value = !isDialOpen.value;
+              var bloc = BlocProvider.of<ProfileViewBloc>(context);
+              context.navigate.push(
+                MaterialPageRoute(
+                  builder: (context) => AudioCallView(
+                    uid: profileDetails.id,
+                    imageUrl: (profileDetails is MatchingProfile)
+                        ? profileDetails.imageUrl
+                        : profileDetails.images.first,
+                    userRepo: bloc.userRepository,
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        SpeedDialChild(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          child: MmmIcons.video(() async {
+            isDialOpen.value = !isDialOpen.value;
+            context.navigate.push(
+              MaterialPageRoute(
+                builder: (context) => VideoCallView(
+                  uid: profileDetails.id,
+                  imageUrl: profileDetails.images.first,
+                ),
+              ),
+            );
+          }),
+        )
+      ],
+    );
   }
 }

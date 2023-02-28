@@ -101,19 +101,23 @@ class _AboutProfileScreenState extends State<AboutProfileScreen> {
                   ),
                   Container(
                     //padding: const EdgeInsets.only(top: 4, left: 4),
-                    child: Text(
-                      "About me",
-                      textScaleFactor: 1.0,
-                      style: MmmTextStyles.cardNumber(textColor: kDark5),
+                    child: Row(
+                      children: [Text(
+                        "About me",
+                        textScaleFactor: 1.0,
+                        style: MmmTextStyles.cardNumber(textColor: kDark5),
+                      ),
+                        Text(
+                          ' *',
+                          style: MmmTextStyles.bodySmall(textColor: kredStar),
+                        )]
                     ),
                   ),
                   SizedBox(
                     height: 4,
                   ),
                   TextFormField(
-                    maxLength: 200,
-                    // controller: controller,
-                    // textCapitalization: textCapitalization,
+                    maxLength: 2000,
                     keyboardType: TextInputType.text,
                     style: MmmTextStyles.bodyRegular(textColor: kDark5),
                     controller: bioController,
@@ -193,6 +197,9 @@ class _AboutProfileScreenState extends State<AboutProfileScreen> {
                                                       .width) /
                                                   2,
                                               height: 120,
+                                          errorBuilder: (context, obj, str) => Container(
+                                              color: Colors.grey,
+                                              child: Icon(Icons.error))
                                             )
                                           : Image.asset('images/human.jpg'),
                                       borderRadius: BorderRadius.circular(8),

@@ -23,11 +23,11 @@ class OnEducationSelected extends OccupationEvent {
 }
 
 class UpdateCareer extends OccupationEvent {
-  final String occupation;
-  final AnualIncome anualIncome;
-  String education;
-  final StateModel myState;
-  final StateModel city;
+  final String? occupation;
+  final AnualIncome? anualIncome;
+  String? education;
+  final StateModel? myState;
+  final StateModel? city;
   // final String name;
   // final String income;
   // final String country;

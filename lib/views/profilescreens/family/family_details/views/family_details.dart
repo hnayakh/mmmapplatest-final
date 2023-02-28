@@ -38,13 +38,8 @@ class FamilyDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => FamilyDetailsBloc(
-        userRepository,
-      ),
-      child: FamilyDetailsScreen(
-          onComplete: onComplete, userRepository: userRepository),
-    );
+    return FamilyDetailsScreen(
+          onComplete: onComplete, userRepository: userRepository);
   }
 }
 
@@ -82,11 +77,9 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
         BlocProvider.of<FamilyDetailsBloc>(context).userRepository.useDetails!;
 
     if (this.userDetails.registrationStep > 6) {
-      print("registrationStep${this.userDetails.registrationStep}");
       BlocProvider.of<FamilyDetailsBloc>(context)
           .add(onFamilyDetailDataLoad(userDetails.id));
     }
-    print("RESTSTEP${this.userDetails.registrationStep}");
     return BlocConsumer<FamilyDetailsBloc, FamilyDetailState>(
         builder: (context, state) {
       initData();
@@ -126,40 +119,35 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
                       },
                       child: MmmIcons.rightArrowEnabled(),
                     )),
-          this.userDetails.registrationStep > 5 ? SizedBox() :Positioned(
-              child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (ctx) =>
-                              Habit(userRepository: widget.userRepository),
-                          // Bio(
-                          //       userRepository: widget.userRepository,
-                          //     )
-                        ));
-                    // BlocProvider.of<OccupationBloc>(context).add(UpdateCareer(
-                    //     orgNameController.text.trim(),
-                    //     annIncomeController.text.trim(),
-                    //     countryController.text.trim(),
-                    //     stateController.text.trim(),
-                    //     cityController.text.trim()));
-                  },
-                  // child: MmmIcons.rightArrowEnabled(),
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '(This section is optional)',
-                          style: TextStyle(fontSize: 14),
+          this.userDetails.registrationStep > 5
+              ? SizedBox()
+              : Positioned(
+                  child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (ctx) =>
+                                Habit(userRepository: widget.userRepository),
+                          ),
+                        );
+                      },
+                      // child: MmmIcons.rightArrowEnabled(),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '(This section is optional)',
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            Text('Skip >',
+                                style:
+                                    TextStyle(color: kPrimary, fontSize: 15)),
+                          ],
                         ),
-                        Text('Skip >',
-                            style: TextStyle(color: kPrimary, fontSize: 15)),
-                      ],
-                    ),
-                  ))),
+                      ))),
           state is OnLoading ? MmmWidgets.buildLoader(context) : Container(),
         ],
       ));
@@ -186,12 +174,11 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
         padding: kMargin16,
         child: Column(
           children: [
-
             SizedBox(
               height: 24,
             ),
             MmmButtons.categoryButtonsNotRequired(
-                "Father's Occpation",
+                "Father's Occupation",
                 fatherOccupation != null
                     ? AppHelper.getStringFromEnum(fatherOccupation!)
                     : fatherOcctext,
@@ -680,20 +667,16 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
   void navigateToMyProfile() {
     var userRepo = BlocProvider.of<FamilyDetailsBloc>(context).userRepository;
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => MultiBlocProvider(
-                providers: [
-                  BlocProvider(
-                    create: (context) => AboutBloc(userRepo),
-                  ),
-                  BlocProvider(
-                    create: (context) => OccupationBloc(userRepo),
-                  ),
-                  BlocProvider(
-                    create: (context) => AccountMenuBloc(userRepo),
-                  ),
-                ],
-                child: MyProfileScreen(
-
-                ))));
+        builder: (context) => MultiBlocProvider(providers: [
+              BlocProvider(
+                create: (context) => AboutBloc(userRepo),
+              ),
+              BlocProvider(
+                create: (context) => OccupationBloc(userRepo),
+              ),
+              BlocProvider(
+                create: (context) => AccountMenuBloc(userRepo),
+              ),
+            ], child: MyProfileScreen())));
   }
 }

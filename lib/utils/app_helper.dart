@@ -15,6 +15,10 @@ class AppHelper {
     return String.fromCharCode(firstLetter) + String.fromCharCode(secondLetter);
   }
 
+  static String heightString(double height) {
+   return  "${(height ~/ 12)}'${(height % 12).toInt()}''";
+  }
+
   // static List<double> getHeights() {
   //   List<double> heights = [];
   //   //convert to ft in change
@@ -24,10 +28,9 @@ class AppHelper {
   //   return heights;
   // }
   static String getFormtedHeight(double height) {
-    print("height$height");
     var intPart = height.toInt();
     var decimalPart = ((height - height.toInt()) * 10).round();
-    print("decimal part$decimalPart");
+
     String result = '$intPart.$decimalPart';
     if (intPart > 4 && decimalPart < 2) {
       result = '${intPart - 1}.${10 + decimalPart}';
@@ -40,31 +43,17 @@ class AppHelper {
 
   static List<String> getHeights() {
     List<Height> result = [];
-    var requiredIndices = [];
-
-    for (double i = 4.5; i <= 8.5; i += 0.1) {
-      var intPart = i.toInt();
-      var decimalPart = ((i - i.toInt()) * 10).round();
-      print('decimalPart$decimalPart');
+    for (double i = 48; i <= 84; i++) {
+      var intPart = i ~/ 12;
+      var decimalPart = (i % 12).toInt();
       var item = new Height(intPart, decimalPart);
       result.add(item);
-      if (decimalPart == 9) {
-        var requiredIndex = result.indexWhere(
-            (item) => item.feet == intPart && item.inch == decimalPart);
-        print('requiredIndex$requiredIndex');
-
-        result.add(new Height(intPart, 11));
-        result.add(new Height(intPart + 1, 0));
-      }
     }
-    result.sort((a, b) =>
-        (((a.feet * 12 + (a.inch)) - (b.feet * 12 + (b.inch))).toInt()));
-
-    var finalResult = result.map((height) {
-      return "${height.feet}.${(height.inch)}";
-    });
-    print(finalResult);
-    //var heights = finalResult;
+    var finalResult = result.map(
+      (height) {
+        return "${height.feet}${(height.inch)}";
+      },
+    );
     return finalResult.toList();
   }
 
@@ -76,6 +65,48 @@ class AppHelper {
     }
     heights.insert(0, 'Doesnot Matter');
     return heights;
+  }
+
+  static String getLabelOfComparitiveField(String field) {
+    switch (field) {
+      case "country":
+        {
+          return "Country";
+        }
+      case "challenged":
+        {
+          return "Physically Ability";
+        }
+      case "minAge":
+        {
+          return "Min Age";
+        }
+      case "maxAge":
+        {
+          return "Max Age";
+        }
+      case "minHeight":
+        {
+          return "Min Height";
+        }
+      case "maxHeight":
+        {
+          return "Max Height";
+        }
+      case "maritalStatus":
+        {
+          return "Marital Status";
+        }
+      case "religion":
+        {
+          return "Religion";
+        }
+      case "motherTongue":
+        {
+          return "Mother Tongue";
+        }
+    }
+    return "";
   }
 
   static String getAgeFromDob(String dateOfBirth) {
@@ -113,20 +144,13 @@ class AppHelper {
     return dateFormat1.format(dateOfBirth);
   }
 
-  static String getHeight(index) {
-    String heightFitInch = AppHelper.getHeights()[index];
-    double heightCm = (double.parse(heightFitInch.split(".")[0]) * 30.48) +
-        (double.parse(heightFitInch.split(".")[1]) * 2.54);
-    heightCm.round();
-    print(heightCm);
-    // String heightText =
-    //     '$heightFitInch ft';
-    return (heightFitInch.split(".")[0] +
+  static String getHeight(int index) {
+    var inches = index + 48;
+    return ((inches ~/ 12).toString() +
         "' " +
-        '.' +
-        heightFitInch.split(".")[1] +
+        ((inches % 12).toInt().toString()) +
         '"' +
-        " (${heightCm.round()}" +
+        " (${(inches * 2.54).round()}" +
         " cm)");
   }
 
@@ -142,7 +166,7 @@ class AppHelper {
       return maritalStatuses[enumEntry.index];
     } else if (enumName == 'MaritalStatusFilter') {
       List<String> maritalFilter = [
-        'Doesnot Matter',
+        'Does not Matter',
         'Never Married',
         'Divorced',
         'Widowed',
@@ -151,7 +175,7 @@ class AppHelper {
       return maritalFilter[enumEntry.index];
     } else if (enumName == 'Interest') {
       List<String> interestFilter = [
-        'DoesnotMatter',
+        'Does not Matter',
         'Sports',
         'Travel',
         'Photography',
@@ -163,7 +187,7 @@ class AppHelper {
         'Art',
         'Cooking',
         'Fashion',
-        'vblogging',
+        'Vlogging',
         'Animals',
         'Nature',
         'Tech',
@@ -224,7 +248,7 @@ class AppHelper {
       List<String> smokingStatus = [
         'Not Specified',
         'Smoker',
-        'NonSmoker',
+        'Non Smoker',
         'Occasionally',
       ];
       return smokingStatus[enumEntry.index];
@@ -274,13 +298,30 @@ class AppHelper {
       return incomes[enumEntry.index];
     } else if (enumName == 'FamilyAfluenceLevel') {
       List<String> familyLevel = [
-        'Rich',
-        'Upper middle class',
-        'Middle class',
-        'Lower middle class',
-        'NotMentioned'
+        'Affluent',
+        'Upper Middle Class',
+        'Middle Class',
+        'Lower Middle Class',
+        'Not Mentioned'
       ];
       return familyLevel[enumEntry.index];
+    } else if (enumName == 'FamilyValues') {
+      List<String> familyValue = [
+        'Orthodox',
+        'Conservative',
+        'Moderate',
+        'Liberal',
+        'Not Mentioned'
+      ];
+      return familyValue[enumEntry.index];
+    } else if (enumName == 'FamilyType') {
+      List<String> familyValue = [
+        'Nuclear',
+        'Joint',
+        'Other',
+        'Not Mentioned',
+      ];
+      return familyValue[enumEntry.index];
     } else if (enumName == 'NoOfChildren') {
       List<String> children = ['One', 'Two', 'Three or more'];
       return children[enumEntry.index];

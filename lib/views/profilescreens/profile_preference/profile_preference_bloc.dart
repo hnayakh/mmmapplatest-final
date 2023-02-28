@@ -3,20 +3,25 @@ import 'package:intl/intl.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
+import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference_events.dart';
 
+import '../../../locator.dart';
 import 'profile_preference_state.dart';
 
 class ProfilePreferenceBloc
     extends Bloc<ProfilePreferenceEvent, ProfilePreferenceState> {
   final UserRepository userRepository;
+
   late double minAge;
   late double minSliderAge;
+  late double maxSliderAge;
   late double maxAge;
   late double minHeight;
   late double maxHeight;
   bool singleCountryInList = true;
+  final bool forFilters;
   late List<MaritalStatus> maritalStatus = [];
   late CountryModel countryModel;
   List<CountryModel> countryModelList = [];
@@ -37,54 +42,101 @@ class ProfilePreferenceBloc
   late Gender gender;
   dynamic gothra = "";
 
-  ProfilePreferenceBloc(this.userRepository)
+  ProfilePreferenceBloc(this.userRepository, {this.forFilters = false})
       : super(ProfilePreferenceInitialState()) {
-    print('inprofileprefDOB=${this.userRepository.useDetails!.dateOfBirth}');
+    initializeFilters();
+  }
+
+  initializeFilters() {
     this.gender = Gender.values[this.userRepository.useDetails!.gender];
     var myAge = DateTime.now()
             .difference(DateFormat(AppConstants.SERVERDATEFORMAT)
                 .parse(this.userRepository.useDetails!.dateOfBirth))
-            .inDays /
+            .inDays ~/
         365;
-    print(myAge);
-
-    if (this.userRepository.useDetails!.gender == Gender.Male.index) {
-      // this.minAge = myAge - 4;
-      // this.maxAge = myAge;
-      // this.minHeight = this.userRepository.useDetails!.height - 0.6;
-      // this.maxHeight = this.userRepository.useDetails!.height;
-      this.minAge = 35;
-      this.maxAge = 49;
-      this.minHeight = 5.0;
-      this.maxHeight = 6.0;
-      this.minSliderAge = 18;
-      if (minAge < minSliderAge) {
-        this.minAge = 18;
-      }
-    } else {
-      this.minAge = myAge;
-      this.maxAge = myAge + 4;
-      this.minHeight =
-          (this.userRepository.useDetails!.height.floor() / 2.54 ~/ 12)
-              .toDouble();
-      this.maxHeight = this.userRepository.useDetails!.height + 0.6;
-      this.minSliderAge = 21;
+    var myHeight = this.userRepository.useDetails?.height ?? 64;
+    myHeight = 64;
+    if (myHeight > 84) {
+      myHeight = 64;
     }
-    print("$minAge -- $maxAge");
-    print("$minHeight -- $maxHeight");
-    this.maritalStatus.add(this.userRepository.useDetails!.maritalStatus);
+    this.maxSliderAge = 70;
+    if (this.userRepository.useDetails!.gender == Gender.Male.index) {
+      this.minAge = myAge - 4;
+      this.maxAge = myAge.toDouble();
+      this.minHeight = myHeight - 6;
+      this.maxHeight = myHeight;
+      this.minSliderAge = 18;
+    } else {
+      this.minSliderAge = 21;
+      this.minAge = myAge.toDouble();
+      this.maxAge = myAge + 4;
+      this.minHeight = myHeight;
+      this.maxHeight = myHeight + 6;
+    }
+    if (minAge < minSliderAge) {
+      this.minAge = minSliderAge;
+    }
+    if (maxAge > maxSliderAge) {
+      maxAge = maxSliderAge;
+    }
+    if (minHeight < 48) {
+      minHeight = 48;
+    }
+    if (maxHeight > 84) {
+      maxHeight = 84;
+    }
+    this.maritalStatus..clear()..add(this.userRepository.useDetails!.maritalStatus);
     this.abilityStatus = this.userRepository.useDetails!.abilityStatus;
-    ////////////////////////////////////////////////////////////////////
+
     this.countryModel = this.userRepository.useDetails!.countryModel;
-    this.religion.add(this.userRepository.useDetails!.religion);
-    this.motherTongue.add(this.userRepository.useDetails!.motherTongue);
-    this.countryModelList.add(countryModel);
+    this.religion..clear()..add(this.userRepository.useDetails!.religion);
+    this.motherTongue..clear()..add(this.userRepository.useDetails!.motherTongue);
+    this.countryModelList..clear()..add(countryModel);
+    if (!this.forFilters) {
+      this.add(GetPartnerPreference());
+    }
   }
 
   @override
   Stream<ProfilePreferenceState> mapEventToState(
       ProfilePreferenceEvent event) async* {
     yield OnLoading();
+    if (event is GetPartnerPreference) {
+      var result = await this.userRepository.getPartnerPreference();
+      this.minAge = result.preferences.minAge.toDouble();
+      this.maxAge = result.preferences.maxAge.toDouble();
+      this.minHeight = result.preferences.minHeight.toDouble();
+      this.maxHeight = result.preferences.maxHeight.toDouble();
+      this.maritalStatus
+        ..clear()
+        ..addAll(result.preferences.maritalStatus);
+      this.abilityStatus = result.preferences.isPhysicallyChallenged
+          ? AbilityStatus.PhysicallyChallenged
+          : AbilityStatus.Normal;
+      this.religion
+        ..clear()
+        ..addAll(result.preferences.religions);
+      this.motherTongue
+        ..clear()
+        ..addAll(result.preferences.motherTongue);
+      this.countryModelList
+        ..clear()
+        ..addAll(result.preferences.countries);
+      this.drinkingHabit
+        ..clear()
+        ..addAll(result.preferences.drinkingHabits);
+      this.eatingHabit
+        ..clear()
+        ..addAll(result.preferences.eatingHabit);
+      this.smokingHabit
+        ..clear()
+        ..addAll(result.preferences.smokingHabit);
+      yield ProfilePreferenceInitialState();
+    }
+    if (event is ResetFilters) {
+      initializeFilters();
+      yield ProfilePreferenceInitialState();
+    }
     if (event is OnAgeRangeChanged) {
       this.minAge = event.start;
       this.maxAge = event.end;
@@ -208,7 +260,8 @@ class ProfilePreferenceBloc
     if (event is RemoveEducation) {
       this.education = [];
       yield ProfilePreferenceInitialState();
-    }if (event is RemoveMaritalStatus) {
+    }
+    if (event is RemoveMaritalStatus) {
       this.maritalStatus = [];
       yield ProfilePreferenceInitialState();
     }
@@ -300,24 +353,23 @@ class ProfilePreferenceBloc
           this.smokingHabit,
           this.abilityStatus);
       if (result.status == AppConstants.SUCCESS) {
-       if(userRepository.useDetails!.registrationStep < 10){
-         this.userRepository.updateRegistrationStep(10);
-         this.userRepository.useDetails!.registrationStep = 10;
-         await this.userRepository.saveUserDetails();
-         var response = await this
-             .userRepository
-             .updateRegistartionStep(this.userRepository.useDetails!.id, 10);
-       }
-       yield ProfilePreferenceComplete();
+        if (userRepository.useDetails!.registrationStep < 10) {
+          this.userRepository.updateRegistrationStep(10);
+          this.userRepository.useDetails!.registrationStep = 10;
+          await this.userRepository.saveUserDetails();
+          var response = await this
+              .userRepository
+              .updateRegistartionStep(this.userRepository.useDetails!.id, 10);
+          yield ProfilePreferenceComplete();
+        } else {
+          yield ProfilePreferenceUpdated();
+        }
       } else {
         yield OnError(result.message);
       }
     }
 
     if (event is CompleteFilter) {
-      // var response = await this
-      //     .userRepository
-      //     .updateRegistartionStep(this.userRepository.useDetails!.id, 10);
       var result = await this.userRepository.completeFilter(
           this.maxHeight,
           this.minHeight,
@@ -344,21 +396,145 @@ class ProfilePreferenceBloc
       }
     }
   }
+}
 
-//bool checkCaste() {
-// if (casteNotAvailable()) {
-//    return false;
-//  } else {
-//    return true;
-//  }
-// }
+class PartnerPreferences {
+  final int minAge;
+  final int maxAge;
+  final int minHeight;
+  final int maxHeight;
+  final String minIncome;
+  final String maxIncome;
+  final List<MaritalStatus> maritalStatus;
+  final List<CountryModel> countries;
+  final List<StateModel> states;
+  final List<StateModel> cities;
+  final List<SimpleMasterData> religions;
+  final List<dynamic> castes;
+  final List<SimpleMasterData> motherTongue;
+  final List<SimpleMasterData> occupation;
+  final List<Education> education;
+  final bool isPhysicallyChallenged;
+  final List<DrinkingHabit> drinkingHabits;
+  final List<EatingHabit> eatingHabit;
+  final List<SmokingHabit> smokingHabit;
 
-//  bool casteNotAvailable() {
-//    return this.religion.title.toLowerCase().contains("budhhist") ||
-//        this.religion.title.toLowerCase().contains("parsi") ||
-//       this.religion.title.toLowerCase().contains("jewish") ||
-//       this.religion.title.toLowerCase().contains("other") ||
-//       this.religion.title.toLowerCase().contains("no religion") ||
-//       this.religion.title.toLowerCase().contains("spiritual");
-// }
+  PartnerPreferences({
+    required this.minAge,
+    required this.maxAge,
+    required this.minHeight,
+    required this.maxHeight,
+    required this.minIncome,
+    required this.maxIncome,
+    required this.maritalStatus,
+    required this.countries,
+    required this.states,
+    required this.cities,
+    required this.religions,
+    required this.castes,
+    required this.motherTongue,
+    required this.occupation,
+    required this.education,
+    required this.isPhysicallyChallenged,
+    required this.drinkingHabits,
+    required this.eatingHabit,
+    required this.smokingHabit,
+  });
+
+  factory PartnerPreferences.fromJson({required Map<String, dynamic> json}) => PartnerPreferences(
+      minAge: json["minAge"],
+      maxAge: json["maxAge"],
+      minHeight: json["minHeight"],
+      maxHeight: json["maxHeight"],
+      minIncome: json["minIncome"],
+      maxIncome: json["maxIncome"],
+      maritalStatus: json["maritalStatus"]
+          .toString()
+          .split(",")
+          .map((e) => MaritalStatus.values[int.parse(e)])
+          .toList(),
+      countries: <CountryModel>[],
+      states: [],
+      cities: [],
+      religions: json["religion"]
+          .toString()
+          .split(",")
+          .where((e) => e.trim().isNotNullEmpty)
+          .toList()
+          .map((e) => getIt<UserRepository>()
+              .masterData
+              .listReligion
+              .firstWhere((element) => element.title == e))
+          .toList(),
+      castes: getIt<UserRepository>()
+          .masterData
+          .listCastSubCast
+          .fold<List<dynamic>>(
+              <dynamic>[],
+              (previousValue, element) =>
+                  previousValue..addAll(element.subCasts))
+          .where((e) => json["caste"]
+              .toString()
+              .split(",")
+              .where((e) => e.isNotNullEmpty)
+              .toList()
+              .contains(e))
+          .toList(),
+      motherTongue: json["motherTongue"]
+          .toString()
+          .split(",")
+          .where((e) => e.isNotNullEmpty)
+          .toList()
+          .map((e) =>
+              getIt<UserRepository>().masterData.listMotherTongue.firstWhere((element) => element.title == e))
+          .toList(),
+      occupation: getIt<UserRepository>().masterData.listOccupation.fold<List<SimpleMasterData>>(<SimpleMasterData>[], (previousValue, element) => previousValue..addAll(element.subCategory)).where((e) => json["caste"].toString().split(",").where((e) => e.isNotNullEmpty).toList().contains(e)).toList(),
+      education: json["highestEducation"].toString().split(",").where((e) => e.isNotNullEmpty).toList().map((e) => getIt<UserRepository>().masterData.listEducation.firstWhere((element) => element.text == e)).toList(),
+      isPhysicallyChallenged: json["challenged"] == "1",
+      drinkingHabits: json["drinkingHabits"].toString().split(",").where((e) => e.isNotNullEmpty).toList().map((e) => DrinkingHabit.values[int.parse(e)]).toList(),
+      eatingHabit: json["dietaryHabits"].toString().split(",").where((e) => e.isNotNullEmpty).toList().map((e) => EatingHabit.values[int.parse(e)]).toList(),
+      smokingHabit: json["smokingHabits"].toString().split(",").where((e) => e.isNotNullEmpty).toList().map((e) => SmokingHabit.values[int.parse(e)]).toList());
+
+  PartnerPreferences copyWith({
+    int? minAge,
+    int? maxAge,
+    int? minHeight,
+    int? maxHeight,
+    String? minIncome,
+    String? maxIncome,
+    List<MaritalStatus>? maritalStatus,
+    List<CountryModel>? countries,
+    List<StateModel>? states,
+    List<StateModel>? cities,
+    List<SimpleMasterData>? religions,
+    List<SimpleMasterData>? castes,
+    List<SimpleMasterData>? motherTongue,
+    List<SimpleMasterData>? occupation,
+    List<Education>? education,
+    bool? isPhysicallyChallenged,
+    List<DrinkingHabit>? drinkingHabits,
+    List<EatingHabit>? eatingHabit,
+    List<SmokingHabit>? smokingHabit,
+  }) =>
+      PartnerPreferences(
+          minAge: minAge ?? this.minAge,
+          maxAge: maxAge ?? this.maxAge,
+          minHeight: minHeight ?? this.minHeight,
+          maxHeight: maxHeight ?? this.maxHeight,
+          minIncome: minIncome ?? this.minIncome,
+          maxIncome: maxIncome ?? this.maxIncome,
+          maritalStatus: maritalStatus ?? this.maritalStatus,
+          countries: countries ?? this.countries,
+          states: states ?? this.states,
+          cities: cities ?? this.cities,
+          religions: religions ?? this.religions,
+          castes: castes ?? this.castes,
+          motherTongue: motherTongue ?? this.motherTongue,
+          occupation: occupation ?? this.occupation,
+          education: education ?? this.education,
+          isPhysicallyChallenged:
+              isPhysicallyChallenged ?? this.isPhysicallyChallenged,
+          drinkingHabits: drinkingHabits ?? this.drinkingHabits,
+          eatingHabit: eatingHabit ?? this.eatingHabit,
+          smokingHabit: smokingHabit ?? this.smokingHabit);
 }

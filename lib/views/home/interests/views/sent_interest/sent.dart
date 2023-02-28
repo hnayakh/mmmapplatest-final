@@ -19,7 +19,7 @@ import 'package:makemymarry/views/connect_pages/call/in_app_call.dart';
 import 'package:makemymarry/views/home/menu/wallet/recharge/recharge_connect_screen.dart';
 
 import '../../../../../repo/chat_repo.dart';
-import '../../../../profileviewscreens/profile_view.dart';
+import '../../../../profile_detail_view/profile_view.dart';
 import 'bloc/sent_bloc.dart';
 import 'bloc/sent_events.dart';
 import 'bloc/sent_states.dart';
@@ -267,7 +267,7 @@ class SentScreen extends StatelessWidget {
                       Text(
                         listSent[index].user.name,
                         textScaleFactor: 1.0,
-                        style: MmmTextStyles.heading5(textColor: Colors.red),
+                        style: MmmTextStyles.heading5(textColor: kDark5)
                       ),
                       SizedBox(
                         height: 4,
@@ -323,50 +323,15 @@ class SentScreen extends StatelessWidget {
                             ),
                           );
                         } else {
-                          var appBloc = BlocProvider.of<AppBloc>(context);
-                          appBloc.add(RefreshWalletCount());
-                          if ((appBloc.state as AppLoggedInState).connectCount >
-                              0) {
-                            var bloc = BlocProvider.of<SentBloc>(context);
-                            await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return MmmWidgets.requestConnectWidget(
-                                  name: listSent[index].user.name,
-                                  imageUrl: listSent[index].user.imageURL,
-                                  isVerified:
-                                  listSent[index].user.isActive == 1,
-                                  onConfirm: () {
-                                    bloc.add(ConnectNow(
-                                        connectById: listSent[index]
-                                            .requestingUserBasicId,
-                                        connectToId: listSent[index]
-                                            .requestedUserBasicId));
-                                  },
-                                );
+                          BlocProvider.of<AppBloc>(navigatorKey.currentContext!).connectNow(
+                              otherUserId: listSent[index].requestedUserBasicId,
+                              onDone: () async {
+                                navigatorKey.currentState?.push((await ChatPage.getRoute(
+                                    navigatorKey.currentContext!, listSent[index].requestedUserBasicId)));
                               },
-                            );
-                            appBloc.add(RefreshWalletCount());
-                          } else {
-                            await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return MmmWidgets.lowBalanceWidget(
-                                  onConfirm: () {
-                                    Navigator.of(context).pop();
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => RechargeConnect(
-                                          userRepository:
-                                          getIt<UserRepository>(),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                            );
-                          }
+                              onError: () async {},
+                              profileDetails: listSent[index],
+                              context: navigatorKey.currentContext!);
                         }
                       },
                     ),

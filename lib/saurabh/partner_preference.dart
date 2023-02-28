@@ -3,14 +3,13 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:makemymarry/locator.dart';
 import 'package:makemymarry/views/filterscreen/disability_preference_filter_sheet.dart';
 import 'package:makemymarry/views/filterscreen/drink_preference_bottom_sheet.dart';
 import 'package:makemymarry/views/filterscreen/fliterscreen%20bloc/filter_bloc.dart';
 import 'package:makemymarry/views/filterscreen/fliterscreen%20bloc/filter_event.dart';
 import 'package:makemymarry/views/filterscreen/food_preference_filter_sheet.dart';
 import 'package:makemymarry/views/filterscreen/interest_preference_filter_sheet.dart';
-import 'package:makemymarry/views/filterscreen/religion_preference_filter_sheet.dart';
-import 'package:makemymarry/views/filterscreen/smoke_preference_filter_sheet.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/annual_income_preference.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/annual_max_income_preference.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/drinking_habit.dart';
@@ -23,9 +22,6 @@ import 'package:makemymarry/views/profilescreens/profile_preference/profile_pref
     as profilepreferenceEvent;
 import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference_events.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/smoking_prefs.dart';
-import 'package:makemymarry/views/profilescreens/religion/bloc/religion_event.dart'
-    as religionEvent;
-import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/sidebar_contactsupport_screen.dart';
 
 import '../datamodels/master_data.dart';
 import '../datamodels/user_model.dart';
@@ -38,6 +34,8 @@ import '../utils/elevations.dart';
 import '../utils/mmm_enums.dart';
 import '../utils/text_styles.dart';
 import '../utils/view_decorations.dart';
+import '../utils/widgets_large.dart';
+import '../views/profile_loader/profile_loader.dart';
 import '../views/profilescreens/occupation/views/anual_income_bottom_sheet.dart';
 import '../views/profilescreens/occupation/bloc/occupation_bloc.dart';
 import '../views/profilescreens/occupation/bloc/occupation_event.dart';
@@ -50,19 +48,18 @@ import '../views/profilescreens/profile_preference/subcast_preference_sheet.dart
 import '../views/profilescreens/religion/views/gothra_bottom_sheet.dart';
 import '../views/profilescreens/religion/bloc/religion_bloc.dart';
 
-import 'hexcolor.dart';
-
 class PartnerPrefsScreen extends StatelessWidget {
   final UserRepository userRepository;
+  final bool forFilters;
 
-  const PartnerPrefsScreen({Key? key, required this.userRepository})
+  const PartnerPrefsScreen({Key? key, required this.userRepository, this.forFilters = false})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(providers: [
       BlocProvider(
-        create: (context) => ProfilePreferenceBloc(userRepository),
+        create: (context) => ProfilePreferenceBloc(userRepository, forFilters: this.forFilters),
       ),
       BlocProvider(
         create: (context) => ReligionBloc(userRepository),
@@ -73,9 +70,7 @@ class PartnerPrefsScreen extends StatelessWidget {
       BlocProvider(
         create: (context) => FilterBloc(userRepository),
       ),
-    ], child: PartnerPrefs()
-        // ProfilePreference(userRepository: userRepository),
-        );
+    ], child: PartnerPrefs());
   }
 }
 
@@ -88,16 +83,16 @@ class PartnerPrefs extends StatefulWidget {
 
 class _PartnerPrefsState extends State<PartnerPrefs> {
   RangeLabels labels = RangeLabels('1', "100");
-  // int values = 10;
   RangeValues values = RangeValues(1, 100);
   int? disabilityPreference;
   final List<String> disabilityType = [
-    'Doesnot Matter',
+    'Does not Matter',
     'Normal',
     'Physically Challenged',
   ];
-  late double minAge, maxAge, minSliderAge;
-  late double minHeight, maxHeight;
+  late double minAge, maxAge, minSliderAge, maxSliderAge;
+  double minHeight = 52;
+  double maxHeight = 62;
   late List<MaritalStatus> maritalStatus;
   late CountryModel countryModel;
   late List<StateModel?> myState, city;
@@ -151,6 +146,8 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
     this.minAge = BlocProvider.of<ProfilePreferenceBloc>(context).minAge;
     this.minSliderAge =
         BlocProvider.of<ProfilePreferenceBloc>(context).minSliderAge;
+    this.maxSliderAge =
+        BlocProvider.of<ProfilePreferenceBloc>(context).maxSliderAge;
     this.maxAge = BlocProvider.of<ProfilePreferenceBloc>(context).maxAge;
     this.minHeight = BlocProvider.of<ProfilePreferenceBloc>(context).minHeight;
     this.maxHeight = BlocProvider.of<ProfilePreferenceBloc>(context).maxHeight;
@@ -204,14 +201,6 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
   }
 
   void selectFood(BuildContext context) async {
-    //  var list = BlocProvider.of<FilterBloc>(context)
-    //   .userRepository
-    //       .masterData
-    //   .listReligion;
-//  SimpleMasterData? castData = SimpleMasterData();
-//  castData.id = 'Doesnot Matter';
-//  castData.title = 'Doesnot Matter';
-//   list.insert(0, castData);
     EatingHabitFilter? foodStatus;
     var result = await showModalBottomSheet(
         context: context,
@@ -223,441 +212,293 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
     if (result != null && result is EatingHabitFilter) {
       BlocProvider.of<FilterBloc>(context).add(OnFoodFilterSelected(result));
     }
-    // if (result != null && result is SimpleMasterData) {
-    //   BlocProvider.of<FilterBloc>(context)
-    //       .add(OnReligionFilterSelected(result));
-    //   this.initCaste = 0;
-    // }
   }
 
-  // void showMaritalStatusBottomSheet() async {
-  //   var result = await showModalBottomSheet(
-  //       context: context,
-  //       builder: (context) => MaritalStatusPreference(
-  //             list: this.maritalStatus,
-  //           ));
-  //   if (result != null && result is List<MaritalStatus>) {
-  //     BlocProvider.of<ProfilePreferenceBloc>(context)
-  //         .add(profilepreferenceEvent.OnMaritalStatusSelected(result));
-  //   }
-  // }
-
-//   void selectSmoke(BuildContext context) async {
-//     //  var list = BlocProvider.of<FilterBloc>(context)
-//     //   .userRepository
-//     //       .masterData
-//     //   .listReligion;
-// //  SimpleMasterData? castData = SimpleMasterData();
-// //  castData.id = 'Doesnot Matter';
-// //  castData.title = 'Doesnot Matter';
-// //   list.insert(0, castData);
-//     SmokingHabit? smokeStatus;
-//     var result = await showModalBottomSheet(
-//         context: context,
-//         backgroundColor: Colors.transparent,
-//         isScrollControlled: true,
-//         builder: (context) => SmokeStatusFilterSheet(
-//               selectedSmokeStatus: smokeStatus,
-//             ));
-//     if (result != null && result is List<SmokingHabit>) {
-//       BlocProvider.of<ProfilePreferenceBloc>(context)
-//           .add(profilepreferenceEvent.SmokingSelected(result));
-//       // BlocProvider.of<ProfilePreferenceBloc>(context)
-//       //     .add(OnSmokeFilterSelected(result));
-//     }
-
-//     // if (result != null && result is SimpleMasterData) {
-//     //   BlocProvider.of<FilterBloc>(context)
-//     //       .add(OnReligionFilterSelected(result));
-//     //   this.initCaste = 0;
-//     // }
-//   }
-
   void selectDrink(BuildContext context) async {
-    //  var list = BlocProvider.of<FilterBloc>(context)
-    //   .userRepository
-    //       .masterData
-    //   .listReligion;
-//  SimpleMasterData? castData = SimpleMasterData();
-//  castData.id = 'Doesnot Matter';
-//  castData.title = 'Doesnot Matter';
-//   list.insert(0, castData);
     DrinkingHabitFilter? drinkStatus;
-    var result = await showModalBottomSheet(
-        context: context,
-        backgroundColor: Colors.transparent,
-        isScrollControlled: true,
-        builder: (context) => DrinkStatusFilterSheet(
-              selectedDrinkStatus: drinkStatus,
-            ));
-    // if (result != null && result is SimpleMasterData) {
-    //   BlocProvider.of<FilterBloc>(context)
-    //       .add(OnReligionFilterSelected(result));
-    //   this.initCaste = 0;
-    // }
+    await showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) => DrinkStatusFilterSheet(
+        selectedDrinkStatus: drinkStatus,
+      ),
+    );
   }
 
   void selectInterest(BuildContext context) async {
-    //  var list = BlocProvider.of<FilterBloc>(context)
-    //   .userRepository
-    //       .masterData
-    //   .listReligion;
-//  SimpleMasterData? castData = SimpleMasterData();
-//  castData.id = 'Doesnot Matter';
-//  castData.title = 'Doesnot Matter';
-//   list.insert(0, castData);
     InterestFilter? interestStatus;
-    var result = await showModalBottomSheet(
-        context: context,
-        backgroundColor: Colors.transparent,
-        isScrollControlled: true,
-        builder: (context) => SmokeInterestFilterSheet(
-              selectedInterestStatus: interestStatus,
-            ));
-    // if (result != null && result is SimpleMasterData) {
-    //   BlocProvider.of<FilterBloc>(context)
-    //       .add(OnReligionFilterSelected(result));
-    //   this.initCaste = 0;
-    // }
+    await showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) => SmokeInterestFilterSheet(
+        selectedInterestStatus: interestStatus,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
-    var primaryColor = HexColor('C9184A');
+    var bloc = context.read<ProfilePreferenceBloc>();
     return Scaffold(
-        appBar: customAppBar('Partner Preference', "Reset", context: context),
-        body: BlocConsumer<ProfilePreferenceBloc, ProfilePreferenceState>(
-            listener: (context, state) {
-          if (state is OnGotCounties) {
-            // selectCountry(context, state.list);
-          }
-          if (state is OnGotStates) {
-            // selectState(context, state.list, "State");
-          }
-          if (state is OnGotCities) {
-            // selectCity(context, state.list, "City");
+      appBar: customAppBar(
+          bloc.forFilters ? "Filters" : 'Partner Preference',
+          bloc.forFilters ? "Reset" : "",
+          bloc.forFilters
+              ? () {
+                  bloc.add(ResetFilters());
+                }
+              : () {},
+          context: context),
+      body: BlocConsumer<ProfilePreferenceBloc, ProfilePreferenceState>(
+        listener: (context, state) {
+          if (state is OnGotCounties) {}
+          if (state is OnGotStates) {}
+          if (state is OnGotCities) {}
+          if (state is ProfilePreferenceUpdated) {
+            navigatorKey.currentState?.pop();
           }
           if (state is OnGotCasteList) {
             selectSubCast(state.caste);
           }
-          // if (state is ProfilePreferenceComplete) {
-          //   navigateToFetchProfile();
-          // }
           if (state is OnError) {
-            ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
-              content: Text(state.message),
-              backgroundColor: kError,
-            ));
+            ScaffoldMessenger.of(context).showSnackBar(
+              new SnackBar(
+                content: Text(state.message),
+                backgroundColor: kError,
+              ),
+            );
           }
-        }, builder: (context, state) {
+        },
+        builder: (context, state) {
           initData(context);
-          return Container(
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              child: ListView(children: [
-                SizedBox(
-                  height: 20,
-                ),
-                // age
-                buildAgePreference(),
-                // Text(
-                //   "Age Peference",
-                //   style:
-                //       MmmTextStyles.bodyMediumSmall(textColor: Colors.black87),
-                // ),
-                // SizedBox(
-                //   height: 10,
-                // ),
-                // Container(
-                //   padding: EdgeInsets.symmetric(horizontal: 20),
-                //   decoration: BoxDecoration(
-                //       border: Border.all(color: Colors.black54),
-                //       borderRadius: BorderRadius.circular(10)),
-                //   child: Column(
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     children: [
-                //       SizedBox(
-                //         height: 10,
-                //       ),
-                //       Text(
-                //         "Selected age is between 24 and 28",
-                //         style: MmmTextStyles.bodyMediumSmall(
-                //             textColor: Colors.black87),
-                //       ),
-                //       SizedBox(
-                //         height: 20,
-                //       ),
-                //       RangeSlider(
-                //           divisions: 100,
-                //           activeColor: Colors.red[700],
-                //           inactiveColor: Colors.red[300],
-                //           min: 1,
-                //           max: 100,
-                //           values: values,
-                //           labels: labels,
-                //           onChanged: (value) {
-                //             print("START: ${value.start}, End: ${value.end}");
-                //             setState(() {
-                //               values = value;
-                //               labels = RangeLabels(
-                //                   "${value.start.toInt().toString()}",
-                //                   "${value.start.toInt().toString()}");
-                //             });
-                //           }),
-                //       SizedBox(
-                //         height: 20,
-                //       ),
-                //     ],
-                //   ),
-                // ),
-                //commented by me
-                // SizedBox(
-                //   height: 20,
-                // ),
-                // Text(
-                //   "Profile Peference",
-                //   style:
-                //       MmmTextStyles.bodyMediumSmall(textColor: Colors.black87),
-                // ),
-                // SizedBox(
-                //   height: 10,
-                // ),
-                // MmmButtons.myProfileButtons('Doesn\'t Matter ', action: () {
-                //   print('ok');
-                //   showDialog(
-                //       context: context,
-                //       builder: (ctx) => verificationSttausAlert());
-                // }),
-
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "Personal Preference",
-                  style:
-                      MmmTextStyles.bodyMediumSmall(textColor: Colors.black87),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                // MmmButtons.myProfileButtons('Height ', action: () {
-                buildHeight(),
-                //   }),
-                SizedBox(
-                  height: 10,
-                ),
-                // MmmButtons.myProfileButtons("Marital Status", action: () {}),
-                buildMaritalStatus(),
-                SizedBox(
-                  height: 10,
-                ),
-                // MmmButtons.myProfileButtons("Disability", action: () {}),
-                // MmmButtons.filterButtons(
-                //     this.disabilityPreference != null
-                //         ? disabilityType[disabilityPreference!]
-                //         : 'Disability', action: () {
-                //   showDisabilityBottomSheet();
-                // }),
-
-                Container(
-                  margin: EdgeInsets.only(left: 8),
-                  child: Text(
-                    'Disability',
-                    style: MmmTextStyles.bodyRegular(textColor: kDark5),
-                  ),
-                ),
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Transform.scale(
-                        scale: 1.2,
-                        child: Radio(
-                            activeColor: kPrimary,
-                            value: AbilityStatus.Normal,
-                            groupValue: abilityStatus,
-                            onChanged: (val) {
-                              BlocProvider.of<ProfilePreferenceBloc>(context)
-                                  .add(AbilityStatusChanged(
-                                      AbilityStatus.Normal));
-                            }),
+          return Stack(
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                child: ListView(
+                  children: [
+                    SizedBox(
+                      height: 20,
+                    ),
+                    buildAgePreference(),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    // Text(
+                    //   "Profile Peference",
+                    //   style:
+                    //   MmmTextStyles.bodyMediumSmall(textColor: Colors.black87),
+                    // ),
+                    // SizedBox(height: 10),
+                    // MmmButtons.myProfileButtons('Doesn\'t Matter ', action: () {
+                    //   showDialog(
+                    //       context: context,
+                    //       builder: (ctx) => verificationSttausAlert(context));
+                    // }),
+                    Text(
+                      "Personal Preference",
+                      style: MmmTextStyles.bodyMediumSmall(
+                          textColor: Colors.black87),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    buildHeight(),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    buildMaritalStatus(),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 8),
+                      child: Text(
+                        'Disability',
+                        style: MmmTextStyles.bodyRegular(textColor: kDark5),
                       ),
-                      //SizedBox(
-                      // width: 8,
-                      //  ),
-                      Text(
-                        'Normal    ',
-                        style: MmmTextStyles.bodySmall(textColor: kDark5),
-                      ),
-
-                      Transform.scale(
-                        scale: 1.2,
-                        child: Radio(
-                            activeColor: kPrimary,
-                            value: AbilityStatus.PhysicallyChallenged,
-                            groupValue: abilityStatus,
-                            onChanged: (val) {
-                              BlocProvider.of<ProfilePreferenceBloc>(context)
-                                  .add(AbilityStatusChanged(
-                                      AbilityStatus.PhysicallyChallenged));
-                            }),
-                      ),
-                      // SizedBox(
-                      //   width: 8,
-                      // ),
-                      Text(
-                        'Physically Challenged',
-                        style: MmmTextStyles.bodySmall(textColor: kDark5),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: SizedBox(
-                            // width: 22,
+                    ),
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Transform.scale(
+                            scale: 1.2,
+                            child: Radio(
+                              activeColor: kPrimary,
+                              value: AbilityStatus.Normal,
+                              groupValue: abilityStatus,
+                              onChanged: (val) {
+                                BlocProvider.of<ProfilePreferenceBloc>(context)
+                                    .add(AbilityStatusChanged(
+                                        AbilityStatus.Normal));
+                              },
                             ),
+                          ),
+                          Text(
+                            'Normal    ',
+                            style: MmmTextStyles.bodySmall(textColor: kDark5),
+                          ),
+                          Transform.scale(
+                            scale: 1.2,
+                            child: Radio(
+                                activeColor: kPrimary,
+                                value: AbilityStatus.PhysicallyChallenged,
+                                groupValue: abilityStatus,
+                                onChanged: (val) {
+                                  BlocProvider.of<ProfilePreferenceBloc>(
+                                          context)
+                                      .add(AbilityStatusChanged(
+                                          AbilityStatus.PhysicallyChallenged));
+                                }),
+                          ),
+                          Text(
+                            'Physically Challenged',
+                            style: MmmTextStyles.bodySmall(textColor: kDark5),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: SizedBox(
+                                // width: 22,
+                                ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "Religion Peference",
-                  style:
-                      MmmTextStyles.bodyMediumSmall(textColor: Colors.black87),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                // MmmButtons.myProfileButtons("Religion", action: () {}),
-                buildReligion(),
-                SizedBox(
-                  height: 10,
-                ),
-                buildCaste(),
-                // MmmButtons.myProfileButtons("Cast", action: () {}),
-                SizedBox(
-                  height: 10,
-                ),
-                // MmmButtons.myProfileButtons("Sub-Cast", action: () {}),
-                // buildCaste(),
-                // SizedBox(
-                //   height: 10,
-                // ),
-                // MmmButtons.myProfileButtons("Mother Tongue", action: () {}),
-                buildMotherTongue(),
-                SizedBox(
-                  height: 10,
-                ),
-                // MmmButtons.myProfileButtons("Gothra", action: () {}),
-                // SizedBox(
-                //   height: 10,
-                // ),
-                // MmmButtons.myProfileButtons("Manglink", action: () {}),
-                // SizedBox(
-                //   height: 24,
-                // ),
-                MmmButtons.categoryButtons(
-                    'Gothra',
-                    this.gothra.length != 0 ? gothra : 'Select your gothra',
-                    'Select your gothra',
-                    'images/rightArrow.svg', action: () {
-                  selectGothra(context);
-                }, required: false),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "Religion Peference",
+                      style: MmmTextStyles.bodyMediumSmall(
+                          textColor: Colors.black87),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    buildReligion(),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    buildCaste(),
+                    SizedBox(
+                      height: 10,
+                    ),
 
-                SizedBox(
-                  height: 20,
+                    buildMotherTongue(),
+                    SizedBox(
+                      height: 10,
+                    ),
+
+                    MmmButtons.categoryButtons(
+                        'Gothra',
+                        this.gothra.length != 0 ? gothra : 'Select your gothra',
+                        'Select your gothra',
+                        'images/rightArrow.svg', action: () {
+                      selectGothra(context);
+                    }, required: false),
+
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "Career Peference",
+                      style: MmmTextStyles.bodyMediumSmall(
+                          textColor: Colors.black87),
+                    ),
+
+                    SizedBox(
+                      height: 10,
+                    ),
+
+                    buildOccupation(),
+                    //      }),
+                    SizedBox(
+                      height: 10,
+                    ),
+
+                    buildEducation(),
+                    //    }),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    buildAnnualIncome(),
+
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "Lifestyle Preference",
+                      style: MmmTextStyles.bodyMediumSmall(
+                          textColor: Colors.black87),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    buildEatingStatus(),
+                    //  }),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    buildSmokingStatus(),
+                    SizedBox(
+                      height: 10,
+                    ),
+
+                    buildDrinkStatus(),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    buildInterestStatus(),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    bloc.forFilters ?
+                    MmmButtons.enabledRedButtonbodyMedium(
+                        50, 'Apply Filters', action: () {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      BlocProvider.of<ProfilePreferenceBloc>(context)
+                          .add(CompleteFilter());
+                    }):
+                    MmmButtons.enabledRedButtonbodyMedium(
+                        50, 'Complete Preference', action: () {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      BlocProvider.of<ProfilePreferenceBloc>(context)
+                          .add(CompletePreference());
+                    }),
+                    SizedBox(
+                      height: 30,
+                    ),
+                  ],
                 ),
-                Text(
-                  "Career Peference",
-                  style:
-                      MmmTextStyles.bodyMediumSmall(textColor: Colors.black87),
-                ),
-                // SizedBox(
-                //   height: 10,
-                // ),
-                // MmmButtons.myProfileButtons('Employeed in ', action: () {}),
-                SizedBox(
-                  height: 10,
-                ),
-                // MmmButtons.myProfileButtons('Occupation ', action: () {
-                buildOccupation(),
-                //      }),
-                SizedBox(
-                  height: 10,
-                ),
-                // MmmButtons.myProfileButtons('Highest Education', action: () {
-                buildEducation(),
-                //    }),
-                SizedBox(
-                  height: 10,
-                ),
-                // MmmButtons.myProfileButtons('Annual Income', action: () {}),
-                buildAnnualIncome(),
-                // MmmButtons.categoryButtons(
-                //     'Annual Income',
-                //     anualIncome != null
-                //         ?
-                //         //'${describeEnum(anualIncome!)}'
-                //         //incomes[anualIncome!.index]
-                //         AppHelper.getStringFromEnum(
-                //             AnualIncome.values[anualIncome!.index])
-                //         : 'Select your income',
-                //     'Select your income',
-                //     'images/rightArrow.svg', action: () {
-                //   selectAnualIncome(context);
-                // }),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  "Lifestyle Peference",
-                  style:
-                      MmmTextStyles.bodyMediumSmall(textColor: Colors.black87),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                //  MmmButtons.myProfileButtons('Food', action: () {
-                buildEatingStatus(),
-                //  }),
-                SizedBox(
-                  height: 10,
-                ),
-                //  MmmButtons.myProfileButtons('Smoke', action: () {
-                buildSmokingStatus(),
-                //  }),
-                SizedBox(
-                  height: 10,
-                ),
-                //  MmmButtons.myProfileButtons('Drink', action: () {
-                buildDrinkStatus(),
-                // }),
-                SizedBox(
-                  height: 10,
-                ),
-                //  MmmButtons.myProfileButtons('Interests', action: () {
-                buildInterestStatus(),
-                //     }),
-                SizedBox(
-                  height: 30,
-                ),
-                MmmButtons.enabledRedButtonbodyMedium(50, 'Apply Filter',
-                    action: () {
-                  print("Hiiiii");
-                  BlocProvider.of<ProfilePreferenceBloc>(context)
-                      .add(CompletePreference());
-                  //FocusScope.of(context).requestFocus(FocusNode());
-                  // BlocProvider.of<ProfilePreferenceBloc>(context)
-                  //     .add(profilepreferenceEvent.CompleteFilter());
-                  // BlocProvider.of<BioBloc>(context)
-                  //     .add(UpdateBio(this.bioController.text));
-                }),
-                SizedBox(
-                  height: 30,
-                ),
-              ]));
-        }));
+              ),
+              state is ProfilePreferenceComplete
+                  ? MmmWidgets.profileCompletedWidget(
+                      userData,
+                      action: () {
+                        navigateToFetchProfile();
+                      },
+                    )
+                  : Container()
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  void navigateToFetchProfile() {
+    var userRepo =
+        BlocProvider.of<ProfilePreferenceBloc>(context).userRepository;
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => ProfileLoader(
+          userRepository: userRepo,
+        ),
+      ),
+    );
   }
 
   void selectGothra(BuildContext context) async {
@@ -696,20 +537,21 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
 
   Widget buildReligion() {
     return MmmButtons.categoryButtons(
-        'Religion',
-        this.religion.length > 0
-            ? getReligionText(this.religion)
-            : 'Does not Matter',
-        'Select your religion',
-        'images/rightArrow.svg',
-        action: () {
-          selectReligion(context);
-        },
-        showCancel: this.religion.length > 0,
-        cancelAction: () {
-          BlocProvider.of<ProfilePreferenceBloc>(context)
-              .add(profilepreferenceEvent.RemoveReligion());
-        });
+      'Religion',
+      this.religion.length > 0
+          ? getReligionText(this.religion)
+          : 'Does not Matter',
+      'Select your religion',
+      'images/rightArrow.svg',
+      action: () {
+        selectReligion(context);
+      },
+      showCancel: this.religion.length > 0,
+      cancelAction: () {
+        BlocProvider.of<ProfilePreferenceBloc>(context)
+            .add(profilepreferenceEvent.RemoveReligion());
+      },
+    );
   }
 
   void selectReligion(BuildContext context) async {
@@ -789,25 +631,23 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
   }
 
   Widget buildCaste() {
-    return //BlocProvider.of<ProfilePreferenceBloc>(context).checkCaste()?
-        Container(
-            child: MmmButtons.categoryButtons(
-                'Caste',
-                subCaste.length > 0
-                    ? getSubCasteText(subCaste)
-                    : 'Does not matter',
-                'Select your caste',
-                'images/rightArrow.svg',
-                action: () {
-                  BlocProvider.of<ProfilePreferenceBloc>(context)
-                      .add(profilepreferenceEvent.GetCasteList());
-                },
-                showCancel: subCaste.length > 0,
-                cancelAction: () {
-                  BlocProvider.of<ProfilePreferenceBloc>(context)
-                      .add(profilepreferenceEvent.RemoveCaste());
-                }));
-    // : Container();
+    return Container(
+      child: MmmButtons.categoryButtons(
+        'Caste',
+        subCaste.length > 0 ? getSubCasteText(subCaste) : 'Does not matter',
+        'Select your caste',
+        'images/rightArrow.svg',
+        action: () {
+          BlocProvider.of<ProfilePreferenceBloc>(context)
+              .add(profilepreferenceEvent.GetCasteList());
+        },
+        showCancel: subCaste.length > 0,
+        cancelAction: () {
+          BlocProvider.of<ProfilePreferenceBloc>(context)
+              .add(profilepreferenceEvent.RemoveCaste());
+        },
+      ),
+    );
   }
 
   String getSubCasteText(List<dynamic> subCaste) {
@@ -934,7 +774,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
         'Smoking Habit',
         this.smokingHabit.length > 0
             ? getStringFromSmoking(this.smokingHabit)
-            : 'Select your smoking status',
+            : 'Select your Smoking status',
         'Select your Smoking status',
         'images/rightArrow.svg', action: () {
       smokingtatusBottomSheet();
@@ -1031,9 +871,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
           Expanded(
             child: MmmButtons.categoryButtons(
                 'Minimum',
-                this.annualIncome.length > 0
-                    ? currentIncomes
-                    : 'Does not matter',
+                this.annualIncome.length > 0 ? currentIncomes : 'Minimum',
                 'Select Annual Income',
                 'images/rightArrow.svg',
                 action: () {
@@ -1054,7 +892,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                   'Maximum',
                   this.annualIncomeMax.length > 0
                       ? currentMaxIncomes
-                      : 'Does not matter',
+                      : 'Maximum',
                   'Select Maximum Annual Income',
                   'images/rightArrow.svg',
                   action: () {
@@ -1109,16 +947,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
     }
   }
 
-  double convertHeight(double height) {
-    return (height.floor() / 2.54 ~/ 12).toDouble();
-  }
-
   Widget buildHeight() {
-    print("minHeight${minHeight}");
-    var maxValue = maxHeight == 0 ? 7.0 : maxHeight;
-    var minValue = minHeight == 0 ? 4.0 : minHeight;
-    // var maxValue = maxHeight > 0 ? maxHeight : 7.0;
-    print("maxHeight${maxValue}");
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -1138,10 +967,15 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Text(
-              //   ' ${minHeight.toStringAsFixed(1)}"" <---> ${maxHeight.toStringAsFixed(1)}""',
-              //   style: MmmTextStyles.bodyRegular(textColor: kDark5),
-              // ),
+              SizedBox(
+                height: 50,
+                child: Text(
+                  "Selected height is between ${minHeight ~/ 12}'${(minHeight % 12).toInt()}'' and ${maxHeight ~/ 12}'${(maxHeight % 12).toInt()}''",
+                  style:
+                      MmmTextStyles.bodyMediumSmall(textColor: Colors.black87),
+                  maxLines: 2,
+                ),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -1153,7 +987,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                         color: kLight4, borderRadius: BorderRadius.circular(8)),
                     child: FittedBox(
                       child: Text(
-                        '${AppHelper.getFormtedHeight(minHeight)}',
+                        "4'0''",
                         style: MmmTextStyles.bodyRegular(textColor: kDark5),
                       ),
                     ),
@@ -1166,7 +1000,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                         color: kLight4, borderRadius: BorderRadius.circular(8)),
                     child: FittedBox(
                       child: Text(
-                        '${AppHelper.getFormtedHeight(maxHeight)}',
+                        "7'0''",
                         style: MmmTextStyles.bodyRegular(textColor: kDark5),
                       ),
                     ),
@@ -1178,21 +1012,18 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                     showValueIndicator: ShowValueIndicator.always,
                     valueIndicatorColor: kPrimary.withOpacity(0.7)),
                 child: RangeSlider(
-                  values: RangeValues(minValue, maxValue),
-
-                  min: 4.0,
-                  max: 7.2,
+                  values:
+                      RangeValues(minHeight.toDouble(), maxHeight.toDouble()),
+                  min: 48,
+                  max: 84,
+                  // divisions: 36,
                   inactiveColor: kGray,
                   activeColor: kPrimary,
-                  // divisions: 5,
                   labels: RangeLabels(
-                    AppHelper.getFormtedHeight(minValue),
-                    AppHelper.getFormtedHeight(maxValue),
-                    // convertHeight(minHeight).toStringAsFixed(1),
-                    // convertHeight(maxValue).toStringAsFixed(1),
+                    "${minHeight ~/ 12}'${(minHeight % 12).toInt()}''",
+                    "${maxHeight ~/ 12}'${(maxHeight % 12).toInt()}''",
                   ),
                   onChanged: (RangeValues values) {
-                    print("RANGEEND${values.end}");
                     BlocProvider.of<ProfilePreferenceBloc>(context)
                         .add(OnHeightRangeChanged(values.start, values.end));
                   },
@@ -1258,9 +1089,11 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
             ? getStringFrom(this.maritalStatus)
             : 'Does not matter',
         'Select your marital status',
-        'images/rightArrow.svg', action: () {
-      showMaritalStatusBottomSheet();
-    }, showCancel: maritalStatus.length > 0,
+        'images/rightArrow.svg',
+        action: () {
+          showMaritalStatusBottomSheet();
+        },
+        showCancel: maritalStatus.length > 0,
         cancelAction: () {
           BlocProvider.of<ProfilePreferenceBloc>(context)
               .add(RemoveMaritalStatus());
@@ -1291,9 +1124,6 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
   }
 
   Widget buildAgePreference() {
-    var maxValue = maxAge > 0 ? maxAge : 0.0;
-    //var progress = RangeValues(minAge, maxAge);
-//maxValue>progress?progress:maxValue;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -1317,11 +1147,6 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                 "Selected age is between ${minAge.round()} and ${maxAge.round()}",
                 style: MmmTextStyles.bodyMediumSmall(textColor: Colors.black87),
               ),
-              // Text(
-              //   ' ${minAge.round()} Yrs <---> ${maxAge.round()} Yrs',
-              //   style: MmmTextStyles.bodyRegular(textColor: kDark5),
-              // ),
-
               SizedBox(
                 height: 6,
               ),
@@ -1336,7 +1161,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                         color: kLight4, borderRadius: BorderRadius.circular(8)),
                     child: FittedBox(
                       child: Text(
-                        '${minAge.round()}',
+                        '${minSliderAge.toInt()}',
                         style: MmmTextStyles.bodyRegular(textColor: kDark5),
                       ),
                     ),
@@ -1349,7 +1174,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                         color: kLight4, borderRadius: BorderRadius.circular(8)),
                     child: FittedBox(
                       child: Text(
-                        '${maxAge.round()}',
+                        '${maxSliderAge.toInt()}',
                         style: MmmTextStyles.bodyRegular(textColor: kDark5),
                       ),
                     ),
@@ -1361,9 +1186,9 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                     showValueIndicator: ShowValueIndicator.always,
                     valueIndicatorColor: kPrimary.withOpacity(0.7)),
                 child: RangeSlider(
-                  values: RangeValues(minAge, maxValue),
-                  min: this.gender == Gender.Female ? 18 : 21,
-                  max: 50,
+                  values: RangeValues(minAge, maxAge),
+                  min: minSliderAge,
+                  max: maxSliderAge,
                   inactiveColor: kGray,
                   activeColor: kPrimary,
                   // divisions: 30,
@@ -1467,45 +1292,48 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
     );
   }
 
-  static PreferredSize customAppBar(String title, String trailText,
+  static PreferredSize customAppBar(
+      String title, String trailText, void Function() onTrailTap,
       {BuildContext? context}) {
     return PreferredSize(
       preferredSize: Size.fromHeight(74.0),
       child: Container(
         child: AppBar(
-          leading: Container(
-            margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
-            decoration: BoxDecoration(
-                color: kLight2.withOpacity(0.60),
-                borderRadius: BorderRadius.all(Radius.circular(8)),
-                boxShadow: [
-                  MmmShadow.elevationbBackButton(
-                      shadowColor: kShadowColorForWhite)
-                ]),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: () {
-                    if (context != null) {
-                      Navigator.of(context).pop();
-                    }
-                  },
-                  child: Container(
-                      height: 32,
-                      width: 32,
-                      alignment: Alignment.center,
-                      child: SvgPicture.asset(
-                        'images/arrowLeft.svg',
-                        height: 17.45,
-                        width: 17.45,
-                        color: gray3,
-                      )),
-                ),
-              ),
-            ),
-          ),
+          leading: (navigatorKey.currentState?.canPop() ?? false)
+              ? Container(
+                  margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
+                  decoration: BoxDecoration(
+                      color: kLight2.withOpacity(0.60),
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                      boxShadow: [
+                        MmmShadow.elevationbBackButton(
+                            shadowColor: kShadowColorForWhite)
+                      ]),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () {
+                          if (context != null) {
+                            Navigator.of(context).pop();
+                          }
+                        },
+                        child: Container(
+                            height: 32,
+                            width: 32,
+                            alignment: Alignment.center,
+                            child: SvgPicture.asset(
+                              'images/arrowLeft.svg',
+                              height: 17.45,
+                              width: 17.45,
+                              color: gray3,
+                            )),
+                      ),
+                    ),
+                  ),
+                )
+              : null,
           toolbarHeight: 74.0,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1517,10 +1345,15 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
               SizedBox(
                   // width: MediaQuery.of(context!).size.width / 2,
                   ),
-              Text(
-                trailText,
-                style: MmmTextStyles.bodySmall(textColor: kLight2),
-                // textAlign: TextAlign.right,
+              InkWell(
+                onTap: () {
+                  onTrailTap.call();
+                },
+                child: Text(
+                  trailText,
+                  style: MmmTextStyles.bodySmall(textColor: kLight2),
+                  // textAlign: TextAlign.right,
+                ),
               ),
             ],
           ),

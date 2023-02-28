@@ -10,12 +10,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/repo/user_repo.dart';
+import 'package:makemymarry/saurabh/partner_preference.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
+import 'package:makemymarry/utils/utility_service.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/profile_loader/profile_loader.dart';
@@ -238,6 +240,13 @@ class _BioScreenState extends State<BioScreen> {
                                       50, 'Save', action: () {
                                       FocusScope.of(context)
                                           .requestFocus(FocusNode());
+                                      if((this.aboutMe?.length ?? 0) < 100 ){
+                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                          content: Text("Please write at least 100 letters in about me section"),
+                                          backgroundColor: Colors.red,
+                                        ));
+                                        return;
+                                      }
                                       BlocProvider.of<BioBloc>(context).add(
                                           UpdateBio(this.aboutMe!, this.localImagePaths, this.userDetails.registrationStep > 8
                                               ));
@@ -246,6 +255,13 @@ class _BioScreenState extends State<BioScreen> {
                                       50, 'Submit your details', action: () {
                                       FocusScope.of(context)
                                           .requestFocus(FocusNode());
+                                      if((this.aboutMe?.length ?? 0) < 100 ){
+                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                          content: Text("Please write at least 100 letters in about me section"),
+                                          backgroundColor: Colors.red,
+                                        ));
+                                        return;
+                                      }
                                       BlocProvider.of<BioBloc>(context).add(
                                           UpdateBio(this.aboutMe!,
                                               this.localImagePaths, this.userDetails.registrationStep > 8));
@@ -335,9 +351,17 @@ class _BioScreenState extends State<BioScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'About me',
-          style: MmmTextStyles.bodyRegular(textColor: kDark5),
+        Row(
+          children: [
+            Text(
+              'About me',
+              style: MmmTextStyles.bodyRegular(textColor: kDark5),
+            ),
+            Text(
+              ' *',
+              style: MmmTextStyles.bodySmall(textColor: kredStar),
+            )
+          ],
         ),
         SizedBox(
           height: 4,
@@ -352,6 +376,7 @@ class _BioScreenState extends State<BioScreen> {
             child: TextField(
                 controller: bioController,
 
+                maxLength: 2000,
                 onChanged: (value) {
                   this.aboutMe = value;
                 },
@@ -539,6 +564,6 @@ class _BioScreenState extends State<BioScreen> {
   void navigateToProfilePreference() {
     var userRepo = BlocProvider.of<BioBloc>(context).userRepository;
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => ProfilePreference(userRepository: userRepo)));
+        builder: (context) => PartnerPrefsScreen(userRepository: userRepo)));
   }
 }

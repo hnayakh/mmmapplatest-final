@@ -9,6 +9,8 @@ class CountrySelected extends ProfilePreferenceEvent {
 
   CountrySelected(this.countryModel);
 }
+class GetPartnerPreference extends ProfilePreferenceEvent {}
+class ResetFilters extends ProfilePreferenceEvent {}
 
 class OnCountryListSelected extends ProfilePreferenceEvent {
   final List<CountryModel> countryModelList;

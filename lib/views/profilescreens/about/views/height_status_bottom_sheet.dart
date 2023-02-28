@@ -70,11 +70,7 @@ class HeightStatusBottomSheet extends StatelessWidget {
                   );
                 },
                 itemCount: AppHelper.getHeights().length,
-                // separatorBuilder: (context, index) {
-                //   return Divider(
-                //     color: kLight4,
-                //   );
-                // },
+
               ),
             )
           ],

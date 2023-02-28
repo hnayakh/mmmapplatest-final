@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:makemymarry/saurabh/partner_preference.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/elevations.dart';
@@ -169,6 +170,9 @@ class _BioScreenState extends State<BioScreen> {
                                                                             .width) /
                                                                         2,
                                                                     height: 120,
+                                                                errorBuilder: (context, obj, str) => Container(
+                                                                    color: Colors.grey,
+                                                                    child: Icon(Icons.error))
                                                                   )
                                                                 : addImageButton(),
                                                             borderRadius:
@@ -315,6 +319,10 @@ class _BioScreenState extends State<BioScreen> {
             child: Image.network(
               profileImage,
               fit: BoxFit.contain,
+                errorBuilder: (context, obj, str) => Container(
+                    color: Colors.grey,
+
+                    child: Icon(Icons.error))
             ),
           ),
         ],
@@ -383,6 +391,6 @@ class _BioScreenState extends State<BioScreen> {
   void navigateToProfilePreference() {
     var userRepo = BlocProvider.of<BioBloc>(context).userRepository;
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => ProfilePreference(userRepository: userRepo)));
+        builder: (context) => PartnerPrefsScreen(userRepository: userRepo)));
   }
 }

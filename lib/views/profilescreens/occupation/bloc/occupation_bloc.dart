@@ -99,6 +99,9 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
       }
     }
     if (event is GetAllCities) {
+      if (this.myState == null) {
+        yield OnError('Enter name of state belonging to.');
+      }
       var result = await this.userRepository.getCities(this.myState!.id);
       if (result.status == AppConstants.SUCCESS) {
         yield OnGotCities(result.list);
@@ -149,13 +152,15 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
           this.userRepository.useDetails!.registrationStep =
               result.userDetails!.registrationStep;
           this.userRepository.useDetails!.countryModel = this.countryModel!;
-
           await this
               .userRepository
               .storageService
               .saveUserDetails(this.userRepository.useDetails!);
           if (!event.isAnUpdate) {
-            this.userRepository.updateRegistrationStep(4);
+            await this
+                .userRepository
+                .updateRegistartionStep(this.userRepository.useDetails!.id, 5);
+            this.userRepository.updateRegistrationStep(5);
           }
           yield event.isAnUpdate ? OnNavigationToMyProfiles() : MoveToFamily();
         } else {

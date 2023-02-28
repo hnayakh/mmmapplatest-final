@@ -143,6 +143,10 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
                                                                 .size
                                                                 .width) *
                                                             0.9,
+                                    errorBuilder: (context, obj, str) => Container(
+                                        color: Colors.grey,
+                                        child: Icon(Icons.error))
+
                                                   )
                                                 : Container(),
                                             borderRadius:

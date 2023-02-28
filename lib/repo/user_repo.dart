@@ -227,13 +227,18 @@ class UserRepository {
   Future<ProfileDetailsResponse> getOtheruserDetails(
       String id, ProfileActivationStatus activationStatus) async {
     var details =  await getUserDetails();
-    return apiClient.getOtherUserDetails(id, activationStatus, userId: details!.id);
+    return apiClient.getOtherUserDetails(id, activationStatus, userId: details?.id);
+  }
+
+  Future<PartnerPreferenceResponse> getPartnerPreference() async {
+    var details =  await getUserDetails();
+    return apiClient.getPartnerPreference(userId: details!.id);
   }
 
   Future<ProfileDetailsResponse> getOtherUserDetailsByDisplayId(
-      String displayId, ProfileActivationStatus activationStatus) async {
+      String displayId, ProfileActivationStatus activationStatus, String? userId) async {
     return apiClient.getOtherUserDetailsByDisplayId(
-        displayId, activationStatus);
+        displayId, activationStatus, userId);
   }
 
   Future<String?> uploadImage(String images) async {
@@ -338,8 +343,18 @@ class UserRepository {
   }
 
   Future<LikeStatusResponse> setLikeStatus(
-      String likedUserId, String likedByUserId) {
-    return this.apiClient.setLikeStatus(likedUserId, likedByUserId);
+      String likedUserId, String likedByUserId, String? requestId) {
+    return this.apiClient.setLikeStatus(likedUserId, likedByUserId, requestId);
+  }
+
+  Future<dynamic> blockProfile(
+      String blockBy, String blockTo) {
+    return this.apiClient.blockProfile(blockBy, blockTo);
+  }
+
+  Future<dynamic> unBlockProfile(
+      String blockId) {
+    return this.apiClient.unblockProfile(blockId);
   }
 
   Future<InterestResponse> getInterestList(String id) async {

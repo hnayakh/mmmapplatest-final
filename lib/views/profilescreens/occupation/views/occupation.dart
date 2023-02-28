@@ -126,7 +126,7 @@ class _OccupationScreenState extends State<OccupationScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         SizedBox(
-                          height: 34,
+                          height: 0,
                         ),
                         MmmButtons.categoryButtonsNotRequired(
                             'Occupation',
@@ -216,6 +216,7 @@ class _OccupationScreenState extends State<OccupationScreen> {
                         SizedBox(
                           height: 24,
                         ),
+                        if(countryModel != null  && countryModel?.name.toLowerCase() == "india")
                         MmmButtons.categoryButtonsNotRequired(
                             'City',
                             city != null && city!.name != ''
@@ -241,11 +242,11 @@ class _OccupationScreenState extends State<OccupationScreen> {
                           onTap: () {
                             BlocProvider.of<OccupationBloc>(context).add(
                                 UpdateCareer(
-                                    this.occupation!,
-                                    this.anualIncome!,
-                                    this.education!,
-                                    this.myState!,
-                                    this.city!,
+                                    this.occupation,
+                                    this.anualIncome,
+                                    this.education,
+                                    this.myState,
+                                    this.city,
                                     this.userDetails.registrationStep > 4));
                           },
                           child: MmmIcons.saveIcon(),
@@ -254,43 +255,43 @@ class _OccupationScreenState extends State<OccupationScreen> {
                           onTap: () {
                             BlocProvider.of<OccupationBloc>(context).add(
                                 UpdateCareer(
-                                    this.occupation!,
-                                    this.anualIncome!,
-                                    this.education!,
-                                    this.myState!,
-                                    this.city!,
+                                    this.occupation,
+                                    this.anualIncome,
+                                    this.education,
+                                    this.myState,
+                                    this.city,
                                     this.userDetails.registrationStep > 4));
                           },
                           child: MmmIcons.rightArrowEnabled(),
                         )),
-              InkWell(
-                onTap: () {
-                  BlocProvider.of<OccupationBloc>(context).add(UpdateCareer(
-                      this.occupation!,
-                      this.anualIncome!,
-                      this.education!,
-                      this.myState!,
-                      this.city!,
-                      this.userDetails.registrationStep > 4));
-                },
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(15, 15, 20, 1),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '(This section is optional)',
-                        style: TextStyle(fontSize: 14),
-                      ),
-                      SizedBox(
-                        height: 24,
-                      ),
-                      Text('Skip >',
-                          style: TextStyle(color: kPrimary, fontSize: 15)),
-                    ],
-                  ),
-                ),
-              ),
+              // InkWell(
+              //   onTap: () {
+              //     BlocProvider.of<OccupationBloc>(context).add(UpdateCareer(
+              //         this.occupation!,
+              //         this.anualIncome!,
+              //         this.education!,
+              //         this.myState!,
+              //         this.city!,
+              //         this.userDetails.registrationStep > 4));
+              //   },
+              //   child: Container(
+              //     margin: EdgeInsets.fromLTRB(15, 15, 20, 1),
+              //     child: Row(
+              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //       children: [
+              //         Text(
+              //           '(This section is optional)',
+              //           style: TextStyle(fontSize: 14),
+              //         ),
+              //         SizedBox(
+              //           height: 24,
+              //         ),
+              //         Text('Skip >',
+              //             style: TextStyle(color: kPrimary, fontSize: 15)),
+              //       ],
+              //     ),
+              //   ),
+              // ),
               state is OnLoading
                   ? MmmWidgets.buildLoader(context)
                   : Container(),

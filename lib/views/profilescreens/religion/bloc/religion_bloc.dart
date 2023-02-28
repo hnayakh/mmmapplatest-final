@@ -93,7 +93,6 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
       //this.subCaste = event.subCaste;
       if (this.motherTongue == null &&
           this.gothra == null &&
-
           this.religion == null &&
           this.subCaste == "") {
         yield OnError('Please enter all mandatory details');
@@ -107,10 +106,10 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
       } else if (this.subCaste == null) {
         yield OnError("Please select Caste");
       }
-      // else if (this.religion!.title.toLowerCase().contains("hindu") &&
-      //     this.gothra == null) {
-      //   yield OnError("Please select Gothra");
-      // }
+      else if (this.religion!.title.toLowerCase().contains("hindu") &&
+          (this.gothra == null || this.gothra.isEmpty)) {
+        yield OnError("Please select Gothra");
+      }
       else {
         var result = await this.userRepository.updateReligion(this.religion!,
             this.subCaste, this.motherTongue!, this.gothra, this.isManglik);
@@ -126,7 +125,10 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
               .storageService
               .saveUserDetails(this.userRepository.useDetails!);
           if (!event.isAnUpdate) {
-            this.userRepository.updateRegistrationStep(3);
+            await this
+                .userRepository
+                .updateRegistartionStep(this.userRepository.useDetails!.id, 4);
+            this.userRepository.updateRegistrationStep(4);
           }
 
           print('in religion');

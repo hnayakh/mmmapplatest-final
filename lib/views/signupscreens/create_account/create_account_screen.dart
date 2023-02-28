@@ -218,31 +218,31 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                           'Female',
                           style: MmmTextStyles.bodySmall(textColor: kDark5),
                         ),
-                        SizedBox(
-                          width: 12,
-                        ),
-                        Transform.scale(
-                          scale: 1.2,
-                          child: Radio(
-                              activeColor: kPrimary,
-                              value: Gender.Other,
-                              groupValue: this.gender,
-                              onChanged: (val) {
-                                if (this.profileCreatedFor ==
-                                        Relationship.Daughter ||
-                                    this.profileCreatedFor ==
-                                        Relationship.Sister) {
-                                  return;
-                                }
-                                BlocProvider.of<CreateAccountBloc>(context)
-                                    .add(OnGenderSelected(Gender.Other));
-                              }),
-                        ),
-
-                        Text(
-                          'Others',
-                          style: MmmTextStyles.bodySmall(textColor: kDark5),
-                        ),
+                        // SizedBox(
+                        //   width: 12,
+                        // ),
+                        // Transform.scale(
+                        //   scale: 1.2,
+                        //   child: Radio(
+                        //       activeColor: kPrimary,
+                        //       value: Gender.Other,
+                        //       groupValue: this.gender,
+                        //       onChanged: (val) {
+                        //         if (this.profileCreatedFor ==
+                        //                 Relationship.Daughter ||
+                        //             this.profileCreatedFor ==
+                        //                 Relationship.Sister) {
+                        //           return;
+                        //         }
+                        //         BlocProvider.of<CreateAccountBloc>(context)
+                        //             .add(OnGenderSelected(Gender.Other));
+                        //       }),
+                        // ),
+                        //
+                        // Text(
+                        //   'Others',
+                        //   style: MmmTextStyles.bodySmall(textColor: kDark5),
+                        // ),
                         //SizedBox(
                         //  width: 22,
                         // ),
@@ -305,6 +305,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                       value: this.acceptTerms,
                       activeColor: kPrimary,
                       onChanged: (bool? value) {
+                        FocusManager.instance.primaryFocus?.unfocus();
                         BlocProvider.of<CreateAccountBloc>(context)
                             .add(ChangeAcceptTerms(value!));
                       },
@@ -314,7 +315,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                   //  width: 4,
                   // ),
                   Text(
-                    'By signing up, i agree to the',
+                    'By signing up, i agree to the ',
                     style: MmmTextStyles.caption(textColor: kDark5),
                   ),
                   InkWell(
@@ -414,6 +415,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
+            FocusManager.instance.primaryFocus?.unfocus();
             showProfileForBottomSheet();
           },
           child: Row(

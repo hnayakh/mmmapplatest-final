@@ -155,6 +155,10 @@ class MyConnectsScreenState extends State<MyConnectsScreen>
               child: Image.network(
                 list[index].thumbnailURL,
                 fit: BoxFit.cover,
+                  errorBuilder: (context, obj, str) => Container(
+                      color: Colors.grey,
+                      child: Icon(Icons.error))
+
               ),
             ),
           ),

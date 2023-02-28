@@ -98,7 +98,7 @@ class _StackViewScreenState extends State<StackViewScreen> {
                                       'Search', index == 0 ? kPrimary : gray3,
                                       action: () {
                                     setColor(0);
-                                  }),
+                                  },),
                                   MmmWidgets.bottomBarUnits(
                                       'images/filter2.svg',
                                       'Filter',

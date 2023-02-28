@@ -882,100 +882,104 @@ class MmmWidgets {
   }
 
   static Widget requestCancelWidget() {
-    return AlertDialog(
-      backgroundColor: Colors.transparent,
-      contentPadding: EdgeInsets.all(0),
-      content: Container(
-        height: 192,
-        padding: kMargin12,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            color: Color(0xffFCFCFD),
-            boxShadow: [
-              MmmShadow.elevation3(shadowColor: kShadowColorForWhite)
-            ]),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              width: double.infinity,
-            ),
-            Container(
-              child: Text(
-                'Request Cancel',
-                style: MmmTextStyles.heading4(textColor: kDark5),
-              ),
-            ),
-            SizedBox(
-              height: 24,
-            ),
-            Container(
-              child: Text(
-                'Are you sure you want to cancel his/her request?',
-                style: MmmTextStyles.bodySmall(textColor: kDark5),
-              ),
-            ),
-            SizedBox(
-              height: 24,
-            ),
-            Container(
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      height: 42,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Color(0xffDDE1E6))),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: () {},
-                            child: Center(
-                              child: Text(
-                                'Cancel',
-                                style: MmmTextStyles.heading6(textColor: gray4),
+    return Column(
+      children: [
+        AlertDialog(
+          backgroundColor: Colors.transparent,
+          contentPadding: EdgeInsets.all(0),
+          content: Container(
+            height: 192,
+            padding: kMargin12,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                color: Color(0xffFCFCFD),
+                boxShadow: [
+                  MmmShadow.elevation3(shadowColor: kShadowColorForWhite)
+                ]),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: double.infinity,
+                ),
+                Container(
+                  child: Text(
+                    'Request Cancel',
+                    style: MmmTextStyles.heading4(textColor: kDark5),
+                  ),
+                ),
+                SizedBox(
+                  height: 24,
+                ),
+                Container(
+                  child: Text(
+                    'Are you sure you want to cancel his/her request?',
+                    style: MmmTextStyles.bodySmall(textColor: kDark5),
+                  ),
+                ),
+                SizedBox(
+                  height: 24,
+                ),
+                Container(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          height: 42,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: Color(0xffDDE1E6))),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                onTap: () {},
+                                child: Center(
+                                  child: Text(
+                                    'Cancel',
+                                    style: MmmTextStyles.heading6(textColor: gray4),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                        height: 42,
-                        decoration: MmmDecorations.primaryButtonDecoration(),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () {},
-                              child: Center(
-                                child: Text(
-                                  'Confirm',
-                                  style:
-                                      MmmTextStyles.heading6(textColor: gray7),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                            height: 42,
+                            decoration: MmmDecorations.primaryButtonDecoration(),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  onTap: () {},
+                                  child: Center(
+                                    child: Text(
+                                      'Confirm',
+                                      style:
+                                          MmmTextStyles.heading6(textColor: gray7),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        )),
-                  )
-                ],
-              ),
-            )
-          ],
+                            )),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
         ),
-      ),
+      ],
     );
   }
 
@@ -987,122 +991,126 @@ class MmmWidgets {
     return AlertDialog(
       backgroundColor: Colors.transparent,
       contentPadding: EdgeInsets.all(0),
-      content: Container(
-        height: 388,
-        padding: kMargin24,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          color: Color(0xffFCFCFD),
-          boxShadow: [MmmShadow.elevation3(shadowColor: kShadowColorForWhite)],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: double.infinity,
+      content: Wrap(
+        children: [
+          Container(
+            padding: kMargin24,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              color: Color(0xffFCFCFD),
+              boxShadow: [MmmShadow.elevation3(shadowColor: kShadowColorForWhite)],
             ),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    name,
-                    textAlign: TextAlign.center,
-                    style: MmmTextStyles.heading4(textColor: kDark5),
-                  ),
-                  SizedBox(
-                    width: 12,
-                  ),
-                  isVerified
-                      ? SvgPicture.asset(
-                          'images/Verified.svg',
-                          color: kPrimary,
-                        )
-                      : Container()
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            Container(
-              height: 72,
-              width: 72,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-              clipBehavior: Clip.hardEdge,
-              child: Image.network(
-                imageUrl,
-                height: 72,
-                width: 72,
-                fit: BoxFit.cover,
-                errorBuilder: (context, obj, str) => Icon(
-                  Icons.error,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: double.infinity,
                 ),
-              ),
-            ),
-            SizedBox(
-              height: 24,
-            ),
-            Container(
-              child: Text(
-                'To make unlimited calls & messages with $name, your 1 connect will be deducted from your MMM wallet.',
-                textAlign: TextAlign.center,
-                style: MmmTextStyles.bodySmall(textColor: kDark5),
-              ),
-            ),
-            SizedBox(
-              height: 24,
-            ),
-            Container(
-                height: 42,
-                decoration: MmmDecorations.primaryButtonDecoration(),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () {
-                        onConfirm.call();
-                      },
-                      child: Center(
-                        child: Text(
-                          'Confirm',
-                          style: MmmTextStyles.heading6(textColor: gray7),
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        name,
+                        textAlign: TextAlign.center,
+                        style: MmmTextStyles.heading4(textColor: kDark5),
+                      ),
+                      SizedBox(
+                        width: 12,
+                      ),
+                      isVerified
+                          ? SvgPicture.asset(
+                              'images/Verified.svg',
+                              color: kPrimary,
+                            )
+                          : Container()
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 16,
+                ),
+                Container(
+                  height: 72,
+                  width: 72,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  clipBehavior: Clip.hardEdge,
+                  child: Image.network(
+                    imageUrl,
+                    height: 72,
+                    width: 72,
+                    fit: BoxFit.cover,
+                      errorBuilder: (context, obj, str) => Container(
+                          color: Colors.grey,
+                          child: Icon(Icons.error))
+
+                  ),
+                ),
+                SizedBox(
+                  height: 24,
+                ),
+                Container(
+                  child: Text(
+                    'To make unlimited calls & messages with $name, your 1 connect will be deducted from your MMM wallet.',
+                    textAlign: TextAlign.center,
+                    style: MmmTextStyles.bodySmall(textColor: kDark5),
+                  ),
+                ),
+                SizedBox(
+                  height: 24,
+                ),
+                Container(
+                    height: 42,
+                    decoration: MmmDecorations.primaryButtonDecoration(),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () {
+                            onConfirm.call();
+                          },
+                          child: Center(
+                            child: Text(
+                              'Confirm',
+                              style: MmmTextStyles.heading6(textColor: gray7),
+                            ),
+                          ),
+                        ),
+                      ),
+                    )),
+                SizedBox(
+                  height: 18,
+                ),
+                Container(
+                  height: 42,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: Color(0xffDDE1E6))),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () {
+                          navigatorKey.currentState?.pop();
+                        },
+                        child: Center(
+                          child: Text(
+                            'Decline',
+                            style: MmmTextStyles.heading6(textColor: gray4),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                )),
-            SizedBox(
-              height: 18,
-            ),
-            Container(
-              height: 42,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Color(0xffDDE1E6))),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: () {
-                      navigatorKey.currentState?.pop();
-                    },
-                    child: Center(
-                      child: Text(
-                        'Decline',
-                        style: MmmTextStyles.heading6(textColor: gray4),
-                      ),
-                    ),
-                  ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
