@@ -1,16 +1,13 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart' as http;
 import 'package:makemymarry/locator.dart';
-import 'package:makemymarry/views/signinscreens/signin_bloc.dart';
-import 'package:makemymarry/views/signinscreens/signin_event.dart';
-import 'package:makemymarry/views/signinscreens/signin_state.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
@@ -25,13 +22,14 @@ import 'package:makemymarry/views/profilescreens/bio/views/bio.dart';
 import 'package:makemymarry/views/profilescreens/family/family.dart';
 import 'package:makemymarry/views/profilescreens/habbit/habits.dart';
 import 'package:makemymarry/views/profilescreens/occupation/views/occupation.dart';
-import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference.dart';
 import 'package:makemymarry/views/signinscreens/authentication_service.dart';
 import 'package:makemymarry/views/signinscreens/phone%20signin/phone_screen.dart';
+import 'package:makemymarry/views/signinscreens/signin_bloc.dart';
+import 'package:makemymarry/views/signinscreens/signin_event.dart';
+import 'package:makemymarry/views/signinscreens/signin_state.dart';
 import 'package:makemymarry/views/signupscreens/create_account/create_account_screen.dart';
 import 'package:makemymarry/views/signupscreens/create_account/signup_option_bottom_sheet.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
-import 'package:http/http.dart' as http;
 
 import '../../saurabh/partner_preference.dart';
 import '../profilescreens/religion/views/religion.dart';
@@ -448,12 +446,12 @@ class SignInScreenState extends State<SignInScreen> {
                                                 _googleSignIn
                                                     .signIn()
                                                     .then((userData) {
+                                                  setState(() {
+                                                    currentText = userData?.email ?? "";
+                                                  });
                                                   emailController.text =
                                                       userData?.email ?? "";
-                                                  // setState(() {
-                                                  //   _isLoggedIn = true;
-                                                  //   _userObj = userData;
-                                                  // });
+
                                                 }).catchError((e) {
                                                   print(e);
                                                 });

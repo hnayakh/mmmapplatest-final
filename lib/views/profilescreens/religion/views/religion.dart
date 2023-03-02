@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:makemymarry/views/profilescreens/about/bloc/about_bloc.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/repo/user_repo.dart';
@@ -11,9 +10,7 @@ import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
-import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
 import 'package:makemymarry/views/profilescreens/occupation/views/occupation.dart';
-import 'package:makemymarry/views/profilescreens/occupation/bloc/occupation_bloc.dart';
 import 'package:makemymarry/views/profilescreens/religion/bloc/religion_bloc.dart';
 import 'package:makemymarry/views/profilescreens/religion/bloc/religion_event.dart';
 import 'package:makemymarry/views/profilescreens/religion/views/religion_bottom_sheet.dart';
@@ -27,19 +24,27 @@ import 'mother_tongue_bottom_sheet.dart';
 
 class Religion extends StatelessWidget {
   final UserRepository userRepository;
+  final bool toUpdate;
 
-  const Religion({Key? key, required this.userRepository}) : super(key: key);
+  const Religion(
+      {Key? key, required this.userRepository, this.toUpdate = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ReligionBloc(userRepository),
-      child: ReligionScreen(),
+      child: ReligionScreen(
+        toUpdate: toUpdate,
+      ),
     );
   }
 }
 
 class ReligionScreen extends StatefulWidget {
+  final bool toUpdate;
+
+  const ReligionScreen({super.key, required this.toUpdate});
   @override
   State<StatefulWidget> createState() {
     return ReligionScreenState();
@@ -78,7 +83,6 @@ class ReligionScreenState extends State<ReligionScreen> {
       body: BlocConsumer<ReligionBloc, ReligionState>(
         builder: (context, state) {
           initData();
-
           return Stack(
             children: [
               SingleChildScrollView(
@@ -87,7 +91,7 @@ class ReligionScreenState extends State<ReligionScreen> {
                 ),
               ),
               Positioned(
-                child: this.userDetails.registrationStep > 3
+                child: widget.toUpdate
                     ? InkWell(
                         onTap: () {
                           BlocProvider.of<ReligionBloc>(context).add(
@@ -97,7 +101,7 @@ class ReligionScreenState extends State<ReligionScreen> {
                                   this.isManglik!,
                                   this.religion,
                                   this.subCaste,
-                                  this.userDetails.registrationStep > 3));
+                                  widget.toUpdate));
                         },
                         child: MmmIcons.saveIcon(),
                       )
@@ -110,7 +114,7 @@ class ReligionScreenState extends State<ReligionScreen> {
                                   this.isManglik!,
                                   this.religion,
                                   this.subCaste,
-                                  this.userDetails.registrationStep > 3));
+                                  widget.toUpdate));
                         },
                         child: MmmIcons.rightArrowEnabled(),
                       ),
@@ -247,24 +251,14 @@ class ReligionScreenState extends State<ReligionScreen> {
                                 Transform.scale(
                                   scale: 1.2,
                                   child: Radio<Manglik?>(
-                                      activeColor: Colors.pinkAccent,
-                                      value: Manglik.Yes,
-                                      groupValue: this.isManglik,
-                                      // this.isManglik !=
-                                      //         Manglik.NotApplicable
-                                      //     ? this.isManglik
-                                      //     : Manglik.Yes,
-
-                                      onChanged: (Manglik? val) {
-                                        print("VALUE$val");
-                                        setState(() {
-                                          this.isManglik = val!;
-                                        });
-
-                                        print("VALUE$isManglik");
-                                        // BlocProvider.of<ReligionBloc>(context)
-                                        //     .add(OnMaglikChanged(Manglik.Yes));
-                                      }),
+                                    activeColor: Colors.pinkAccent,
+                                    value: Manglik.Yes,
+                                    groupValue: this.isManglik,
+                                    onChanged: (Manglik? val) {
+                                      BlocProvider.of<ReligionBloc>(context)
+                                          .add(OnMaglikChanged(Manglik.Yes));
+                                    },
+                                  ),
                                 ),
                                 SizedBox(
                                   width: 8,
@@ -284,12 +278,6 @@ class ReligionScreenState extends State<ReligionScreen> {
                                       value: Manglik.No,
                                       groupValue: this.isManglik,
                                       onChanged: (val) {
-                                        print("VALUE$val");
-                                        setState(() {
-                                          this.isManglik = val!;
-                                        });
-
-                                        print("VALUE$isManglik");
                                         BlocProvider.of<ReligionBloc>(context)
                                             .add(OnMaglikChanged(Manglik.No));
                                       }),
@@ -305,7 +293,6 @@ class ReligionScreenState extends State<ReligionScreen> {
                                 SizedBox(
                                   width: 22,
                                 ),
-
                               ],
                             ),
                           ),
@@ -337,14 +324,14 @@ class ReligionScreenState extends State<ReligionScreen> {
   }
 
   void initData() {
-    if (this.isManglik == null)
-      this.isManglik = BlocProvider.of<ReligionBloc>(context).isManglik;
+    this.isManglik = BlocProvider.of<ReligionBloc>(context).isManglik;
     this.gothra = BlocProvider.of<ReligionBloc>(context).gothra;
     this.motherTongue = BlocProvider.of<ReligionBloc>(context).motherTongue;
     this.cast = BlocProvider.of<ReligionBloc>(context).cast;
     this.subCaste = BlocProvider.of<ReligionBloc>(context).subCaste;
     this.religion = BlocProvider.of<ReligionBloc>(context).religion;
-    if (BlocProvider.of<ReligionBloc>(context).profileDetails != null) {
+    if (BlocProvider.of<ReligionBloc>(context).profileDetails != null &&
+        context.read<ReligionBloc>().state is ReligionDetailsState) {
       if (this.religion == null) {
         var religionName =
             BlocProvider.of<ReligionBloc>(context).profileDetails!.religion;
@@ -352,7 +339,6 @@ class ReligionScreenState extends State<ReligionScreen> {
             BlocProvider.of<ReligionBloc>(context).profileDetails!.religionId;
 
         this.religion = SimpleMasterData(religionId, religionName);
-        print("RELIGION${this.religion}");
       }
       if (this.motherTongue == null) {
         var motherTongueName =
@@ -360,14 +346,8 @@ class ReligionScreenState extends State<ReligionScreen> {
         var motherTongueId = BlocProvider.of<ReligionBloc>(context)
             .profileDetails!
             .motherTongueId;
-
-        // var religionId =
-        //     BlocProvider.of<ReligionBloc>(context).profileDetails!.religionId;
-
         this.motherTongue = SimpleMasterData(motherTongueId, motherTongueName);
-        print("Mother${this.motherTongue!.title}");
       }
-
       if (this.gothra == null || this.gothra == "") {
         this.gothra =
             BlocProvider.of<ReligionBloc>(context).profileDetails!.gothra;
@@ -377,19 +357,9 @@ class ReligionScreenState extends State<ReligionScreen> {
             BlocProvider.of<ReligionBloc>(context).profileDetails!.manglik;
       }
 
-      if (this.subCaste != null && this.subCaste.length == 0) {
-        var castName =
-            BlocProvider.of<ReligionBloc>(context).profileDetails!.casteName;
-
-        var subCasteName =
-            BlocProvider.of<ReligionBloc>(context).profileDetails!.subCasteName;
-
-        print("Hello456$castName");
-        print("Hello$subCasteName");
-
-        this.cast = CastSubCast(castName, [subCasteName]);
-        this.subCaste = subCasteName;
-        print("Hello${this.cast.subCasts[0]}");
+      if (this.subCaste == null || this.subCaste == "") {
+        this.subCaste =
+            BlocProvider.of<ReligionBloc>(context).profileDetails!.cast;
       }
     }
   }
@@ -412,7 +382,6 @@ class ReligionScreenState extends State<ReligionScreen> {
               selected: religion,
             ));
     if (result != null && result is SimpleMasterData) {
-
       BlocProvider.of<ReligionBloc>(context).add(OnReligionSelected(result));
     }
   }

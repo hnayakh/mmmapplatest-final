@@ -1,5 +1,4 @@
 import 'package:makemymarry/base_event_state.dart';
-import 'package:makemymarry/utils/mmm_enums.dart';
 
 import 'lifestyle_details_view.dart';
 

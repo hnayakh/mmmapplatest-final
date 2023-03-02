@@ -1,11 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:makemymarry/repo/user_repo.dart';
-import 'package:makemymarry/saurabh/hexcolor.dart';
-import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
 import 'package:makemymarry/views/signinscreens/signin_page.dart';

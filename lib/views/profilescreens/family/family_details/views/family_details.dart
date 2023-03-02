@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:makemymarry/views/profilescreens/about/bloc/about_bloc.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_helper.dart';
@@ -15,6 +14,7 @@ import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
+import 'package:makemymarry/views/profilescreens/about/bloc/about_bloc.dart';
 import 'package:makemymarry/views/profilescreens/family/family_details/bloc/family_details_bloc.dart';
 import 'package:makemymarry/views/profilescreens/family/family_details/bloc/family_details_events.dart';
 import 'package:makemymarry/views/profilescreens/family/family_details/bloc/family_details_state.dart';
@@ -23,32 +23,39 @@ import 'package:makemymarry/views/profilescreens/habbit/habits.dart';
 import 'package:makemymarry/views/profilescreens/occupation/bloc/occupation_bloc.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/my_profile/myprofile.dart';
 
-import '../../../bio/views/bio.dart';
 import 'father_occupation.dart';
 
 class FamilyDetails extends StatelessWidget {
   final UserRepository userRepository;
   final Function onComplete;
+  final bool toUpdate;
 
   const FamilyDetails({
     Key? key,
     required this.userRepository,
     required this.onComplete,
+    required this.toUpdate,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FamilyDetailsScreen(
-          onComplete: onComplete, userRepository: userRepository);
+      onComplete: onComplete,
+      userRepository: userRepository,
+      toUpdate: toUpdate,
+    );
   }
 }
 
 class FamilyDetailsScreen extends StatefulWidget {
   final Function onComplete;
   final UserRepository userRepository;
-
+  final bool toUpdate;
   const FamilyDetailsScreen(
-      {Key? key, required this.onComplete, required this.userRepository})
+      {Key? key,
+      required this.onComplete,
+      required this.userRepository,
+      required this.toUpdate})
       : super(key: key);
 
   @override
@@ -76,7 +83,7 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
     this.userDetails =
         BlocProvider.of<FamilyDetailsBloc>(context).userRepository.useDetails!;
 
-    if (this.userDetails.registrationStep > 6) {
+    if (widget.toUpdate) {
       BlocProvider.of<FamilyDetailsBloc>(context)
           .add(onFamilyDetailDataLoad(userDetails.id));
     }
@@ -90,7 +97,7 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
           Positioned(
               bottom: 24,
               right: 24,
-              child: this.userDetails.registrationStep > 6
+              child: widget.toUpdate
                   ? InkWell(
                       onTap: () {
                         BlocProvider.of<FamilyDetailsBloc>(context).add(
@@ -101,7 +108,7 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
                                 this.noOfSister,
                                 this.brotherMarried,
                                 this.sistersMarried,
-                                this.userDetails.registrationStep > 6));
+                                widget.toUpdate));
                       },
                       child: MmmIcons.saveIcon(),
                     )
@@ -115,11 +122,11 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
                                 this.noOfSister,
                                 this.brotherMarried,
                                 this.sistersMarried,
-                                this.userDetails.registrationStep > 6));
+                                widget.toUpdate));
                       },
                       child: MmmIcons.rightArrowEnabled(),
                     )),
-          this.userDetails.registrationStep > 5
+          widget.toUpdate
               ? SizedBox()
               : Positioned(
                   child: InkWell(

@@ -28,11 +28,7 @@ class UpdateCareer extends OccupationEvent {
   String? education;
   final StateModel? myState;
   final StateModel? city;
-  // final String name;
-  // final String income;
-  // final String country;
-  // final String stateName;
-  // final String city;
+
   bool isAnUpdate;
 
   // UpdateCareer(this.name, this.income, this.country, this.stateName, this.city,

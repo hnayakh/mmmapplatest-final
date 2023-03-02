@@ -4,11 +4,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:makemymarry/views/signinscreens/signin_bloc.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/text_styles.dart';
+import 'package:makemymarry/views/signinscreens/signin_bloc.dart';
 import 'package:makemymarry/views/signupscreens/create_account/create_account_screen.dart';
 
 class SignupOption extends StatelessWidget {

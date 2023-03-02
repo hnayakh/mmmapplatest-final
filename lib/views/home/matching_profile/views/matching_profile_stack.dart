@@ -10,7 +10,6 @@ import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
-import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/home/matching_profile/bloc/matching_profile_bloc.dart';
 import 'package:makemymarry/views/home/matching_profile/bloc/matching_profile_event.dart';
 import 'package:makemymarry/views/home/matching_profile/bloc/matching_profile_state.dart';
@@ -19,7 +18,6 @@ import 'package:makemymarry/views/profile_detail_view/profile_view.dart';
 import '../../../../app/bloc/app_bloc.dart';
 import '../../../../utils/icons.dart';
 import '../../../chat_room/chat_page.dart';
-import '../../../profile_detail_view/profile_view_bloc.dart';
 
 class MatchingProfileStackView extends StatelessWidget {
   final List<MatchingProfile> list;
@@ -178,12 +176,10 @@ class MatchingProfileStackView extends StatelessWidget {
                                               SizedBox(
                                                 width: 8,
                                               ),
-                                              // Expanded(
+                                              // Expanded(v
                                               //     child:
                                               Text(
-                                                list.length > 0
-                                                    ? ''
-                                                    : "${item.city}, ${item.state}",
+                                                "${item.city}, ${item.state}",
                                                 textScaleFactor: 1.0,
                                                 overflow: TextOverflow.ellipsis,
                                                 style:

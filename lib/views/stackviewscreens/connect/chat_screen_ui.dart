@@ -1,7 +1,6 @@
 import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:makemymarry/utils/colors.dart';
 
 class ChatScreenUi extends StatefulWidget {
   const ChatScreenUi({Key? key}) : super(key: key);

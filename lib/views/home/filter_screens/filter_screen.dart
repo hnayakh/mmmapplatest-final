@@ -5,21 +5,15 @@ import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/repo/user_repo.dart';
-import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
-import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/profile_loader/profile_loader.dart';
-import 'package:makemymarry/views/profilescreens/occupation/views/education_bottom_sheet.dart';
-import 'package:makemymarry/views/profilescreens/occupation/views/occupation_bottom_sheet.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/annual_income_preference.dart';
-
 import 'package:makemymarry/views/profilescreens/profile_preference/city_preference_bottom_sheet.dart';
-import 'package:makemymarry/views/profilescreens/profile_preference/country_preference_sheet.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/drinking_habit.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/eating_prefs.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/education_preference_sheet.dart';
@@ -33,7 +27,6 @@ import 'package:makemymarry/views/profilescreens/profile_preference/religion_pre
 import 'package:makemymarry/views/profilescreens/profile_preference/smoking_prefs.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/state_preference_sheet.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/subcast_preference_sheet.dart';
-import 'package:makemymarry/views/profilescreens/religion/views/mother_tongue_bottom_sheet.dart';
 
 import 'country_filter_sheet.dart';
 

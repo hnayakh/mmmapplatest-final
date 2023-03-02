@@ -1,28 +1,22 @@
 import 'package:country_picker/country_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:makemymarry/locator.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_helper.dart';
-
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
-
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/signinscreens/phone%20signin/phone_bloc.dart';
 import 'package:makemymarry/views/signinscreens/phone%20signin/phone_event.dart';
 import 'package:makemymarry/views/signinscreens/phone%20signin/phone_state.dart';
 import 'package:makemymarry/views/signupscreens/create_account/create_account_screen.dart';
-
-import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 import '../mobile verification/mobile_verification.dart';
 

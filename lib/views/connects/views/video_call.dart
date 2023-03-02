@@ -10,7 +10,6 @@ import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/utility_service.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 /// JoinChannelAudio Example
 class VideoCallView extends StatefulWidget {

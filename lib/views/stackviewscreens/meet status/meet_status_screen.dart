@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
-import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/stackviewscreens/meet%20status/meet_accepted.dart';
 import 'package:makemymarry/views/stackviewscreens/meet%20status/meet_received.dart';

@@ -55,7 +55,6 @@ class ProfilePreferenceBloc
             .inDays ~/
         365;
     var myHeight = this.userRepository.useDetails?.height ?? 64;
-    myHeight = 64;
     if (myHeight > 84) {
       myHeight = 64;
     }

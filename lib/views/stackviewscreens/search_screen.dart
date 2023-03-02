@@ -3,17 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
-import 'package:makemymarry/saurabh/custom_drawer.dart';
-import 'package:makemymarry/saurabh/filter_preference.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
-import 'package:makemymarry/views/stackviewscreens/notification_list.dart';
 
 import '../../saurabh/partner_preference.dart';
-import '../home/matching_profile/bloc/matching_profile_bloc.dart';
 import '../home/matching_profile/views/matching_profile.dart';
 import '../profile_detail_view/profile_view.dart';
 import '../profile_detail_view/profile_view_bloc.dart';
@@ -84,13 +80,10 @@ class _SearchScreenState extends State<SearchScreen> {
         if (state is OnErrorView) {
           this.message = BlocProvider.of<ProfileViewBloc>(context).message;
           print("MESSAGE${this.message}");
-          // ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
-          //   content: Text(state.message),
-          //   backgroundColor: kError,
-          // ));
+
         }
         return Scaffold(
-          appBar: MmmButtons.appBarCurved('Search', isTopLevel: true),
+          appBar: MmmButtons.appBarCurved('Search',context: context, isTopLevel: true),
           body: SingleChildScrollView(
             child: Column(
               children: [

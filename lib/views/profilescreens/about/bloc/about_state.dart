@@ -1,5 +1,3 @@
-import 'package:makemymarry/base_event_state.dart';
-
 import '../../../../utils/mmm_enums.dart';
 
 class AboutState  {}

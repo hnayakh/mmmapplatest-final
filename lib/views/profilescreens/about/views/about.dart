@@ -1,9 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:makemymarry/locator.dart';
-import 'package:makemymarry/views/profilescreens/about/bloc/about_bloc.dart';
-import 'package:makemymarry/views/profilescreens/about/bloc/about_event.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_helper.dart';
@@ -15,6 +12,8 @@ import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
+import 'package:makemymarry/views/profilescreens/about/bloc/about_bloc.dart';
+import 'package:makemymarry/views/profilescreens/about/bloc/about_event.dart';
 import 'package:makemymarry/views/profilescreens/about/views/marital_status_bottom_sheet.dart';
 
 import '../../religion/views/religion.dart';
@@ -24,20 +23,22 @@ import 'no_of_childeren_bottom_sheet.dart';
 
 class About extends StatelessWidget {
   final UserRepository userRepository;
+  final bool toUpdate;
 
-  const About({Key? key, required this.userRepository}) : super(key: key);
+  const About({Key? key, required this.userRepository, this.toUpdate = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AboutBloc(userRepository),
-      child: AboutScreen(),
+      child: AboutScreen(toUpdate: toUpdate,),
     );
   }
 }
 
 class AboutScreen extends StatefulWidget {
-  AboutScreen({Key? key}) : super(key: key);
+  final bool toUpdate;
+  AboutScreen({Key? key, required this.toUpdate }) : super(key: key);
 
   @override
   _AboutScreenState createState() => _AboutScreenState();
@@ -90,12 +91,12 @@ class _AboutScreenState extends State<AboutScreen> {
                   Positioned(
                     bottom: 24,
                     right: 24,
-                    child: this.userDetails.registrationStep > 2
+                    child: widget.toUpdate
                         ? InkWell(
                             onTap: () {
                               BlocProvider.of<AboutBloc>(context).add(
                                   OnAboutDone(
-                                      this.userDetails.registrationStep > 2));
+                                      widget.toUpdate));
                             },
                             child: MmmIcons.saveIcon(),
                           )
@@ -103,7 +104,7 @@ class _AboutScreenState extends State<AboutScreen> {
                             onTap: () {
                               BlocProvider.of<AboutBloc>(context).add(
                                   OnAboutDone(
-                                      this.userDetails.registrationStep > 2));
+                                      widget.toUpdate));
                             },
                             child: MmmIcons.rightArrowEnabled(),
                           ),
@@ -121,7 +122,7 @@ class _AboutScreenState extends State<AboutScreen> {
 
   Widget buildForm(AboutIdleState state) {
     var hintText = state.heightStatus != null
-        ? AppHelper.getHeight(state.heightStatus ?? 0)
+        ? AppHelper.getHeight((state.heightStatus ?? 48) - 48)
         : 'Select your height';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -395,11 +396,11 @@ class _AboutScreenState extends State<AboutScreen> {
         backgroundColor: Colors.transparent,
         context: context,
         builder: (context) => HeightStatusBottomSheet(
-              selectedHeightStatus: heightStatus,
+              selectedHeightStatus: (heightStatus ?? 48) - 48,
             ));
 
     if (result != null && result is int) {
-      BlocProvider.of<AboutBloc>(context).add(OnHeightStatusSelected(result));
+      BlocProvider.of<AboutBloc>(context).add(OnHeightStatusSelected(result + 48));
     }
   }
 

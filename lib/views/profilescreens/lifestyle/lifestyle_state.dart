@@ -1,6 +1,3 @@
-import 'package:makemymarry/datamodels/martching_profile.dart';
-
-import '../../../base_event_state.dart';
 import 'lifestyle_event.dart';
 
 class LifeStyleState  {}

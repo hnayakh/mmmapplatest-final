@@ -64,6 +64,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
   int aboutState = 0;
   int careerState = 0;
   int interestState = 0;
+  int hobbyState = 0;
   int religionState = 0;
   int familyState = 0;
   int lifestyleState = 0;
@@ -118,6 +119,20 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
       if (status == AnimationStatus.dismissed && interestState == 2)
         setState(() {
           interestState = 0;
+        });
+    });
+
+  late final AnimationController _hobbyController = AnimationController(
+    duration: Duration(milliseconds: 500),
+    vsync: this,
+  )..forward();
+  late final Animation<double> _hobbyAnimation = CurvedAnimation(
+    parent: _hobbyController,
+    curve: Curves.fastOutSlowIn,
+  )..addStatusListener((AnimationStatus status) {
+      if (status == AnimationStatus.dismissed && hobbyState == 2)
+        setState(() {
+          hobbyState = 0;
         });
     });
 
@@ -293,11 +308,18 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                         SizedBox(
                           height: 16,
                         ),
-                        if(profileDetails.lifeStyle.isNotNullEmpty) ... [
-                        buildLifeStyle(context),
-                        SizedBox(
-                          height: 16,
-                        )],
+                        if (profileDetails.hobbies.isNotNullEmpty) ...[
+                          buildHobbies(context),
+                          SizedBox(
+                            height: 16,
+                          )
+                        ],
+                        if (profileDetails.lifeStyle.isNotNullEmpty) ...[
+                          buildLifeStyle(context),
+                          SizedBox(
+                            height: 16,
+                          )
+                        ],
                         BlocProvider<MatchingPercentageBloc>(
                           create: (context) => MatchingPercentageBloc(
                               UserRepository(), profileDetails),
@@ -464,9 +486,36 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                   profileDetails.eatingHabit,
                   profileDetails.drinkingHabit,
                   profileDetails.smokingHabit,
-                  profileDetails.hobbies,
                   action: () {
                     showInterestData();
+                  },
+                ),
+              ),
+      ],
+    );
+  }
+
+  Stack buildHobbies(BuildContext context) {
+    return Stack(
+      children: [
+        MmmButtons.profileViewButtons("images/occasionally.svg", 'Hobbies'),
+        hobbyState == 0
+            ? MmmButtons.profileViewButtons(
+                "images/occasionally.svg",
+                'Hobbies',
+                action: () {
+                  showHobbiesData();
+                },
+              )
+            : SizeTransition(
+                sizeFactor: _hobbyAnimation,
+                axis: Axis.vertical,
+                axisAlignment: -1,
+                child: MmmButtons.hoobiesProfileViewButtons(
+                  context,
+                  profileDetails.hobbies,
+                  action: () {
+                    showHobbiesData();
                   },
                 ),
               ),
@@ -722,6 +771,18 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
     });
   }
 
+  void showHobbiesData() {
+    setState(() {
+      if (hobbyState == 0) {
+        hobbyState = 1;
+        _hobbyController..forward();
+      } else if (hobbyState == 1 && _hobbyController.isCompleted) {
+        _hobbyController..reverse();
+        hobbyState = 2;
+      }
+    });
+  }
+
   void showReligionData() {
     setState(() {
       if (religionState == 0) {
@@ -813,30 +874,30 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                   ),
                 ),
                 StreamBuilder<bool>(
-                    stream:
-                        getIt<ChatRepo>().getOnlineStatus(profileDetails.id),
-                    builder: (context, snapshot) {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          //Expanded(
-                          // child:
-                          Container(
-                            height: 8,
-                            width: 8,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: snapshot.data == null
-                                    ? kGray
-                                    : snapshot.data!
-                                        ? kGreen
-                                        : kError),
-                          ),
-                          // ),
-                          Expanded(child: SizedBox())
-                        ],
-                      );
-                    }),
+                  stream: getIt<ChatRepo>().getOnlineStatus(profileDetails.id),
+                  builder: (context, snapshot) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        //Expanded(
+                        // child:
+                        Container(
+                          height: 8,
+                          width: 8,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: snapshot.data == null
+                                  ? kGray
+                                  : snapshot.data!
+                                      ? kGreen
+                                      : kError),
+                        ),
+                        // ),
+                        Expanded(child: SizedBox())
+                      ],
+                    );
+                  },
+                ),
                 profileDetails.activationStatus ==
                         ProfileActivationStatus.Verified
                     ? SvgPicture.asset(
@@ -898,27 +959,22 @@ class ConnectWidget extends StatelessWidget {
 
       buttonSize: Size(54.0, 54.0),
       childPadding: EdgeInsets.zero,
-      // childMargin: EdgeInsets.zero,
+
       childrenButtonSize: Size(54.0, 44.0),
       direction: direction,
       child: MmmIcons.largeConnect(
         action: () {
           isDialOpen.value = !isDialOpen.value;
-          // navigateToSelectMeet();
+
         },
       ),
       children: [
         SpeedDialChild(
           elevation: 0,
           backgroundColor: Colors.transparent,
-          child: MmmIcons.chat(
-            context,
-            profileDetails.id,
-            () async {
-              isDialOpen.value = !isDialOpen.value;
-              // profileDetails.connectStatus
-            },
-          ),
+          child: MmmIcons.chat(context, profileDetails.id, () async {
+            isDialOpen.value = !isDialOpen.value;
+          }, profileDetails),
         ),
         SpeedDialChild(
           elevation: 0,
@@ -926,7 +982,6 @@ class ConnectWidget extends StatelessWidget {
           child: MmmIcons.call(
             () async {
               isDialOpen.value = !isDialOpen.value;
-              var bloc = BlocProvider.of<ProfileViewBloc>(context);
               context.navigate.push(
                 MaterialPageRoute(
                   builder: (context) => AudioCallView(
@@ -934,7 +989,7 @@ class ConnectWidget extends StatelessWidget {
                     imageUrl: (profileDetails is MatchingProfile)
                         ? profileDetails.imageUrl
                         : profileDetails.images.first,
-                    userRepo: bloc.userRepository,
+                    userRepo: getIt<UserRepository>(),
                   ),
                 ),
               );
@@ -950,7 +1005,9 @@ class ConnectWidget extends StatelessWidget {
               MaterialPageRoute(
                 builder: (context) => VideoCallView(
                   uid: profileDetails.id,
-                  imageUrl: profileDetails.images.first,
+                  imageUrl: (profileDetails is MatchingProfile)
+                      ? profileDetails.imageUrl
+                      : profileDetails.images.first,
                 ),
               ),
             );

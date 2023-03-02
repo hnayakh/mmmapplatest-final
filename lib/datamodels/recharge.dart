@@ -1,6 +1,4 @@
 import 'package:makemymarry/utils/app_constants.dart';
-import 'package:makemymarry/utils/app_helper.dart';
-import 'package:makemymarry/views/home/menu/wallet/recharge_history/RechargeHistoryScreen.dart';
 
 class CouponDetails {
   late String id, code;

@@ -2,12 +2,10 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:makemymarry/datamodels/agora_token_response.dart';
-import 'package:makemymarry/socket_io/StreamSocket.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:dio/dio.dart';
 import 'package:dio_logger/dio_logger.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:makemymarry/datamodels/agora_token_response.dart';
 import 'package:makemymarry/datamodels/connect.dart';
 import 'package:makemymarry/datamodels/interests_model.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
@@ -15,8 +13,10 @@ import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/datamodels/matching_percentage_response.dart';
 import 'package:makemymarry/datamodels/recharge.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
+import 'package:makemymarry/socket_io/StreamSocket.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:socket_io_client/socket_io_client.dart';
 
 class ApiClient {
@@ -129,10 +129,9 @@ class ApiClient {
       int? heightStatus,
       String? dob,
       String? name,
-      String userId) async {
+      String userId,) async {
     try {
-      int heightCm = 48 + (heightStatus ?? 0);
-
+      int heightCm = (heightStatus ?? 48);
       Response response =
           await this.dio.post(AppConstants.ENDPOINT + "users/about", data: {
         "userBasicId": userId,
@@ -567,7 +566,16 @@ class ApiClient {
           .dio
           .post(AppConstants.ENDPOINT + "users/familyBackground", data: {
         "userBasicId": id,
-        "familyStatus": familyValues.index,
+        "familyStatus": familyAfluenceLevel.index,
+        "familyValues": familyValues.index,
+        "familyType": type.index,
+        "country": countryModel.id,
+        "state": state.id,
+        "city": city.id
+      });
+      print({
+        "userBasicId": id,
+        "familyStatus": familyAfluenceLevel.index,
         "familyValues": familyValues.index,
         "familyType": type.index,
         "country": countryModel.id,

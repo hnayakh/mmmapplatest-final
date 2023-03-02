@@ -5,8 +5,6 @@ import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/views/profilescreens/family/family_details/bloc/family_details_events.dart';
 import 'package:makemymarry/views/profilescreens/family/family_details/bloc/family_details_state.dart';
-import 'package:makemymarry/views/profilescreens/family/globals.dart'
-    as globals;
 
 class FamilyDetailsBloc extends Bloc<FamilyDetailsEvent, FamilyDetailState> {
   final UserRepository userRepository;

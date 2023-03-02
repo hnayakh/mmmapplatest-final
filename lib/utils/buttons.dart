@@ -841,7 +841,7 @@ class MmmButtons {
       EatingHabit eatingHabit,
       DrinkingHabit drinkingHabit,
       SmokingHabit smokingHabit,
-      List<String>? hobbies,
+
       {Function()? action}) {
     return Container(
       decoration: BoxDecoration(
@@ -1160,6 +1160,86 @@ class MmmButtons {
                         ),
                       ),
                       SizedBox(height: 10),
+
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  static Container hoobiesProfileViewButtons(
+      BuildContext context,
+      List<String>? hobbies,
+      {Function()? action}) {
+    return Container(
+      decoration: BoxDecoration(
+        color: kWhite,
+        boxShadow: [MmmShadow.elevation1()],
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: Color(0xffF0EFF5),
+          width: 1,
+        ),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: action,
+          child: Container(
+            alignment: Alignment.center,
+            //height: 264,
+            padding: EdgeInsets.all(9),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 8,
+                ),
+                Row(
+                  children: [
+                    SvgPicture.asset(
+                      "images/occasionally.svg",
+                      color: kPrimary,
+                      fit: BoxFit.cover,
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: SizedBox(),
+                    ),
+                    Text(
+                      "Hobbies",
+                      textScaleFactor: 1.0,
+                      //textAlign: TextAlign.start,
+                      style: MmmTextStyles.heading5(textColor: kPrimary),
+                    ),
+                    Expanded(
+                      flex: 20,
+                      child: SizedBox(),
+                    ),
+                    Container(
+                      child: SvgPicture.asset(
+                        "images/arrowUp.svg",
+                        color: Color(0xff878D96),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Container(
+                  margin: kMargin16,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+
+
+
                       if (hobbies.isNotNullEmpty)
                         Container(
                           margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -1167,16 +1247,16 @@ class MmmButtons {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                'Hobbies',
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    color: Color.fromARGB(212, 0, 0, 0),
-                                    fontFamily: 'Poppins',
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal,
-                                    height: 1.6666666666666667),
-                              ),
+                              // Text(
+                              //   'Hobbies',
+                              //   textAlign: TextAlign.left,
+                              //   style: TextStyle(
+                              //       color: Color.fromARGB(212, 0, 0, 0),
+                              //       fontFamily: 'Poppins',
+                              //       fontSize: 14,
+                              //       fontWeight: FontWeight.normal,
+                              //       height: 1.6666666666666667),
+                              // ),
                               Wrap(
                                 crossAxisAlignment: WrapCrossAlignment.start,
                                 runAlignment: WrapAlignment.start,

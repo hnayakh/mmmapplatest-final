@@ -6,18 +6,17 @@ import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
+import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/connect_pages/call/in_app_call.dart';
+
 import '../../../../../app/bloc/app_bloc.dart';
-import '../../../../../app/bloc/app_event.dart';
-import '../../../../../app/bloc/app_state.dart';
 import '../../../../../locator.dart';
 import '../../../../../repo/chat_repo.dart';
 import '../../../../chat_room/chat_page.dart';
 import '../../../../profile_detail_view/profile_view.dart';
-import '../../../menu/wallet/recharge/recharge_connect_screen.dart';
 import 'bloc/accepted_bloc.dart';
 import 'bloc/accepted_events.dart';
 import 'bloc/accepted_states.dart';
@@ -213,82 +212,157 @@ class AcceptedScreen extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
-                  child: Image.network(
-                    listAccepted[index].user.imageURL,
-                    height: MediaQuery.of(context).size.width * 0.28,
-                    width: MediaQuery.of(context).size.width * 0.28,
-                    fit: BoxFit.cover,
+                  child: Image.network(listAccepted[index].user.imageURL,
+                      height: MediaQuery.of(context).size.width * 0.28,
+                      width: MediaQuery.of(context).size.width * 0.28,
+                      fit: BoxFit.cover,
                       errorBuilder: (context, obj, str) => Container(
-                          color: Colors.grey,
-                          child: Icon(Icons.error))
-
-                  ),
+                          color: Colors.grey, child: Icon(Icons.error))),
                 ),
                 SizedBox(
                   width: 16,
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        InkWell(
-                          onTap: () async {
-                            var data = await getIt<UserRepository>()
-                                .getOtheruserDetails(
-                                    listAccepted[index].user.id,
-                                    ProfileActivationStatus.Verified);
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => ProfileView(
-                                      userRepository: getIt<UserRepository>(),
-                                      profileDetails: data.profileDetails,
-                                    )));
-                          },
-                          child: Text(
-                            listAccepted[index].user.displayId.toUpperCase(),
-                            textScaleFactor: 1.0,
-                            style:
-                                MmmTextStyles.bodyRegular(textColor: kPrimary),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Row(
+                        children: [
+                          InkWell(
+                            onTap: () async {
+                              var data = await getIt<UserRepository>()
+                                  .getOtheruserDetails(
+                                      listAccepted[index].user.id,
+                                      ProfileActivationStatus.Verified);
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => ProfileView(
+                                        userRepository: getIt<UserRepository>(),
+                                        profileDetails: data.profileDetails,
+                                      )));
+                            },
+                            child: Text(
+                              listAccepted[index].user.displayId.toUpperCase(),
+                              textScaleFactor: 1.0,
+                              style: MmmTextStyles.bodyRegular(
+                                  textColor: kPrimary),
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.04,
-                        ),
-                        listAccepted[index].user.activationStatus ==
-                                ActivationStatus.Verified.index
-                            ? SvgPicture.asset(
-                                'images/Verified.svg',
-                                color: kPrimary,
-                              )
-                            : Container()
-                      ],
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Text(
-                      listAccepted[index].user.name,
-                      textScaleFactor: 1.0,
-                      style: MmmTextStyles.heading5(textColor: kDark5),
-                    ),
-                    SizedBox(
-                      height: 4,
-                    ),
-                    Text(
-                      "${AppHelper.getAgeFromDob(listAccepted[index].user.dateOfBirth)} Years, "
-                      "${listAccepted[index].user.height}', ${listAccepted[index].user.highestEducation}",
-                      overflow: TextOverflow.ellipsis,
-                      textScaleFactor: 1.0,
-                      maxLines: 3,
-                      style: MmmTextStyles.footer(textColor: gray3),
-                    ),
-                    Text(
-                      "${listAccepted[index].user.careerCity}, ${listAccepted[index].user.careerState}, ${listAccepted[index].user.careerCountry}",
-                      textScaleFactor: 1.0,
-                      maxLines: 2,
-                      style: MmmTextStyles.footer(textColor: gray3),
-                    )
-                  ],
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.04,
+                          ),
+                          listAccepted[index].user.activationStatus ==
+                                  ActivationStatus.Verified.index
+                              ? SvgPicture.asset(
+                                  'images/Verified.svg',
+                                  color: kPrimary,
+                                )
+                              : Container(),
+                          Spacer(),
+                          Container(
+                            child: FutureBuilder<int>(
+                              future: getIt<ChatRepo>().getMessageCount(
+                                userId: getIt<UserRepository>().useDetails!.id,
+                                otherUser: getIt<UserRepository>()
+                                            .useDetails!
+                                            .id ==
+                                        listAccepted[index]
+                                            .requestingUserBasicId
+                                    ? listAccepted[index].requestedUserBasicId
+                                    : listAccepted[index].requestingUserBasicId,
+                              ),
+                              builder: (context, snapshot) {
+                                return (snapshot.hasData &&
+                                        ((snapshot.data ?? 0) > 0))
+                                    ? Stack(
+                                        children: [
+                                          InkWell(
+                                            onTap: () async {
+                                              Navigator.of(context).push(
+                                                  (await ChatPage.getRoute(
+                                                      context,
+                                                      getIt<UserRepository>()
+                                                                  .useDetails!
+                                                                  .id ==
+                                                              listAccepted[
+                                                                      index]
+                                                                  .requestingUserBasicId
+                                                          ? listAccepted[index]
+                                                              .requestedUserBasicId
+                                                          : listAccepted[index]
+                                                              .requestingUserBasicId)));
+                                            },
+                                            child: Container(
+                                              width: 40,
+                                              height: 40,
+                                              child: Container(
+                                                height: 32,
+                                                width: 32,
+                                                alignment: Alignment.center,
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: kLight4),
+                                                child: SvgPicture.asset(
+                                                  'images/chat.svg',
+                                                  height: 18,
+                                                  color: kNotify,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Positioned(
+                                            top: 0,
+                                            right: 0,
+                                            child: Container(
+                                              width: 15,
+                                              height: 15,
+                                              //alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: kPrimary),
+                                              child: Text(
+                                                snapshot.data?.toString() ??
+                                                    "0",
+                                                textAlign: TextAlign.center,
+                                                style: MmmTextStyles.footer(
+                                                    textColor: kLight4),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : SizedBox();
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        listAccepted[index].user.name,
+                        textScaleFactor: 1.0,
+                        style: MmmTextStyles.heading5(textColor: kDark5),
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Text(
+                        "${AppHelper.getAgeFromDob(listAccepted[index].user.dateOfBirth)} Years, ${listAccepted[index].user.height.isNotNullEmpty ? AppHelper.heightString(double.parse(listAccepted[index].user.height)) : ""}, ${listAccepted[index].user.highestEducation}",
+                        overflow: TextOverflow.ellipsis,
+                        textScaleFactor: 1.0,
+                        maxLines: 3,
+                        softWrap: true,
+                        style: MmmTextStyles.footer(textColor: gray3),
+                      ),
+                      Text(
+                        "${listAccepted[index].user.careerCity}, ${listAccepted[index].user.careerState}, ${listAccepted[index].user.careerCountry}",
+                        textScaleFactor: 1.0,
+                        maxLines: 2,
+                        style: MmmTextStyles.footer(textColor: gray3),
+                      )
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -324,15 +398,20 @@ class AcceptedScreen extends StatelessWidget {
                             ),
                           );
                         } else {
-                          BlocProvider.of<AppBloc>(navigatorKey.currentContext!).connectNow(
-                              otherUserId: listAccepted[index].requestedUserBasicId,
-                              onDone: () async {
-                                navigatorKey.currentState?.push((await ChatPage.getRoute(
-                                    navigatorKey.currentContext!, listAccepted[index].requestedUserBasicId)));
-                              },
-                              onError: () async {},
-                              profileDetails: listAccepted[index],
-                              context: navigatorKey.currentContext!);
+                          BlocProvider.of<AppBloc>(navigatorKey.currentContext!)
+                              .connectNow(
+                                  otherUserId:
+                                      listAccepted[index].requestedUserBasicId,
+                                  onDone: () async {
+                                    navigatorKey.currentState?.push(
+                                        (await ChatPage.getRoute(
+                                            navigatorKey.currentContext!,
+                                            listAccepted[index]
+                                                .requestedUserBasicId)));
+                                  },
+                                  onError: () async {},
+                                  profileDetails: listAccepted[index],
+                                  context: navigatorKey.currentContext!);
                         }
                       },
                     ),

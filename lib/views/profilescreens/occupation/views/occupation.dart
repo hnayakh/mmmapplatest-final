@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -27,20 +26,26 @@ import '../bloc/occupation_event.dart';
 
 class Occupations extends StatelessWidget {
   final UserRepository userRepository;
+  final bool toUpdate;
 
-  const Occupations({Key? key, required this.userRepository}) : super(key: key);
+  const Occupations(
+      {Key? key, required this.userRepository, this.toUpdate = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => OccupationBloc(userRepository),
-      child: OccupationScreen(),
+      create: (context) => OccupationBloc(
+        userRepository,
+      ),
+      child: OccupationScreen(toUpdate: toUpdate),
     );
   }
 }
 
 class OccupationScreen extends StatefulWidget {
-  OccupationScreen({Key? key}) : super(key: key);
+  final bool toUpdate;
+  OccupationScreen({Key? key, required this.toUpdate}) : super(key: key);
 
   @override
   _OccupationScreenState createState() => _OccupationScreenState();
@@ -92,7 +97,7 @@ class _OccupationScreenState extends State<OccupationScreen> {
             navigateToFamily(context);
           }
           if (state is OnNavigationToMyProfiles) {
-           Navigator.of(context).pop();
+            Navigator.of(context).pop();
           }
           if (state is MoveToFamilyTo) {
             navigateToFamilyTo(context);
@@ -216,19 +221,20 @@ class _OccupationScreenState extends State<OccupationScreen> {
                         SizedBox(
                           height: 24,
                         ),
-                        if(countryModel != null  && countryModel?.name.toLowerCase() == "india")
-                        MmmButtons.categoryButtonsNotRequired(
-                            'City',
-                            city != null && city!.name != ''
-                                ? '${city!.name}'
-                                : 'Select City',
-                            'Select City',
-                            'images/rightArrow.svg', action: () {
-                          FocusScope.of(context).requestFocus(FocusNode());
+                        if (countryModel != null &&
+                            countryModel?.name.toLowerCase() == "india")
+                          MmmButtons.categoryButtonsNotRequired(
+                              'City',
+                              city != null && city!.name != ''
+                                  ? '${city!.name}'
+                                  : 'Select City',
+                              'Select City',
+                              'images/rightArrow.svg', action: () {
+                            FocusScope.of(context).requestFocus(FocusNode());
 
-                          BlocProvider.of<OccupationBloc>(context)
-                              .add(GetAllCities());
-                        }),
+                            BlocProvider.of<OccupationBloc>(context)
+                                .add(GetAllCities());
+                          }),
                       ],
                     ),
                   ],
@@ -237,7 +243,7 @@ class _OccupationScreenState extends State<OccupationScreen> {
               Positioned(
                   bottom: 15,
                   right: 24,
-                  child: this.userDetails.registrationStep > 4
+                  child: widget.toUpdate
                       ? InkWell(
                           onTap: () {
                             BlocProvider.of<OccupationBloc>(context).add(
@@ -247,7 +253,7 @@ class _OccupationScreenState extends State<OccupationScreen> {
                                     this.education,
                                     this.myState,
                                     this.city,
-                                    this.userDetails.registrationStep > 4));
+                                    widget.toUpdate));
                           },
                           child: MmmIcons.saveIcon(),
                         )
@@ -260,7 +266,7 @@ class _OccupationScreenState extends State<OccupationScreen> {
                                     this.education,
                                     this.myState,
                                     this.city,
-                                    this.userDetails.registrationStep > 4));
+                                    widget.toUpdate));
                           },
                           child: MmmIcons.rightArrowEnabled(),
                         )),
@@ -303,15 +309,15 @@ class _OccupationScreenState extends State<OccupationScreen> {
   }
 
   void initData(BuildContext context) {
-    if (this.education == null)
-      this.education = BlocProvider.of<OccupationBloc>(context).education;
+    this.education = BlocProvider.of<OccupationBloc>(context).education;
     this.occupation = BlocProvider.of<OccupationBloc>(context).occupation;
     this.countryModel = BlocProvider.of<OccupationBloc>(context).countryModel;
     this.myState = BlocProvider.of<OccupationBloc>(context).myState;
     this.city = BlocProvider.of<OccupationBloc>(context).city;
     this.anualIncome = BlocProvider.of<OccupationBloc>(context).annualIncome;
 
-    if (BlocProvider.of<OccupationBloc>(context).profileDetails != null) {
+    if (BlocProvider.of<OccupationBloc>(context).profileDetails != null &&
+        context.read<OccupationBloc>().state is OccupationDetailsState) {
       if (this.education == null)
         this.education = BlocProvider.of<OccupationBloc>(context)
             .profileDetails!
@@ -436,7 +442,7 @@ class _OccupationScreenState extends State<OccupationScreen> {
     var userRepo = BlocProvider.of<OccupationBloc>(context).userRepository;
     var countryModel = BlocProvider.of<OccupationBloc>(context).countryModel!;
     var stateModel = BlocProvider.of<OccupationBloc>(context).myState!;
-    var city = BlocProvider.of<OccupationBloc>(context).city!;
+    var city = BlocProvider.of<OccupationBloc>(context).city ?? StateModel("", 0);
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => FamilyScreen(
               userRepository: userRepo,

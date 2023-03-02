@@ -1,13 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/app/bloc/app_bloc.dart';
 import 'package:makemymarry/app/bloc/app_event.dart';
-import 'package:makemymarry/views/splash/splash_event.dart';
-import 'package:makemymarry/views/splash/splash_state.dart';
 import 'package:makemymarry/locator.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
-import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/preference_helper.dart';
+import 'package:makemymarry/views/splash/splash_event.dart';
+import 'package:makemymarry/views/splash/splash_state.dart';
 
 class SplashBloc extends Bloc<SplashEvent, SplashState> {
   final UserRepository userRepository;

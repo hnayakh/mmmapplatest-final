@@ -29,6 +29,7 @@ class FamilyBackground extends StatelessWidget {
   final CountryModel? countryModel;
   final StateModel? stateModel;
   final StateModel? city;
+  final bool toUpdate;
 
   const FamilyBackground(
       {Key? key,
@@ -36,24 +37,30 @@ class FamilyBackground extends StatelessWidget {
       required this.onComplete,
       required this.countryModel,
       required this.stateModel,
+      required this.toUpdate,
       required this.city})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FamilyBackgroundScreen(
-        onComplete: onComplete,
-        userRepository: userRepository,
-      );
+      onComplete: onComplete,
+      userRepository: userRepository,
+      toUpdate: toUpdate,
+    );
   }
 }
 
 class FamilyBackgroundScreen extends StatefulWidget {
   final Function onComplete;
   final UserRepository userRepository;
+  final bool toUpdate;
 
   const FamilyBackgroundScreen(
-      {Key? key, required this.onComplete, required this.userRepository})
+      {Key? key,
+      required this.onComplete,
+      required this.userRepository,
+      required this.toUpdate})
       : super(key: key);
 
   @override
@@ -84,8 +91,7 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
         .userRepository
         .useDetails!;
 
-    if (this.userDetails.registrationStep > 5) {
-
+    if (widget.toUpdate) {
       BlocProvider.of<FamilyBackgroundBloc>(context)
           .add(onFamilyBackgroundDataLoad(userDetails.id));
     }
@@ -99,7 +105,7 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
               Positioned(
                 bottom: 24,
                 right: 24,
-                child: this.userDetails.registrationStep > 5
+                child:widget.toUpdate
                     ? InkWell(
                         onTap: () {
                           BlocProvider.of<FamilyBackgroundBloc>(context).add(
@@ -109,7 +115,7 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                               this.isStayingWithParents!,
                               this.city,
                               this.myState,
-                              this.userDetails.registrationStep > 5,
+                              widget.toUpdate,
                               this.type,
                             ),
                           );
@@ -125,7 +131,7 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                               this.isStayingWithParents!,
                               this.city,
                               this.myState,
-                              this.userDetails.registrationStep > 5,
+                              widget.toUpdate,
                               this.type,
                             ),
                           );
@@ -133,7 +139,7 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                         child: MmmIcons.rightArrowEnabled(),
                       ),
               ),
-              this.userDetails.registrationStep > 5
+              widget.toUpdate
                   ? SizedBox()
                   : Positioned(
                       child: InkWell(

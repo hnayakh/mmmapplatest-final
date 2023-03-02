@@ -8,7 +8,10 @@ import 'package:makemymarry/views/profilescreens/profile_preference/eating_prefs
 import 'package:makemymarry/views/profilescreens/profile_preference/education_preference_sheet.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/interest_prefs.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/occupation_preference_sheet.dart';
+import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference_events.dart'
+    as profilepreferenceEvent;
 import 'package:makemymarry/views/profilescreens/profile_preference/smoking_prefs.dart';
+
 import '../datamodels/master_data.dart';
 import '../datamodels/user_model.dart';
 import '../repo/user_repo.dart';
@@ -20,20 +23,18 @@ import '../utils/elevations.dart';
 import '../utils/mmm_enums.dart';
 import '../utils/text_styles.dart';
 import '../utils/view_decorations.dart';
-import '../views/profilescreens/occupation/views/anual_income_bottom_sheet.dart';
 import '../views/profilescreens/occupation/bloc/occupation_bloc.dart';
 import '../views/profilescreens/occupation/bloc/occupation_event.dart';
+import '../views/profilescreens/occupation/views/anual_income_bottom_sheet.dart';
 import '../views/profilescreens/profile_preference/marital_status_preference.dart';
 import '../views/profilescreens/profile_preference/mother_tongue_preference_sheet.dart';
 import '../views/profilescreens/profile_preference/profile_preference_bloc.dart';
-import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference_events.dart'
-    as profilepreferenceEvent;
 import '../views/profilescreens/profile_preference/profile_preference_events.dart';
 import '../views/profilescreens/profile_preference/profile_preference_state.dart';
 import '../views/profilescreens/profile_preference/religion_preference_sheet.dart';
-import '../views/profilescreens/religion/views/gothra_bottom_sheet.dart';
 import '../views/profilescreens/religion/bloc/religion_bloc.dart';
 import '../views/profilescreens/religion/bloc/religion_event.dart';
+import '../views/profilescreens/religion/views/gothra_bottom_sheet.dart';
 import 'hexcolor.dart';
 
 class FilterPrefsScreen extends StatelessWidget {

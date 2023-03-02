@@ -3,13 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:http/http.dart';
 import 'package:makemymarry/locator.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/saurabh/partner_preference.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
-import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
@@ -20,11 +18,9 @@ import 'package:makemymarry/views/profilescreens/habbit/habits.dart';
 import 'package:makemymarry/views/profilescreens/occupation/views/occupation.dart';
 import 'package:makemymarry/views/profilescreens/religion/views/religion.dart';
 import 'package:makemymarry/views/signinscreens/signin_page.dart';
-
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../profilescreens/family/family.dart';
-import '../signin_bloc.dart';
 import 'mobile_verification_bloc.dart';
 import 'mobile_verification_event.dart';
 import 'mobile_verification_state.dart';

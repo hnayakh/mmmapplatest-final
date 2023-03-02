@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:makemymarry/locator.dart';
-import 'package:makemymarry/views/profilescreens/about/bloc/about_bloc.dart';
-import 'package:makemymarry/views/profilescreens/habbit/habit_bloc.dart';
-import 'package:makemymarry/views/profilescreens/habbit/habit_event.dart';
-import 'package:makemymarry/views/profilescreens/habbit/habit_state.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
+import 'package:makemymarry/locator.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
@@ -14,11 +10,12 @@ import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
-import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
 import 'package:makemymarry/views/profilescreens/bio/views/bio.dart';
+import 'package:makemymarry/views/profilescreens/habbit/habit_bloc.dart';
+import 'package:makemymarry/views/profilescreens/habbit/habit_event.dart';
+import 'package:makemymarry/views/profilescreens/habbit/habit_state.dart';
 import 'package:makemymarry/views/profilescreens/hobbies/hobby_bloc.dart';
 import 'package:makemymarry/views/profilescreens/hobbies/hobby_details_view.dart';
-import 'package:makemymarry/views/profilescreens/occupation/bloc/occupation_bloc.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/my_profile/myprofile.dart';
 
 import '../hobbies/hobby_event.dart';

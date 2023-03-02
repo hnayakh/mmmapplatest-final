@@ -2,25 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:makemymarry/views/profilescreens/about/bloc/about_bloc.dart';
-import 'package:makemymarry/views/signinscreens/signin_bloc.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/saurabh/myprofile/add_interest.dart';
-import 'package:makemymarry/saurabh/filter_preference.dart';
 import 'package:makemymarry/saurabh/partner_preference.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
-import 'package:makemymarry/views/profilescreens/about/views/about.dart';
-import 'package:makemymarry/views/profilescreens/bio/views/bio.dart';
-import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference.dart';
-import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/sidebar_about_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/status_screen.dart';
 
 import '../../../../datamodels/martching_profile.dart';
-import '../../../../saurabh/myprofile/about_profile.dart';
 import '../../../../utils/widgets_large.dart';
 import '../../../home/menu/account_menu_event.dart';
 import '../../../home/menu/account_menu_state.dart' as Menu;
@@ -315,21 +307,21 @@ class _MyProfileMenuState extends State<MyProfileMenu> {
     // }
   }
 
-  void onEdit() {
-    print("hekllo222");
-    // Navigator.of(context)
-    //     .push(MaterialPageRoute(builder: (context) => AboutScreen()));
-    //var userRepository = BlocProvider.of<AboutBloc>(context).userRepository;
-    print("hekllo333");
-    Navigator.of(context).push(
-      MaterialPageRoute<AboutBloc>(
-        builder: (context) => BlocProvider<AboutBloc>(
-          create: (context) => AboutBloc(widget.userRepository),
-          child: AboutScreen(),
-        ),
-      ),
-    );
-  }
+  // void onEdit() {
+  //   print("hekllo222");
+  //   // Navigator.of(context)
+  //   //     .push(MaterialPageRoute(builder: (context) => AboutScreen()));
+  //   //var userRepository = BlocProvider.of<AboutBloc>(context).userRepository;
+  //   print("hekllo333");
+  //   Navigator.of(context).push(
+  //     MaterialPageRoute<AboutBloc>(
+  //       builder: (context) => BlocProvider<AboutBloc>(
+  //         create: (context) => AboutBloc(widget.userRepository),
+  //         child: AboutScreen(toUpdate: null,),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   void showImagePickerDialog() async {
     var result = await showModalBottomSheet(

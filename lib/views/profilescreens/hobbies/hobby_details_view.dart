@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart';
-import 'package:makemymarry/locator.dart';
-import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
-import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 
 import 'hobby_bloc.dart';

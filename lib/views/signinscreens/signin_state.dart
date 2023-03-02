@@ -1,5 +1,4 @@
 import 'package:makemymarry/base_event_state.dart';
-import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 
 class SigninState extends BaseEventState {}

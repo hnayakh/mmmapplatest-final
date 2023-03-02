@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/repo/user_repo.dart';
-
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/views/signupscreens/create_account/create_account_event.dart';
@@ -59,7 +58,6 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
         if (checkMail.message == 'Email already exist.') {
           yield OnError(checkMail.message);
         } else {
-          print('here1');
           if (profileCreatedFor == null) {
             yield OnError("Select Profile Created For");
           } else if (!RegExp(AppConstants.EMAILREGEXP).hasMatch(this.email)) {
@@ -77,10 +75,6 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
           } else if (!this.acceptTerms) {
             yield OnError("Accept terms and conditions.");
           } else {
-            // if (checkMail.status == AppConstants.FAILURE) {
-            //   yield OnError('Oops something went wrong');
-
-            // }
             CountryModel countryModel = CountryModel();
 
             countryModel.name = selectedCountry.name;
@@ -89,7 +83,6 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
             var result = await this.userRepository.getCountries();
             if (result.status == AppConstants.SUCCESS) {
               var countries = result.list;
-              print(result.list);
 
               countryModel.id = -1;
               countryModel.phoneCode = -1;
@@ -99,11 +92,7 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
                     selectedCountry.countryCode.toLowerCase().trim()) {
                   countryModel.id = country.id;
                   countryModel.phoneCode = country.phoneCode;
-                  print('match found..');
-                  print(country.id); //4
-                  print(country.phoneCode); //1684
-                  print(country.name); //American Samoa
-                  print(country.shortName); //AS
+
                 }
               }
             } else {
@@ -132,7 +121,7 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
               0,
               "",
               Relationship.Self,
-              4.6,
+             64,
               MaritalStatus.NeverMarried,
               AbilityStatus.Normal,
               countryModel,

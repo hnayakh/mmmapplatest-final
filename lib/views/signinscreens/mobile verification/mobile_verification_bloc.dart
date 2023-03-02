@@ -1,4 +1,3 @@
-import 'package:carousel_slider/utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/app/bloc/app_bloc.dart';
 import 'package:makemymarry/app/bloc/app_event.dart';
@@ -8,7 +7,6 @@ import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
-import 'package:makemymarry/views/forgotpasswordscreens/otp_screen.dart';
 
 import 'mobile_verification_event.dart';
 import 'mobile_verification_state.dart';

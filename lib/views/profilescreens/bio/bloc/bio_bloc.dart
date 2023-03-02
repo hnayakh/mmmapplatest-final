@@ -4,8 +4,8 @@ import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 
-import 'bio_state.dart';
 import 'bio_event.dart';
+import 'bio_state.dart';
 
 class BioBloc extends Bloc<BioEvent, BioState> {
   final UserRepository userRepository;
@@ -71,7 +71,7 @@ class BioBloc extends Bloc<BioEvent, BioState> {
       }
       if (this.aboutMeMsg.isEmpty) {
         yield OnError("Enter Bio");
-      } else if (this.localImagePaths.length <= 1) {
+      } else if (this.localImagePaths.length <= 1 && !event.toUpdate) {
         yield OnError("Please add at least one image");
       } else {
         var result = await this.userRepository.updateBio(

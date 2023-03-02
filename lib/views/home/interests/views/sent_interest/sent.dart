@@ -1,22 +1,19 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:makemymarry/app/bloc/app_bloc.dart';
-import 'package:makemymarry/app/bloc/app_event.dart';
-import 'package:makemymarry/app/bloc/app_state.dart';
 import 'package:makemymarry/datamodels/interests_model.dart';
 import 'package:makemymarry/locator.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
+import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/chat_room/chat_page.dart';
 import 'package:makemymarry/views/connect_pages/call/in_app_call.dart';
-import 'package:makemymarry/views/home/menu/wallet/recharge/recharge_connect_screen.dart';
 
 import '../../../../../repo/chat_repo.dart';
 import '../../../../profile_detail_view/profile_view.dart';
@@ -264,19 +261,17 @@ class SentScreen extends StatelessWidget {
                       SizedBox(
                         height: 8,
                       ),
-                      Text(
-                        listSent[index].user.name,
-                        textScaleFactor: 1.0,
-                        style: MmmTextStyles.heading5(textColor: kDark5)
-                      ),
+                      Text(listSent[index].user.name,
+                          textScaleFactor: 1.0,
+                          style: MmmTextStyles.heading5(textColor: kDark5)),
                       SizedBox(
                         height: 4,
                       ),
                       Text(
                         "${AppHelper.getAgeFromDob(listSent[index].user.dateOfBirth)} Years, "
-                        "${listSent[index].user.height}  ${listSent[index].user.highestEducation}",
+                        "${listSent[index].user.height.isNotNullEmpty ? AppHelper.heightString(double.parse(listSent[index].user.height)) : ""}, ${listSent[index].user.highestEducation}",
                         textScaleFactor: 1.0,
-                        maxLines: 2,
+                        maxLines: 3,
                         softWrap: true,
                         overflow: TextOverflow.ellipsis,
                         style: MmmTextStyles.footer(textColor: gray3),
@@ -323,15 +318,20 @@ class SentScreen extends StatelessWidget {
                             ),
                           );
                         } else {
-                          BlocProvider.of<AppBloc>(navigatorKey.currentContext!).connectNow(
-                              otherUserId: listSent[index].requestedUserBasicId,
-                              onDone: () async {
-                                navigatorKey.currentState?.push((await ChatPage.getRoute(
-                                    navigatorKey.currentContext!, listSent[index].requestedUserBasicId)));
-                              },
-                              onError: () async {},
-                              profileDetails: listSent[index],
-                              context: navigatorKey.currentContext!);
+                          BlocProvider.of<AppBloc>(navigatorKey.currentContext!)
+                              .connectNow(
+                                  otherUserId:
+                                      listSent[index].requestedUserBasicId,
+                                  onDone: () async {
+                                    navigatorKey.currentState?.push(
+                                        (await ChatPage.getRoute(
+                                            navigatorKey.currentContext!,
+                                            listSent[index]
+                                                .requestedUserBasicId)));
+                                  },
+                                  onError: () async {},
+                                  profileDetails: listSent[index],
+                                  context: navigatorKey.currentContext!);
                         }
                       },
                     ),

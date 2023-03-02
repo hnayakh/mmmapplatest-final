@@ -6,17 +6,17 @@ import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
-import 'package:makemymarry/views/profilescreens/bio/views/bio.dart';
 import 'package:makemymarry/views/profilescreens/habbit/habits.dart';
 
-import 'family_background/views/family_background.dart';
 import 'family_background/bloc/family_background_bloc.dart';
+import 'family_background/views/family_background.dart';
 import 'family_details/bloc/family_details_bloc.dart';
 import 'family_details/views/family_details.dart';
 import 'globals.dart' as globals;
 
 class FamilyScreen extends StatefulWidget {
   final UserRepository userRepository;
+  final bool toUpdate;
   final CountryModel? countryModel;
   final StateModel? stateModel;
   final StateModel? city;
@@ -24,6 +24,7 @@ class FamilyScreen extends StatefulWidget {
   FamilyScreen(
       {Key? key,
       required this.userRepository,
+      this.toUpdate = false,
       this.countryModel,
       this.stateModel,
       this.city})
@@ -56,11 +57,13 @@ class _FamilyScreenState extends State<FamilyScreen>
                 widget.countryModel,
                 widget.stateModel,
                 widget.city,
+
               ),
             ),
             BlocProvider(
               create: (context) => FamilyDetailsBloc(
                 widget.userRepository,
+
               ),
             )
           ],
@@ -168,10 +171,12 @@ class _FamilyScreenState extends State<FamilyScreen>
                       countryModel: widget.countryModel,
                       stateModel: widget.stateModel,
                       city: widget.city,
+                      toUpdate : widget.toUpdate,
                     ),
                     FamilyDetails(
                       userRepository: widget.userRepository,
                       onComplete: onComplete,
+                      toUpdate : widget.toUpdate,
                     ),
                   ],
                 ),
@@ -200,7 +205,7 @@ class _FamilyScreenState extends State<FamilyScreen>
     if (globals.familyDetailsComplete && globals.familyBackgroundComplete) {
       globals.familyDetailsComplete = false;
       globals.familyBackgroundComplete = false;
-      if (widget.userRepository.useDetails!.registrationStep > 6) {
+      if (widget.toUpdate) {
         Navigator.of(context).pop();
       } else {
         Navigator.of(context).push(

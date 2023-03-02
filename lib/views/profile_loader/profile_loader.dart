@@ -8,6 +8,7 @@ import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/home/home.dart';
 import 'package:makemymarry/views/profile_loader/profile_loader_bloc.dart';
 import 'package:makemymarry/views/profile_loader/profile_loader_state.dart';
+
 import 'profile_loader_event.dart';
 
 class ProfileLoader extends StatelessWidget {

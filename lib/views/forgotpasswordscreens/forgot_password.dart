@@ -4,10 +4,8 @@ import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
-
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/forgotpasswordscreens/forgot_password_event.dart';
-import 'package:makemymarry/views/signinscreens/mobile%20verification/mobile_verification_state.dart';
 
 import 'forgot_password_bloc.dart';
 import 'forgot_password_state.dart';

@@ -38,5 +38,5 @@ class OnGotStates extends FamilyBackgroundState {
 
 class familyBackgroundDataState extends FamilyBackgroundState {
   late final ProfileDetails profileDetails;
-  familyBackgroundDataState(this.profileDetails);
+   familyBackgroundDataState(this.profileDetails);
 }

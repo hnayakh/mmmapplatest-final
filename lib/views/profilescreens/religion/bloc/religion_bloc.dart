@@ -32,6 +32,25 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
 
       if (result.status == AppConstants.SUCCESS) {
         this.profileDetails = result.profileDetails;
+        if (this.religion == null) {
+          var religionName = this.profileDetails!.religion;
+          var religionId = this.profileDetails!.religionId;
+          this.religion = SimpleMasterData(religionId, religionName);
+        }
+        if (this.motherTongue == null) {
+          var motherTongueName = this.profileDetails!.motherTongue;
+          var motherTongueId = this.profileDetails!.motherTongueId;
+          this.motherTongue =
+              SimpleMasterData(motherTongueId, motherTongueName);
+        }
+        if (this.gothra == null || this.gothra == "") {
+          this.gothra = this.profileDetails!.gothra;
+        }
+        this.isManglik = this.profileDetails!.manglik;
+
+        if (this.subCaste == null || this.subCaste == "") {
+          this.subCaste = this.profileDetails!.cast;
+        }
         yield ReligionDetailsState(result.profileDetails);
       } else {
         yield OnError(result.message);
@@ -54,11 +73,10 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
         if (prevReligion != this.religion) {
           this.subCaste = null;
           this.cast = CastSubCast("", []);
-          this.motherTongue = null;
           this.gothra = "";
         }
       }
-      if( this.religion!.title.toLowerCase().contains("hindu")){
+      if (this.religion!.title.toLowerCase().contains("hindu")) {
         this.isManglik = Manglik.NotApplicable;
         this.gothra = "";
       }
@@ -90,7 +108,7 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
       this.isManglik = event.isManglik;
       this.religion = event.religion;
       this.subCaste = event.subcast;
-      //this.subCaste = event.subCaste;
+
       if (this.motherTongue == null &&
           this.gothra == null &&
           this.religion == null &&
@@ -105,12 +123,14 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
         yield OnError("Please select mother tongue");
       } else if (this.subCaste == null) {
         yield OnError("Please select Caste");
-      }
-      else if (this.religion!.title.toLowerCase().contains("hindu") &&
+      } else if (this.religion!.title.toLowerCase().contains("hindu") &&
           (this.gothra == null || this.gothra.isEmpty)) {
         yield OnError("Please select Gothra");
-      }
-      else {
+      } else if (this.religion!.title.toLowerCase().contains("hindu") &&
+          (this.isManglik == Manglik.NotApplicable)) {
+        yield OnError("Please choose Manglik Status.");
+      } else {
+
         var result = await this.userRepository.updateReligion(this.religion!,
             this.subCaste, this.motherTongue!, this.gothra, this.isManglik);
 
@@ -119,7 +139,6 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
           this.userRepository.useDetails!.motherTongue = this.motherTongue!;
           this.userRepository.useDetails!.registrationStep =
               result.userDetails!.registrationStep;
-          //await this.userRepository.saveUserDetails();
           await this
               .userRepository
               .storageService
@@ -130,12 +149,6 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
                 .updateRegistartionStep(this.userRepository.useDetails!.id, 4);
             this.userRepository.updateRegistrationStep(4);
           }
-
-          print('in religion');
-          print(
-              'dobinreligionbloc=${this.userRepository.useDetails!.dateOfBirth}');
-          print(this.userRepository.useDetails!.registrationStep);
-
           yield event.isAnUpdate ? OnNavigationToMyProfiles() : MoveToCarrer();
         } else {
           yield OnError(result.message);

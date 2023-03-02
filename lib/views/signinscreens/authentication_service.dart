@@ -1,7 +1,4 @@
-import 'dart:io' show Platform;
-
 import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:makemymarry/utils/app_constants.dart';

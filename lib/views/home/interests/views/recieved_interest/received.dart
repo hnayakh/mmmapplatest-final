@@ -8,11 +8,12 @@ import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
+import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/chat_room/chat_page.dart';
-import 'package:makemymarry/views/stackviewscreens/connect/chat_screen_ui.dart';
 
+import '../../../../../repo/chat_repo.dart';
 import '../../../../profile_detail_view/profile_view.dart';
 import 'bloc/received_bloc.dart';
 import 'bloc/received_events.dart';
@@ -147,55 +148,78 @@ class ReceivedScreen extends StatelessWidget {
                             ),
                           ),
                           Container(
-                            child: Stack(
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AcceptRequestDialog(
-                                            user: listReceived[index].user, requestId: listReceived[index].id,);
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 40,
-                                    height: 40,
-                                    child: Container(
-                                      height: 32,
-                                      width: 32,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: kLight4),
-                                      child: SvgPicture.asset(
-                                        'images/chat.svg',
-                                        height: 18,
-                                        color: kNotify,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  top: 0,
-                                  right: 0,
-                                  child: Container(
-                                    width: 15,
-                                    height: 15,
-                                    //alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: kPrimary),
-                                    child: Text(
-                                      '2',
-                                      textAlign: TextAlign.center,
-                                      style: MmmTextStyles.footer(
-                                          textColor: kLight4),
-                                    ),
-                                  ),
-                                )
-                              ],
+                            child: FutureBuilder<int>(
+                              future: getIt<ChatRepo>().getMessageCount(
+                                userId: getIt<UserRepository>().useDetails!.id,
+                                otherUser: getIt<UserRepository>()
+                                            .useDetails!
+                                            .id ==
+                                        listReceived[index]
+                                            .requestingUserBasicId
+                                    ? listReceived[index].requestedUserBasicId
+                                    : listReceived[index].requestingUserBasicId,
+                              ),
+                              builder: (context, snapshot) {
+                                return (snapshot.hasData &&
+                                        ((snapshot.data ?? 0) > 0))
+                                    ? Stack(
+                                        children: [
+                                          InkWell(
+                                            onTap: () async {
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AcceptRequestDialog(
+                                                    user: listReceived[index]
+                                                        .user,
+                                                    requestId:
+                                                        listReceived[index].id,
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            child: Container(
+                                              width: 40,
+                                              height: 40,
+                                              child: Container(
+                                                height: 32,
+                                                width: 32,
+                                                alignment: Alignment.center,
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: kLight4),
+                                                child: SvgPicture.asset(
+                                                  'images/chat.svg',
+                                                  height: 18,
+                                                  color: kNotify,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Positioned(
+                                            top: 0,
+                                            right: 0,
+                                            child: Container(
+                                              width: 15,
+                                              height: 15,
+                                              //alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: kPrimary),
+                                              child: Text(
+                                                snapshot.data?.toString() ??
+                                                    "0",
+                                                textAlign: TextAlign.center,
+                                                style: MmmTextStyles.footer(
+                                                    textColor: kLight4),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : SizedBox();
+                              },
                             ),
                           ),
                         ],
@@ -213,9 +237,9 @@ class ReceivedScreen extends StatelessWidget {
                       ),
                       Text(
                         "${AppHelper.getAgeFromDob(listReceived[index].user.dateOfBirth)} Years, "
-                        "${listReceived[index].user.height}', ${listReceived[index].user.highestEducation}",
+                        "${listReceived[index].user.height.isNotNullEmpty ? AppHelper.heightString(double.parse(listReceived[index].user.height)) : ""}, ${listReceived[index].user.highestEducation}",
                         textScaleFactor: 1.0,
-                        maxLines: 2,
+                        maxLines: 3,
                         style: MmmTextStyles.footer(textColor: gray3),
                       ),
                       Text(
@@ -396,12 +420,17 @@ class AcceptRequestDialog extends StatelessWidget {
                       style: TextStyle(fontSize: 17))),
             ),
             MmmButtons.primaryButton('Confirm', () async {
+              Navigator.of(context).pop();
               context.read<AppBloc>().acceptProposal(
                   otherUserId: user.id,
                   requestId: requestId,
                   onDone: () async {
-                    Navigator.of(context)
-                        .push((await ChatPage.getRoute(context, user.id)));
+                    Navigator.of(context).push(
+                      (await ChatPage.getRoute(
+                        context,
+                        user.id,
+                      )),
+                    );
                   },
                   onError: () async {});
             }),

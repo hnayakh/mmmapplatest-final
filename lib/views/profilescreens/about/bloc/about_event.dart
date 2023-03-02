@@ -1,5 +1,3 @@
-import 'package:makemymarry/base_event_state.dart';
-import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 
 class AboutEvent  {}
@@ -51,17 +49,17 @@ class OnDOBSelected extends AboutEvent {
   OnDOBSelected(this.dob);
 }
 
-class OnNavigationButtonClicked extends AboutEvent {
-  late final String name;
-  late final MaritalStatus ms;
-  late final int height;
-  late final ChildrenStatus childrenStatus;
-  late final AbilityStatus abilityStatus;
-  late final String dob;
-
-  OnNavigationButtonClicked(this.name, this.ms, this.height,
-      this.childrenStatus, this.abilityStatus, this.dob);
-}
+// class OnNavigationButtonClicked extends AboutEvent {
+//   late final String name;
+//   late final MaritalStatus ms;
+//   late final int height;
+//   late final ChildrenStatus childrenStatus;
+//   late final AbilityStatus abilityStatus;
+//   late final String dob;
+//
+//   OnNavigationButtonClicked(this.name, this.ms, this.height,
+//       this.childrenStatus, this.abilityStatus, this.dob);
+// }
 
 class OnAboutDone extends AboutEvent{
 

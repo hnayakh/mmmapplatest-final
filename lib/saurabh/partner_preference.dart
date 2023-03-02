@@ -36,17 +36,16 @@ import '../utils/text_styles.dart';
 import '../utils/view_decorations.dart';
 import '../utils/widgets_large.dart';
 import '../views/profile_loader/profile_loader.dart';
-import '../views/profilescreens/occupation/views/anual_income_bottom_sheet.dart';
 import '../views/profilescreens/occupation/bloc/occupation_bloc.dart';
 import '../views/profilescreens/occupation/bloc/occupation_event.dart';
+import '../views/profilescreens/occupation/views/anual_income_bottom_sheet.dart';
 import '../views/profilescreens/profile_preference/marital_status_preference.dart';
-
 import '../views/profilescreens/profile_preference/profile_preference_bloc.dart';
 import '../views/profilescreens/profile_preference/profile_preference_state.dart';
 import '../views/profilescreens/profile_preference/religion_preference_sheet.dart';
 import '../views/profilescreens/profile_preference/subcast_preference_sheet.dart';
-import '../views/profilescreens/religion/views/gothra_bottom_sheet.dart';
 import '../views/profilescreens/religion/bloc/religion_bloc.dart';
+import '../views/profilescreens/religion/views/gothra_bottom_sheet.dart';
 
 class PartnerPrefsScreen extends StatelessWidget {
   final UserRepository userRepository;

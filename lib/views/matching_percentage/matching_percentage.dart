@@ -9,7 +9,6 @@ import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/matching_percentage/matching_percentage_bloc.dart';
-import 'package:makemymarry/views/matching_percentage/matching_percentage_event.dart';
 import 'package:makemymarry/views/matching_percentage/matching_percentage_state.dart';
 
 class MatchingPercentageScreen extends StatefulWidget {

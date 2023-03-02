@@ -1,7 +1,5 @@
-import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/views/profilescreens/hobbies/hobby_details_view.dart';
 
-import '../../../base_event_state.dart';
 import 'hobby_event.dart';
 
 class HobbyState {}

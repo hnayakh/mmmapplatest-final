@@ -3,34 +3,25 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/locator.dart';
-import 'package:makemymarry/utils/app_helper.dart';
-import 'package:makemymarry/utils/helper.dart';
-import 'package:makemymarry/utils/mmm_enums.dart';
-import 'package:makemymarry/views/profilescreens/about/bloc/about_bloc.dart';
-import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/saurabh/myprofile/profile_photo_video.dart';
+import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
+import 'package:makemymarry/utils/helper.dart';
+import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
-import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
 import 'package:makemymarry/views/profilescreens/about/views/about.dart';
 import 'package:makemymarry/views/profilescreens/bio/views/bio.dart';
 import 'package:makemymarry/views/profilescreens/family/family.dart';
-import 'package:makemymarry/views/profilescreens/family/family_details/bloc/family_details_bloc.dart';
-import 'package:makemymarry/views/profilescreens/habbit/habit_bloc.dart';
 import 'package:makemymarry/views/profilescreens/hobbies/hobby_details_view.dart';
 import 'package:makemymarry/views/profilescreens/occupation/views/occupation.dart';
-import 'package:makemymarry/views/profilescreens/occupation/bloc/occupation_bloc.dart';
-import 'package:makemymarry/views/profilescreens/religion/bloc/religion_bloc.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/my_profile/myprofile_bloc.dart';
-import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/my_profile/myprofile_event.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/my_profile/myprofile_state.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/profile%20screens/verify%20account%20screens/verify_account.dart';
+
 import '../../../../utils/widgets_large.dart';
-import '../../../profilescreens/bio/bloc/bio_bloc.dart';
-import '../../../profilescreens/family/family_background/bloc/family_background_bloc.dart';
 import '../../../profilescreens/habbit/habits.dart';
 import '../../../profilescreens/lifestyle/lifestyle_details_view.dart';
 import '../../../profilescreens/religion/views/religion.dart';
@@ -272,7 +263,6 @@ class LifestyleInfoCard extends StatelessWidget {
                     await context.navigate.push(MaterialPageRoute(
                         builder: (context) => LifeStyleView()));
                     BlocProvider.of<MyProfileBloc>(context).loadMyData();
-
                   },
                   child: Image.asset(
                     'images/pen.png',
@@ -298,7 +288,9 @@ class LifestyleInfoCard extends StatelessWidget {
                   <Widget>[]),
             ],
           ),
-          SizedBox(height: 12,)
+          SizedBox(
+            height: 12,
+          )
         ],
       ),
     );
@@ -430,15 +422,14 @@ class InterestInfoCard extends StatelessWidget {
                     ),
                     InkWell(
                       onTap: () async {
-                      await   Navigator.push(
+                        await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (ctx) =>
                                 Habit(userRepository: getIt<UserRepository>()),
-
                           ),
                         );
-                      BlocProvider.of<MyProfileBloc>(context).loadMyData();
+                        BlocProvider.of<MyProfileBloc>(context).loadMyData();
                       },
                       child: Image.asset(
                         'images/pen.png',
@@ -989,7 +980,9 @@ class ReligionInfoCard extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
                   child: Text(
-                    profileDetails != null ? profileDetails!.gothra : "",
+                    profileDetails.gothra.isNotNullEmpty
+                        ? profileDetails.gothra
+                        : "Not Applicable",
                     textAlign: TextAlign.left,
                     style: TextStyle(
                         color: Color.fromRGBO(18, 22, 25, 1),
@@ -1134,7 +1127,7 @@ class CareerInfoCard extends StatelessWidget {
                       height: 1.6666666666666667),
                 ),
                 Container(
-                  width: 149,
+
                   height: 90,
                   margin: EdgeInsets.fromLTRB(0, 20, 20, 0),
                   child: Text(
@@ -1171,9 +1164,7 @@ class CareerInfoCard extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
                   child: Text(
-                    profileDetails != null
-                        ? profileDetails!.annualIncome.name
-                        : "",
+                    AppHelper.getStringFromEnum(profileDetails.annualIncome),
                     textAlign: TextAlign.left,
                     style: TextStyle(
                         color: Color.fromRGBO(18, 22, 25, 1),
@@ -1187,10 +1178,11 @@ class CareerInfoCard extends StatelessWidget {
             ),
           ),
           Container(
-              margin: EdgeInsets.fromLTRB(20, 150, 0, 0),
-              width: 149,
-              height: 46,
-              child: Stack(children: <Widget>[
+            margin: EdgeInsets.fromLTRB(20, 150, 0, 0),
+            // width: 149,
+            height: 46,
+            child: Stack(
+              children: <Widget>[
                 Text(
                   'Highest Education',
                   textAlign: TextAlign.left,
@@ -1206,9 +1198,7 @@ class CareerInfoCard extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
                   child: Text(
-                    profileDetails != null
-                        ? profileDetails!.highiestEducation
-                        : "",
+                    profileDetails.highiestEducation,
                     textAlign: TextAlign.left,
                     style: TextStyle(
                         color: Color.fromRGBO(18, 22, 25, 1),
@@ -1220,7 +1210,9 @@ class CareerInfoCard extends StatelessWidget {
                         height: 1.5714285714285714),
                   ),
                 ),
-              ])),
+              ],
+            ),
+          ),
           Container(
             margin: EdgeInsets.fromLTRB(20, 200, 0, 0),
             width: 150,
@@ -1494,7 +1486,8 @@ class FamilyInfoCard extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
                     child: Text(
-                      AppHelper.getStringFromEnum(profileDetails.fatherOccupation),
+                      AppHelper.getStringFromEnum(
+                          profileDetails.fatherOccupation),
                       textAlign: TextAlign.left,
                       style: TextStyle(
                           color: Color.fromRGBO(18, 22, 25, 1),
@@ -1527,7 +1520,8 @@ class FamilyInfoCard extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
                     child: Text(
-                      AppHelper.getStringFromEnum(profileDetails.motherOccupation),
+                      AppHelper.getStringFromEnum(
+                          profileDetails.motherOccupation),
                       textAlign: TextAlign.left,
                       style: TextStyle(
                           color: Color.fromRGBO(18, 22, 25, 1),
@@ -1676,6 +1670,7 @@ class AboutCard extends StatelessWidget {
                     await Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => Bio(
                               userRepository: getIt<UserRepository>(),
+                              toUpdate: true,
                             )));
                     BlocProvider.of<MyProfileBloc>(context).loadMyData();
                   },
@@ -1716,9 +1711,10 @@ class BasicInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     print(profileDetails.occupation);
     return Container(
-        width: 350,
-        height: 194,
-        child: Stack(children: <Widget>[
+      width: 350,
+      height: 194,
+      child: Stack(
+        children: <Widget>[
           Container(
               margin: EdgeInsets.only(left: 1),
               width: 350,
@@ -1763,9 +1759,7 @@ class BasicInfoCard extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             Text(
-                              profileDetails != null
-                                  ? profileDetails!.dateOfBirth
-                                  : "",
+                              '${AppHelper.getAgeFromDob(profileDetails.dateOfBirth)} yrs, ${AppHelper.getReadableDob(profileDetails.dateOfBirth)}',
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                   color: Color.fromRGBO(18, 22, 25, 1),
@@ -1828,7 +1822,8 @@ class BasicInfoCard extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             Text(
-                             AppHelper.heightString(profileDetails.height)  + ' inches',
+                              AppHelper.heightString(profileDetails.height) +
+                                  ' inches',
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                   color: Color.fromRGBO(18, 22, 25, 1),
@@ -1907,10 +1902,14 @@ class BasicInfoCard extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () async {
-                    await Navigator.of(context).push(MaterialPageRoute(
+                    await Navigator.of(context).push(
+                      MaterialPageRoute(
                         builder: (context) => About(
-                              userRepository: getIt<UserRepository>(),
-                            )));
+                          userRepository: getIt<UserRepository>(),
+                          toUpdate: true,
+                        ),
+                      ),
+                    );
                     BlocProvider.of<MyProfileBloc>(context).loadMyData();
                   },
                   child: Image.asset(
@@ -1922,7 +1921,9 @@ class BasicInfoCard extends StatelessWidget {
               ],
             ),
           ),
-        ]));
+        ],
+      ),
+    );
   }
 
   String getProfileManagedBy(Relationship relationship) {
@@ -1944,18 +1945,26 @@ class BasicInfoCard extends StatelessWidget {
 }
 
 void OnNavigateToReligion(BuildContext context) async {
-  await Navigator.of(context).push(MaterialPageRoute(
+  await Navigator.of(context).push(
+    MaterialPageRoute(
       builder: (context) => Religion(
-            userRepository: getIt<UserRepository>(),
-          )));
+        userRepository: getIt<UserRepository>(),
+        toUpdate: true,
+      ),
+    ),
+  );
   BlocProvider.of<MyProfileBloc>(context).loadMyData();
 }
 
 void navigateToCareer(BuildContext context) async {
-  await Navigator.of(context).push(MaterialPageRoute(
+  await Navigator.of(context).push(
+    MaterialPageRoute(
       builder: (context) => Occupations(
-            userRepository: getIt<UserRepository>(),
-          )));
+        userRepository: getIt<UserRepository>(),
+        toUpdate: true,
+      ),
+    ),
+  );
   BlocProvider.of<MyProfileBloc>(context).loadMyData();
 }
 
@@ -1971,6 +1980,7 @@ void navigateToFamily(BuildContext context) async {
             countryModel: null,
             stateModel: null,
             city: null,
+        toUpdate: true,
           )));
   BlocProvider.of<MyProfileBloc>(context).loadMyData();
 }

@@ -192,7 +192,13 @@ class AppBloc extends Bloc<AppEvent, AppState> {
                     otherUserId,
                   );
                   if (result.status == AppConstants.SUCCESS) {
-                    onDone();
+
+                    try{
+                      Navigator.of(context).pop();
+                      onDone();
+                    }catch(e){
+                      UtilityService.cprint(e.toString());
+                    }
                   } else {
                     onError();
                   }

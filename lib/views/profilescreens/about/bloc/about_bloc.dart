@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:makemymarry/views/profilescreens/about/bloc/about_event.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
+import 'package:makemymarry/views/profilescreens/about/bloc/about_event.dart';
 
 import 'about_state.dart';
 
@@ -14,14 +14,17 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController editNameController = TextEditingController();
   AboutBloc(this.userRepository)
-      : super(AboutIdleState(
+      : super(
+          AboutIdleState(
             maritalStatus: MaritalStatus.NeverMarried,
             abilityStatus: AbilityStatus.Normal,
             childrenStatus: ChildrenStatus.No,
             noOfChildren: NoOfChildren.One,
-            heightStatus: 0,
+            heightStatus: 48,
             dateOfBirth: null,
-            name: null));
+            name: null,
+          ),
+        );
 
   ProfileDetails? profileDetails;
   String? basicUserId;
@@ -35,14 +38,13 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
 
       if (result.status == AppConstants.SUCCESS) {
         this.profileDetails = result.profileDetails;
-        editNameController.text =  profileDetails?.name ?? "";
+        editNameController.text = profileDetails?.name ?? "";
         yield AboutIdleState(
             maritalStatus: profileDetails?.maritalStatus,
             abilityStatus: profileDetails?.abilityStatus,
             childrenStatus: profileDetails?.childrenStatus,
             noOfChildren: profileDetails?.noOfChildren,
-            heightStatus: 0,
-            // heightStatus: profileDetails?.height,
+            heightStatus: (profileDetails?.height ?? 48).toInt(),
             dateOfBirth: DateTime.parse(profileDetails!.dateOfBirth),
             name: profileDetails?.name);
       } else {
@@ -118,10 +120,11 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
                   (state as AboutIdleState).dateOfBirth!);
           this.userRepository.useDetails!.maritalStatus =
               (state as AboutIdleState).maritalStatus!;
-          this.userRepository.useDetails!.height = double.parse(
-              AppHelper.getHeights()[(state as AboutIdleState).heightStatus!]);
+          this.userRepository.useDetails!.height =
+              (state as AboutIdleState).heightStatus!.toDouble();
           this.userRepository.useDetails!.abilityStatus =
               (state as AboutIdleState).abilityStatus!;
+          print(this.userRepository.useDetails!.height.toString() + "========================== height");
           await this
               .userRepository
               .storageService

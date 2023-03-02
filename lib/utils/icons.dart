@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:makemymarry/app/bloc/app_bloc.dart';
 import 'package:makemymarry/locator.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
-import 'package:makemymarry/views/stackviewscreens/meet%20status/meet_status_screen.dart';
 
 import '../views/chat_room/chat_page.dart';
 
@@ -89,6 +90,7 @@ class MmmIcons {
       ),
     );
   }
+
   static Widget largeConnect({Function()? action, bool isHalf = false}) {
     return InkWell(
       onTap: () {
@@ -96,7 +98,7 @@ class MmmIcons {
       },
       child: Container(
         height: isHalf ? 56 : 64,
-        width: isHalf ? 56 :64,
+        width: isHalf ? 56 : 64,
         child: Center(
           child: SvgPicture.asset(
             "images/connect.svg",
@@ -117,7 +119,10 @@ class MmmIcons {
     );
   }
 
-  static Container cancel({Function()? action,Function()? longAction,}) {
+  static Container cancel({
+    Function()? action,
+    Function()? longAction,
+  }) {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -157,14 +162,14 @@ class MmmIcons {
     );
   }
 
-  static Widget largeCancel({required Function() action,bool isHalf = false}) {
+  static Widget largeCancel({required Function() action, bool isHalf = false}) {
     return InkWell(
       onTap: () {
         action.call();
       },
       child: Container(
         height: isHalf ? 56 : 64,
-        width: isHalf ? 56 :64,
+        width: isHalf ? 56 : 64,
         child: Center(
           child: SvgPicture.asset(
             "images/cancel.svg",
@@ -185,7 +190,7 @@ class MmmIcons {
     );
   }
 
-  static Widget largeAccept({required Function() action,bool isHalf = false}) {
+  static Widget largeAccept({required Function() action, bool isHalf = false}) {
     return InkWell(
       onTap: () {
         action.call();
@@ -213,14 +218,15 @@ class MmmIcons {
       ),
     );
   }
-  static Widget largeReject({required Function() action,bool isHalf = false}) {
+
+  static Widget largeReject({required Function() action, bool isHalf = false}) {
     return InkWell(
       onTap: () {
         action.call();
       },
       child: Container(
         height: isHalf ? 56 : 64,
-        width: isHalf ? 56 :64,
+        width: isHalf ? 56 : 64,
         child: Center(
           child: SvgPicture.asset(
             "images/Cross.svg",
@@ -241,14 +247,15 @@ class MmmIcons {
       ),
     );
   }
-  static Widget largeHeart({required Function() action,bool isHalf = false}) {
+
+  static Widget largeHeart({required Function() action, bool isHalf = false}) {
     return InkWell(
       onTap: () {
         action.call();
       },
       child: Container(
         height: isHalf ? 32 : 64,
-        width: isHalf ? 32 :64,
+        width: isHalf ? 32 : 64,
         child: Center(
           child: SvgPicture.asset(
             "images/heart.svg",
@@ -348,7 +355,8 @@ class MmmIcons {
     );
   }
 
-  static Container chat(BuildContext context,String userId, Future<void> Function() onTap) {
+  static Container chat(BuildContext context, String userId,
+      Future<void> Function() onTap, dynamic profileDetails) {
     return Container(
       decoration: BoxDecoration(
         color: Color(0xffFF758F),
@@ -372,8 +380,15 @@ class MmmIcons {
           child: InkWell(
             onTap: () async {
               await onTap.call();
-              navigatorKey.currentState
-                  ?.push((await ChatPage.getRoute(context, userId)));
+              context.read<AppBloc>().connectNow(
+                  otherUserId: userId,
+                  onDone: () async {
+                    navigatorKey.currentState?.push((await ChatPage.getRoute(
+                        navigatorKey.currentContext!, userId)));
+                  },
+                  onError: () async {},
+                  profileDetails: profileDetails,
+                  context: context);
             },
             child: Container(
               height: 34,
@@ -390,7 +405,8 @@ class MmmIcons {
     );
   }
 
-  static Widget largeChat(BuildContext context,String userId, Future<void> Function() onTap,
+  static Widget largeChat(
+      BuildContext context, String userId, Future<void> Function() onTap,
       {bool isHalf = false}) {
     return InkWell(
         onTap: () async {

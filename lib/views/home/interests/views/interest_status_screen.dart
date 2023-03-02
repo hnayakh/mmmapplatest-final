@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:makemymarry/datamodels/interests_model.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/colors.dart';
-import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 
-import 'accepted_interest/accepted.dart';
 import '../bloc/interest_events.dart';
 import '../bloc/interest_states.dart';
 import '../bloc/interests_bloc.dart';
+import 'accepted_interest/accepted.dart';
 import 'recieved_interest/received.dart';
 import 'sent_interest/sent.dart';
 

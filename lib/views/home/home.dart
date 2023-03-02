@@ -7,6 +7,7 @@ import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/stackviewscreens/notification_list.dart';
 import 'package:makemymarry/views/stackviewscreens/search_screen.dart';
+
 import '../profile_detail_view/profile_view_bloc.dart';
 import 'interests/views/interest_status_screen.dart';
 import 'matching_profile/views/matching_profile.dart';

@@ -1,30 +1,25 @@
 import 'dart:io';
-import 'dart:developer';
-import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
-import 'package:makemymarry/saurabh/profile_detail.dart';
 import 'package:makemymarry/utils/buttons.dart';
-import 'package:makemymarry/utils/dimens.dart';
+import 'package:makemymarry/utils/text_styles.dart';
+import 'package:makemymarry/utils/widgets_large.dart';
+import 'package:makemymarry/views/home/interests/views/interest_status_screen.dart';
 import 'package:makemymarry/views/home/matching_profile/bloc/matching_profile_bloc.dart';
 import 'package:makemymarry/views/home/matching_profile/views/matching_profile.dart';
+import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
+import 'package:makemymarry/views/home/menu/account_menu_event.dart';
+import 'package:makemymarry/views/home/menu/account_menu_state.dart';
 import 'package:makemymarry/views/home/my_connects/my_connects_screen.dart';
 import 'package:makemymarry/views/signinscreens/signin_page.dart';
 import 'package:makemymarry/views/stackviewscreens/search_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/my_profile/myprofile.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/setting_screen.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:makemymarry/utils/text_styles.dart';
-import 'package:makemymarry/utils/widgets_large.dart';
-import 'package:makemymarry/views/home/interests/views/interest_status_screen.dart';
-import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
-import 'package:makemymarry/views/home/menu/account_menu_event.dart';
-import 'package:makemymarry/views/home/menu/account_menu_state.dart';
-import 'package:makemymarry/views/profilescreens/bio/views/bio.dart';
-import 'package:makemymarry/views/signinscreens/phone%20signin/phone_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'wallet/wallet_main.dart';

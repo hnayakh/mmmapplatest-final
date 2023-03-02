@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -15,23 +14,21 @@ import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/elevations.dart';
-import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
-import 'package:makemymarry/utils/utility_service.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
-import 'package:makemymarry/views/profile_loader/profile_loader.dart';
 import 'package:makemymarry/views/profilescreens/bio/views/image_picker_dialog.dart';
-import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference.dart';
 
 import '../bloc/bio_bloc.dart';
-import '../bloc/bio_state.dart';
 import '../bloc/bio_event.dart';
+import '../bloc/bio_state.dart';
 
 class Bio extends StatelessWidget {
   final UserRepository userRepository;
+  final bool toUpdate;
 
-  const Bio({Key? key, required this.userRepository}) : super(key: key);
+  const Bio({Key? key, required this.userRepository,  this.toUpdate = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,13 +36,14 @@ class Bio extends StatelessWidget {
       create: (context) => BioBloc(
         userRepository,
       ),
-      child: BioScreen(),
+      child: BioScreen(toUpdate: toUpdate),
     );
   }
 }
 
 class BioScreen extends StatefulWidget {
-  const BioScreen({Key? key}) : super(key: key);
+  final bool toUpdate;
+  const BioScreen({Key? key, required this.toUpdate}) : super(key: key);
 
   @override
   _BioScreenState createState() => _BioScreenState();
@@ -81,9 +79,9 @@ class _BioScreenState extends State<BioScreen> {
               ));
             }
             if (state is OnUpdate) {
-              if(this.userDetails.registrationStep > 8 ){
+              if (widget.toUpdate) {
                 Navigator.of(context).pop();
-              }else {
+              } else {
                 navigateToProfilePreference();
               }
             }
@@ -91,13 +89,12 @@ class _BioScreenState extends State<BioScreen> {
           builder: (context, state) {
             initData(context);
 
-
             return Stack(
               children: [
                 Container(
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
                       MmmButtons.appBarCurved('About', context: context),
                       Expanded(
                         child: Container(
@@ -235,42 +232,38 @@ class _BioScreenState extends State<BioScreen> {
                               SizedBox(
                                 height: 20,
                               ),
-                              this.userDetails.registrationStep > 8
-                                  ? MmmButtons.enabledRedButtonbodyMedium(
-                                      50, 'Save', action: () {
-                                      FocusScope.of(context)
-                                          .requestFocus(FocusNode());
-                                      if((this.aboutMe?.length ?? 0) < 100 ){
-                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                          content: Text("Please write at least 100 letters in about me section"),
-                                          backgroundColor: Colors.red,
-                                        ));
-                                        return;
-                                      }
-                                      BlocProvider.of<BioBloc>(context).add(
-                                          UpdateBio(this.aboutMe!, this.localImagePaths, this.userDetails.registrationStep > 8
-                                              ));
-                                    })
-                                  : MmmButtons.enabledRedButtonbodyMedium(
-                                      50, 'Submit your details', action: () {
-                                      FocusScope.of(context)
-                                          .requestFocus(FocusNode());
-                                      if((this.aboutMe?.length ?? 0) < 100 ){
-                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                          content: Text("Please write at least 100 letters in about me section"),
-                                          backgroundColor: Colors.red,
-                                        ));
-                                        return;
-                                      }
-                                      BlocProvider.of<BioBloc>(context).add(
-                                          UpdateBio(this.aboutMe!,
-                                              this.localImagePaths, this.userDetails.registrationStep > 8));
-                                    })
+                              MmmButtons.enabledRedButtonbodyMedium(
+                                      50,
+                                      'Save',
+                                      action: () {
+                                        FocusScope.of(context)
+                                            .requestFocus(FocusNode());
+                                        if ((this.aboutMe?.length ?? 0) < 100) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text(
+                                                "Please write at least 100 letters in about me section"),
+                                            backgroundColor: Colors.red,
+                                          ));
+                                          return;
+                                        }
+                                        BlocProvider.of<BioBloc>(context).add(
+                                          UpdateBio(
+                                            this.aboutMe!,
+                                            this.localImagePaths,
+                                            widget.toUpdate
+                                          ),
+                                        );
+                                      },
+                                    )
+
                             ],
                           ),
                         ),
                       )
-                    ])),
+                    ],
+                  ),
+                ),
                 state is OnLoading
                     ? MmmWidgets.buildLoader(context)
                     : Container()
@@ -375,7 +368,6 @@ class _BioScreenState extends State<BioScreen> {
                 borderRadius: BorderRadius.circular(8)),
             child: TextField(
                 controller: bioController,
-
                 maxLength: 2000,
                 onChanged: (value) {
                   this.aboutMe = value;
@@ -538,12 +530,12 @@ class _BioScreenState extends State<BioScreen> {
     this.aboutMe = this.bioController.text;
 
     if (BlocProvider.of<BioBloc>(context).profileData != null) {
-      print("aboutMe  ${this.aboutMe}");
+
       if (this.aboutMe == null || this.aboutMe == '') {
         this.aboutMe =
             BlocProvider.of<BioBloc>(context).profileData!.aboutmeMsg;
 
-        print("object123${this.aboutMe}");
+
         this.bioController.text = this.aboutMe ?? "";
       }
       if (this.localImagePaths.length == 0) {

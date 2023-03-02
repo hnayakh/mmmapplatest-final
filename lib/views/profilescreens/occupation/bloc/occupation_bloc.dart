@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
-
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
@@ -35,6 +34,22 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
 
       if (result.status == AppConstants.SUCCESS) {
         this.profileDetails = result.profileDetails;
+        if (this.education == null)
+          this.education = this.profileDetails!.highiestEducation;
+        if (this.occupation == null)
+          this.occupation = this.profileDetails!.occupation;
+        if (this.annualIncome == null)
+          this.annualIncome = this.profileDetails!.annualIncome;
+        if (this.city == null) {
+          var cityName = this.profileDetails!.city;
+          var cityId = this.profileDetails!.cityId;
+          this.city = StateModel(cityName, cityId);
+        }
+        if (this.myState == null) {
+          var stateName = this.profileDetails!.state;
+          var stateId = this.profileDetails!.stateId;
+          this.myState = StateModel(stateName, stateId);
+        }
         yield OccupationDetailsState(result.profileDetails);
       } else {
         yield OnError(result.message);
@@ -63,7 +78,6 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
           this.city = null;
         }
       }
-
       yield OccupationInitialState();
     }
     if (event is OnStateSelected) {
@@ -131,21 +145,20 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
         yield OnError('Enter name of country belonging to.');
       } else if (this.myState == null) {
         yield OnError('Enter name of state belonging to.');
-      } else if (this.city == null) {
+      } else if (this.city == null && this.countryModel?.id == 101) {
         yield OnError('Enter name of city belonging to.');
       } else if (this.occupation == null) {
         yield OnError('select your occupation.');
       } else if (this.education == null) {
         yield OnError('select your educational qualifications.');
       } else {
-
         var result = await this.userRepository.career(
               this.occupation!,
               this.annualIncome!,
               this.education!,
               this.countryModel!,
               this.myState!,
-              this.city!,
+              this.city ?? StateModel("", 0),
             );
 
         if (result.status == AppConstants.SUCCESS) {
