@@ -16,7 +16,7 @@ import '../connects/views/audio_call.dart';
 import 'chat_body.dart';
 import 'chat_cubit.dart';
 
-class ChatPage extends StatefulWidget {
+class ChatPage extends StatelessWidget {
   const ChatPage(
       {required this.room, required this.userRepo, this.allowCalls = false});
 
@@ -25,34 +25,10 @@ class ChatPage extends StatefulWidget {
   final bool allowCalls;
 
   @override
-  State<ChatPage> createState() => _ChatPageState();
-
-  static Future<Route<Object?>> getRoute(BuildContext context, String userId) async {
-    var otherUser = await getIt<ChatRepo>().getChatUser(id: userId);
-    String currentId = (BlocProvider.of<AppBloc>(context).state
-            as AppLoggedInState)
-        .currentUserId;
-    var chatRoom = await getIt<ChatRepo>().getChatRoom(currentId, otherUser);
-    return MaterialPageRoute(
-      builder: (context) => ChatPage(
-        room: chatRoom,
-        userRepo: getIt<UserRepository>(),
-      ),
-    );
-  }
-}
-
-class _ChatPageState extends State<ChatPage> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ChatCubit(
-        chatRoom: widget.room,
+        chatRoom: room,
       ),
       child: Builder(
         builder: (context) {
@@ -62,13 +38,13 @@ class _ChatPageState extends State<ChatPage> {
             appBar: AppBar(
               flexibleSpace: Container(
                   decoration: BoxDecoration(
-                borderRadius:
+                    borderRadius:
                     BorderRadius.only(bottomRight: Radius.circular(100)),
-                gradient: LinearGradient(
-                    colors: [kSecondary, kPrimary],
-                    begin: Alignment.bottomRight,
-                    end: Alignment.topLeft),
-              )),
+                    gradient: LinearGradient(
+                        colors: [kSecondary, kPrimary],
+                        begin: Alignment.bottomRight,
+                        end: Alignment.topLeft),
+                  )),
               leading: InkWell(
                 onTap: () {
                   context.navigate.pop();
@@ -82,11 +58,11 @@ class _ChatPageState extends State<ChatPage> {
               title: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (widget.room.imageUrl.isNotNullEmpty)
+                  if (room.imageUrl.isNotNullEmpty)
                     CircleAvatar(
                       minRadius: 24,
                       backgroundImage: NetworkImage(
-                        widget.room.imageUrl!,
+                        room.imageUrl!,
                       ),
                     ),
                   SizedBox(
@@ -94,83 +70,96 @@ class _ChatPageState extends State<ChatPage> {
                   ),
                   Flexible(
                     child: Text(
-                      '${widget.room.name}',
+                      '${room.name}',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       softWrap: true,
                       style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],
               ),
-              actions: !widget.allowCalls
+              actions: !allowCalls
                   ? null
                   : <Widget>[
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                context.navigate.push(
-                                  MaterialPageRoute(
-                                    builder: (context) => VideoCallView(
-                                      uid: widget.room.users.last.id,
-                                      imageUrl: widget.room.imageUrl!,
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                child: Image.asset(
-                                  'images/video.png',
-                                  // width: 30,
-                                  height: 36,
-                                  color: Colors.white,
-                                ),
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          context.navigate.push(
+                            MaterialPageRoute(
+                              builder: (context) => VideoCallView(
+                                uid: room.users.last.id,
+                                imageUrl: room.imageUrl!,
                               ),
                             ),
-                            const SizedBox(
-                              width: 12,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                context.navigate.push(
-                                  MaterialPageRoute(
-                                    builder: (context) => AudioCallView(
-                                      uid: widget.room.users.last.id,
-                                      imageUrl: widget.room.imageUrl!,
-                                      userRepo: widget.userRepo,
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                child: Image.asset(
-                                  'images/audio.png',
-                                  height: 30,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                          ],
+                          );
+                        },
+                        child: Container(
+                          child: Image.asset(
+                            'images/video.png',
+                            // width: 30,
+                            height: 36,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
+                      const SizedBox(
+                        width: 12,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          context.navigate.push(
+                            MaterialPageRoute(
+                              builder: (context) => AudioCallView(
+                                uid: room.users.last.id,
+                                imageUrl: room.imageUrl!,
+                                userRepo: userRepo,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          child: Image.asset(
+                            'images/audio.png',
+                            height: 30,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
                     ],
+                  ),
+                ),
+              ],
               toolbarHeight: MediaQuery.of(context).size.height * 0.1,
               backgroundColor: primaryColor,
               shape: const ContinuousRectangleBorder(
                   borderRadius: BorderRadius.only(
-                      //bottomLeft: Radius.circular(30),
+                    //bottomLeft: Radius.circular(30),
                       bottomRight: Radius.circular(100))),
             ),
             body: ChatBody(),
           );
         },
+      ),
+    );
+  }
+  static Future<Route<Object?>> getRoute(BuildContext context, String userId) async {
+    var otherUser = await getIt<ChatRepo>().getChatUser(id: userId);
+    String currentId = (BlocProvider.of<AppBloc>(context).state
+            as AppLoggedInState)
+        .currentUserId;
+    var chatRoom = await getIt<ChatRepo>().getChatRoom(currentId, otherUser);
+    return MaterialPageRoute(
+      builder: (context) => ChatPage(
+        room: chatRoom,
+        userRepo: getIt<UserRepository>(),
       ),
     );
   }

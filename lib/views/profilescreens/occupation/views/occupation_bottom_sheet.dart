@@ -28,8 +28,9 @@ class OccupationBottomSheetState extends State<OccupationBottomSheet> {
 
   @override
   void initState() {
-    filtered = widget.list;
     super.initState();
+    filtered = widget.list;
+
   }
 
   @override

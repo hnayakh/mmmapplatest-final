@@ -179,7 +179,6 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
     this.abilityStatus =
         BlocProvider.of<ProfilePreferenceBloc>(context).abilityStatus;
     this.gothra = BlocProvider.of<ProfilePreferenceBloc>(context).gothra;
-    print("GOTHARA${this.gothra}");
     this.disabilityPreference =
         BlocProvider.of<FilterBloc>(context).disabilityType;
   }
@@ -665,7 +664,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
         'Interest',
         this.interestHabit.length > 0
             ? getStringFromInterest(this.interestHabit)
-            : 'Select your Interest status',
+            : 'Does not matter',
         'Select your Interest status',
         'images/rightArrow.svg', action: () {
       interestStatusBottomSheet();
@@ -701,7 +700,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
         'Eating Habit',
         this.eatingHabit.length > 0
             ? getStringFromEating(this.eatingHabit)
-            : 'Select your Eating status',
+            : 'Does not matter',
         'Select your Eating status',
         'images/rightArrow.svg', action: () {
       eatingStatusBottomSheet();
@@ -737,7 +736,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
         'Drinking Habit',
         this.drinkingHabit.length > 0
             ? getStringFromDrinking(this.drinkingHabit)
-            : 'Select your drinking status',
+            : 'Does not matter',
         'Select your drinking status',
         'images/rightArrow.svg', action: () {
       drinkingtatusBottomSheet();
@@ -773,7 +772,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
         'Smoking Habit',
         this.smokingHabit.length > 0
             ? getStringFromSmoking(this.smokingHabit)
-            : 'Select your Smoking status',
+            : 'Does not matter',
         'Select your Smoking status',
         'images/rightArrow.svg', action: () {
       smokingtatusBottomSheet();

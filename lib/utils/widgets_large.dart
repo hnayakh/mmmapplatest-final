@@ -1184,7 +1184,7 @@ class MmmWidgets {
                     },
                     child: Center(
                       child: Text(
-                        'Latter',
+                        'Later',
                         style: MmmTextStyles.heading6(textColor: gray4),
                       ),
                     ),

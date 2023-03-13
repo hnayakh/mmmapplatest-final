@@ -83,10 +83,9 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
     this.userDetails =
         BlocProvider.of<FamilyDetailsBloc>(context).userRepository.useDetails!;
 
-    if (widget.toUpdate) {
+
       BlocProvider.of<FamilyDetailsBloc>(context)
           .add(onFamilyDetailDataLoad(userDetails.id));
-    }
     return BlocConsumer<FamilyDetailsBloc, FamilyDetailState>(
         builder: (context, state) {
       initData();

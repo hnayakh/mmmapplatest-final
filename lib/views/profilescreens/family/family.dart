@@ -40,9 +40,10 @@ class _FamilyScreenState extends State<FamilyScreen>
 
   @override
   void initState() {
+    super.initState();
     tabController = TabController(length: 2, vsync: this);
 
-    super.initState();
+
   }
 
   @override
@@ -57,13 +58,11 @@ class _FamilyScreenState extends State<FamilyScreen>
                 widget.countryModel,
                 widget.stateModel,
                 widget.city,
-
               ),
             ),
             BlocProvider(
               create: (context) => FamilyDetailsBloc(
                 widget.userRepository,
-
               ),
             )
           ],
@@ -171,12 +170,12 @@ class _FamilyScreenState extends State<FamilyScreen>
                       countryModel: widget.countryModel,
                       stateModel: widget.stateModel,
                       city: widget.city,
-                      toUpdate : widget.toUpdate,
+                      toUpdate: widget.toUpdate,
                     ),
                     FamilyDetails(
                       userRepository: widget.userRepository,
                       onComplete: onComplete,
-                      toUpdate : widget.toUpdate,
+                      toUpdate: widget.toUpdate,
                     ),
                   ],
                 ),
@@ -188,7 +187,7 @@ class _FamilyScreenState extends State<FamilyScreen>
     );
   }
 
-  void onComplete() {
+  void onComplete() async {
     if (this.tabController.index == 0) {
       setState(() {
         globals.familyBackgroundComplete = true;
@@ -208,6 +207,9 @@ class _FamilyScreenState extends State<FamilyScreen>
       if (widget.toUpdate) {
         Navigator.of(context).pop();
       } else {
+        await widget.userRepository
+            .updateRegistartionStep(widget.userRepository.useDetails!.id, 7);
+        widget.userRepository.updateRegistrationStep(7);
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => Habit(

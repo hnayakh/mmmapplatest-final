@@ -126,6 +126,7 @@ class MmmButtons {
         width: 40,
         height: 40,
         padding: EdgeInsets.all(2),
+        margin: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
         decoration: BoxDecoration(
             color: kWhite,
             borderRadius: BorderRadius.all(Radius.circular(5.85))),
@@ -806,7 +807,7 @@ class MmmButtons {
                               style: MmmTextStyles.heading6()),
                           Flexible(
                             child: Text(
-                              "$city,$state,$country",
+                              "$city${city.isNotEmpty ? ",": ""} $state,$country",
                               style: MmmTextStyles.bodySmall(),
                               maxLines: 2,
                             ),

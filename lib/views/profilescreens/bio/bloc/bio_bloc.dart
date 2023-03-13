@@ -104,12 +104,20 @@ class BioBloc extends Bloc<BioEvent, BioState> {
       }
     }
     if (event is AddImage) {
+      if (this
+              .localImagePaths
+              .where((element) => element != "addImage")
+              .length >=
+          10) {
+        yield OnError('You can select only up to 10 Images.');
+        return;
+      }
       var result = await this.userRepository.uploadImage(event.images);
       if (result != null) {
         this.localImagePaths.insert((this.localImagePaths.length - 1), result);
         yield BioInitialState();
       } else {
-        yield OnError('Couldnot upload image');
+        yield OnError('Could not upload image');
       }
     }
     if (event is ChangeProfilePic) {
@@ -118,6 +126,9 @@ class BioBloc extends Bloc<BioEvent, BioState> {
     }
     if (event is RemoveImage) {
       this.localImagePaths.removeAt(event.pos);
+      if (this.profileImage == this.localImagePaths[event.pos]) {
+        this.profileImage = this.localImagePaths[0];
+      }
       yield BioInitialState();
     }
     if (event is FetchMyImage) {

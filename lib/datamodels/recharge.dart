@@ -59,7 +59,7 @@ class ConnectPriceDetailsResponse {
 
     if (this.status == AppConstants.SUCCESS) {
       this.couponDetails =
-          ConnectPriceDetails.fromJson((json["data"] as List).last);
+          ConnectPriceDetails.fromJson((json["data"] as List).first);
     }
   }
 

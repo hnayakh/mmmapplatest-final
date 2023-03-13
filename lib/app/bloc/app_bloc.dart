@@ -25,7 +25,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   @override
   Stream<AppState> mapEventToState(AppEvent event) async* {
     if (event is SignInEvent) {
-      var onlineMembers = chatRepo.getOnlineUsers();
+      var onlineMembers = chatRepo.getOnlineUsersStream();
       var response = await this.userRepository.fetchCurrentBalance();
       var connectCount = 0;
       if (response.status == AppConstants.SUCCESS) {

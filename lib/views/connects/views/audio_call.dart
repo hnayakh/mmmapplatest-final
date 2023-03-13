@@ -33,9 +33,9 @@ class AudioCallView extends StatefulWidget {
 class _State extends State<AudioCallView> {
   late final RtcEngine _engine;
   String channelId = "test";
-  bool isJoined = false, openMicrophone = true, enableSpeakerphone = true;
+  bool isJoined = false, openMicrophone = false, enableSpeakerphone = false;
 
-  var _maxSeconds = 300;
+  var _maxSeconds = 1800;
 
   int timeLeft = 0;
 
@@ -58,7 +58,6 @@ class _State extends State<AudioCallView> {
   void initState() {
     super.initState();
     _initEngine();
-    startTimer();
   }
 
   @override
@@ -89,6 +88,10 @@ class _State extends State<AudioCallView> {
       setState(() {
         isJoined = true;
       });
+    }, onUserJoined: (RtcConnection connection, int elapsed, int a) {
+      UtilityService.cprint(
+          '[onJoinChannelSuccess] connection: ${connection.toJson()} elapsed: $elapsed');
+      startTimer();
     }, onLeaveChannel: (RtcConnection connection, RtcStats stats) {
       UtilityService.cprint(
           '[onLeaveChannel] connection: ${connection.toJson()} stats: ${stats.toJson()}');
@@ -153,22 +156,22 @@ class _State extends State<AudioCallView> {
     await _engine.leaveChannel();
     setState(() {
       isJoined = false;
-      openMicrophone = true;
-      enableSpeakerphone = true;
+      openMicrophone = false;
+      enableSpeakerphone = false;
     });
     context.navigate.pop();
   }
 
   _switchMicrophone() async {
-    // await await _engine.muteLocalAudioStream(!openMicrophone);
-    await _engine.enableLocalAudio(!openMicrophone);
+    await _engine.muteLocalAudioStream(!openMicrophone);
     setState(() {
       openMicrophone = !openMicrophone;
     });
   }
 
   _switchSpeakerphone() async {
-    await _engine.setEnableSpeakerphone(!enableSpeakerphone);
+    _engine.setEnableSpeakerphone(!enableSpeakerphone);
+    await _engine.setDefaultAudioRouteToSpeakerphone(!enableSpeakerphone);
     setState(
       () {
         enableSpeakerphone = !enableSpeakerphone;
@@ -193,7 +196,9 @@ class _State extends State<AudioCallView> {
               flex: 2,
             ),
             Text(
-              "${(timeLeft ~/ 60).toString().padLeft(2, "0")}:${(timeLeft % 60).toString().padLeft(2, "0")}",
+              timeLeft <= 0
+                  ? "Connecting ..."
+                  : "${(timeLeft ~/ 60).toString().padLeft(2, "0")}:${(timeLeft % 60).toString().padLeft(2, "0")}",
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.black,
@@ -217,7 +222,7 @@ class _State extends State<AudioCallView> {
                 ),
                 _buildIconButton(
                     onTap: _switchMicrophone,
-                    icon: openMicrophone ? Icons.mic : Icons.mic_off_rounded),
+                    icon: !openMicrophone ? Icons.mic : Icons.mic_off_rounded),
                 SizedBox(
                   width: 12,
                 ),

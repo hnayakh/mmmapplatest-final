@@ -16,7 +16,7 @@ class HobbyBody extends StatelessWidget {
     return BlocConsumer<HobbyBloc, HobbyState>(
       listener: (context, state) {
         if (state is NavigateToMyProfile) {
-          Navigator.of(context).pop();
+          // Navigator.of(context).pop();
         }
       },
       builder: (context, state) {

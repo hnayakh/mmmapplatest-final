@@ -26,8 +26,9 @@ class EducationBottomSheetState extends State<EducationBottomSheet> {
 
   @override
   void initState() {
-    filtered = widget.list;
     super.initState();
+    filtered = widget.list;
+
   }
 
   @override

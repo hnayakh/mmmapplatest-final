@@ -64,7 +64,7 @@ class MmmTextFileds {
       String label, String hintText, TextEditingController controller,
       {TextInputType inputType: TextInputType.name,
       onTextChange,
-      bool isPassword: false,
+      bool isPassword: false,bool enable: true,int maxLength = 30,
       TextCapitalization textCapitalization: TextCapitalization.none}) {
     return Container(
       child: Column(
@@ -95,8 +95,9 @@ class MmmTextFileds {
           Container(
             height: 44,
             child: TextField(
-              maxLength: 30,
+              maxLength: maxLength,
               controller: controller,
+              enabled: enable,
               keyboardType: inputType,
               onChanged: onTextChange,
               textCapitalization: textCapitalization,

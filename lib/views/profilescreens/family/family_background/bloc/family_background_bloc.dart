@@ -18,9 +18,9 @@ class FamilyBackgroundBloc
   StateModel? myState, city;
   late bool canSelectStayingWithParent;
   bool isStayingWithParents = false;
-  final CountryModel? selectedCountry;
-  final StateModel? selectedState;
-  final StateModel? selectedCity;
+   CountryModel? selectedCountry;
+   StateModel? selectedState;
+   StateModel? selectedCity;
   ProfileDetails? profileDetails;
 
   FamilyBackgroundBloc(this.userRepository, this.selectedCountry,
@@ -44,10 +44,75 @@ class FamilyBackgroundBloc
 
       if (result.status == AppConstants.SUCCESS) {
         this.profileDetails = result.profileDetails;
+        if (this.level == null)
+          this.level = this.profileDetails!.familyAfluenceLevel;
+
+        if (this.values == null)
+          this.values = this.profileDetails!.familyValues;
+
+        this.type = this.profileDetails!.familyType;
+
+        var countryName = this.profileDetails!.familyCountry;
+        var countryId = this.profileDetails!.familyCountryId;
+        // if(profileDetails)
+        if (countryId >= 0) {
+          this.countryModel = CountryModel.fromJson({
+            "name": countryName,
+            "shortName": countryName,
+            "id": countryId,
+            "phoneCode": 0,
+          });
+        } else {
+          this.countryModel = null;
+        }
+        var stateName = this.profileDetails!.familyState;
+        var stateId = this.profileDetails!.familyStateId;
+        if (stateId >= 0) {
+          this.myState = StateModel(stateName, stateId);
+        } else {
+          this.myState = null;
+        }
+
+        var cityName = this.profileDetails!.familyCity;
+        var cityId = this.profileDetails!.familyCityId;
+        if (cityId >= 0) {
+          this.city = StateModel(cityName, cityId);
+        } else {
+          this.city = null;
+        }
+        var selectedCountryName = this.profileDetails!.country;
+        var selectedCountryId = this.profileDetails!.countryId;
+
+        if (selectedCountryId >= 0) {
+          this.selectedCountry = CountryModel.fromJson({
+            "name": selectedCountryName,
+            "shortName": selectedCountryName,
+            "id": selectedCountryId,
+            "phoneCode": 0,
+          });
+        } else {
+          this.selectedCountry = null;
+        }
+        var selectedStateName = this.profileDetails!.state;
+        var selectedStateId = this.profileDetails!.stateId;
+        if (selectedStateId >= 0) {
+          this.selectedState = StateModel(selectedStateName, selectedStateId);
+        } else {
+          this.selectedState = null;
+        }
+
+        var selectedCityName = this.profileDetails!.city;
+        var selectedCityId = this.profileDetails!.cityId;
+        if (selectedCityId >= 0) {
+          this.selectedCity = StateModel(selectedCityName, selectedCityId);
+        } else {
+          this.selectedCity = null;
+        }
         yield familyBackgroundDataState(result.profileDetails);
       } else {
         yield OnError(result.message);
       }
+
     }
     if (event is OnStayingWithParentsChanged) {
       this.isStayingWithParents = event.isStayingWithParents;
@@ -66,10 +131,17 @@ class FamilyBackgroundBloc
       yield FamilyBackgroundState();
     }
     if (event is OnCountrySelected) {
+      if (this.countryModel?.id != event.countryModel.id) {
+        this.myState = null;
+        this.city = null;
+      }
       this.countryModel = event.countryModel;
       yield FamilyBackgroundState();
     }
     if (event is OnStateSelected) {
+      if (this.myState?.id != event.stateModel.id) {
+        this.city = null;
+      }
       this.myState = event.stateModel;
       yield FamilyBackgroundState();
     }
@@ -86,6 +158,10 @@ class FamilyBackgroundBloc
       }
     }
     if (event is GetAllStates) {
+      if (this.countryModel == null) {
+        yield OnError("Select Country");
+        return;
+      }
       var result = await this.userRepository.getStates(this.countryModel!.id);
       if (result.status == AppConstants.SUCCESS) {
         yield OnGotStates(result.list);
@@ -94,6 +170,10 @@ class FamilyBackgroundBloc
       }
     }
     if (event is GetAllCities) {
+      if (this.myState == null) {
+        yield OnError("Select State");
+        return;
+      }
       var result = await this.userRepository.getCities(this.myState!.id);
       if (result.status == AppConstants.SUCCESS) {
         yield OnGotCities(result.list);
@@ -107,35 +187,43 @@ class FamilyBackgroundBloc
       this.isStayingWithParents = event.isStayingWithParents;
       this.city = event.city;
       this.myState = event.myState;
-      this.type = event.type ?? FamilyType.Nuclear;
+      this.type = event.type ?? FamilyType.Notmentioned;
 
-      if (this.level == null &&
-          this.values == null &&
-          !this.isStayingWithParents &&
-          myState == null &&
-          city == null) {
+      if ((this.level == null ||
+              this.level != FamilyAfluenceLevel.NotMentioned) &&
+          (this.values == null || this.values == FamilyValues.NotMentioned) &&
+          (this.type == FamilyType.Notmentioned) &&
+          (!this.isStayingWithParents && myState == null)) {
         yield OnError('Enter your family background');
       }
-      if (this.level == null) {
+      if (this.level == null ||
+          this.level == FamilyAfluenceLevel.NotMentioned) {
         yield OnError("Select Family Status");
-      } else if (this.values == null) {
+      } else if (this.values == null ||
+          this.values == FamilyValues.NotMentioned) {
         yield OnError("Select Family Values");
-      } else if (!this.isStayingWithParents && this.countryModel == null) {
+      } else if (this.type == FamilyType.Notmentioned) {
+        yield OnError("Select Family Type");
+      } else if (this.isStayingWithParents && this.countryModel == null) {
         yield OnError("Select Country");
-      } else if (!this.isStayingWithParents && myState == null) {
+      } else if (this.isStayingWithParents && myState == null) {
         yield OnError("Select State");
-      } else if (!this.isStayingWithParents && city == null) {
+      } else if (this.isStayingWithParents &&
+          city == null &&
+          this.countryModel?.id == 101) {
         yield OnError("Select City");
       } else {
         var result = await this.userRepository.updateFamilyBackground(
             this.level!,
             this.values!,
             this.type,
-            this.isStayingWithParents
+            !this.isStayingWithParents
                 ? this.selectedCountry!
                 : this.countryModel!,
-            this.isStayingWithParents ? this.selectedState! : this.myState!,
-            this.isStayingWithParents ? this.selectedCity! : this.city!);
+            !this.isStayingWithParents ? this.selectedState! : this.myState!,
+            !this.isStayingWithParents
+                ? this.selectedCity!
+                : (this.city ?? StateModel("", -1)));
         if (result.status == AppConstants.SUCCESS) {
           this.userRepository.useDetails!.registrationStep =
               result.userDetails!.registrationStep;

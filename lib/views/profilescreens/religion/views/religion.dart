@@ -71,14 +71,11 @@ class ReligionScreenState extends State<ReligionScreen> {
   late UserDetails userDetails;
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<ReligionBloc>(context).add(GetUserReligionMasterData());
     this.userDetails =
         BlocProvider.of<ReligionBloc>(context).userRepository.useDetails!;
-
-    if (this.userDetails.registrationStep > 3) {
       BlocProvider.of<ReligionBloc>(context)
           .add(onReligionDataLoad(userDetails.id));
-    }
+    BlocProvider.of<ReligionBloc>(context).add(GetUserReligionMasterData());
     return Scaffold(
       body: BlocConsumer<ReligionBloc, ReligionState>(
         builder: (context, state) {
@@ -316,11 +313,7 @@ class ReligionScreenState extends State<ReligionScreen> {
   }
 
   void navigateToMyProfile() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => MyProfileScreen(),
-      ),
-    );
+    Navigator.of(context).pop();
   }
 
   void initData() {

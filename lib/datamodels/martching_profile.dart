@@ -50,14 +50,14 @@ class MatchingProfile {
   // MatchingProfile.fromError(String error);
   MatchingProfile.fromPremiumJson(json) {
     this.id = json["userBasicId"];
-    this.name = json["name"];
-    this.city = json["city"];
-    this.state = json["state"];
+    this.name = json["name"] ?? "";
+    this.city = json["city"] ?? "";
+    this.state = json["state"] ?? "";
     this.religion = json["religion"] != null ? json["religion"] : "";
     this.motherTongue =
     json["motherTongue"] != null ? json["motherTongue"] : "";
-    this.dateOfBirth = json["dateOfBirth"];
-    this.imageUrl = json["imageURL"];
+    this.dateOfBirth = json["dateOfBirth"] ?? DateTime.now().toString();
+    this.imageUrl = json["imageURL"] ?? "";
     if (json["activationStatus"] != null) {
       this.activationStatus =
           ProfileActivationStatus.values[json["activationStatus"]];
@@ -217,8 +217,8 @@ class MatchingProfile {
     } else {
       this.state = "";
     }
-    if (json["careerCountry"] != null) {
-      this.city = json["careerCity"];
+    if (json["careerCity"] != null) {
+      this.city = json["careerCity"] ;
     } else {
       this.city = "";
     }
@@ -374,6 +374,7 @@ class ProfileDetails {
   late double height;
   late int cityId;
   late int stateId;
+  late int countryId;
   late String religionId = "";
   late String religionName = "";
   late String casteName;
@@ -399,7 +400,7 @@ class ProfileDetails {
   late int noOfSister, sistersMarried;
 
   late String familyState, familyCity, familyCountry;
-  late int familyStateId, familyCityId;
+  late int familyStateId, familyCityId, familyCountryId;
   List<String> images = [];
   late String aboutmeMsg = "";
   late ProfileActivationStatus activationStatus;
@@ -507,10 +508,11 @@ class ProfileDetails {
       this.employedin = userCareer["employedIn"];
       this.annualIncome = AnualIncome.values[userCareer["annualIncome"]];
       this.country = userCareer["countryName"];
+      this.countryId = userCareer["country"];
       this.state = userCareer["stateName"];
       this.stateId = userCareer["state"];
-      this.city = userCareer["cityName"];
-      this.cityId = userCareer["city"];
+      this.city = userCareer["cityName"] ?? "";
+      this.cityId = userCareer["city"] ?? -1;
       this.highiestEducation = userCareer["highestEducation"];
     } else {
       this.occupation = "";
@@ -518,6 +520,7 @@ class ProfileDetails {
       this.city = "";
       this.state = "";
       this.country = "";
+      this.countryId = -1;
       this.highiestEducation = "";
       this.employedin = "";
       this.cityId = -1;
@@ -536,6 +539,7 @@ class ProfileDetails {
       this.familyStateId = userFamilyBackground["state"];
       this.familyCity = userFamilyBackground["cityName"];
       this.familyCityId = userFamilyBackground["city"];
+      this.familyCountryId = userFamilyBackground["country"];
     } else {
       this.familyAfluenceLevel = FamilyAfluenceLevel.NotMentioned;
       this.familyValues = FamilyValues.NotMentioned;
@@ -545,6 +549,7 @@ class ProfileDetails {
       this.familyCity = "";
       this.familyCityId = -1;
       this.familyStateId = -1;
+      this.familyCountryId = -1;
     }
     if (json["userFamilyDetails"].length > 0) {
       var userFamilyDetail = json["userFamilyDetails"][0];
@@ -558,11 +563,10 @@ class ProfileDetails {
       this.noOfSister = userFamilyDetail["numberOfSisters"];
       this.sistersMarried = userFamilyDetail["marriedNumberOfSisters"];
     } else {
-      this.fatherOccupation = FatherOccupation.NotEmployed;
-      this.motherOccupation = MotherOccupation.HomeMaker;
+      this.fatherOccupation = FatherOccupation.NotMentioned;
+      this.motherOccupation = MotherOccupation.NotMentioned;
       this.noOfBrother = 0;
       this.brothersMarried = 0;
-
       this.noOfSister = 0;
       this.sistersMarried = 0;
     }

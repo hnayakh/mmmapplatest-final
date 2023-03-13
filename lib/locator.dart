@@ -10,8 +10,10 @@ import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:makemymarry/repo/chat_repo.dart';
 import 'package:makemymarry/repo/user_repo.dart';
+import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/simple_observer.dart';
 import 'package:makemymarry/views/connects/views/audio_call.dart';
+import 'package:makemymarry/views/connects/views/call_recieve_page.dart';
 import 'package:makemymarry/views/connects/views/video_call.dart';
 
 import 'datamodels/agora_token_response.dart';
@@ -51,35 +53,23 @@ setUpFirebase() async {
 }
 
 void handleNotificationData(RemoteMessage message) {
-  print('Got a message whilst in the foreground!');
-  print('Message data: ${message.data}');
   if (message.notification != null) {
     print('Message also contained a notification: ${message.notification}');
   }
   var token = AgoraToken.fromJson(message.data);
 
   if (message.notification != null) {
-    if (message.notification!.title != "Video call") {
-      navigatorKey.currentState!.push(
-        MaterialPageRoute(
-          builder: (context) => AudioCallView(
-            uid: '',
-            imageUrl: token.profileImage,
-            userRepo: getIt<UserRepository>(),
-            agoraToken: token,
-          ),
+    navigatorKey.currentState!.push(
+      MaterialPageRoute(
+        builder: (context) => CallAnswerPage(
+          callType: message.notification!.title != "Video call"
+              ? CallType.audioCall
+              : CallType.videoCall,
+          userImage: token.profileImage,
+          name: token.name,
+          token: token,
         ),
-      );
-    } else {
-      navigatorKey.currentState!.push(
-        MaterialPageRoute(
-          builder: (context) => VideoCallView(
-            uid: '',
-            imageUrl: token.profileImage,
-            agoraToken: token,
-          ),
-        ),
-      );
-    }
+      ),
+    );
   }
 }

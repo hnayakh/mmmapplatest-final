@@ -25,7 +25,7 @@ class SelectCountryBottomSheetState extends State<SelectCountryBottomSheet> {
   @override
   void initState() {
     this.filtered = List.of(widget.list, growable: true);
-    if (widget.countryModel == null) {
+    if (widget.countryModel != null) {
       widget.countryModel.name = '';
     }
     super.initState();
@@ -94,7 +94,7 @@ class SelectCountryBottomSheetState extends State<SelectCountryBottomSheet> {
                         children: [
                           Text(filtered[index].name,
                               style: MmmTextStyles.bodyMediumSmall(
-                                  textColor: widget.countryModel.name ==
+                                  textColor: widget.countryModel?.name ==
                                           filtered[index].name
                                       ? kPrimary
                                       : kModalPrimary)),

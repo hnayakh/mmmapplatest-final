@@ -330,7 +330,8 @@ class AppHelper {
         'Business Man',
         'Retired',
         'Not employed',
-        'Passed away'
+        'Passed away',
+        'Not Mentioned'
       ];
       return fatherOcc[enumEntry.index];
     } else if (enumName == 'MotherOccupation') {
@@ -339,7 +340,8 @@ class AppHelper {
         'Employed',
         'Business woman',
         'Retired',
-        'Passed away'
+        'Passed away',
+        'Not Mentioned'
       ];
       return motherOcc[enumEntry.index];
     }

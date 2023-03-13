@@ -6,6 +6,7 @@ import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/views/profilescreens/about/bloc/about_event.dart';
+import 'package:string_validator/string_validator.dart';
 
 import 'about_state.dart';
 
@@ -27,7 +28,7 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
         );
 
   ProfileDetails? profileDetails;
-  String? basicUserId;
+  String?basicUserId;
 
   @override
   Stream<AboutState> mapEventToState(AboutEvent event) async* {
@@ -92,7 +93,7 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
           (state as AboutIdleState).abilityStatus == null) {
         yield OnError('Please enter all mandatory details');
       }
-      if ((state as AboutIdleState).name == '') {
+      if ((state as AboutIdleState).name == '' || !isAlpha((state as AboutIdleState).name ?? "")) {
         yield OnError('Enter valid username.');
       } else if ((state as AboutIdleState).maritalStatus == null) {
         yield OnError('Select marital status.');

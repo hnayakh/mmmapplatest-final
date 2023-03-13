@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:makemymarry/utils/utility_service.dart';
@@ -209,7 +210,7 @@ class ChatRepo {
     }
   }
 
-  Stream<List<String>> getOnlineUsers() {
+  Stream<List<String>> getOnlineUsersStream() {
     try {
       var docRef = firestore
           .collection('users')
@@ -224,6 +225,23 @@ class ChatRepo {
     }
   }
 
+  Future<List<String>> getOnlineUsers() async {
+    try {
+
+      var docRef = firestore
+          .collection('users')
+          .where('metadata', isEqualTo: {'onlineStatus': true});
+      var res =  await docRef.get();
+      var ids = <String>[];
+      res.docs.forEach((element) {
+        ids.add(element.id);
+      });
+      return ids;
+    } catch (e, stacktrace) {
+      UtilityService.cprint(e.toString(), stackTrace: stacktrace);
+      rethrow;
+    }
+  }
   Stream<bool> getOnlineStatus(String userId) {
     try {
       var docRef = firestore.collection('users').doc(userId);

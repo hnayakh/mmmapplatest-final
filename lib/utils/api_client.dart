@@ -122,14 +122,15 @@ class ApiClient {
   }
 
   Future<SigninResponse> aboutVerification(
-      NoOfChildren? noOfChildren,
-      MaritalStatus? maritalStatus,
-      AbilityStatus? abilityStatus,
-      ChildrenStatus? childrenStatus,
-      int? heightStatus,
-      String? dob,
-      String? name,
-      String userId,) async {
+    NoOfChildren? noOfChildren,
+    MaritalStatus? maritalStatus,
+    AbilityStatus? abilityStatus,
+    ChildrenStatus? childrenStatus,
+    int? heightStatus,
+    String? dob,
+    String? name,
+    String userId,
+  ) async {
     try {
       int heightCm = (heightStatus ?? 48);
       Response response =
@@ -271,14 +272,14 @@ class ApiClient {
   }
 
   Future<SendOtpResponse> sendOtp(
-      String dialCode, String mobile, OtpType login) async {
+      String dialCode, String mobile, OtpType login, String email) async {
     try {
       Response response =
           await this.dio.post(AppConstants.ENDPOINT + "auth/sendOtp", data: {
         "countryCode": "+$dialCode",
         "phoneNumber": mobile,
         "type": login.index,
-        "email": "",
+        "email": email,
       });
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SendOtpResponse.fromJson(response.data);
@@ -782,54 +783,37 @@ class ApiClient {
     socket.onDisconnect((_) => print('disconnect'));
   }
 
-  getOnlineMembers(String id) {
+  Future<MatchingProfileResponse> getOnlineMembers(String id, List<String> onlineUserIds) async {
     try {
-      //   IO.Socket socket = IO.io('http://13.233.130.85:3000',
-      //       OptionBuilder().setTransports(['websocket']).build());
-
-      //   socket.onConnect((_) {
-      //     print('connect');
-      //     socket.emit('onlineUsers', id);
-      //   });
-      //   var alldata;
-
-      //   //When an event recieved from server, data is added to the stream
-      //   socket.on('online_users_list', (data) {
-      //     print("DATA$data");
-      //     return ProfileVisitedResponse.fromJson(alldata);
-      //   });
-      //   // var data;
-      //   // socket.onDisconnect((_) {
-      //   //   print('disconnect');
-      //   //   dispose();
-      //   // });
-      connectAndListen(id);
-      print("streamSocket.getResponse${streamSocket.currentData}");
-      return ProfileVisitedResponse.fromJson(streamSocket.currentData);
-      //  return streamSocket.getResponse.sna
+      var response = await this
+          .dio
+          .post("${AppConstants.ENDPOINT}users/online_members/$id", data: {
+        "onlineUserIds": onlineUserIds
+        // "onlineUserIds": [
+        //   "0ac85e91-1d8d-4950-b999-705199c8083d",
+        //   "11b4c803-ca76-4695-ad88-ca116109bc72",
+        //   "1498aaca-6e8f-4ccd-b4d1-110c9520896d",
+        //   "1636e93d-cd8a-488c-9803-2ba454c06150",
+        //   "5422df45-0156-40dd-8db6-24c589e8b140",
+        //   "fddc858b-7b89-4a52-aea4-00c33fd552c6",
+        //   "e992e797-e93c-44d6-9c10-ade71c901308",
+        //   "e4711932-9497-4d5c-82d0-4026e9a9bb14",
+        //   "e2a06a9f-83e5-4c2c-986c-804b996fe2cd",
+        //   "d66ced90-3050-4d25-9892-46f43dd03c4e"
+        // ]
+      });
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return MatchingProfileResponse.fromJson(response.data);
+      }
+      return MatchingProfileResponse.fromError(
+          "Error Occurred. Please try again.");
     } catch (error) {
       if (error is DioError) {
         print(error.message);
       }
-      // return ProfileVisitedResponse.fromError(
-      //     "Error Occurred. Please try again.");
+      return MatchingProfileResponse.fromError(
+          "Error Occurred. Please try again.");
     }
-    // try {
-    //   var response = await this
-    //       .dio
-    //       .get("${AppConstants.ENDPOINT}users/profile_visited_by/$id");
-    //   if (response.statusCode == 200 || response.statusCode == 201) {
-    //     return ProfileVisitedResponse.fromJson(response.data);
-    //   }
-    //   return ProfileVisitedResponse.fromError(
-    //       "Error Occurred. Please try again.");
-    // } catch (error) {
-    //   if (error is DioError) {
-    //     print(error.message);
-    //   }
-    //   return ProfileVisitedResponse.fromError(
-    //       "Error Occurred. Please try again.");
-    // }
   }
 
   Future<ProfileDetailsResponse> getOtherUserDetails(

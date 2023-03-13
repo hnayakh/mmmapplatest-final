@@ -41,9 +41,10 @@ class MyConnectsScreenState extends State<MyConnectsScreen>
 
   @override
   void initState() {
+    super.initState();
     tabController = TabController(length: 2, vsync: this);
 
-    super.initState();
+
   }
 
   @override

@@ -27,7 +27,7 @@ class Bio extends StatelessWidget {
   final UserRepository userRepository;
   final bool toUpdate;
 
-  const Bio({Key? key, required this.userRepository,  this.toUpdate = false})
+  const Bio({Key? key, required this.userRepository, this.toUpdate = false})
       : super(key: key);
 
   @override
@@ -60,9 +60,8 @@ class _BioScreenState extends State<BioScreen> {
     this.userDetails =
         BlocProvider.of<BioBloc>(context).userRepository.useDetails!;
 
-    if (this.userDetails.registrationStep > 8) {
+
       BlocProvider.of<BioBloc>(context).add(onBioDataLoad(userDetails.id));
-    }
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -77,6 +76,14 @@ class _BioScreenState extends State<BioScreen> {
                 content: Text(state.message),
                 backgroundColor: Colors.red,
               ));
+            }
+            if (state is BioDataState) {
+              this.profileDetails = state.profileDetails;
+              (this.profileDetails?.images ?? []).forEach((element) {
+                if (!this.localImagePaths.contains(element)) {
+                  this.localImagePaths.insert(0, element);
+                }
+              });
             }
             if (state is OnUpdate) {
               if (widget.toUpdate) {
@@ -107,22 +114,22 @@ class _BioScreenState extends State<BioScreen> {
                               ),
                               Expanded(
                                 flex: 1,
-                                child: this.userDetails.registrationStep > 8
+                                child: widget.toUpdate
                                     ? Container()
                                     : Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.stretch,
                                         children: [
-                                            Text(
-                                              'Photo',
-                                              style: MmmTextStyles.bodyRegular(
-                                                  textColor: kDark5),
-                                            ),
-                                            SizedBox(
-                                              height: 4,
-                                            ),
-                                            Expanded(
-                                                child: GridView.builder(
+                                          Text(
+                                            'Photo',
+                                            style: MmmTextStyles.bodyRegular(
+                                                textColor: kDark5),
+                                          ),
+                                          SizedBox(
+                                            height: 4,
+                                          ),
+                                          Expanded(
+                                            child: GridView.builder(
                                               gridDelegate:
                                                   SliverGridDelegateWithMaxCrossAxisExtent(
                                                       maxCrossAxisExtent:
@@ -135,8 +142,6 @@ class _BioScreenState extends State<BioScreen> {
                                                       crossAxisSpacing: 20,
                                                       mainAxisSpacing: 20),
                                               itemBuilder: (context, index) {
-                                                print(
-                                                    "IMAGE${this.localImagePaths}");
                                                 if (this
                                                         .localImagePaths
                                                         .length ==
@@ -145,7 +150,7 @@ class _BioScreenState extends State<BioScreen> {
                                                 } else {
                                                   var image = this
                                                       .localImagePaths[index];
-                                                  print("image $image");
+
                                                   return Column(
                                                     children: [
                                                       Container(
@@ -226,37 +231,35 @@ class _BioScreenState extends State<BioScreen> {
                                               },
                                               itemCount:
                                                   this.localImagePaths.length,
-                                            )),
-                                          ]),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                               ),
                               SizedBox(
                                 height: 20,
                               ),
                               MmmButtons.enabledRedButtonbodyMedium(
-                                      50,
-                                      'Save',
-                                      action: () {
-                                        FocusScope.of(context)
-                                            .requestFocus(FocusNode());
-                                        if ((this.aboutMe?.length ?? 0) < 100) {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                            content: Text(
-                                                "Please write at least 100 letters in about me section"),
-                                            backgroundColor: Colors.red,
-                                          ));
-                                          return;
-                                        }
-                                        BlocProvider.of<BioBloc>(context).add(
-                                          UpdateBio(
-                                            this.aboutMe!,
-                                            this.localImagePaths,
-                                            widget.toUpdate
-                                          ),
-                                        );
-                                      },
-                                    )
-
+                                50,
+                                'Save',
+                                action: () {
+                                  FocusScope.of(context)
+                                      .requestFocus(FocusNode());
+                                  if ((this.aboutMe?.length ?? 0) < 100) {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content: Text(
+                                          "Please write at least 100 letters in about me section"),
+                                      backgroundColor: Colors.red,
+                                    ));
+                                    return;
+                                  }
+                                  BlocProvider.of<BioBloc>(context).add(
+                                    UpdateBio(this.aboutMe!,
+                                        this.localImagePaths, widget.toUpdate),
+                                  );
+                                },
+                              )
                             ],
                           ),
                         ),
@@ -530,11 +533,9 @@ class _BioScreenState extends State<BioScreen> {
     this.aboutMe = this.bioController.text;
 
     if (BlocProvider.of<BioBloc>(context).profileData != null) {
-
       if (this.aboutMe == null || this.aboutMe == '') {
         this.aboutMe =
             BlocProvider.of<BioBloc>(context).profileData!.aboutmeMsg;
-
 
         this.bioController.text = this.aboutMe ?? "";
       }

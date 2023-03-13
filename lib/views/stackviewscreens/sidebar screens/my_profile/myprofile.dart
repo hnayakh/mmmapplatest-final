@@ -92,12 +92,12 @@ class MyProfileBody extends StatelessWidget {
                     right: 25,
                     left: MediaQuery.of(context).size.width * 0.066,
                     child: InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
+                      onTap: () async {
+                        await Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => MmmPhotovideos(
                                   userRepository: getIt<UserRepository>(),
                                 )));
-                        //showImagePickerDialog();
+                        BlocProvider.of<MyProfileBloc>(context).loadMyData();
                       },
                       child: Container(
                         height: MediaQuery.of(context).size.width * 0.1,
@@ -142,7 +142,7 @@ class MyProfileBody extends StatelessWidget {
                     margin: const EdgeInsets.only(top: 130),
                     alignment: Alignment.bottomCenter,
                     child: Text(
-                      profileDetails!.name,
+                      profileDetails.name,
                       style: MmmTextStyles.heading4(textColor: kDark5),
                     ),
                   ),
@@ -1127,7 +1127,6 @@ class CareerInfoCard extends StatelessWidget {
                       height: 1.6666666666666667),
                 ),
                 Container(
-
                   height: 90,
                   margin: EdgeInsets.fromLTRB(0, 20, 20, 0),
                   child: Text(
@@ -1215,7 +1214,6 @@ class CareerInfoCard extends StatelessWidget {
           ),
           Container(
             margin: EdgeInsets.fromLTRB(20, 200, 0, 0),
-            width: 150,
             height: 46,
             child: Stack(
               children: <Widget>[
@@ -1234,9 +1232,7 @@ class CareerInfoCard extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
                   child: Text(
-                    profileDetails != null
-                        ? "${profileDetails!.city}, ${profileDetails!.state} "
-                        : "",
+                    "${profileDetails.country}, ${profileDetails.state}${profileDetails.city.isNotEmpty ? ",": ""} ${profileDetails.city}",
                     textAlign: TextAlign.left,
                     style: TextStyle(
                         color: Color.fromRGBO(18, 22, 25, 1),
@@ -1337,11 +1333,11 @@ class FamilyInfoCard extends StatelessWidget {
               ])),
           Container(
               margin: EdgeInsets.fromLTRB(20, 50, 0, 0),
-              width: 84,
+              // width: 84,
               height: 46,
               child: Stack(children: <Widget>[
                 Text(
-                  'Status',
+                  'Family Status',
                   textAlign: TextAlign.left,
                   style: TextStyle(
                       color: Color.fromRGBO(135, 141, 150, 1),
@@ -1371,7 +1367,7 @@ class FamilyInfoCard extends StatelessWidget {
               height: 46,
               child: Stack(children: <Widget>[
                 Text(
-                  'Type',
+                  'Family Type',
                   textAlign: TextAlign.left,
                   style: TextStyle(
                       color: Color.fromRGBO(135, 141, 150, 1),
@@ -1403,7 +1399,7 @@ class FamilyInfoCard extends StatelessWidget {
             child: Stack(
               children: <Widget>[
                 Text(
-                  'Values',
+                  'Family Values',
                   textAlign: TextAlign.left,
                   style: TextStyle(
                       color: Color.fromRGBO(135, 141, 150, 1),
@@ -1432,41 +1428,41 @@ class FamilyInfoCard extends StatelessWidget {
               ],
             ),
           ),
-          if ((profileDetails.familyCity + profileDetails.familyState)
-              .isNotEmpty)
-            Container(
-                margin: EdgeInsets.fromLTRB(20, 200, 0, 0),
-                width: 150,
-                height: 46,
-                child: Stack(children: <Widget>[
-                  Text(
-                    'Location',
+          Container(
+              margin: EdgeInsets.fromLTRB(20, 200, 0, 0),
+              height: 46,
+              child: Stack(children: <Widget>[
+                Text(
+                  'Location',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                      color: Color.fromRGBO(135, 141, 150, 1),
+                      fontFamily: 'Poppins',
+                      fontSize: 12,
+                      letterSpacing:
+                          0 /*percentages not used in flutter. defaulting to zero*/,
+                      fontWeight: FontWeight.normal,
+                      height: 1.6666666666666667),
+                ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                  child: Text(
+                    (profileDetails.familyCountry +
+                                profileDetails.familyCity +
+                                profileDetails.familyState)
+                            .isNotEmpty
+                        ? "${profileDetails.familyCountry}, ${profileDetails.familyState}, ${profileDetails.familyCity}"
+                        : "Not Mentioned",
                     textAlign: TextAlign.left,
                     style: TextStyle(
-                        color: Color.fromRGBO(135, 141, 150, 1),
+                        color: Color.fromRGBO(18, 22, 25, 1),
                         fontFamily: 'Poppins',
-                        fontSize: 12,
-                        letterSpacing:
-                            0 /*percentages not used in flutter. defaulting to zero*/,
+                        fontSize: 14,
                         fontWeight: FontWeight.normal,
-                        height: 1.6666666666666667),
+                        height: 1.5714285714285714),
                   ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: Text(
-                      profileDetails != null
-                          ? "${profileDetails!.familyCity}, ${profileDetails!.familyState} "
-                          : "",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                          color: Color.fromRGBO(18, 22, 25, 1),
-                          fontFamily: 'Poppins',
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
-                          height: 1.5714285714285714),
-                    ),
-                  ),
-                ])),
+                ),
+              ])),
           Column(children: [
             Container(
                 margin: EdgeInsets.fromLTRB(20, 250, 0, 0),
@@ -1617,8 +1613,6 @@ class AboutCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         margin: EdgeInsets.only(left: 1),
-        width: 350,
-        height: 180,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(8),
@@ -1683,7 +1677,7 @@ class AboutCard extends StatelessWidget {
             ),
           ),
           Container(
-            margin: EdgeInsets.fromLTRB(14, 40, 30, 0),
+            margin: EdgeInsets.fromLTRB(14, 40, 30, 12),
             child: Text(
               profileDetails.aboutmeMsg,
               textAlign: TextAlign.left,
@@ -1980,7 +1974,7 @@ void navigateToFamily(BuildContext context) async {
             countryModel: null,
             stateModel: null,
             city: null,
-        toUpdate: true,
+            toUpdate: true,
           )));
   BlocProvider.of<MyProfileBloc>(context).loadMyData();
 }

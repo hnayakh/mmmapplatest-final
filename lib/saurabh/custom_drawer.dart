@@ -73,7 +73,6 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
   void initState() {
     super.initState();
     SharedPreferences.getInstance().then((prefValue) => {
-          print("PREVV${prefValue.getString(AppConstants.USERID)}"),
           setState(() {
             basicUserId = prefValue.getString(AppConstants.USERID);
           })
@@ -84,8 +83,7 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
     return BlocConsumer<AccountMenuBloc, AccountMenuState>(
-      listener: (context, state) {
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         var userRepo = BlocProvider.of<AccountMenuBloc>(context).userRepository;
         if (state is AccountMenuInitialState) {
@@ -144,55 +142,68 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                           SizedBox(
                             width: 20,
                           ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    this.profileDetails != null
-                                        ? profileDetails!.name
-                                        : "",
-                                    style: MmmTextStyles.heading4(
-                                      textColor: Colors.white,
-                                    ),
-                                  ),
-                                  this.profileDetails != null && this.profileDetails?.activationStatus == ProfileActivationStatus.Verified ?
-                                  Icon(
-                                    Icons.verified_user,
-                                    size: 22,
-                                    color: Colors.white,
-                                  ): SizedBox()
-                                ],
-                              ),
-                              Text(
-                                this.profileDetails != null
-                                    ? profileDetails!.mmId.toUpperCase()
-                                    : "",
-                                style: MmmTextStyles.bodyMedium(
-                                    textColor: Colors.white70),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  onEdit(this.basicUserId);
-                                },
-                                child: Row(
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Row(
                                   children: [
-                                    Text(
-                                      "Edit Profile",
-                                      style: MmmTextStyles.bodyMediumSmall(
-                                          textColor: Colors.white70),
+                                    Flexible(
+                                      flex: 1,
+                                      child: Text(
+                                        this.profileDetails != null
+                                            ? profileDetails!.name
+                                            : "",
+                                        // overflow: TextOverflow.ellipsis,
+                                        softWrap: true,
+                                        maxLines: 1,
+                                        style: MmmTextStyles.heading4(
+                                          textColor: Colors.white,
+                                        ),
+                                      ),
                                     ),
-                                    Icon(
-                                      Icons.edit_outlined,
-                                      size: 22,
-                                      color: Colors.white,
-                                    )
+                                    this.profileDetails != null &&
+                                            this
+                                                    .profileDetails
+                                                    ?.activationStatus ==
+                                                ProfileActivationStatus.Verified
+                                        ? Icon(
+                                            Icons.verified_user,
+                                            size: 22,
+                                            color: Colors.white,
+                                          )
+                                        : SizedBox()
                                   ],
                                 ),
-                              )
-                            ],
+                                Text(
+                                  this.profileDetails != null
+                                      ? profileDetails!.mmId.toUpperCase()
+                                      : "",
+                                  style: MmmTextStyles.bodyMedium(
+                                      textColor: Colors.white70),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    onEdit(this.basicUserId);
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        "Edit Profile",
+                                        style: MmmTextStyles.bodyMediumSmall(
+                                            textColor: Colors.white70),
+                                      ),
+                                      Icon(
+                                        Icons.edit_outlined,
+                                        size: 22,
+                                        color: Colors.white,
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
                           )
                         ],
                       ),
@@ -202,7 +213,6 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                       child: ListView(
                         shrinkWrap: true,
                         children: [
-
                           InkWell(
                             onTap: () {
                               Navigator.push(
@@ -382,13 +392,12 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
     await pref.clear();
   }
 
-  void onEdit(basicUserId) {
-    print("basicUserId${this.basicUserId}");
-    var userRepo = BlocProvider.of<AccountMenuBloc>(context).userRepository;
-    Navigator.of(context).push(
+  void onEdit(basicUserId) async {
+    await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => MyProfileScreen(),
       ),
     );
+    context.read<AccountMenuBloc>().add(FetchMyProfile());
   }
 }

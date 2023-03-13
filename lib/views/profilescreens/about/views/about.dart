@@ -25,20 +25,23 @@ class About extends StatelessWidget {
   final UserRepository userRepository;
   final bool toUpdate;
 
-  const About({Key? key, required this.userRepository, this.toUpdate = false}) : super(key: key);
+  const About({Key? key, required this.userRepository, this.toUpdate = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AboutBloc(userRepository),
-      child: AboutScreen(toUpdate: toUpdate,),
+      child: AboutScreen(
+        toUpdate: toUpdate,
+      ),
     );
   }
 }
 
 class AboutScreen extends StatefulWidget {
   final bool toUpdate;
-  AboutScreen({Key? key, required this.toUpdate }) : super(key: key);
+  AboutScreen({Key? key, required this.toUpdate}) : super(key: key);
 
   @override
   _AboutScreenState createState() => _AboutScreenState();
@@ -94,17 +97,15 @@ class _AboutScreenState extends State<AboutScreen> {
                     child: widget.toUpdate
                         ? InkWell(
                             onTap: () {
-                              BlocProvider.of<AboutBloc>(context).add(
-                                  OnAboutDone(
-                                      widget.toUpdate));
+                              BlocProvider.of<AboutBloc>(context)
+                                  .add(OnAboutDone(widget.toUpdate));
                             },
                             child: MmmIcons.saveIcon(),
                           )
                         : InkWell(
                             onTap: () {
-                              BlocProvider.of<AboutBloc>(context).add(
-                                  OnAboutDone(
-                                      widget.toUpdate));
+                              BlocProvider.of<AboutBloc>(context)
+                                  .add(OnAboutDone(widget.toUpdate));
                             },
                             child: MmmIcons.rightArrowEnabled(),
                           ),
@@ -137,21 +138,19 @@ class _AboutScreenState extends State<AboutScreen> {
                 height: 8,
               ),
               MmmTextFileds.textFiledWithLabelStar(
-                userDetails.relationship == Relationship.Self
-                    ? "Name"
-                    : 'Name of ${describeEnum(userDetails.relationship)}',
-                userDetails.relationship == Relationship.Self
-                    ? "Enter Name"
-                    : 'Enter Name of ${describeEnum(userDetails.relationship)}',
-                BlocProvider.of<AboutBloc>(context).editNameController.text !=
-                        ""
-                    ? BlocProvider.of<AboutBloc>(context).editNameController
-                    : BlocProvider.of<AboutBloc>(context).nameController,
-                onTextChange: (value) {
-                  BlocProvider.of<AboutBloc>(context).add(OnNameChanged(value));
-                },
-                textCapitalization: TextCapitalization.words,
-              ),
+                  userDetails.relationship == Relationship.Self
+                      ? "Name"
+                      : 'Name of ${describeEnum(userDetails.relationship)}',
+                  userDetails.relationship == Relationship.Self
+                      ? "Enter Name"
+                      : 'Enter Name of ${describeEnum(userDetails.relationship)}',
+                  BlocProvider.of<AboutBloc>(context).editNameController.text !=
+                          ""
+                      ? BlocProvider.of<AboutBloc>(context).editNameController
+                      : BlocProvider.of<AboutBloc>(context).nameController,
+                  onTextChange: (value) {
+                BlocProvider.of<AboutBloc>(context).add(OnNameChanged(value));
+              }, textCapitalization: TextCapitalization.words, maxLength: 50),
               SizedBox(
                 height: 24,
               ),
@@ -400,7 +399,8 @@ class _AboutScreenState extends State<AboutScreen> {
             ));
 
     if (result != null && result is int) {
-      BlocProvider.of<AboutBloc>(context).add(OnHeightStatusSelected(result + 48));
+      BlocProvider.of<AboutBloc>(context)
+          .add(OnHeightStatusSelected(result + 48));
     }
   }
 

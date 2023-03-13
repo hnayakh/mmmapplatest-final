@@ -74,9 +74,10 @@ class _OccupationScreenState extends State<OccupationScreen> {
   late UserDetails userDetails;
   @override
   void initState() {
+    super.initState();
     myState = StateModel("", -1);
     myState!.name = '';
-    super.initState();
+
   }
 
   @override
@@ -84,10 +85,8 @@ class _OccupationScreenState extends State<OccupationScreen> {
     this.userDetails =
         BlocProvider.of<OccupationBloc>(context).userRepository.useDetails!;
 
-    if (this.userDetails.registrationStep > 4) {
-      BlocProvider.of<OccupationBloc>(context)
-          .add(onOccupationDataLoad(userDetails.id));
-    }
+    BlocProvider.of<OccupationBloc>(context)
+        .add(onOccupationDataLoad(userDetails.id));
 
     return Scaffold(
       appBar: MmmButtons.appBarCurved('Career', context: context),
@@ -442,7 +441,8 @@ class _OccupationScreenState extends State<OccupationScreen> {
     var userRepo = BlocProvider.of<OccupationBloc>(context).userRepository;
     var countryModel = BlocProvider.of<OccupationBloc>(context).countryModel!;
     var stateModel = BlocProvider.of<OccupationBloc>(context).myState!;
-    var city = BlocProvider.of<OccupationBloc>(context).city ?? StateModel("", 0);
+    var city =
+        BlocProvider.of<OccupationBloc>(context).city ?? StateModel("", 0);
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => FamilyScreen(
               userRepository: userRepo,

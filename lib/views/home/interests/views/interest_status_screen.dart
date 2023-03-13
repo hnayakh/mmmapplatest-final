@@ -42,9 +42,10 @@ class _InterestStatusScreenState extends State<InterestStatusScreen>
 
   @override
   void initState() {
+    super.initState();
     tabController = TabController(length: 3, vsync: this);
 
-    super.initState();
+
   }
 
   @override

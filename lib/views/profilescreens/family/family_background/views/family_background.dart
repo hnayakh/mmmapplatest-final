@@ -8,6 +8,7 @@ import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
+import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
@@ -91,10 +92,8 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
         .userRepository
         .useDetails!;
 
-    if (widget.toUpdate) {
       BlocProvider.of<FamilyBackgroundBloc>(context)
           .add(onFamilyBackgroundDataLoad(userDetails.id));
-    }
     return BlocConsumer<FamilyBackgroundBloc, FamilyBackgroundState>(
       builder: (context, state) {
         initData();
@@ -105,7 +104,7 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
               Positioned(
                 bottom: 24,
                 right: 24,
-                child:widget.toUpdate
+                child: widget.toUpdate
                     ? InkWell(
                         onTap: () {
                           BlocProvider.of<FamilyBackgroundBloc>(context).add(
@@ -232,7 +231,7 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                     this.values != null
                         ? AppHelper.getStringFromEnum(this.values!)
                         : familyValuestext,
-                    "  familyValuestext",
+                    familyValuestext,
                     "images/rightArrow.svg", action: () {
                   showFamilyValuesSheet();
                 }),
@@ -362,7 +361,7 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                         ],
                       )
                     : Container(),
-                this.isStayingWithParents!
+                !this.isStayingWithParents!
                     ? Container()
                     : Column(
                         children: [
@@ -371,7 +370,8 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                           ),
                           MmmButtons.categoryButtonsNotRequired(
                               'Country',
-                              countryModel != null
+                              countryModel != null &&
+                                      countryModel!.name.isNotNullEmpty
                                   ? '${countryModel!.name}'
                                   : 'Select Country',
                               'Select Country',
@@ -399,18 +399,20 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                           SizedBox(
                             height: 24,
                           ),
-                          MmmButtons.categoryButtonsNotRequired(
-                              'City',
-                              city != null && city!.name != ""
-                                  ? '${city!.name}'
-                                  : 'Select City',
-                              'Select City',
-                              'images/rightArrow.svg', action: () {
-                            FocusScope.of(context).requestFocus(FocusNode());
+                          if (countryModel != null &&
+                              this.countryModel?.id == 101)
+                            MmmButtons.categoryButtonsNotRequired(
+                                'City',
+                                city != null && city!.name != ""
+                                    ? '${city!.name}'
+                                    : 'Select City',
+                                'Select City',
+                                'images/rightArrow.svg', action: () {
+                              FocusScope.of(context).requestFocus(FocusNode());
 
-                            BlocProvider.of<FamilyBackgroundBloc>(context)
-                                .add(GetAllCities());
-                          }),
+                              BlocProvider.of<FamilyBackgroundBloc>(context)
+                                  .add(GetAllCities());
+                            }),
                         ],
                       ),
                 SizedBox(
@@ -438,43 +440,58 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
         BlocProvider.of<FamilyBackgroundBloc>(context)
             .canSelectStayingWithParent;
 
-    if (BlocProvider.of<FamilyBackgroundBloc>(context).profileDetails != null) {
-      if (this.level == null)
-        this.level = BlocProvider.of<FamilyBackgroundBloc>(context)
-            .profileDetails!
-            .familyAfluenceLevel;
-
-      if (this.values == null)
-        this.values = BlocProvider.of<FamilyBackgroundBloc>(context)
-            .profileDetails!
-            .familyValues;
-
-      if (this.type == null)
-        this.type = BlocProvider.of<FamilyBackgroundBloc>(context)
-            .profileDetails!
-            .familyType;
-
-      if (this.myState == null) {
-        var stateName = BlocProvider.of<FamilyBackgroundBloc>(context)
-            .profileDetails!
-            .familyState;
-
-        var stateId = BlocProvider.of<FamilyBackgroundBloc>(context)
-            .profileDetails!
-            .familyStateId;
-
-        this.myState = StateModel(stateName, stateId);
-      }
-      if (this.city == null) {
-        var cityName = BlocProvider.of<FamilyBackgroundBloc>(context)
-            .profileDetails!
-            .familyCity;
-        var cityId = BlocProvider.of<FamilyBackgroundBloc>(context)
-            .profileDetails!
-            .familyCityId;
-        this.city = StateModel(cityName, cityId);
-      }
-    }
+    // if (BlocProvider.of<FamilyBackgroundBloc>(context).profileDetails != null &&
+    //     context.read<FamilyBackgroundBloc>().state
+    //         is familyBackgroundDataState) {
+    //   if (this.level == null)
+    //     this.level = BlocProvider.of<FamilyBackgroundBloc>(context)
+    //         .profileDetails!
+    //         .familyAfluenceLevel;
+    //
+    //   if (this.values == null)
+    //     this.values = BlocProvider.of<FamilyBackgroundBloc>(context)
+    //         .profileDetails!
+    //         .familyValues;
+    //
+    //   if (this.type == null)
+    //     this.type = BlocProvider.of<FamilyBackgroundBloc>(context)
+    //         .profileDetails!
+    //         .familyType;
+    //
+    //     var countryName = BlocProvider.of<FamilyBackgroundBloc>(context)
+    //         .profileDetails!
+    //         .familyCountry;
+    //     var countryId = BlocProvider.of<FamilyBackgroundBloc>(context)
+    //         .profileDetails!
+    //         .familyCountryId;
+    //
+    //     this.countryModel = CountryModel.fromJson({
+    //       "name": countryName,
+    //       "shortName": countryName,
+    //       "id": countryId,
+    //       "phoneCode": 0,
+    //     });
+    //   if (this.myState == null) {
+    //     var stateName = BlocProvider.of<FamilyBackgroundBloc>(context)
+    //         .profileDetails!
+    //         .familyState;
+    //     var stateId = BlocProvider.of<FamilyBackgroundBloc>(context)
+    //         .profileDetails!
+    //         .familyStateId;
+    //
+    //     this.myState = StateModel(stateName, stateId);
+    //   }
+    //
+    //   if (this.city == null) {
+    //     var cityName = BlocProvider.of<FamilyBackgroundBloc>(context)
+    //         .profileDetails!
+    //         .familyCity;
+    //     var cityId = BlocProvider.of<FamilyBackgroundBloc>(context)
+    //         .profileDetails!
+    //         .familyCityId;
+    //     this.city = StateModel(cityName, cityId);
+    //   }
+    // }
   }
 
   showFamilyStatusSheet() async {

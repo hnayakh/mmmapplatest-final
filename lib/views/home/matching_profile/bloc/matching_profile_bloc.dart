@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/app/bloc/app_bloc.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/locator.dart';
+import 'package:makemymarry/repo/chat_repo.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/views/home/matching_profile/bloc/matching_profile_state.dart';
@@ -66,7 +67,7 @@ class MatchingProfileBloc
         case ProposalStatus.Sent:
           {
             navigatorKey.currentContext?.read<AppBloc>().makeProposalRequest(
-              requestId: event.profile.proposalId,
+                  requestId: event.profile.proposalId,
                   otherUserId: event.profile.id,
                   onDone: () async {
                     this.onProposalRequestComplete(event);
@@ -78,43 +79,44 @@ class MatchingProfileBloc
         case ProposalStatus.Accepted:
           {
             navigatorKey.currentContext?.read<AppBloc>().acceptProposal(
-              otherUserId: event.profile.id,
-              onDone: () async {
-                this.onProposalRequestComplete(event);
-              },
-              onError: () async {}, requestId: event.profile.proposalId!,
-            );
+                  otherUserId: event.profile.id,
+                  onDone: () async {
+                    this.onProposalRequestComplete(event);
+                  },
+                  onError: () async {},
+                  requestId: event.profile.proposalId!,
+                );
             break;
           }
         case ProposalStatus.Rejected:
           {
             navigatorKey.currentContext?.read<AppBloc>().rejectProposal(
-              otherUserId: event.profile.id,
-              onDone: () async {
-                this.onProposalRequestComplete(event);
-              },
-              onError: () async {}, requestId: event.profile.proposalId!,
-            );
+                  otherUserId: event.profile.id,
+                  onDone: () async {
+                    this.onProposalRequestComplete(event);
+                  },
+                  onError: () async {},
+                  requestId: event.profile.proposalId!,
+                );
             break;
           }
         case ProposalStatus.Reverted:
           {
             navigatorKey.currentContext?.read<AppBloc>().revertProposal(
-              otherUserId: event.profile.id,
-              onDone: () async {
-                this.onProposalRequestComplete(event);
-              },
-              onError: () async {}, requestId: event.profile.proposalId!,
-            );
+                  otherUserId: event.profile.id,
+                  onDone: () async {
+                    this.onProposalRequestComplete(event);
+                  },
+                  onError: () async {},
+                  requestId: event.profile.proposalId!,
+                );
             break;
           }
         case ProposalStatus.Received:
           {
-
             break;
           }
       }
-
     } else {
       yield OnLoading();
       if (event is OnSearchByMMID) {
@@ -148,9 +150,12 @@ class MatchingProfileBloc
             }
           case ProfilesFilter.onlineMembers:
             {
-              var result = await this.userRepository.getOnlineMembers();
+              var ids = await getIt<ChatRepo>().getOnlineUsers();
+              print(ids.toString()  + "========================\n");
+              var result = await this.userRepository.getOnlineMembers(ids);
               if (result.status == AppConstants.SUCCESS) {
                 result.list.forEach((element) {
+                  print(element.name + "========================\n");
                   proposalStatuses.putIfAbsent(
                       element.id, () => element.proposalStatus);
                 });

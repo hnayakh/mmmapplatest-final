@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -77,22 +78,22 @@ class _BioScreenState extends State<BioScreen> {
               );
             }
             if (state is OnUpdate) {
-              if(this.userDetails.registrationStep > 8){
+              if (this.userDetails.registrationStep > 8) {
                 Navigator.of(context).pop();
-              }else {
+              } else {
                 navigateToProfilePreference();
               }
             }
             if (state is BioDataState) {
               this.profileDetails = state.profileDetails;
               (this.profileDetails?.images ?? []).forEach((element) {
-                if(!this.localImagePaths.contains(element)){
+                if (!this.localImagePaths.contains(element)) {
                   this.localImagePaths.insert(0, element);
                 }
               });
-              if((this.profileDetails?.images ?? []).isNotEmpty){
+              if ((this.profileDetails?.images ?? []).isNotEmpty) {
                 profileImage = (this.profileDetails?.images ?? []).first;
-              }else{
+              } else {
                 profileImage = "";
               }
             }
@@ -145,15 +146,13 @@ class _BioScreenState extends State<BioScreen> {
                                                     crossAxisSpacing: 20,
                                                     mainAxisSpacing: 20),
                                             itemBuilder: (context, index) {
-                                              print(
-                                                  "IMAGE${this.localImagePaths}");
                                               if (this.localImagePaths.length ==
                                                   0) {
                                                 return addImageButton();
                                               } else {
                                                 var image =
                                                     this.localImagePaths[index];
-                                                print("image $image");
+
                                                 return Column(
                                                   children: [
                                                     Container(
@@ -162,18 +161,44 @@ class _BioScreenState extends State<BioScreen> {
                                                           ClipRRect(
                                                             child: image !=
                                                                     "addImage"
-                                                                ? Image.network(
-                                                                    image,
-                                                                    fit: BoxFit.contain,
+                                                                ? CachedNetworkImage(
+                                                                    imageUrl:
+                                                                        image,
+                                                                    fit: BoxFit
+                                                                        .contain,
                                                                     width: (MediaQuery.of(context)
                                                                             .size
                                                                             .width) /
                                                                         2,
                                                                     height: 120,
-                                                                errorBuilder: (context, obj, str) => Container(
-                                                                    color: Colors.grey,
-                                                                    child: Icon(Icons.error))
-                                                                  )
+                                                                    errorWidget:
+                                                                        (context,
+                                                                            obj,
+                                                                            str) {
+                                                                      print(image +
+                                                                          "========================================================================>>>>>");
+                                                                      print(
+                                                                          obj);
+                                                                      print(
+                                                                          str);
+                                                                      print(image +
+                                                                          "========================================================================>>>>>");
+                                                                      return InkWell(
+                                                                        onTap:
+                                                                            () {
+                                                                          setState(
+                                                                              () {});
+                                                                        },
+                                                                        child: Container(
+                                                                            width: (MediaQuery.of(context).size.width) /
+                                                                                2,
+                                                                            height:
+                                                                                120,
+                                                                            color:
+                                                                                Colors.grey,
+                                                                            child: Icon(Icons.error)),
+                                                                      );
+                                                                    })
                                                                 : addImageButton(),
                                                             borderRadius:
                                                                 BorderRadius
@@ -217,23 +242,31 @@ class _BioScreenState extends State<BioScreen> {
                                                                   ))
                                                               : Container(),
                                                           this.localImagePaths[
-                                                          index] !=
-                                                              "addImage" ?
-                                                              Positioned(
-                                                                top: -8,
-                                                                left: -8,
-                                                                child: Radio<String>(value: this.localImagePaths[
-                                                                index], groupValue: profileImage, onChanged: (String? value){
-                                                                  if(value != null) {
-                                                                    BlocProvider.of<BioBloc>(context).add(ChangeProfilePic(value));
-                                                                    this
-                                                                        .profileImage =
-                                                                        value;
-                                                                  }
-                                                                }),
-                                                              )
-                                                              :Container()
-
+                                                                      index] !=
+                                                                  "addImage"
+                                                              ? Positioned(
+                                                                  top: -8,
+                                                                  left: -8,
+                                                                  child: Radio<
+                                                                          String>(
+                                                                      value: this
+                                                                              .localImagePaths[
+                                                                          index],
+                                                                      groupValue:
+                                                                          profileImage,
+                                                                      onChanged:
+                                                                          (String?
+                                                                              value) {
+                                                                        if (value !=
+                                                                            null) {
+                                                                          BlocProvider.of<BioBloc>(context)
+                                                                              .add(ChangeProfilePic(value));
+                                                                          this.profileImage =
+                                                                              value;
+                                                                        }
+                                                                      }),
+                                                                )
+                                                              : Container()
                                                         ],
                                                       ),
                                                       decoration: BoxDecoration(
@@ -253,7 +286,7 @@ class _BioScreenState extends State<BioScreen> {
                                               }
                                             },
                                             itemCount:
-                                                this.localImagePaths.length ,
+                                                this.localImagePaths.length,
                                           )),
                                         ]),
                                   ),
@@ -265,7 +298,10 @@ class _BioScreenState extends State<BioScreen> {
                                     FocusScope.of(context)
                                         .requestFocus(FocusNode());
                                     BlocProvider.of<BioBloc>(context).add(
-                                        UpdateBioImage(this.localImagePaths, this.userDetails.registrationStep > 8));
+                                        UpdateBioImage(
+                                            this.localImagePaths,
+                                            this.userDetails.registrationStep >
+                                                8));
                                   })
                                 ],
                               ),
@@ -311,18 +347,20 @@ class _BioScreenState extends State<BioScreen> {
         children: [
           Container(
             width: double.infinity,
-
-            height: 200,decoration: BoxDecoration(borderRadius: BorderRadius.circular(12.0
-          ),
-
-          ),clipBehavior: Clip.hardEdge,
-            child: Image.network(
-              profileImage,
+            height: 200,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+            clipBehavior: Clip.hardEdge,
+            child: CachedNetworkImage(
+              imageUrl: profileImage,
               fit: BoxFit.contain,
-                errorBuilder: (context, obj, str) => Container(
-                    color: Colors.grey,
-
-                    child: Icon(Icons.error))
+              errorWidget: (context, obj, str) => Container(
+                color: Colors.grey,
+                child: Icon(
+                  Icons.error,
+                ),
+              ),
             ),
           ),
         ],

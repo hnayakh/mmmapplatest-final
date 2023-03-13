@@ -30,7 +30,7 @@ class _State extends State<VideoCallView> {
   bool _isReadyPreview = false;
   String channelId = "test";
   bool isJoined = false,
-      openMicrophone = true,
+      openMicrophone = false,
       switchCamera = true,
       switchRender = true;
   Set<int> remoteUid = {};
@@ -40,7 +40,7 @@ class _State extends State<VideoCallView> {
   ChannelProfileType _channelProfileType =
       ChannelProfileType.channelProfileCommunication;
 
-  var _maxSeconds = 300;
+  var _maxSeconds = 1800;
 
   int timeLeft = 0;
 
@@ -85,6 +85,7 @@ class _State extends State<VideoCallView> {
         UtilityService.cprint(
             '[onUserJoined] connection: ${connection.toJson()} remoteUid: $rUid elapsed: $elapsed');
         setState(() {
+          startTimer();
           remoteUid.add(rUid);
         });
       },
@@ -159,7 +160,6 @@ class _State extends State<VideoCallView> {
         clientRoleType: ClientRoleType.clientRoleBroadcaster,
       ),
     );
-    startTimer();
   }
 
   Future<void> _leaveChannel() async {
@@ -194,8 +194,8 @@ class _State extends State<VideoCallView> {
   }
 
   _switchMicrophone() async {
-    // await await _engine.muteLocalAudioStream(!openMicrophone);
-    await _engine.enableLocalAudio(!openMicrophone);
+
+    await _engine.muteLocalAudioStream(!openMicrophone);
     setState(() {
       openMicrophone = !openMicrophone;
     });
@@ -256,7 +256,7 @@ class _State extends State<VideoCallView> {
                   flex: 1,
                 ),
                 Text(
-                  "${(timeLeft ~/ 60).toString().padLeft(2, "0")}:${(timeLeft % 60).toString().padLeft(2, "0")}",
+                  timeLeft <= 0 ? "Ringing ..." : "${(timeLeft ~/ 60).toString().padLeft(2, "0")}:${(timeLeft % 60).toString().padLeft(2, "0")}",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.black,
@@ -281,14 +281,14 @@ class _State extends State<VideoCallView> {
                     _buildIconButton(
                         onTap: _switchMicrophone,
                         icon:
-                            openMicrophone ? Icons.mic : Icons.mic_off_rounded),
+                            !openMicrophone ? Icons.mic : Icons.mic_off_rounded),
                     SizedBox(
                       width: 12,
                     ),
                     _buildIconButton(
                         onTap: _switchCamera,
                         icon:
-                            switchCamera ? Icons.videocam : Icons.videocam_off),
+                            Icons.switch_camera_rounded),
                     Spacer(),
                   ],
                 ),

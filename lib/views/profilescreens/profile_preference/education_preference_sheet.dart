@@ -22,8 +22,9 @@ class _EducationPreferenceSheetState extends State<EducationPreferenceSheet> {
 
   @override
   void initState() {
-    this.filtered = List.of(widget.list, growable: true);
     super.initState();
+
+    this.filtered = List.of(widget.list, growable: true);
   }
 
   @override

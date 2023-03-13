@@ -44,10 +44,11 @@ class ProfileLoaderScreenState extends State<ProfileLoaderScreen>
 
   @override
   void initState() {
+    super.initState();
     userId = widget.repo.useDetails!.id;
     WidgetsBinding.instance?.addObserver(this);
     setStatus('Online');
-    super.initState();
+
   }
 
   @override

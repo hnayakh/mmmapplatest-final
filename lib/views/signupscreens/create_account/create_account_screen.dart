@@ -7,6 +7,7 @@ import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
+import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/preference_helper.dart';
 import 'package:makemymarry/utils/text_field.dart';
@@ -153,7 +154,9 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
               ),
               MmmTextFileds.textFiledWithLabelStar(
                   'Email', 'Enter email id', emailController,
-                  inputType: TextInputType.emailAddress),
+                  inputType: TextInputType.emailAddress,
+                  enable: !widget.email.isNotNullEmpty ,
+              ),
               SizedBox(
                 height: 24,
               ),

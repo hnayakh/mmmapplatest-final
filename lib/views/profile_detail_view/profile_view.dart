@@ -638,13 +638,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
               ),
             ),
           ),
-          Positioned(
-            top: MediaQuery.of(context).size.height * 0.1,
-            right: MediaQuery.of(context).size.width * 0.05,
-            child: Column(
-              children: createImageThumbNails(),
-            ),
-          ),
+
           if (profileDetails.proposalStatus == ProposalStatus.Accepted) ...[
             Positioned(
               right: MediaQuery.of(context).size.width * 0.1,
@@ -730,6 +724,19 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
               ),
             ),
           ],
+          Positioned(
+            top: MediaQuery.of(context).size.height * 0.1,
+            right: MediaQuery.of(context).size.width * 0.05,
+            child: Container(
+                height: MediaQuery.of(context).size.height * 0.55,
+                width: 112,
+
+                child: Wrap(
+                  direction: Axis.vertical,
+                  textDirection: TextDirection.rtl,
+                  children: createImageThumbNails(),
+                )),
+          ),
         ],
       ),
     );
@@ -822,18 +829,16 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
   List<Widget> createImageThumbNails() {
     List<Widget> list = [];
     for (var image in profileDetails.images) {
-      list.add(Column(
-        children: [
-          MmmButtons.smallprofilePicButton(image, () {
+      list.add(
+        MmmButtons.smallprofilePicButton(
+          image,
+          () {
             setState(() {
               this.selectedImagePos = profileDetails.images.indexOf(image);
             });
-          }),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.012,
-          ),
-        ],
-      ));
+          },
+        ),
+      );
     }
     return list;
   }
@@ -956,16 +961,13 @@ class ConnectWidget extends StatelessWidget {
       openCloseDial: isDialOpen,
       spaceBetweenChildren: 0,
       spacing: 0,
-
       buttonSize: Size(54.0, 54.0),
       childPadding: EdgeInsets.zero,
-
       childrenButtonSize: Size(54.0, 44.0),
       direction: direction,
       child: MmmIcons.largeConnect(
         action: () {
           isDialOpen.value = !isDialOpen.value;
-
         },
       ),
       children: [

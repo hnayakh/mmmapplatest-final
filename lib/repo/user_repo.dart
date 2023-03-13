@@ -104,7 +104,7 @@ class UserRepository {
 
   Future<SendOtpResponse> sendOtp(String dialCode, String mobile, OtpType login,
       {String email = ""}) async {
-    return this.apiClient.sendOtp(dialCode, mobile, login);
+    return this.apiClient.sendOtp(dialCode, mobile, login, email);
   }
 
   Future<CheckEmailResponse> checkEmail(String email) async {
@@ -216,8 +216,8 @@ class UserRepository {
     return this.apiClient.getProfileVisitor(this.useDetails!.id);
   }
 
-  Future<ProfileVisitedResponse> getOnlineMembers() async {
-    return this.apiClient.getOnlineMembers(this.useDetails!.id);
+  Future<MatchingProfileResponse> getOnlineMembers(List<String> onlineUserIds) async {
+    return this.apiClient.getOnlineMembers(this.useDetails!.id, onlineUserIds);
   }
 
   Future<RecentViewsResponse> getRecentViews() async {

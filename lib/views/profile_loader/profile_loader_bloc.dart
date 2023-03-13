@@ -19,7 +19,7 @@ class ProfileLoaderBloc extends Bloc<ProfileLoaderEvent, ProfileLoaderState> {
       if (result.status == AppConstants.SUCCESS) {
         this.userRepository.updateRegistrationStep(10);
         var userDetails  = (await this.userRepository.getUserDetails())!;
-        getIt<ChatRepo>().updateChatUser(id: userDetails.id, fullName: userDetails.name, imageUrl: "");
+        getIt<ChatRepo>().updateChatUser(id: userDetails.id, fullName: userDetails.name, imageUrl: userDetails.imageUrl);
         yield OnGotProfiles(result.list, [], [], [], [], []);
       } else {
         yield OnGotProfiles([], [], [], [], [], []);
