@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
+import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 
 import 'bio_event.dart';
@@ -24,6 +25,7 @@ class BioBloc extends Bloc<BioEvent, BioState> {
 
       if (result.status == AppConstants.SUCCESS) {
         this.profileData = result.profileDetails;
+        profileImage = result.profileDetails.images.isNotNullEmpty ?  result.profileDetails.images.first : "";
         yield BioDataState(result.profileDetails);
       } else {
         yield OnError(result.message);
@@ -125,11 +127,13 @@ class BioBloc extends Bloc<BioEvent, BioState> {
       yield BioInitialState();
     }
     if (event is RemoveImage) {
-      this.localImagePaths.removeAt(event.pos);
       if (this.profileImage == this.localImagePaths[event.pos]) {
-        this.profileImage = this.localImagePaths[0];
+        yield OnError("You can't remove an image that is selected as profile image.");
       }
-      yield BioInitialState();
+      else {
+        this.localImagePaths.removeAt(event.pos);
+        yield BioInitialState();
+      }
     }
     if (event is FetchMyImage) {
       var response = await this.userRepository.getOtheruserDetails(

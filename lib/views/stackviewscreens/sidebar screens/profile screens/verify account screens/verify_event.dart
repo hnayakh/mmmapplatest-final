@@ -6,7 +6,10 @@ class VerifyEvent extends BaseEventState {}
 class OnSelectIdProof extends VerifyEvent {
   late final IdProofType idProof;
   OnSelectIdProof(this.idProof);
+
 }
+
+class GetPreviousDocs extends VerifyEvent{}
 
 class AddDocumentImage extends VerifyEvent {
   final String docImages;
@@ -21,7 +24,7 @@ class RemoveDocImage extends VerifyEvent {
 }
 
 class UpdateDoc extends VerifyEvent {
-  final IdProofType idProof;
+  final IdProofType? idProof;
   final List<String> localDocImagePaths;
   UpdateDoc(this.idProof, this.localDocImagePaths);
 }

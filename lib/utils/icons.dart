@@ -208,12 +208,11 @@ class MmmIcons {
         ),
         foregroundDecoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: kGreen.withAlpha(50),
+            color: kPrimary.withAlpha(50),
             border: Border.all(color: Colors.white, width: 1.2)),
         decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: kGreen,
-            // gradient: MmmDecorations.primaryGradient(),
+            color: kPrimary,
             border: Border.all(color: Colors.white, width: 1.2)),
       ),
     );

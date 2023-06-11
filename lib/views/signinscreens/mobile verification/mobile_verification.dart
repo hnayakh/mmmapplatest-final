@@ -145,7 +145,7 @@ class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
                       margin: EdgeInsets.fromLTRB(15, 15, 1, 0),
                       child: Text(
                         'We have sent a 6 digit verification code on your \nregistered number +$dialCode-${phone}',
-                        style: TextStyle(fontSize: 14),
+                        style: TextStyle( fontFamily: 'MakeMyMarry', fontSize: 14),
                         textScaleFactor: 1.0,
                       ),
                     ),
@@ -224,13 +224,13 @@ class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
       case 10:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-                builder: (context) => ProfileLoader(userRepository: userRepo)),
+                builder: (context) => ProfileLoader(userRepository: userRepo, firstTime: true,)),
                 (route) => false);
         break;
       case 11:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-                builder: (context) => ProfileLoader(userRepository: userRepo)),
+                builder: (context) => ProfileLoader(userRepository: userRepo, firstTime: true,)),
                 (route) => false);
         break;
       case 9:

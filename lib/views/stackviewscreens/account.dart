@@ -72,11 +72,11 @@ class _AccountState extends State<Account> {
             backgroundColor: Colors.white,
             title: const Text("Delete Account ",
                 textAlign: TextAlign.left,
-                style: TextStyle(fontWeight: FontWeight.bold)),
+                style: TextStyle( fontFamily: 'MakeMyMarry', fontWeight: FontWeight.bold)),
             content: RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(
-                  style: const TextStyle(
+                  style: const TextStyle( fontFamily: 'MakeMyMarry', 
                     fontSize: 14.0,
                     color: Colors.grey,
                   ),

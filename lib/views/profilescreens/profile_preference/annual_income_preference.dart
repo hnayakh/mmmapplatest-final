@@ -7,8 +7,8 @@ import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 
 class AnnualIncomePreference extends StatefulWidget {
-  final List<AnualIncome> list;
-  final List<AnualIncome> listMax;
+  final List<AnnualIncome> list;
+  final List<AnnualIncome> listMax;
   final int? minimumSelectedIndex;
   const AnnualIncomePreference(
       {Key? key,
@@ -24,8 +24,8 @@ class AnnualIncomePreference extends StatefulWidget {
 }
 
 class AnnualIncomePreferenceScreen extends State<AnnualIncomePreference> {
-  List<AnualIncome> list;
-  List<AnualIncome> listMax;
+  List<AnnualIncome> list;
+  List<AnnualIncome> listMax;
   int? minimumSelectedIndex;
   AnnualIncomePreferenceScreen(
       this.list, this.listMax, this.minimumSelectedIndex);
@@ -91,10 +91,10 @@ class AnnualIncomePreferenceScreen extends State<AnnualIncomePreference> {
                                   child: Text(incomes[index],
                                       style: MmmTextStyles.bodyMediumSmall(
                                           textColor: isSelected(
-                                                  AnualIncome.values[index])
+                                                  AnnualIncome.values[index])
                                               ? kPrimary
                                               : kModalPrimary))),
-                              isSelected(AnualIncome.values[index])
+                              isSelected(AnnualIncome.values[index])
                                   ? Icon(
                                       Icons.check,
                                       color: kPrimary,
@@ -115,13 +115,13 @@ class AnnualIncomePreferenceScreen extends State<AnnualIncomePreference> {
                     ),
                     onTap: () {
                       setState(() {
-                        setSelected(AnualIncome.values[index], index);
+                        setSelected(AnnualIncome.values[index], index);
                       });
                       // Navigator.of(context).pop(MaritalStatus.values[index]);
                     },
                   );
                 },
-                itemCount: AnualIncome.values.length,
+                itemCount: AnnualIncome.values.length - 1,
                 // separatorBuilder: (context, index) {
                 //   return Divider(
                 //     color: kLight4,
@@ -140,7 +140,7 @@ class AnnualIncomePreferenceScreen extends State<AnnualIncomePreference> {
         ));
   }
 
-  bool isSelected(AnualIncome value) {
+  bool isSelected(AnnualIncome value) {
     for (var item in list) {
       if (item == value) {
         return true;
@@ -149,7 +149,7 @@ class AnnualIncomePreferenceScreen extends State<AnnualIncomePreference> {
     return false;
   }
 
-  void setSelected(AnualIncome value, index) {
+  void setSelected(AnnualIncome value, index) {
     print(list);
     this.list = [value];
     this.minimumSelectedIndex = index;

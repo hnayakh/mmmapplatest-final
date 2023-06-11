@@ -12,11 +12,22 @@ class VerifyBloc extends Bloc<VerifyEvent, VerifyState> {
   List<String> localDocImagePaths = [];
   ProfileDetails? profileData;
 
-  VerifyBloc(this.userRepository) : super(VerifyInitialState());
+  VerifyBloc(this.userRepository) : super(VerifyInitialState()){
+    add(GetPreviousDocs());
+  }
 
   @override
   Stream<VerifyState> mapEventToState(VerifyEvent event) async* {
     yield OnLoading();
+    if (event is GetPreviousDocs) {
+      var res = await userRepository.getOtheruserDetails(
+          userRepository.useDetails!.id, ProfileActivationStatus.Verified);
+      if(res.profileDetails.docUpdationStatus != '-1'){
+        localDocImagePaths..clear()..add(res.profileDetails.docUrl);
+        idProof = res.profileDetails.docType;
+      }
+      yield VerifyInitialState();
+    }
     if (event is OnSelectIdProof) {
       this.idProof = event.idProof;
       yield VerifyInitialState();
@@ -31,10 +42,8 @@ class VerifyBloc extends Bloc<VerifyEvent, VerifyState> {
         this.localDocImagePaths.add(result);
         yield VerifyInitialState();
       } else {
-        yield OnError('Couldnot upload document');
+        yield OnError('Could not upload document');
       }
-
-      //implement condition
     }
     if (event is RemoveDocImage) {
       this.localDocImagePaths.removeAt(event.pos);
@@ -42,8 +51,14 @@ class VerifyBloc extends Bloc<VerifyEvent, VerifyState> {
     }
 
     if (event is UpdateDoc) {
+      if (this.idProof == null && this.localDocImagePaths.length == 0) {
+        yield OnError("Please enter all data");
+      }
+      if (this.idProof == null) {
+        yield OnError("Please select the ID Proof type");
+      }
       if (this.localDocImagePaths.length == 0) {
-        yield OnError("Please pick an image for IDproof");
+        yield OnError("Please pick an image as ID Proof");
       }
       this.idProof = event.idProof;
       this.localDocImagePaths = event.localDocImagePaths;
@@ -52,7 +67,7 @@ class VerifyBloc extends Bloc<VerifyEvent, VerifyState> {
           await this.userRepository.updateDoc(idProof!, localDocImagePaths);
 
       if (result.status == AppConstants.SUCCESS) {
-        yield OnUpdateDoc();
+        yield OnUpdateDoc(result.message);
       } else {
         yield OnError(result.message);
       }

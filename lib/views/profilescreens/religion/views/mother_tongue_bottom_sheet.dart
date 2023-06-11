@@ -91,7 +91,7 @@ class MotherTongueBottomSheetState extends State<MotherTongueBottomSheet> {
                         children: [
                           Text(filtered[index].title,
                               style: MmmTextStyles.bodyMediumSmall(
-                                  textColor: widget.selected == filtered[index]
+                                  textColor: widget.selected.id == filtered[index].id
                                       ? kPrimary
                                       : kModalPrimary)),
                           SizedBox(

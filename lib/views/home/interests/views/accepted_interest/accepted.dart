@@ -59,7 +59,7 @@ class AcceptedScreen extends StatelessWidget {
             return Center(
               child: Text(
                 'No requests accepted yet..',
-                style: TextStyle(color: kPrimary),
+                style: TextStyle( fontFamily: 'MakeMyMarry', color: kPrimary),
               ),
             );
           }
@@ -77,124 +77,7 @@ class AcceptedScreen extends StatelessWidget {
                       : Container()
                 ],
               ));
-          return ListView.separated(
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Row(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.network(
-                        listAccepted[index].user.imageURL,
-                        height: MediaQuery.of(context).size.width * 0.28,
-                        width: MediaQuery.of(context).size.width * 0.28,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.03,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              listAccepted[index].user.displayId,
-                              style:
-                                  MmmTextStyles.bodySmall(textColor: kPrimary),
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.04,
-                            ),
-                            SvgPicture.asset(
-                              'images/Verified.svg',
-                              color: kPrimary,
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.12,
-                            ),
-                            Stack(
-                              children: [
-                                Container(
-                                  width: 40,
-                                  height: 40,
-                                  child: Container(
-                                    height: 32,
-                                    width: 32,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle, color: kLight4),
-                                    child: SvgPicture.asset(
-                                      'images/chat.svg',
-                                      height: 18,
-                                      color: kNotify,
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  top: 0,
-                                  right: 0,
-                                  child: Container(
-                                    width: 15,
-                                    height: 15,
-                                    //alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: kPrimary),
-                                    child: Text(
-                                      '2',
-                                      textAlign: TextAlign.center,
-                                      style: MmmTextStyles.footer(
-                                          textColor: kLight4),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 14,
-                        ),
-                        Text(
-                          listAccepted[index].user.name,
-                          style: MmmTextStyles.heading5(textColor: kDark5),
-                        ),
-                        SizedBox(
-                          height: 4,
-                        ),
-                        Text(
-                          listAccepted[index].user.aboutMe,
-                          style: MmmTextStyles.footer(textColor: gray3),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                subtitle: Column(
-                  children: [
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.31,
-                        ),
-                        MmmButtons.connectButton('Connect Now', action: () {}),
-                      ],
-                    )
-                  ],
-                ),
-              );
-            },
-            itemCount: listAccepted.length,
-            separatorBuilder: (BuildContext context, int index) {
-              return Divider();
-            },
-          );
+
         },
       ),
     );
@@ -385,9 +268,11 @@ class AcceptedScreen extends StatelessWidget {
                       action: () async {
                         if (listAccepted[index].user.connectStatus) {
                           var otherUser = await getIt<ChatRepo>().getChatUser(
-                              id: listAccepted[index].requestedUserBasicId);
+                              id: listAccepted[index].user.id);
                           var chatRoom = await getIt<ChatRepo>().getChatRoom(
-                              listAccepted[index].requestingUserBasicId,
+                              getIt<UserRepository>()
+                                  .useDetails!
+                                  .id,
                               otherUser);
                           Navigator.of(context).push(
                             MaterialPageRoute(
@@ -401,13 +286,12 @@ class AcceptedScreen extends StatelessWidget {
                           BlocProvider.of<AppBloc>(navigatorKey.currentContext!)
                               .connectNow(
                                   otherUserId:
-                                      listAccepted[index].requestedUserBasicId,
+                                  listAccepted[index].user.id,
                                   onDone: () async {
                                     navigatorKey.currentState?.push(
                                         (await ChatPage.getRoute(
                                             navigatorKey.currentContext!,
-                                            listAccepted[index]
-                                                .requestedUserBasicId)));
+                                            listAccepted[index].user.id)));
                                   },
                                   onError: () async {},
                                   profileDetails: listAccepted[index],

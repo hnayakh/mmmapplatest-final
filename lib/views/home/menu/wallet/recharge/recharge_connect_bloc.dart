@@ -83,6 +83,6 @@ class RechargeConnectBloc
     this.tax =
         ((this.totalAmount - generalDiscount - promoDiscount) * 18 / 100);
     this.totalPayable =
-        this.totalAmount - this.promoDiscount - promoDiscount + this.tax;
+        this.totalAmount - generalDiscount - promoDiscount + this.tax;
   }
 }

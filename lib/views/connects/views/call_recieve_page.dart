@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/views/connects/views/video_call.dart';
 
@@ -25,11 +28,27 @@ class CallAnswerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FirebaseFirestore.instance
+        .collection('activeCalls')
+        .doc(token.notificationId)
+        .snapshots()
+        .listen((event) {
+      if (!event.data()?['status']) {
+        if (context.navigate.canPop()) {
+          context.navigate.pop();
+        } else {
+          SystemNavigator.pop();
+        }
+      }
+    });
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: NetworkImage(this.userImage),fit: BoxFit.cover, opacity: 0.4)),
+                image: NetworkImage(this.userImage),
+                fit: BoxFit.cover,
+                opacity: 0.4)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -48,14 +67,27 @@ class CallAnswerPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Container(
-                  decoration:
-                      BoxDecoration(color: Colors.red, shape: BoxShape.circle),
-                  padding: EdgeInsets.all(12),
-                  child: Icon(
-                    Icons.clear,
-                    color: Colors.white,
-                    size: 36,
+                InkWell(
+                  onTap: () async {
+                    await FirebaseFirestore.instance
+                        .collection('activeCalls')
+                        .doc(token.notificationId)
+                        .update({'status': false});
+                    if(context.navigate.canPop()){
+                      context.navigate.pop();
+                    }else {
+                      SystemNavigator.pop();
+                    }
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.red, shape: BoxShape.circle),
+                    padding: EdgeInsets.all(12),
+                    child: Icon(
+                      Icons.clear,
+                      color: Colors.white,
+                      size: 36,
+                    ),
                   ),
                 ),
                 InkWell(

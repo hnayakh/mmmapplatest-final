@@ -10,7 +10,6 @@ class AgoraTokenResponse {
   AgoraTokenResponse.fromJson(json) {
     this.status = json["type"];
     this.message = json["message"];
-    print(this.status);
     if (this.status == AppConstants.SUCCESS) {
        token =  AgoraToken.fromJson(json["data"])  ;
     }

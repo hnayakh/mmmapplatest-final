@@ -3,6 +3,7 @@ import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
+import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 
 import 'religion_event.dart';
@@ -109,31 +110,33 @@ class ReligionBloc extends Bloc<ReligionEvent, ReligionState> {
       this.religion = event.religion;
       this.subCaste = event.subcast;
 
-      if (this.motherTongue == null &&
-          this.gothra == null &&
-          this.religion == null &&
-          this.subCaste == "") {
+      if ((this.motherTongue == null ||
+              this.motherTongue!.title.isNullOrEmpty) &&
+          (this.gothra == null || this.gothra.isEmpty) &&
+          (this.religion == null || this.religion!.title.isNullOrEmpty) &&
+          (this.subCaste == null || this.subCaste.isEmpty)) {
         yield OnError('Please enter all mandatory details');
       }
-      if (this.religion == null) {
+      if (this.religion == null || this.religion!.title.isNullOrEmpty) {
         yield OnError("Please select religion");
-      } else if (!casteNotAvailable() && this.subCaste == '') {
-        yield OnError("Please select sub-caste");
-      } else if (this.motherTongue == null) {
+      } else if (!casteNotAvailable() && (this.subCaste == '' || this.subCaste == null)) {
+        yield OnError("Please select caste");
+      } else if (this.motherTongue == null ||
+          this.motherTongue!.title.isNullOrEmpty) {
         yield OnError("Please select mother tongue");
-      } else if (this.subCaste == null) {
-        yield OnError("Please select Caste");
-      } else if (this.religion!.title.toLowerCase().contains("hindu") &&
+      }  else if (this.religion!.title.toLowerCase().contains("hindu") &&
           (this.gothra == null || this.gothra.isEmpty)) {
         yield OnError("Please select Gothra");
       } else if (this.religion!.title.toLowerCase().contains("hindu") &&
           (this.isManglik == Manglik.NotApplicable)) {
         yield OnError("Please choose Manglik Status.");
       } else {
-
+        if (!this.religion!.title.toLowerCase().contains("hindu")) {
+          this.isManglik = Manglik.NotApplicable;
+        }
         var result = await this.userRepository.updateReligion(this.religion!,
             this.subCaste, this.motherTongue!, this.gothra, this.isManglik);
-
+        // MMn0qxwM
         if (result.status == AppConstants.SUCCESS) {
           this.userRepository.useDetails!.religion = this.religion!;
           this.userRepository.useDetails!.motherTongue = this.motherTongue!;

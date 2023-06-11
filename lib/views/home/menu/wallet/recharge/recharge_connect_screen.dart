@@ -103,7 +103,7 @@ class _RechargeConnectScreenState extends State<RechargeConnectScreen> {
   void openCheckout() async {
     var options = {
       'key': 'rzp_test_KKICP7OGSuGiN1',
-      'amount': this.totalPayable * 100,
+      'amount':(this.totalPayable * 100).toInt(),
       'name': 'Ironage Tech Pvt. Ltd.',
       'description': 'MakeMyMarry Connect Recharge',
       'retry': {'enabled': true, 'max_count': 1},

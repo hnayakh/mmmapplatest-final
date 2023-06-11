@@ -1,15 +1,21 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:makemymarry/datamodels/agora_token_response.dart';
+import 'package:makemymarry/datamodels/blocked_users_response.dart';
 import 'package:makemymarry/datamodels/connect.dart';
 import 'package:makemymarry/datamodels/interests_model.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/datamodels/matching_percentage_response.dart';
+import 'package:makemymarry/datamodels/notification_response.dart';
 import 'package:makemymarry/datamodels/recharge.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
+import 'package:makemymarry/locator.dart';
 import 'package:makemymarry/utils/api_client.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/storage_service.dart';
+import 'package:makemymarry/views/meet/bloc/meet_form_bloc.dart';
 
 class UserRepository {
   late StorageService storageService;
@@ -46,16 +52,23 @@ class UserRepository {
     return this.apiClient.updateLifeStyle(uid, data);
   }
 
- Future<SigninResponse> updateHobby(String uid, List<String> data) async {
+  Future<SigninResponse> updateHobby(String uid, List<String> data) async {
     return this.apiClient.updateHobby(uid, data);
   }
 
-
-
-  Future<AgoraTokenResponse> generateAgoraToken(String callerId, CallType type) async {
+  Future<AgoraTokenResponse> generateAgoraToken(
+      String callerId, CallType type) async {
     var currentUser = await getUserDetails();
     var id = currentUser!.id;
-    return this.apiClient.generateAgoraToken(type: type, calleUserId: callerId, callerUserId: id);
+    var res = await this.apiClient.generateAgoraToken(
+        type: type, calleUserId: callerId, callerUserId: id);
+    if (res.token != null) {
+      FirebaseFirestore.instance
+          .collection('activeCalls')
+          .doc(res.token!.notificationId)
+          .set({'status': true});
+    }
+    return res;
   }
 
   Future updateRegistartionStep(String basicUserId, int step) async {
@@ -147,7 +160,7 @@ class UserRepository {
   Future<SigninResponse> career(
       // String nameOfOrg,
       String? occupation,
-      AnualIncome income,
+      AnnualIncome income,
       String? education,
       CountryModel country,
       StateModel stateName,
@@ -169,14 +182,16 @@ class UserRepository {
   }
 
   Future<SigninResponse> updateFamilyBackground(
-      FamilyAfluenceLevel familyAfluenceLevel,
-      FamilyValues familyValues,
-      FamilyType type,
-      CountryModel countryModel,
-      StateModel state,
-      StateModel city) async {
+    FamilyAfluenceLevel familyAfluenceLevel,
+    FamilyValues familyValues,
+    FamilyType type,
+    CountryModel countryModel,
+    StateModel state,
+    StateModel city,
+    bool isResidingWithFamily,
+  ) async {
     return apiClient.updateFamilyBackground(familyAfluenceLevel, familyValues,
-        type, countryModel, state, city, useDetails!.id);
+        type, countryModel, state, city, useDetails!.id, isResidingWithFamily);
   }
 
   Future<SigninResponse> updateFamilyDetails(
@@ -216,7 +231,8 @@ class UserRepository {
     return this.apiClient.getProfileVisitor(this.useDetails!.id);
   }
 
-  Future<MatchingProfileResponse> getOnlineMembers(List<String> onlineUserIds) async {
+  Future<MatchingProfileResponse> getOnlineMembers(
+      List<String> onlineUserIds) async {
     return this.apiClient.getOnlineMembers(this.useDetails!.id, onlineUserIds);
   }
 
@@ -224,19 +240,97 @@ class UserRepository {
     return this.apiClient.getRecentViews(this.useDetails!.id);
   }
 
+  Future<MeetListResponse> fetchALlMeets() async {
+    return this.apiClient.fetchAllMeets(this.useDetails!.id);
+  }
+
+  Future<dynamic> createMeetRequest({
+    required DateTime scheduleTime,
+    required MeetType meetType,
+    required String otherUserId,
+    required LatLng latLng,
+    required String location,
+  }) async {
+    return this.apiClient.createMeetRequest(
+        scheduleTime: scheduleTime,
+        meetType: meetType,
+        otherUserId: otherUserId,
+        latLng: latLng,
+        location: location,
+        id: getIt<UserRepository>().useDetails!.id);
+  }
+
+  Future<dynamic> updateMeetRequest({
+    required DateTime scheduleTime,
+    required Activeconnection meet,
+    required LatLng latLng,
+    required String location,
+  }) async {
+    return this.apiClient.updateMeetRequest(
+        scheduleTime: scheduleTime,
+        latLng: latLng,
+        location: location,
+        meet: meet);
+  }
+
+  Future<dynamic> updateMeetStatus({
+    required Activeconnection meet,
+    required int status,
+  }) async {
+    return this.apiClient.updateMeetStatus(
+        meet: meet, status: status, id: getIt<UserRepository>().useDetails!.id);
+  }
+
+  Future<dynamic> updateSettings({
+    required bool showEmail,
+    required bool showPhone,
+    required bool isHidden,
+    required bool isNotification,
+  }) async {
+    return this
+        .apiClient
+        .updateSettings(
+        showEmail: showEmail,
+        showPhone: showPhone,
+        isHidden: isHidden,
+        isNotification: isNotification,
+        userId: getIt<UserRepository>().useDetails!.id);
+  }
+
+  Future<SettingsDataResponse> getSettings() async {
+    return this
+        .apiClient
+        .getSettingsData(userId: getIt<UserRepository>().useDetails!.id);
+  }
+
   Future<ProfileDetailsResponse> getOtheruserDetails(
       String id, ProfileActivationStatus activationStatus) async {
-    var details =  await getUserDetails();
-    return apiClient.getOtherUserDetails(id, activationStatus, userId: details?.id);
+    var details = await getUserDetails();
+    return apiClient.getOtherUserDetails(id, activationStatus,
+        userId: details?.id);
+  }
+
+  Future<NotificationResponse> getNotifications(
+    String id,
+  ) async {
+    return apiClient.getNotifications(id);
+  }
+
+  Future<BlockedUsersResponse> getBlockedUsers(
+    String id,
+  ) async {
+    return apiClient.getBlockedUsers(id);
   }
 
   Future<PartnerPreferenceResponse> getPartnerPreference() async {
-    var details =  await getUserDetails();
+    var details = await getUserDetails();
     return apiClient.getPartnerPreference(userId: details!.id);
   }
 
   Future<ProfileDetailsResponse> getOtherUserDetailsByDisplayId(
-      String displayId, ProfileActivationStatus activationStatus, String? userId) async {
+      String displayId,
+      ProfileActivationStatus activationStatus,
+      String? userId) async {
     return apiClient.getOtherUserDetailsByDisplayId(
         displayId, activationStatus, userId);
   }
@@ -270,7 +364,8 @@ class UserRepository {
       List<SimpleMasterData> motherTongue,
       List<String?> occupation,
       List<Education> education,
-      List<AnualIncome> annualIncome,
+      List<AnnualIncome> annualIncome,
+      List<AnnualIncome> annualIncomeMax,
       List<EatingHabit> eatingHabit,
       List<DrinkingHabit> drinkingHabit,
       List<SmokingHabit> smokingHabit,
@@ -290,6 +385,7 @@ class UserRepository {
         occupation,
         education,
         annualIncome,
+        annualIncomeMax,
         eatingHabit,
         drinkingHabit,
         smokingHabit,
@@ -303,7 +399,7 @@ class UserRepository {
       double maxAge,
       double minAge,
       List<MaritalStatus> maritalStatus,
-      List<CountryModel> countryModel,
+      CountryModel countryModel,
       List<StateModel?> myState,
       List<StateModel?> city,
       List<SimpleMasterData> religion,
@@ -311,7 +407,8 @@ class UserRepository {
       List<SimpleMasterData> motherTongue,
       List<String?> occupation,
       List<Education> education,
-      List<AnualIncome> annualIncome,
+      List<AnnualIncome> annualIncome,
+      List<AnnualIncome> annualIncomeMax,
       List<EatingHabit> eatingHabit,
       List<DrinkingHabit> drinkingHabit,
       List<SmokingHabit> smokingHabit,
@@ -331,6 +428,7 @@ class UserRepository {
         occupation,
         education,
         annualIncome,
+        annualIncomeMax,
         eatingHabit,
         drinkingHabit,
         smokingHabit,
@@ -347,13 +445,11 @@ class UserRepository {
     return this.apiClient.setLikeStatus(likedUserId, likedByUserId, requestId);
   }
 
-  Future<dynamic> blockProfile(
-      String blockBy, String blockTo) {
+  Future<dynamic> blockProfile(String blockBy, String blockTo) {
     return this.apiClient.blockProfile(blockBy, blockTo);
   }
 
-  Future<dynamic> unBlockProfile(
-      String blockId) {
+  Future<dynamic> unBlockProfile(String blockId) {
     return this.apiClient.unblockProfile(blockId);
   }
 
@@ -431,6 +527,4 @@ class UserRepository {
     //     "39222b1b-07e4-46a6-a504-9a521380d099",
     //     "a6e1b1af-a3d4-47cd-b4e0-88070996cd61");
   }
-
-
 }

@@ -3,6 +3,7 @@ import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
+import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 
 import 'occupation_event.dart';
@@ -18,7 +19,7 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
   CountryModel? prevCountryModel;
   StateModel? myState, city, prevState;
 
-  AnualIncome? annualIncome;
+  AnnualIncome? annualIncome;
   ProfileDetails? profileDetails;
 
   OccupationBloc(this.userRepository) : super(OccupationInitialState()) {
@@ -32,14 +33,20 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
       var result = await this.userRepository.getOtheruserDetails(
           event.basicUserId, ProfileActivationStatus.Verified);
 
-      if (result.status == AppConstants.SUCCESS) {
+      if (result.status == AppConstants.SUCCESS ) {
         this.profileDetails = result.profileDetails;
-        if (this.education == null)
+        if (this.education == null )
           this.education = this.profileDetails!.highiestEducation;
         if (this.occupation == null)
           this.occupation = this.profileDetails!.occupation;
         if (this.annualIncome == null)
           this.annualIncome = this.profileDetails!.annualIncome;
+        // if(this.countryModel == null){
+          var countryName = this.profileDetails!.country;
+          var countryId = this.profileDetails!.countryId;
+          var countryCode = this.profileDetails!.countryCode;
+          this.countryModel = CountryModel.fromJson({'name': countryName, 'id': countryId,'phoneCode': int.parse(countryCode),"shortName":countryName  });
+        // }
         if (this.city == null) {
           var cityName = this.profileDetails!.city;
           var cityId = this.profileDetails!.cityId;
@@ -131,26 +138,26 @@ class OccupationBloc extends Bloc<OccupationEvent, OccupationState> {
       this.myState = event.myState;
       this.city = event.city;
 
-      if (this.annualIncome == null &&
-          this.myState == null &&
-          this.city == null &&
-          this.occupation == null &&
-          this.education == null) {
+      if ((this.annualIncome == null || this.annualIncome == AnnualIncome.NotMentioned) &&
+         (this.myState == null || this.myState?.id == -1) &&
+           (this.countryModel?.id == -1 || this.countryModel == null || (this.countryModel?.id == 101 && (this.city == null || this.city?.id == -1)))&&
+          !this.occupation.isNotNullEmpty &&
+          !this.education.isNotNullEmpty) {
         yield OnError('Please enter all mandatory career details');
       }
-
-      if (this.annualIncome == null) {
+      else if ( !this.occupation.isNotNullEmpty) {
+        yield OnError('Please select your occupation.');
+      }
+      if (this.annualIncome == null || this.annualIncome == AnnualIncome.NotMentioned) {
         yield OnError('Enter annual income.');
-      } else if (this.countryModel == null) {
-        yield OnError('Enter name of country belonging to.');
-      } else if (this.myState == null) {
-        yield OnError('Enter name of state belonging to.');
-      } else if (this.city == null && this.countryModel?.id == 101) {
-        yield OnError('Enter name of city belonging to.');
-      } else if (this.occupation == null) {
-        yield OnError('select your occupation.');
-      } else if (this.education == null) {
+      }  else if ( !this.education.isNotNullEmpty) {
         yield OnError('select your educational qualifications.');
+      }else if (this.countryModel == null || this.countryModel?.id == -1) {
+        yield OnError('Enter name of country belonging to.');
+      } else if (this.myState == null || this.myState?.id == -1) {
+        yield OnError('Enter name of state belonging to.');
+      } else if (this.countryModel?.id == 101 && (this.city == null || this.city?.id == -1)) {
+        yield OnError('Enter name of city belonging to.');
       } else {
         var result = await this.userRepository.career(
               this.occupation!,

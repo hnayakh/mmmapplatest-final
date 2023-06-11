@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/locator.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/elevations.dart';
+import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
-import 'package:makemymarry/views/stackviewscreens/meet%20status/meet_timing/schedule_meeting_date.dart';
+import 'package:makemymarry/views/meet/bloc/meet_form_bloc.dart';
+import 'package:makemymarry/views/meet/views/meet_location.dart';
 
+import '../views/meet/views/meet_timing/schedule_meeting_date.dart';
 import 'colors.dart';
 
 class MmmWidgets {
@@ -304,7 +308,7 @@ class MmmWidgets {
                     text: TextSpan(
                       // Note: Styles for TextSpans must be explicitly defined.
                       // Child text spans will inherit styles from parent
-                      style: new TextStyle(
+                      style: new TextStyle( fontFamily: 'MakeMyMarry', 
                         fontSize: 14.0,
                         color: Colors.black,
                       ),
@@ -314,7 +318,7 @@ class MmmWidgets {
                                 'Your profile is created successfully on  $date with'),
                         new TextSpan(
                             text: ' ${user.displayId.toUpperCase()} ',
-                            style: new TextStyle(
+                            style: new TextStyle( fontFamily: 'MakeMyMarry', 
                                 color: kPrimary, fontWeight: FontWeight.bold)),
                         new TextSpan(text: 'id'),
                       ],
@@ -935,7 +939,8 @@ class MmmWidgets {
                                 child: Center(
                                   child: Text(
                                     'Cancel',
-                                    style: MmmTextStyles.heading6(textColor: gray4),
+                                    style: MmmTextStyles.heading6(
+                                        textColor: gray4),
                                   ),
                                 ),
                               ),
@@ -950,7 +955,8 @@ class MmmWidgets {
                         flex: 1,
                         child: Container(
                             height: 42,
-                            decoration: MmmDecorations.primaryButtonDecoration(),
+                            decoration:
+                                MmmDecorations.primaryButtonDecoration(),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(8),
                               child: Material(
@@ -960,8 +966,8 @@ class MmmWidgets {
                                   child: Center(
                                     child: Text(
                                       'Confirm',
-                                      style:
-                                          MmmTextStyles.heading6(textColor: gray7),
+                                      style: MmmTextStyles.heading6(
+                                          textColor: gray7),
                                     ),
                                   ),
                                 ),
@@ -994,7 +1000,9 @@ class MmmWidgets {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
               color: Color(0xffFCFCFD),
-              boxShadow: [MmmShadow.elevation3(shadowColor: kShadowColorForWhite)],
+              boxShadow: [
+                MmmShadow.elevation3(shadowColor: kShadowColorForWhite)
+              ],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -1006,10 +1014,15 @@ class MmmWidgets {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        name,
-                        textAlign: TextAlign.center,
-                        style: MmmTextStyles.heading4(textColor: kDark5),
+                      Flexible(
+                        child: Text(
+                          name.split(" ").first,
+                          maxLines: 1,
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                          style: MmmTextStyles.heading4(textColor: kDark5),
+                        ),
                       ),
                       SizedBox(
                         width: 12,
@@ -1033,16 +1046,12 @@ class MmmWidgets {
                     borderRadius: BorderRadius.circular(12.0),
                   ),
                   clipBehavior: Clip.hardEdge,
-                  child: Image.network(
-                    imageUrl,
-                    height: 72,
-                    width: 72,
-                    fit: BoxFit.cover,
+                  child: Image.network(imageUrl,
+                      height: 72,
+                      width: 72,
+                      fit: BoxFit.cover,
                       errorBuilder: (context, obj, str) => Container(
-                          color: Colors.grey,
-                          child: Icon(Icons.error))
-
-                  ),
+                          color: Colors.grey, child: Icon(Icons.error))),
                 ),
                 SizedBox(
                   height: 24,
@@ -1111,7 +1120,8 @@ class MmmWidgets {
     );
   }
 
-  static Widget lowBalanceWidget({required Function onConfirm}) {
+  static Widget lowBalanceWidget(
+      {required Function onConfirm, String? message}) {
     return AlertDialog(
       backgroundColor: Colors.transparent,
       contentPadding: EdgeInsets.all(0),
@@ -1137,7 +1147,8 @@ class MmmWidgets {
             ),
             Container(
               child: Text(
-                "You don't have enough Connect in your wallet, Please buy some  Connect to make this call.",
+                message ??
+                    "You don't have enough Connect in your wallet, Please buy some  Connect to make this call.",
                 textAlign: TextAlign.center,
                 style: MmmTextStyles.bodySmall(textColor: kDark5),
               ),
@@ -1296,7 +1307,8 @@ class MmmWidgets {
     );
   }
 
-  static Widget selectMeetWidget(BuildContext context) {
+  static Widget selectMeetWidget(
+      BuildContext context, ProfileDetails profileDetails) {
     return Container(
       margin: const EdgeInsets.only(top: 20, left: 5),
       height: 300,
@@ -1348,67 +1360,27 @@ class MmmWidgets {
                   ),
                   width: 340,
                   child: MmmButtons.primaryButtonMeetGray('Virtual Meet', () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => BookYourDate()),
-                    );
+                    context.navigate.pop();
+                    context.navigate.push(BookYourDate.getRoute(
+                      meetType: MeetType.virtual,
+                      profileDetails: profileDetails,
+                    ));
                   })),
               const SizedBox(
                 height: 20,
               ),
               Container(
-                  width: 340,
-                  child: MmmButtons.primaryButtonMeet(
-                      'Meet in Person', () => null)),
-              // Container(
-              //     width: 365,
-              //     height: 55,
-              //     child: ElevatedButton(
-              //       onPressed: () {
-              //         Navigator.of(context).push(MaterialPageRoute(
-              //             builder: (context) => BookYourDate()));
-              //       },
-              //       // ignore: sort_child_properties_last
-              //       child: const Text(
-              //         'Virtual meet',
-              //         style: TextStyle(
-              //             fontSize: 18,
-              //             color: Colors.white,
-              //             fontWeight: FontWeight.bold),
-              //       ),
-              //       style: ElevatedButton.styleFrom(
-              //         shadowColor: kPrimary,
-              //         shape: RoundedRectangleBorder(
-              //           borderRadius: BorderRadius.circular(10), // <-- Radius
-              //         ),
-              //         side: const BorderSide(
-              //           width: 1.0,
-              //         ),
-              //       ),
-              //     )),
-
-              // Container(
-              //     width: 365,
-              //     height: 55,
-              //     child: ElevatedButton(
-              //       onPressed: () {},
-              //       // ignore: sort_child_properties_last
-              //       child: const Text(
-              //         'Meet in Person',
-              //         style: TextStyle(
-              //             fontSize: 18,
-              //             fontWeight: FontWeight.bold,
-              //             color: Colors.white),
-              //       ),
-              //       style: ElevatedButton.styleFrom(
-              //         shadowColor: kPrimary, //  Color Cose #C9184A
-              //         shape: RoundedRectangleBorder(
-              //           borderRadius: BorderRadius.circular(10), // <-- Radius
-              //         ),
-              //         side: const BorderSide(
-              //           width: 1.0,
-              //         ),
-              //       ),
-              //     )),
+                width: 340,
+                child: MmmButtons.primaryButtonMeet(
+                  'Meet in Person',
+                  () {
+                    context.navigate.pop();
+                    context.navigate.push(MeetLocationView.getRoute(
+                      profileDetails: profileDetails,
+                    ));
+                  },
+                ),
+              ),
             ],
           )
         ],

@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:makemymarry/locator.dart';
+import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/views/filterscreen/disability_preference_filter_sheet.dart';
 import 'package:makemymarry/views/filterscreen/drink_preference_bottom_sheet.dart';
 import 'package:makemymarry/views/filterscreen/fliterscreen%20bloc/filter_bloc.dart';
@@ -51,14 +52,16 @@ class PartnerPrefsScreen extends StatelessWidget {
   final UserRepository userRepository;
   final bool forFilters;
 
-  const PartnerPrefsScreen({Key? key, required this.userRepository, this.forFilters = false})
+  const PartnerPrefsScreen(
+      {Key? key, required this.userRepository, this.forFilters = false})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(providers: [
       BlocProvider(
-        create: (context) => ProfilePreferenceBloc(userRepository, forFilters: this.forFilters),
+        create: (context) =>
+            ProfilePreferenceBloc(userRepository, forFilters: this.forFilters),
       ),
       BlocProvider(
         create: (context) => ReligionBloc(userRepository),
@@ -100,8 +103,8 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
   late List<SimpleMasterData> motherTongue;
   late List<String?> occupation;
   late List<Education> education;
-  late List<AnualIncome> annualIncome;
-  late List<AnualIncome> annualIncomeMax;
+  late List<AnnualIncome> annualIncome;
+  late List<AnnualIncome> annualIncomeMax;
   int minimumSelectedIndex = 0;
   String titleRedOcc = '';
   TextEditingController annIncomeController = TextEditingController();
@@ -135,7 +138,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
   dynamic gothra;
 
   // String? occupation;
-  AnualIncome? anualIncome;
+  AnnualIncome? anualIncome;
 
   void initData(BuildContext context) {
     this.userData = BlocProvider.of<ProfilePreferenceBloc>(context)
@@ -176,6 +179,13 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
         BlocProvider.of<ProfilePreferenceBloc>(context).annualIncome;
     this.annualIncomeMax =
         BlocProvider.of<ProfilePreferenceBloc>(context).annualIncomeMax;
+    if (annualIncome.isNotNullEmpty) {
+      currentIncomes = incomes[annualIncome.first.index];
+      minimumSelectedIndex = annualIncome.first.index + 1;
+    }
+    if (annualIncomeMax.isNotNullEmpty) {
+      currentMaxIncomes = incomes[annualIncomeMax.first.index];
+    }
     this.abilityStatus =
         BlocProvider.of<ProfilePreferenceBloc>(context).abilityStatus;
     this.gothra = BlocProvider.of<ProfilePreferenceBloc>(context).gothra;
@@ -189,7 +199,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
         builder: (context) => SubCastPreferenceSheet(
-              list: castList,
+              list: List.from(castList),
               selected: this.subCaste,
             ));
     if (result != null) {
@@ -240,15 +250,10 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
   Widget build(BuildContext context) {
     var bloc = context.read<ProfilePreferenceBloc>();
     return Scaffold(
-      appBar: customAppBar(
-          bloc.forFilters ? "Filters" : 'Partner Preference',
-          bloc.forFilters ? "Reset" : "",
-          bloc.forFilters
-              ? () {
-                  bloc.add(ResetFilters());
-                }
-              : () {},
-          context: context),
+      appBar: customAppBar(bloc.forFilters ? "Filters" : 'Partner Preference',
+          bloc.forFilters ? "Reset" : "Reset", () {
+        bloc.add(ResetFilters());
+      }, context: context),
       body: BlocConsumer<ProfilePreferenceBloc, ProfilePreferenceState>(
         listener: (context, state) {
           if (state is OnGotCounties) {}
@@ -369,7 +374,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                       height: 20,
                     ),
                     Text(
-                      "Religion Peference",
+                      "Religion Preference",
                       style: MmmTextStyles.bodyMediumSmall(
                           textColor: Colors.black87),
                     ),
@@ -386,23 +391,23 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                     ),
 
                     buildMotherTongue(),
-                    SizedBox(
-                      height: 10,
-                    ),
-
-                    MmmButtons.categoryButtons(
-                        'Gothra',
-                        this.gothra.length != 0 ? gothra : 'Select your gothra',
-                        'Select your gothra',
-                        'images/rightArrow.svg', action: () {
-                      selectGothra(context);
-                    }, required: false),
+                    // SizedBox(
+                    //   height: 10,
+                    // ),
+                    //
+                    // MmmButtons.categoryButtons(
+                    //     'Gothra',
+                    //     this.gothra.length != 0 ? gothra : 'Select your gothra',
+                    //     'Select your gothra',
+                    //     'images/rightArrow.svg', action: () {
+                    //   selectGothra(context);
+                    // }, required: false),
 
                     SizedBox(
                       height: 20,
                     ),
                     Text(
-                      "Career Peference",
+                      "Career Preference",
                       style: MmmTextStyles.bodyMediumSmall(
                           textColor: Colors.black87),
                     ),
@@ -446,26 +451,26 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
                     ),
 
                     buildDrinkStatus(),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    buildInterestStatus(),
+                    // SizedBox(
+                    //   height: 10,
+                    // ),
+                    // buildInterestStatus(),
                     SizedBox(
                       height: 30,
                     ),
-                    bloc.forFilters ?
-                    MmmButtons.enabledRedButtonbodyMedium(
-                        50, 'Apply Filters', action: () {
-                      FocusScope.of(context).requestFocus(FocusNode());
-                      BlocProvider.of<ProfilePreferenceBloc>(context)
-                          .add(CompleteFilter());
-                    }):
-                    MmmButtons.enabledRedButtonbodyMedium(
-                        50, 'Complete Preference', action: () {
-                      FocusScope.of(context).requestFocus(FocusNode());
-                      BlocProvider.of<ProfilePreferenceBloc>(context)
-                          .add(CompletePreference());
-                    }),
+                    bloc.forFilters
+                        ? MmmButtons.enabledRedButtonbodyMedium(
+                            50, 'Apply Filters', action: () {
+                            FocusScope.of(context).requestFocus(FocusNode());
+                            BlocProvider.of<ProfilePreferenceBloc>(context)
+                                .add(CompleteFilter());
+                          })
+                        : MmmButtons.enabledRedButtonbodyMedium(
+                            50, 'Complete Preference', action: () {
+                            FocusScope.of(context).requestFocus(FocusNode());
+                            BlocProvider.of<ProfilePreferenceBloc>(context)
+                                .add(CompletePreference());
+                          }),
                     SizedBox(
                       height: 30,
                     ),
@@ -494,6 +499,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
       MaterialPageRoute(
         builder: (context) => ProfileLoader(
           userRepository: userRepo,
+          firstTime: true,
         ),
       ),
     );
@@ -527,7 +533,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
               income: this.anualIncome,
             ));
 
-    if (result != null && result is AnualIncome) {
+    if (result != null && result is AnnualIncome) {
       BlocProvider.of<OccupationBloc>(context)
           .add(OnAnnualIncomeSelected(result));
     }
@@ -858,8 +864,12 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
           children: [
             Text(
               'Annual Income',
-              style: MmmTextStyles.bodyMedium(textColor: kDark5),
+              style: MmmTextStyles.bodySmall(textColor: kDark5),
             ),
+            Text(
+              ' *',
+              style: MmmTextStyles.bodySmall(textColor: kredStar),
+            )
           ],
         ),
         Row(children: [
@@ -867,8 +877,8 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
             width: 6,
           ),
           Expanded(
-            child: MmmButtons.categoryButtons(
-                'Minimum',
+            child: MmmButtons.categoryButtonsNotRequired(
+                '',
                 this.annualIncome.length > 0 ? currentIncomes : 'Minimum',
                 'Select Annual Income',
                 'images/rightArrow.svg',
@@ -886,8 +896,8 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
             width: 6,
           ),
           Expanded(
-              child: MmmButtons.categoryButtons(
-                  'Maximum',
+              child: MmmButtons.categoryButtonsNotRequired(
+                  '',
                   this.annualIncomeMax.length > 0
                       ? currentMaxIncomes
                       : 'Maximum',
@@ -917,7 +927,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
               listMax: annualIncomeMax,
               minimumSelectedIndex: minimumSelectedIndex,
             ));
-    if (result != null && result is List<AnualIncome>) {
+    if (result != null && result is List<AnnualIncome>) {
       BlocProvider.of<ProfilePreferenceBloc>(context)
           .add(IncomeSelectedMax(result));
       for (int i = 0; i < result.length; i++) {
@@ -935,7 +945,7 @@ class _PartnerPrefsState extends State<PartnerPrefs> {
             AnnualIncomePreference(list: annualIncome, listMax: annualIncomeMax
                 // minimumSelectedIndex: minimumSelectedIndex,
                 ));
-    if (result != null && result is List<AnualIncome>) {
+    if (result != null && result is List<AnnualIncome>) {
       BlocProvider.of<ProfilePreferenceBloc>(context)
           .add(IncomeSelected(result));
       for (int i = 0; i < result.length; i++) {

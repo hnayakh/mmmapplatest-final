@@ -8,6 +8,7 @@ import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
+import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
@@ -67,7 +68,7 @@ class _OccupationScreenState extends State<OccupationScreen> {
   final TextEditingController cityController = TextEditingController();
 
   String? occupation;
-  AnualIncome? anualIncome;
+  AnnualIncome? anualIncome;
   String? education;
   CountryModel? countryModel;
   StateModel? myState, city;
@@ -132,7 +133,7 @@ class _OccupationScreenState extends State<OccupationScreen> {
                         SizedBox(
                           height: 0,
                         ),
-                        MmmButtons.categoryButtonsNotRequired(
+                        MmmButtons.categoryButtons(
                             'Occupation',
                             occupation != null && occupation != ''
                                 ? '${occupation!}'
@@ -144,14 +145,12 @@ class _OccupationScreenState extends State<OccupationScreen> {
                         SizedBox(
                           height: 24,
                         ),
-                        MmmButtons.categoryButtonsNotRequired(
+                        MmmButtons.categoryButtons(
                             'Annual Income',
-                            anualIncome != null
+                            anualIncome != null && anualIncome != AnnualIncome.NotMentioned
                                 ?
-                                //'${describeEnum(anualIncome!)}'
-                                //incomes[anualIncome!.index]
                                 AppHelper.getStringFromEnum(
-                                    AnualIncome.values[anualIncome!.index])
+                                    AnnualIncome.values[anualIncome!.index])
                                 : 'Select your income',
                             'Select your income',
                             'images/rightArrow.svg', action: () {
@@ -160,7 +159,7 @@ class _OccupationScreenState extends State<OccupationScreen> {
                         SizedBox(
                           height: 24,
                         ),
-                        MmmButtons.categoryButtonsNotRequired(
+                        MmmButtons.categoryButtons(
                             'Highest Education',
                             education != null && education != ''
                                 ? '${education!}'
@@ -190,9 +189,9 @@ class _OccupationScreenState extends State<OccupationScreen> {
                         SizedBox(
                           height: 8,
                         ),
-                        MmmButtons.categoryButtonsNotRequired(
+                        MmmButtons.categoryButtons(
                             'Country',
-                            countryModel != null
+                            countryModel != null && countryModel!.name.isNotNullEmpty
                                 ? '${countryModel!.name}'
                                 : 'Select Country',
                             'Select Country',
@@ -205,7 +204,7 @@ class _OccupationScreenState extends State<OccupationScreen> {
                         SizedBox(
                           height: 24,
                         ),
-                        MmmButtons.categoryButtonsNotRequired(
+                        MmmButtons.categoryButtons(
                             'State',
                             myState != null && myState!.name != ''
                                 ? '${myState!.name}'
@@ -222,7 +221,7 @@ class _OccupationScreenState extends State<OccupationScreen> {
                         ),
                         if (countryModel != null &&
                             countryModel?.name.toLowerCase() == "india")
-                          MmmButtons.categoryButtonsNotRequired(
+                          MmmButtons.categoryButtons(
                               'City',
                               city != null && city!.name != ''
                                   ? '${city!.name}'
@@ -286,13 +285,13 @@ class _OccupationScreenState extends State<OccupationScreen> {
               //       children: [
               //         Text(
               //           '(This section is optional)',
-              //           style: TextStyle(fontSize: 14),
+              //           style: TextStyle( fontFamily: 'MakeMyMarry', fontSize: 14),
               //         ),
               //         SizedBox(
               //           height: 24,
               //         ),
               //         Text('Skip >',
-              //             style: TextStyle(color: kPrimary, fontSize: 15)),
+              //             style: TextStyle( fontFamily: 'MakeMyMarry', color: kPrimary, fontSize: 15)),
               //       ],
               //     ),
               //   ),
@@ -355,7 +354,7 @@ class _OccupationScreenState extends State<OccupationScreen> {
               income: this.anualIncome,
             ));
 
-    if (result != null && result is AnualIncome) {
+    if (result != null && result is AnnualIncome) {
       BlocProvider.of<OccupationBloc>(context)
           .add(OnAnnualIncomeSelected(result));
     }
@@ -366,6 +365,7 @@ class _OccupationScreenState extends State<OccupationScreen> {
         .userRepository
         .masterData
         .listOccupation;
+    titleRedOcc = this.occupation ?? "";
     var result = await showModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,
@@ -387,6 +387,7 @@ class _OccupationScreenState extends State<OccupationScreen> {
         .userRepository
         .masterData
         .listEducation;
+    titleRedEdu = education ?? "";
     var result = await showModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,

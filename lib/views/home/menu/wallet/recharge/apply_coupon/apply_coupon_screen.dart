@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/repo/user_repo.dart';
+import 'package:makemymarry/utils/alert.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
@@ -107,6 +108,7 @@ class ApplyCouponScreenState extends State<ApplyCouponScreen> {
     }, listener: (context, state) {
       if (state is OnCouponApplied) {
         Navigator.of(context).pop(state.couponDetails);
+        Alert.message(context, message: "Coupon applied successfully");
       }
     });
   }

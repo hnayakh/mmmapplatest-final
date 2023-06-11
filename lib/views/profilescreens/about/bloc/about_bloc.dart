@@ -37,7 +37,7 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
       var result = await this.userRepository.getOtheruserDetails(
           event.basicUserId, ProfileActivationStatus.Verified);
 
-      if (result.status == AppConstants.SUCCESS) {
+      if (result.status == AppConstants.SUCCESS ) {
         this.profileDetails = result.profileDetails;
         editNameController.text = profileDetails?.name ?? "";
         yield AboutIdleState(
@@ -93,7 +93,7 @@ class AboutBloc extends Bloc<AboutEvent, AboutState> {
           (state as AboutIdleState).abilityStatus == null) {
         yield OnError('Please enter all mandatory details');
       }
-      if ((state as AboutIdleState).name == '' || !isAlpha((state as AboutIdleState).name ?? "")) {
+      if ((state as AboutIdleState).name == '' || !isAlpha(((state as AboutIdleState).name ?? "").replaceAll(" ", ""))) {
         yield OnError('Enter valid username.');
       } else if ((state as AboutIdleState).maritalStatus == null) {
         yield OnError('Select marital status.');

@@ -11,6 +11,7 @@ import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/elevations.dart';
+import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
@@ -45,6 +46,13 @@ class VerifyAccountScreen extends StatefulWidget {
 class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
   IdProofType? idProof;
   late UserDetails? userDetails;
+  List<String> ids = [
+    'Passport',
+    'Voter Id Card',
+    'Aadhaar Card',
+    'Driving Licence',
+    'Pan Card'
+  ];
   List<String> localImagePaths = [];
   @override
   Widget build(BuildContext context) {
@@ -56,13 +64,14 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
       appBar: MmmButtons.appBarCurved('Verify your account', context: context),
       body: BlocConsumer<VerifyBloc, VerifyState>(
         listener: (context, state) {
-          if (state is OnError) {
+          if (state is OnUpdateDoc) {
+            context.navigate.pop();
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text(state.message),
-              backgroundColor: kError,
+              backgroundColor: kSuccess,
             ));
           }
-          // TODO: implement listener
+
 
           if (state is OnError) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -84,7 +93,7 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
                 MmmButtons.idproofButton(
                     '',
                     this.idProof != null
-                        ? describeEnum(idProof!)
+                        ? ids[idProof!.index]
                         : 'Select your ID Proof',
                     'Select your ID Proof',
                     'images/rightArrow.svg', action: () {
@@ -202,7 +211,7 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
                 ),
                 MmmButtons.enabledRedButtonbodyMedium(50, 'Verify', action: () {
                   BlocProvider.of<VerifyBloc>(context)
-                      .add(UpdateDoc(this.idProof!, localImagePaths));
+                      .add(UpdateDoc(this.idProof, localImagePaths));
                 })
               ],
             ),
@@ -282,7 +291,7 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
               height: 20,
             ),
             Text('Click to upload your document',
-                style: TextStyle(fontSize: 12))
+                style: TextStyle( fontFamily: 'MakeMyMarry', fontSize: 12))
           ],
         ),
       ),

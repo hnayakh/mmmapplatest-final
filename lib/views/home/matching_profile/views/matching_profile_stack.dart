@@ -7,6 +7,7 @@ import 'package:makemymarry/locator.dart';
 import 'package:makemymarry/repo/chat_repo.dart';
 import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/colors.dart';
+import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
@@ -32,207 +33,235 @@ class MatchingProfileStackView extends StatelessWidget {
     return BlocConsumer<MatchingProfileBloc, MatchingProfileState>(
       builder: (context, state) {
         return Container(
-            height: MediaQuery.of(context).size.height - 72,
-            width: MediaQuery.of(context).size.width,
-            color: gray5,
-            child: PageView.builder(
-              controller: PageController(
-                  initialPage: list.indexWhere((element) =>
+          height: MediaQuery.of(context).size.height - 72,
+          width: MediaQuery.of(context).size.width,
+          color: gray5,
+          child: list.isNotNullEmpty
+              ? PageView.builder(
+                  controller: PageController(
+                      initialPage: list.indexWhere((element) =>
+                                  element.id ==
+                                  context
+                                      .read<MatchingProfileBloc>()
+                                      .clickedUserId) <
+                              0
+                          ? 0
+                          : list.indexWhere((element) =>
                               element.id ==
                               context
                                   .read<MatchingProfileBloc>()
-                                  .clickedUserId) <
-                          0
-                      ? 0
-                      : list.indexWhere((element) =>
-                          element.id ==
-                          context.read<MatchingProfileBloc>().clickedUserId)),
-              itemBuilder: (context, index) {
-                MatchingProfile item = list[index];
-                return Stack(
-                  children: [
-                    Card(
-                      child: InkWell(
-                        child: Stack(
-                          children: [
-                            ClipRRect(
-                              child: Image.network('${item.imageUrl}',
-                                  height: double.maxFinite,
-                                  fit: BoxFit.cover,
-                                  width: double.infinity,
-                                  errorBuilder: (context, obj, str) =>
-                                      Container(
-                                          color: Colors.grey,
-                                          child: Icon(Icons.error))),
+                                  .clickedUserId)),
+                  itemBuilder: (context, index) {
+                    MatchingProfile item = list[index];
+                    return Stack(
+                      children: [
+                        Card(
+                          child: InkWell(
+                            child: Stack(
+                              children: [
+                                ClipRRect(
+                                  child: Image.network('${item.imageUrl}',
+                                      height: double.maxFinite,
+                                      fit: BoxFit.cover,
+                                      width: double.infinity,
+                                      errorBuilder: (context, obj, str) =>
+                                          Container(
+                                              color: Colors.grey,
+                                              child: Icon(Icons.error))),
+                                  borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(18),
+                                      bottomRight: Radius.circular(18)),
+                                ),
+                                Positioned(
+                                  child: Container(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                            child: Container(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                // mainAxisAlignment:
+                                                //     MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  SizedBox(
+                                                    width: 8,
+                                                  ),
+                                                  StreamBuilder<bool>(
+                                                      stream: getIt<ChatRepo>()
+                                                          .getOnlineStatus(
+                                                              item.id),
+                                                      builder:
+                                                          (context, snapshot) {
+                                                        return Container(
+                                                          height: 8,
+                                                          width: 8,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                                  shape: BoxShape
+                                                                      .circle,
+                                                                  color: snapshot
+                                                                              .data ==
+                                                                          null
+                                                                      ? kGray
+                                                                      : snapshot
+                                                                              .data!
+                                                                          ? kGreen
+                                                                          : kError),
+                                                        );
+                                                      }),
+                                                  SizedBox(
+                                                    width: 14,
+                                                  ),
+                                                  Flexible(
+                                                    child: Text(
+                                                      "${item.name},",
+                                                      maxLines: 1,
+                                                      softWrap: true,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: MmmTextStyles
+                                                          .heading5(
+                                                              textColor: gray6),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    ", ${AppHelper.getAgeFromDob(item.dateOfBirth)} yrs,  ${AppHelper.heightString(item.height)}",
+                                                    maxLines: 2,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style:
+                                                        MmmTextStyles.heading5(
+                                                            textColor: gray6),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 8,
+                                                  ),
+                                                  item.activationStatus ==
+                                                          ProfileActivationStatus
+                                                              .Verified
+                                                      ? Stack(
+                                                          children: [
+                                                            SvgPicture.asset(
+                                                              "images/Verified.svg",
+                                                              color:
+                                                                  Colors.white,
+                                                              width: 24,
+                                                              height: 24,
+                                                            ),
+                                                            Container(
+                                                              height: 24,
+                                                              width: 24,
+                                                              decoration: BoxDecoration(
+                                                                  color: kPrimary
+                                                                      .withAlpha(
+                                                                          50),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              6)),
+                                                            ),
+                                                            SizedBox(
+                                                              height: 8,
+                                                            ),
+                                                          ],
+                                                        )
+                                                      : Container()
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  SizedBox(
+                                                    width: 20.0,
+                                                  ),
+                                                  // Expanded(
+                                                  //     child:
+                                                  Text(
+                                                    "    ${item.religion}, ${item.motherTongue}",
+                                                    textScaleFactor: 1.0,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style:
+                                                        MmmTextStyles.bodySmall(
+                                                            textColor:
+                                                                Colors.white),
+                                                  )
+                                                  //)
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  SvgPicture.asset(
+                                                    "images/location.svg",
+                                                    color: Colors.white,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 8,
+                                                  ),
+                                                  // Expanded(v
+                                                  //     child:
+                                                  Text(
+                                                    "${item.city}, ${item.state}",
+                                                    textScaleFactor: 1.0,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: MmmTextStyles
+                                                        .bodyRegular(
+                                                            textColor:
+                                                                Colors.white),
+                                                  )
+                                                  //)
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        )),
+                                      ],
+                                    ),
+                                    width: MediaQuery.of(context).size.width,
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 23, horizontal: 16),
+                                    decoration: BoxDecoration(
+                                        color: Colors.black.withAlpha(50),
+                                        borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(18),
+                                            bottomRight: Radius.circular(18))),
+                                  ),
+                                  bottom: 0,
+                                )
+                              ],
+                            ),
+                            onTap: () {
+                              BlocProvider.of<MatchingProfileBloc>(context)
+                                  .add(GetProfileDetails(list[index]));
+                            },
+                          ),
+                          shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.only(
                                   bottomLeft: Radius.circular(18),
-                                  bottomRight: Radius.circular(18)),
-                            ),
-                            Positioned(
-                              child: Container(
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                        child: Container(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            // mainAxisAlignment:
-                                            //     MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              SizedBox(
-                                                width: 8,
-                                              ),
-                                              StreamBuilder<bool>(
-                                                  stream: getIt<ChatRepo>()
-                                                      .getOnlineStatus(item.id),
-                                                  builder: (context, snapshot) {
-                                                    return Container(
-                                                      height: 8,
-                                                      width: 8,
-                                                      decoration: BoxDecoration(
-                                                          shape:
-                                                              BoxShape.circle,
-                                                          color: snapshot
-                                                                      .data ==
-                                                                  null
-                                                              ? kGray
-                                                              : snapshot.data!
-                                                                  ? kGreen
-                                                                  : kError),
-                                                    );
-                                                  }),
-                                              SizedBox(
-                                                width: 14,
-                                              ),
-                                              Text(
-                                                "${item.name}, ${AppHelper.getAgeFromDob(item.dateOfBirth)} yrs,  ${AppHelper.heightString(item.height)}",
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: MmmTextStyles.heading5(
-                                                    textColor: gray6),
-                                              ),
-                                              SizedBox(
-                                                width: 8,
-                                              ),
-                                              item.activationStatus ==
-                                                      ProfileActivationStatus
-                                                          .Verified
-                                                  ? Stack(
-                                                      children: [
-                                                        SvgPicture.asset(
-                                                          "images/Verified.svg",
-                                                          color: Colors.white,
-                                                          width: 24,
-                                                          height: 24,
-                                                        ),
-                                                        Container(
-                                                          height: 24,
-                                                          width: 24,
-                                                          decoration: BoxDecoration(
-                                                              color: kPrimary
-                                                                  .withAlpha(
-                                                                      50),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          6)),
-                                                        ),
-                                                        SizedBox(
-                                                          height: 8,
-                                                        ),
-                                                      ],
-                                                    )
-                                                  : Container()
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              SizedBox(
-                                                width: 20.0,
-                                              ),
-                                              // Expanded(
-                                              //     child:
-                                              Text(
-                                                "    ${item.religion}, ${item.motherTongue}",
-                                                textScaleFactor: 1.0,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: MmmTextStyles.bodySmall(
-                                                    textColor: Colors.white),
-                                              )
-                                              //)
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              SvgPicture.asset(
-                                                "images/location.svg",
-                                                color: Colors.white,
-                                              ),
-                                              SizedBox(
-                                                width: 8,
-                                              ),
-                                              // Expanded(v
-                                              //     child:
-                                              Text(
-                                                "${item.city}, ${item.state}",
-                                                textScaleFactor: 1.0,
-                                                overflow: TextOverflow.ellipsis,
-                                                style:
-                                                    MmmTextStyles.bodyRegular(
-                                                        textColor:
-                                                            Colors.white),
-                                              )
-                                              //)
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    )),
-                                  ],
-                                ),
-                                width: MediaQuery.of(context).size.width,
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 23, horizontal: 16),
-                                decoration: BoxDecoration(
-                                    color: Colors.black.withAlpha(50),
-                                    borderRadius: BorderRadius.only(
-                                        bottomLeft: Radius.circular(18),
-                                        bottomRight: Radius.circular(18))),
-                              ),
-                              bottom: 0,
-                            )
-                          ],
+                                  bottomRight: Radius.circular(18))),
+                          elevation: 4,
+                          margin: const EdgeInsets.only(bottom: 16),
                         ),
-                        onTap: () {
-                          BlocProvider.of<MatchingProfileBloc>(context)
-                              .add(GetProfileDetails(list[index]));
-                        },
-                      ),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(18),
-                              bottomRight: Radius.circular(18))),
-                      elevation: 4,
-                      margin: const EdgeInsets.only(bottom: 16),
-                    ),
-                    Positioned(
-                      bottom: 30,
-                      right: 20,
-                      child:
-                          // ? buildConnected(context, index)
-                          buildInterest(context, index),
-                    ),
-                  ],
-                );
-              },
-              itemCount: list.length,
-              scrollDirection: Axis.vertical,
-            ));
+                        Positioned(
+                          bottom: 30,
+                          right: 20,
+                          child:
+                              // ? buildConnected(context, index)
+                              buildInterest(context, index),
+                        ),
+                      ],
+                    );
+                  },
+                  itemCount: list.length,
+                  scrollDirection: Axis.vertical,
+                )
+              : Center(child: Text("No Matching Profiles Found!!!")),
+        );
       },
       listener: (context, state) {},
     );

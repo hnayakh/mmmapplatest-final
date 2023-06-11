@@ -497,6 +497,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
     this.gender = BlocProvider.of<CreateAccountBloc>(context).gender!;
     this.profileCreatedFor =
         BlocProvider.of<CreateAccountBloc>(context).profileCreatedFor!;
+    this.hintText = describeEnum(this.profileCreatedFor);
     this.selectedCountry =
         BlocProvider.of<CreateAccountBloc>(context).selectedCountry;
     this.acceptTerms = BlocProvider.of<CreateAccountBloc>(context).acceptTerms;

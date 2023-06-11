@@ -171,6 +171,8 @@ extension StringHelper on String? {
 
   bool get isNotNullEmpty => this != null && this!.isNotEmpty;
 
+  bool get isNullOrEmpty => this == null || this!.isEmpty;
+
   Option<String> get value {
     if (this != null && this!.isNotEmpty) {
       return some(this!);

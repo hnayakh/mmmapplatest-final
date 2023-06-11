@@ -55,12 +55,12 @@ class OnOccupationSelected extends ProfilePreferenceEvent {
 }
 
 class IncomeSelected extends ProfilePreferenceEvent {
-  final List<AnualIncome> list;
+  final List<AnnualIncome> list;
   IncomeSelected(this.list);
 }
 
 class IncomeSelectedMax extends ProfilePreferenceEvent {
-  final List<AnualIncome> listMax;
+  final List<AnnualIncome> listMax;
   IncomeSelectedMax(this.listMax);
 }
 

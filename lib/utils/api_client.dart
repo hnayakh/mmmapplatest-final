@@ -5,7 +5,9 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:dio_logger/dio_logger.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:makemymarry/datamodels/agora_token_response.dart';
+import 'package:makemymarry/datamodels/blocked_users_response.dart';
 import 'package:makemymarry/datamodels/connect.dart';
 import 'package:makemymarry/datamodels/interests_model.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
@@ -18,6 +20,9 @@ import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:socket_io_client/socket_io_client.dart';
+
+import '../datamodels/notification_response.dart';
+import '../views/meet/bloc/meet_form_bloc.dart';
 
 class ApiClient {
   final Dio dio = Dio();
@@ -51,14 +56,14 @@ class ApiClient {
         return RegistrationResponse.fromJson(response.data);
       } else {
         return RegistrationResponse.fromError(
-            "Error Occurred. Please try againa.");
+            "Error Occurred. Please try again.");
       }
     } catch (error) {
       if (error is DioError) {
         print(error.message);
       }
       return RegistrationResponse.fromError(
-          "Error Occurred. Please try againa.");
+          "Error Occurred. Please try again.");
     }
   }
 
@@ -168,11 +173,11 @@ class ApiClient {
         return MasterDataResponse.fromJson(response.data);
       } else {
         return MasterDataResponse.fromError(
-            "Error Occurred. Please try againa.");
+            "Error Occurred. Please try again.");
       }
     } catch (error) {
       if (error is DioError) {}
-      return MasterDataResponse.fromError("Error Occurred. Please try againa.");
+      return MasterDataResponse.fromError("Error Occurred. Please try again.");
     }
   }
 
@@ -212,13 +217,13 @@ class ApiClient {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SigninResponse.fromJson(response.data);
       } else {
-        return SigninResponse.fromError("Error Occurred. Please try againa.");
+        return SigninResponse.fromError("Error Occurred. Please try again.");
       }
     } catch (error) {
       if (error is DioError) {
         print(error.message);
       }
-      return SigninResponse.fromError("Error Occurred. Please try againa.");
+      return SigninResponse.fromError("Error Occurred. Please try again.");
     }
   }
 
@@ -238,13 +243,13 @@ class ApiClient {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SigninResponse.fromJson(response.data, otpType: otpType);
       } else {
-        return SigninResponse.fromError("Error Occurred. Please try againa.");
+        return SigninResponse.fromError("Please enter valid otp.");
       }
     } catch (error) {
       if (error is DioError) {
         print(error.message);
       }
-      return SigninResponse.fromError("Error Occurred. Please try againa.");
+      return SigninResponse.fromError("Please enter valid otp.");
     }
   }
 
@@ -261,13 +266,13 @@ class ApiClient {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SigninResponse.fromJson(response.data);
       } else {
-        return SigninResponse.fromError("Error Occurred. Please try againa.");
+        return SigninResponse.fromError("Please enter valid otp.");
       }
     } catch (error) {
       if (error is DioError) {
         print(error.message);
       }
-      return SigninResponse.fromError("Error Occurred. Please try againa.");
+      return SigninResponse.fromError("Please enter valid otp.");
     }
   }
 
@@ -284,14 +289,14 @@ class ApiClient {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SendOtpResponse.fromJson(response.data);
       } else {
-        return SendOtpResponse.fromError("Error Occurred. Please try againa.");
+        return SendOtpResponse.fromError("Error Occurred. Please try again.");
       }
     } catch (error) {
       if (error is DioError) {
         print(error.message);
         return SendOtpResponse.fromError(error.response!.data["message"]);
       }
-      return SendOtpResponse.fromError("Error Occurred. Please try againa.");
+      return SendOtpResponse.fromError("Error Occurred. Please try again.");
     }
   }
 
@@ -304,14 +309,14 @@ class ApiClient {
         return CheckEmailResponse.fromJson(response.data);
       } else {
         return CheckEmailResponse.fromError(
-            "Error Occurred. Please try againa.");
+            "Error Occurred. Please try again.");
       }
     } catch (error) {
       if (error is DioError) {
         print(error.message);
         return CheckEmailResponse.fromError(error.response!.data["message"]);
       }
-      return CheckEmailResponse.fromError("Error Occurred. Please try againa.");
+      return CheckEmailResponse.fromError("Error Occurred. Please try again.");
     }
   }
 
@@ -327,13 +332,13 @@ class ApiClient {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SendOtpResponse.fromJson(response.data);
       } else {
-        return SendOtpResponse.fromError("Error Occurred. Please try againa.");
+        return SendOtpResponse.fromError("Error Occurred. Please try again.");
       }
     } catch (error) {
       if (error is DioError) {
         print(error.message);
       }
-      return SendOtpResponse.fromError("Error Occurred. Please try againa.");
+      return SendOtpResponse.fromError("Error Occurred. Please try again.");
     }
   }
 
@@ -357,13 +362,13 @@ class ApiClient {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SigninResponse.fromJson(response.data);
       } else {
-        return SigninResponse.fromError("Error Occurred. Please try againa.");
+        return SigninResponse.fromError("Error Occurred. Please try again.");
       }
     } catch (error) {
       if (error is DioError) {
         print(error.message);
       }
-      return SigninResponse.fromError("Error Occurred. Please try againaa.");
+      return SigninResponse.fromError("Error Occurred. Please try againa.");
     }
   }
 
@@ -472,7 +477,7 @@ class ApiClient {
   Future<SigninResponse> careerVerification(
       // String nameOfOrg,
       String? occupation,
-      AnualIncome income,
+      AnnualIncome income,
       String? education,
       CountryModel country,
       StateModel stateName,
@@ -493,13 +498,13 @@ class ApiClient {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return SigninResponse.fromJson(response.data);
       } else {
-        return SigninResponse.fromError("Error Occurred. Please try againaaa.");
+        return SigninResponse.fromError("Error Occurred. Please try againaa.");
       }
     } catch (error) {
       if (error is DioError) {
         print(error.message);
       }
-      return SigninResponse.fromError("Error Occurred. Please try againa.");
+      return SigninResponse.fromError("Error Occurred. Please try again.");
     }
   }
 
@@ -511,12 +516,12 @@ class ApiClient {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return CountryResponse.fromJson(response.data);
       }
-      return CountryResponse.fromError("Error Occurred. Please try againa.");
+      return CountryResponse.fromError("Error Occurred. Please try again.");
     } catch (error) {
       if (error is DioError) {
         print(error.message);
       }
-      return CountryResponse.fromError("Error Occurred. Please try againa.");
+      return CountryResponse.fromError("Error Occurred. Please try again.");
     }
   }
 
@@ -528,12 +533,12 @@ class ApiClient {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return StateCityResponse.fromJson(response.data);
       }
-      return StateCityResponse.fromError("Error Occurred. Please try againa.");
+      return StateCityResponse.fromError("Error Occurred. Please try again.");
     } catch (error) {
       if (error is DioError) {
         print(error.message);
       }
-      return StateCityResponse.fromError("Error Occurred. Please try againa.");
+      return StateCityResponse.fromError("Error Occurred. Please try again.");
     }
   }
 
@@ -545,23 +550,25 @@ class ApiClient {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return StateCityResponse.fromJson(response.data);
       }
-      return StateCityResponse.fromError("Error Occurred. Please try againa.");
+      return StateCityResponse.fromError("Error Occurred. Please try again.");
     } catch (error) {
       if (error is DioError) {
         print(error.message);
       }
-      return StateCityResponse.fromError("Error Occurred. Please try againa.");
+      return StateCityResponse.fromError("Error Occurred. Please try again.");
     }
   }
 
   Future<SigninResponse> updateFamilyBackground(
-      FamilyAfluenceLevel familyAfluenceLevel,
-      FamilyValues familyValues,
-      FamilyType type,
-      CountryModel countryModel,
-      StateModel state,
-      StateModel city,
-      String id) async {
+    FamilyAfluenceLevel familyAfluenceLevel,
+    FamilyValues familyValues,
+    FamilyType type,
+    CountryModel countryModel,
+    StateModel state,
+    StateModel city,
+    String id,
+    bool isResidingWithFamily,
+  ) async {
     try {
       Response response = await this
           .dio
@@ -569,15 +576,7 @@ class ApiClient {
         "userBasicId": id,
         "familyStatus": familyAfluenceLevel.index,
         "familyValues": familyValues.index,
-        "familyType": type.index,
-        "country": countryModel.id,
-        "state": state.id,
-        "city": city.id
-      });
-      print({
-        "userBasicId": id,
-        "familyStatus": familyAfluenceLevel.index,
-        "familyValues": familyValues.index,
+        "isResidingWithFamily": isResidingWithFamily,
         "familyType": type.index,
         "country": countryModel.id,
         "state": state.id,
@@ -740,6 +739,21 @@ class ApiClient {
     }
   }
 
+  Future<MeetListResponse> fetchAllMeets(String id) async {
+    try {
+      var response = await this.dio.get("${AppConstants.ENDPOINT}meet/get/$id");
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return MeetListResponse.fromJson(response.data);
+      }
+      return MeetListResponse.fromError("Error Occurred. Please try again.");
+    } catch (error) {
+      if (error is DioError) {
+        print(error.message);
+      }
+      return MeetListResponse.fromError("Error Occurred. Please try again.");
+    }
+  }
+
   Future<ProfileVisitedResponse> getProfileVisitor(String id) async {
     try {
       var response = await this
@@ -783,7 +797,8 @@ class ApiClient {
     socket.onDisconnect((_) => print('disconnect'));
   }
 
-  Future<MatchingProfileResponse> getOnlineMembers(String id, List<String> onlineUserIds) async {
+  Future<MatchingProfileResponse> getOnlineMembers(
+      String id, List<String> onlineUserIds) async {
     try {
       var response = await this
           .dio
@@ -828,6 +843,26 @@ class ApiClient {
     }
     return ProfileDetailsResponse.fromError(
         "Error Occurred. Please try again.");
+  }
+
+  Future<NotificationResponse> getNotifications(String id) async {
+    var response = await this.dio.get(
+          "${AppConstants.ENDPOINT}connects/user_notifications/$id",
+        );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return NotificationResponse.fromJson(response.data);
+    }
+    return NotificationResponse.fromError("Error Occurred. Please try again.");
+  }
+
+  Future<BlockedUsersResponse> getBlockedUsers(String id) async {
+    var response = await this.dio.get(
+          "${AppConstants.ENDPOINT}users/blocked_users/$id",
+        );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return BlockedUsersResponse.fromJson(response.data);
+    }
+    return BlockedUsersResponse.fromError("Error Occurred. Please try again.");
   }
 
   Future<PartnerPreferenceResponse> getPartnerPreference(
@@ -926,7 +961,8 @@ class ApiClient {
       List<SimpleMasterData> motherTongue,
       List<String?> occupation,
       List<Education> education,
-      List<AnualIncome> annualIncome,
+      List<AnnualIncome> annualIncome,
+      List<AnnualIncome> annualIncomeMax,
       List<EatingHabit> eatingHabit,
       List<DrinkingHabit> drinkingHabit,
       List<SmokingHabit> smokingHabit,
@@ -950,7 +986,7 @@ class ApiClient {
         "motherTongue": motherTongue.map((e) => e.id).toList(),
         "highestEducation": education.map((e) => e.id).toList(),
         "occupation": occupation.map((e) => e!).toList(),
-        "maxIncome": annualIncome.map((e) => e.index).toList(),
+        "maxIncome": annualIncomeMax.map((e) => e.index).toList(),
         "minIncome": annualIncome.map((e) => e.index).toList(),
         "dietaryHabits": eatingHabit.map((e) => e.index).toList(),
         "drinkingHabits": drinkingHabit.map((e) => e.index).toList(),
@@ -967,6 +1003,133 @@ class ApiClient {
     }
   }
 
+  Future<CreateMeetResponse> createMeetRequest(
+      {required DateTime scheduleTime,
+      required MeetType meetType,
+      required String otherUserId,
+      required LatLng latLng,
+      required String location,
+      required String id}) async {
+    try {
+      Response response =
+          await this.dio.post(AppConstants.ENDPOINT + "meet/create", data: {
+        "requestingId": id,
+        "requestedId": otherUserId,
+        "link": meetType == MeetType.virtual ? "dummy Link" : "",
+        "scheduleTime": scheduleTime.toIso8601String(),
+        "address": location,
+        'status': 0,
+        "lat": latLng.latitude.toStringAsFixed(4),
+        "long": latLng.longitude.toStringAsFixed(4),
+      });
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return CreateMeetResponse.fromJson(response.data);
+      } else {
+        return CreateMeetResponse.fromError("Please Try Again");
+      }
+    } catch (error) {
+      return CreateMeetResponse.fromError("Please Try Again");
+    }
+  }
+
+  Future<CreateMeetResponse> updateMeetRequest({
+    required DateTime scheduleTime,
+    required Activeconnection meet,
+    required LatLng latLng,
+    required String location,
+  }) async {
+    try {
+      Response response = await this
+          .dio
+          .post(AppConstants.ENDPOINT + "meet/update/${meet.id}", data: {
+        "requestingId": meet.requestingId,
+        "requestedId": meet.requestedId,
+        "link": meet.link,
+        "scheduleTime": scheduleTime.toIso8601String(),
+        "address": location,
+        'status': meet.status,
+        "lat": latLng.latitude.toStringAsFixed(4),
+        "long": latLng.longitude.toStringAsFixed(4),
+      });
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return CreateMeetResponse.fromJson(response.data);
+      } else {
+        return CreateMeetResponse.fromError("Please Try Again");
+      }
+    } catch (error) {
+      return CreateMeetResponse.fromError("Please Try Again");
+    }
+  }
+
+  Future<CreateMeetResponse> updateMeetStatus(
+      {required Activeconnection meet,
+      required int status,
+      required String id}) async {
+    try {
+      Response response = await this
+          .dio
+          .post(AppConstants.ENDPOINT + "meet/update/${meet.id}", data: {
+        "requestingId": meet.requestingId,
+        "requestedId": meet.requestedId,
+        "link": meet.link,
+        "scheduleTime": meet.scheduleTime.toIso8601String(),
+        "address": meet.address,
+        'status': status,
+        "lat": meet.lat,
+        "long": meet.long,
+      });
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return CreateMeetResponse.fromJson(response.data);
+      } else {
+        return CreateMeetResponse.fromError("Please Try Again");
+      }
+    } catch (error) {
+      return CreateMeetResponse.fromError("Please Try Again");
+    }
+  }
+
+  Future<SettingsDataResponse> updateSettings({
+    required bool showEmail,
+    required bool showPhone,
+    required bool isHidden,
+    required bool isNotification,
+    required String userId,
+  }) async {
+    try {
+      Response response =
+          await this.dio.post(AppConstants.ENDPOINT + "settings/update/$userId", data: {
+        "showEmail": showEmail,
+        "showPhone": showPhone,
+        "isHidden": isHidden ,
+        "isNotification":isNotification,
+      });
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return SettingsDataResponse.fromJson(response.data);
+      } else {
+        return SettingsDataResponse.fromError("Please Try Again");
+      }
+    } catch (error) {
+      return SettingsDataResponse.fromError("Please Try Again");
+    }
+  }
+
+
+  Future<SettingsDataResponse> getSettingsData({
+    required String userId,
+  }) async {
+    try {
+      Response response =
+      await this.dio.get(AppConstants.ENDPOINT + "settings/get/$userId");
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return SettingsDataResponse.fromJson(response.data);
+      } else {
+        return SettingsDataResponse.fromError("Please Try Again");
+      }
+    } catch (error) {
+      return SettingsDataResponse.fromError("Please Try Again");
+    }
+  }
+
   Future updateRegistartionStep(basicuserId, step) {
     return this.dio.post(AppConstants.ENDPOINT +
         "users/app/users/updateRegistrationStep/$basicuserId/$step");
@@ -978,7 +1141,7 @@ class ApiClient {
       double maxAge,
       double minAge,
       List<MaritalStatus> maritalStatus,
-      List<CountryModel> countryModel,
+      CountryModel countryModel,
       List<StateModel?> myState,
       List<StateModel?> city,
       List<SimpleMasterData> religion,
@@ -986,45 +1149,49 @@ class ApiClient {
       List<SimpleMasterData> motherTongue,
       List<String?> occupation,
       List<Education> education,
-      List<AnualIncome> annualIncome,
+      List<AnnualIncome> annualIncome,
+      List<AnnualIncome> annualIncomeMax,
       List<EatingHabit> eatingHabit,
       List<DrinkingHabit> drinkingHabit,
       List<SmokingHabit> smokingHabit,
       AbilityStatus abilityStatus,
       String id) async {
     try {
-      Response response = await this
-          .dio
-          .post(AppConstants.ENDPOINT + "users/app/users/filter", data: {
-        "userBasicId": id,
-        "minAge": minAge,
-        "maxAge": maxAge,
-        "minHeight": minHeight * 30.48,
-        "maxHeight": maxHeight * 30.48,
-        "maritalStatus": maritalStatus.map((e) => e.index).toList(),
-        "country": countryModel.map((e) => e.id).toList(),
-        "state": myState.map((e) => e!.id).toList(),
-        "city": city.map((e) => e!.id).toList(),
-        "religion": religion.map((e) => e.id).toList(),
-        "caste": subCaste,
-        "motherTongue": motherTongue.map((e) => e.id).toList(),
-        "highestEducation": education.map((e) => e.id).toList(),
-        "occupation": occupation.map((e) => e!).toList(),
-        "maxIncome": annualIncome.map((e) => e.index).toList(),
-        "minIncome": annualIncome.map((e) => e.index).toList(),
-        "dietaryHabits": eatingHabit.map((e) => e.index).toList(),
-        "drinkingHabits": drinkingHabit.map((e) => e.index).toList(),
-        "smokingHabits": smokingHabit.map((e) => e.index).toList(),
-        "challenged": abilityStatus.index
-      });
+      Response response = await this.dio.request(
+          AppConstants.ENDPOINT + "users/filter-profiles/$id",
+          options: Options(method: "GET"),
+          data: {
+            "userBasicId": id,
+            "minAge": minAge,
+            "maxAge": maxAge,
+            "minHeight": minHeight,
+            "maxHeight": maxHeight,
+            "maritalStatus": maritalStatus.map((e) => e.index).toList(),
+            "country": [countryModel.id],
+            "state": myState.map((e) => e!.id).toList(),
+            "city": city.map((e) => e!.id).toList(),
+            "religion": religion.map((e) => e.id).toList(),
+            "caste": subCaste,
+            "motherTongue": motherTongue.map((e) => e.id).toList(),
+            "highestEducation": education.map((e) => e.id).toList(),
+            "occupation": occupation.map((e) => e!).toList(),
+            "maxIncome": annualIncomeMax.map((e) => e.index).toList(),
+            "minIncome": annualIncome.map((e) => e.index).toList(),
+            "dietaryHabits": eatingHabit.map((e) => e.index).toList(),
+            "drinkingHabits": drinkingHabit.map((e) => e.index).toList(),
+            "smokingHabits": smokingHabit.map((e) => e.index).toList(),
+            "challenged": abilityStatus.index,
+          });
       if (response.statusCode == 200 || response.statusCode == 201) {
         print(response.data);
         return MatchingProfileResponse.fromJson(response.data);
       } else {
-        return MatchingProfileResponse.fromError("Please Try Again");
+        return MatchingProfileResponse.fromError(
+            "Please Try Again, didn't find any relevant profiles.");
       }
     } catch (error) {
-      return MatchingProfileResponse.fromError("Please Try Again");
+      return MatchingProfileResponse.fromError(
+          "Please Try Again, didn't find any relevant profiles.");
     }
   }
 

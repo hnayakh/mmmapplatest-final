@@ -3,14 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/saurabh/custom_drawer.dart';
+import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
-import 'package:makemymarry/views/stackviewscreens/notification_list.dart';
+import 'package:makemymarry/views/home/notifications/notification_list.dart';
 import 'package:makemymarry/views/stackviewscreens/search_screen.dart';
 
+import '../../locator.dart';
 import '../profile_detail_view/profile_view_bloc.dart';
 import 'interests/views/interest_status_screen.dart';
 import 'matching_profile/views/matching_profile.dart';
+import 'menu/wallet/recharge/recharge_connect_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final UserRepository userRepository;
@@ -21,18 +24,20 @@ class HomeScreen extends StatefulWidget {
   final List<MatchingProfile> recentViewList;
   final List<MatchingProfile> profileVisitorList;
   final List<MatchingProfile> onlineMembersList;
+  final bool firstTime;
 
-  const HomeScreen(
-      {Key? key,
-      required this.userRepository,
-      required this.list,
-      required this.premiumList,
-      required this.screenName,
-      required this.searchList,
-      required this.recentViewList,
-      required this.profileVisitorList,
-      required this.onlineMembersList})
-      : super(key: key);
+  const HomeScreen({
+    Key? key,
+    required this.userRepository,
+    required this.list,
+    required this.premiumList,
+    required this.screenName,
+    required this.searchList,
+    required this.recentViewList,
+    required this.profileVisitorList,
+    required this.onlineMembersList,
+    required this.firstTime,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -42,6 +47,39 @@ class HomeScreen extends StatefulWidget {
 
 class HomeScreenState extends State<HomeScreen> {
   var index = 0;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      if(widget.firstTime) {
+        var response = await getIt<UserRepository>().fetchCurrentBalance();
+        if (response.status == AppConstants.SUCCESS) {
+          if (response.balance <= 0) {
+            await showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return MmmWidgets.lowBalanceWidget(
+                  message : 'Recharge Your Wallet to Connect Instantly',
+                  onConfirm: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            RechargeConnect(
+                              userRepository: getIt<UserRepository>(),
+                            ),
+                      ),
+                    );
+                  },
+                );
+              },
+            );
+          }
+        }
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,31 +170,14 @@ class HomeScreenState extends State<HomeScreen> {
       //   userRepository: widget.userRepository,
       // );
       case 2:
-        return
-            // MyprofileScreen(
-            //   userRepository: widget.userRepository,
-            // );
-            // ScheduleMeetingTime();
-            Interests(
+        return Interests(
           userRepository: widget.userRepository,
         );
-      // case 3:
-      //   return MyConnects(userRepository: widget.userRepository);
-      case 3:
-        return Notifications(userRepository: widget.userRepository);
-      //  return MeetStatusScreen();
-      // return ProfileDetailsScreen();
 
+      case 3:
+        return Notifications.getWidget(userRepository: widget.userRepository);
       case 4:
         return AppDrawer(userRepository: widget.userRepository);
-      // return SidebarAccount(
-      //     userRepository: widget.userRepository,
-      //     list: widget.list,
-      //     searchList: widget.searchList,
-      //     premiumList: widget.premiumList,
-      //     recentViewList: widget.recentViewList,
-      //     profileVisitorList: widget.profileVisitorList,
-      //     onlineMembersList: widget.onlineMembersList);
     }
     return Container();
   }
