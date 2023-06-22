@@ -63,6 +63,7 @@ class _AboutScreenState extends State<AboutScreen> {
     }
 
     return Scaffold(
+      appBar: MmmButtons.appBarCurved('Basic Details', context: widget.toUpdate ? context : null),
       body: BlocConsumer<AboutBloc, AboutState>(
         listener: (context, state) {
           if (state is OnError) {
@@ -128,7 +129,7 @@ class _AboutScreenState extends State<AboutScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        MmmButtons.appBarCurved('Basic Details', context: context),
+
         Container(
           padding: kMargin16,
           child: Column(
@@ -213,7 +214,7 @@ class _AboutScreenState extends State<AboutScreen> {
                               ),
                               Text('Yes Living Together',
                                   style:
-                                      TextStyle(fontSize: 14, color: kDark5)),
+                                      TextStyle( fontFamily: 'MakeMyMarry', fontSize: 14, color: kDark5)),
                               Transform.scale(
                                 scale: 1.2,
                                 child: Radio(
@@ -231,7 +232,7 @@ class _AboutScreenState extends State<AboutScreen> {
                               SizedBox(width: 1),
                               Text('Yes Not Living\nTogether',
                                   style:
-                                      TextStyle(fontSize: 14, color: kDark5)),
+                                      TextStyle( fontFamily: 'MakeMyMarry', fontSize: 14, color: kDark5)),
                             ],
                           ),
                         ),
@@ -323,7 +324,7 @@ class _AboutScreenState extends State<AboutScreen> {
                         // width: 8,
                         //  ),
                         Text('Normal',
-                            style: TextStyle(fontSize: 15, color: kDark5)),
+                            style: TextStyle( fontFamily: 'MakeMyMarry', fontSize: 15, color: kDark5)),
 
                         Transform.scale(
                           scale: 1.1,
@@ -339,7 +340,7 @@ class _AboutScreenState extends State<AboutScreen> {
                               }),
                         ),
                         Text('Physically Challenged',
-                            style: TextStyle(fontSize: 15, color: kDark5)),
+                            style: TextStyle( fontFamily: 'MakeMyMarry', fontSize: 15, color: kDark5)),
                         Expanded(
                           flex: 1,
                           child: SizedBox(
@@ -348,7 +349,10 @@ class _AboutScreenState extends State<AboutScreen> {
                         ),
                       ],
                     ),
-                  )
+                  ),
+                  SizedBox(
+                    height: 76,
+                  ),
                 ],
               ),
             ],

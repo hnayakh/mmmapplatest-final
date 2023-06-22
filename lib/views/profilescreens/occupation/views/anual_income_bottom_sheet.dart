@@ -8,7 +8,7 @@ import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 
 class AnnualIncomeBottomSheet extends StatefulWidget {
-  final AnualIncome? income;
+  final AnnualIncome? income;
 
   const AnnualIncomeBottomSheet({Key? key, this.income}) : super(key: key);
 
@@ -54,10 +54,10 @@ class AnnualIncomeBottomSheetState extends State<AnnualIncomeBottomSheet> {
                               //describeEnum(AnualIncome.values[index])
                               //incomes[index]
                               AppHelper.getStringFromEnum(
-                                  AnualIncome.values[index]),
+                                  AnnualIncome.values[index]),
                               style: MmmTextStyles.bodyMediumSmall(
                                   textColor:
-                                      AnualIncome.values[index] == widget.income
+                                      AnnualIncome.values[index] == widget.income
                                           ? kPrimary
                                           : kModalPrimary)),
                           SizedBox(
@@ -70,12 +70,12 @@ class AnnualIncomeBottomSheetState extends State<AnnualIncomeBottomSheet> {
                       ),
                     ),
                     onTap: () {
-                      Navigator.of(context).pop(AnualIncome.values[index]);
-                      print(AnualIncome.values[index]);
+                      Navigator.of(context).pop(AnnualIncome.values[index]);
+                      print(AnnualIncome.values[index]);
                     },
                   );
                 },
-                itemCount: AnualIncome.values.length,
+                itemCount: AnnualIncome.values.length - 1,
                 // separatorBuilder: (context, index) {
                 //   return Divider(
                 //     color: kLight4,

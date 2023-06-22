@@ -32,8 +32,8 @@ class ProfilePreferenceBloc
   List<SimpleMasterData> motherTongue = [];
   List<String?> occupation = [];
   List<Education> education = [];
-  List<AnualIncome> annualIncomeMax = [];
-  List<AnualIncome> annualIncome = [];
+  List<AnnualIncome> annualIncomeMax = [];
+  List<AnnualIncome> annualIncome = [];
   late List<EatingHabit> eatingHabit = [];
   late List<InterestFilter> interestHabit = [];
   late List<SmokingHabit> smokingHabit = [];
@@ -84,13 +84,21 @@ class ProfilePreferenceBloc
     if (maxHeight > 84) {
       maxHeight = 84;
     }
-    this.maritalStatus..clear()..add(this.userRepository.useDetails!.maritalStatus);
+    this.maritalStatus
+      ..clear()
+      ..add(this.userRepository.useDetails!.maritalStatus);
     this.abilityStatus = this.userRepository.useDetails!.abilityStatus;
 
     this.countryModel = this.userRepository.useDetails!.countryModel;
-    this.religion..clear()..add(this.userRepository.useDetails!.religion);
-    this.motherTongue..clear()..add(this.userRepository.useDetails!.motherTongue);
-    this.countryModelList..clear()..add(countryModel);
+    this.religion
+      ..clear()
+      ..add(this.userRepository.useDetails!.religion);
+    this.motherTongue
+      ..clear()
+      ..add(this.userRepository.useDetails!.motherTongue);
+    this.countryModelList
+      ..clear()
+      ..add(countryModel);
     if (!this.forFilters) {
       this.add(GetPartnerPreference());
     }
@@ -130,6 +138,21 @@ class ProfilePreferenceBloc
       this.smokingHabit
         ..clear()
         ..addAll(result.preferences.smokingHabit);
+      this.annualIncome
+        ..clear()
+        ..addAll(result.preferences.minIncome.map((e) => AnnualIncome.values[e]));
+      this.annualIncomeMax
+        ..clear()
+        ..addAll(result.preferences.maxIncome.map((e) => AnnualIncome.values[e]));
+      this.occupation
+        ..clear()
+        ..addAll(result.preferences.occupation.map((e) => e.title));
+      this.subCaste
+        ..clear()
+        ..addAll(result.preferences.castes.map((e) => e).toSet().toList());
+      this.education
+        ..clear()
+        ..addAll(result.preferences.education);
       yield ProfilePreferenceInitialState();
     }
     if (event is ResetFilters) {
@@ -347,6 +370,7 @@ class ProfilePreferenceBloc
           this.occupation,
           this.education,
           this.annualIncome,
+          this.annualIncomeMax,
           this.eatingHabit,
           this.drinkingHabit,
           this.smokingHabit,
@@ -375,7 +399,7 @@ class ProfilePreferenceBloc
           this.maxAge,
           this.minAge,
           this.maritalStatus,
-          this.countryModelList,
+          this.countryModel,
           this.myState,
           this.city,
           this.religion,
@@ -384,6 +408,7 @@ class ProfilePreferenceBloc
           this.occupation,
           this.education,
           this.annualIncome,
+          this.annualIncomeMax,
           this.eatingHabit,
           this.drinkingHabit,
           this.smokingHabit,
@@ -402,8 +427,8 @@ class PartnerPreferences {
   final int maxAge;
   final int minHeight;
   final int maxHeight;
-  final String minIncome;
-  final String maxIncome;
+  final List<int> minIncome;
+  final List<int> maxIncome;
   final List<MaritalStatus> maritalStatus;
   final List<CountryModel> countries;
   final List<StateModel> states;
@@ -445,8 +470,8 @@ class PartnerPreferences {
       maxAge: json["maxAge"],
       minHeight: json["minHeight"],
       maxHeight: json["maxHeight"],
-      minIncome: json["minIncome"],
-      maxIncome: json["maxIncome"],
+      minIncome: json["minIncome"].toString().split(',').where((e) => e.isNotNullEmpty).map((e) => int.parse(e)).toList(),
+      maxIncome: json["maxIncome"].toString().split(',').where((e) => e.isNotNullEmpty).map((e) => int.parse(e)).toList(),
       maritalStatus: json["maritalStatus"]
           .toString()
           .split(",")
@@ -487,7 +512,7 @@ class PartnerPreferences {
           .map((e) =>
               getIt<UserRepository>().masterData.listMotherTongue.firstWhere((element) => element.title == e))
           .toList(),
-      occupation: getIt<UserRepository>().masterData.listOccupation.fold<List<SimpleMasterData>>(<SimpleMasterData>[], (previousValue, element) => previousValue..addAll(element.subCategory)).where((e) => json["caste"].toString().split(",").where((e) => e.isNotNullEmpty).toList().contains(e)).toList(),
+      occupation: getIt<UserRepository>().masterData.listOccupation.fold<List<SimpleMasterData>>(<SimpleMasterData>[], (previousValue, element) => previousValue..addAll(element.subCategory)).where((e) => json["occupation"].toString().split(",").where((occupation) => occupation.isNotNullEmpty).toList().contains(e.id)).toList(),
       education: json["highestEducation"].toString().split(",").where((e) => e.isNotNullEmpty).toList().map((e) => getIt<UserRepository>().masterData.listEducation.firstWhere((element) => element.text == e)).toList(),
       isPhysicallyChallenged: json["challenged"] == "1",
       drinkingHabits: json["drinkingHabits"].toString().split(",").where((e) => e.isNotNullEmpty).toList().map((e) => DrinkingHabit.values[int.parse(e)]).toList(),
@@ -499,8 +524,8 @@ class PartnerPreferences {
     int? maxAge,
     int? minHeight,
     int? maxHeight,
-    String? minIncome,
-    String? maxIncome,
+    List<int>? minIncome,
+    List<int>? maxIncome,
     List<MaritalStatus>? maritalStatus,
     List<CountryModel>? countries,
     List<StateModel>? states,

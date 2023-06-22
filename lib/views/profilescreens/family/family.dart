@@ -42,8 +42,6 @@ class _FamilyScreenState extends State<FamilyScreen>
   void initState() {
     super.initState();
     tabController = TabController(length: 2, vsync: this);
-
-
   }
 
   @override
@@ -70,9 +68,9 @@ class _FamilyScreenState extends State<FamilyScreen>
             children: [
               Container(
                 child: PreferredSize(
-                    preferredSize: Size.fromHeight(120.0),
-                    child: Container(
-                        child: AppBar(
+                  preferredSize: Size.fromHeight(120.0),
+                  child: Container(
+                    child: AppBar(
                       leading: Navigator.of(context).canPop()
                           ? Container(
                               margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
@@ -115,7 +113,31 @@ class _FamilyScreenState extends State<FamilyScreen>
                       ),
                       backgroundColor: Colors.transparent,
                       elevation: 0.0,
-                    ))),
+                      actions: !widget.toUpdate ? [
+                        Row(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (ctx) =>
+                                        Habit(userRepository: widget.userRepository),
+                                  ),
+                                );
+                              },
+                              // child: MmmIcons.rightArrowEnabled(),
+                              child: Text('Skip >',
+                                  style:
+                                  TextStyle( fontFamily: 'MakeMyMarry', color: Colors.white, fontSize: 16)),
+                            ),
+                            SizedBox(width: 16,)
+                          ],
+                        ),
+                      ] : [],
+                    ),
+                  ),
+                ),
                 decoration: BoxDecoration(
                   // borderRadius: BorderRadius.only(bottomRight: Radius.circular(32)),
                   gradient: LinearGradient(

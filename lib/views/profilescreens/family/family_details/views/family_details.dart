@@ -125,35 +125,35 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
                       },
                       child: MmmIcons.rightArrowEnabled(),
                     )),
-          widget.toUpdate
-              ? SizedBox()
-              : Positioned(
-                  child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (ctx) =>
-                                Habit(userRepository: widget.userRepository),
-                          ),
-                        );
-                      },
-                      // child: MmmIcons.rightArrowEnabled(),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '(This section is optional)',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                            Text('Skip >',
-                                style:
-                                    TextStyle(color: kPrimary, fontSize: 15)),
-                          ],
-                        ),
-                      ))),
+          // widget.toUpdate
+          //     ? SizedBox()
+          //     : Positioned(
+          //         child: InkWell(
+          //             onTap: () {
+          //               Navigator.push(
+          //                 context,
+          //                 MaterialPageRoute(
+          //                   builder: (ctx) =>
+          //                       Habit(userRepository: widget.userRepository),
+          //                 ),
+          //               );
+          //             },
+          //             // child: MmmIcons.rightArrowEnabled(),
+          //             child: Padding(
+          //               padding: const EdgeInsets.all(12.0),
+          //               child: Row(
+          //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //                 children: [
+          //                   Text(
+          //                     '(This section is optional)',
+          //                     style: TextStyle( fontFamily: 'MakeMyMarry', fontSize: 14),
+          //                   ),
+          //                   Text('Skip >',
+          //                       style:
+          //                           TextStyle( fontFamily: 'MakeMyMarry', color: kPrimary, fontSize: 15)),
+          //                 ],
+          //               ),
+          //             ))),
           state is OnLoading ? MmmWidgets.buildLoader(context) : Container(),
         ],
       ));
@@ -180,9 +180,9 @@ class FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
         padding: kMargin16,
         child: Column(
           children: [
-            SizedBox(
-              height: 24,
-            ),
+            // SizedBox(
+            //   height: 24,
+            // ),
             MmmButtons.categoryButtonsNotRequired(
                 "Father's Occupation",
                 fatherOccupation != null

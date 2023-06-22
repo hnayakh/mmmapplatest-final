@@ -11,7 +11,7 @@ class OnOccupationSelected extends OccupationEvent {
 }
 
 class OnAnnualIncomeSelected extends OccupationEvent {
-  final AnualIncome income;
+  final AnnualIncome income;
 
   OnAnnualIncomeSelected(this.income);
 }
@@ -24,7 +24,7 @@ class OnEducationSelected extends OccupationEvent {
 
 class UpdateCareer extends OccupationEvent {
   final String? occupation;
-  final AnualIncome? anualIncome;
+  final AnnualIncome? anualIncome;
   String? education;
   final StateModel? myState;
   final StateModel? city;

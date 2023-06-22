@@ -1,12 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:makemymarry/datamodels/martching_profile.dart';
+import 'package:makemymarry/datamodels/user_model.dart';
+import 'package:makemymarry/locator.dart';
+import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/colors.dart';
+import 'package:makemymarry/utils/helper.dart';
+import 'package:makemymarry/views/meet/bloc/meet_form_bloc.dart';
+import 'package:makemymarry/views/meet/views/meet_timing/schedule_meeting_time.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../../../../utils/buttons.dart';
-import 'schedule_meeting_time.dart';
-
 class BookYourDate extends StatefulWidget {
-  BookYourDate({key}) : super(key: key);
+  BookYourDate(
+      {this.meetType,
+      this.latLng,
+      this.address,
+      this.connection,
+      this.profileDetails,
+      key})
+      : super(key: key);
+
+  static getRoute({
+    MeetType? meetType,
+    LatLng? latLng,
+    String? address,
+    Activeconnection? connection,
+    ProfileDetails? profileDetails,
+  }) =>
+      MaterialPageRoute(
+          builder: (_) => BlocProvider(
+              create: (_) => MeetFormBloc(
+                  userRepository: getIt<UserRepository>(),
+                  profileDetails: profileDetails),
+              child: BookYourDate(
+                  meetType: meetType,
+                  connection: connection,
+                  latLng: latLng,
+                  address: address,
+                  profileDetails: profileDetails)));
+
+  final MeetType? meetType;
+  final Activeconnection? connection;
+  final LatLng? latLng;
+  final String? address;
+  final ProfileDetails? profileDetails;
 
   @override
   _BookYourDate createState() => _BookYourDate();
@@ -14,8 +53,18 @@ class BookYourDate extends StatefulWidget {
 
 class _BookYourDate extends State<BookYourDate> {
   final CalendarFormat _calendarFormat = CalendarFormat.month;
-  final DateTime _focusedDay = DateTime.now();
-  DateTime? _selectedDay;
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay = DateTime.now();
+
+
+  @override
+  void initState() {
+    if(widget.connection != null){
+      _focusedDay = widget.connection!.scheduleTime;
+      _selectedDay = widget.connection!.scheduleTime;
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,31 +77,43 @@ class _BookYourDate extends State<BookYourDate> {
               topLeft: Radius.circular(20),
             )),
             child: Column(children: [
-              const SizedBox(
-                height: 15,
+              Row(
+                children: [
+                  InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: ShaderMask(
+                        shaderCallback: (bounds) => RadialGradient(
+                          center: Alignment.center,
+                          radius: 0.5,
+                          colors: [kPrimary, kSecondary],
+                          tileMode: TileMode.mirror,
+                        ).createShader(bounds),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 12.0, top: 15, right: 12),
+                          child: SvgPicture.asset(
+                            'images/leftArrow.svg',
+                            height: 24,
+                            width: 24,
+                          ),
+                        ),
+                      )),
+                ],
               ),
-
-              //Left Arrow Mark
-              ClipRRect(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 350),
-                  child: MmmButtons.backButton(context),
-                ),
-              ),
-
               // Choose Your Type
               const SizedBox(
                 width: 350,
                 child: Text(
                   'Book your Date',
-                  style: TextStyle(fontSize: 18, height: 3),
+                  style: TextStyle( fontFamily: 'MakeMyMarry', fontSize: 18, height: 3),
                 ),
               ),
               Column(
                 children: [
                   Container(
                     child: TableCalendar(
-                      firstDay: DateTime(2002),
+                      firstDay: DateTime.now(),
                       lastDay: DateTime(3000),
                       focusedDay: _focusedDay,
                       calendarFormat: _calendarFormat,
@@ -69,7 +130,7 @@ class _BookYourDate extends State<BookYourDate> {
                         if (!isSameDay(_selectedDay, selectedDay)) {
                           setState(() {
                             _selectedDay = selectedDay;
-                            focusedDay = focusedDay;
+                            _focusedDay = selectedDay;
                           });
                         }
                       },
@@ -80,20 +141,20 @@ class _BookYourDate extends State<BookYourDate> {
                   ),
                   const SizedBox(height: 30),
                   Padding(
-                    padding: const EdgeInsets.only(left: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: Row(
                       children: [
-                        Container(
-                          width: 170,
-                          height: 40,
+                        Expanded(
+
                           child: ElevatedButton(
                             onPressed: () {
+                              Navigator.pop(context);
                               Navigator.pop(context);
                             },
                             // ignore: sort_child_properties_last
                             child: const Text(
                               'Cancel',
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'MakeMyMarry',
                                   //fontSize: 12,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white),
@@ -110,18 +171,22 @@ class _BookYourDate extends State<BookYourDate> {
                         const SizedBox(
                           width: 20,
                         ),
-                        Container(
-                          width: 170,
-                          height: 40,
+                        Expanded(
                           child: ElevatedButton(
                             onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => ScheduleMeetingTime()));
+                              context.navigate.push(
+                                  ScheduleMeetingTime.getRoute(
+                                      meetType: widget.meetType,
+                                      address: widget.address,
+                                      latLng: widget.latLng,
+                                      profileDetails: widget.profileDetails,
+                                      connection: widget.connection,
+                                      selectedDate: _selectedDay));
                             },
                             // ignore: sort_child_properties_last
                             child: const Text(
                               'Next',
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'MakeMyMarry',
                                   //fontSize: 12,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white),

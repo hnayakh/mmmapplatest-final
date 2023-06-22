@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
@@ -24,6 +26,7 @@ import 'package:makemymarry/views/profilescreens/lifestyle/lifestyle_details_vie
 import '../datamodels/martching_profile.dart';
 import '../locator.dart';
 import '../repo/chat_repo.dart';
+import '../views/meet/views/meet_form_view.dart';
 import '../views/profile_detail_view/profile_view.dart';
 import '../views/profile_detail_view/profile_view_bloc.dart';
 import '../views/profile_detail_view/profile_view_event.dart';
@@ -225,9 +228,9 @@ class MmmButtons {
                             Text(
                               'Status',
                               textAlign: TextAlign.left,
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'MakeMyMarry', 
                                   color: Color.fromRGBO(135, 141, 150, 1),
-                                  fontFamily: 'Poppins',
+                                  
                                   fontSize: 12,
                                   fontWeight: FontWeight.normal,
                                   height: 1.6666666666666667),
@@ -238,9 +241,9 @@ class MmmButtons {
                                 AppHelper.getStringFromEnum(
                                     familyAfluenceLevel),
                                 textAlign: TextAlign.left,
-                                style: TextStyle(
+                                style: TextStyle( fontFamily: 'MakeMyMarry', 
                                     color: Color.fromRGBO(18, 22, 25, 1),
-                                    fontFamily: 'Poppins',
+                                    
                                     fontSize: 14,
                                     fontWeight: FontWeight.normal,
                                     height: 1.5714285714285714),
@@ -259,9 +262,9 @@ class MmmButtons {
                             Text(
                               'Type',
                               textAlign: TextAlign.left,
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'MakeMyMarry', 
                                   color: Color.fromRGBO(135, 141, 150, 1),
-                                  fontFamily: 'Poppins',
+                                  
                                   fontSize: 12,
                                   fontWeight: FontWeight.normal,
                                   height: 1.6666666666666667),
@@ -271,9 +274,9 @@ class MmmButtons {
                               child: Text(
                                 AppHelper.getStringFromEnum(familyType),
                                 textAlign: TextAlign.left,
-                                style: TextStyle(
+                                style: TextStyle( fontFamily: 'MakeMyMarry', 
                                     color: Color.fromRGBO(18, 22, 25, 1),
-                                    fontFamily: 'Poppins',
+                                    
                                     fontSize: 14,
                                     fontWeight: FontWeight.normal,
                                     height: 1.5714285714285714),
@@ -293,9 +296,9 @@ class MmmButtons {
                             Text(
                               'Values',
                               textAlign: TextAlign.left,
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'MakeMyMarry', 
                                   color: Color.fromRGBO(135, 141, 150, 1),
-                                  fontFamily: 'Poppins',
+                                  
                                   fontSize: 12,
                                   fontWeight: FontWeight.normal,
                                   height: 1.6666666666666667),
@@ -305,9 +308,9 @@ class MmmButtons {
                               child: Text(
                                 AppHelper.getStringFromEnum(familyValues),
                                 textAlign: TextAlign.left,
-                                style: TextStyle(
+                                style: TextStyle( fontFamily: 'MakeMyMarry', 
                                     color: Color.fromRGBO(18, 22, 25, 1),
-                                    fontFamily: 'Poppins',
+                                    
                                     fontSize: 14,
                                     fontWeight: FontWeight.normal,
                                     height: 1.5714285714285714),
@@ -327,9 +330,9 @@ class MmmButtons {
                               Text(
                                 'Location',
                                 textAlign: TextAlign.left,
-                                style: TextStyle(
+                                style: TextStyle( fontFamily: 'MakeMyMarry', 
                                     color: Color.fromRGBO(135, 141, 150, 1),
-                                    fontFamily: 'Poppins',
+                                    
                                     fontSize: 12,
                                     fontWeight: FontWeight.normal,
                                     height: 1.6666666666666667),
@@ -339,9 +342,9 @@ class MmmButtons {
                                 child: Text(
                                   '$city, $state, $country',
                                   textAlign: TextAlign.left,
-                                  style: TextStyle(
+                                  style: TextStyle( fontFamily: 'MakeMyMarry', 
                                       color: Color.fromRGBO(18, 22, 25, 1),
-                                      fontFamily: 'Poppins',
+                                      
                                       fontSize: 14,
                                       fontWeight: FontWeight.normal,
                                       height: 1.5714285714285714),
@@ -360,9 +363,9 @@ class MmmButtons {
                             Text(
                               "Father's Occupation",
                               textAlign: TextAlign.left,
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'MakeMyMarry', 
                                   color: Color.fromRGBO(135, 141, 150, 1),
-                                  fontFamily: 'Poppins',
+                                  
                                   fontSize: 12,
                                   fontWeight: FontWeight.normal,
                                   height: 1.6666666666666667),
@@ -372,9 +375,9 @@ class MmmButtons {
                               child: Text(
                                 AppHelper.getStringFromEnum(fatherOccupation),
                                 textAlign: TextAlign.left,
-                                style: TextStyle(
+                                style: TextStyle( fontFamily: 'MakeMyMarry', 
                                     color: Color.fromRGBO(18, 22, 25, 1),
-                                    fontFamily: 'Poppins',
+                                    
                                     fontSize: 14,
                                     fontWeight: FontWeight.normal,
                                     height: 1.5714285714285714),
@@ -394,9 +397,9 @@ class MmmButtons {
                             Text(
                               "Mother's Occupation",
                               textAlign: TextAlign.left,
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'MakeMyMarry', 
                                   color: Color.fromRGBO(135, 141, 150, 1),
-                                  fontFamily: 'Poppins',
+                                  
                                   fontSize: 12,
                                   fontWeight: FontWeight.normal,
                                   height: 1.6666666666666667),
@@ -406,9 +409,9 @@ class MmmButtons {
                               child: Text(
                                 AppHelper.getStringFromEnum(motherOccupation),
                                 textAlign: TextAlign.left,
-                                style: TextStyle(
+                                style: TextStyle( fontFamily: 'MakeMyMarry', 
                                     color: Color.fromRGBO(18, 22, 25, 1),
-                                    fontFamily: 'Poppins',
+                                    
                                     fontSize: 14,
                                     fontWeight: FontWeight.normal,
                                     height: 1.5714285714285714),
@@ -428,9 +431,9 @@ class MmmButtons {
                             Text(
                               "No. of Brothers/Married",
                               textAlign: TextAlign.left,
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'MakeMyMarry', 
                                   color: Color.fromRGBO(135, 141, 150, 1),
-                                  fontFamily: 'Poppins',
+                                  
                                   fontSize: 12,
                                   fontWeight: FontWeight.normal,
                                   height: 1.6666666666666667),
@@ -440,9 +443,9 @@ class MmmButtons {
                               child: Text(
                                 '$noOfBrother out of $brothersMarried Married',
                                 textAlign: TextAlign.left,
-                                style: TextStyle(
+                                style: TextStyle( fontFamily: 'MakeMyMarry', 
                                     color: Color.fromRGBO(18, 22, 25, 1),
-                                    fontFamily: 'Poppins',
+                                    
                                     fontSize: 14,
                                     fontWeight: FontWeight.normal,
                                     height: 1.5714285714285714),
@@ -462,9 +465,9 @@ class MmmButtons {
                             Text(
                               "No. of Sister's/Married",
                               textAlign: TextAlign.left,
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'MakeMyMarry', 
                                   color: Color.fromRGBO(135, 141, 150, 1),
-                                  fontFamily: 'Poppins',
+                                  
                                   fontSize: 12,
                                   fontWeight: FontWeight.normal,
                                   height: 1.6666666666666667),
@@ -474,9 +477,9 @@ class MmmButtons {
                               child: Text(
                                 '$noOfSister out of $sistersMarried Married',
                                 textAlign: TextAlign.left,
-                                style: TextStyle(
+                                style: TextStyle( fontFamily: 'MakeMyMarry', 
                                     color: Color.fromRGBO(18, 22, 25, 1),
-                                    fontFamily: 'Poppins',
+                                    
                                     fontSize: 14,
                                     fontWeight: FontWeight.normal,
                                     height: 1.5714285714285714),
@@ -618,6 +621,7 @@ class MmmButtons {
             padding: EdgeInsets.all(9),
 
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
                   height: 8,
@@ -626,7 +630,7 @@ class MmmButtons {
                   children: [
                     SvgPicture.asset(
                       "images/religion.svg",
-                      color: Color(0xff121619),
+                      color: kPrimary,
                       fit: BoxFit.cover,
                     ),
                     Expanded(
@@ -637,7 +641,9 @@ class MmmButtons {
                       "Religion",
                       textScaleFactor: 1.0,
                       //textAlign: TextAlign.start,
-                      style: MmmTextStyles.heading5(textColor: kDark6),
+                      style: MmmTextStyles.heading5(
+                        textColor: kPrimary,
+                      ),
                     ),
                     Expanded(
                       flex: 20,
@@ -656,47 +662,107 @@ class MmmButtons {
                   height: 8,
                 ),
                 Container(
-                  margin: kMargin16,
+                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Text('Religion: ', style: MmmTextStyles.heading6()),
-                          Text(religion, style: MmmTextStyles.bodySmall()),
-                        ],
+                      Text('Religion',
+                          style: TextStyle( fontFamily: 'MakeMyMarry', 
+                              color: Color.fromRGBO(135, 141, 150, 1),
+                              
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                              height: 1.6666666666666667)),
+                      Text(
+                        religion,
+                        style: TextStyle( fontFamily: 'MakeMyMarry', 
+                            color: Color.fromRGBO(18, 22, 25, 1),
+                            
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                            height: 1.5714285714285714),
                       ),
-                      cast != "null" || cast.length == 0
-                          ? Row(
-                              children: [
-                                Text('Caste: ',
-                                    style: MmmTextStyles.heading6()),
-                                Text(cast, style: MmmTextStyles.bodySmall()),
-                              ],
-                            )
-                          : Container(),
-                      gothra != null && gothra.length == 0
-                          ? Row(
-                              children: [
-                                Text('Gothra: ',
-                                    style: MmmTextStyles.heading6()),
-                                Text(gothra, style: MmmTextStyles.bodySmall()),
-                              ],
-                            )
-                          : Container(),
-                      Row(
-                        children: [
-                          Text('Manglik: ', style: MmmTextStyles.heading6()),
-                          Text(describeEnum(manglik),
-                              style: MmmTextStyles.bodySmall()),
-                        ],
+                      SizedBox(
+                        height: 6,
                       ),
-                      Row(
-                        children: [
-                          Text('Mother Tongue: ',
-                              style: MmmTextStyles.heading6()),
-                          Text(motherTongue, style: MmmTextStyles.bodySmall()),
-                        ],
+                      if (cast != "null" || cast.length == 0) ...[
+                        Text('Caste',
+                            style: TextStyle( fontFamily: 'MakeMyMarry', 
+                                color: Color.fromRGBO(135, 141, 150, 1),
+                                
+                                fontSize: 12,
+                                fontWeight: FontWeight.normal,
+                                height: 1.6666666666666667)),
+                        Text(
+                          cast,
+                          style: TextStyle( fontFamily: 'MakeMyMarry', 
+                              color: Color.fromRGBO(18, 22, 25, 1),
+                              
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                              height: 1.5714285714285714),
+                        ),
+                      ],
+                      SizedBox(
+                        height: 6,
                       ),
+                      if (gothra != null && gothra.length == 0) ...[
+                        Text('Gothra',
+                            style: TextStyle( fontFamily: 'MakeMyMarry', 
+                                color: Color.fromRGBO(135, 141, 150, 1),
+                                
+                                fontSize: 12,
+                                fontWeight: FontWeight.normal,
+                                height: 1.6666666666666667)),
+                        Text(
+                          gothra,
+                          style: TextStyle( fontFamily: 'MakeMyMarry', 
+                              color: Color.fromRGBO(18, 22, 25, 1),
+                              
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                              height: 1.5714285714285714),
+                        ),
+                      ],
+                      SizedBox(
+                        height: 6,
+                      ),
+                      Text('Manglik',
+                          style: TextStyle( fontFamily: 'MakeMyMarry', 
+                              color: Color.fromRGBO(135, 141, 150, 1),
+                              
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                              height: 1.6666666666666667)),
+                      Text(
+                        describeEnum(manglik),
+                        style: TextStyle( fontFamily: 'MakeMyMarry', 
+                            color: Color.fromRGBO(18, 22, 25, 1),
+                            
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                            height: 1.5714285714285714),
+                      ),
+                      SizedBox(
+                        height: 6,
+                      ),
+                      Text('Mother Tongue',
+                          style: TextStyle( fontFamily: 'MakeMyMarry', 
+                              color: Color.fromRGBO(135, 141, 150, 1),
+                              
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                              height: 1.6666666666666667)),
+                      Text(
+                        motherTongue,
+                        style: TextStyle( fontFamily: 'MakeMyMarry', 
+                            color: Color.fromRGBO(18, 22, 25, 1),
+                            
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                            height: 1.5714285714285714),
+                      ),
+
                     ],
                   ),
                 )
@@ -711,7 +777,7 @@ class MmmButtons {
   static Container carrerProfileView(
       //String employedin,
       String occupation,
-      AnualIncome annualIncome,
+      AnnualIncome annualIncome,
       String city,
       String state,
       String country,
@@ -737,6 +803,7 @@ class MmmButtons {
             padding: EdgeInsets.all(9),
 
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
                   height: 8,
@@ -745,7 +812,7 @@ class MmmButtons {
                   children: [
                     SvgPicture.asset(
                       "images/education.svg",
-                      color: Color(0xff121619),
+                      color: kPrimary,
                       fit: BoxFit.cover,
                     ),
                     Expanded(
@@ -755,8 +822,8 @@ class MmmButtons {
                     Text(
                       "Career & Education",
                       textScaleFactor: 1.0,
-                      //textAlign: TextAlign.start,
-                      style: MmmTextStyles.heading5(textColor: kDark6),
+
+                      style: MmmTextStyles.heading5(textColor: kPrimary),
                     ),
                     Expanded(
                       flex: 20,
@@ -771,61 +838,77 @@ class MmmButtons {
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 8,
-                ),
+
                 Container(
-                  margin: kMargin16,
+                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Row(
-                      //   children: [
-                      //     Text('Employed In: ',
-                      //         style: MmmTextStyles.heading6()),
-                      //     Text(employedin, style: MmmTextStyles.bodySmall()),
-                      //   ],
-                      // ),
-                      Row(
-                        children: [
-                          Text('Occupation: ', style: MmmTextStyles.heading6()),
-                          Text(occupation, style: MmmTextStyles.bodySmall()),
-                        ],
+
+                      Text('Occupation', style: TextStyle( fontFamily: 'MakeMyMarry', 
+                          color: Color.fromRGBO(135, 141, 150, 1),
+                          
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                          height: 1.6666666666666667)),
+                      Text(occupation, style: TextStyle( fontFamily: 'MakeMyMarry', 
+                          color: Color.fromRGBO(18, 22, 25, 1),
+                          
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                          height: 1.5714285714285714),),
+                      SizedBox(height: 6,),
+                      Text('Annual Income',
+                          style: TextStyle( fontFamily: 'MakeMyMarry', 
+                              color: Color.fromRGBO(135, 141, 150, 1),
+                              
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                              height: 1.6666666666666667)),
+                      Text(AppHelper.getStringFromEnum(annualIncome),
+                          style: TextStyle( fontFamily: 'MakeMyMarry', 
+                              color: Color.fromRGBO(18, 22, 25, 1),
+                              
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                              height: 1.5714285714285714),),
+                      SizedBox(height: 6,),
+
+                      Text('Job Location',
+                          style:TextStyle( fontFamily: 'MakeMyMarry', 
+                              color: Color.fromRGBO(135, 141, 150, 1),
+                              
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                              height: 1.6666666666666667)),
+                      Text(
+                        "$city${city.isNotEmpty ? "," : ""} $state,$country",
+                        style:  TextStyle( fontFamily: 'MakeMyMarry', 
+                            color: Color.fromRGBO(18, 22, 25, 1),
+                            
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                            height: 1.5714285714285714),
+                        maxLines: 2,
                       ),
-                      Row(
-                        children: [
-                          Text('Annual Income: ',
-                              style: MmmTextStyles.heading6()),
-                          Text(AppHelper.getStringFromEnum(annualIncome),
-                              style: MmmTextStyles.bodySmall()),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Job Location: ',
-                              style: MmmTextStyles.heading6()),
-                          Flexible(
-                            child: Text(
-                              "$city${city.isNotEmpty ? ",": ""} $state,$country",
-                              style: MmmTextStyles.bodySmall(),
-                              maxLines: 2,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text('Highest Education: ',
-                              style: MmmTextStyles.heading6()),
-                          Expanded(
-                            child: Text(highiestEducation,
-                                overflow: TextOverflow.ellipsis,
-                                // maxLines: 2,
-                                style: MmmTextStyles.bodySmall()),
-                          )
-                        ],
-                      ),
+                      SizedBox(height: 6,),
+
+                      Text('Highest Education',
+                          style: TextStyle( fontFamily: 'MakeMyMarry', 
+                              color: Color.fromRGBO(135, 141, 150, 1),
+                              
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                              height: 1.6666666666666667)),
+                      Text(highiestEducation,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 10,
+                          style:  TextStyle( fontFamily: 'MakeMyMarry', 
+                              color: Color.fromRGBO(18, 22, 25, 1),
+                              
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                              height: 1.5714285714285714),)
                     ],
                   ),
                 )
@@ -842,7 +925,6 @@ class MmmButtons {
       EatingHabit eatingHabit,
       DrinkingHabit drinkingHabit,
       SmokingHabit smokingHabit,
-
       {Function()? action}) {
     return Container(
       decoration: BoxDecoration(
@@ -879,7 +961,7 @@ class MmmButtons {
                       child: SizedBox(),
                     ),
                     Text(
-                      "Interests",
+                      "Habits",
                       textScaleFactor: 1.0,
                       //textAlign: TextAlign.start,
                       style: MmmTextStyles.heading5(textColor: kPrimary),
@@ -916,9 +998,8 @@ class MmmButtons {
                                 Text(
                                   'Eating',
                                   textAlign: TextAlign.left,
-                                  style: TextStyle(
+                                  style: TextStyle( fontFamily: 'MakeMyMarry', 
                                       color: Color.fromARGB(212, 0, 0, 0),
-                                      fontFamily: 'Poppins',
                                       fontSize: 14,
                                       fontWeight: FontWeight.normal,
                                       height: 1.6666666666666667),
@@ -949,17 +1030,17 @@ class MmmButtons {
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
-                                      Image.asset(
+                                      SvgPicture.asset(
                                         describeEnum(eatingHabit) ==
                                                 " Vegetarrian"
-                                            ? 'images/LeafyGreen.png'
+                                            ? 'images/Veg2.svg'
                                             : describeEnum(eatingHabit) ==
                                                     "Nonvegetarrian"
-                                                ? 'images/chicken.png'
+                                                ? 'images/non veg.svg'
                                                 : describeEnum(eatingHabit) ==
                                                         "Eggitarrian"
-                                                    ? 'images/egggg.png'
-                                                    : "images/download.png",
+                                                    ? 'images/egg.svg'
+                                                    : "images/egg.svg",
                                         height: 28,
                                         width: 28,
                                       ),
@@ -973,10 +1054,10 @@ class MmmButtons {
                                               AppHelper.getStringFromEnum(
                                                   eatingHabit),
                                               textAlign: TextAlign.left,
-                                              style: TextStyle(
+                                              style: TextStyle( fontFamily: 'MakeMyMarry', 
                                                   color: Color.fromRGBO(
                                                       18, 22, 25, 1),
-                                                  fontFamily: 'Poppins',
+                                                  
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.normal,
                                                   height: 1.625),
@@ -1003,9 +1084,9 @@ class MmmButtons {
                             Text(
                               'Smoking',
                               textAlign: TextAlign.left,
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'MakeMyMarry', 
                                   color: Color.fromARGB(212, 0, 0, 0),
-                                  fontFamily: 'Poppins',
+                                  
                                   fontSize: 14,
                                   letterSpacing:
                                       0 /*percentages not used in flutter. defaulting to zero*/,
@@ -1037,12 +1118,12 @@ class MmmButtons {
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
-                                  Image.asset(
+                                  SvgPicture.asset(
                                       describeEnum(smokingHabit) == "Smoker"
-                                          ? 'images/cigarette.png'
+                                          ? 'images/smoke.svg'
                                           : describeEnum(smokingHabit) ==
                                                   "NonSmoker"
-                                              ? 'images/nonsmokerr.png'
+                                              ? 'images/smoke.svg'
                                               : describeEnum(smokingHabit) ==
                                                       "Occasionally"
                                                   ? 'images/cigarette.png'
@@ -1059,10 +1140,10 @@ class MmmButtons {
                                           AppHelper.getStringFromEnum(
                                               smokingHabit),
                                           textAlign: TextAlign.left,
-                                          style: TextStyle(
+                                          style: TextStyle( fontFamily: 'MakeMyMarry', 
                                               color:
                                                   Color.fromRGBO(18, 22, 25, 1),
-                                              fontFamily: 'Poppins',
+                                              
                                               fontSize: 16,
                                               fontWeight: FontWeight.normal,
                                               height: 1.625),
@@ -1087,9 +1168,9 @@ class MmmButtons {
                             Text(
                               'Alcoholic',
                               textAlign: TextAlign.left,
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'MakeMyMarry', 
                                   color: Color.fromARGB(212, 0, 0, 0),
-                                  fontFamily: 'Poppins',
+                                  
                                   fontSize: 14,
                                   letterSpacing:
                                       0 /*percentages not used in flutter. defaulting to zero*/,
@@ -1121,16 +1202,16 @@ class MmmButtons {
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
-                                  Image.asset(
+                                  SvgPicture.asset(
                                       describeEnum(drinkingHabit) == "Alcoholic"
-                                          ? 'images/Beer.png'
+                                          ? 'images/alcoholic.svg'
                                           : describeEnum(drinkingHabit) ==
                                                   "Nonalcoholic"
-                                              ? 'images/nonalcoholiya.png'
+                                              ? 'images/non_alcoholic.svg'
                                               : describeEnum(drinkingHabit) ==
                                                       "Occasionally"
-                                                  ? 'images/Beer.png'
-                                                  : "images/download.png",
+                                                  ? 'images/occasionally.svg'
+                                                  : "images/occasionally.svg",
                                       height: 28,
                                       width: 28),
                                   SizedBox(width: 8),
@@ -1143,10 +1224,10 @@ class MmmButtons {
                                           AppHelper.getStringFromEnum(
                                               drinkingHabit),
                                           textAlign: TextAlign.left,
-                                          style: TextStyle(
+                                          style: TextStyle( fontFamily: 'MakeMyMarry', 
                                               color:
                                                   Color.fromRGBO(18, 22, 25, 1),
-                                              fontFamily: 'Poppins',
+                                              
                                               fontSize: 16,
                                               fontWeight: FontWeight.normal,
                                               height: 1.625),
@@ -1161,7 +1242,6 @@ class MmmButtons {
                         ),
                       ),
                       SizedBox(height: 10),
-
                     ],
                   ),
                 )
@@ -1174,8 +1254,7 @@ class MmmButtons {
   }
 
   static Container hoobiesProfileViewButtons(
-      BuildContext context,
-      List<String>? hobbies,
+      BuildContext context, List<String>? hobbies,
       {Function()? action}) {
     return Container(
       decoration: BoxDecoration(
@@ -1238,9 +1317,6 @@ class MmmButtons {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
-
-
                       if (hobbies.isNotNullEmpty)
                         Container(
                           margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -1251,9 +1327,9 @@ class MmmButtons {
                               // Text(
                               //   'Hobbies',
                               //   textAlign: TextAlign.left,
-                              //   style: TextStyle(
+                              //   style: TextStyle( fontFamily: 'MakeMyMarry', 
                               //       color: Color.fromARGB(212, 0, 0, 0),
-                              //       fontFamily: 'Poppins',
+                              //       
                               //       fontSize: 14,
                               //       fontWeight: FontWeight.normal,
                               //       height: 1.6666666666666667),
@@ -1825,21 +1901,22 @@ class MmmButtons {
       bool required = true}) {
     return Column(
       children: [
-        Row(
-          children: [
-            Text(
-              labelText,
-              textScaleFactor: 1.0,
-              style: MmmTextStyles.bodySmall(textColor: kDark5),
-            ),
-            required
-                ? Text(
-                    '',
-                    style: MmmTextStyles.bodySmall(textColor: kredStar),
-                  )
-                : Container()
-          ],
-        ),
+        if (labelText.isNotNullEmpty)
+          Row(
+            children: [
+              Text(
+                labelText,
+                textScaleFactor: 1.0,
+                style: MmmTextStyles.bodySmall(textColor: kDark5),
+              ),
+              required
+                  ? Text(
+                      '',
+                      style: MmmTextStyles.bodySmall(textColor: kredStar),
+                    )
+                  : Container()
+            ],
+          ),
         SizedBox(
           height: 4,
         ),
@@ -2237,7 +2314,10 @@ class MmmButtons {
             shadowColor: Colors.transparent,
             elevation: 0.0,
           ),
-          if (connectStatus == ProposalStatus.Accepted) ...[
+
+          if (connectStatus == ProposalStatus.Accepted &&
+              profileDetails.gender.index !=
+                  getIt<UserRepository>().useDetails?.gender) ...[
             Positioned(
               right: MediaQuery.of(context).size.width * 0.1,
               bottom: 0,
@@ -2254,24 +2334,26 @@ class MmmButtons {
                   MmmIcons.meet(
                     context,
                     action: () async {
-                      await showModalBottomSheet(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(25),
-                                topRight: Radius.circular(25)),
-                          ),
-                          context: context,
-                          builder: (context) =>
-                              MmmWidgets.selectMeetWidget(context));
-                      // print("gfchfdgfcbfbfxbfx");
+                      showModalBottomSheet(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(25),
+                              topRight: Radius.circular(25)),
+                        ),
+                        context: context,
+                        builder: (context) => MmmWidgets.selectMeetWidget(
+                            context, profileDetails),
+                      );
                     },
                   ),
                 ],
               ),
             ),
-          ] else if (connectStatus == ProposalStatus.Reverted ||
-              connectStatus == ProposalStatus.Rejected ||
-              connectStatus == null) ...[
+          ] else if ((connectStatus == ProposalStatus.Reverted ||
+                  connectStatus == ProposalStatus.Rejected ||
+                  connectStatus == null) &&
+              profileDetails.gender.index !=
+                  getIt<UserRepository>().useDetails?.gender) ...[
             Positioned(
               right: MediaQuery.of(context).size.width * 0.1,
               bottom: 0,
@@ -2310,7 +2392,9 @@ class MmmButtons {
                     ],
                   )),
             )
-          ] else if (connectStatus == ProposalStatus.Sent) ...[
+          ] else if (connectStatus == ProposalStatus.Sent &&
+              profileDetails.gender.index !=
+                  getIt<UserRepository>().useDetails?.gender) ...[
             Positioned(
               right: MediaQuery.of(context).size.width * 0.1,
               bottom: 0,
@@ -2390,8 +2474,9 @@ class MmmButtons {
                 ],
               ),
             ),
-          ] else if (profileDetails.proposalStatus ==
-              ProposalStatus.Received) ...[
+          ] else if (profileDetails.proposalStatus == ProposalStatus.Received &&
+              profileDetails.gender.index !=
+                  getIt<UserRepository>().useDetails?.gender) ...[
             Positioned(
               right: MediaQuery.of(context).size.width * 0.1,
               bottom: 0,
@@ -2414,6 +2499,7 @@ class MmmButtons {
               ),
             ),
           ],
+
           // Positioned(
           //     bottom: 0,
           //     //right: 80,
@@ -2508,7 +2594,10 @@ class MmmButtons {
       preferredSize: Size.fromHeight(74.0),
       child: Container(
         child: AppBar(
-          leading: (navigatorKey.currentState?.canPop() ?? false)
+          leading: (context != null
+                  ? ((navigatorKey.currentState?.canPop() ?? true) &&
+                      Navigator.of(context).canPop())
+                  : false)
               ? Container(
                   margin: EdgeInsets.fromLTRB(20, 20, 0, 20),
                   decoration: BoxDecoration(
@@ -2525,9 +2614,10 @@ class MmmButtons {
                     child: Material(
                       color: Colors.transparent,
                       child: InkWell(
-                        onTap: () {
-                          if (context != null) {
-                            Navigator.of(context).pop();
+                        onTap: () async {
+                          var res = await Navigator.of(context).maybePop();
+                          if (!res) {
+                            SystemNavigator.pop();
                           }
                         },
                         child: Container(
@@ -3146,8 +3236,8 @@ class MmmButtons {
                     Text(
                       'Match meter ${(state).matchingPercentage}%',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontFamily: 'Poppins',
+                      style: TextStyle( fontFamily: 'MakeMyMarry', 
+                          
                           color: kPrimary,
                           fontSize: 17,
                           fontWeight: FontWeight.bold,
@@ -3159,84 +3249,33 @@ class MmmButtons {
               CupertinoSlider(
                   value: (state as OnProfileVisited).matchingPercentage / 100,
                   onChanged: (value) {}),
-              // Container(
-              //     margin: EdgeInsets.fromLTRB(10, 60, 1, 1),
-              //     width: 347,
-              //     height: 8,
-              //     decoration: BoxDecoration(
-              //       borderRadius: BorderRadius.only(
-              //         topLeft: Radius.circular(8),
-              //         topRight: Radius.circular(8),
-              //         bottomLeft: Radius.circular(8),
-              //         bottomRight: Radius.circular(8),
-              //       ),
-              //       boxShadow: [
-              //         BoxShadow(
-              //             color: Color.fromRGBO(61, 75, 92, 0.07000000029802322),
-              //             offset: Offset(0, 10),
-              //             blurRadius: 25)
-              //       ],
-              //       color: Color.fromRGBO(255, 193, 204, 1),
-              //     ),
-              //     child: Stack(children: <Widget>[])),
-              // Container(
-              //     margin: EdgeInsets.fromLTRB(265, 50, 1, 1),
-              //     child: Image.asset(
-              //       'images/hrt3.png',
-              //     )),
-              // Container(
-              //     margin: EdgeInsets.fromLTRB(10, 60, 1, 1),
-              //     width: 258,
-              //     height: 8,
-              //     decoration: BoxDecoration(
-              //       borderRadius: BorderRadius.only(
-              //         topLeft: Radius.circular(8),
-              //         topRight: Radius.circular(8),
-              //         bottomLeft: Radius.circular(8),
-              //         bottomRight: Radius.circular(8),
-              //       ),
-              //       boxShadow: [
-              //         BoxShadow(
-              //             color: Color.fromRGBO(61, 75, 92, 0.07000000029802322),
-              //             offset: Offset(0, 10),
-              //             blurRadius: 25)
-              //       ],
-              //       border: Border.all(
-              //         color: Color.fromRGBO(225, 223, 235, 1),
-              //         width: 1,
-              //       ),
-              //       gradient: LinearGradient(colors: [
-              //         Color.fromARGB(255, 201, 24, 74),
-              //         Color.fromARGB(245, 235, 90, 131)
-              //       ]),
-              //     ),
-              //     child: Stack(children: <Widget>[])),
 
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  InkWell(
-                    onTap: action,
-                    child: Text(
-                      'View more',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Color.fromRGBO(201, 24, 74, 1),
-                          fontFamily: 'Poppins',
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          height: 1.5714285714285714),
-                    ),
+              InkWell(
+                onTap: action,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 12.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        'View more',
+                        textAlign: TextAlign.center,
+                        style: TextStyle( fontFamily: 'MakeMyMarry',
+                            color: Color.fromRGBO(201, 24, 74, 1),
+
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            height: 1.5714285714285714),
+                      ),
+                      Container(
+                          margin: EdgeInsets.fromLTRB(5, 7, 1, 1),
+                          child: Image.asset('images/doublearrow.png'))
+                    ],
                   ),
-                  Container(
-                      margin: EdgeInsets.fromLTRB(5, 7, 1, 1),
-                      child: Image.asset('images/doublearrow.png'))
-                ],
+                ),
               ),
-              SizedBox(
-                height: 12,
-              ),
+
             ],
           ),
         );
@@ -3805,7 +3844,7 @@ class MmmButtons {
           child: Container(
             alignment: Alignment.center,
             height: containerheight,
-            padding: const EdgeInsets.symmetric(horizontal: 2),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
 
             // width: containerwidth,
             child: Row(
@@ -4245,7 +4284,7 @@ class MmmButtons {
     );
   }
 
-  static Container rescheduleButtonMeet() {
+  static Widget rescheduleButtonMeet(Function onTap) {
     return Container(
       height: 28,
       width: 127,
@@ -4256,7 +4295,9 @@ class MmmButtons {
           child: Material(
             color: Colors.transparent,
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                onTap.call();
+              },
               child: Center(
                 child: Row(
                   children: [
@@ -4320,6 +4361,37 @@ class MmmButtons {
                   SizedBox(
                     width: 8,
                   ),
+                  Text(
+                    text,
+                    textAlign: TextAlign.center,
+                    textScaleFactor: 1.0,
+                    style: MmmTextStyles.caption(textColor: gray7),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  static Container unblockButton(String text, {Function()? action}) {
+    return Container(
+      decoration: MmmDecorations.primaryButtonDecoration(),
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(8)),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: action,
+            child: Container(
+              padding: EdgeInsets.fromLTRB(12, 4, 12, 4),
+              //alignment: Alignment.center,
+              height: 28,
+              width: 104,
+              child: Row(
+                children: [
                   Text(
                     text,
                     textAlign: TextAlign.center,
@@ -4425,7 +4497,7 @@ class MmmButtons {
     );
   }
 
-  static Container acceptMeetScreen() {
+  static Container acceptMeetScreen(void Function() onTap) {
     return Container(
       height: 28,
       width: 91,
@@ -4434,7 +4506,9 @@ class MmmButtons {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () {},
+            onTap: () {
+              onTap.call();
+            },
             child: Center(
               child: Row(
                 children: [

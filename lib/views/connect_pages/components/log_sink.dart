@@ -60,7 +60,7 @@ class _LogActionWidgetState extends State<LogActionWidget> {
                                 },
                                 child: const Text(
                                   'Clear log',
-                                  style: TextStyle(color: Colors.white),
+                                  style: TextStyle( fontFamily: 'MakeMyMarry', color: Colors.white),
                                 ),
                               ),
                               Expanded(
@@ -101,7 +101,7 @@ class _LogActionWidgetState extends State<LogActionWidget> {
         },
         child: const Text(
           'Log',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle( fontFamily: 'MakeMyMarry', color: Colors.white),
         ));
   }
 }
@@ -112,7 +112,7 @@ class LogWidget extends StatefulWidget {
   const LogWidget({
     Key? key,
     this.logSink,
-    this.textStyle = const TextStyle(fontSize: 15, color: Colors.white),
+    this.textStyle = const TextStyle( fontFamily: 'MakeMyMarry', fontSize: 15, color: Colors.white),
   }) : super(key: key);
 
   /// This [LogSink] is used to add log.

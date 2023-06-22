@@ -138,37 +138,37 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                         child: MmmIcons.rightArrowEnabled(),
                       ),
               ),
-              widget.toUpdate
-                  ? SizedBox()
-                  : Positioned(
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (ctx) =>
-                                  Habit(userRepository: widget.userRepository),
-                            ),
-                          );
-                        },
-                        // child: MmmIcons.rightArrowEnabled(),
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                '(This section is optional)',
-                                style: TextStyle(fontSize: 14),
-                              ),
-                              Text('Skip >',
-                                  style:
-                                      TextStyle(color: kPrimary, fontSize: 15)),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+              // widget.toUpdate
+              //     ? SizedBox()
+              //     : Positioned(
+              //         child: InkWell(
+              //           onTap: () {
+              //             Navigator.push(
+              //               context,
+              //               MaterialPageRoute(
+              //                 builder: (ctx) =>
+              //                     Habit(userRepository: widget.userRepository),
+              //               ),
+              //             );
+              //           },
+              //           // child: MmmIcons.rightArrowEnabled(),
+              //           child: Padding(
+              //             padding: const EdgeInsets.all(12.0),
+              //             child: Row(
+              //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //               children: [
+              //                 Text(
+              //                   '(This section is optional)',
+              //                   style: TextStyle( fontFamily: 'MakeMyMarry', fontSize: 14),
+              //                 ),
+              //                 Text('Skip >',
+              //                     style:
+              //                         TextStyle( fontFamily: 'MakeMyMarry', color: kPrimary, fontSize: 15)),
+              //               ],
+              //             ),
+              //           ),
+              //         ),
+              //       ),
               state is OnLoading
                   ? MmmWidgets.buildLoader(context)
                   : Container(),
@@ -211,11 +211,11 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
           children: [
             Column(
               children: [
-                SizedBox(
-                  height: 30,
-                ),
+                // SizedBox(
+                //   height: 30,
+                // ),
                 MmmButtons.categoryButtonsNotRequired(
-                    'Family Status',
+            'Status',
                     level != null
                         ? AppHelper.getStringFromEnum(level!)
                         : familyStatustext,
@@ -227,7 +227,7 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                   height: 24,
                 ),
                 MmmButtons.categoryButtonsNotRequired(
-                    'Family Values',
+                    'Values',
                     this.values != null
                         ? AppHelper.getStringFromEnum(this.values!)
                         : familyValuestext,
@@ -244,7 +244,7 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                     Container(
                       margin: EdgeInsets.only(top: 10, left: 8),
                       child: Text(
-                        'Family Type',
+                        'Type',
                         style: MmmTextStyles.bodyRegular(textColor: kDark5),
                       ),
                     ),
@@ -361,7 +361,7 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                         ],
                       )
                     : Container(),
-                !this.isStayingWithParents!
+                this.isStayingWithParents!
                     ? Container()
                     : Column(
                         children: [
@@ -416,7 +416,7 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
                         ],
                       ),
                 SizedBox(
-                  height: 20,
+                  height: 76,
                 ),
               ],
             )
@@ -439,59 +439,6 @@ class FamilyBackgroundScreenState extends State<FamilyBackgroundScreen> {
     this.canSelectStayingWithParent =
         BlocProvider.of<FamilyBackgroundBloc>(context)
             .canSelectStayingWithParent;
-
-    // if (BlocProvider.of<FamilyBackgroundBloc>(context).profileDetails != null &&
-    //     context.read<FamilyBackgroundBloc>().state
-    //         is familyBackgroundDataState) {
-    //   if (this.level == null)
-    //     this.level = BlocProvider.of<FamilyBackgroundBloc>(context)
-    //         .profileDetails!
-    //         .familyAfluenceLevel;
-    //
-    //   if (this.values == null)
-    //     this.values = BlocProvider.of<FamilyBackgroundBloc>(context)
-    //         .profileDetails!
-    //         .familyValues;
-    //
-    //   if (this.type == null)
-    //     this.type = BlocProvider.of<FamilyBackgroundBloc>(context)
-    //         .profileDetails!
-    //         .familyType;
-    //
-    //     var countryName = BlocProvider.of<FamilyBackgroundBloc>(context)
-    //         .profileDetails!
-    //         .familyCountry;
-    //     var countryId = BlocProvider.of<FamilyBackgroundBloc>(context)
-    //         .profileDetails!
-    //         .familyCountryId;
-    //
-    //     this.countryModel = CountryModel.fromJson({
-    //       "name": countryName,
-    //       "shortName": countryName,
-    //       "id": countryId,
-    //       "phoneCode": 0,
-    //     });
-    //   if (this.myState == null) {
-    //     var stateName = BlocProvider.of<FamilyBackgroundBloc>(context)
-    //         .profileDetails!
-    //         .familyState;
-    //     var stateId = BlocProvider.of<FamilyBackgroundBloc>(context)
-    //         .profileDetails!
-    //         .familyStateId;
-    //
-    //     this.myState = StateModel(stateName, stateId);
-    //   }
-    //
-    //   if (this.city == null) {
-    //     var cityName = BlocProvider.of<FamilyBackgroundBloc>(context)
-    //         .profileDetails!
-    //         .familyCity;
-    //     var cityId = BlocProvider.of<FamilyBackgroundBloc>(context)
-    //         .profileDetails!
-    //         .familyCityId;
-    //     this.city = StateModel(cityName, cityId);
-    //   }
-    // }
   }
 
   showFamilyStatusSheet() async {

@@ -171,7 +171,7 @@ class _StatusScreenState extends State<StatusScreen> {
     //       const SizedBox(height: 70),
     //       const Text(
     //         "Select your Status",
-    //         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+    //         style: TextStyle( fontFamily: 'MakeMyMarry', fontWeight: FontWeight.bold, fontSize: 24),
     //       ),
     //       const SizedBox(height: 30),
     //       ClipRRect(
@@ -184,7 +184,7 @@ class _StatusScreenState extends State<StatusScreen> {
     //       const SizedBox(height: 20),
     //       const Text(
     //         "Abhishek Sharma",
-    //         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+    //         style: TextStyle( fontFamily: 'MakeMyMarry', fontWeight: FontWeight.bold, fontSize: 18),
     //       ),
     //       const SizedBox(height: 8),
     //       Row(children: [
@@ -192,7 +192,7 @@ class _StatusScreenState extends State<StatusScreen> {
     //           margin: const EdgeInsets.only(left: 130),
     //           child: const Text(
     //             "MMY23456",
-    //             style: TextStyle(
+    //             style: TextStyle( fontFamily: 'MakeMyMarry', 
     //               fontSize: 14,
     //             ),
     //           ),
@@ -229,7 +229,7 @@ class _StatusScreenState extends State<StatusScreen> {
     //         //     ),
 
     //         //     // filled: true,
-    //         //     hintStyle: const TextStyle(
+    //         //     hintStyle: const TextStyle( fontFamily: 'MakeMyMarry', 
     //         //       color: Colors.white,
     //         //       fontSize: 18,
     //         //       height: .5,
@@ -253,7 +253,7 @@ class _StatusScreenState extends State<StatusScreen> {
     //             ),
 
     //             // filled: true,
-    //             hintStyle: const TextStyle(
+    //             hintStyle: const TextStyle( fontFamily: 'MakeMyMarry', 
     //               color: Colors.black,
     //               fontSize: 18,
     //               height: .5,

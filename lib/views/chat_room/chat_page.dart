@@ -34,6 +34,7 @@ class ChatPage extends StatelessWidget {
         builder: (context) {
           var primaryColor = HexColor('#EB5884');
           return Scaffold(
+
             extendBodyBehindAppBar: true,
             appBar: AppBar(
               flexibleSpace: Container(
@@ -75,7 +76,7 @@ class ChatPage extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       softWrap: true,
                       style:
-                      TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      TextStyle( fontFamily: 'MakeMyMarry', fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],

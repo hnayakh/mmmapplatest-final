@@ -271,7 +271,7 @@
 //                                   Text(
 //                                     'Normal',
 //                                     style:
-//                                         TextStyle(fontSize: 15, color: kDark5),
+//                                         TextStyle( fontFamily: 'MakeMyMarry', fontSize: 15, color: kDark5),
 //                                   ),
 //
 //                                   Transform.scale(
@@ -296,7 +296,7 @@
 //                                   Text(
 //                                     'Physically Challenged',
 //                                     style:
-//                                         TextStyle(fontSize: 15, color: kDark5),
+//                                         TextStyle( fontFamily: 'MakeMyMarry', fontSize: 15, color: kDark5),
 //                                   ),
 //                                   Expanded(
 //                                     flex: 1,

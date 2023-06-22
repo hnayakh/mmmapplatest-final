@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:makemymarry/datamodels/agora_token_response.dart';
@@ -14,7 +15,7 @@ import 'package:permission_handler/permission_handler.dart';
 /// JoinChannelAudio Example
 class AudioCallView extends StatefulWidget {
   /// Construct the [AudioCallView]
-  const AudioCallView(
+   AudioCallView(
       {Key? key,
       required this.uid,
       required this.imageUrl,
@@ -25,7 +26,7 @@ class AudioCallView extends StatefulWidget {
   final String uid;
   final String imageUrl;
   final UserRepository userRepo;
-  final AgoraToken? agoraToken;
+  AgoraToken? agoraToken;
   @override
   State<StatefulWidget> createState() => _State();
 }
@@ -54,9 +55,18 @@ class _State extends State<AudioCallView> {
     });
   }
 
+  var pageLeft = false;
   @override
   void initState() {
     super.initState();
+    if(widget.agoraToken != null) {
+      FirebaseFirestore.instance.collection('activeCalls').doc(
+          widget.agoraToken!.notificationId).snapshots().listen((event) {
+        if (!event.data()?['status']) {
+          _leaveChannel();
+        }
+      });
+    }
     _initEngine();
   }
 
@@ -120,16 +130,25 @@ class _State extends State<AudioCallView> {
           widget.userRepo.generateAgoraToken(widget.uid, CallType.audioCall);
       res.then((value) async {
         if (value.status == AppConstants.SUCCESS) {
+          widget.agoraToken = value.token;
+          if(value.token!= null) {
+            FirebaseFirestore.instance.collection('activeCalls').doc(
+                value.token!.notificationId).snapshots().listen((event) {
+              if (!event.data()?['status']) {
+                _leaveChannel();
+              }
+            });
+          }
           _joinChannel(value.token!.agoraToken, value.token!.channelName);
         } else {
           ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text("ERROR!!!!")));
+              .showSnackBar(SnackBar(content: Text("Something went wrong on our side. Please try again later.")));
           await Future.delayed(Duration(seconds: 2));
           Navigator.of(context).pop();
         }
       }).onError((error, stackTrace) async {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("ERROR!!!!")));
+            .showSnackBar(SnackBar(content: Text("Something went wrong on our side. Please try again later.")));
         await Future.delayed(Duration(seconds: 2));
         Navigator.of(context).pop();
       });
@@ -153,13 +172,19 @@ class _State extends State<AudioCallView> {
   }
 
   _leaveChannel() async {
+    if(!pageLeft){
+      context.navigate.pop();
+      pageLeft = true;
+    }
     await _engine.leaveChannel();
     setState(() {
       isJoined = false;
       openMicrophone = false;
       enableSpeakerphone = false;
     });
-    context.navigate.pop();
+    await FirebaseFirestore.instance.collection('activeCalls').doc(
+        widget.agoraToken?.notificationId).update({'status': false});
+
   }
 
   _switchMicrophone() async {
@@ -200,7 +225,7 @@ class _State extends State<AudioCallView> {
                   ? "Connecting ..."
                   : "${(timeLeft ~/ 60).toString().padLeft(2, "0")}:${(timeLeft % 60).toString().padLeft(2, "0")}",
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: TextStyle( fontFamily: 'MakeMyMarry', 
                 color: Colors.black,
                 fontSize: 24,
                 fontWeight: FontWeight.w500,

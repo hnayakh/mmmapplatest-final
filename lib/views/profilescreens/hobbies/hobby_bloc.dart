@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/views/profilescreens/hobbies/hobby_details_view.dart';
 
@@ -25,8 +26,10 @@ class HobbyBloc extends Bloc<HobbyEvent, HobbyState> {
 
       var hobbies = <HobbyType>[];
       data.profileDetails.hobbies?.forEach((hobby) {
-        hobbies.add(
-            HobbyType.values.firstWhere((element) => element.name == hobby));
+        if(hobby.trim().isNotNullEmpty) {
+          hobbies.add(
+              HobbyType.values.firstWhere((element) => element.name == hobby));
+        }
       });
 
       yield HobbyIdleState(data: HobbyData(hobbies: hobbies));

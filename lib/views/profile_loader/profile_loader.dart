@@ -14,15 +14,17 @@ import 'profile_loader_event.dart';
 class ProfileLoader extends StatelessWidget {
   final UserRepository userRepository;
 
-  const ProfileLoader({Key? key, required this.userRepository})
+  const ProfileLoader({Key? key, required this.userRepository, this.firstTime = false})
       : super(key: key);
 
+  final bool firstTime;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ProfileLoaderBloc(userRepository),
       child: ProfileLoaderScreen(
         repo: userRepository,
+        firstTime: firstTime,
       ),
     );
   }
@@ -30,8 +32,8 @@ class ProfileLoader extends StatelessWidget {
 
 class ProfileLoaderScreen extends StatefulWidget {
   final UserRepository repo;
-
-  const ProfileLoaderScreen({Key? key, required this.repo}) : super(key: key);
+  final bool firstTime;
+  const ProfileLoaderScreen({Key? key, required this.repo, required this.firstTime}) : super(key: key);
   @override
   State<StatefulWidget> createState() {
     return ProfileLoaderScreenState();
@@ -153,6 +155,7 @@ class ProfileLoaderScreenState extends State<ProfileLoaderScreen>
                   profileVisitorList: profileVisitorList,
                   onlineMembersList: onlineMembersList,
                   screenName: "",
+              firstTime: widget.firstTime,
                 )),
         (route) => false);
   }

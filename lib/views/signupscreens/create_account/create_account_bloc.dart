@@ -62,7 +62,7 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
             yield OnError("Select Profile Created For");
           } else if (!RegExp(AppConstants.EMAILREGEXP).hasMatch(this.email)) {
             yield OnError("Enter Valid Email");
-          } else if (gender == null) {
+          } else if (gender == null || gender == Gender.Other) {
             yield OnError("Select Gender");
           } else if (mobile.length != 10) {
             yield OnError("Enter Valid Mobile Number");
@@ -142,6 +142,7 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
                 email: this.email);
             if (otpResponse.status == AppConstants.SUCCESS) {
               yield OnOtpGenerated(this.selectedCountry);
+
             } else {
               yield OnError(otpResponse.message);
             }

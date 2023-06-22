@@ -6,6 +6,7 @@ import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
+import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
@@ -362,8 +363,8 @@ class ReligionScreenState extends State<ReligionScreen> {
         .userRepository
         .masterData
         .listReligion;
-    if (religion != null) {
-      list.remove(religion);
+    if (religion != null && (religion?.title).isNotNullEmpty) {
+     list.removeWhere((element) => element.id == religion!.id);
       list.insert(0, religion!);
     }
     var result = await showModalBottomSheet(

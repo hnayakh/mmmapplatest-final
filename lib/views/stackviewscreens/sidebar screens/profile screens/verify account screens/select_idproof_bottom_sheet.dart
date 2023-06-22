@@ -18,7 +18,7 @@ class _IdproofBottomSheetState extends State<IdproofBottomSheet> {
   List<String> ids = [
     'Passport',
     'Voter Id Card',
-    'Aadhar Card',
+    'Aadhaar Card',
     'Driving Licence',
     'Pan Card'
   ];

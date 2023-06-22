@@ -54,12 +54,12 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 
   @override
   Widget build(BuildContext context) {
-    const bodyStyle = TextStyle(
+    const bodyStyle = TextStyle( fontFamily: 'MakeMyMarry', 
       fontSize: 16.0,
     );
 
     const pageDecoration = const PageDecoration(
-      titleTextStyle: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
+      titleTextStyle: TextStyle( fontFamily: 'MakeMyMarry', fontSize: 28.0, fontWeight: FontWeight.w700),
       bodyTextStyle: bodyStyle,
       bodyAlignment: Alignment(0.7, 0.5),
       pageColor: Colors.white,
@@ -113,7 +113,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       back: Container(
         margin: EdgeInsets.fromLTRB(0, 170, 0, 0),
         child: const Text('Previous',
-            style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black)),
+            style: TextStyle( fontFamily: 'MakeMyMarry', fontWeight: FontWeight.w600, color: Colors.black)),
       ),
 
       next: Container(
@@ -124,7 +124,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         child: Center(
           child: Text(
             'Next',
-            style: TextStyle(
+            style: TextStyle( fontFamily: 'MakeMyMarry', 
                 color: Color.fromARGB(255, 255, 255, 255), fontSize: 17),
           ),
         ),
@@ -139,7 +139,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         child: Center(
           child: const Text(
             'Continue',
-            style: TextStyle(
+            style: TextStyle( fontFamily: 'MakeMyMarry', 
                 color: Color.fromARGB(255, 255, 255, 255), fontSize: 16),
           ),
         ),

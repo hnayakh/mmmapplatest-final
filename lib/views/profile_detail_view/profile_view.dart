@@ -21,6 +21,7 @@ import 'package:makemymarry/views/connects/views/audio_call.dart';
 import 'package:makemymarry/views/connects/views/video_call.dart';
 import 'package:makemymarry/views/matching_percentage/matching_percentage.dart';
 import 'package:makemymarry/views/matching_percentage/matching_percentage_bloc.dart';
+import 'package:makemymarry/views/meet/views/meet_form_view.dart';
 import 'package:makemymarry/views/profile_detail_view/profile_view_bloc.dart';
 import 'package:makemymarry/views/profile_detail_view/profile_view_event.dart';
 import 'package:makemymarry/views/profile_detail_view/profile_view_state.dart';
@@ -320,52 +321,55 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                             height: 16,
                           )
                         ],
-                        BlocProvider<MatchingPercentageBloc>(
-                          create: (context) => MatchingPercentageBloc(
-                              UserRepository(), profileDetails),
-                          child: MmmButtons.checkMatchButtonModified(
-                              54, 'Check Match Percentage', action: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => BlocProvider(
-                                  create: (context) => MatchingPercentageBloc(
-                                      UserRepository(), profileDetails),
-                                  child: MatchingPercentageScreen(
-                                    userRepository: UserRepository(),
+                        if (profileDetails.gender.index !=
+                            getIt<UserRepository>().useDetails?.gender) ...[
+                          BlocProvider<MatchingPercentageBloc>(
+                            create: (context) => MatchingPercentageBloc(
+                                UserRepository(), profileDetails),
+                            child: MmmButtons.checkMatchButtonModified(
+                                54, 'Check Match Percentage', action: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => BlocProvider(
+                                    create: (context) => MatchingPercentageBloc(
+                                        UserRepository(), profileDetails),
+                                    child: MatchingPercentageScreen(
+                                      userRepository: UserRepository(),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            );
-                          }),
-                        ),
-                        SizedBox(
-                          height: 16,
-                        ),
-                        !profileDetails.isBlocked
-                            ? InkWell(
-                                onTap: () {
-                                  context
-                                      .read<ProfileViewBloc>()
-                                      .add(BlockProfile());
-                                },
-                                child: Text(
-                                  'Block Profile',
-                                  style: MmmTextStyles.bodyRegular(
-                                      textColor: kPrimary),
+                              );
+                            }),
+                          ),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          !profileDetails.isBlocked
+                              ? InkWell(
+                                  onTap: () {
+                                    context
+                                        .read<ProfileViewBloc>()
+                                        .add(BlockProfile());
+                                  },
+                                  child: Text(
+                                    'Block Profile',
+                                    style: MmmTextStyles.bodyRegular(
+                                        textColor: kPrimary),
+                                  ),
+                                )
+                              : InkWell(
+                                  onTap: () {
+                                    context
+                                        .read<ProfileViewBloc>()
+                                        .add(UnBlockProfile());
+                                  },
+                                  child: Text(
+                                    'Unblock Profile',
+                                    style: MmmTextStyles.bodyRegular(
+                                        textColor: kPrimary),
+                                  ),
                                 ),
-                              )
-                            : InkWell(
-                                onTap: () {
-                                  context
-                                      .read<ProfileViewBloc>()
-                                      .add(UnBlockProfile());
-                                },
-                                child: Text(
-                                  'Unblock Profile',
-                                  style: MmmTextStyles.bodyRegular(
-                                      textColor: kPrimary),
-                                ),
-                              ),
+                        ],
                       ],
                     ),
                   )
@@ -468,11 +472,11 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
   Stack buildHabits(BuildContext context) {
     return Stack(
       children: [
-        MmmButtons.profileViewButtons("images/occasionally.svg", 'Interests'),
+        MmmButtons.profileViewButtons("images/occasionally.svg", 'Habits'),
         interestState == 0
             ? MmmButtons.profileViewButtons(
                 "images/occasionally.svg",
-                'Interests',
+                'Habits',
                 action: () {
                   showInterestData();
                 },
@@ -638,8 +642,9 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
               ),
             ),
           ),
-
-          if (profileDetails.proposalStatus == ProposalStatus.Accepted) ...[
+          if (profileDetails.proposalStatus == ProposalStatus.Accepted &&
+              profileDetails.gender.index !=
+                  getIt<UserRepository>().useDetails?.gender) ...[
             Positioned(
               right: MediaQuery.of(context).size.width * 0.1,
               bottom: 0,
@@ -657,15 +662,18 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                   MmmIcons.meet(
                     context,
                     action: () {
-                      navigateToSelectMeet();
+                      navigateToSelectMeet(profileDetails);
                     },
                   ),
                 ],
               ),
             ),
-          ] else if (profileDetails.proposalStatus == ProposalStatus.Reverted ||
-              profileDetails.proposalStatus == ProposalStatus.Rejected ||
-              profileDetails.proposalStatus == null) ...[
+          ] else if ((profileDetails.proposalStatus ==
+                      ProposalStatus.Reverted ||
+                  profileDetails.proposalStatus == ProposalStatus.Rejected ||
+                  profileDetails.proposalStatus == null) &&
+              profileDetails.gender.index !=
+                  getIt<UserRepository>().useDetails?.gender) ...[
             Positioned(
               right: MediaQuery.of(context).size.width * 0.1,
               bottom: 0,
@@ -676,7 +684,9 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                 },
               ),
             ),
-          ] else if (profileDetails.proposalStatus == ProposalStatus.Sent) ...[
+          ] else if (profileDetails.proposalStatus == ProposalStatus.Sent &&
+              profileDetails.gender.index !=
+                  getIt<UserRepository>().useDetails?.gender) ...[
             Positioned(
               right: MediaQuery.of(context).size.width * 0.1,
               bottom: 0,
@@ -700,8 +710,9 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
                 ],
               ),
             ),
-          ] else if (profileDetails.proposalStatus ==
-              ProposalStatus.Received) ...[
+          ] else if (profileDetails.proposalStatus == ProposalStatus.Received &&
+              profileDetails.gender.index !=
+                  getIt<UserRepository>().useDetails?.gender) ...[
             Positioned(
               right: MediaQuery.of(context).size.width * 0.1,
               bottom: 0,
@@ -730,7 +741,6 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
             child: Container(
                 height: MediaQuery.of(context).size.height * 0.55,
                 width: 112,
-
                 child: Wrap(
                   direction: Axis.vertical,
                   textDirection: TextDirection.rtl,
@@ -929,14 +939,16 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
     );
   }
 
-  void navigateToSelectMeet() async {
-    var result = await showModalBottomSheet(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(25), topRight: Radius.circular(25)),
-        ),
-        context: context,
-        builder: (context) => MmmWidgets.selectMeetWidget(context));
+  void navigateToSelectMeet(ProfileDetails profile) async {
+    showModalBottomSheet(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(25),
+            topRight: Radius.circular(25)),
+      ),
+      context: context,
+      builder: (context) => MmmWidgets.selectMeetWidget(context, profile),
+    );
   }
 }
 

@@ -12,6 +12,7 @@ import 'package:makemymarry/saurabh/partner_preference.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/elevations.dart';
+import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
@@ -161,44 +162,56 @@ class _BioScreenState extends State<BioScreen> {
                                                           ClipRRect(
                                                             child: image !=
                                                                     "addImage"
-                                                                ? CachedNetworkImage(
-                                                                    imageUrl:
-                                                                        image,
-                                                                    fit: BoxFit
-                                                                        .contain,
-                                                                    width: (MediaQuery.of(context)
-                                                                            .size
-                                                                            .width) /
-                                                                        2,
-                                                                    height: 120,
-                                                                    errorWidget:
-                                                                        (context,
-                                                                            obj,
-                                                                            str) {
-                                                                      print(image +
-                                                                          "========================================================================>>>>>");
-                                                                      print(
-                                                                          obj);
-                                                                      print(
-                                                                          str);
-                                                                      print(image +
-                                                                          "========================================================================>>>>>");
-                                                                      return InkWell(
-                                                                        onTap:
-                                                                            () {
-                                                                          setState(
-                                                                              () {});
-                                                                        },
-                                                                        child: Container(
-                                                                            width: (MediaQuery.of(context).size.width) /
-                                                                                2,
-                                                                            height:
-                                                                                120,
-                                                                            color:
-                                                                                Colors.grey,
-                                                                            child: Icon(Icons.error)),
-                                                                      );
-                                                                    })
+                                                                ? InkWell(
+                                                                    onTap: () {
+                                                                      context
+                                                                          .navigate
+                                                                          .push(MaterialPageRoute(
+                                                                              builder: (context) => Scaffold(
+                                                                                    body: GestureDetector(
+                                                                                      onTap: () {
+                                                                                        Navigator.pop(context);
+                                                                                      },
+                                                                                      child: Center(
+                                                                                        child: Hero(
+                                                                                          tag: 'imageHero$index',
+                                                                                          child: Image.network(
+                                                                                              image                                                                                          ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  )));
+                                                                    },
+                                                                    child: Hero(
+                                                                      tag: 'imageHero$index',
+                                                                      child: CachedNetworkImage(
+                                                                          imageUrl: image,
+                                                                          fit: BoxFit.contain,
+                                                                          width: (MediaQuery.of(context).size.width) / 2,
+                                                                          height: 120,
+                                                                          errorWidget: (context, obj, str) {
+                                                                            print(image +
+                                                                                "========================================================================>>>>>");
+                                                                            print(
+                                                                                obj);
+                                                                            print(
+                                                                                str);
+                                                                            print(image +
+                                                                                "========================================================================>>>>>");
+                                                                            return InkWell(
+                                                                              onTap:
+                                                                                  () {
+                                                                                setState(() {});
+                                                                              },
+                                                                              child: Container(
+                                                                                  width: (MediaQuery.of(context).size.width) / 2,
+                                                                                  height: 120,
+                                                                                  color: Colors.grey,
+                                                                                  child: Icon(Icons.error)),
+                                                                            );
+                                                                          }),
+                                                                    ),
+                                                                  )
                                                                 : addImageButton(),
                                                             borderRadius:
                                                                 BorderRadius

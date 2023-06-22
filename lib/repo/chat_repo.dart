@@ -5,7 +5,6 @@ import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:makemymarry/utils/utility_service.dart';
 
 class ChatRepo {
-
   final FirebaseFirestore firestore;
   final FirebaseChatCore chatService;
   ChatRepo({required this.firestore, required this.chatService});
@@ -38,6 +37,11 @@ class ChatRepo {
     required String imageUrl,
   }) async {
     try {
+      var arr = List.generate(11, (value) => value);
+
+      arr.map((e) {
+        print(e.toString());
+      });
       var docRef = await firestore.collection('users').doc(id).get();
       if (docRef.exists) {
         await docRef.reference.update({
@@ -138,6 +142,43 @@ class ChatRepo {
     }
   }
 
+  Future<List<types.Room>> getMyChatRooms(
+    String userId,
+  ) async {
+    try {
+      final roomQuery = await firestore
+          .collection('rooms')
+          .where('type', isEqualTo: types.RoomType.direct.toShortString())
+          .where('userIds', arrayContains: userId)
+          .get();
+
+      if (roomQuery.docs.isNotEmpty) {
+        var userDetails = await getChatUser(id: userId);
+        var rooms = <types.Room>[];
+        for (var e in roomQuery.docs) {
+          var data = e.data();
+          var otherUser = await getChatUser(id: (data['userIds'] as List<dynamic>).where((e) => e.toString() != userId).first.toString());
+          var otherUserDetails = otherUser;
+          var room = types.Room(
+              id: e.id,
+              type: types.RoomType.direct,
+              users: [userDetails, otherUserDetails],
+              name: (otherUser.firstName ?? "") +
+                  " " +
+                  (otherUser.lastName ?? ""),
+              imageUrl: otherUser.imageUrl ?? "");
+          rooms.add(room);
+        }
+        return rooms;
+      } else {
+        return [];
+      }
+    } catch (e, stackTrace) {
+      UtilityService.cprint(e.toString(), stackTrace: stackTrace);
+      rethrow;
+    }
+  }
+
   Future<void> sendMessage(
       String roomId, dynamic partialMessage, String userId) async {
     try {
@@ -227,11 +268,10 @@ class ChatRepo {
 
   Future<List<String>> getOnlineUsers() async {
     try {
-
       var docRef = firestore
           .collection('users')
           .where('metadata', isEqualTo: {'onlineStatus': true});
-      var res =  await docRef.get();
+      var res = await docRef.get();
       var ids = <String>[];
       res.docs.forEach((element) {
         ids.add(element.id);
@@ -242,10 +282,10 @@ class ChatRepo {
       rethrow;
     }
   }
+
   Stream<bool> getOnlineStatus(String userId) {
     try {
       var docRef = firestore.collection('users').doc(userId);
-
 
       return docRef.snapshots().asyncMap(
           (event) async => (await event.get('metadata'))['onlineStatus']);

@@ -28,6 +28,7 @@ import 'package:makemymarry/views/profilescreens/profile_preference/smoking_pref
 import 'package:makemymarry/views/profilescreens/profile_preference/state_preference_sheet.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/subcast_preference_sheet.dart';
 
+import '../matching_profile/views/matching_profile.dart';
 import 'country_filter_sheet.dart';
 
 class Filter extends StatelessWidget {
@@ -65,8 +66,8 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   late List<SimpleMasterData> motherTongue;
   late List<String?> occupation;
   late List<Education> education;
-  late List<AnualIncome> annualIncome;
-  late List<AnualIncome> annualIncomeMax;
+  late List<AnnualIncome> annualIncome;
+  late List<AnnualIncome> annualIncomeMax;
   String titleRedOcc = '';
   TextEditingController annIncomeController = TextEditingController();
   late List<EatingHabit> eatingHabit;
@@ -335,7 +336,15 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
             );
           }
           if (state is ProfileFilterComplete) {
-            Navigator.of(context).pop(state.list);
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => MatchingProfileScreen(
+                  list: state.list,
+                  filter: ProfilesFilter.onlineMembers,
+                  isTopLevel: false,
+                ),
+              ),
+            );
           }
         },
       ),
@@ -953,7 +962,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
               list: this.annualIncome,
               listMax: this.annualIncomeMax,
             ));
-    if (result != null && result is List<AnualIncome>) {
+    if (result != null && result is List<AnnualIncome>) {
       BlocProvider.of<ProfilePreferenceBloc>(context)
           .add(IncomeSelected(result));
       for (int i = 0; i < result.length; i++) {

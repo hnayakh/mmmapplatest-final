@@ -97,16 +97,20 @@ class FamilyDetailsBloc extends Bloc<FamilyDetailsEvent, FamilyDetailState> {
       this.brotherMarried = event.brotherMarried;
       this.sistersMarried = event.sistersMarried;
 
-      if (this.fatherOccupation == null &&
-          this.motherOccupation == null &&
+      if ((this.fatherOccupation == null ||
+              this.fatherOccupation == FatherOccupation.NotMentioned) &&
+          (this.motherOccupation == null ||
+              this.motherOccupation == MotherOccupation.NotMentioned) &&
           this.noOfBrothers == 0 &&
           this.noOfSister == 0 &&
           this.brotherMarried == 0 &&
           this.sistersMarried == 0) {
         yield OnError("Select mandatory fields");
-      } else if (this.fatherOccupation == null) {
+      } else if (this.fatherOccupation == null ||
+          this.fatherOccupation == FatherOccupation.NotMentioned) {
         yield OnError("Select Father's Occupation");
-      } else if (this.motherOccupation == null) {
+      } else if (this.motherOccupation == null ||
+          this.motherOccupation == MotherOccupation.NotMentioned) {
         yield OnError("Select Mother's Occupation");
       } else {
         var result = await this.userRepository.updateFamilyDetails(

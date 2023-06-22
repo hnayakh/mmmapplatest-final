@@ -6,10 +6,13 @@ import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
+import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/matching_percentage/matching_percentage_bloc.dart';
 import 'package:makemymarry/views/matching_percentage/matching_percentage_state.dart';
+
+import '../../locator.dart';
 
 class MatchingPercentageScreen extends StatefulWidget {
   final UserRepository userRepository;
@@ -50,6 +53,24 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                   BlocProvider.of<MatchingPercentageBloc>(context)
                       .differentFieldList;
 
+              List<String> incomes = [
+                'No Income',
+                '1 lakh',
+                '2 lakh',
+                '3 lakh',
+                '4 lakh',
+                '5 lakh',
+                '7.5 lakh',
+                '10 lakh',
+                '15 lakh',
+                '20 lakh',
+                '25 lakh',
+                '35 lakh',
+                '50 lakh',
+                '75 lakh',
+                '1 crore',
+                '1 crore and above'
+              ];
               for (int j = 0; j < matchingFieldList.length; j++) {
                 if (matchingFieldList[j]['filed'] == 'challenged') {
                   var aStr = matchingFieldList[j]['value']
@@ -64,64 +85,198 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                   matchingFieldList[j]['value'] = val.toString().split('.')[1];
                 }
                 if (matchingFieldList[j]['filed'] == 'maritalStatus') {
+                  var value = matchingFieldList[j]['value'];
+                  matchingFieldList[j]['value'] = "";
+                  value.split(',').forEach((e) {
+                    var aStr = e.replaceAll(new RegExp(r'[^0-9]'), '');
+                    int value;
+                    try {
+                      value = int.parse(aStr);
+                    } catch (e) {
+                      value = 0;
+                    }
+                    var val = AppHelper.getStringFromEnum(
+                        MaritalStatus.values[value]);
+                    matchingFieldList[j]['value'] +=
+                        ((matchingFieldList[j]['value'].isEmpty ? "" : ", ") +
+                            val.toString().split('.')[0]);
+                  });
+                }
+                if (matchingFieldList[j]['filed'] == 'smokingHabits') {
+                  var value = matchingFieldList[j]['value'];
+                  matchingFieldList[j]['value'] = "";
+                  value.split(',').forEach((e) {
+                    var aStr = e.replaceAll(new RegExp(r'[^0-9]'), '');
+                    int value;
+                    try {
+                      value = int.parse(aStr);
+                    } catch (e) {
+                      value = 0;
+                    }
+                    var val =
+                        AppHelper.getStringFromEnum(SmokingHabit.values[value]);
+                    matchingFieldList[j]['value'] +=
+                        ((matchingFieldList[j]['value'].isEmpty ? "" : ", ") +
+                            val.toString().split('.')[0]);
+                  });
+                }
+                if (matchingFieldList[j]['filed'] == 'highestEducation') {
+                  matchingFieldList[j]['value'] = matchingFieldList[j]['value']
+                      .toString()
+                      .split(",")
+                      .where((e) => e.isNotNullEmpty)
+                      .toList()
+                      .map((e) => getIt<UserRepository>()
+                          .masterData
+                          .listEducation
+                          .firstWhere((element) => element.text == e)
+                          .title)
+                      .toList()
+                      .join(", ");
+                } else if (matchingFieldList[j]['filed'] == 'drinkingHabits') {
+                  var value = matchingFieldList[j]['value'];
+                  matchingFieldList[j]['value'] = "";
+                  value.split(',').forEach((e) {
+                    var aStr = e.replaceAll(new RegExp(r'[^0-9]'), '');
+                    int value;
+                    try {
+                      value = int.parse(aStr);
+                    } catch (e) {
+                      value = 0;
+                    }
+                    var val = AppHelper.getStringFromEnum(
+                        DrinkingHabit.values[value]);
+                    matchingFieldList[j]['value'] +=
+                        ((matchingFieldList[j]['value'].isEmpty ? "" : ", ") +
+                            val.toString().split('.')[0]);
+                  });
+                } else if (matchingFieldList[j]['filed'] == 'dietaryHabits') {
+                  var value = matchingFieldList[j]['value'];
+                  matchingFieldList[j]['value'] = "";
+                  value.split(',').forEach((e) {
+                    var aStr = e.replaceAll(new RegExp(r'[^0-9]'), '');
+                    int value;
+                    try {
+                      value = int.parse(aStr);
+                    } catch (e) {
+                      value = 0;
+                    }
+                    var val =
+                        AppHelper.getStringFromEnum(EatingHabit.values[value]);
+                    matchingFieldList[j]['value'] +=
+                        ((matchingFieldList[j]['value'].isEmpty ? "" : ", ") +
+                            val.toString().split('.')[0]);
+                  });
+                } else if (matchingFieldList[j]['filed'] == 'maxIncome') {
                   var aStr = matchingFieldList[j]['value']
                       .replaceAll(new RegExp(r'[^0-9]'), '');
-                  int value;
-                  try {
-                    value = int.parse(aStr);
-                  } catch (e) {
-                    value = 0;
-                  }
-                  var val =
-                      AppHelper.getStringFromEnum(MaritalStatus.values[value]);
-                  matchingFieldList[j]['value'] = val.toString().split('.')[0];
+                  int value = int.parse(aStr);
+                  var val = incomes[value];
+                  matchingFieldList[j]['value'] = val;
+                } else if (matchingFieldList[j]['filed'] == 'minIncome') {
+                  var aStr = matchingFieldList[j]['value']
+                      .replaceAll(new RegExp(r'[^0-9]'), '');
+                  int value = int.parse(aStr);
+                  var val = incomes[value];
+                  matchingFieldList[j]['value'] = val;
                 }
               }
               // get enum data for differentFieldList>>>>>
               for (int j = 0; j < differentFieldList.length; j++) {
                 if (differentFieldList[j]['filed'] == 'smokingHabits') {
-                  var aStr = differentFieldList[j]['value']
-                      .replaceAll(new RegExp(r'[^0-9]'), '');
-                  int value = int.parse(aStr);
-                  var val = SmokingHabit.values[value];
-                  differentFieldList[j]['value'] = val.toString().split('.')[1];
+                  var value = differentFieldList[j]['value'];
+                  differentFieldList[j]['value'] = "";
+                  value.split(',').forEach((e) {
+                    var aStr = e.replaceAll(new RegExp(r'[^0-9]'), '');
+                    int value;
+                    try {
+                      value = int.parse(aStr);
+                    } catch (e) {
+                      value = 0;
+                    }
+                    var val =
+                        AppHelper.getStringFromEnum(SmokingHabit.values[value]);
+                    differentFieldList[j]['value'] +=
+                        ((differentFieldList[j]['value'].isEmpty ? "" : ", ") +
+                            val.toString().split('.')[0]);
+                  });
+                }if (differentFieldList[j]['filed'] == 'highestEducation') {
+                  differentFieldList[j]['value'] = differentFieldList[j]['value']
+                      .toString()
+                      .split(",")
+                      .where((e) => e.isNotNullEmpty)
+                      .toList()
+                      .map((e) => getIt<UserRepository>()
+                      .masterData
+                      .listEducation
+                      .firstWhere((element) => element.text == e)
+                      .title)
+                      .toList()
+                      .join(", ");
                 } else if (differentFieldList[j]['filed'] == 'drinkingHabits') {
-                  var aStr = differentFieldList[j]['value']
-                      .replaceAll(new RegExp(r'[^0-9]'), '');
-                  int value = int.parse(aStr);
-                  var val = DrinkingHabit.values[value];
-                  differentFieldList[j]['value'] = val.toString().split('.')[1];
+                  var value = differentFieldList[j]['value'];
+                  differentFieldList[j]['value'] = "";
+                  value.split(',').forEach((e) {
+                    var aStr = e.replaceAll(new RegExp(r'[^0-9]'), '');
+                    int value;
+                    try {
+                      value = int.parse(aStr);
+                    } catch (e) {
+                      value = 0;
+                    }
+                    var val = AppHelper.getStringFromEnum(
+                        DrinkingHabit.values[value]);
+                    differentFieldList[j]['value'] +=
+                        ((differentFieldList[j]['value'].isEmpty ? "" : ", ") +
+                            val.toString().split('.')[0]);
+                  });
                 } else if (differentFieldList[j]['filed'] == 'dietaryHabits') {
-                  var aStr = differentFieldList[j]['value']
-                      .replaceAll(new RegExp(r'[^0-9]'), '');
-                  int value = int.parse(aStr);
-                  var val = EatingHabit.values[value];
-                  differentFieldList[j]['value'] = val.toString().split('.')[1];
+                  var value = differentFieldList[j]['value'];
+                  differentFieldList[j]['value'] = "";
+                  value.split(',').forEach((e) {
+                    var aStr = e.replaceAll(new RegExp(r'[^0-9]'), '');
+                    int value;
+                    try {
+                      value = int.parse(aStr);
+                    } catch (e) {
+                      value = 0;
+                    }
+                    var val =
+                        AppHelper.getStringFromEnum(EatingHabit.values[value]);
+                    differentFieldList[j]['value'] +=
+                        ((differentFieldList[j]['value'].isEmpty ? "" : ", ") +
+                            val.toString().split('.')[0]);
+                  });
                 } else if (differentFieldList[j]['filed'] == 'maxIncome') {
                   var aStr = differentFieldList[j]['value']
                       .replaceAll(new RegExp(r'[^0-9]'), '');
                   int value = int.parse(aStr);
-                  var val = AnualIncome.values[value];
-                  differentFieldList[j]['value'] = val.toString().split('.')[1];
+                  var val = incomes[value];
+                  differentFieldList[j]['value'] = val;
                 } else if (differentFieldList[j]['filed'] == 'minIncome') {
                   var aStr = differentFieldList[j]['value']
                       .replaceAll(new RegExp(r'[^0-9]'), '');
                   int value = int.parse(aStr);
-                  var val = AnualIncome.values[value];
-                  differentFieldList[j]['value'] = val.toString().split('.')[1];
+                  var val = incomes[value];
+                  differentFieldList[j]['value'] = val;
                 }
                 if (differentFieldList[j]['filed'] == 'maritalStatus') {
-                  var aStr = differentFieldList[j]['value']
-                      .replaceAll(new RegExp(r'[^0-9]'), '');
-                  int value;
-                  try {
-                    value = int.parse(aStr);
-                  } catch (e) {
-                    value = 0;
-                  }
-                  var val =
-                      AppHelper.getStringFromEnum(MaritalStatus.values[value]);
-                  differentFieldList[j]['value'] = val.toString().split('.')[0];
+                  var value = differentFieldList[j]['value'];
+                  differentFieldList[j]['value'] = "";
+                  value.split(',').forEach((e) {
+                    var aStr = e.replaceAll(new RegExp(r'[^0-9]'), '');
+                    int value;
+                    try {
+                      value = int.parse(aStr);
+                    } catch (e) {
+                      value = 0;
+                    }
+                    var val = AppHelper.getStringFromEnum(
+                        MaritalStatus.values[value]);
+                    differentFieldList[j]['value'] +=
+                        ((differentFieldList[j]['value'].isEmpty ? "" : ", ") +
+                            val.toString().split('.')[0]);
+                  });
                 }
                 if (differentFieldList[j]['filed'] == 'challenged') {
                   var aStr = differentFieldList[j]['value']
@@ -136,7 +291,76 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                   differentFieldList[j]['value'] = val.toString().split('.')[1];
                 }
               }
+              var minAgeIndex = matchingFieldList
+                  .indexWhere((element) => element['filed'] == 'minAge');
+              var maxAgeIndex = matchingFieldList
+                  .indexWhere((element) => element['filed'] == 'maxAge');
+              if (minAgeIndex >= 0 && maxAgeIndex >= 0) {
+                var minAge = matchingFieldList[minAgeIndex]['value'];
 
+                var maxAge = matchingFieldList[maxAgeIndex]['value'];
+
+                matchingFieldList
+                    .add({'filed': 'Age', 'value': '$minAge to $maxAge'});
+                matchingFieldList
+                    .removeWhere((element) => element['filed'] == 'minAge');
+                matchingFieldList
+                    .removeWhere((element) => element['filed'] == 'maxAge');
+              }
+              minAgeIndex = differentFieldList
+                  .indexWhere((element) => element['filed'] == 'minAge');
+              maxAgeIndex = differentFieldList
+                  .indexWhere((element) => element['filed'] == 'maxAge');
+              if (minAgeIndex >= 0 && maxAgeIndex >= 0) {
+                var minAge = differentFieldList[minAgeIndex]['value'];
+
+                var maxAge = differentFieldList[maxAgeIndex]['value'];
+
+                differentFieldList
+                    .add({'filed': 'Age', 'value': '$minAge to $maxAge'});
+
+                differentFieldList
+                    .removeWhere((element) => element['filed'] == 'minAge');
+                differentFieldList
+                    .removeWhere((element) => element['filed'] == 'maxAge');
+              }
+
+              var minHeightIndex = matchingFieldList
+                  .indexWhere((element) => element['filed'] == 'minHeight');
+              var maxHeightIndex = matchingFieldList
+                  .indexWhere((element) => element['filed'] == 'maxHeight');
+              if (minHeightIndex >= 0 && maxHeightIndex >= 0) {
+                var minHeight = matchingFieldList[minHeightIndex]['value'];
+
+                var maxHeight = matchingFieldList[maxHeightIndex]['value'];
+
+                matchingFieldList.add(
+                    {'filed': 'Height', 'value': '$minHeight - $maxHeight'});
+                matchingFieldList
+                    .removeWhere((element) => element['filed'] == 'minHeight');
+                matchingFieldList
+                    .removeWhere((element) => element['filed'] == 'maxHeight');
+              }
+              minHeightIndex = differentFieldList
+                  .indexWhere((element) => element['filed'] == 'minHeight');
+              maxHeightIndex = differentFieldList
+                  .indexWhere((element) => element['filed'] == 'maxHeight');
+              if (minHeightIndex >= 0 && maxHeightIndex >= 0) {
+                var minHeight = differentFieldList[minHeightIndex]['value'];
+
+                var maxHeight = differentFieldList[maxHeightIndex]['value'];
+
+                differentFieldList.add({
+                  'filed': 'Height',
+                  'value':
+                      '${AppHelper.heightString(double.parse(minHeight.toString()))} - ${AppHelper.heightString(double.parse(maxHeight.toString()))}'
+                });
+
+                differentFieldList
+                    .removeWhere((element) => element['filed'] == 'minHeight');
+                differentFieldList
+                    .removeWhere((element) => element['filed'] == 'maxHeight');
+              }
               return Container(
                 padding: kMargin16,
                 child: Column(
@@ -145,7 +369,7 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                     Stack(
                       children: [
                         Container(
-                          height:  MediaQuery.of(context).size.width * 0.244,
+                          height: MediaQuery.of(context).size.width * 0.244,
                           width: MediaQuery.of(context).size.width * 0.90,
                           //color: Colors.orangeAccent,
                         ),
@@ -180,9 +404,8 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                                 radius:
                                     MediaQuery.of(context).size.width * 0.122,
                                 child: Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle
-                                  ),
+                                  decoration:
+                                      BoxDecoration(shape: BoxShape.circle),
                                   clipBehavior: Clip.hardEdge,
                                   child: Image.network('$image',
                                       width: double.infinity,
@@ -198,7 +421,7 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                           ),
                         ),
                         Container(
-                          height:  MediaQuery.of(context).size.width * 0.244,
+                          height: MediaQuery.of(context).size.width * 0.244,
                           child: Align(
                             alignment: Alignment.bottomCenter,
                             child: Container(
@@ -258,6 +481,7 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                           return TextFormField(
                             enabled: false,
                             readOnly: true,
+                            maxLines: null,
                             initialValue:
                                 matchingFieldList[i]['value'].toString(),
                             decoration: InputDecoration(
@@ -288,6 +512,7 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                             return TextFormField(
                               enabled: false,
                               readOnly: true,
+                              maxLines: null,
                               initialValue:
                                   differentFieldList[i]['value'].toString(),
                               decoration: InputDecoration(

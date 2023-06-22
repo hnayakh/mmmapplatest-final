@@ -169,7 +169,11 @@ enum OtpType {
   ForgotPassword,
 }
 
-enum Manglik { Yes, No, NotApplicable }
+enum Manglik { Yes('Yes'), No('No'), NotApplicable('Not Applicable');
+
+final String label;
+const Manglik(this.label);
+}
 
 enum ManglikFilter { DoesnotMatter, Yes, No, NotApplicable }
 
@@ -200,7 +204,7 @@ enum InterestFilter {
   Social
 }
 
-enum AnualIncome {
+enum AnnualIncome {
   NoIncome,
   LessThanOneLacs,
   OneToTwoLacs,
@@ -215,8 +219,9 @@ enum AnualIncome {
   TwentyFiveToThirtyFiveLacs,
   ThirtyFiveToFiftyLacs,
   FiftyToSeventyFiveLacs,
-  SeventyFivelacToOneCrore,
-  MoreThanOneCrore
+  SeventyFiveLacToOneCrore,
+  MoreThanOneCrore,
+  NotMentioned
 }
 
 enum Index { test }

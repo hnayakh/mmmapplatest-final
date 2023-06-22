@@ -1,24 +1,27 @@
 import 'dart:async';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:makemymarry/datamodels/agora_token_response.dart';
 import 'package:makemymarry/locator.dart';
 import 'package:makemymarry/repo/user_repo.dart';
+import 'package:makemymarry/utils/alert.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/utility_service.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 /// JoinChannelAudio Example
 class VideoCallView extends StatefulWidget {
   /// Construct the [VideoCallView]
-  const VideoCallView(
+  VideoCallView(
       {Key? key, required this.uid, required this.imageUrl, this.agoraToken})
       : super(key: key);
 
-  final AgoraToken? agoraToken;
+  AgoraToken? agoraToken;
   final String uid;
   final String imageUrl;
   @override
@@ -41,14 +44,49 @@ class _State extends State<VideoCallView> {
       ChannelProfileType.channelProfileCommunication;
 
   var _maxSeconds = 1800;
-
+  var pageLeft = false;
   int timeLeft = 0;
 
   var timer;
   @override
   void initState() {
     super.initState();
+    if (widget.agoraToken != null) {
+      FirebaseFirestore.instance
+          .collection('activeCalls')
+          .doc(widget.agoraToken!.notificationId)
+          .snapshots()
+          .listen((event) {
+        if (!event.data()?['status']) {
+          _leaveChannel();
+        }
+      });
+    }
+    requestCameraPosition();
+  }
 
+  Future<void> requestCameraPosition() async {
+    var permission = await Permission.camera.status;
+    if (permission != PermissionStatus.granted) {
+      permission = await Permission.camera.request();
+      // while (permission != PermissionStatus.granted) {
+        await Alert.message(
+          navigatorKey.currentContext!,
+          message: 'Please enable camera in settings of the app',
+          popsAutomatically: false,
+          barrierDismissible: false,
+          onPressed: () async {
+            permission = await Permission.camera.status;
+            if (permission == PermissionStatus.granted) {
+              context.navigate.pop();
+              // navigatorKey.currentState?.pop();
+            } else {
+              await openAppSettings();
+            }
+          },
+        );
+      // }
+    }
     _initEngine();
   }
 
@@ -59,7 +97,7 @@ class _State extends State<VideoCallView> {
   }
 
   Future<void> _dispose() async {
-    timer.cancel();
+    timer?.cancel();
     await _engine.leaveChannel();
     await _engine.release();
   }
@@ -130,16 +168,30 @@ class _State extends State<VideoCallView> {
       res.then((value) async {
         if (value.status == AppConstants.SUCCESS) {
           channelId = value.token!.channelName;
+          widget.agoraToken = value.token;
+          if (value.token != null) {
+            FirebaseFirestore.instance
+                .collection('activeCalls')
+                .doc(value.token!.notificationId)
+                .snapshots()
+                .listen((event) {
+              if (!event.data()?['status']) {
+                _leaveChannel();
+              }
+            });
+          }
           _joinChannel(value.token!.agoraToken, value.token!.channelName);
         } else {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text("ERROR!!!!")));
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(
+                  "Something went wrong on our side. Please try again later.")));
           await Future.delayed(Duration(seconds: 2));
           Navigator.of(context).pop();
         }
       }).onError((error, stackTrace) async {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("ERROR!!!!")));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+                "Something went wrong on our side. Please try again later.")));
         await Future.delayed(Duration(seconds: 2));
         Navigator.of(context).pop();
       });
@@ -163,13 +215,21 @@ class _State extends State<VideoCallView> {
   }
 
   Future<void> _leaveChannel() async {
+    if(!pageLeft){
+      context.navigate.pop();
+      pageLeft = true;
+    }
     await _engine.leaveChannel();
     setState(() {
       isJoined = false;
       openMicrophone = true;
       switchCamera = true;
     });
-    context.navigate.pop();
+    await FirebaseFirestore.instance
+        .collection('activeCalls')
+        .doc(widget.agoraToken?.notificationId)
+        .update({'status': false});
+
   }
 
   Future<void> _switchCamera() async {
@@ -194,7 +254,6 @@ class _State extends State<VideoCallView> {
   }
 
   _switchMicrophone() async {
-
     await _engine.muteLocalAudioStream(!openMicrophone);
     setState(() {
       openMicrophone = !openMicrophone;
@@ -256,9 +315,11 @@ class _State extends State<VideoCallView> {
                   flex: 1,
                 ),
                 Text(
-                  timeLeft <= 0 ? "Ringing ..." : "${(timeLeft ~/ 60).toString().padLeft(2, "0")}:${(timeLeft % 60).toString().padLeft(2, "0")}",
+                  timeLeft <= 0
+                      ? "Connecting ..."
+                      : "${(timeLeft ~/ 60).toString().padLeft(2, "0")}:${(timeLeft % 60).toString().padLeft(2, "0")}",
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: TextStyle( fontFamily: 'MakeMyMarry', 
                     color: Colors.black,
                     fontSize: 24,
                     fontWeight: FontWeight.w500,
@@ -280,15 +341,15 @@ class _State extends State<VideoCallView> {
                     ),
                     _buildIconButton(
                         onTap: _switchMicrophone,
-                        icon:
-                            !openMicrophone ? Icons.mic : Icons.mic_off_rounded),
+                        icon: !openMicrophone
+                            ? Icons.mic
+                            : Icons.mic_off_rounded),
                     SizedBox(
                       width: 12,
                     ),
                     _buildIconButton(
                         onTap: _switchCamera,
-                        icon:
-                            Icons.switch_camera_rounded),
+                        icon: Icons.switch_camera_rounded),
                     Spacer(),
                   ],
                 ),

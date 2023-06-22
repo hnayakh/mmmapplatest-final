@@ -18,9 +18,9 @@ class FamilyBackgroundBloc
   StateModel? myState, city;
   late bool canSelectStayingWithParent;
   bool isStayingWithParents = false;
-   CountryModel? selectedCountry;
-   StateModel? selectedState;
-   StateModel? selectedCity;
+  CountryModel? selectedCountry;
+  StateModel? selectedState;
+  StateModel? selectedCity;
   ProfileDetails? profileDetails;
 
   FamilyBackgroundBloc(this.userRepository, this.selectedCountry,
@@ -50,6 +50,7 @@ class FamilyBackgroundBloc
         if (this.values == null)
           this.values = this.profileDetails!.familyValues;
 
+        this.isStayingWithParents =  this.profileDetails!.isResidingWithFamily;
         this.type = this.profileDetails!.familyType;
 
         var countryName = this.profileDetails!.familyCountry;
@@ -112,7 +113,6 @@ class FamilyBackgroundBloc
       } else {
         yield OnError(result.message);
       }
-
     }
     if (event is OnStayingWithParentsChanged) {
       this.isStayingWithParents = event.isStayingWithParents;
@@ -193,7 +193,7 @@ class FamilyBackgroundBloc
               this.level != FamilyAfluenceLevel.NotMentioned) &&
           (this.values == null || this.values == FamilyValues.NotMentioned) &&
           (this.type == FamilyType.Notmentioned) &&
-          (!this.isStayingWithParents && myState == null)) {
+          (this.isStayingWithParents && myState == null)) {
         yield OnError('Enter your family background');
       }
       if (this.level == null ||
@@ -204,26 +204,28 @@ class FamilyBackgroundBloc
         yield OnError("Select Family Values");
       } else if (this.type == FamilyType.Notmentioned) {
         yield OnError("Select Family Type");
-      } else if (this.isStayingWithParents && this.countryModel == null) {
+      } else if (!this.isStayingWithParents && this.countryModel == null) {
         yield OnError("Select Country");
-      } else if (this.isStayingWithParents && myState == null) {
+      } else if (!this.isStayingWithParents && myState == null) {
         yield OnError("Select State");
-      } else if (this.isStayingWithParents &&
+      } else if (!this.isStayingWithParents &&
           city == null &&
           this.countryModel?.id == 101) {
         yield OnError("Select City");
       } else {
         var result = await this.userRepository.updateFamilyBackground(
-            this.level!,
-            this.values!,
-            this.type,
-            !this.isStayingWithParents
-                ? this.selectedCountry!
-                : this.countryModel!,
-            !this.isStayingWithParents ? this.selectedState! : this.myState!,
-            !this.isStayingWithParents
-                ? this.selectedCity!
-                : (this.city ?? StateModel("", -1)));
+              this.level!,
+              this.values!,
+              this.type,
+              this.isStayingWithParents
+                  ? this.selectedCountry!
+                  : this.countryModel!,
+              this.isStayingWithParents ? this.selectedState! : this.myState!,
+              this.isStayingWithParents
+                  ? this.selectedCity!
+                  : (this.city ?? StateModel("", -1)),
+              this.isStayingWithParents,
+            );
         if (result.status == AppConstants.SUCCESS) {
           this.userRepository.useDetails!.registrationStep =
               result.userDetails!.registrationStep;

@@ -7,8 +7,8 @@ import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 
 class AnnualMaxIncomePreference extends StatefulWidget {
-  final List<AnualIncome> list;
-  final List<AnualIncome> listMax;
+  final List<AnnualIncome> list;
+  final List<AnnualIncome> listMax;
   final int minimumSelectedIndex;
   const AnnualMaxIncomePreference(
       {Key? key,
@@ -24,8 +24,8 @@ class AnnualMaxIncomePreference extends StatefulWidget {
 }
 
 class AnnualMaxIncomePreferenceScreen extends State<AnnualMaxIncomePreference> {
-  List<AnualIncome> list;
-  List<AnualIncome> listMax;
+  List<AnnualIncome> list;
+  List<AnnualIncome> listMax;
   int minimumSelectedIndex;
   AnnualMaxIncomePreferenceScreen(
       this.list, this.listMax, this.minimumSelectedIndex);
@@ -94,14 +94,14 @@ class AnnualMaxIncomePreferenceScreen extends State<AnnualMaxIncomePreference> {
                                       incomes.sublist(
                                           this.minimumSelectedIndex)[index],
                                       style: MmmTextStyles.bodyMediumSmall(
-                                          textColor: isSelected(AnualIncome
+                                          textColor: isSelected(AnnualIncome
                                                       .values
                                                       .sublist(this
                                                           .minimumSelectedIndex)[
                                                   index])
                                               ? kPrimary
                                               : kModalPrimary))),
-                              isSelected(AnualIncome.values.sublist(
+                              isSelected(AnnualIncome.values.sublist(
                                       this.minimumSelectedIndex)[index])
                                   ? Icon(
                                       Icons.check,
@@ -123,7 +123,7 @@ class AnnualMaxIncomePreferenceScreen extends State<AnnualMaxIncomePreference> {
                     ),
                     onTap: () {
                       setState(() {
-                        setSelected(AnualIncome.values
+                        setSelected(AnnualIncome.values
                             .sublist(this.minimumSelectedIndex)[index]);
                       });
                       // Navigator.of(context).pop(MaritalStatus.values[index]);
@@ -150,7 +150,7 @@ class AnnualMaxIncomePreferenceScreen extends State<AnnualMaxIncomePreference> {
         ));
   }
 
-  bool isSelected(AnualIncome value) {
+  bool isSelected(AnnualIncome value) {
     for (var item in listMax) {
       if (item == value) {
         return true;
@@ -159,7 +159,7 @@ class AnnualMaxIncomePreferenceScreen extends State<AnnualMaxIncomePreference> {
     return false;
   }
 
-  void setSelected(AnualIncome value) {
+  void setSelected(AnnualIncome value) {
     print(list);
     print(listMax);
     this.listMax = [value];

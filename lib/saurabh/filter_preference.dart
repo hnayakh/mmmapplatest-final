@@ -79,8 +79,8 @@ class _FilterPrefsState extends State<FilterPrefs> {
   late List<SimpleMasterData> motherTongue;
   late List<String?> occupation;
   late List<Education> education;
-  late List<AnualIncome> annualIncome;
-  late List<AnualIncome> annualIncomeMax;
+  late List<AnnualIncome> annualIncome;
+  late List<AnnualIncome> annualIncomeMax;
   int minimumSelectedIndex = 0;
   String titleRedOcc = '';
   TextEditingController annIncomeController = TextEditingController();
@@ -113,7 +113,7 @@ class _FilterPrefsState extends State<FilterPrefs> {
   String currentMaxIncomes = "";
   dynamic gothra;
 
-  AnualIncome? anualIncome;
+  AnnualIncome? anualIncome;
 
   void initData(BuildContext context) {
     this.userData = BlocProvider.of<ProfilePreferenceBloc>(context)
@@ -337,7 +337,7 @@ class _FilterPrefsState extends State<FilterPrefs> {
               income: this.anualIncome,
             ));
 
-    if (result != null && result is AnualIncome) {
+    if (result != null && result is AnnualIncome) {
       BlocProvider.of<OccupationBloc>(context)
           .add(OnAnnualIncomeSelected(result));
     }
@@ -989,7 +989,7 @@ class _FilterPrefsState extends State<FilterPrefs> {
               listMax: annualIncomeMax,
               minimumSelectedIndex: minimumSelectedIndex,
             ));
-    if (result != null && result is List<AnualIncome>) {
+    if (result != null && result is List<AnnualIncome>) {
       BlocProvider.of<ProfilePreferenceBloc>(context)
           .add(IncomeSelectedMax(result));
       for (int i = 0; i < result.length; i++) {
@@ -1007,7 +1007,7 @@ class _FilterPrefsState extends State<FilterPrefs> {
             AnnualIncomePreference(list: annualIncome, listMax: annualIncomeMax
                 // minimumSelectedIndex: minimumSelectedIndex,
                 ));
-    if (result != null && result is List<AnualIncome>) {
+    if (result != null && result is List<AnnualIncome>) {
       BlocProvider.of<ProfilePreferenceBloc>(context)
           .add(IncomeSelected(result));
       for (int i = 0; i < result.length; i++) {

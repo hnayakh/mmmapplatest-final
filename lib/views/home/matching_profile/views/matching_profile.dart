@@ -69,7 +69,7 @@ class MatchingProfileScreen extends StatelessWidget {
                                 list: state.list,
                               ),
                         Container(
-                          margin: new EdgeInsets.symmetric(vertical: !isTopLevel ? 12 : 60.0),
+                          margin: new EdgeInsets.symmetric(vertical: !isTopLevel ? 12 : 48.0),
                           width: MediaQuery.of(context).size.width,
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Row(
@@ -97,9 +97,7 @@ class MatchingProfileScreen extends StatelessWidget {
                                 width: 16,
                               ),
                               Expanded(
-                                child: state.currentFilter == ProfilesFilter.recommendedProfile
-                                    ? SizedBox()
-                                    : buildScreenHeader(
+                                child:  buildScreenHeader(
                                         state.currentFilter,
                                       ),
                               ),
@@ -168,10 +166,15 @@ class MatchingProfileScreen extends StatelessWidget {
             // allowDrawingOutsideViewBox: false,
           ),
           SizedBox(width: 12,),
-          Text(
-            filter.label,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontFamily: "MakeMyMarrySemiBold", color: kDark5),
+          Flexible(
+            child: Text(
+              filter.label,
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.clip,
+              softWrap: true,
+              style: TextStyle(  fontFamily: "MakeMyMarrySemiBold", color: kDark5),
+            ),
           ),
         ],
       ),
@@ -243,9 +246,14 @@ class FilterPopupTile extends StatelessWidget {
             SizedBox(
               width: 20,
             ),
-            Text(
-              filter.label,
-              style: MmmTextStyles.bodyMediumSmall(),
+            Flexible(
+              child: Text(
+                filter.label,
+                maxLines: 1,
+                overflow: TextOverflow.clip,
+                softWrap: true,
+                style: MmmTextStyles.bodyMediumSmall(),
+              ),
             ),
           ],
         ),

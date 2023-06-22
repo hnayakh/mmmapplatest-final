@@ -20,7 +20,6 @@ import 'package:makemymarry/views/signupscreens/create_account/create_account_sc
 
 import '../mobile verification/mobile_verification.dart';
 
-
 class SigninWithPhone extends StatelessWidget {
   final UserRepository userRepository;
 
@@ -60,6 +59,12 @@ class _SigninWithPhoneScreenState extends State<SigninWithPhoneScreen> {
         listener: (context, state) {
           if (state is MoveToMobileVerification) {
             navigateToOtp();
+          }
+          if (state is OnError) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(state.message),
+              backgroundColor: kError,
+            ));
           }
         },
         builder: (context, state) {

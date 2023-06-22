@@ -19,7 +19,12 @@ class ApplyCouponBloc extends Bloc<ApplyCouponEvent, ApplyCouponState> {
       } else {
         var response = await this.userRepository.validateCoupon(event.coupon);
         if (response.status == AppConstants.SUCCESS) {
-          yield OnCouponApplied(response.couponDetails!);
+          if(DateTime.parse(response.couponDetails!.validTill).toLocal().isBefore(DateTime.now().toLocal())){
+            yield OnError(
+                "The Coupon Code ${event.coupon} has been expired. Please enter another code.");
+          }else {
+            yield OnCouponApplied(response.couponDetails!);
+          }
         } else
           yield OnError(
               "The Coupon Code ${event.coupon} is not valid. Please enter another code.");

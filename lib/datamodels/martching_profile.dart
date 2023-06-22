@@ -1,5 +1,6 @@
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/utils/app_constants.dart';
+import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference_bloc.dart';
 
@@ -55,7 +56,7 @@ class MatchingProfile {
     this.state = json["state"] ?? "";
     this.religion = json["religion"] != null ? json["religion"] : "";
     this.motherTongue =
-    json["motherTongue"] != null ? json["motherTongue"] : "";
+        json["motherTongue"] != null ? json["motherTongue"] : "";
     this.dateOfBirth = json["dateOfBirth"] ?? DateTime.now().toString();
     this.imageUrl = json["imageURL"] ?? "";
     if (json["activationStatus"] != null) {
@@ -64,8 +65,8 @@ class MatchingProfile {
     } else {
       this.activationStatus = ProfileActivationStatus.values[0];
     }
-    this.isConnected = json['connectRequestCallMessageStatus']?["isConnectedForCallMessage"] ?? false;
-    this.connectId = json['connectRequestCallMessageStatus']?["userConnectRequestId"] ?? "";
+    this.isConnected = json['connectStatus']?["isConnected"] ?? false;
+    this.connectId = json['connectStatus']?["id"] ?? "";
     if (json["height"] != null) {
       this.height = (double.parse(json["height"]));
     } else {
@@ -90,7 +91,7 @@ class MatchingProfile {
     this.gender = Gender.values[json["gender"]];
     this.religion = json["religion"] != null ? json["religion"] : "";
     this.motherTongue =
-    json["motherTongue"] != null ? json["motherTongue"] : "";
+        json["motherTongue"] != null ? json["motherTongue"] : "";
     this.countryCode = json["countryCode"];
     this.dialCode = json["phoneNumber"];
     this.mmId = json["displayId"];
@@ -118,18 +119,26 @@ class MatchingProfile {
     } else {
       this.activationStatus = ProfileActivationStatus.values[1];
     }
-    this.isConnected = json['connectRequestCallMessageStatus']?["isConnectedForCallMessage"] ?? false;
-    this.connectId = json['connectRequestCallMessageStatus']?["userConnectRequestId"] ?? "";
+    this.isConnected = json['connectStatus']?["isConnected"] ?? false;
+    this.connectId = json['connectStatus']?["id"] ?? "";
     this.proposalStatus = (json['UserRequestStatus']?.isNotEmpty ?? false)
-        ? (ProposalStatus.values[(json['UserRequestStatus'][0]
-                        ["requestedUserBasicId"] !=
-                    json['id'] &&
-                json['UserRequestStatus'][0]['userRequestStatus'] == 0)
+        ? (ProposalStatus.values[(((json['UserRequestStatus'] is List
+                        ? json['UserRequestStatus'][0]["requestedUserBasicId"]
+                        : json['UserRequestStatus']["requestedUserBasicId"]) !=
+                    json['id']) &&
+                (json['UserRequestStatus'] is List
+                        ? json['UserRequestStatus'][0]['userRequestStatus']
+                        : json['UserRequestStatus']['userRequestStatus']) ==
+                    0)
             ? 4
-            : json['UserRequestStatus'][0]['userRequestStatus']])
+            : (json['UserRequestStatus'] is List
+                ? json['UserRequestStatus'][0]['userRequestStatus']
+                : json['UserRequestStatus']['userRequestStatus'])])
         : null;
     this.proposalId = (json['UserRequestStatus']?.isNotEmpty ?? false)
-        ? json['UserRequestStatus'][0]['id']
+        ? json['UserRequestStatus'] is List
+            ? json['UserRequestStatus'][0]['id']
+            : json['UserRequestStatus']['id']
         : null;
   }
   MatchingProfile.fromProfileVisitedJson(json) {
@@ -141,7 +150,7 @@ class MatchingProfile {
     this.countryCode = json["countryCode"];
     this.dialCode = json["phoneNumber"];
     this.motherTongue =
-    json["motherTongue"] != null ? json["motherTongue"] : "";
+        json["motherTongue"] != null ? json["motherTongue"] : "";
     this.mmId = json["displayId"];
     this.aboutMe = json["aboutMe"];
     this.dateOfBirth = json["dateOfBirth"];
@@ -169,18 +178,38 @@ class MatchingProfile {
     } else {
       this.activationStatus = ProfileActivationStatus.values[1];
     }
-    this.isConnected = json['connectRequestCallMessageStatus']?["isConnectedForCallMessage"] ?? false;
-    this.connectId = json['connectRequestCallMessageStatus']?["userConnectRequestId"] ?? "";
+    this.isConnected = json['connectStatus']?["isConnected"] ?? false;
+    this.connectId = json['connectStatus']?["id"] ?? "";
+    // this.proposalStatus = (json['UserRequestStatus']?.isNotEmpty ?? false)
+    //     ? (ProposalStatus.values[(json['UserRequestStatus'][0]
+    //                     ["requestedUserBasicId"] !=
+    //                 json['id'] &&
+    //             json['UserRequestStatus'][0]['userRequestStatus'] == 0)
+    //         ? 4
+    //         : json['UserRequestStatus'][0]['userRequestStatus']])
+    //     : null;
+    // this.proposalId = (json['UserRequestStatus']?.isNotEmpty ?? false)
+    //     ? json['UserRequestStatus'][0]['id']
+    //     : null;
+
     this.proposalStatus = (json['UserRequestStatus']?.isNotEmpty ?? false)
-        ? (ProposalStatus.values[(json['UserRequestStatus'][0]
-                        ["requestedUserBasicId"] !=
-                    json['id'] &&
-                json['UserRequestStatus'][0]['userRequestStatus'] == 0)
+        ? (ProposalStatus.values[(((json['UserRequestStatus'] is List
+                        ? json['UserRequestStatus'][0]["requestedUserBasicId"]
+                        : json['UserRequestStatus']["requestedUserBasicId"]) !=
+                    json['id']) &&
+                (json['UserRequestStatus'] is List
+                        ? json['UserRequestStatus'][0]['userRequestStatus']
+                        : json['UserRequestStatus']['userRequestStatus']) ==
+                    0)
             ? 4
-            : json['UserRequestStatus'][0]['userRequestStatus']])
+            : (json['UserRequestStatus'] is List
+                ? json['UserRequestStatus'][0]['userRequestStatus']
+                : json['UserRequestStatus']['userRequestStatus'])])
         : null;
     this.proposalId = (json['UserRequestStatus']?.isNotEmpty ?? false)
-        ? json['UserRequestStatus'][0]['id']
+        ? json['UserRequestStatus'] is List
+            ? json['UserRequestStatus'][0]['id']
+            : json['UserRequestStatus']['id']
         : null;
   }
   MatchingProfile.fromError(String error);
@@ -218,7 +247,7 @@ class MatchingProfile {
       this.state = "";
     }
     if (json["careerCity"] != null) {
-      this.city = json["careerCity"] ;
+      this.city = json["careerCity"];
     } else {
       this.city = "";
     }
@@ -229,26 +258,26 @@ class MatchingProfile {
     }
     this.activationStatus =
         ProfileActivationStatus.values[json["activationStatus"]];
-    this.isConnected = json['connectRequestCallMessageStatus']?["isConnectedForCallMessage"] ?? false;
-    this.connectId = json['connectRequestCallMessageStatus']?["userConnectRequestId"] ?? "";
+    this.isConnected = json['connectStatus']?["isConnected"] ?? false;
+    this.connectId = json['connectStatus']?["id"] ?? "";
     this.proposalStatus = (json['UserRequestStatus']?.isNotEmpty ?? false)
         ? (ProposalStatus.values[(((json['UserRequestStatus'] is List
-            ? json['UserRequestStatus'][0]["requestedUserBasicId"]
-            : json['UserRequestStatus']["requestedUserBasicId"]) !=
-                        json['id']) &&
-                   (json['UserRequestStatus'] is List
-                            ? json['UserRequestStatus'][0]['userRequestStatus']
-                            : json['UserRequestStatus']['userRequestStatus']) ==
-                        0)
-                ? 4
-                : (json['UserRequestStatus'] is List
-                    ? json['UserRequestStatus'][0]['userRequestStatus']
-                    : json['UserRequestStatus']['userRequestStatus'])])
+                        ? json['UserRequestStatus'][0]["requestedUserBasicId"]
+                        : json['UserRequestStatus']["requestedUserBasicId"]) !=
+                    json['id']) &&
+                (json['UserRequestStatus'] is List
+                        ? json['UserRequestStatus'][0]['userRequestStatus']
+                        : json['UserRequestStatus']['userRequestStatus']) ==
+                    0)
+            ? 4
+            : (json['UserRequestStatus'] is List
+                ? json['UserRequestStatus'][0]['userRequestStatus']
+                : json['UserRequestStatus']['userRequestStatus'])])
         : null;
     this.proposalId = (json['UserRequestStatus']?.isNotEmpty ?? false)
         ? json['UserRequestStatus'] is List
-        ? json['UserRequestStatus'][0]['id']
-        : json['UserRequestStatus']['id']
+            ? json['UserRequestStatus'][0]['id']
+            : json['UserRequestStatus']['id']
         : null;
   }
 }
@@ -375,10 +404,15 @@ class ProfileDetails {
   late int cityId;
   late int stateId;
   late int countryId;
+  late int registrationStep;
   late String religionId = "";
   late String religionName = "";
   late String casteName;
   late String subCasteName;
+  late String docUrl;
+  late String docId;
+  late String docUpdationStatus;
+  late IdProofType docType;
   late DrinkingHabit drinkingHabit;
   late EatingHabit eatingHabit;
   late SmokingHabit smokingHabit;
@@ -390,9 +424,10 @@ class ProfileDetails {
   late String motherTongueName = "", motherTongueId = "";
   late Manglik manglik;
   late String occupation, employedin, city, state, country, highiestEducation;
-  late AnualIncome annualIncome;
+  late AnnualIncome annualIncome;
   late FamilyAfluenceLevel familyAfluenceLevel;
   late FamilyType familyType;
+  late bool isResidingWithFamily;
   late FamilyValues familyValues;
   late FatherOccupation fatherOccupation;
   late MotherOccupation motherOccupation;
@@ -409,23 +444,29 @@ class ProfileDetails {
   ProfileDetails.fromJson(json, ProfileActivationStatus activationStatus) {
     this.id = json["id"];
     this.mmId = json["displayId"];
-    this.activationStatus = ProfileActivationStatus.values[json["activationStatus"] ?? 0];
+    this.activationStatus =
+        ProfileActivationStatus.values[json["activationStatus"] ?? 0];
     this.email = json["email"];
     this.countryCode = json["countryCode"];
     this.dialCode = json["phoneNumber"];
     this.gender = Gender.values[json["gender"]];
     this.relationship = Relationship.values[json["relationship"]];
+    this.registrationStep = json["registrationStep"];
     if (json["userBios"] != null && json["userBios"].length > 0) {
       this.aboutmeMsg = json["userBios"][0]["aboutMe"];
     }
-    if (json["userLifestyle"] != null && json["userLifestyle"].length > 0) {
+    if (json["userLifestyle"] != null &&
+        json["userLifestyle"].length > 0 &&
+        (json["userLifestyle"][0]["lifestyle"] as String).isNotNullEmpty) {
       this.lifeStyle = json["userLifestyle"][0]["lifestyle"].split(", ");
     } else {
       this.lifeStyle = null;
     }
-    if (json["userHobbies"] != null && json["userHobbies"].length > 0) {
+    if (json["userHobbies"] != null &&
+        json["userHobbies"].length > 0 &&
+        (json["userHobbies"][0]["hobbies"] as String).isNotNullEmpty) {
       this.hobbies = json["userHobbies"][0]["hobbies"].split(", ");
-    }else{
+    } else {
       this.hobbies = null;
     }
     var aboutMe = json["userAbouts"][0];
@@ -444,11 +485,10 @@ class ProfileDetails {
     this.proposalId = (json['UserRequestStatus']?.isNotEmpty ?? false)
         ? json['UserRequestStatus'][0]['id']
         : null;
-    this.connectStatus = json['connectRequestCallMessageStatus']?["isConnectedForCallMessage"] ?? false;
-    this.connectId = json['connectRequestCallMessageStatus']?["userConnectRequestId"] ?? "";
+    this.connectStatus = json['connectStatus']?["isConnected"] ?? false;
+    this.connectId = json['connectStatus']?["id"] ?? "";
     this.blockId = json['blockDetails']?["id"] ?? "";
     this.isBlocked = json['blockDetails']?["isBlocked"] ?? false;
-
 
     if (aboutMe["numberOfChildren"] != null) {
       this.noOfChildren = NoOfChildren.values[aboutMe["numberOfChildren"]];
@@ -479,7 +519,10 @@ class ProfileDetails {
 
       //this.religionDetails = userReligion["religion"];
       this.cast = userReligion["cast"];
-      this.religionId =  userReligion['religionId'] != null && userReligion['religionId'].length > 0 ? userReligion['religionId'][0]["id"] : "";
+      this.religionId = userReligion['religionId'] != null &&
+              userReligion['religionId'].length > 0
+          ? userReligion['religionId'][0]["id"]
+          : "";
 
       this.gothra =
           userReligion["gothra"] != null ? userReligion["gothra"] : "";
@@ -506,7 +549,7 @@ class ProfileDetails {
         this.occupation = "";
       }
       this.employedin = userCareer["employedIn"];
-      this.annualIncome = AnualIncome.values[userCareer["annualIncome"]];
+      this.annualIncome = AnnualIncome.values[userCareer["annualIncome"]];
       this.country = userCareer["countryName"];
       this.countryId = userCareer["country"];
       this.state = userCareer["stateName"];
@@ -516,7 +559,7 @@ class ProfileDetails {
       this.highiestEducation = userCareer["highestEducation"];
     } else {
       this.occupation = "";
-      this.annualIncome = AnualIncome.NoIncome;
+      this.annualIncome = AnnualIncome.NotMentioned;
       this.city = "";
       this.state = "";
       this.country = "";
@@ -534,11 +577,13 @@ class ProfileDetails {
       this.familyValues =
           FamilyValues.values[userFamilyBackground["familyValues"]];
       this.familyType = FamilyType.values[userFamilyBackground["familyType"]];
+      this.isResidingWithFamily =
+          userFamilyBackground["isResidingWithFamily"] == 1;
       this.familyCountry = userFamilyBackground["countryName"];
       this.familyState = userFamilyBackground["stateName"];
       this.familyStateId = userFamilyBackground["state"];
-      this.familyCity = userFamilyBackground["cityName"];
-      this.familyCityId = userFamilyBackground["city"];
+      this.familyCity = userFamilyBackground["cityName"] ?? "";
+      this.familyCityId = userFamilyBackground["city"] ?? -1;
       this.familyCountryId = userFamilyBackground["country"];
     } else {
       this.familyAfluenceLevel = FamilyAfluenceLevel.NotMentioned;
@@ -547,6 +592,7 @@ class ProfileDetails {
       this.familyCountry = "";
       this.familyState = "";
       this.familyCity = "";
+      this.isResidingWithFamily = false;
       this.familyCityId = -1;
       this.familyStateId = -1;
       this.familyCountryId = -1;
@@ -580,6 +626,22 @@ class ProfileDetails {
         }
       }
     }
+
+    if (json["userDocs"] != null && json["userDocs"].length > 0) {
+      var doc = json["userDocs"][0];
+      docId = doc['id'];
+      docType = IdProofType.values
+          .where((element) =>
+              element.name == doc['idProof'].toString().split(".")[1])
+          .first;
+      docUrl = doc['imageURL'];
+      docUpdationStatus = doc['profileUpdationStatus'].toString();
+    } else {
+      docId = "";
+      docType = IdProofType.AadharCard;
+      docUpdationStatus = (-1).toString();
+      docUrl = "";
+    }
   }
 }
 
@@ -603,19 +665,17 @@ class ProfileDetailsResponse {
   }
 }
 
-
 class PartnerPreferenceResponse {
   late String status, message;
   late PartnerPreferences preferences;
 
   PartnerPreferenceResponse.fromJson(
-      json,) {
-    this.status =  AppConstants.SUCCESS;
+    json,
+  ) {
+    this.status = AppConstants.SUCCESS;
     this.message = json["message"];
 
-      this.preferences =
-          PartnerPreferences.fromJson(json: json["data"]);
-
+    this.preferences = PartnerPreferences.fromJson(json: json["data"]);
   }
 
   PartnerPreferenceResponse.fromError(String message) {

@@ -59,7 +59,7 @@ class SentScreen extends StatelessWidget {
             return Center(
               child: Text(
                 'No requests sent yet..',
-                style: TextStyle(color: kPrimary),
+                style: TextStyle( fontFamily: 'MakeMyMarry', color: kPrimary),
               ),
             );
           }
@@ -390,7 +390,7 @@ class SentScreen extends StatelessWidget {
             backgroundColor: kWhite,
             title: Text("Cancel Request",
                 textAlign: TextAlign.left,
-                style: TextStyle(
+                style: TextStyle( fontFamily: 'MakeMyMarry', 
                     fontWeight: FontWeight
                         .bold)), // To display the title it is optional
             content: new RichText(
@@ -398,14 +398,14 @@ class SentScreen extends StatelessWidget {
                 text: new TextSpan(
                   // Note: Styles for TextSpans must be explicitly defined.
                   // Child text spans will inherit styles from parent
-                  style: new TextStyle(
+                  style: new TextStyle( fontFamily: 'MakeMyMarry', 
                     fontSize: 14.0,
                     color: Colors.grey,
                   ),
                   children: <TextSpan>[
                     new TextSpan(text: 'Are you want to cancel the request?'),
                     // new TextSpan(
-                    //     text: ' mmyid', style: new TextStyle(color: kPrimary)),
+                    //     text: ' mmyid', style: new TextStyle( fontFamily: 'MakeMyMarry', color: kPrimary)),
                     // new TextSpan(text: ' to find your perfect match.'),
                   ],
                 )),

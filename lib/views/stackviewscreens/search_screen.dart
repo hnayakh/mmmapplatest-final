@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
@@ -90,246 +91,255 @@ class _SearchScreenState extends State<SearchScreen> {
                 Container(
                   padding: kMargin16,
                   height: MediaQuery.of(context).size.height * 0.757,
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Stack(
-                            children: [
-                              Container(
-                                width: MediaQuery.of(context).size.width * 0.74,
-                                height: 60,
-                                padding: EdgeInsets.fromLTRB(16, 8, 8, 8),
-                                decoration: BoxDecoration(
-                                    color: kWhite,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8)),
-                                    boxShadow: [MmmShadow.elevation1()]),
-                                child: Container(
-                                  width: 100,
-                                  child: TextField(
-                                      onTap: () {
-                                        myController.value =
-                                            TextEditingValue(text: "MM");
-                                      },
-                                      controller: myController,
-                                      //controller: cntrlr,
-                                      keyboardType: TextInputType.multiline,
-                                      maxLines: 1,
-                                      maxLength: 15,
-                                      decoration: InputDecoration(
-                                        counterText: '',
-                                        hintText: "MMABC1234",
-                                        hintStyle: MmmTextStyles.bodyRegular(
-                                            textColor: gray4),
-                                        contentPadding: EdgeInsets.zero,
-                                        border: InputBorder.none,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Stack(
+                              children: [
+                                Container(
+                                  width: MediaQuery.of(context).size.width * 0.74,
+                                  height: 60,
+                                  padding: EdgeInsets.fromLTRB(16, 8, 8, 8),
+                                  decoration: BoxDecoration(
+                                      color: kWhite,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(8)),
+                                      boxShadow: [MmmShadow.elevation1()]),
+                                  child: Container(
+                                    width: 100,
+                                    child: TextField(
+                                        onTap: () {
+                                          myController.value =
+                                              TextEditingValue(text: "MM");
+                                          myController.selection =
+                                              TextSelection.collapsed(offset: myController.text.length);
+
+                                        },
+                                        controller: myController,
+                                        keyboardType: TextInputType.name,
+                                        maxLines: 1,
+                                        maxLength: 15,
+                                        textInputAction: TextInputAction.done,
+                                        inputFormatters: [
+                                          FilteringTextInputFormatter.allow(RegExp(r'^[a-zA-Z0-9]+$'), replacementString: '${myController.text}')
+                                        ],
+                                        decoration: InputDecoration(
+
+                                          counterText: '',
+                                          hintText: "MMABC1234",
+                                          hintStyle: MmmTextStyles.bodyRegular(
+                                              textColor: gray4),
+                                          contentPadding: EdgeInsets.zero,
+                                          border: InputBorder.none,
+                                        )),
+                                  ),
+                                ),
+                                Positioned(
+                                  right: 8,
+                                  top: 8,
+                                  child: Container(
+                                      width: 44,
+                                      height: 44,
+                                      // alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                          color: kLight4,
+                                          boxShadow: [
+                                            MmmShadow.filterButton(
+                                                shadowColor: kShadowColorForGrid)
+                                          ],
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(8))),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(8),
+                                        child: Material(
+                                            color: Colors.transparent,
+                                            child: InkWell(
+                                                onTap: () {
+                                                  BlocProvider.of<
+                                                              ProfileViewBloc>(
+                                                          context)
+                                                      .add(GetProfileViewDetails(
+                                                          myController.text));
+                                                  print("search button click");
+                                                  // setState(() {
+                                                  //   isDilogueVisible = true;
+                                                  // });
+                                                },
+                                                child: Container(
+                                                  padding: EdgeInsets.all(10),
+                                                  child: SvgPicture.asset(
+                                                    'images/Search.svg',
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ))),
                                       )),
+                                )
+                              ],
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.14,
+                              height: MediaQuery.of(context).size.width * 0.14,
+                              //alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: kWhite,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8)),
+                                  boxShadow: [
+                                    MmmShadow.filterButton(
+                                        shadowColor: kShadowColorForGrid)
+                                  ]),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Material(
+                                    color: Colors.transparent,
+                                    child: InkWell(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  PartnerPrefsScreen(
+                                                userRepository:
+                                                    widget.userRepository,
+                                                    forFilters: true
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.all(15),
+                                          child: SvgPicture.asset(
+                                            'images/filter2.svg',
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ))),
+                              ),
+                            ),
+                          ],
+                        ),
+                        this.message == "No user found for given DisplayId" &&
+                                state is OnErrorView
+                            ? this.isDilogueVisible
+                                ? AlertDialog(
+                                    backgroundColor: kWhite,
+                                    title: Text("User doesn't exist",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle( fontFamily: 'MakeMyMarry', 
+                                            fontWeight: FontWeight
+                                                .bold)), // To display the title it is optional
+                                    content: new RichText(
+                                      textAlign: TextAlign.center,
+                                      text: new TextSpan(
+                                        // Note: Styles for TextSpans must be explicitly defined.
+                                        // Child text spans will inherit styles from parent
+                                        style: new TextStyle( fontFamily: 'MakeMyMarry', 
+                                          fontSize: 14.0,
+                                          color: Colors.black,
+                                        ),
+                                        children: <TextSpan>[
+                                          new TextSpan(
+                                              text: 'Please enter correct'),
+                                          new TextSpan(
+                                              text: ' mmyid',
+                                              style:
+                                                  new TextStyle( fontFamily: 'MakeMyMarry', color: kPrimary)),
+                                          new TextSpan(
+                                              text:
+                                                  ' to find your perfect match.'),
+                                        ],
+                                      ),
+                                    ),
+                                    // Action widget which will provide the user to acknowledge the choice
+                                    actions: [
+                                      MmmButtons.primaryButton("Ok", () {
+                                        setState(() {
+                                          isDilogueVisible = false;
+                                        });
+                                        //navigateToSearch(state);
+                                      })
+                                    ],
+                                  )
+                                : Container()
+                            : SizedBox(
+                                height: 5,
+                              ),
+                        MmmButtons.searchButtons(
+                          'images/online.svg',
+                          'Online Members',
+                          action: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => MatchingProfileScreen(
+                                  list: widget.list,
+                                  filter: ProfilesFilter.onlineMembers,
+                                  isTopLevel: false,
                                 ),
                               ),
-                              Positioned(
-                                right: 8,
-                                top: 8,
-                                child: Container(
-                                    width: 44,
-                                    height: 44,
-                                    // alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        color: kLight4,
-                                        boxShadow: [
-                                          MmmShadow.filterButton(
-                                              shadowColor: kShadowColorForGrid)
-                                        ],
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(8))),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
-                                      child: Material(
-                                          color: Colors.transparent,
-                                          child: InkWell(
-                                              onTap: () {
-                                                BlocProvider.of<
-                                                            ProfileViewBloc>(
-                                                        context)
-                                                    .add(GetProfileViewDetails(
-                                                        myController.text));
-                                                print("search button click");
-                                                // setState(() {
-                                                //   isDilogueVisible = true;
-                                                // });
-                                              },
-                                              child: Container(
-                                                padding: EdgeInsets.all(10),
-                                                child: SvgPicture.asset(
-                                                  'images/Search.svg',
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ))),
-                                    )),
-                              )
-                            ],
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.14,
-                            height: MediaQuery.of(context).size.width * 0.14,
-                            //alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: kWhite,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8)),
-                                boxShadow: [
-                                  MmmShadow.filterButton(
-                                      shadowColor: kShadowColorForGrid)
-                                ]),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Material(
-                                  color: Colors.transparent,
-                                  child: InkWell(
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                PartnerPrefsScreen(
-                                              userRepository:
-                                                  widget.userRepository,
-                                                  forFilters: true
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.all(15),
-                                        child: SvgPicture.asset(
-                                          'images/filter2.svg',
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ))),
-                            ),
-                          ),
-                        ],
-                      ),
-                      this.message == "No user found for given DisplayId" &&
-                              state is OnErrorView
-                          ? this.isDilogueVisible
-                              ? AlertDialog(
-                                  backgroundColor: kWhite,
-                                  title: Text("User doesn't exist",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight
-                                              .bold)), // To display the title it is optional
-                                  content: new RichText(
-                                    textAlign: TextAlign.center,
-                                    text: new TextSpan(
-                                      // Note: Styles for TextSpans must be explicitly defined.
-                                      // Child text spans will inherit styles from parent
-                                      style: new TextStyle(
-                                        fontSize: 14.0,
-                                        color: Colors.black,
-                                      ),
-                                      children: <TextSpan>[
-                                        new TextSpan(
-                                            text: 'Please enter correct'),
-                                        new TextSpan(
-                                            text: ' mmyid',
-                                            style:
-                                                new TextStyle(color: kPrimary)),
-                                        new TextSpan(
-                                            text:
-                                                ' to find your perfect match.'),
-                                      ],
-                                    ),
-                                  ),
-                                  // Action widget which will provide the user to acknowledge the choice
-                                  actions: [
-                                    MmmButtons.primaryButton("Ok", () {
-                                      setState(() {
-                                        isDilogueVisible = false;
-                                      });
-                                      //navigateToSearch(state);
-                                    })
-                                  ],
-                                )
-                              : Container()
-                          : SizedBox(
-                              height: 5,
-                            ),
-                      MmmButtons.searchButtons(
-                        'images/online.svg',
-                        'Online Members',
-                        action: () {
+                            );
+                          },
+                        ),
+                        SizedBox(height: 5),
+                        MmmButtons.searchButtons(
+                            'images/online.svg', 'Premium Members', action: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => MatchingProfileScreen(
                                 list: widget.list,
-                                filter: ProfilesFilter.onlineMembers,
+                                filter: ProfilesFilter.premiumMembers,
                                 isTopLevel: false,
                               ),
                             ),
                           );
-                        },
-                      ),
-                      SizedBox(height: 5),
-                      MmmButtons.searchButtons(
-                          'images/online.svg', 'Premium Members', action: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => MatchingProfileScreen(
-                              list: widget.list,
-                              filter: ProfilesFilter.premiumMembers,
-                              isTopLevel: false,
+                        }),
+                        SizedBox(height: 5),
+                        MmmButtons.searchButtons(
+                            'images/profileViewed.svg', 'Profile Viewed by',
+                            action: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => MatchingProfileScreen(
+                                list: widget.list,
+                                filter: ProfilesFilter.profileVisitor,
+                                isTopLevel: false,
+                              ),
                             ),
-                          ),
-                        );
-                      }),
-                      SizedBox(height: 5),
-                      MmmButtons.searchButtons(
-                          'images/profileViewed.svg', 'Profile Viewed by',
-                          action: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => MatchingProfileScreen(
-                              list: widget.list,
-                              filter: ProfilesFilter.profileVisitor,
-                              isTopLevel: false,
+                          );
+                        }),
+                        SizedBox(height: 5),
+                        MmmButtons.searchButtons(
+                            'images/Search.svg', 'Profile Recently Viewed',
+                            action: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => MatchingProfileScreen(
+                                list: widget.list,
+                                filter: ProfilesFilter.recentlyViewed,
+                                isTopLevel: false,
+                              ),
                             ),
-                          ),
-                        );
-                      }),
-                      SizedBox(height: 5),
-                      MmmButtons.searchButtons(
-                          'images/Search.svg', 'Profile Recently Viewed',
-                          action: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => MatchingProfileScreen(
-                              list: widget.list,
-                              filter: ProfilesFilter.recentlyViewed,
-                              isTopLevel: false,
+                          );
+                        }),
+                        SizedBox(height: 5),
+                        MmmButtons.searchButtons(
+                            'images/Check.svg', 'Recommended Profile',
+                            action: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => MatchingProfileScreen(
+                                list: widget.list,
+                                filter: ProfilesFilter.recommendedProfile,
+                                isTopLevel: false,
+                              ),
                             ),
-                          ),
-                        );
-                      }),
-                      SizedBox(height: 5),
-                      MmmButtons.searchButtons(
-                          'images/Check.svg', 'Recommended Profile',
-                          action: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => MatchingProfileScreen(
-                              list: widget.list,
-                              filter: ProfilesFilter.recommendedProfile,
-                              isTopLevel: false,
-                            ),
-                          ),
-                        );
-                      }),
-                    ],
+                          );
+                        }),
+                      ],
+                    ),
                   ),
                 ),
                 // SizedBox(

@@ -56,7 +56,7 @@ class ReceivedScreen extends StatelessWidget {
             return Center(
               child: Text(
                 'No requests received yet..',
-                style: TextStyle(color: kPrimary),
+                style: TextStyle( fontFamily: 'MakeMyMarry', color: kPrimary),
               ),
             );
           }
@@ -272,10 +272,7 @@ class ReceivedScreen extends StatelessWidget {
                       width: 12,
                     ),
                     MmmButtons.rejectButtonInterestScreen(() {
-                      print("Hello");
-                      _showDialog(context);
-                      // BlocProvider.of<ReceivedsBloc>(context)
-                      //     .add(RejectInterestEvent(index));
+                      _showDialog(context, listReceived[index].user, listReceived[index].id, index,BlocProvider.of<ReceivedBloc>(context)  );
                     })
                   ],
                 )
@@ -297,7 +294,7 @@ class ReceivedScreen extends StatelessWidget {
     print(listReceived);
   }
 
-  void _showDialog(BuildContext context) {
+  void _showDialog(BuildContext context, InterestUser user, String requestId, index, ReceivedBloc bloc) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -307,26 +304,19 @@ class ReceivedScreen extends StatelessWidget {
           backgroundColor: kWhite,
           title: Text("Cancel Request",
               textAlign: TextAlign.left,
-              style: TextStyle(
-                  fontWeight:
-                      FontWeight.bold)), // To display the title it is optional
+              style: TextStyle( fontFamily: 'MakeMyMarry', fontWeight: FontWeight.bold)),
           content: new RichText(
-              textAlign: TextAlign.left,
-              text: new TextSpan(
-                // Note: Styles for TextSpans must be explicitly defined.
-                // Child text spans will inherit styles from parent
-                style: new TextStyle(
-                  fontSize: 14.0,
-                  color: Colors.grey,
-                ),
-                children: <TextSpan>[
-                  new TextSpan(text: 'Are you want to reject the request?'),
-                  // new TextSpan(
-                  //     text: ' mmyid', style: new TextStyle(color: kPrimary)),
-                  // new TextSpan(text: ' to find your perfect match.'),
-                ],
-              )),
-          // Action widget which will provide the user to acknowledge the choice
+            textAlign: TextAlign.left,
+            text: new TextSpan(
+              style: new TextStyle( fontFamily: 'MakeMyMarry', 
+                fontSize: 14.0,
+                color: Colors.grey,
+              ),
+              children: <TextSpan>[
+                new TextSpan(text: 'Are you want to reject the request?'),
+              ],
+            ),
+          ),
           actions: [
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -337,8 +327,16 @@ class ReceivedScreen extends StatelessWidget {
                 }),
                 SizedBox(width: 10),
                 MmmButtons.primaryButtonMeet("Confirm", () {
-                  Navigator.of(context).pop();
-                  // navigateToHome(state);
+                  context.read<AppBloc>().rejectProposal(
+                      otherUserId: user.id,
+                      requestId: requestId,
+                      onDone: () async {
+
+                        bloc.add(RejectInterestEvent(index));
+                        context.navigate.pop();
+
+                      },
+                      onError: () async {});
                 })
               ],
             ),
@@ -387,7 +385,7 @@ class AcceptRequestDialog extends StatelessWidget {
               Container(
                 child: Text(
                   user.name,
-                  style: TextStyle(
+                  style: TextStyle( fontFamily: 'MakeMyMarry', 
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                   ),
@@ -417,7 +415,7 @@ class AcceptRequestDialog extends StatelessWidget {
                   width: 300,
                   child: Text('Please accept the request to read a message',
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 17))),
+                      style: TextStyle( fontFamily: 'MakeMyMarry', fontSize: 17))),
             ),
             MmmButtons.primaryButton('Confirm', () async {
               Navigator.of(context).pop();

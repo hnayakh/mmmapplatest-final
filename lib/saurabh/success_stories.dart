@@ -142,7 +142,7 @@ class _SuccessStoriesState extends State<SuccessStories> {
                             )
                             // Text(
                             //   'text $i',
-                            //   style: TextStyle(fontSize: 16.0),
+                            //   style: TextStyle( fontFamily: 'MakeMyMarry', fontSize: 16.0),
                             // )
 
                             ),

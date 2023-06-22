@@ -15,7 +15,7 @@ class AppHelper {
   }
 
   static String heightString(double height) {
-   return  "${(height ~/ 12)}'${(height % 12).toInt()}''";
+    return "${(height ~/ 12)}'${(height % 12).toInt()}''";
   }
 
   // static List<double> getHeights() {
@@ -104,8 +104,44 @@ class AppHelper {
         {
           return "Mother Tongue";
         }
+      case "caste":
+        {
+          return "Caste";
+        }
+      case "caste":
+        {
+          return "Caste";
+        }
+      case "occupation":
+        {
+          return "Occupation";
+        }
+      case "highestEducation":
+        {
+          return "Education";
+        }
+      case "dietaryHabits":
+        {
+          return "Eating Habits";
+        }
+      case "smokingHabits":
+        {
+          return "Smoking Habits";
+        }
+      case "drinkingHabits":
+        {
+          return "Drinking Habits";
+        }
+      case "maxIncome":
+        {
+          return "Max Income";
+        }
+      case "minIncome":
+        {
+          return "Min Income";
+        }
     }
-    return "";
+    return field;
   }
 
   static String getAgeFromDob(String dateOfBirth) {
@@ -275,7 +311,7 @@ class AppHelper {
         'Occasionally',
       ];
       return drinkingFilterStatus[enumEntry.index];
-    } else if (enumName == 'AnualIncome') {
+    } else if (enumName == 'AnnualIncome') {
       List<String> incomes = [
         'No Income',
         '0-1 lakh',
@@ -292,7 +328,8 @@ class AppHelper {
         '35-50 lakh',
         '50-75 lakh',
         '75 lakh- 1 crore',
-        '1 crore and above'
+        '1 crore and above',
+        'Not Mentioned'
       ];
       return incomes[enumEntry.index];
     } else if (enumName == 'FamilyAfluenceLevel') {

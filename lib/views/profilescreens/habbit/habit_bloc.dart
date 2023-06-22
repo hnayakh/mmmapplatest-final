@@ -23,7 +23,7 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
       var result = await this.userRepository.getOtheruserDetails(
           event.basicUserId, ProfileActivationStatus.Verified);
 
-      if (result.status == AppConstants.SUCCESS) {
+      if (result.status == AppConstants.SUCCESS ) {
         this.profileDetails = result.profileDetails;
         yield HabitDetailsState(result.profileDetails);
       } else {
@@ -46,17 +46,17 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
       this.eatingHabit = event.eatingHabit;
       this.drinkingHabit = event.drinkingHabit;
       this.smokingHabit = event.smokingHabit;
-      if (this.eatingHabit == null &&
-          this.drinkingHabit == null &&
-          this.smokingHabit == null) {
+      if ((this.eatingHabit == null || this.eatingHabit == EatingHabit.Notspecified) &&
+         ( this.drinkingHabit == null || this.drinkingHabit == DrinkingHabit.Notspecified)  &&
+         ( this.smokingHabit == null || this.smokingHabit == SmokingHabit.Notspecified)) {
         yield OnError('Select all habits');
       }
-      if (this.eatingHabit == null) {
+      if(this.eatingHabit == null || this.eatingHabit == EatingHabit.Notspecified) {
         yield OnError('Select eating habit.');
-      } else if (this.drinkingHabit == null) {
-        yield OnError('Select drinking habit.');
-      } else if (this.smokingHabit == null) {
+      } else if( this.smokingHabit == null || this.smokingHabit == SmokingHabit.Notspecified) {
         yield OnError('Select smoking habit.');
+      } else if ( this.drinkingHabit == null || this.drinkingHabit == DrinkingHabit.Notspecified) {
+        yield OnError('Select drinking habit.');
       } else {
         var result = await this.userRepository.habit(
               this.eatingHabit!,

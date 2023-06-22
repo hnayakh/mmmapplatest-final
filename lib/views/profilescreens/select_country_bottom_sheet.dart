@@ -26,7 +26,7 @@ class SelectCountryBottomSheetState extends State<SelectCountryBottomSheet> {
   void initState() {
     this.filtered = List.of(widget.list, growable: true);
     if (widget.countryModel != null) {
-      widget.countryModel.name = '';
+      // widget.countryModel.name = '';
     }
     super.initState();
   }
