@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
@@ -46,6 +47,7 @@ class VerifyAccountScreen extends StatefulWidget {
 class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
   IdProofType? idProof;
   late UserDetails? userDetails;
+  late ProfileDetails? profileDetails;
   List<String> ids = [
     'Passport',
     'Voter Id Card',
@@ -58,6 +60,8 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
   Widget build(BuildContext context) {
     this.userDetails =
         BlocProvider.of<VerifyBloc>(context).userRepository.useDetails;
+    this.profileDetails =
+        BlocProvider.of<VerifyBloc>(context).userRepository.profileDetails;
     print("USEDETAILS${this.userDetails}");
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -71,13 +75,16 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
               backgroundColor: kSuccess,
             ));
           }
-
-
           if (state is OnError) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text(state.message),
               backgroundColor: kError,
             ));
+          }
+          if (state is VerifyInitialState) {
+            this.localImagePaths =
+                BlocProvider.of<VerifyBloc>(context).localDocImagePaths;
+            print("length after upload${this.localImagePaths.length}");
           }
         },
         builder: (context, state) {
@@ -123,10 +130,13 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
                             ),
                             itemBuilder: (context, index) {
                               print("LOCALLL${this.localImagePaths.length}");
-                              if (this.localImagePaths.length == 0) {
+                              var image = this.localImagePaths.length > 0
+                                  ? this.localImagePaths[index]
+                                  : "";
+
+                              if (image == "") {
                                 return addImageButton();
                               } else {
-                                var image = this.localImagePaths[index];
                                 print("image $image");
                                 return Column(
                                   children: [
@@ -134,12 +144,8 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
                                       child: Stack(
                                         children: [
                                           ClipRRect(
-                                            child: this
-                                                        .localImagePaths
-                                                        .length !=
-                                                    0
-                                                ? Image.network(
-                                                    image,
+                                            child: this.localImagePaths.length > 0
+                                                ? Image.network(image,
                                                     fit: BoxFit.cover,
                                                     width:
                                                         (MediaQuery.of(context)
@@ -151,11 +157,12 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
                                                                 .size
                                                                 .width) *
                                                             0.9,
-                                    errorBuilder: (context, obj, str) => Container(
-                                        color: Colors.grey,
-                                        child: Icon(Icons.error))
-
-                                                  )
+                                                    errorBuilder: (context, obj,
+                                                            str) =>
+                                                        Container(
+                                                            color: Colors.grey,
+                                                            child: Icon(
+                                                                Icons.error)))
                                                 : Container(),
                                             borderRadius:
                                                 BorderRadius.circular(8),
@@ -206,9 +213,9 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
                             itemCount: 1,
                           )),
                         ])),
-                SizedBox(
-                  height: 40,
-                ),
+                // SizedBox(
+                //   height: 40,
+                // ),
                 MmmButtons.enabledRedButtonbodyMedium(50, 'Verify', action: () {
                   BlocProvider.of<VerifyBloc>(context)
                       .add(UpdateDoc(this.idProof, localImagePaths));
@@ -291,7 +298,7 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
               height: 20,
             ),
             Text('Click to upload your document',
-                style: TextStyle( fontFamily: 'MakeMyMarry', fontSize: 12))
+                style: TextStyle(fontFamily: 'MakeMyMarry', fontSize: 12))
           ],
         ),
       ),

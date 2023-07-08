@@ -117,20 +117,40 @@ class MatchingProfileStackView extends StatelessWidget {
                                                   SizedBox(
                                                     width: 14,
                                                   ),
-                                                  Flexible(
-                                                    child: Text(
-                                                      "${item.name},",
-                                                      maxLines: 1,
-                                                      softWrap: true,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: MmmTextStyles
-                                                          .heading5(
-                                                              textColor: gray6),
+                                                  ConstrainedBox(
+                                                    constraints: BoxConstraints(
+                                                      minWidth: MediaQuery.of(
+                                                                  context)
+                                                              .size
+                                                              .width *
+                                                          0.06, // Set the minimum width here
+                                                      maxWidth:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.35,
+                                                    ),
+                                                    child: SizedBox(
+                                                      // width:
+                                                      //     MediaQuery.of(context)
+                                                      //             .size
+                                                      //             .width *
+                                                      //         0.35,
+                                                      child: Text(
+                                                        "${item.name}",
+                                                        maxLines: 1,
+                                                        softWrap: true,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: MmmTextStyles
+                                                            .heading5(
+                                                                textColor:
+                                                                    gray6),
+                                                      ),
                                                     ),
                                                   ),
                                                   Text(
-                                                    ", ${AppHelper.getAgeFromDob(item.dateOfBirth)} yrs,  ${AppHelper.heightString(item.height)}",
+                                                    ", ${AppHelper.getAgeFromDob(item.dateOfBirth)} yrs, ${AppHelper.heightString(item.height)}",
                                                     maxLines: 2,
                                                     overflow:
                                                         TextOverflow.ellipsis,

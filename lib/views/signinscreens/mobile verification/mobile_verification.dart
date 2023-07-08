@@ -20,6 +20,7 @@ import 'package:makemymarry/views/profilescreens/religion/views/religion.dart';
 import 'package:makemymarry/views/signinscreens/signin_page.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
+import '../../../utils/icons.dart';
 import '../../profilescreens/family/family.dart';
 import 'mobile_verification_bloc.dart';
 import 'mobile_verification_event.dart';
@@ -142,13 +143,27 @@ class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
                     //   height: 6,
                     // ),
                     Container(
-                      margin: EdgeInsets.fromLTRB(15, 15, 1, 0),
-                      child: Text(
-                        'We have sent a 6 digit verification code on your \nregistered number +$dialCode-${phone}',
-                        style: TextStyle( fontFamily: 'MakeMyMarry', fontSize: 14),
-                        textScaleFactor: 1.0,
-                      ),
-                    ),
+                        margin: EdgeInsets.fromLTRB(15, 15, 1, 0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                                child: Container(
+                                    child: Text(
+                              'We have sent a 6 digit verification code on your \nregistered number +$dialCode-${phone}',
+                              style: TextStyle(
+                                  fontFamily: 'MakeMyMarry', fontSize: 14),
+                              textScaleFactor: 1.0,
+                            ))),
+                            Container(
+                                margin: EdgeInsets.only(right: 25, top: 5),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: MmmIcons.editIcon(),
+                                ))
+                          ],
+                        )),
                     SizedBox(
                       height: 32,
                     ),
@@ -224,66 +239,72 @@ class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
       case 10:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-                builder: (context) => ProfileLoader(userRepository: userRepo, firstTime: true,)),
-                (route) => false);
+                builder: (context) => ProfileLoader(
+                      userRepository: userRepo,
+                      firstTime: true,
+                    )),
+            (route) => false);
         break;
       case 11:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-                builder: (context) => ProfileLoader(userRepository: userRepo, firstTime: true,)),
-                (route) => false);
+                builder: (context) => ProfileLoader(
+                      userRepository: userRepo,
+                      firstTime: true,
+                    )),
+            (route) => false);
         break;
       case 9:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => PartnerPrefsScreen(
-                  userRepository: userRepo,
-                )),
-                (route) => false);
+                      userRepository: userRepo,
+                    )),
+            (route) => false);
         break;
       case 8:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => Bio(userRepository: userRepo)),
-                (route) => false);
+            (route) => false);
         break;
       case 7:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => Habit(userRepository: userRepo)),
-                (route) => false);
+            (route) => false);
         break;
-    // case 6:
-    //   break;
+      // case 6:
+      //   break;
       case 5:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => FamilyScreen(userRepository: userRepo)),
-                (route) => false);
+            (route) => false);
         break;
       case 4:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => Occupations(userRepository: userRepo)),
-                (route) => false);
+            (route) => false);
 
         break;
       case 3:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => Religion(userRepository: userRepo)),
-                (route) => false);
+            (route) => false);
         break;
       case 2:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => About(userRepository: userRepo)),
-                (route) => false);
+            (route) => false);
         break;
       default:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => SignInPage()),
-                (route) => false);
+            (route) => false);
         break;
     }
   }

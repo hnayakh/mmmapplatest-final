@@ -70,21 +70,21 @@ class _State extends State<VideoCallView> {
     if (permission != PermissionStatus.granted) {
       permission = await Permission.camera.request();
       // while (permission != PermissionStatus.granted) {
-        await Alert.message(
-          navigatorKey.currentContext!,
-          message: 'Please enable camera in settings of the app',
-          popsAutomatically: false,
-          barrierDismissible: false,
-          onPressed: () async {
-            permission = await Permission.camera.status;
-            if (permission == PermissionStatus.granted) {
-              context.navigate.pop();
-              // navigatorKey.currentState?.pop();
-            } else {
-              await openAppSettings();
-            }
-          },
-        );
+      await Alert.message(
+        navigatorKey.currentContext!,
+        message: 'Please enable camera in settings of the app',
+        popsAutomatically: false,
+        barrierDismissible: false,
+        onPressed: () async {
+          permission = await Permission.camera.status;
+          if (permission == PermissionStatus.granted) {
+            context.navigate.pop();
+            // navigatorKey.currentState?.pop();
+          } else {
+            await openAppSettings();
+          }
+        },
+      );
       // }
     }
     _initEngine();
@@ -215,7 +215,7 @@ class _State extends State<VideoCallView> {
   }
 
   Future<void> _leaveChannel() async {
-    if(!pageLeft){
+    if (!pageLeft) {
       context.navigate.pop();
       pageLeft = true;
     }
@@ -229,7 +229,6 @@ class _State extends State<VideoCallView> {
         .collection('activeCalls')
         .doc(widget.agoraToken?.notificationId)
         .update({'status': false});
-
   }
 
   Future<void> _switchCamera() async {
@@ -319,7 +318,8 @@ class _State extends State<VideoCallView> {
                       ? "Connecting ..."
                       : "${(timeLeft ~/ 60).toString().padLeft(2, "0")}:${(timeLeft % 60).toString().padLeft(2, "0")}",
                   textAlign: TextAlign.center,
-                  style: TextStyle( fontFamily: 'MakeMyMarry', 
+                  style: TextStyle(
+                    fontFamily: 'MakeMyMarry',
                     color: Colors.black,
                     fontSize: 24,
                     fontWeight: FontWeight.w500,

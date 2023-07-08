@@ -10,7 +10,7 @@ import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/home/filter_screens/filter_screen.dart';
 import 'package:makemymarry/views/home/matching_profile/bloc/matching_profile_bloc.dart';
-
+import 'package:skeleton_loader/skeleton_loader.dart';
 import '../../../../utils/buttons.dart';
 import '../bloc/matching_profile_event.dart';
 import '../bloc/matching_profile_state.dart';
@@ -18,7 +18,6 @@ import 'matching_profile_grid.dart';
 import 'matching_profile_stack.dart';
 
 class MatchingProfileScreen extends StatelessWidget {
-
   const MatchingProfileScreen({
     Key? key,
     required this.list,
@@ -29,115 +28,136 @@ class MatchingProfileScreen extends StatelessWidget {
   final ProfilesFilter filter;
   final List<MatchingProfile> list;
   final bool isTopLevel;
-
+  final String selectedAsset = 'images/icons/shuffle-icon.png';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: gray5,
-      appBar: !isTopLevel ? MmmButtons.appBarCurved('Search', context: context) : null,
+      appBar: !isTopLevel
+          ? MmmButtons.appBarCurved('Search', context: context)
+          : null,
       body: BlocProvider<MatchingProfileBloc>(
-        create: (context) => MatchingProfileBloc(
-          getIt<UserRepository>(),
-          list,
-          filter
-        ),
+        create: (context) =>
+            MatchingProfileBloc(getIt<UserRepository>(), list, filter),
         child: Builder(
           builder: (context) {
             return BlocConsumer<MatchingProfileBloc, MatchingProfileState>(
-              listener: (context, state) {
-
-              },
+              listener: (context, state) {},
               builder: (context, state) {
-                  return Container(
-                    height: MediaQuery.of(context).size.height - 72,
-                    width: MediaQuery.of(context).size.width,
-                    color: gray5,
-                    child: Stack(
-                      children: [
-                        if (state is MatchingProfileInitialState) !state.isStack
+                return Container(
+                  height: MediaQuery.of(context).size.height - 72,
+                  width: MediaQuery.of(context).size.width,
+                  color: gray5,
+                  child: Stack(
+                    children: [
+                      if (state is MatchingProfileInitialState)
+                        !state.isStack
                             ? ProfilesGridView(
-                              list: state.list,
-                            )
+                                list: state.list, isLoading: state is OnLoading)
                             : MatchingProfileStackView(
                                 list: state.list,
                               ),
-                        if (state is OnGotProfiles) !state.isStack
+                      if (state is OnGotProfiles)
+                        !state.isStack
                             ? ProfilesGridView(
-                              list: state.list,
-                            )
+                                list: state.list, isLoading: state is OnLoading)
                             : MatchingProfileStackView(
                                 list: state.list,
                               ),
-                        Container(
-                          margin: new EdgeInsets.symmetric(vertical: !isTopLevel ? 12 : 48.0),
-                          width: MediaQuery.of(context).size.width,
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Row(
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  BlocProvider.of<MatchingProfileBloc>(context).add(ToggleView());
-                                },
-                                child: Container(
-                                  height: 44,
-                                  width: 44,
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                      color: Colors.white.withOpacity(0.85),
-                                      borderRadius: BorderRadius.circular(6)),
-                                  child: SvgPicture.asset(
-                                    state.isStack
-                                        ? "images/stack.svg"
-                                        : "images/grid_view.svg",
-                                    color: kShadowColorForGrid,
-                                  ),
+                      Container(
+                        margin: new EdgeInsets.symmetric(
+                            vertical: !isTopLevel ? 12 : 48.0),
+                        width: MediaQuery.of(context).size.width,
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Row(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                BlocProvider.of<MatchingProfileBloc>(context)
+                                    .add(ToggleView());
+                              },
+                              child: Container(
+                                height: 44,
+                                width: 44,
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.85),
+                                    borderRadius: BorderRadius.circular(6)),
+                                child: SvgPicture.asset(
+                                  state.isStack
+                                      ? "images/grid_view.svg"
+                                      : "images/stack.svg",
+                                  color: kShadowColorForGrid,
                                 ),
                               ),
-                              SizedBox(
-                                width: 16,
-                              ),
-                              Expanded(
-                                child:  buildScreenHeader(
-                                        state.currentFilter,
-                                      ),
-                              ),
-                              SizedBox(
-                                width: 16,
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  var bloc = BlocProvider.of<MatchingProfileBloc>(
-                                      context);
-                                  showDialog(
-                                    barrierColor: Colors.black26,
-                                    context: context,
-                                    builder: (context) {
-                                      return FiltersDialog(
-                                        bloc: bloc,
-                                        isStack: state.isStack,
-                                      );
-                                    },
-                                  );
-                                },
-                                child: Container(
+                            ),
+                            SizedBox(
+                              width: 16,
+                            ),
+                            Expanded(
+                              child: !state.isStack
+                                  ? buildScreenHeader(
+                                      state.currentFilter,
+                                    )
+                                  : Container(height: 44),
+                            ),
+                            SizedBox(
+                              width: 16,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                var bloc = BlocProvider.of<MatchingProfileBloc>(
+                                    context);
+                                showDialog(
+                                  barrierColor: Colors.black26,
+                                  context: context,
+                                  builder: (context) {
+                                    return FiltersDialog(
+                                      bloc: bloc,
+                                      isStack: state.isStack,
+                                    );
+                                  },
+                                );
+                              },
+                              child: Container(
                                   height: 40,
                                   width: 40,
                                   decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(10)),
                                   child: Image.asset(
-                                      'images/icons/shuffle-icon.png'),
-                                ),
-                              )
-                            ],
-                          ),
+                                    state.currentFilter.asset,
+
+                                    // fit: BoxFit.contain,
+                                    height: 40.0,
+                                    width: 40.0,
+                                  )
+                                  // : 'images/icons/shuffle-icon.png'),
+                                  ),
+                            )
+                          ],
                         ),
-                        if (state is OnLoading) MmmWidgets.buildLoader(context, color: Colors.transparent)
-                      ],
-
-                    ),
-                  );
-
+                      ),
+                      if (state is OnLoading)
+                        // MmmWidgets.buildLoader(context,
+                        //     color: Colors.transparent)
+                        SingleChildScrollView(
+                          child: SkeletonLoader(
+                            builder: !state.isStack
+                                ? ProfilesGridView(
+                                    list: list, isLoading: state is OnLoading)
+                                : MatchingProfileStackView(
+                                    list: list,
+                                  ),
+                            //  ),
+                            items: 2,
+                            highlightColor: Colors.grey,
+                            direction: SkeletonDirection.ltr,
+                          ),
+                        )
+                    ],
+                  ),
+                );
               },
             );
           },
@@ -157,15 +177,17 @@ class MatchingProfileScreen extends StatelessWidget {
           border: Border.all(color: Color.fromARGB(174, 181, 178, 178))),
       child: Row(
         children: [
-          SvgPicture.asset(
+          Image.asset(
             filter.asset,
-            color: Colors.black,
+            // color: Colors.black,
             // fit: BoxFit.contain,
             height: 40.0,
             width: 40.0,
             // allowDrawingOutsideViewBox: false,
           ),
-          SizedBox(width: 12,),
+          SizedBox(
+            width: 12,
+          ),
           Flexible(
             child: Text(
               filter.label,
@@ -173,7 +195,8 @@ class MatchingProfileScreen extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.clip,
               softWrap: true,
-              style: TextStyle(  fontFamily: "MakeMyMarrySemiBold", color: kDark5),
+              style:
+                  TextStyle(fontFamily: "MakeMyMarrySemiBold", color: kDark5),
             ),
           ),
         ],
@@ -188,7 +211,8 @@ class MatchingProfileScreen extends StatelessWidget {
 }
 
 class FiltersDialog extends StatelessWidget {
-  const FiltersDialog({Key? key, required this.bloc, required this.isStack}) : super(key: key);
+  const FiltersDialog({Key? key, required this.bloc, required this.isStack})
+      : super(key: key);
 
   final MatchingProfileBloc bloc;
   final bool isStack;
@@ -211,7 +235,11 @@ class FiltersDialog extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ...ProfilesFilter.values
-                  .map((e) => FilterPopupTile(filter: e, bloc: this.bloc, isStack: this.isStack,))
+                  .map((e) => FilterPopupTile(
+                        filter: e,
+                        bloc: this.bloc,
+                        isStack: this.isStack,
+                      ))
                   .toList(),
             ],
           ),
@@ -220,7 +248,11 @@ class FiltersDialog extends StatelessWidget {
 }
 
 class FilterPopupTile extends StatelessWidget {
-  const FilterPopupTile({Key? key, required this.filter, required this.bloc, required this.isStack})
+  const FilterPopupTile(
+      {Key? key,
+      required this.filter,
+      required this.bloc,
+      required this.isStack})
       : super(key: key);
 
   final ProfilesFilter filter;
@@ -242,7 +274,7 @@ class FilterPopupTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(10)),
         child: Row(
           children: [
-            SvgPicture.asset(filter.asset),
+            Image.asset(filter.asset),
             SizedBox(
               width: 20,
             ),
@@ -289,15 +321,15 @@ extension ProfilesFilterExtension on ProfilesFilter {
   String get asset {
     switch (this) {
       case ProfilesFilter.recommendedProfile:
-        return "images/Check.svg";
+        return "images/recomendedprofiles.png";
       case ProfilesFilter.onlineMembers:
-        return "images/online.svg";
+        return "images/onlinemembers.png";
       case ProfilesFilter.premiumMembers:
-        return "images/Check.svg";
+        return "images/crown.png";
       case ProfilesFilter.profileVisitor:
-        return "images/prodile_visitor.svg";
+        return "images/profilevisitor.png";
       case ProfilesFilter.recentlyViewed:
-        return "images/Search.svg";
+        return "images/recentlyviewed.png";
     }
   }
 }

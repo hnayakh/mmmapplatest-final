@@ -1,3 +1,4 @@
+import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -80,17 +81,41 @@ class MyProfileBody extends StatelessWidget {
                               radius: MediaQuery.of(context).size.width * 0.122,
                               child: ClipOval(
                                   // clipper: Cu,
+
                                   child: profileDetails.images.length > 0 &&
                                           !profileDetails.images[0]
                                               .contains("addImage")
-                                      ? Image.network(profileDetails.images[0],
-                                          width: double.infinity,
-                                          fit: BoxFit.cover,
-                                          height: double.infinity,
-                                          errorBuilder: (context, obj, str) =>
-                                              Container(
-                                                  color: Colors.grey,
-                                                  child: Icon(Icons.error)))
+                                      ?
+                                      // child: Container(
+                                      ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(20.0),
+                                          child: InkWell(
+                                              onTap: () async {
+                                                print("enlarge photo");
+                                                final imageProvider =
+                                                    Image.network(profileDetails
+                                                            .images[0])
+                                                        .image;
+                                                showImageViewer(
+                                                    context, imageProvider,
+                                                    onViewerDismissed: () {
+                                                  print("dismissed");
+                                                });
+                                              },
+                                              child: Image.network(
+                                                  profileDetails.images[0],
+                                                  width: double.infinity,
+                                                  fit: BoxFit.cover,
+                                                  height: double.infinity,
+                                                  errorBuilder: (context, obj,
+                                                          str) =>
+                                                      Container(
+                                                          color: Colors.grey,
+                                                          child: Icon(
+                                                              Icons.error)))),
+                                        )
+                                      //)
                                       : Image.asset('images/human.jpg')),
                             ),
                           ),
@@ -261,9 +286,9 @@ class LifestyleInfoCard extends StatelessWidget {
                       Text(
                         'LifeStyle',
                         textAlign: TextAlign.left,
-                        style: TextStyle( fontFamily: 'MakeMyMarry', 
+                        style: TextStyle(
+                            fontFamily: 'MakeMyMarry',
                             color: Color.fromRGBO(164, 19, 60, 1),
-                            
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             height: 1.625),
@@ -354,9 +379,9 @@ class LifeStyleTile extends StatelessWidget {
                 Text(
                   lifestyle.label,
                   textAlign: TextAlign.left,
-                  style: TextStyle( fontFamily: 'MakeMyMarry', 
+                  style: TextStyle(
+                      fontFamily: 'MakeMyMarry',
                       color: Color.fromRGBO(18, 22, 25, 1),
-                      
                       fontSize: 16,
                       fontWeight: FontWeight.normal,
                       height: 1.625),
@@ -427,11 +452,11 @@ class InterestInfoCard extends StatelessWidget {
                           // ),
                           SizedBox(width: 10),
                           Text(
-                            'Interests',
+                            'Habits',
                             textAlign: TextAlign.left,
-                            style: TextStyle( fontFamily: 'MakeMyMarry', 
+                            style: TextStyle(
+                                fontFamily: 'MakeMyMarry',
                                 color: Color.fromRGBO(164, 19, 60, 1),
-                                
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 height: 1.625),
@@ -471,9 +496,9 @@ class InterestInfoCard extends StatelessWidget {
                     Text(
                       'Eating',
                       textAlign: TextAlign.left,
-                      style: TextStyle( fontFamily: 'MakeMyMarry', 
+                      style: TextStyle(
+                          fontFamily: 'MakeMyMarry',
                           color: Color.fromARGB(212, 0, 0, 0),
-                          
                           fontSize: 14,
                           fontWeight: FontWeight.normal,
                           height: 1.6666666666666667),
@@ -503,18 +528,18 @@ class InterestInfoCard extends StatelessWidget {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          Image.asset(
+                          SvgPicture.asset(
                             profileDetails != null
                                 ? profileDetails!.eatingHabit.name ==
                                         "Vegetarrian"
-                                    ? 'images/LeafyGreen.png'
+                                    ? 'images/Veg2.svg'
                                     : profileDetails!.eatingHabit.name ==
                                             "Nonvegetarrian"
-                                        ? 'images/chicken.png'
+                                        ? 'images/non veg.svg'
                                         : profileDetails!.eatingHabit.name ==
                                                 "Eggitarrian"
-                                            ? 'images/egggg.png'
-                                            : ""
+                                            ? 'images/egg.svg'
+                                            : "images/egg.svg"
                                 : "",
                             height: 28,
                             width: 28,
@@ -530,9 +555,9 @@ class InterestInfoCard extends StatelessWidget {
                                       ? profileDetails!.eatingHabit.name
                                       : "",
                                   textAlign: TextAlign.left,
-                                  style: TextStyle( fontFamily: 'MakeMyMarry', 
+                                  style: TextStyle(
+                                      fontFamily: 'MakeMyMarry',
                                       color: Color.fromRGBO(18, 22, 25, 1),
-                                      
                                       fontSize: 16,
                                       fontWeight: FontWeight.normal,
                                       height: 1.625),
@@ -552,9 +577,9 @@ class InterestInfoCard extends StatelessWidget {
                     Text(
                       'Smoking',
                       textAlign: TextAlign.left,
-                      style: TextStyle( fontFamily: 'MakeMyMarry', 
+                      style: TextStyle(
+                          fontFamily: 'MakeMyMarry',
                           color: Color.fromARGB(212, 0, 0, 0),
-                          
                           fontSize: 14,
                           letterSpacing:
                               0 /*percentages not used in flutter. defaulting to zero*/,
@@ -586,18 +611,18 @@ class InterestInfoCard extends StatelessWidget {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          Image.asset(
+                          SvgPicture.asset(
                               profileDetails != null
                                   ? profileDetails!.smokingHabit.name ==
                                           "Smoker"
-                                      ? 'images/cigarette.png'
+                                      ? 'images/smoke.svg'
                                       : profileDetails!.smokingHabit.name ==
                                               "NonSmoker"
-                                          ? 'images/nonsmokerr.png'
+                                          ? 'images/noSmoke.svg'
                                           : profileDetails!.smokingHabit.name ==
                                                   "Occasionally"
-                                              ? 'images/cigarette.png'
-                                              : ""
+                                              ? 'images/smoke.svg'
+                                              : "images/smoke.svg"
                                   : "",
                               height: 28,
                               width: 28),
@@ -612,9 +637,9 @@ class InterestInfoCard extends StatelessWidget {
                                       ? profileDetails!.smokingHabit.name
                                       : "",
                                   textAlign: TextAlign.left,
-                                  style: TextStyle( fontFamily: 'MakeMyMarry', 
+                                  style: TextStyle(
+                                      fontFamily: 'MakeMyMarry',
                                       color: Color.fromRGBO(18, 22, 25, 1),
-                                      
                                       fontSize: 16,
                                       fontWeight: FontWeight.normal,
                                       height: 1.625),
@@ -635,9 +660,9 @@ class InterestInfoCard extends StatelessWidget {
                     Text(
                       'Alcoholic',
                       textAlign: TextAlign.left,
-                      style: TextStyle( fontFamily: 'MakeMyMarry', 
+                      style: TextStyle(
+                          fontFamily: 'MakeMyMarry',
                           color: Color.fromARGB(212, 0, 0, 0),
-                          
                           fontSize: 14,
                           fontWeight: FontWeight.normal,
                           height: 1.6666666666666667),
@@ -667,19 +692,19 @@ class InterestInfoCard extends StatelessWidget {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          Image.asset(
+                          SvgPicture.asset(
                               profileDetails != null
                                   ? profileDetails!.drinkingHabit.name ==
                                           "Alcoholic"
-                                      ? 'images/Beer.png'
+                                      ? 'images/alcoholic.svg'
                                       : profileDetails!.drinkingHabit.name ==
                                               "Nonalcoholic"
-                                          ? 'images/nonalcoholiya.png'
+                                          ? 'images/non_alcoholic.svg'
                                           : profileDetails!
                                                       .drinkingHabit.name ==
                                                   "Occasionally"
-                                              ? 'images/Beer.png'
-                                              : ""
+                                              ? 'images/occasionally.svg'
+                                              : "images/occasionally.svg"
                                   : "",
                               height: 28,
                               width: 28),
@@ -693,9 +718,9 @@ class InterestInfoCard extends StatelessWidget {
                                       ? profileDetails!.drinkingHabit.name
                                       : "",
                                   textAlign: TextAlign.left,
-                                  style: TextStyle( fontFamily: 'MakeMyMarry', 
+                                  style: TextStyle(
+                                      fontFamily: 'MakeMyMarry',
                                       color: Color.fromRGBO(18, 22, 25, 1),
-                                      
                                       fontSize: 16,
                                       fontWeight: FontWeight.normal,
                                       height: 1.625),
@@ -721,9 +746,9 @@ class InterestInfoCard extends StatelessWidget {
                   Text(
                     'Hobbies',
                     textAlign: TextAlign.left,
-                    style: TextStyle( fontFamily: 'MakeMyMarry', 
+                    style: TextStyle(
+                        fontFamily: 'MakeMyMarry',
                         color: Color.fromARGB(212, 0, 0, 0),
-                        
                         fontSize: 14,
                         fontWeight: FontWeight.normal,
                         height: 1.6666666666666667),
@@ -800,9 +825,9 @@ class ProfileHobbyTile extends StatelessWidget {
                 Text(
                   hobby.label,
                   textAlign: TextAlign.left,
-                  style: TextStyle( fontFamily: 'MakeMyMarry', 
+                  style: TextStyle(
+                      fontFamily: 'MakeMyMarry',
                       color: Color.fromRGBO(18, 22, 25, 1),
-                      
                       fontSize: 16,
                       fontWeight: FontWeight.normal,
                       height: 1.625),
@@ -870,9 +895,9 @@ class ReligionInfoCard extends StatelessWidget {
                             Text(
                               'Religion',
                               textAlign: TextAlign.left,
-                              style: TextStyle( fontFamily: 'MakeMyMarry', 
+                              style: TextStyle(
+                                  fontFamily: 'MakeMyMarry',
                                   color: Color.fromRGBO(164, 19, 60, 1),
-                                  
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                   height: 1.625),
@@ -907,9 +932,9 @@ class ReligionInfoCard extends StatelessWidget {
                 Text(
                   'Religion',
                   textAlign: TextAlign.left,
-                  style: TextStyle( fontFamily: 'MakeMyMarry', 
+                  style: TextStyle(
+                      fontFamily: 'MakeMyMarry',
                       color: Color.fromRGBO(135, 141, 150, 1),
-                      
                       fontSize: 12,
                       fontWeight: FontWeight.normal,
                       height: 1.6666666666666667),
@@ -919,9 +944,9 @@ class ReligionInfoCard extends StatelessWidget {
                   child: Text(
                     profileDetails != null ? profileDetails!.religion : "",
                     textAlign: TextAlign.left,
-                    style: TextStyle( fontFamily: 'MakeMyMarry', 
+                    style: TextStyle(
+                        fontFamily: 'MakeMyMarry',
                         color: Color.fromRGBO(18, 22, 25, 1),
-                        
                         fontSize: 14,
                         fontWeight: FontWeight.normal,
                         height: 1.5714285714285714),
@@ -936,9 +961,9 @@ class ReligionInfoCard extends StatelessWidget {
                 Text(
                   'Caste',
                   textAlign: TextAlign.left,
-                  style: TextStyle( fontFamily: 'MakeMyMarry', 
+                  style: TextStyle(
+                      fontFamily: 'MakeMyMarry',
                       color: Color.fromRGBO(135, 141, 150, 1),
-                      
                       fontSize: 12,
                       letterSpacing:
                           0 /*percentages not used in flutter. defaulting to zero*/,
@@ -950,9 +975,9 @@ class ReligionInfoCard extends StatelessWidget {
                   child: Text(
                     profileDetails != null ? profileDetails!.cast : "",
                     textAlign: TextAlign.left,
-                    style: TextStyle( fontFamily: 'MakeMyMarry', 
+                    style: TextStyle(
+                        fontFamily: 'MakeMyMarry',
                         color: Color.fromRGBO(18, 22, 25, 1),
-                        
                         fontSize: 14,
                         fontWeight: FontWeight.normal,
                         height: 1.5714285714285714),
@@ -967,9 +992,9 @@ class ReligionInfoCard extends StatelessWidget {
                 Text(
                   'Mother Tongue',
                   textAlign: TextAlign.left,
-                  style: TextStyle( fontFamily: 'MakeMyMarry', 
+                  style: TextStyle(
+                      fontFamily: 'MakeMyMarry',
                       color: Color.fromRGBO(135, 141, 150, 1),
-                      
                       fontSize: 12,
                       letterSpacing:
                           0 /*percentages not used in flutter. defaulting to zero*/,
@@ -981,9 +1006,9 @@ class ReligionInfoCard extends StatelessWidget {
                   child: Text(
                     profileDetails != null ? profileDetails!.motherTongue : "",
                     textAlign: TextAlign.left,
-                    style: TextStyle( fontFamily: 'MakeMyMarry', 
+                    style: TextStyle(
+                        fontFamily: 'MakeMyMarry',
                         color: Color.fromRGBO(18, 22, 25, 1),
-                        
                         fontSize: 14,
                         letterSpacing:
                             0 /*percentages not used in flutter. defaulting to zero*/,
@@ -1000,9 +1025,9 @@ class ReligionInfoCard extends StatelessWidget {
                 Text(
                   'Gothra',
                   textAlign: TextAlign.left,
-                  style: TextStyle( fontFamily: 'MakeMyMarry', 
+                  style: TextStyle(
+                      fontFamily: 'MakeMyMarry',
                       color: Color.fromRGBO(135, 141, 150, 1),
-                      
                       fontSize: 12,
                       letterSpacing:
                           0 /*percentages not used in flutter. defaulting to zero*/,
@@ -1016,9 +1041,9 @@ class ReligionInfoCard extends StatelessWidget {
                         ? profileDetails.gothra
                         : "Not Applicable",
                     textAlign: TextAlign.left,
-                    style: TextStyle( fontFamily: 'MakeMyMarry', 
+                    style: TextStyle(
+                        fontFamily: 'MakeMyMarry',
                         color: Color.fromRGBO(18, 22, 25, 1),
-                        
                         fontSize: 14,
                         fontWeight: FontWeight.normal,
                         height: 1.5714285714285714),
@@ -1036,9 +1061,9 @@ class ReligionInfoCard extends StatelessWidget {
                 Text(
                   'Manglik',
                   textAlign: TextAlign.left,
-                  style: TextStyle( fontFamily: 'MakeMyMarry', 
+                  style: TextStyle(
+                      fontFamily: 'MakeMyMarry',
                       color: Color.fromRGBO(135, 141, 150, 1),
-                      
                       fontSize: 12,
                       letterSpacing:
                           0 /*percentages not used in flutter. defaulting to zero*/,
@@ -1050,9 +1075,9 @@ class ReligionInfoCard extends StatelessWidget {
                   child: Text(
                     profileDetails.manglik.label,
                     textAlign: TextAlign.left,
-                    style: TextStyle( fontFamily: 'MakeMyMarry', 
+                    style: TextStyle(
+                        fontFamily: 'MakeMyMarry',
                         color: Color.fromRGBO(18, 22, 25, 1),
-                        
                         fontSize: 14,
                         fontWeight: FontWeight.normal,
                         height: 1.5714285714285714),
@@ -1115,9 +1140,9 @@ class CareerInfoCard extends StatelessWidget {
                       Text(
                         'Career',
                         textAlign: TextAlign.left,
-                        style: TextStyle( fontFamily: 'MakeMyMarry', 
+                        style: TextStyle(
+                            fontFamily: 'MakeMyMarry',
                             color: Color.fromRGBO(164, 19, 60, 1),
-                            
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             height: 1.625),
@@ -1142,43 +1167,44 @@ class CareerInfoCard extends StatelessWidget {
             ),
           ),
           Container(
-
               child: Stack(children: <Widget>[
-                Text(
-                  'Occupation',
-                  textAlign: TextAlign.left,
-                  style: TextStyle( fontFamily: 'MakeMyMarry', 
-                      color: Color.fromRGBO(135, 141, 150, 1),
-                      
-                      fontSize: 12,
-                      fontWeight: FontWeight.normal,
-                      height: 1.6666666666666667),
+            Text(
+              'Occupation',
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                  fontFamily: 'MakeMyMarry',
+                  color: Color.fromRGBO(135, 141, 150, 1),
+                  fontSize: 12,
+                  fontWeight: FontWeight.normal,
+                  height: 1.6666666666666667),
+            ),
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 20, 20, 0),
+              child: Text(
+                profileDetails != null ? profileDetails!.occupation : "",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: 'MakeMyMarry',
+                  color: Color.fromRGBO(18, 22, 25, 1),
+                  fontSize: 14,
+                  fontWeight: FontWeight.normal,
+                  height: 1.5,
                 ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(0, 20, 20, 0),
-                  child: Text(
-                    profileDetails != null ? profileDetails!.occupation : "",
-                    textAlign: TextAlign.left,
-                    style: TextStyle( fontFamily: 'MakeMyMarry', 
-                      color: Color.fromRGBO(18, 22, 25, 1),
-                      
-                      fontSize: 14,
-                      fontWeight: FontWeight.normal,
-                      height: 1.5,
-                    ),
-                  ),
-                ),
-              ])),
-          SizedBox(height: 12,),
+              ),
+            ),
+          ])),
+          SizedBox(
+            height: 12,
+          ),
           Container(
             child: Stack(
               children: <Widget>[
                 Text(
                   'Annual Income',
                   textAlign: TextAlign.left,
-                  style: TextStyle( fontFamily: 'MakeMyMarry', 
+                  style: TextStyle(
+                      fontFamily: 'MakeMyMarry',
                       color: Color.fromRGBO(135, 141, 150, 1),
-                      
                       fontSize: 12,
                       letterSpacing:
                           0 /*percentages not used in flutter. defaulting to zero*/,
@@ -1190,9 +1216,9 @@ class CareerInfoCard extends StatelessWidget {
                   child: Text(
                     AppHelper.getStringFromEnum(profileDetails.annualIncome),
                     textAlign: TextAlign.left,
-                    style: TextStyle( fontFamily: 'MakeMyMarry', 
+                    style: TextStyle(
+                        fontFamily: 'MakeMyMarry',
                         color: Color.fromRGBO(18, 22, 25, 1),
-                        
                         fontSize: 14,
                         fontWeight: FontWeight.normal,
                         height: 1.5714285714285714),
@@ -1201,16 +1227,18 @@ class CareerInfoCard extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 12,),
+          SizedBox(
+            height: 12,
+          ),
           Container(
             child: Stack(
               children: <Widget>[
                 Text(
                   'Highest Education',
                   textAlign: TextAlign.left,
-                  style: TextStyle( fontFamily: 'MakeMyMarry', 
+                  style: TextStyle(
+                      fontFamily: 'MakeMyMarry',
                       color: Color.fromRGBO(135, 141, 150, 1),
-                      
                       fontSize: 12,
                       letterSpacing:
                           0 /*percentages not used in flutter. defaulting to zero*/,
@@ -1222,9 +1250,9 @@ class CareerInfoCard extends StatelessWidget {
                   child: Text(
                     profileDetails.highiestEducation,
                     textAlign: TextAlign.left,
-                    style: TextStyle( fontFamily: 'MakeMyMarry', 
+                    style: TextStyle(
+                        fontFamily: 'MakeMyMarry',
                         color: Color.fromRGBO(18, 22, 25, 1),
-                        
                         fontSize: 14,
                         letterSpacing:
                             0 /*percentages not used in flutter. defaulting to zero*/,
@@ -1235,16 +1263,18 @@ class CareerInfoCard extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 12,),
+          SizedBox(
+            height: 12,
+          ),
           Container(
             child: Stack(
               children: <Widget>[
                 Text(
                   'Current Location',
                   textAlign: TextAlign.left,
-                  style: TextStyle( fontFamily: 'MakeMyMarry', 
+                  style: TextStyle(
+                      fontFamily: 'MakeMyMarry',
                       color: Color.fromRGBO(135, 141, 150, 1),
-                      
                       fontSize: 12,
                       letterSpacing:
                           0 /*percentages not used in flutter. defaulting to zero*/,
@@ -1256,9 +1286,9 @@ class CareerInfoCard extends StatelessWidget {
                   child: Text(
                     "${profileDetails.country}, ${profileDetails.state}${profileDetails.city.isNotEmpty ? "," : ""} ${profileDetails.city}",
                     textAlign: TextAlign.left,
-                    style: TextStyle( fontFamily: 'MakeMyMarry', 
+                    style: TextStyle(
+                        fontFamily: 'MakeMyMarry',
                         color: Color.fromRGBO(18, 22, 25, 1),
-                        
                         fontSize: 14,
                         fontWeight: FontWeight.normal,
                         height: 1.5714285714285714),
@@ -1267,7 +1297,9 @@ class CareerInfoCard extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 12,),
+          SizedBox(
+            height: 12,
+          ),
         ],
       ),
     );
@@ -1328,9 +1360,9 @@ class FamilyInfoCard extends StatelessWidget {
                             Text(
                               'Family',
                               textAlign: TextAlign.left,
-                              style: TextStyle( fontFamily: 'MakeMyMarry', 
+                              style: TextStyle(
+                                  fontFamily: 'MakeMyMarry',
                                   color: Color.fromRGBO(164, 19, 60, 1),
-                                  
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                   height: 1.625),
@@ -1365,9 +1397,9 @@ class FamilyInfoCard extends StatelessWidget {
                 Text(
                   'Status',
                   textAlign: TextAlign.left,
-                  style: TextStyle( fontFamily: 'MakeMyMarry', 
+                  style: TextStyle(
+                      fontFamily: 'MakeMyMarry',
                       color: Color.fromRGBO(135, 141, 150, 1),
-                      
                       fontSize: 12,
                       fontWeight: FontWeight.normal,
                       height: 1.6666666666666667),
@@ -1378,9 +1410,9 @@ class FamilyInfoCard extends StatelessWidget {
                     AppHelper.getStringFromEnum(
                         profileDetails.familyAfluenceLevel),
                     textAlign: TextAlign.left,
-                    style: TextStyle( fontFamily: 'MakeMyMarry', 
+                    style: TextStyle(
+                        fontFamily: 'MakeMyMarry',
                         color: Color.fromRGBO(18, 22, 25, 1),
-                        
                         fontSize: 14,
                         fontWeight: FontWeight.normal,
                         height: 1.5714285714285714),
@@ -1395,9 +1427,9 @@ class FamilyInfoCard extends StatelessWidget {
                 Text(
                   'Type',
                   textAlign: TextAlign.left,
-                  style: TextStyle( fontFamily: 'MakeMyMarry', 
+                  style: TextStyle(
+                      fontFamily: 'MakeMyMarry',
                       color: Color.fromRGBO(135, 141, 150, 1),
-                      
                       fontSize: 12,
                       letterSpacing:
                           0 /*percentages not used in flutter. defaulting to zero*/,
@@ -1409,9 +1441,9 @@ class FamilyInfoCard extends StatelessWidget {
                   child: Text(
                     AppHelper.getStringFromEnum(profileDetails.familyType),
                     textAlign: TextAlign.left,
-                    style: TextStyle( fontFamily: 'MakeMyMarry', 
+                    style: TextStyle(
+                        fontFamily: 'MakeMyMarry',
                         color: Color.fromRGBO(18, 22, 25, 1),
-                        
                         fontSize: 14,
                         fontWeight: FontWeight.normal,
                         height: 1.5714285714285714),
@@ -1427,9 +1459,9 @@ class FamilyInfoCard extends StatelessWidget {
                 Text(
                   'Values',
                   textAlign: TextAlign.left,
-                  style: TextStyle( fontFamily: 'MakeMyMarry', 
+                  style: TextStyle(
+                      fontFamily: 'MakeMyMarry',
                       color: Color.fromRGBO(135, 141, 150, 1),
-                      
                       fontSize: 12,
                       letterSpacing:
                           0 /*percentages not used in flutter. defaulting to zero*/,
@@ -1441,9 +1473,9 @@ class FamilyInfoCard extends StatelessWidget {
                   child: Text(
                     AppHelper.getStringFromEnum(profileDetails.familyValues),
                     textAlign: TextAlign.left,
-                    style: TextStyle( fontFamily: 'MakeMyMarry', 
+                    style: TextStyle(
+                        fontFamily: 'MakeMyMarry',
                         color: Color.fromRGBO(18, 22, 25, 1),
-                        
                         fontSize: 14,
                         letterSpacing:
                             0 /*percentages not used in flutter. defaulting to zero*/,
@@ -1461,9 +1493,9 @@ class FamilyInfoCard extends StatelessWidget {
                 Text(
                   'Location',
                   textAlign: TextAlign.left,
-                  style: TextStyle( fontFamily: 'MakeMyMarry', 
+                  style: TextStyle(
+                      fontFamily: 'MakeMyMarry',
                       color: Color.fromRGBO(135, 141, 150, 1),
-                      
                       fontSize: 12,
                       letterSpacing:
                           0 /*percentages not used in flutter. defaulting to zero*/,
@@ -1480,9 +1512,9 @@ class FamilyInfoCard extends StatelessWidget {
                         ? "${profileDetails.familyCountry}, ${profileDetails.familyState}, ${profileDetails.familyCity}"
                         : "Not Mentioned",
                     textAlign: TextAlign.left,
-                    style: TextStyle( fontFamily: 'MakeMyMarry', 
+                    style: TextStyle(
+                        fontFamily: 'MakeMyMarry',
                         color: Color.fromRGBO(18, 22, 25, 1),
-                        
                         fontSize: 14,
                         fontWeight: FontWeight.normal,
                         height: 1.5714285714285714),
@@ -1498,9 +1530,9 @@ class FamilyInfoCard extends StatelessWidget {
                   Text(
                     'Father’s Occupation',
                     textAlign: TextAlign.left,
-                    style: TextStyle( fontFamily: 'MakeMyMarry', 
+                    style: TextStyle(
+                        fontFamily: 'MakeMyMarry',
                         color: Color.fromRGBO(135, 141, 150, 1),
-                        
                         fontSize: 12,
                         fontWeight: FontWeight.normal,
                         height: 1.6666666666666667),
@@ -1511,9 +1543,9 @@ class FamilyInfoCard extends StatelessWidget {
                       AppHelper.getStringFromEnum(
                           profileDetails.fatherOccupation),
                       textAlign: TextAlign.left,
-                      style: TextStyle( fontFamily: 'MakeMyMarry', 
+                      style: TextStyle(
+                          fontFamily: 'MakeMyMarry',
                           color: Color.fromRGBO(18, 22, 25, 1),
-                          
                           fontSize: 14,
                           letterSpacing:
                               0 /*percentages not used in flutter. defaulting to zero*/,
@@ -1530,9 +1562,9 @@ class FamilyInfoCard extends StatelessWidget {
                   Text(
                     'Mother’s Occupation',
                     textAlign: TextAlign.left,
-                    style: TextStyle( fontFamily: 'MakeMyMarry', 
+                    style: TextStyle(
+                        fontFamily: 'MakeMyMarry',
                         color: Color.fromRGBO(135, 141, 150, 1),
-                        
                         fontSize: 12,
                         letterSpacing:
                             0 /*percentages not used in flutter. defaulting to zero*/,
@@ -1545,9 +1577,9 @@ class FamilyInfoCard extends StatelessWidget {
                       AppHelper.getStringFromEnum(
                           profileDetails.motherOccupation),
                       textAlign: TextAlign.left,
-                      style: TextStyle( fontFamily: 'MakeMyMarry', 
+                      style: TextStyle(
+                          fontFamily: 'MakeMyMarry',
                           color: Color.fromRGBO(18, 22, 25, 1),
-                          
                           fontSize: 14,
                           letterSpacing:
                               0 /*percentages not used in flutter. defaulting to zero*/,
@@ -1558,16 +1590,15 @@ class FamilyInfoCard extends StatelessWidget {
                 ])),
             Container(
                 margin: EdgeInsets.fromLTRB(12, 5, 0, 0),
-
                 height: 46,
                 child: Stack(children: <Widget>[
                   Container(
                     child: Text(
                       'No. of Brother’s/Married',
                       textAlign: TextAlign.left,
-                      style: TextStyle( fontFamily: 'MakeMyMarry', 
+                      style: TextStyle(
+                          fontFamily: 'MakeMyMarry',
                           color: Color.fromRGBO(135, 141, 150, 1),
-                          
                           fontSize: 12,
                           fontWeight: FontWeight.normal,
                           height: 1.6666666666666667),
@@ -1580,9 +1611,9 @@ class FamilyInfoCard extends StatelessWidget {
                           ? "${profileDetails!.noOfBrother} Brother ${profileDetails!.brothersMarried} Married"
                           : "",
                       textAlign: TextAlign.left,
-                      style: TextStyle( fontFamily: 'MakeMyMarry', 
+                      style: TextStyle(
+                          fontFamily: 'MakeMyMarry',
                           color: Color.fromRGBO(18, 22, 25, 1),
-                          
                           fontSize: 14,
                           fontWeight: FontWeight.normal,
                           height: 1.5714285714285714),
@@ -1598,9 +1629,9 @@ class FamilyInfoCard extends StatelessWidget {
                     child: Text(
                       'No. of Sister’s/Married',
                       textAlign: TextAlign.left,
-                      style: TextStyle( fontFamily: 'MakeMyMarry', 
+                      style: TextStyle(
+                          fontFamily: 'MakeMyMarry',
                           color: Color.fromRGBO(135, 141, 150, 1),
-                          
                           fontSize: 12,
                           fontWeight: FontWeight.normal,
                           height: 1.6666666666666667),
@@ -1613,9 +1644,9 @@ class FamilyInfoCard extends StatelessWidget {
                           ? "${profileDetails!.noOfSister} Sister ${profileDetails!.sistersMarried} Married"
                           : "",
                       textAlign: TextAlign.left,
-                      style: TextStyle( fontFamily: 'MakeMyMarry', 
+                      style: TextStyle(
+                          fontFamily: 'MakeMyMarry',
                           color: Color.fromRGBO(18, 22, 25, 1),
-                          
                           fontSize: 14,
                           fontWeight: FontWeight.normal,
                           height: 1.5714285714285714),
@@ -1675,9 +1706,9 @@ class AboutCard extends StatelessWidget {
                       Text(
                         'About',
                         textAlign: TextAlign.left,
-                        style: TextStyle( fontFamily: 'MakeMyMarry', 
+                        style: TextStyle(
+                            fontFamily: 'MakeMyMarry',
                             color: Color.fromRGBO(164, 19, 60, 1),
-                            
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             height: 1.625),
@@ -1710,9 +1741,9 @@ class AboutCard extends StatelessWidget {
             child: Text(
               profileDetails.aboutmeMsg,
               textAlign: TextAlign.left,
-              style: TextStyle( fontFamily: 'MakeMyMarry', 
+              style: TextStyle(
+                  fontFamily: 'MakeMyMarry',
                   color: Color.fromRGBO(18, 22, 25, 1),
-                  
                   fontSize: 17,
                   fontWeight: FontWeight.normal,
                   height: 1.5714285714285714),
@@ -1780,9 +1811,9 @@ class BasicInfoCard extends StatelessWidget {
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                             softWrap: true,
-                            style: TextStyle( fontFamily: 'MakeMyMarry', 
+                            style: TextStyle(
+                                fontFamily: 'MakeMyMarry',
                                 color: Color.fromRGBO(164, 19, 60, 1),
-                                
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 height: 1.625),
@@ -1834,9 +1865,9 @@ class BasicInfoCard extends StatelessWidget {
                       Text(
                         '${AppHelper.getAgeFromDob(profileDetails.dateOfBirth)} yrs, ${AppHelper.getReadableDob(profileDetails.dateOfBirth)}',
                         textAlign: TextAlign.left,
-                        style: TextStyle( fontFamily: 'MakeMyMarry', 
+                        style: TextStyle(
+                            fontFamily: 'MakeMyMarry',
                             color: Color.fromRGBO(18, 22, 25, 1),
-                            
                             fontSize: 16,
                             letterSpacing:
                                 0 /*percentages not used in flutter. defaulting to zero*/,
@@ -1865,9 +1896,9 @@ class BasicInfoCard extends StatelessWidget {
                       Text(
                         profileDetails.occupation,
                         textAlign: TextAlign.left,
-                        style: TextStyle( fontFamily: 'MakeMyMarry', 
+                        style: TextStyle(
+                            fontFamily: 'MakeMyMarry',
                             color: Color.fromRGBO(18, 22, 25, 1),
-                            
                             fontSize: 16,
                             letterSpacing:
                                 0 /*percentages not used in flutter. defaulting to zero*/,
@@ -1898,9 +1929,9 @@ class BasicInfoCard extends StatelessWidget {
                         AppHelper.heightString(profileDetails.height) +
                             ' inches',
                         textAlign: TextAlign.left,
-                        style: TextStyle( fontFamily: 'MakeMyMarry', 
+                        style: TextStyle(
+                            fontFamily: 'MakeMyMarry',
                             color: Color.fromRGBO(18, 22, 25, 1),
-                            
                             fontSize: 16,
                             // fontWeight: FontWeight.bold,
                             height: 1.5714285714285714),
@@ -1931,9 +1962,9 @@ class BasicInfoCard extends StatelessWidget {
                             ? 'Profile managed by ${getProfileManagedBy(profileDetails!.relationship)}'
                             : "",
                         textAlign: TextAlign.left,
-                        style: TextStyle( fontFamily: 'MakeMyMarry', 
+                        style: TextStyle(
+                            fontFamily: 'MakeMyMarry',
                             color: Color.fromRGBO(18, 22, 25, 1),
-                            
                             fontSize: 16,
                             // fontWeight: FontWeight.bold,
                             height: 1.5714285714285714),

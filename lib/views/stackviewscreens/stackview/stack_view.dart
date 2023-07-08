@@ -85,11 +85,14 @@ class _StackViewScreenState extends State<StackViewScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: [
-                                  MmmWidgets.bottomBarUnits('images/Search.svg',
-                                      'Search', index == 0 ? kPrimary : gray3,
-                                      action: () {
-                                    setColor(0);
-                                  },),
+                                  MmmWidgets.bottomBarUnits(
+                                    'images/Search.svg',
+                                    'Search',
+                                    index == 0 ? kPrimary : gray3,
+                                    action: () {
+                                      setColor(0);
+                                    },
+                                  ),
                                   MmmWidgets.bottomBarUnits(
                                       'images/filter2.svg',
                                       'Filter',

@@ -33,7 +33,7 @@ dependencies:
   flutter_typeahead: ^4.1.1
   flutter_svg:
 
-  flutter_facebook_login: ^3.0.0
+  #flutter_facebook_login: ^3.0.0
   firebase_auth: ^4.2.1
   introduction_screen: ^3.1.1
   shared_preferences:
@@ -87,13 +87,16 @@ dependencies:
   google_maps_flutter: ^2.2.5
   geocoding: ^2.1.0
   geolocator: ^9.0.2
-
-  
+  easy_image_viewer: ^1.2.1
+  package_info_plus: any
+  skeleton_loader: ^2.0.0+4
 
 dev_dependencies:
   dart_code_metrics: ^5.6.0
   flutter_test:
     sdk: flutter
+    
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
