@@ -132,6 +132,7 @@ class _ScheduleMeetingTimeState extends State<ScheduleMeetingTime> {
                     bottomRight: Radius.circular(20))),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
+
               children: [
                 Row(
                   children: [
@@ -169,6 +170,7 @@ class _ScheduleMeetingTimeState extends State<ScheduleMeetingTime> {
                       fontWeight: FontWeight.bold),
                 ),
                 Spacer(),
+
                 const SizedBox(
                   height: 50,
                 ),
@@ -267,6 +269,7 @@ class _ScheduleMeetingTimeState extends State<ScheduleMeetingTime> {
                             ),
                           )),
                       SizedBox(height: 36,),
+
                     ],
                   ),
                 ),

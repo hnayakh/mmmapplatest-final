@@ -59,6 +59,7 @@ class _BookYourDate extends State<BookYourDate> {
   @override
   void initState() {
     if (widget.connection != null) {
+
       _focusedDay = widget.connection!.scheduleTime;
       _selectedDay = widget.connection!.scheduleTime;
     }
@@ -213,5 +214,6 @@ class _BookYourDate extends State<BookYourDate> {
         ),
       ),
     );
+
   }
 }

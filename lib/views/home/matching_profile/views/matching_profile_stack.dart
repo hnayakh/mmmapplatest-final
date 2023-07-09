@@ -131,6 +131,7 @@ class MatchingProfileStackView extends StatelessWidget {
                                                   ),
                                                   Text(
                                                     ", ${AppHelper.getAgeFromDob(item.dateOfBirth)} yrs,  ${AppHelper.heightString(item.height)}",
+
                                                     maxLines: 2,
                                                     overflow:
                                                         TextOverflow.ellipsis,

@@ -87,6 +87,7 @@ class _State extends State<VideoCallView> {
             }
           },
         );
+
       // }
     }
     _initEngine();
@@ -187,6 +188,7 @@ class _State extends State<VideoCallView> {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text(
                   "Something went wrong on our side. Please try again later."), backgroundColor: kError,));
+
           await Future.delayed(Duration(seconds: 2));
           Navigator.of(context).pop();
         }
@@ -194,6 +196,7 @@ class _State extends State<VideoCallView> {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
                 "Something went wrong on our side. Please try again later."), backgroundColor: kError,));
+
         await Future.delayed(Duration(seconds: 2));
         Navigator.of(context).pop();
       });
@@ -218,6 +221,7 @@ class _State extends State<VideoCallView> {
 
   Future<void> _leaveChannel() async {
     if(!pageLeft){
+
       context.navigate.pop();
       pageLeft = true;
     }
@@ -231,7 +235,6 @@ class _State extends State<VideoCallView> {
         .collection('activeCalls')
         .doc(widget.agoraToken?.notificationId)
         .update({'status': false});
-
   }
 
   Future<void> _switchCamera() async {
@@ -322,6 +325,7 @@ class _State extends State<VideoCallView> {
                       : "${(timeLeft ~/ 60).toString().padLeft(2, "0")}:${(timeLeft % 60).toString().padLeft(2, "0")}",
                   textAlign: TextAlign.center,
                   style: TextStyle( fontFamily: 'MakeMyMarry', 
+
                     color: Colors.black,
                     fontSize: 24,
                     fontWeight: FontWeight.w500,
@@ -344,6 +348,7 @@ class _State extends State<VideoCallView> {
                     _buildIconButton(
                         onTap: _switchMicrophone,
                         iconColor: Colors.white,
+
                         icon: !openMicrophone
                             ? Icons.mic
                             : Icons.mic_off_rounded),
@@ -351,6 +356,7 @@ class _State extends State<VideoCallView> {
                       width: 12,
                     ),
                     SvgPicture.asset('images/switch_camera_icon.svg',),
+
                     Spacer(),
                   ],
                 ),

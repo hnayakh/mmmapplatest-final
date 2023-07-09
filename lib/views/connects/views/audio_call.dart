@@ -145,12 +145,14 @@ class _State extends State<AudioCallView> {
         } else {
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text("Something went wrong on our side. Please try again later."), backgroundColor: kError,));
+
           await Future.delayed(Duration(seconds: 2));
           Navigator.of(context).pop();
         }
       }).onError((error, stackTrace) async {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text("Something went wrong on our side. Please try again later."), backgroundColor: kError,));
+
         await Future.delayed(Duration(seconds: 2));
         Navigator.of(context).pop();
       });

@@ -878,15 +878,43 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
             height: MediaQuery.of(context).size.height * 0.03,
             child: Row(
               children: [
-                Flexible(
-                  child: RichText(
-                    overflow: TextOverflow.ellipsis,
-                    strutStyle: StrutStyle(fontSize: 12.0),
-                    text: TextSpan(
+                // Flexible(
+                //   child: RichText(
+                //     overflow: TextOverflow.ellipsis,
+                //     strutStyle: StrutStyle(fontSize: 12.0),
+                //     text: TextSpan(
+                //       style: MmmTextStyles.heading5(textColor: kPrimary),
+                //       text: profileDetails.name,
+                //     ),
+                //   ),
+                // ),
+                ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minWidth: MediaQuery.of(context).size.width *
+                        0.06, // Set the minimum width here
+                    maxWidth: MediaQuery.of(context).size.width * 0.35,
+                  ),
+                  child: SizedBox(
+                    // width:
+                    //     MediaQuery.of(context)
+                    //             .size
+                    //             .width *
+                    //         0.35,
+                    child: Text(
+                      "${profileDetails.name}",
+                      maxLines: 1,
+                      softWrap: true,
+                      overflow: TextOverflow.ellipsis,
                       style: MmmTextStyles.heading5(textColor: kPrimary),
-                      text: profileDetails.name,
                     ),
                   ),
+                ),
+                Text(
+                  ", (${profileDetails.mmId})",
+                  maxLines: 1,
+                  softWrap: true,
+                  overflow: TextOverflow.ellipsis,
+                  style: MmmTextStyles.heading5(textColor: kPrimary),
                 ),
                 StreamBuilder<bool>(
                   stream: getIt<ChatRepo>().getOnlineStatus(profileDetails.id),
@@ -945,6 +973,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(25),
             topRight: Radius.circular(25)),
+
       ),
       context: context,
       builder: (context) => MmmWidgets.selectMeetWidget(context, profile),

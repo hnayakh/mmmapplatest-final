@@ -551,4 +551,31 @@ class MmmIcons {
       ),
     );
   }
+
+//Edit icon
+  static Container editIcon() {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+            colors: [kPrimary, kSecondary],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight),
+        shape: BoxShape.circle,
+      ),
+      child: ClipOval(
+        child: Material(
+          color: Colors.transparent,
+          child: Container(
+            height: 27,
+            width: 27,
+            // padding: EdgeInsets.fromLTRB(14, 13, 12, 13),
+            child: SvgPicture.asset(
+              "images/pencil.svg",
+              color: gray7,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }

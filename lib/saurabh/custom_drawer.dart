@@ -97,31 +97,32 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
               BlocProvider.of<AccountMenuBloc>(context).profileData;
 
           return Drawer(
-            width: 300,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+
+              width: 350,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                 Container(
                   // height: 200,
-                  padding: const EdgeInsets.only(top: 20.0 + 24, bottom: 20),
+                  padding: const EdgeInsets.only(top: 50.0, bottom: 40),
                   alignment: Alignment.center,
                   width: screenSize.width,
                   decoration: BoxDecoration(
                       // color: HexColor('C9184A'),
                       gradient: LinearGradient(
                           colors: [
-                            kPrimary,
-                            kSecondary,
 
+                            kSecondary,
+                            kPrimary,
                             // HexColor('FF758F'),
                             // HexColor('FF758F'),
                           ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
+                          begin: Alignment.topRight,
+                          end: Alignment.bottomCenter,
                           stops: const [0.0, 1.0]),
                       // FF758F
-                      borderRadius:
-                          BorderRadius.only(bottomRight: Radius.circular(32))),
+                      borderRadius: BorderRadius.only(
+                          bottomRight: Radius.circular(40))),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -163,7 +164,10 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                                   ),
                                 ),
                                 this.profileDetails != null &&
-                                        this.profileDetails?.activationStatus ==
+
+                                        this
+                                                .profileDetails
+                                                ?.activationStatus ==
                                             ProfileActivationStatus.Verified
                                     ? Icon(
                                         Icons.verified_user,
@@ -182,7 +186,7 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                context.navigate.pop();
+
                                 onEdit(this.basicUserId);
                               },
                               child: Row(
@@ -206,6 +210,7 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                     ],
                   ),
                 ),
+
                 Expanded(
                   child: ListView(
                     shrinkWrap: true,
@@ -224,6 +229,7 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                       InkWell(
                         onTap: () {
                           context.navigate.pop();
+
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -236,12 +242,14 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                           leading: SvgPicture.asset(
                             'images/Group22.svg',
                           ),
-                          text: "Partner Preference",
+
+                          text: "Partner Preferrence",
                         ),
                       ),
                       InkWell(
                         onTap: () {
                           context.navigate.pop();
+
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => Wallet(
                                     userRepository: userRepo,
@@ -400,6 +408,7 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
               ],
             ),
           );
+
         } else
           return Container();
       },

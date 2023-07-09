@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:makemymarry/locator.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
+
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
@@ -38,61 +39,62 @@ class _ConnectMainScreenState extends State<ConnectMainScreen>
         body: Container(
           child: Column(
             children: [
-              MmmButtons.appBarCurved('Connects', context: context),
-              // Container(
-              //   child: PreferredSize(
-              //     preferredSize:
-              //         Size.fromHeight(MediaQuery.of(context).size.height * 0.1),
-              //     child: Container(
-              //       child: AppBar(
-              //         leading: Container(
-              //           margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
-              //           decoration: BoxDecoration(
-              //               color: kLight2.withOpacity(0.60),
-              //               borderRadius: BorderRadius.all(Radius.circular(8)),
-              //               boxShadow: [
-              //                 MmmShadow.elevationbBackButton(
-              //                     shadowColor: kShadowColorForWhite)
-              //               ]),
-              //           child: ClipRRect(
-              //             borderRadius: BorderRadius.circular(8),
-              //             child: Material(
-              //               color: Colors.transparent,
-              //               child: InkWell(
-              //                 onTap: () {
-              //                   Navigator.of(context).pop();
-              //                 },
-              //                 child: Container(
-              //                     height: 22,
-              //                     width: 32,
-              //                     alignment: Alignment.center,
-              //                     child: SvgPicture.asset(
-              //                       'images/arrowLeft.svg',
-              //                       height: 12.45,
-              //                       width: 17.45,
-              //                       color: gray3,
-              //                     )),
-              //               ),
-              //             ),
-              //           ),
-              //         ),
-              //         toolbarHeight: MediaQuery.of(context).size.height * 0.108,
-              //         title: Text(
-              //           "Connects",
-              //           style: MmmTextStyles.heading4(textColor: kLight2),
-              //         ),
-              //         backgroundColor: Colors.transparent,
-              //         elevation: 0.0,
-              //       ),
-              //     ),
-              //   ),
-              //   decoration: BoxDecoration(
-              //     gradient: LinearGradient(
-              //         colors: [kPrimary, kSecondary],
-              //         begin: Alignment.centerLeft,
-              //         end: Alignment.centerRight),
-              //   ),
-              // ),
+
+              Container(
+                child: PreferredSize(
+                  preferredSize:
+                      Size.fromHeight(MediaQuery.of(context).size.height * 0.1),
+                  child: Container(
+                    child: AppBar(
+                      leading: Container(
+                        margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
+                        decoration: BoxDecoration(
+                            color: kLight2.withOpacity(0.60),
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                            boxShadow: [
+                              MmmShadow.elevationbBackButton(
+                                  shadowColor: kShadowColorForWhite)
+                            ]),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Container(
+                                  height: 22,
+                                  width: 32,
+                                  alignment: Alignment.center,
+                                  child: SvgPicture.asset(
+                                    'images/arrowLeft.svg',
+                                    height: 12.45,
+                                    width: 17.45,
+                                    color: gray3,
+                                  )),
+                            ),
+                          ),
+                        ),
+                      ),
+                      toolbarHeight: MediaQuery.of(context).size.height * 0.108,
+                      title: Text(
+                        "Connects",
+                        style: MmmTextStyles.heading4(textColor: kLight2),
+                      ),
+                      backgroundColor: Colors.transparent,
+                      elevation: 0.0,
+                    ),
+                  ],
+                ),
+
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [kPrimary, kSecondary],
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight),
+                ),
+              ),
               TabBar(
                 controller: tabController,
                 indicator: UnderlineTabIndicator(

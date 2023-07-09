@@ -11,7 +11,7 @@ import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/home/filter_screens/filter_screen.dart';
 import 'package:makemymarry/views/home/matching_profile/bloc/matching_profile_bloc.dart';
-
+import 'package:skeleton_loader/skeleton_loader.dart';
 import '../../../../utils/buttons.dart';
 import '../bloc/matching_profile_event.dart';
 import '../bloc/matching_profile_state.dart';
@@ -29,7 +29,7 @@ class MatchingProfileScreen extends StatelessWidget {
   final ProfilesFilter filter;
   final List<MatchingProfile> list;
   final bool isTopLevel;
-
+  final String selectedAsset = 'images/icons/shuffle-icon.png';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,16 +54,16 @@ class MatchingProfileScreen extends StatelessWidget {
                       if (state is MatchingProfileInitialState)
                         !state.isStack
                             ? ProfilesGridView(
-                                list: state.list,
-                              )
+
+                                list: state.list, isLoading: state is OnLoading)
                             : MatchingProfileStackView(
                                 list: state.list,
                               ),
                       if (state is OnGotProfiles)
                         !state.isStack
                             ? ProfilesGridView(
-                                list: state.list,
-                              )
+
+                                list: state.list, isLoading: state is OnLoading)
                             : MatchingProfileStackView(
                                 list: state.list,
                               ),
@@ -90,6 +90,7 @@ class MatchingProfileScreen extends StatelessWidget {
                                   !state.isStack
                                       ? "images/stack.svg"
                                       : "images/grid_view.svg",
+
                                   color: kShadowColorForGrid,
                                 ),
                               ),
@@ -98,9 +99,12 @@ class MatchingProfileScreen extends StatelessWidget {
                               width: 16,
                             ),
                             Expanded(
-                              child: buildScreenHeader(
-                                state.currentFilter,
-                              ),
+
+                              child: !state.isStack
+                                  ? buildScreenHeader(
+                                      state.currentFilter,
+                                    )
+                                  : Container(height: 44),
                             ),
                             SizedBox(
                               width: 16,
@@ -117,6 +121,7 @@ class MatchingProfileScreen extends StatelessWidget {
                                         bloc: bloc,
                                         isStack: state.isStack,
                                         currentFilter: state.currentFilter);
+
                                   },
                                 );
                               },
@@ -134,13 +139,29 @@ class MatchingProfileScreen extends StatelessWidget {
                                         : SvgPicture.asset(
                                             state.currentFilter.asset),
                               ),
+
                             )
                           ],
                         ),
                       ),
                       if (state is OnLoading)
-                        MmmWidgets.buildLoader(context,
-                            color: Colors.transparent)
+
+                        // MmmWidgets.buildLoader(context,
+                        //     color: Colors.transparent)
+                        SingleChildScrollView(
+                          child: SkeletonLoader(
+                            builder: !state.isStack
+                                ? ProfilesGridView(
+                                    list: list, isLoading: state is OnLoading)
+                                : MatchingProfileStackView(
+                                    list: list,
+                                  ),
+                            //  ),
+                            items: 2,
+                            highlightColor: Colors.grey,
+                            direction: SkeletonDirection.ltr,
+                          ),
+                        )
                     ],
                   ),
                 );
@@ -180,6 +201,7 @@ class MatchingProfileScreen extends StatelessWidget {
           SizedBox(
             width: 12,
           ),
+
           Flexible(
             child: Text(
               filter.label,
@@ -208,6 +230,7 @@ class FiltersDialog extends StatelessWidget {
       required this.bloc,
       required this.isStack,
       required this.currentFilter})
+
       : super(key: key);
 
   final MatchingProfileBloc bloc;
@@ -246,6 +269,7 @@ class FiltersDialog extends StatelessWidget {
             )),
       ],
     );
+
   }
 }
 
@@ -257,6 +281,7 @@ class FilterPopupTile extends StatelessWidget {
     required this.isStack,
     required this.selected,
   }) : super(key: key);
+
 
   final ProfilesFilter filter;
   final bool isStack;
@@ -286,6 +311,7 @@ margin: EdgeInsets.all(4),
                     width: 24,
                   )
                 : SvgPicture.asset(filter.asset),
+
             SizedBox(
               width: 20,
             ),
@@ -332,15 +358,15 @@ extension ProfilesFilterExtension on ProfilesFilter {
   String get asset {
     switch (this) {
       case ProfilesFilter.recommendedProfile:
-        return "images/recommended_icon.svg";
+        return "images/recomendedprofiles.png";
       case ProfilesFilter.onlineMembers:
-        return "images/online_icon.svg";
+        return "images/onlinemembers.png";
       case ProfilesFilter.premiumMembers:
-        return "images/crownicon_premium_member.png";
+        return "images/crown.png";
       case ProfilesFilter.profileVisitor:
-        return "images/visitors_icon.svg";
+        return "images/profilevisitor.png";
       case ProfilesFilter.recentlyViewed:
-        return "images/recents_icon.png";
+        return "images/recentlyviewed.png";
     }
   }
 }
