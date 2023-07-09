@@ -212,7 +212,7 @@ class _BioScreenState extends State<BioScreen> {
                                                                           }),
                                                                     ),
                                                                   )
-                                                                : addImageButton(),
+                                                                : this.localImagePaths.length < 11 ? addImageButton() : SizedBox(),
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .circular(
@@ -299,7 +299,7 @@ class _BioScreenState extends State<BioScreen> {
                                               }
                                             },
                                             itemCount:
-                                                this.localImagePaths.length,
+                                            this.localImagePaths.length > 10 ? 10 : this.localImagePaths.length,
                                           )),
                                         ]),
                                   ),

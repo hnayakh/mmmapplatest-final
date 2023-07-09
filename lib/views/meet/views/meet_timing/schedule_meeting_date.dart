@@ -56,10 +56,9 @@ class _BookYourDate extends State<BookYourDate> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay = DateTime.now();
 
-
   @override
   void initState() {
-    if(widget.connection != null){
+    if (widget.connection != null) {
       _focusedDay = widget.connection!.scheduleTime;
       _selectedDay = widget.connection!.scheduleTime;
     }
@@ -69,142 +68,150 @@ class _BookYourDate extends State<BookYourDate> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-            margin: const EdgeInsets.only(top: 40, left: 5),
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-              topRight: Radius.circular(20),
-              topLeft: Radius.circular(20),
-            )),
-            child: Column(children: [
-              Row(
-                children: [
-                  InkWell(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: ShaderMask(
-                        shaderCallback: (bounds) => RadialGradient(
-                          center: Alignment.center,
-                          radius: 0.5,
-                          colors: [kPrimary, kSecondary],
-                          tileMode: TileMode.mirror,
-                        ).createShader(bounds),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 12.0, top: 15, right: 12),
-                          child: SvgPicture.asset(
-                            'images/leftArrow.svg',
-                            height: 24,
-                            width: 24,
-                          ),
+      body: Container(
+        margin: const EdgeInsets.only(top: 40, left: 5),
+        decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
+          topRight: Radius.circular(20),
+          topLeft: Radius.circular(20),
+        )),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                InkWell(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: ShaderMask(
+                      shaderCallback: (bounds) => RadialGradient(
+                        center: Alignment.center,
+                        radius: 0.5,
+                        colors: [kPrimary, kSecondary],
+                        tileMode: TileMode.mirror,
+                      ).createShader(bounds),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 12.0, top: 15, right: 12),
+                        child: SvgPicture.asset(
+                          'images/leftArrow.svg',
+                          height: 24,
+                          width: 24,
                         ),
-                      )),
-                ],
-              ),
-              // Choose Your Type
-              const SizedBox(
-                width: 350,
-                child: Text(
-                  'Book your Date',
-                  style: TextStyle( fontFamily: 'MakeMyMarry', fontSize: 18, height: 3),
-                ),
-              ),
-              Column(
-                children: [
-                  Container(
-                    child: TableCalendar(
-                      firstDay: DateTime.now(),
-                      lastDay: DateTime(3000),
-                      focusedDay: _focusedDay,
-                      calendarFormat: _calendarFormat,
-                      startingDayOfWeek: StartingDayOfWeek.monday,
-                      rowHeight: 40,
-                      daysOfWeekHeight: 20,
-                      headerStyle: const HeaderStyle(
-                        formatButtonVisible: false,
                       ),
-                      calendarStyle: const CalendarStyle(
-                          selectedDecoration: BoxDecoration(
-                              color: kPrimary, shape: BoxShape.circle)),
-                      onDaySelected: (selectedDay, focusedDay) {
-                        if (!isSameDay(_selectedDay, selectedDay)) {
-                          setState(() {
-                            _selectedDay = selectedDay;
-                            _focusedDay = selectedDay;
-                          });
-                        }
-                      },
-                      selectedDayPredicate: (day) {
-                        return isSameDay(_selectedDay, day);
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Row(
-                      children: [
-                        Expanded(
+                    )),
+              ],
+            ),
 
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                              Navigator.pop(context);
-                            },
-                            // ignore: sort_child_properties_last
-                            child: const Text(
-                              'Cancel',
-                              style: TextStyle( fontFamily: 'MakeMyMarry',
-                                  //fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.grey,
-                              shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.circular(10), // <-- Radius
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              context.navigate.push(
-                                  ScheduleMeetingTime.getRoute(
-                                      meetType: widget.meetType,
-                                      address: widget.address,
-                                      latLng: widget.latLng,
-                                      profileDetails: widget.profileDetails,
-                                      connection: widget.connection,
-                                      selectedDate: _selectedDay));
-                            },
-                            // ignore: sort_child_properties_last
-                            child: const Text(
-                              'Next',
-                              style: TextStyle( fontFamily: 'MakeMyMarry',
-                                  //fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              primary: kPrimary,
-                              shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.circular(10), // <-- Radius
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
+            // Choose Your Type
+            Text(
+              'Book your Date',
+              style: TextStyle(
+                  fontFamily: 'MakeMyMarry', fontSize: 18, height: 3),
+            ),
+            Spacer(),
+            Column(
+              children: [
+                Container(
+                  child: TableCalendar(
+                    firstDay: DateTime.now(),
+                    lastDay: DateTime(3000),
+                    focusedDay: _focusedDay,
+                    calendarFormat: _calendarFormat,
+                    startingDayOfWeek: StartingDayOfWeek.monday,
+                    rowHeight: 40,
+                    daysOfWeekHeight: 20,
+                    headerStyle: const HeaderStyle(
+                      formatButtonVisible: false,
                     ),
+                    calendarStyle: const CalendarStyle(
+                        selectedDecoration: BoxDecoration(
+                            color: kPrimary, shape: BoxShape.circle)),
+                    onDaySelected: (selectedDay, focusedDay) {
+                      if (!isSameDay(_selectedDay, selectedDay)) {
+                        setState(() {
+                          _selectedDay = selectedDay;
+                          _focusedDay = selectedDay;
+                        });
+                      }
+                    },
+                    selectedDayPredicate: (day) {
+                      return isSameDay(_selectedDay, day);
+                    },
                   ),
-                ],
-              )
-            ])));
+                ),
+                const SizedBox(height: 30),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                          },
+                          // ignore: sort_child_properties_last
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(
+                                fontFamily: 'MakeMyMarry',
+                                //fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.grey,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(10), // <-- Radius
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            context.navigate.push(ScheduleMeetingTime.getRoute(
+                                meetType: widget.meetType,
+                                address: widget.address,
+                                latLng: widget.latLng,
+                                profileDetails: widget.profileDetails,
+                                connection: widget.connection,
+                                selectedDate: _selectedDay));
+                          },
+                          // ignore: sort_child_properties_last
+                          child: const Text(
+                            'Next',
+                            style: TextStyle(
+                                fontFamily: 'MakeMyMarry',
+                                //fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            primary: kPrimary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(10), // <-- Radius
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 36,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

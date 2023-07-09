@@ -410,7 +410,7 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                                   child: Image.network('$image',
                                       width: double.infinity,
                                       height: double.infinity,
-                                      fit: BoxFit.fill,
+                                      fit: BoxFit.cover,
                                       errorBuilder: (context, obj, str) =>
                                           Container(
                                               color: Colors.grey,
@@ -439,10 +439,10 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                     Container(
                       alignment: Alignment.center,
                       // width: 900.0,
-                      margin: const EdgeInsets.all(20.0),
-                      padding: const EdgeInsets.all(3.0),
+                      margin: const EdgeInsets.symmetric(vertical: 16.0),
+                      padding: const EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
-                        color: Color(0xffF0EFF5),
+                        color: Colors.white,
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
                           color: Color(0xffDDE1E6),
@@ -461,9 +461,13 @@ class MatchingPercentageScreenState extends State<MatchingPercentageScreen> {
                           SizedBox(
                             height: 20,
                           ),
-                          Center(
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12)
+                            ),
+                            clipBehavior: Clip.hardEdge,
                             child: LinearProgressIndicator(
-                              backgroundColor: Colors.grey.shade400,
+                              backgroundColor: Color(0xffFFC2CD),
                               minHeight: 7,
                               value: percent.toDouble() / 100.0,
                               semanticsLabel: 'Linear progress indicator',

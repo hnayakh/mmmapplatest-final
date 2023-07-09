@@ -131,18 +131,16 @@ class MmmWidgets {
 
   static Container buildLoader2(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      color: Colors.black.withOpacity(0.55),
+      // height: MediaQuery.of(context).size.height,
+      // width: MediaQuery.of(context).size.width,
+      color: Colors.transparent,
       child: Center(
-        child: Card(
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 64),
-            child: Image.asset(
-              "images/app_loader4.gif",
-              width: 128,
-              height: 96,
-            ),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 64),
+          child: Image.asset(
+            "images/app_loader4.gif",
+            width: 128,
+            height: 96,
           ),
         ),
       ),

@@ -43,6 +43,7 @@ class FamilyDetailsBloc extends Bloc<FamilyDetailsEvent, FamilyDetailState> {
     }
     if (event is ChangeNoOfBrothers) {
       this.noOfBrothers += event.change;
+      brotherMarried = 0;
       if (noOfBrothers < 0) {
         this.noOfBrothers = 0;
       }
@@ -56,6 +57,7 @@ class FamilyDetailsBloc extends Bloc<FamilyDetailsEvent, FamilyDetailState> {
     }
     if (event is ChangeNoOfSisters) {
       this.noOfSister += event.change;
+      sistersMarried = 0;
       if (noOfSister < 0) {
         this.noOfSister = 0;
       }

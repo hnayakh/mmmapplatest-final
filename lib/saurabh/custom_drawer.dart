@@ -89,38 +89,39 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
           BlocProvider.of<AccountMenuBloc>(context).add(FetchMyProfile());
         }
         if (state is OnLoading) {
-          return Scaffold(
-            body: MmmWidgets.buildLoader2(context),
+          return Material(
+            child: MmmWidgets.buildLoader2(context),
           );
         } else if (state is OnGotProfile) {
           this.profileDetails =
               BlocProvider.of<AccountMenuBloc>(context).profileData;
 
           return Drawer(
-              width: 350,
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+            width: 300,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 Container(
                   // height: 200,
-                  padding: const EdgeInsets.only(top: 50.0, bottom: 40),
+                  padding: const EdgeInsets.only(top: 20.0 + 24, bottom: 20),
                   alignment: Alignment.center,
                   width: screenSize.width,
                   decoration: BoxDecoration(
                       // color: HexColor('C9184A'),
                       gradient: LinearGradient(
                           colors: [
-                            kSecondary,
                             kPrimary,
+                            kSecondary,
+
                             // HexColor('FF758F'),
                             // HexColor('FF758F'),
                           ],
-                          begin: Alignment.topRight,
-                          end: Alignment.bottomCenter,
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
                           stops: const [0.0, 1.0]),
                       // FF758F
-                      borderRadius: BorderRadius.only(
-                          bottomRight: Radius.circular(40))),
+                      borderRadius:
+                          BorderRadius.only(bottomRight: Radius.circular(32))),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -162,9 +163,7 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                                   ),
                                 ),
                                 this.profileDetails != null &&
-                                        this
-                                                .profileDetails
-                                                ?.activationStatus ==
+                                        this.profileDetails?.activationStatus ==
                                             ProfileActivationStatus.Verified
                                     ? Icon(
                                         Icons.verified_user,
@@ -183,6 +182,7 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                             ),
                             GestureDetector(
                               onTap: () {
+                                context.navigate.pop();
                                 onEdit(this.basicUserId);
                               },
                               child: Row(
@@ -206,13 +206,24 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                     ],
                   ),
                 ),
-
                 Expanded(
                   child: ListView(
                     shrinkWrap: true,
                     children: [
                       InkWell(
                         onTap: () {
+                          context.navigate.pop();
+                          onEdit(this.basicUserId);
+                        },
+                        child: customListTile(
+                          leading: SvgPicture.asset(
+                              "images/clarity_avatar-solid.svg"),
+                          text: "My Profile",
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          context.navigate.pop();
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -225,11 +236,12 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                           leading: SvgPicture.asset(
                             'images/Group22.svg',
                           ),
-                          text: "Partner Preferrence",
+                          text: "Partner Preference",
                         ),
                       ),
                       InkWell(
                         onTap: () {
+                          context.navigate.pop();
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => Wallet(
                                     userRepository: userRepo,
@@ -243,12 +255,13 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                         ),
                       ),
                       InkWell(
-                        onTap: (() {
+                        onTap: () {
+                          context.navigate.pop();
                           Navigator.of(context).push(
                             MaterialPageRoute(
                                 builder: (context) => MeetStatusScreen()),
                           );
-                        }),
+                        },
                         child: customListTile(
                           leading: SvgPicture.asset("images/Group3764.svg"),
                           text: "Meet",
@@ -256,6 +269,7 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                       ),
                       InkWell(
                         onTap: () {
+                          context.navigate.pop();
                           Navigator.of(context).push(
                             MaterialPageRoute(
                                 builder: (context) => Interests(
@@ -270,6 +284,7 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                       ),
                       InkWell(
                         onTap: () {
+                          context.navigate.pop();
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => ConnectMainScreen()));
                         },
@@ -280,36 +295,25 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => ContactSupportScreen(
-                                  userRepository: userRepo)));
-                        },
-                        child: customListTile(
-                          leading: SvgPicture.asset("images/Group3756.svg"),
-                          text: "Contact Support",
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
+                          context.navigate.pop();
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => BlocProvider(
-                                    create: (context) => ProfileViewBloc(
-                                        UserRepository(), ProfileDetails()),
-                                    child: SearchScreen(
-                                      list: [],
-                                      onlineMembersList: [],
-                                      premiumList: [],
-                                      profileVisitorList: [],
-                                      recentViewList: [],
-                                      searchList: [],
-                                      userRepository: userRepo,
-                                      // key: Key,
-                                    ),
-                                  )));
+                                create: (context) => ProfileViewBloc(
+                                    UserRepository(), ProfileDetails()),
+                                child: SearchScreen(
+                                  list: [],
+                                  onlineMembersList: [],
+                                  premiumList: [],
+                                  profileVisitorList: [],
+                                  recentViewList: [],
+                                  searchList: [],
+                                  userRepository: userRepo,
+                                  // key: Key,
+                                ),
+                              )));
                         },
                         child: customListTile(
-                          leading:
-                              SvgPicture.asset("images/serachById.svg"),
+                          leading: Icon(Icons.search, color: kShadowColorForPink,),
                           // Icon(
                           //   Icons.person,
                           //   color: primaryColor,
@@ -319,6 +323,20 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                       ),
                       InkWell(
                         onTap: () {
+                          context.navigate.pop();
+                          Navigator.of(context).push(
+                              BlockedUsers.getRoute(userRepository: userRepo));
+                        },
+                        child: customListTile(
+                          leading: SvgPicture.asset(
+                              'images/blocked_profile_icon.svg'),
+                          text: "Blocked Profile",
+                        ),
+                      ),
+
+                      InkWell(
+                        onTap: () {
+                          context.navigate.pop();
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => ReferFriendScreen()));
                         },
@@ -327,54 +345,61 @@ class AppDrawerScreenState extends State<AppDrawerScreen> {
                           text: "Refer & earn",
                         ),
                       ),
+                      // InkWell(
+                      //   onTap: () {
+                      //
+                      //   },
+                      //   child: customListTile(
+                      //     leading: SvgPicture.asset("images/success_stories_icon.svg"),
+                      //     text: "Success Stories",
+                      //   ),
+                      // ),
                       InkWell(
                         onTap: () {
+                          context.navigate.pop();
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) =>
                                   SettingScreen(userRepository: userRepo)));
                         },
                         child: customListTile(
-                          leading: SvgPicture.asset(
-                              "images/cisettingsfilled.svg"),
-                          text: "Setting",
-                        ),
-                      ),
-                      customListTile(
-                        leading: SvgPicture.asset(
-                            "images/iconoir_headset-help.svg"),
-                        text: "Help",
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(BlockedUsers.getRoute(
-                              userRepository: userRepo));
-                        },
-                        child: customListTile(
-                          leading: SvgPicture.asset(
-                              "images/clarity_avatar-solid.svg"),
-                          text: "Blocked Profile",
+                          leading:
+                          SvgPicture.asset("images/cisettingsfilled.svg"),
+                          text: "Account & Settings",
                         ),
                       ),
                       InkWell(
                         onTap: () {
-                          FirebaseMessaging.instance.deleteToken();
-                          BlocProvider.of<AppBloc>(context)
-                              .updateOnlineStatus(false);
-                          BlocProvider.of<AppBloc>(context)
-                              .add(SignOutEvent());
-                          _deleteAppDir().then((value) =>
-                              Navigator.of(context)
-                                  .pushReplacement(SignInPage.getRoute()));
+                          context.navigate.pop();
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ContactSupportScreen(
+                                  userRepository: userRepo)));
                         },
                         child: customListTile(
-                          leading: SvgPicture.asset("images/logout.svg"),
-                          text: "Sign out",
+                          leading: SvgPicture.asset("images/iconoir_headset-help.svg"),
+                          text: "Help and Support",
                         ),
-                      )
+                      ),
+                      // InkWell(
+                      //   onTap: () {
+                      //     context.navigate.pop();
+                      //     FirebaseMessaging.instance.deleteToken();
+                      //     BlocProvider.of<AppBloc>(context)
+                      //         .updateOnlineStatus(false);
+                      //     BlocProvider.of<AppBloc>(context).add(SignOutEvent());
+                      //     _deleteAppDir().then((value) => Navigator.of(context)
+                      //         .pushReplacement(SignInPage.getRoute()));
+                      //   },
+                      //   child: customListTile(
+                      //     leading: SvgPicture.asset("images/logout.svg"),
+                      //     text: "Sign out",
+                      //   ),
+                      // )
                     ],
                   ),
                 )
-              ]));
+              ],
+            ),
+          );
         } else
           return Container();
       },

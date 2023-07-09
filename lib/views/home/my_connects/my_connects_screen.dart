@@ -67,7 +67,7 @@ class MyConnectsScreenState extends State<MyConnectsScreen>
               Container(
                 child: Column(
                   children: [
-                    // MmmButtons.appBarCurved('Connects', context: context),
+
                     Container(
                       child: PreferredSize(
                           preferredSize: Size.fromHeight(74),

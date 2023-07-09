@@ -42,7 +42,7 @@ class _MeetStatusScreenState extends State<MeetStatusScreen>
         child: Container(
           child: Column(
             children: [
-              MmmButtons.appBarCurved("Meets"),
+              MmmButtons.appBarCurved('Meets', context: context),
               TabBar(
                 controller: tabController,
                 indicator: UnderlineTabIndicator(
@@ -84,16 +84,21 @@ class _MeetStatusScreenState extends State<MeetStatusScreen>
                 ],
               ),
               BlocBuilder<MeetListBloc, MeetListState>(
-                builder: (context,state) {
-                  return state.viewState == ViewState.loading ? MmmWidgets.buildLoader(context) :Expanded(
-                    child: TabBarView(
-                      controller: tabController,
-                      physics: NeverScrollableScrollPhysics(),
-                      children: [MSentScreen(), MReceivedScreen(), MAcceptedScreen()],
-                    ),
-                  );
-                }
-              )
+                  builder: (context, state) {
+                return state.viewState == ViewState.loading
+                    ? MmmWidgets.buildLoader(context)
+                    : Expanded(
+                        child: TabBarView(
+                          controller: tabController,
+                          physics: NeverScrollableScrollPhysics(),
+                          children: [
+                            MSentScreen(),
+                            MReceivedScreen(),
+                            MAcceptedScreen()
+                          ],
+                        ),
+                      );
+              })
             ],
           ),
         ),

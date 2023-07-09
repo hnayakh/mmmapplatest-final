@@ -71,10 +71,30 @@ class ProfilesGridView extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    "${item.name}, ${AppHelper.getAgeFromDob(item.dateOfBirth)} yrs",
-                                    style: MmmTextStyles.heading6(
-                                        textColor: gray6),
+                                  Row(
+                                    children: [
+                                      Flexible(
+                                        fit: FlexFit.loose,
+                                        child: Text(
+                                          "${item.name}",
+                                          maxLines: 1,
+                                          softWrap: true,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: MmmTextStyles.heading6(
+                                              textColor: gray6),
+                                        ),
+                                      ),
+                                      Flexible(
+                                        child: Text(
+                                          ", ${AppHelper.getAgeFromDob(item.dateOfBirth)} yrs",
+                                          maxLines: 1,
+                                          softWrap: true,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: MmmTextStyles.heading6(
+                                              textColor: gray6),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                   Row(
                                     children: [

@@ -1807,7 +1807,10 @@ class MmmButtons {
         Container(
           height: 66,
           decoration: BoxDecoration(
-            color: kWhite,
+            gradient: LinearGradient(
+                colors: [kPrimary, kSecondary],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight) ,
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               MmmShadow.filterButton(),
@@ -1828,13 +1831,13 @@ class MmmButtons {
                       Text(
                         hintText,
                         textScaleFactor: 1.0,
-                        style: MmmTextStyles.bodyMedium(textColor: kDark5),
+                        style: MmmTextStyles.bodyMedium(textColor: kWhite),
                       ),
                       SvgPicture.asset(
                         'images/rightArrow.svg',
                         width: 24,
                         height: 24,
-                        color: gray3,
+                        color: kWhite,
                         fit: BoxFit.cover,
                       ),
                     ],

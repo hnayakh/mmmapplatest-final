@@ -78,8 +78,9 @@ class _WalletScreenState extends State<WalletScreen> {
                   height: 16,
                 ),
                 Text(
-                  'Unlock your happiness \n           per connects',
+                  'Unlock your happiness\nper connects',
                   textScaleFactor: 1.0,
+                  textAlign: TextAlign.center,
                   style: MmmTextStyles.heading4(textColor: kDark5),
                 ),
                 SizedBox(
@@ -94,7 +95,7 @@ class _WalletScreenState extends State<WalletScreen> {
                     gradient: MmmDecorations.primaryGradient(),
                   ),
                   child: SvgPicture.asset(
-                    'images/Gift.svg',
+                    'images/wallet_icon.svg',
                     color: kLight4,
                   ),
                 ),
@@ -103,25 +104,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 ),
                 Row(
                   children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.1,
-                    ),
-                    SvgPicture.asset('images/Check.svg'),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      'Unlimited calls per connect',
-                      textScaleFactor: 1.0,
-                      style: MmmTextStyles.bodySmall(textColor: gray3),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.1,
-                    ),
+
                     SvgPicture.asset('images/Check.svg'),
                     SizedBox(
                       width: 10,
@@ -135,17 +118,33 @@ class _WalletScreenState extends State<WalletScreen> {
                 ),
                 Row(
                   children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.1,
-                    ),
+
                     SvgPicture.asset('images/Check.svg'),
                     SizedBox(
                       width: 10,
                     ),
-                    Text(
-                      'Unlimited meets per connect',
-                      textScaleFactor: 1.0,
-                      style: MmmTextStyles.bodySmall(textColor: gray3),
+                    Flexible(
+                      child: Text(
+                        'Easily arrange limitless virtual or in-person meetings.',
+                        textScaleFactor: 1.0,
+                        style: MmmTextStyles.bodySmall(textColor: gray3),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+
+                    SvgPicture.asset('images/Check.svg'),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Flexible(
+                      child: Text(
+                        'Enjoy audio or video calls without the need for contact sharing.',
+                        textScaleFactor: 1.0,
+                        style: MmmTextStyles.bodySmall(textColor: gray3),
+                      ),
                     ),
                   ],
                 ),
@@ -158,32 +157,40 @@ class _WalletScreenState extends State<WalletScreen> {
                   padding: EdgeInsets.fromLTRB(16, 32, 16, 16),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    gradient: MmmDecorations.primaryGradient(),
-                    boxShadow: [MmmShadow.elevation3()],
+                    color: kLight2,
+                    boxShadow: [MmmShadow.elevation3(shadowColor: Color(0xffFD0051))],
                   ),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        'Number of connects available',
+                        'No. of connects available',
                         textScaleFactor: 1.0,
-                        style: MmmTextStyles.bodyMedium(textColor: kLight2),
+                        style: MmmTextStyles.bodyRegular(textColor: kTextColor),
                       ),
                       SizedBox(
-                        height: 16,
+                        height: 12,
                       ),
-                      Text(
-                        '$balance Connects',
-                        textScaleFactor: 1.0,
-                        style: MmmTextStyles.heading3(textColor: kLight2),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '${balance.toString().padLeft(2, '0')}',
+                            textScaleFactor: 1.0,
+                            style: MmmTextStyles.heading3(textColor: kPrimaryHeart),
+                          ),
+                          SizedBox(width: 4,),
+                          SvgPicture.asset('images/connect_count_icon.svg')
+                        ],
                       ),
+
                       SizedBox(
-                        height: 4,
+                        height: 12,
                       ),
                       Text(
                         '*you can connect with $balance people',
                         textScaleFactor: 1.0,
-                        style: MmmTextStyles.bodySmall(textColor: kLight2),
+                        style: MmmTextStyles.bodySmall(textColor: kDark5),
                       ),
                     ],
                   ),
