@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/saurabh/custom_drawer.dart';
+import 'package:makemymarry/saurabh/partner_preference.dart';
+
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
@@ -84,6 +86,7 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: AppDrawer(userRepository: widget.userRepository),
       body: getContent(),
       backgroundColor: gray5,
       bottomNavigationBar: BottomAppBar(
@@ -124,13 +127,18 @@ class HomeScreenState extends State<HomeScreen> {
                   this.index = 3;
                 });
               }),
-              MmmWidgets.bottomBarUnits(
-                  'images/menu.svg', 'Menu', index == 4 ? kPrimary : gray3,
-                  action: () {
-                setState(() {
-                  this.index = 4;
-                });
-              })
+              Builder(
+                builder: (context) {
+                  return MmmWidgets.bottomBarUnits(
+                      'images/menu.svg', 'Menu', index == 4 ? kPrimary : gray3,
+                      action: () {
+                        Scaffold.of(context).openDrawer();
+                    // setState(() {
+                    //   this.index = 4;
+                    // });
+                  });
+                }
+              )
             ],
           ),
           padding: const EdgeInsets.only(left: 12, right: 12, top: 12),
@@ -152,20 +160,25 @@ class HomeScreenState extends State<HomeScreen> {
         );
       case 1:
         return
+          PartnerPrefsScreen(
+              userRepository:
+              widget.userRepository,
+              forFilters: true
+          );
             // ScheduleMeetingTime();
-            BlocProvider(
-          create: (context) =>
-              ProfileViewBloc(widget.userRepository, ProfileDetails()),
-          child: SearchScreen(
-            userRepository: widget.userRepository,
-            list: widget.list,
-            searchList: widget.searchList,
-            premiumList: widget.premiumList,
-            recentViewList: widget.recentViewList,
-            profileVisitorList: widget.profileVisitorList,
-            onlineMembersList: widget.onlineMembersList,
-          ),
-        );
+        //     BlocProvider(
+        //   create: (context) =>
+        //       ProfileViewBloc(widget.userRepository, ProfileDetails()),
+        //   child: SearchScreen(
+        //     userRepository: widget.userRepository,
+        //     list: widget.list,
+        //     searchList: widget.searchList,
+        //     premiumList: widget.premiumList,
+        //     recentViewList: widget.recentViewList,
+        //     profileVisitorList: widget.profileVisitorList,
+        //     onlineMembersList: widget.onlineMembersList,
+        //   ),
+        // );
       //     PartnerPrefsScreen(
       //   userRepository: widget.userRepository,
       // );

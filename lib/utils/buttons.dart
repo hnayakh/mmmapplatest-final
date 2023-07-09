@@ -745,6 +745,7 @@ class MmmButtons {
                       ),
                       SizedBox(
                         height: 6,
+
                       ),
                       Text('Mother Tongue',
                           style: TextStyle( fontFamily: 'MakeMyMarry', 
@@ -961,7 +962,7 @@ class MmmButtons {
                       child: SizedBox(),
                     ),
                     Text(
-                      "Interests",
+                      "Habits",
                       textScaleFactor: 1.0,
                       //textAlign: TextAlign.start,
                       style: MmmTextStyles.heading5(textColor: kPrimary),
@@ -1000,7 +1001,6 @@ class MmmButtons {
                                   textAlign: TextAlign.left,
                                   style: TextStyle( fontFamily: 'MakeMyMarry', 
                                       color: Color.fromARGB(212, 0, 0, 0),
-                                      
                                       fontSize: 14,
                                       fontWeight: FontWeight.normal,
                                       height: 1.6666666666666667),
@@ -1031,17 +1031,17 @@ class MmmButtons {
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
-                                      Image.asset(
+                                      SvgPicture.asset(
                                         describeEnum(eatingHabit) ==
                                                 " Vegetarrian"
-                                            ? 'images/LeafyGreen.png'
+                                            ? 'images/Veg2.svg'
                                             : describeEnum(eatingHabit) ==
                                                     "Nonvegetarrian"
-                                                ? 'images/chicken.png'
+                                                ? 'images/non veg.svg'
                                                 : describeEnum(eatingHabit) ==
                                                         "Eggitarrian"
-                                                    ? 'images/egggg.png'
-                                                    : "images/download.png",
+                                                    ? 'images/egg.svg'
+                                                    : "images/egg.svg",
                                         height: 28,
                                         width: 28,
                                       ),
@@ -1119,12 +1119,12 @@ class MmmButtons {
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
-                                  Image.asset(
+                                  SvgPicture.asset(
                                       describeEnum(smokingHabit) == "Smoker"
-                                          ? 'images/cigarette.png'
+                                          ? 'images/smoke.svg'
                                           : describeEnum(smokingHabit) ==
                                                   "NonSmoker"
-                                              ? 'images/nonsmokerr.png'
+                                              ? 'images/smoke.svg'
                                               : describeEnum(smokingHabit) ==
                                                       "Occasionally"
                                                   ? 'images/cigarette.png'
@@ -1203,16 +1203,16 @@ class MmmButtons {
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
-                                  Image.asset(
+                                  SvgPicture.asset(
                                       describeEnum(drinkingHabit) == "Alcoholic"
-                                          ? 'images/Beer.png'
+                                          ? 'images/alcoholic.svg'
                                           : describeEnum(drinkingHabit) ==
                                                   "Nonalcoholic"
-                                              ? 'images/nonalcoholiya.png'
+                                              ? 'images/non_alcoholic.svg'
                                               : describeEnum(drinkingHabit) ==
                                                       "Occasionally"
-                                                  ? 'images/Beer.png'
-                                                  : "images/download.png",
+                                                  ? 'images/occasionally.svg'
+                                                  : "images/occasionally.svg",
                                       height: 28,
                                       width: 28),
                                   SizedBox(width: 8),
@@ -1808,7 +1808,10 @@ class MmmButtons {
         Container(
           height: 66,
           decoration: BoxDecoration(
-            color: kWhite,
+            gradient: LinearGradient(
+                colors: [kPrimary, kSecondary],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight) ,
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               MmmShadow.filterButton(),
@@ -1829,13 +1832,13 @@ class MmmButtons {
                       Text(
                         hintText,
                         textScaleFactor: 1.0,
-                        style: MmmTextStyles.bodyMedium(textColor: kDark5),
+                        style: MmmTextStyles.bodyMedium(textColor: kWhite),
                       ),
                       SvgPicture.asset(
                         'images/rightArrow.svg',
                         width: 24,
                         height: 24,
-                        color: gray3,
+                        color: kWhite,
                         fit: BoxFit.cover,
                       ),
                     ],

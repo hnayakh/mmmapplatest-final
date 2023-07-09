@@ -15,6 +15,7 @@ import '../bloc/matching_profile_event.dart';
 
 class ProfilesGridView extends StatelessWidget {
   final List<MatchingProfile> list;
+
   final bool isLoading;
   const ProfilesGridView(
       {Key? key, required this.list, required this.isLoading})

@@ -47,6 +47,7 @@ class VerifyAccountScreen extends StatefulWidget {
 class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
   IdProofType? idProof;
   late UserDetails? userDetails;
+
   late ProfileDetails? profileDetails;
   List<String> ids = [
     'Passport',
@@ -75,6 +76,7 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
               backgroundColor: kSuccess,
             ));
           }
+
           if (state is OnError) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text(state.message),
@@ -298,7 +300,8 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
               height: 20,
             ),
             Text('Click to upload your document',
-                style: TextStyle(fontFamily: 'MakeMyMarry', fontSize: 12))
+                style: TextStyle( fontFamily: 'MakeMyMarry', fontSize: 12))
+
           ],
         ),
       ),

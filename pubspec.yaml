@@ -87,6 +87,8 @@ dependencies:
   google_maps_flutter: ^2.2.5
   geocoding: ^2.1.0
   geolocator: ^9.0.2
+
+  
   easy_image_viewer: ^1.2.1
   package_info_plus: any
   skeleton_loader: ^2.0.0+4

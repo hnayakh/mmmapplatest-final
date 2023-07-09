@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:makemymarry/locator.dart';
 import 'package:makemymarry/repo/user_repo.dart';
+import 'package:makemymarry/utils/buttons.dart';
+
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
@@ -37,6 +39,7 @@ class _ConnectMainScreenState extends State<ConnectMainScreen>
         body: Container(
           child: Column(
             children: [
+
               Container(
                 child: PreferredSize(
                   preferredSize:
@@ -82,8 +85,9 @@ class _ConnectMainScreenState extends State<ConnectMainScreen>
                       backgroundColor: Colors.transparent,
                       elevation: 0.0,
                     ),
-                  ),
+                  ],
                 ),
+
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                       colors: [kPrimary, kSecondary],

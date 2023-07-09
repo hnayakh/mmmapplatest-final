@@ -63,7 +63,7 @@ class MatchingProfile {
       this.activationStatus =
           ProfileActivationStatus.values[json["activationStatus"]];
     } else {
-      this.activationStatus = ProfileActivationStatus.values[0];
+      this.activationStatus = ProfileActivationStatus.Pending;
     }
     this.isConnected = json['connectStatus']?["isConnected"] ?? false;
     this.connectId = json['connectStatus']?["id"] ?? "";
@@ -117,7 +117,7 @@ class MatchingProfile {
       this.activationStatus =
           ProfileActivationStatus.values[json["activationStatus"]];
     } else {
-      this.activationStatus = ProfileActivationStatus.values[1];
+      this.activationStatus = ProfileActivationStatus.Pending;
     }
     this.isConnected = json['connectStatus']?["isConnected"] ?? false;
     this.connectId = json['connectStatus']?["id"] ?? "";
@@ -176,7 +176,7 @@ class MatchingProfile {
       this.activationStatus =
           ProfileActivationStatus.values[json["activationStatus"]];
     } else {
-      this.activationStatus = ProfileActivationStatus.values[1];
+      this.activationStatus = ProfileActivationStatus.Pending;
     }
     this.isConnected = json['connectStatus']?["isConnected"] ?? false;
     this.connectId = json['connectStatus']?["id"] ?? "";

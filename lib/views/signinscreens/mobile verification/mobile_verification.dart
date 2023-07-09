@@ -143,6 +143,7 @@ class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
                     //   height: 6,
                     // ),
                     Container(
+
                         margin: EdgeInsets.fromLTRB(15, 15, 1, 0),
                         child: Row(
                           children: [
@@ -239,6 +240,7 @@ class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
       case 10:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
+
                 builder: (context) => ProfileLoader(
                       userRepository: userRepo,
                       firstTime: true,
@@ -248,6 +250,7 @@ class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
       case 11:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
+
                 builder: (context) => ProfileLoader(
                       userRepository: userRepo,
                       firstTime: true,

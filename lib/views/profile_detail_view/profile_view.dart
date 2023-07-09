@@ -472,11 +472,11 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
   Stack buildHabits(BuildContext context) {
     return Stack(
       children: [
-        MmmButtons.profileViewButtons("images/occasionally.svg", 'Interests'),
+        MmmButtons.profileViewButtons("images/occasionally.svg", 'Habits'),
         interestState == 0
             ? MmmButtons.profileViewButtons(
                 "images/occasionally.svg",
-                'Interests',
+                'Habits',
                 action: () {
                   showInterestData();
                 },
@@ -971,7 +971,9 @@ class _ProfileViewScreenState extends State<ProfileViewScreen>
     showModalBottomSheet(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(25), topRight: Radius.circular(25)),
+            topLeft: Radius.circular(25),
+            topRight: Radius.circular(25)),
+
       ),
       context: context,
       builder: (context) => MmmWidgets.selectMeetWidget(context, profile),

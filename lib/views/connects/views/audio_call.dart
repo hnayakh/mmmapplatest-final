@@ -4,9 +4,11 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:makemymarry/datamodels/agora_token_response.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
+import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/utility_service.dart';
@@ -142,13 +144,15 @@ class _State extends State<AudioCallView> {
           _joinChannel(value.token!.agoraToken, value.token!.channelName);
         } else {
           ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text("Something went wrong on our side. Please try again later.")));
+              .showSnackBar(SnackBar(content: Text("Something went wrong on our side. Please try again later."), backgroundColor: kError,));
+
           await Future.delayed(Duration(seconds: 2));
           Navigator.of(context).pop();
         }
       }).onError((error, stackTrace) async {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("Something went wrong on our side. Please try again later.")));
+            .showSnackBar(SnackBar(content: Text("Something went wrong on our side. Please try again later."), backgroundColor: kError,));
+
         await Future.delayed(Duration(seconds: 2));
         Navigator.of(context).pop();
       });
@@ -247,15 +251,16 @@ class _State extends State<AudioCallView> {
                 ),
                 _buildIconButton(
                     onTap: _switchMicrophone,
+                    iconColor: Colors.white,
                     icon: !openMicrophone ? Icons.mic : Icons.mic_off_rounded),
                 SizedBox(
                   width: 12,
                 ),
-                _buildIconButton(
+                _buildIconButtonSvg(
                     onTap: _switchSpeakerphone,
                     icon: enableSpeakerphone
-                        ? Icons.speaker_phone_outlined
-                        : Icons.speaker_phone_outlined),
+                        ? 'images/speaker_off.svg'
+                        : 'images/speaker_on.svg'),
                 Spacer(),
               ],
             ),
@@ -276,13 +281,38 @@ class _State extends State<AudioCallView> {
       child: Container(
         padding: EdgeInsets.all(12),
         decoration:
-            BoxDecoration(shape: BoxShape.circle, color: bgColor, boxShadow: [
+            BoxDecoration(shape: BoxShape.circle, gradient: LinearGradient(
+                colors: [kPrimary,kSecondary]
+            ), boxShadow: [
           BoxShadow(color: Colors.black45, offset: Offset(4, 4), blurRadius: 12)
         ]),
         child: Icon(
           icon,
           color: iconColor,
           size: 36,
+        ),
+      ),
+    );
+  }
+  _buildIconButtonSvg(
+      {required void Function() onTap,
+      required String icon,
+      Color bgColor = Colors.white,
+      Color iconColor = Colors.black87}) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.all(12),
+        decoration:
+            BoxDecoration(shape: BoxShape.circle, gradient: LinearGradient(
+                colors: [kPrimary,kSecondary]
+            ), boxShadow: [
+          BoxShadow(color: Colors.black45, offset: Offset(4, 4), blurRadius: 12)
+        ]),
+        child: SvgPicture.asset(
+          icon,
+          height: 36,
+          width: 36,
         ),
       ),
     );

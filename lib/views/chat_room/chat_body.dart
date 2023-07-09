@@ -44,7 +44,7 @@ class ChatBody extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(100),
                                 border: Border.fromBorderSide(
                                     BorderSide(color: Colors.black26)))),
-                        showUserNames: true,
+                        showUserNames: false,
                         showUserAvatars: false,
                         isAttachmentUploading: state.isAttachmentUploading,
                         messages: state.message,

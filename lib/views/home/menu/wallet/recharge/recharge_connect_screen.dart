@@ -401,7 +401,9 @@ class _RechargeConnectScreenState extends State<RechargeConnectScreen> {
   void navigateToCoupon() async {
     var userRepo = BlocProvider.of<RechargeConnectBloc>(context).userRepository;
     var result = await showModalBottomSheet(
+        isScrollControlled: true,
         context: context,
+        backgroundColor: Colors.transparent,
         builder: (context) => ApplyCoupon(
               userRepository: userRepo,
             ));

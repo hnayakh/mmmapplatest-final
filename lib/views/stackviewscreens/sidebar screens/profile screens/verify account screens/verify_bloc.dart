@@ -13,7 +13,8 @@ class VerifyBloc extends Bloc<VerifyEvent, VerifyState> {
   List<String> localDocImagePaths = [];
   ProfileDetails? profileData;
 
-  VerifyBloc(this.userRepository) : super(VerifyInitialState()) {
+  VerifyBloc(this.userRepository) : super(VerifyInitialState()){
+
     add(GetPreviousDocs());
   }
 
@@ -23,6 +24,7 @@ class VerifyBloc extends Bloc<VerifyEvent, VerifyState> {
     if (event is GetPreviousDocs) {
       var res = await userRepository.getOtheruserDetails(
           userRepository.useDetails!.id, ProfileActivationStatus.Verified);
+
       if (res.profileDetails.docUpdationStatus != '-1') {
         localDocImagePaths.clear();
         print("length after clear${localDocImagePaths.length}");

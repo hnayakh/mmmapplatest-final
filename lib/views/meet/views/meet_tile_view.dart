@@ -79,6 +79,7 @@ class MeetTile extends StatelessWidget {
                       ]
                     ],
                   ),
+
                   SizedBox(
                     height: 14,
                   ),
@@ -90,7 +91,8 @@ class MeetTile extends StatelessWidget {
                     height: 4,
                   ),
                   Text(
-                    "on ${DateFormat('dd MMMM, yyyy').format(connection.scheduleTime)} on ${DateFormat('hh:mm a').format(connection.scheduleTime)}(IST)\nat ${connection.address}",
+                    "on ${DateFormat('dd MMMM, yyyy').format(connection.scheduleTime)} on ${DateFormat('hh:mm a').format(connection.scheduleTime)}(IST)\n${connection.address.isEmpty ? '' : "at" } ${connection.address}",
+
                     style: MmmTextStyles.footer(textColor: gray3),
                   ),
                   SizedBox(
