@@ -1,24 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:intl/intl.dart';
-import 'package:makemymarry/datamodels/master_data.dart';
-import 'package:makemymarry/datamodels/profile_data.dart';
 import 'package:makemymarry/repo/user_repo.dart';
-
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/elevations.dart';
-import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/text_styles.dart';
-
 import 'package:makemymarry/utils/widgets_large.dart';
-
 import 'package:makemymarry/views/stackviewscreens/stackview/stack_view_bloc.dart';
 import 'package:makemymarry/views/stackviewscreens/stackview/stack_view_event.dart';
 import 'package:makemymarry/views/stackviewscreens/stackview/stack_view_state.dart';
-
-import '../grid_view_stack.dart';
 
 class StackView extends StatelessWidget {
   final UserRepository userRepository;
@@ -94,11 +85,14 @@ class _StackViewScreenState extends State<StackViewScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: [
-                                  MmmWidgets.bottomBarUnits('images/Search.svg',
-                                      'Search', index == 0 ? kPrimary : gray3,
-                                      action: () {
-                                    setColor(0);
-                                  }),
+                                  MmmWidgets.bottomBarUnits(
+                                    'images/Search.svg',
+                                    'Search',
+                                    index == 0 ? kPrimary : gray3,
+                                    action: () {
+                                      setColor(0);
+                                    },
+                                  ),
                                   MmmWidgets.bottomBarUnits(
                                       'images/filter2.svg',
                                       'Filter',

@@ -29,7 +29,6 @@ class PhoneSigninBloc extends Bloc<PhoneSigninEvent, PhoneSigninState> {
             this.selectedCountry.phoneCode,
             this.mobile,OtpType.Login
           );
-
       if (result.status == AppConstants.SUCCESS) {
         yield MoveToMobileVerification();
       } else {

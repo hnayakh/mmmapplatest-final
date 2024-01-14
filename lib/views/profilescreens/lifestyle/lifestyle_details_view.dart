@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:makemymarry/locator.dart';
+import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
+import 'package:makemymarry/utils/icons.dart';
+import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/profilescreens/lifestyle/lifestyle_bloc.dart';
 import 'package:makemymarry/views/profilescreens/lifestyle/lifestyle_event.dart';
 import 'package:makemymarry/views/profilescreens/lifestyle/lifestyle_state.dart';
+
 
 class LifeStyleView extends StatelessWidget {
   const LifeStyleView({Key? key}) : super(key: key);
@@ -11,17 +16,26 @@ class LifeStyleView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<LifeStyleBloc>(
-      create: (BuildContext context) => LifeStyleBloc(),
+      create: (BuildContext context) =>
+          LifeStyleBloc(userRepository: getIt<UserRepository>()),
       child: Scaffold(
+        extendBodyBehindAppBar: true,
         appBar: MmmButtons.appBarCurved('Life Style', context: context),
         body: Builder(
           builder: (BuildContext context) => Column(
             children: [
-              SizedBox(height: 24,),
               LifeStyleBody(),
             ],
           ),
         ),
+        floatingActionButton: Builder(builder: (context) {
+          return InkWell(
+            onTap: () {
+              BlocProvider.of<LifeStyleBloc>(context).add(SaveLifeStyleData());
+            },
+            child: MmmIcons.saveIcon(),
+          );
+        }),
       ),
     );
   }
@@ -32,37 +46,44 @@ class LifeStyleBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LifeStyleBloc, LifeStyleState>(
+    return BlocConsumer<LifeStyleBloc, LifeStyleState>(
+      listener: (context, state) {
+        if (state is NavigateToMyProfile) {
+          Navigator.of(context).pop();
+        }
+      },
       builder: (context, state) {
-        if ((state is LifeStyleIdleState) ||
-            (state is LifeStyleInitialState)) {
+        if ((state is LifeStyleIdleState) || (state is LifeStyleInitialState)) {
           dynamic castedState = state is LifeStyleIdleState
               ? state as LifeStyleIdleState
               : state as LifeStyleInitialState;
-          return Wrap(
-            crossAxisAlignment: WrapCrossAlignment.start,
-            runAlignment: WrapAlignment.start,
-            alignment: WrapAlignment.start,
-            children: LifeStyleType.values
-                .map(
-                  (e) => MmmButtons.lifeStyleChip(
-                    56,
-                    double.infinity,
-                    e.asset,
-                    e.label,
-                    e.activeStatus(castedState.data),
-                    () {
-                      BlocProvider.of<LifeStyleBloc>(context)
-                          .add(LifeStyleToggled(castedState.data, e));
-                    },
-                  ),
-                )
-                .toList(),
+          return Padding(
+            padding: const EdgeInsets.only(top: 108.0),
+            child: Wrap(
+              crossAxisAlignment: WrapCrossAlignment.start,
+              runAlignment: WrapAlignment.start,
+              alignment: WrapAlignment.start,
+              children: LifeStyleType.values
+                  .map(
+                    (e) => MmmButtons.lifeStyleChip(
+                      56,
+                      double.infinity,
+                      e.asset,
+                      e.label,
+                      e.activeStatus(castedState.data),
+                      () {
+                        BlocProvider.of<LifeStyleBloc>(context)
+                            .add(LifeStyleToggled(castedState.data, e));
+                      },
+                    ),
+                  )
+                  .toList(),
+            ),
           );
         } else if (state is LifeStyleErrorState) {
           return Container();
         } else if (state is LifeStyleLoadingState) {
-          return Container();
+          return MmmWidgets.buildLoader(context, color: Colors.transparent);
         }
         return Container();
       },
@@ -148,3 +169,4 @@ extension LifeStyleExtension on LifeStyleType {
     }
   }
 }
+

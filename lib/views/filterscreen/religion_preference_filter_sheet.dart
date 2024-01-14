@@ -22,8 +22,9 @@ class _ReligonFilterBottomSheetState extends State<ReligonFilterBottomSheet> {
 
   @override
   void initState() {
-    filtered = widget.list;
     super.initState();
+    filtered = widget.list;
+
   }
 
   @override

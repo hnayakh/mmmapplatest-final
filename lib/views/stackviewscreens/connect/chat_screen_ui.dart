@@ -1,7 +1,6 @@
 import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:makemymarry/utils/colors.dart';
 
 class ChatScreenUi extends StatefulWidget {
   const ChatScreenUi({Key? key}) : super(key: key);
@@ -66,7 +65,7 @@ class _ChatScreenUIState extends State<ChatScreenUi> {
       //           Container(
       //             child: const Text(
       //               'Jacab Joney',
-      //               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      //               style: TextStyle( fontFamily: 'MakeMyMarry', fontSize: 20, fontWeight: FontWeight.bold),
       //             ),
       //           ),
       //           const SizedBox(
@@ -116,7 +115,7 @@ class _ChatScreenUIState extends State<ChatScreenUi> {
                       baselineType: TextBaseline.alphabetic,
                       child: Text(
                         'Yesterday',
-                        style: TextStyle(fontSize: 16, color: Colors.black38),
+                        style: TextStyle( fontFamily: 'MakeMyMarry', fontSize: 16, color: Colors.black38),
                       )),
                   const SizedBox(
                     height: 15,
@@ -144,7 +143,7 @@ class _ChatScreenUIState extends State<ChatScreenUi> {
                       child: Center(
                         child: const Text("Hey Alia How's u?",
                             maxLines: 100,
-                            style: TextStyle(
+                            style: TextStyle( fontFamily: 'MakeMyMarry', 
                               height: 2,
                               fontSize: 18.0,
                             )),
@@ -161,7 +160,7 @@ class _ChatScreenUIState extends State<ChatScreenUi> {
                         baselineType: TextBaseline.alphabetic,
                         child: Text(
                           '17:04',
-                          style: TextStyle(color: Colors.black38),
+                          style: TextStyle( fontFamily: 'MakeMyMarry', color: Colors.black38),
                         )),
                   ),
                   Align(
@@ -188,7 +187,7 @@ class _ChatScreenUIState extends State<ChatScreenUi> {
                       child: Center(
                         child: const Text("i'm good. what about you?",
                             maxLines: 100,
-                            style: TextStyle(
+                            style: TextStyle( fontFamily: 'MakeMyMarry', 
                               height: 2,
                               fontSize: 18.0,
                             )),
@@ -205,7 +204,7 @@ class _ChatScreenUIState extends State<ChatScreenUi> {
                         baselineType: TextBaseline.alphabetic,
                         child: Text(
                           '17:04',
-                          style: TextStyle(color: Colors.black38),
+                          style: TextStyle( fontFamily: 'MakeMyMarry', color: Colors.black38),
                         )),
                   ),
                   const Baseline(
@@ -213,7 +212,7 @@ class _ChatScreenUIState extends State<ChatScreenUi> {
                       baselineType: TextBaseline.alphabetic,
                       child: Text('Today',
                           style:
-                              TextStyle(fontSize: 17, color: Colors.black38))),
+                              TextStyle( fontFamily: 'MakeMyMarry', fontSize: 17, color: Colors.black38))),
                   const SizedBox(
                     height: 5,
                   ),
@@ -242,7 +241,7 @@ class _ChatScreenUIState extends State<ChatScreenUi> {
                           child: const Text(
                               "Let's meet for coffee , what do you say ?",
                               //maxLines: 100,
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'MakeMyMarry', 
                                 height: 2,
                                 fontSize: 18.0,
                               )),
@@ -257,7 +256,7 @@ class _ChatScreenUIState extends State<ChatScreenUi> {
                         baselineType: TextBaseline.alphabetic,
                         child: Text(
                           '17:04',
-                          style: TextStyle(color: Colors.black38),
+                          style: TextStyle( fontFamily: 'MakeMyMarry', color: Colors.black38),
                         )),
                   ),
                 ],
@@ -274,7 +273,7 @@ class _ChatScreenUIState extends State<ChatScreenUi> {
                       borderRadius: BorderRadius.circular(25),
                       borderSide: const BorderSide(color: Colors.black26)),
                   hintText: 'Type your message',
-                  hintStyle: const TextStyle(
+                  hintStyle: const TextStyle( fontFamily: 'MakeMyMarry', 
                     fontSize: 20,
                     color: Colors.grey,
                   ),

@@ -1,4 +1,3 @@
-import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 
 class MasterDataResponse {

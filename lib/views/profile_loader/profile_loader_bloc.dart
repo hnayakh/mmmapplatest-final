@@ -15,23 +15,14 @@ class ProfileLoaderBloc extends Bloc<ProfileLoaderEvent, ProfileLoaderState> {
   Stream<ProfileLoaderState> mapEventToState(ProfileLoaderEvent event) async* {
     yield OnLoading();
     if (event is GetProfiles) {
-      var mmid = '';
-      print('in profileloader');
       var result = await this.userRepository.getMyMatchingProfile();
-      // var resultSearch = await this.userRepository.getConnectThroughMMId(mmid);
-      // var premium = await this.userRepository.getPremiumMembers();
-      // var recentViewed = await this.userRepository.getRecentViews();
-      // var profileVisitorList = await this.userRepository.getProfileVisitor();
-      // var onlineMembersList = await this.userRepository.getOnlineMembers();
       if (result.status == AppConstants.SUCCESS) {
         this.userRepository.updateRegistrationStep(10);
         var userDetails  = (await this.userRepository.getUserDetails())!;
-        getIt<ChatRepo>().updateChatUser(id: userDetails.id, fullName: userDetails.name, imageUrl: "");
+        getIt<ChatRepo>().updateChatUser(id: userDetails.id, fullName: userDetails.name, imageUrl: userDetails.imageUrl);
         yield OnGotProfiles(result.list, [], [], [], [], []);
       } else {
-        yield OnError(result.message);
-        // print(result.status);
-        // print(result.message);
+        yield OnGotProfiles([], [], [], [], [], []);
       }
     }
   }

@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/datamodels/martching_profile.dart';
-
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
@@ -24,7 +23,7 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
       var result = await this.userRepository.getOtheruserDetails(
           event.basicUserId, ProfileActivationStatus.Verified);
 
-      if (result.status == AppConstants.SUCCESS) {
+      if (result.status == AppConstants.SUCCESS ) {
         this.profileDetails = result.profileDetails;
         yield HabitDetailsState(result.profileDetails);
       } else {
@@ -47,17 +46,17 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
       this.eatingHabit = event.eatingHabit;
       this.drinkingHabit = event.drinkingHabit;
       this.smokingHabit = event.smokingHabit;
-      if (this.eatingHabit == null &&
-          this.drinkingHabit == null &&
-          this.smokingHabit == null) {
+      if ((this.eatingHabit == null || this.eatingHabit == EatingHabit.Notspecified) &&
+         ( this.drinkingHabit == null || this.drinkingHabit == DrinkingHabit.Notspecified)  &&
+         ( this.smokingHabit == null || this.smokingHabit == SmokingHabit.Notspecified)) {
         yield OnError('Select all habits');
       }
-      if (this.eatingHabit == null) {
+      if(this.eatingHabit == null || this.eatingHabit == EatingHabit.Notspecified) {
         yield OnError('Select eating habit.');
-      } else if (this.drinkingHabit == null) {
-        yield OnError('Select drinking habit.');
-      } else if (this.smokingHabit == null) {
+      } else if( this.smokingHabit == null || this.smokingHabit == SmokingHabit.Notspecified) {
         yield OnError('Select smoking habit.');
+      } else if ( this.drinkingHabit == null || this.drinkingHabit == DrinkingHabit.Notspecified) {
+        yield OnError('Select drinking habit.');
       } else {
         var result = await this.userRepository.habit(
               this.eatingHabit!,
@@ -66,26 +65,21 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
             );
 
         if (result.status == AppConstants.SUCCESS) {
-          //await this.userRepository.saveUserDetails();
           this.userRepository.useDetails!.registrationStep =
               result.userDetails!.registrationStep;
           await this
               .userRepository
               .storageService
               .saveUserDetails(this.userRepository.useDetails!);
-          this.userRepository.updateRegistrationStep(7);
-          print('in habit');
-          print(
-              'dobinhabitbloc=${this.userRepository.useDetails!.dateOfBirth}');
-          print(this.userRepository.useDetails!.registrationStep);
           if (!event.isAnUpdate) {
-            this.userRepository.updateRegistrationStep(7);
+            await this
+                .userRepository
+                .updateRegistartionStep(this.userRepository.useDetails!.id, 8);
+            this.userRepository.updateRegistrationStep(8);
           }
-          print('event.isAnUpdate$event.isAnUpdate');
           yield event.isAnUpdate
               ? OnNavigationToMyProfiles()
               : NavigationToReligion();
-          // : NavigationToReligion();
         } else {
           yield OnError(result.message);
         }

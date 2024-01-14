@@ -7,6 +7,7 @@ class AppConstants {
 
   static String USERID = "USERID";
   static String NAME = "NAME";
+  static String IMAGE_URL = "IMAGE_URL";
   static String DISPLAYID = "DISPLAYID";
   static String MOBILE = "MOBILE";
   static String EMAIL = "EMAIL";

@@ -1,11 +1,16 @@
 import 'dart:async';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:makemymarry/datamodels/agora_token_response.dart';
 import 'package:makemymarry/locator.dart';
 import 'package:makemymarry/repo/user_repo.dart';
+import 'package:makemymarry/utils/alert.dart';
 import 'package:makemymarry/utils/app_constants.dart';
+import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/utility_service.dart';
@@ -14,9 +19,11 @@ import 'package:permission_handler/permission_handler.dart';
 /// JoinChannelAudio Example
 class VideoCallView extends StatefulWidget {
   /// Construct the [VideoCallView]
-  const VideoCallView({Key? key, required this.uid, required this.imageUrl})
+  VideoCallView(
+      {Key? key, required this.uid, required this.imageUrl, this.agoraToken})
       : super(key: key);
 
+  AgoraToken? agoraToken;
   final String uid;
   final String imageUrl;
   @override
@@ -28,7 +35,7 @@ class _State extends State<VideoCallView> {
   bool _isReadyPreview = false;
   String channelId = "test";
   bool isJoined = false,
-      openMicrophone = true,
+      openMicrophone = false,
       switchCamera = true,
       switchRender = true;
   Set<int> remoteUid = {};
@@ -38,15 +45,51 @@ class _State extends State<VideoCallView> {
   ChannelProfileType _channelProfileType =
       ChannelProfileType.channelProfileCommunication;
 
-  var _maxSeconds = 300;
-
+  var _maxSeconds = 1800;
+  var pageLeft = false;
   int timeLeft = 0;
 
   var timer;
   @override
   void initState() {
     super.initState();
+    if (widget.agoraToken != null) {
+      FirebaseFirestore.instance
+          .collection('activeCalls')
+          .doc(widget.agoraToken!.notificationId)
+          .snapshots()
+          .listen((event) {
+        if (!event.data()?['status']) {
+          _leaveChannel();
+        }
+      });
+    }
+    requestCameraPosition();
+  }
 
+  Future<void> requestCameraPosition() async {
+    var permission = await Permission.camera.status;
+    if (permission != PermissionStatus.granted) {
+      permission = await Permission.camera.request();
+      // while (permission != PermissionStatus.granted) {
+        await Alert.message(
+          navigatorKey.currentContext!,
+          message: 'Please enable camera in settings of the app',
+          popsAutomatically: false,
+          barrierDismissible: false,
+          onPressed: () async {
+            permission = await Permission.camera.status;
+            if (permission == PermissionStatus.granted) {
+              context.navigate.pop();
+              // navigatorKey.currentState?.pop();
+            } else {
+              await openAppSettings();
+            }
+          },
+        );
+
+      // }
+    }
     _initEngine();
   }
 
@@ -57,7 +100,7 @@ class _State extends State<VideoCallView> {
   }
 
   Future<void> _dispose() async {
-    timer.cancel();
+    timer?.cancel();
     await _engine.leaveChannel();
     await _engine.release();
   }
@@ -83,16 +126,19 @@ class _State extends State<VideoCallView> {
         UtilityService.cprint(
             '[onUserJoined] connection: ${connection.toJson()} remoteUid: $rUid elapsed: $elapsed');
         setState(() {
+          startTimer();
           remoteUid.add(rUid);
         });
       },
       onUserOffline:
           (RtcConnection connection, int rUid, UserOfflineReasonType reason) {
-        UtilityService.cprint(
-            '[onUserOffline] connection: ${connection.toJson()}  rUid: $rUid reason: $reason');
         setState(() {
           remoteUid.removeWhere((element) => element == rUid);
         });
+        if (reason == UserOfflineReasonType.userOfflineQuit ||
+            reason == UserOfflineReasonType.userOfflineDropped) {
+          _leaveChannel();
+        }
       },
       onLeaveChannel: (RtcConnection connection, RtcStats stats) {
         UtilityService.cprint(
@@ -104,8 +150,6 @@ class _State extends State<VideoCallView> {
       },
     ));
 
-    await _engine.enableVideo();
-
     await _engine.setVideoEncoderConfiguration(
       const VideoEncoderConfiguration(
         dimensions: VideoDimensions(width: 640, height: 360),
@@ -114,30 +158,53 @@ class _State extends State<VideoCallView> {
       ),
     );
 
+    await _engine.enableVideo();
+
     await _engine.startPreview();
 
     setState(() {
       _isReadyPreview = true;
     });
-    var res = getIt<UserRepository>()
-        .generateAgoraToken(widget.uid, CallType.videoCall);
-    res.then((value) async {
-      if (value.status == AppConstants.SUCCESS) {
-        _joinChannel(
-            value.token!.agoraToken,
-            value.token!.channelName);
-      } else {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("ERROR!!!!")));
+    if (widget.agoraToken == null) {
+      var res = getIt<UserRepository>()
+          .generateAgoraToken(widget.uid, CallType.videoCall);
+      res.then((value) async {
+        if (value.status == AppConstants.SUCCESS) {
+          channelId = value.token!.channelName;
+          widget.agoraToken = value.token;
+          if (value.token != null) {
+            FirebaseFirestore.instance
+                .collection('activeCalls')
+                .doc(value.token!.notificationId)
+                .snapshots()
+                .listen((event) {
+              if (!event.data()?['status']) {
+                _leaveChannel();
+              }
+            });
+          }
+          _joinChannel(value.token!.agoraToken, value.token!.channelName);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(
+                  "Something went wrong on our side. Please try again later."), backgroundColor: kError,));
+
+          await Future.delayed(Duration(seconds: 2));
+          Navigator.of(context).pop();
+        }
+      }).onError((error, stackTrace) async {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+                "Something went wrong on our side. Please try again later."), backgroundColor: kError,));
+
         await Future.delayed(Duration(seconds: 2));
         Navigator.of(context).pop();
-      }
-    }).onError((error, stackTrace) async {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("ERROR!!!!")));
-      await Future.delayed(Duration(seconds: 2));
-      Navigator.of(context).pop();
-    });
+      });
+    } else {
+      channelId = widget.agoraToken!.channelName;
+      _joinChannel(
+          widget.agoraToken!.agoraToken, widget.agoraToken!.channelName);
+    }
   }
 
   Future<void> _joinChannel(String token, String channelId) async {
@@ -150,17 +217,24 @@ class _State extends State<VideoCallView> {
         clientRoleType: ClientRoleType.clientRoleBroadcaster,
       ),
     );
-    startTimer();
   }
 
   Future<void> _leaveChannel() async {
+    if(!pageLeft){
+
+      context.navigate.pop();
+      pageLeft = true;
+    }
     await _engine.leaveChannel();
     setState(() {
       isJoined = false;
       openMicrophone = true;
       switchCamera = true;
     });
-    context.navigate.pop();
+    await FirebaseFirestore.instance
+        .collection('activeCalls')
+        .doc(widget.agoraToken?.notificationId)
+        .update({'status': false});
   }
 
   Future<void> _switchCamera() async {
@@ -185,8 +259,7 @@ class _State extends State<VideoCallView> {
   }
 
   _switchMicrophone() async {
-    // await await _engine.muteLocalAudioStream(!openMicrophone);
-    await _engine.enableLocalAudio(!openMicrophone);
+    await _engine.muteLocalAudioStream(!openMicrophone);
     setState(() {
       openMicrophone = !openMicrophone;
     });
@@ -247,9 +320,12 @@ class _State extends State<VideoCallView> {
                   flex: 1,
                 ),
                 Text(
-                  "${(timeLeft ~/ 60).toString().padLeft(2, "0")}:${(timeLeft % 60).toString().padLeft(2, "0")}",
+                  timeLeft <= 0
+                      ? "Connecting ..."
+                      : "${(timeLeft ~/ 60).toString().padLeft(2, "0")}:${(timeLeft % 60).toString().padLeft(2, "0")}",
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: TextStyle( fontFamily: 'MakeMyMarry', 
+
                     color: Colors.black,
                     fontSize: 24,
                     fontWeight: FontWeight.w500,
@@ -271,15 +347,16 @@ class _State extends State<VideoCallView> {
                     ),
                     _buildIconButton(
                         onTap: _switchMicrophone,
-                        icon:
-                            openMicrophone ? Icons.mic : Icons.mic_off_rounded),
+                        iconColor: Colors.white,
+
+                        icon: !openMicrophone
+                            ? Icons.mic
+                            : Icons.mic_off_rounded),
                     SizedBox(
                       width: 12,
                     ),
-                    _buildIconButton(
-                        onTap: _switchCamera,
-                        icon:
-                            switchCamera ? Icons.videocam : Icons.videocam_off),
+                    SvgPicture.asset('images/switch_camera_icon.svg',),
+
                     Spacer(),
                   ],
                 ),
@@ -302,7 +379,9 @@ class _State extends State<VideoCallView> {
       child: Container(
         padding: EdgeInsets.all(12),
         decoration:
-            BoxDecoration(shape: BoxShape.circle, color: bgColor, boxShadow: [
+            BoxDecoration(shape: BoxShape.circle,gradient: LinearGradient(
+              colors: [kPrimary,kSecondary]
+            ) , boxShadow: [
           BoxShadow(color: Colors.black45, offset: Offset(4, 4), blurRadius: 12)
         ]),
         child: Icon(

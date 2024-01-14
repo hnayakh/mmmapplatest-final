@@ -7,12 +7,12 @@ import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
-import 'package:makemymarry/utils/dimens.dart';
+import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/preference_helper.dart';
 import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
-import 'package:makemymarry/views/profilescreens/about/about.dart';
+import 'package:makemymarry/views/profilescreens/about/views/about.dart';
 import 'package:makemymarry/views/signinscreens/mobile%20verification/mobile_verification.dart';
 import 'package:makemymarry/views/signupscreens/create_account/create_account_bloc.dart';
 import 'package:makemymarry/views/signupscreens/create_account/create_account_event.dart';
@@ -66,6 +66,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
 
 
   initState(){
+    super.initState();
     emailController.text = widget.email;
   }
 
@@ -153,7 +154,9 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
               ),
               MmmTextFileds.textFiledWithLabelStar(
                   'Email', 'Enter email id', emailController,
-                  inputType: TextInputType.emailAddress),
+                  inputType: TextInputType.emailAddress,
+                  enable: !widget.email.isNotNullEmpty ,
+              ),
               SizedBox(
                 height: 24,
               ),
@@ -217,31 +220,31 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                           'Female',
                           style: MmmTextStyles.bodySmall(textColor: kDark5),
                         ),
-                        SizedBox(
-                          width: 12,
-                        ),
-                        Transform.scale(
-                          scale: 1.2,
-                          child: Radio(
-                              activeColor: kPrimary,
-                              value: Gender.Other,
-                              groupValue: this.gender,
-                              onChanged: (val) {
-                                if (this.profileCreatedFor ==
-                                        Relationship.Daughter ||
-                                    this.profileCreatedFor ==
-                                        Relationship.Sister) {
-                                  return;
-                                }
-                                BlocProvider.of<CreateAccountBloc>(context)
-                                    .add(OnGenderSelected(Gender.Other));
-                              }),
-                        ),
-
-                        Text(
-                          'Others',
-                          style: MmmTextStyles.bodySmall(textColor: kDark5),
-                        ),
+                        // SizedBox(
+                        //   width: 12,
+                        // ),
+                        // Transform.scale(
+                        //   scale: 1.2,
+                        //   child: Radio(
+                        //       activeColor: kPrimary,
+                        //       value: Gender.Other,
+                        //       groupValue: this.gender,
+                        //       onChanged: (val) {
+                        //         if (this.profileCreatedFor ==
+                        //                 Relationship.Daughter ||
+                        //             this.profileCreatedFor ==
+                        //                 Relationship.Sister) {
+                        //           return;
+                        //         }
+                        //         BlocProvider.of<CreateAccountBloc>(context)
+                        //             .add(OnGenderSelected(Gender.Other));
+                        //       }),
+                        // ),
+                        //
+                        // Text(
+                        //   'Others',
+                        //   style: MmmTextStyles.bodySmall(textColor: kDark5),
+                        // ),
                         //SizedBox(
                         //  width: 22,
                         // ),
@@ -304,6 +307,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                       value: this.acceptTerms,
                       activeColor: kPrimary,
                       onChanged: (bool? value) {
+                        FocusManager.instance.primaryFocus?.unfocus();
                         BlocProvider.of<CreateAccountBloc>(context)
                             .add(ChangeAcceptTerms(value!));
                       },
@@ -313,7 +317,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                   //  width: 4,
                   // ),
                   Text(
-                    'By signing up, i agree to the',
+                    'By signing up, i agree to the ',
                     style: MmmTextStyles.caption(textColor: kDark5),
                   ),
                   InkWell(
@@ -413,6 +417,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
+            FocusManager.instance.primaryFocus?.unfocus();
             showProfileForBottomSheet();
           },
           child: Row(
@@ -492,6 +497,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
     this.gender = BlocProvider.of<CreateAccountBloc>(context).gender!;
     this.profileCreatedFor =
         BlocProvider.of<CreateAccountBloc>(context).profileCreatedFor!;
+    this.hintText = describeEnum(this.profileCreatedFor);
     this.selectedCountry =
         BlocProvider.of<CreateAccountBloc>(context).selectedCountry;
     this.acceptTerms = BlocProvider.of<CreateAccountBloc>(context).acceptTerms;

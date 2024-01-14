@@ -21,7 +21,9 @@ class MatchingPercentageBloc
   MatchingPercentageBloc(
     this.userRepository,
     this.profileDetails,
-  ) : super(MatchingPercentageInitialState());
+  ) : super(MatchingPercentageInitialState()){
+     add(MatchProfile());
+  }
 
   @override
   Stream<MatchingPercentageState> mapEventToState(

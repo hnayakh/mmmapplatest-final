@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:makemymarry/datamodels/recharge.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
@@ -14,7 +13,6 @@ import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/home/menu/wallet/recharge/recharge_connect_bloc.dart';
 import 'package:makemymarry/views/home/menu/wallet/recharge/recharge_connect_event.dart';
 import 'package:makemymarry/views/home/menu/wallet/recharge/recharge_connect_state.dart';
-import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/wallet%20screens/payment_screen.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 import 'apply_coupon/apply_coupon_screen.dart';
@@ -45,7 +43,7 @@ class _RechargeConnectScreenState extends State<RechargeConnectScreen> {
   late int connectCounts = 0;
   late String mobile, email;
   bool showUi = false;
-  double totalAmount = 0, tax = 0, promoDiscount = 0;
+  double totalAmount = 0, tax = 0, promoDiscount = 0, generalDiscount = 0;
   double totalPayable = 0;
   CouponDetails? couponDetails;
 
@@ -62,6 +60,8 @@ class _RechargeConnectScreenState extends State<RechargeConnectScreen> {
         this.tax = BlocProvider.of<RechargeConnectBloc>(context).tax;
         this.promoDiscount =
             BlocProvider.of<RechargeConnectBloc>(context).promoDiscount;
+        this.generalDiscount =
+            BlocProvider.of<RechargeConnectBloc>(context).generalDiscount;
         this.totalPayable =
             BlocProvider.of<RechargeConnectBloc>(context).totalPayable;
         this.couponDetails =
@@ -82,10 +82,7 @@ class _RechargeConnectScreenState extends State<RechargeConnectScreen> {
         if (state is OnGotConnectDetails) {
           showUi = true;
         }
-        if (state is OnRechargeSuccess) {
-          print("Connect Count: ${state.connectCount}");
-          // Navigator.of(context).pop(state.connectCount);
-        }
+        if (state is OnRechargeSuccess) {}
       }),
     );
   }
@@ -106,7 +103,7 @@ class _RechargeConnectScreenState extends State<RechargeConnectScreen> {
   void openCheckout() async {
     var options = {
       'key': 'rzp_test_KKICP7OGSuGiN1',
-      'amount': this.totalPayable * 100,
+      'amount':(this.totalPayable * 100).toInt(),
       'name': 'Ironage Tech Pvt. Ltd.',
       'description': 'MakeMyMarry Connect Recharge',
       'retry': {'enabled': true, 'max_count': 1},
@@ -265,13 +262,13 @@ class _RechargeConnectScreenState extends State<RechargeConnectScreen> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        'GST (18%)',
+                                        'General Discount',
                                         textScaleFactor: 1.0,
                                         style: MmmTextStyles.bodySmall(
                                             textColor: kDark5),
                                       ),
                                       Text(
-                                        '\u{20B9}${tax.toStringAsFixed(2)}',
+                                        '- \u{20B9}${generalDiscount.toStringAsFixed(2)}',
                                         textScaleFactor: 1.0,
                                         style: MmmTextStyles.bodySmall(
                                             textColor: kDark5),
@@ -281,20 +278,41 @@ class _RechargeConnectScreenState extends State<RechargeConnectScreen> {
                                   SizedBox(
                                     height: 8,
                                   ),
+                                  if (this.couponDetails != null) ...[
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'Promo Discount',
+                                          textScaleFactor: 1.0,
+                                          style: MmmTextStyles.bodySmall(
+                                              textColor: kDark5),
+                                        ),
+                                        Text(
+                                          '- \u{20B9}${promoDiscount.toStringAsFixed(2)}',
+                                          textScaleFactor: 1.0,
+                                          style: MmmTextStyles.bodySmall(
+                                              textColor: kDark5),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 8,
+                                    ),
+                                  ],
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        this.couponDetails != null
-                                            ? 'Promo Discount'
-                                            : 'General Discount',
+                                        'GST (18%)',
                                         textScaleFactor: 1.0,
                                         style: MmmTextStyles.bodySmall(
                                             textColor: kDark5),
                                       ),
                                       Text(
-                                        '- \u{20B9}${promoDiscount.toStringAsFixed(2)}',
+                                        '+ \u{20B9}${tax.toStringAsFixed(2)}',
                                         textScaleFactor: 1.0,
                                         style: MmmTextStyles.bodySmall(
                                             textColor: kDark5),
@@ -383,7 +401,9 @@ class _RechargeConnectScreenState extends State<RechargeConnectScreen> {
   void navigateToCoupon() async {
     var userRepo = BlocProvider.of<RechargeConnectBloc>(context).userRepository;
     var result = await showModalBottomSheet(
+        isScrollControlled: true,
         context: context,
+        backgroundColor: Colors.transparent,
         builder: (context) => ApplyCoupon(
               userRepository: userRepo,
             ));

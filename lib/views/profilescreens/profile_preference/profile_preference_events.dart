@@ -9,6 +9,8 @@ class CountrySelected extends ProfilePreferenceEvent {
 
   CountrySelected(this.countryModel);
 }
+class GetPartnerPreference extends ProfilePreferenceEvent {}
+class ResetFilters extends ProfilePreferenceEvent {}
 
 class OnCountryListSelected extends ProfilePreferenceEvent {
   final List<CountryModel> countryModelList;
@@ -53,12 +55,12 @@ class OnOccupationSelected extends ProfilePreferenceEvent {
 }
 
 class IncomeSelected extends ProfilePreferenceEvent {
-  final List<AnualIncome> list;
+  final List<AnnualIncome> list;
   IncomeSelected(this.list);
 }
 
 class IncomeSelectedMax extends ProfilePreferenceEvent {
-  final List<AnualIncome> listMax;
+  final List<AnnualIncome> listMax;
   IncomeSelectedMax(this.listMax);
 }
 
@@ -72,10 +74,10 @@ class RemoveIncome extends ProfilePreferenceEvent {}
 
 class RemoveMaxIncome extends ProfilePreferenceEvent {}
 
-class DietrySelected extends ProfilePreferenceEvent {
+class DietarySelected extends ProfilePreferenceEvent {
   final List<EatingHabit> eatingHabit;
 
-  DietrySelected(this.eatingHabit);
+  DietarySelected(this.eatingHabit);
 }
 
 class InterestSelected extends ProfilePreferenceEvent {
@@ -162,6 +164,8 @@ class GetCasteList extends ProfilePreferenceEvent {}
 class RemoveCaste extends ProfilePreferenceEvent {}
 
 class RemoveEducation extends ProfilePreferenceEvent {}
+
+class RemoveMaritalStatus extends ProfilePreferenceEvent {}
 
 class RemoveOccupation extends ProfilePreferenceEvent {}
 

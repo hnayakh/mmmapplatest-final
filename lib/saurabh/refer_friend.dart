@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:makemymarry/utils/colors.dart';
+import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:share_plus/share_plus.dart';
+
+import '../utils/elevations.dart';
 
 class ReferFriendScreen extends StatefulWidget {
   ReferFriendScreen({Key? key}) : super(key: key);
@@ -31,6 +35,49 @@ class ReferFriendScreenState extends State<ReferFriendScreen> {
                   image: const DecorationImage(
                       fit: BoxFit.fill,
                       image: AssetImage('images/refer_earn.png'))),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SafeArea(
+                    child: Container(
+                      height: 36,
+                      width: 36,
+                      margin: EdgeInsets.fromLTRB(20, 20, 0, 20),
+                      decoration: BoxDecoration(
+                        color: kLight2.withOpacity(0.60),
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        boxShadow: [
+                          MmmShadow.elevationbBackButton(
+                            shadowColor: kShadowColorForWhite,
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Container(
+                                height: 32,
+                                width: 32,
+                                alignment: Alignment.center,
+                                child: SvgPicture.asset(
+                                  'images/arrowLeft.svg',
+                                  height: 17.45,
+                                  width: 17.45,
+                                  color: gray3,
+                                )),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(
               height: 30,
@@ -65,7 +112,7 @@ class ReferFriendScreenState extends State<ReferFriendScreen> {
                     // ignore: sort_child_properties_last
                     child: const Text(
                       'Refer Now',
-                      style: TextStyle(
+                      style: TextStyle( fontFamily: 'MakeMyMarry', 
                           //fontSize: 12,
                           fontWeight: FontWeight.bold,
                           color: Colors.white),
@@ -88,7 +135,7 @@ class ReferFriendScreenState extends State<ReferFriendScreen> {
                     }),
                     child: const Text(
                       'Terms & Conditions',
-                      style: TextStyle(height: 1),
+                      style: TextStyle( fontFamily: 'MakeMyMarry', height: 1),
                     ),
                   ),
                 )

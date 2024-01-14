@@ -25,8 +25,9 @@ class RechargeHistoryState extends State<RechargeHistory>
 
   @override
   void initState() {
-    tabController = TabController(length: 2, vsync: this);
     super.initState();
+    tabController = TabController(length: 2, vsync: this);
+
   }
 
   @override

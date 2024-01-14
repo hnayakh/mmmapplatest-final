@@ -1,12 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/gestures.dart';
-
 import 'package:flutter/material.dart';
-
 import 'package:flutter_svg/svg.dart';
-import 'package:makemymarry/utils/colors.dart';
 import 'package:intl/intl.dart';
-
+import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/elevations.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';

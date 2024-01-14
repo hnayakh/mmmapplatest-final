@@ -8,8 +8,8 @@ import 'package:makemymarry/views/home/menu/wallet/recharge/recharge_connect_sta
 class RechargeConnectBloc
     extends Bloc<RechargeConnectEvent, RechargeConnectState> {
   final UserRepository userRepository;
-  int connectCount = 1;
-  double totalAmount = 0, tax = 0, promoDiscount = 0;
+  int connectCount = 0;
+  double totalAmount = 0, tax = 0, promoDiscount = 0, generalDiscount = 0;
   double totalPayable = 0;
   late ConnectPriceDetails connectPriceDetails;
   CouponDetails? couponDetails;
@@ -25,13 +25,8 @@ class RechargeConnectBloc
       var response = await this.userRepository.getConnectPrice();
       if (response.status == AppConstants.SUCCESS) {
         connectPriceDetails = response.couponDetails!;
-        this.totalAmount = connectPriceDetails.connectPrice;
-        promoDiscount = (connectPriceDetails.connectPrice *
-                connectPriceDetails.discount /
-                100)
-            .toDouble();
-        this.tax = (this.totalAmount * 18 / 100).roundToDouble();
-        this.totalPayable = this.totalAmount + this.tax - this.promoDiscount;
+        connectCount = 1;
+        calculateInvoice();
       }
       yield OnGotConnectDetails();
     }
@@ -40,52 +35,20 @@ class RechargeConnectBloc
         if (this.connectCount != 1) {
           this.connectCount -= 1;
         }
-      } else {
+      } else if(this.connectCount < 100) {
         this.connectCount += 1;
       }
-      this.totalAmount = connectPriceDetails.connectPrice * this.connectCount;
-      this.tax = (this.totalAmount * 18 / 100 * connectCount).roundToDouble();
-      if (this.couponDetails != null) {
-        if (this.couponDetails!.discountType == 1)
-          promoDiscount = (connectPriceDetails.connectPrice *
-                  couponDetails!.discount /
-                  100 *
-                  connectCount)
-              .toDouble();
-        else {
-          promoDiscount = couponDetails!.discount;
-        }
-      } else
-        promoDiscount = (connectPriceDetails.connectPrice *
-                connectPriceDetails.discount /
-                100 *
-                connectCount)
-            .toDouble();
-      this.totalPayable = this.totalAmount + this.tax - this.promoDiscount;
+      calculateInvoice();
       yield OnGotConnectDetails();
     }
     if (event is ApplyCouponCode) {
       this.couponDetails = event.couponDetails;
-      if (this.couponDetails!.discountType == 0)
-        promoDiscount = (connectPriceDetails.connectPrice *
-                couponDetails!.discount /
-                100 *
-                connectCount)
-            .toDouble();
-      else {
-        promoDiscount = couponDetails!.discount;
-      }
-      this.totalPayable = this.totalAmount + this.tax - this.promoDiscount;
+      calculateInvoice();
       yield OnGotConnectDetails();
     }
     if (event is RemovePromoCode) {
       this.couponDetails = null;
-      promoDiscount = (connectPriceDetails.connectPrice *
-              connectPriceDetails.discount /
-              100 *
-              connectCount)
-          .toDouble();
-      this.totalPayable = this.totalAmount + this.tax - this.promoDiscount;
+      calculateInvoice();
       yield OnGotConnectDetails();
     }
     if (event is OnPaymentSuccess) {
@@ -104,5 +67,22 @@ class RechargeConnectBloc
         yield OnError(response.message);
       }
     }
+  }
+
+  void calculateInvoice() {
+    this.totalAmount = connectPriceDetails.connectPrice * this.connectCount;
+    this.generalDiscount = (totalAmount * connectPriceDetails.discount) / 100;
+
+    if (this.couponDetails != null) {
+      if (this.couponDetails!.discountType == 0) {
+        this.promoDiscount = (totalAmount * couponDetails!.discount) / 100;
+      } else {
+        promoDiscount = couponDetails!.discount;
+      }
+    }
+    this.tax =
+        ((this.totalAmount - generalDiscount - promoDiscount) * 18 / 100);
+    this.totalPayable =
+        this.totalAmount - generalDiscount - promoDiscount + this.tax;
   }
 }

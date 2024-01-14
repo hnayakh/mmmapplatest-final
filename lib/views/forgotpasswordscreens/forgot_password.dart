@@ -4,10 +4,9 @@ import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
-
+import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/forgotpasswordscreens/forgot_password_event.dart';
-import 'package:makemymarry/views/signinscreens/mobile%20verification/mobile_verification_state.dart';
 
 import 'forgot_password_bloc.dart';
 import 'forgot_password_state.dart';
@@ -50,6 +49,12 @@ class _ForgotPasswordState extends State<ForgotPasswordScreen> {
         listener: (context, state) {
           if (state is MoveToOtpScreen) {
             navigateToOtp(context);
+          }
+          if (state is OnError) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(state.message),
+              backgroundColor: kError,
+            ));
           }
         },
         builder: (context, state) {
@@ -145,13 +150,11 @@ class _ForgotPasswordState extends State<ForgotPasswordScreen> {
                   SizedBox(
                     height: 44,
                   ),
-                  currentText.length < 10
-                      ? MmmButtons.disabledGreyButton(50, 'Send OTP')
-                      : MmmButtons.enabledRedButtonbodyMedium(50, 'Send OTP',
-                          action: () {
-                          BlocProvider.of<ForgotPasswordBloc>(context)
-                              .add(SendOtpEvent(emailcontroller.text.trim()));
-                        })
+                  MmmButtons.enabledRedButtonbodyMedium(50, 'Send Link',
+                      action: () {
+                    BlocProvider.of<ForgotPasswordBloc>(context)
+                        .add(SendOtpEvent(emailcontroller.text.trim()));
+                  })
                 ],
               ),
             ),
@@ -163,10 +166,17 @@ class _ForgotPasswordState extends State<ForgotPasswordScreen> {
 
   void navigateToOtp(BuildContext context) {
     var userRepo = BlocProvider.of<ForgotPasswordBloc>(context).userRepository;
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => Otp(
-              userRepository: userRepo,
-              email: emailcontroller.text.trim(),
-            )));
+    context.navigate.pop();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(
+        'We have sent an email to you with a link to reset your password',
+      ),
+      backgroundColor: kSuccess,
+    ));
+    // Navigator.of(context).push(MaterialPageRoute(
+    //     builder: (context) => Otp(
+    //           userRepository: userRepo,
+    //           email: emailcontroller.text.trim(),
+    //         )));
   }
 }

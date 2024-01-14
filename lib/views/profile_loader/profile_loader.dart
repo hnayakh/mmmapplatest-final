@@ -8,20 +8,23 @@ import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/home/home.dart';
 import 'package:makemymarry/views/profile_loader/profile_loader_bloc.dart';
 import 'package:makemymarry/views/profile_loader/profile_loader_state.dart';
+
 import 'profile_loader_event.dart';
 
 class ProfileLoader extends StatelessWidget {
   final UserRepository userRepository;
 
-  const ProfileLoader({Key? key, required this.userRepository})
+  const ProfileLoader({Key? key, required this.userRepository, this.firstTime = false})
       : super(key: key);
 
+  final bool firstTime;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ProfileLoaderBloc(userRepository),
       child: ProfileLoaderScreen(
         repo: userRepository,
+        firstTime: firstTime,
       ),
     );
   }
@@ -29,8 +32,8 @@ class ProfileLoader extends StatelessWidget {
 
 class ProfileLoaderScreen extends StatefulWidget {
   final UserRepository repo;
-
-  const ProfileLoaderScreen({Key? key, required this.repo}) : super(key: key);
+  final bool firstTime;
+  const ProfileLoaderScreen({Key? key, required this.repo, required this.firstTime}) : super(key: key);
   @override
   State<StatefulWidget> createState() {
     return ProfileLoaderScreenState();
@@ -43,10 +46,11 @@ class ProfileLoaderScreenState extends State<ProfileLoaderScreen>
 
   @override
   void initState() {
+    super.initState();
     userId = widget.repo.useDetails!.id;
     WidgetsBinding.instance?.addObserver(this);
     setStatus('Online');
-    super.initState();
+
   }
 
   @override
@@ -151,6 +155,7 @@ class ProfileLoaderScreenState extends State<ProfileLoaderScreen>
                   profileVisitorList: profileVisitorList,
                   onlineMembersList: onlineMembersList,
                   screenName: "",
+              firstTime: widget.firstTime,
                 )),
         (route) => false);
   }

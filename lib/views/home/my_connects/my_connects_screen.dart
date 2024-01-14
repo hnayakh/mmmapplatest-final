@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/datamodels/connect.dart';
+import 'package:makemymarry/locator.dart';
 import 'package:makemymarry/repo/user_repo.dart';
-import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
-import 'package:makemymarry/views/home/interests/interests_bloc.dart';
-import 'package:makemymarry/views/home/my_connects/chats.dart';
+import 'package:makemymarry/views/home/interests/bloc/interests_bloc.dart';
 import 'package:makemymarry/views/home/my_connects/my_connects_bloc.dart';
 import 'package:makemymarry/views/home/my_connects/my_connects_event.dart';
 import 'package:makemymarry/views/home/my_connects/my_connects_state.dart';
 import 'package:makemymarry/views/stackviewscreens/connect/chat_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/connect/connect_screen.dart';
-// import './chats.dart';
-// import 'connected.dart';
+
+import '../../../datamodels/interests_model.dart';
 
 class MyConnects extends StatelessWidget {
   final UserRepository userRepository;
@@ -23,8 +22,15 @@ class MyConnects extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => MyConnectsBloc(userRepository),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => InterestsBloc(userRepository),
+        ),
+        BlocProvider(
+          create: (context) => MyConnectsBloc(userRepository),
+        ),
+      ],
       child: MyConnectsScreen(),
     );
   }
@@ -44,9 +50,8 @@ class MyConnectsScreenState extends State<MyConnectsScreen>
 
   @override
   void initState() {
-    tabController = TabController(length: 2, vsync: this);
-
     super.initState();
+    tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -62,7 +67,7 @@ class MyConnectsScreenState extends State<MyConnectsScreen>
               Container(
                 child: Column(
                   children: [
-                    // MmmButtons.appBarCurved('Connects', context: context),
+
                     Container(
                       child: PreferredSize(
                           preferredSize: Size.fromHeight(74),
@@ -120,8 +125,10 @@ class MyConnectsScreenState extends State<MyConnectsScreen>
                       physics: NeverScrollableScrollPhysics(),
                       children: [
                         // ChatsScreen(),
-                        ConnectScreen(),
-                        ChatScreen(),
+                        ConnectScreen(
+                          userRepository: getIt<UserRepository>(),
+                        ),
+                        ChatScreen()
                         // ConnectedScreen(),
                       ],
                     ))
@@ -141,63 +148,6 @@ class MyConnectsScreenState extends State<MyConnectsScreen>
           }
         },
       ),
-    );
-  }
-
-  Widget buildList() {
-    return ListView.separated(
-      padding: const EdgeInsets.all(0),
-      itemBuilder: (context, index) {
-        return ListTile(
-          leading: CircleAvatar(
-            radius: 29,
-            child: ClipOval(
-              child: Image.network(
-                list[index].thumbnailURL,
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          trailing: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                radius: 10,
-                backgroundColor: kPrimary,
-                child: Text(
-                  '1',
-                  textAlign: TextAlign.center,
-                  textScaleFactor: 1.0,
-                  style: MmmTextStyles.caption(textColor: kWhite),
-                ),
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              Text(
-                '8m ago',
-                textScaleFactor: 1.0,
-                style: MmmTextStyles.caption(textColor: gray1),
-              ),
-            ],
-          ),
-          title: Text(
-            list[index].name,
-            textScaleFactor: 1.0,
-            style: MmmTextStyles.heading5(),
-          ),
-          subtitle: Text(
-            "He'll want to use your yacht, and I don't want this thing smelling",
-            textScaleFactor: 1.0,
-            maxLines: 2,
-            style: MmmTextStyles.bodySmall(),
-          ),
-        );
-      },
-      itemCount: list.length,
-      separatorBuilder: (BuildContext context, int index) {
-        return Divider();
-      },
     );
   }
 }

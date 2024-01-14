@@ -29,7 +29,7 @@ class ExampleActionsWidget extends StatelessWidget {
 
     const actionsTitle = Text(
       'Actions',
-      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+      style: TextStyle( fontFamily: 'MakeMyMarry', fontWeight: FontWeight.bold, fontSize: 24),
     );
 
     if (isLayoutHorizontal) {

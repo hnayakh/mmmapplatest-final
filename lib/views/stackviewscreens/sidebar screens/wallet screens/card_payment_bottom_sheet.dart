@@ -4,7 +4,6 @@ import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_styles.dart';
-import 'package:pin_code_text_field/pin_code_text_field.dart';
 
 class CardPaymentBottomSheet extends StatefulWidget {
   const CardPaymentBottomSheet({Key? key}) : super(key: key);

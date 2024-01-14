@@ -4,7 +4,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
-
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,8 +20,7 @@ import 'package:uuid/uuid.dart';
 import 'chat_state.dart';
 
 class ChatCubit extends Cubit<ChatState> {
-  ChatCubit({required this.chatRoom})
-      : super(ChatInitial()) {
+  ChatCubit({required this.chatRoom}) : super(ChatInitial()) {
     _loadMessages();
   }
   final types.Room chatRoom;
@@ -32,15 +30,17 @@ class ChatCubit extends Cubit<ChatState> {
     state.copyWith(
       estate: EChatState.loading,
     );
-    FirebaseChatCore.instance.messages(chatRoom).listen((event) {
-      final messages = event;
-      emit(
-        state.copyWith(
-          message: messages,
-          estate: EChatState.loaded,
-        ),
-      );
-    });
+    FirebaseChatCore.instance.messages(chatRoom).listen(
+      (event) {
+        final messages = event;
+        emit(
+          state.copyWith(
+            message: messages,
+            estate: EChatState.loaded,
+          ),
+        );
+      },
+    );
   }
 
   void addMessages(types.Message message) {

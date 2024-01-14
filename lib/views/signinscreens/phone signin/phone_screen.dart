@@ -2,17 +2,15 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:makemymarry/locator.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_helper.dart';
-
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
-
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/signinscreens/phone%20signin/phone_bloc.dart';
@@ -20,23 +18,7 @@ import 'package:makemymarry/views/signinscreens/phone%20signin/phone_event.dart'
 import 'package:makemymarry/views/signinscreens/phone%20signin/phone_state.dart';
 import 'package:makemymarry/views/signupscreens/create_account/create_account_screen.dart';
 
-import 'package:simple_gradient_text/simple_gradient_text.dart';
-
 import '../mobile verification/mobile_verification.dart';
-
-//class SinginWithPhone extends StatelessWidget {
-// final UserRepository userRepository;
-
-// const SinginWithPhone({Key? key, required this.userRepository})
-//     : super(key: key);
-
-// @override
-// Widget build(BuildContext context) {
-//   return SigninWithPhoneScreen(
-//     userRepository: userRepository,
-//    );
-//  }
-//}
 
 class SigninWithPhone extends StatelessWidget {
   final UserRepository userRepository;
@@ -77,6 +59,12 @@ class _SigninWithPhoneScreenState extends State<SigninWithPhoneScreen> {
         listener: (context, state) {
           if (state is MoveToMobileVerification) {
             navigateToOtp();
+          }
+          if (state is OnError) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(state.message),
+              backgroundColor: kError,
+            ));
           }
         },
         builder: (context, state) {
@@ -194,7 +182,8 @@ class _SigninWithPhoneScreenState extends State<SigninWithPhoneScreen> {
                               GoogleSignIn _googleSignIn = GoogleSignIn();
                               await _googleSignIn.signOut();
                               _googleSignIn.signIn().then((userData) {
-                                Navigator.of(context).pop(userData?.email ?? "");
+                                Navigator.of(context)
+                                    .pop(userData?.email ?? "");
                               });
                             },
                           ),
@@ -300,13 +289,16 @@ class _SigninWithPhoneScreenState extends State<SigninWithPhoneScreen> {
   }
 
   void navigateToOtp() {
-    var userRepo = BlocProvider.of<PhoneSigninBloc>(context).userRepository;
-    Navigator.of(context).push(MaterialPageRoute(
+    var userRepo = getIt<UserRepository>();
+    Navigator.of(context).push(
+      MaterialPageRoute(
         builder: (context) => MobileVerification(
-              dialCode: selectedCountry.phoneCode,
-              phone: phoneController.text.trim(),
-              userRepository: userRepo,
-              otpType: OtpType.Login,
-            )));
+          dialCode: selectedCountry.phoneCode,
+          phone: phoneController.text.trim(),
+          userRepository: userRepo,
+          otpType: OtpType.Login,
+        ),
+      ),
+    );
   }
 }

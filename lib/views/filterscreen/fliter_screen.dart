@@ -55,6 +55,8 @@ class FilterScreen extends StatefulWidget {
 class _FilterScreenState extends State<FilterScreen> {
   @override
   void initState() {
+
+    super.initState();
     listReligion = BlocProvider.of<FilterBloc>(context)
         .userRepository
         .masterData
@@ -64,7 +66,6 @@ class _FilterScreenState extends State<FilterScreen> {
     religionData.title = 'Doesnot Matter';
     listReligion.insert(0, religionData);
 
-    super.initState();
   }
 
   List<SimpleMasterData> listReligion = [];

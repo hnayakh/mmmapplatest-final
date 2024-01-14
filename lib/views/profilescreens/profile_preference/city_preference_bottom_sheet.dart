@@ -28,11 +28,12 @@ class _SelectCityPreferenceSheetState extends State<SelectCityPreferenceSheet> {
 
   @override
   void initState() {
+    super.initState();
     this.filtered = List.of(widget.list, growable: true);
     //for (int i = 1; i < filtered.length; i++) {
     //   filtered.addAll(filtered[i]);
     //  }
-    super.initState();
+
   }
 
   @override

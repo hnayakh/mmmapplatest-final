@@ -24,8 +24,9 @@ class _OccupationPreferenceSheetState extends State<OccupationPreferenceSheet> {
 
   @override
   void initState() {
-    filtered = widget.list;
     super.initState();
+    filtered = widget.list;
+
   }
 
   @override

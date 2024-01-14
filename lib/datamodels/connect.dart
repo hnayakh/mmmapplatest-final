@@ -75,8 +75,7 @@ class ConnectHistoryItem {
     this.transactionType = data["transactionType"];
     this.userId = data["userId"];
     this.displayId = data["displayId"];
-    this.name = data["name"];
-    this.name = data["name"];
+    this.name = data["name"] ?? "";
     this.activationStatus = data["activationStatus"] != null
         ? ActivationStatus.values[data["activationStatus"]]
         : ActivationStatus.Pending;

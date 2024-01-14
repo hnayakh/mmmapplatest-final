@@ -27,13 +27,14 @@ class FilterUsers extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: MatchingProfileScreen(
-        userRepository: userRepository,
-        list: list,
-        searchList: searchList,
-        premiumList: premiumList,
-        recentViewList: recentViewList,
-        profileVisitorList: profileVisitorList,
-        onlineMembersList: onlineMembersList,
+        list: this.list,
+        // userRepository: userRepository,
+        // list: list,
+        // searchList: searchList,
+        // premiumList: premiumList,
+        // recentViewList: recentViewList,
+        // profileVisitorList: profileVisitorList,
+        // onlineMembersList: onlineMembersList,
       ),
     );
   }

@@ -1,18 +1,36 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/elevations.dart';
+import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/icons.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
-import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/profile%20screens/verify%20account%20screens/verify_account.dart';
+import 'package:makemymarry/utils/widgets_large.dart';
+import 'package:makemymarry/views/matching_percentage/matching_percentage_bloc.dart';
+import 'package:makemymarry/views/matching_percentage/matching_percentage_state.dart';
+import 'package:makemymarry/views/profilescreens/hobbies/hobby_details_view.dart';
+import 'package:makemymarry/views/profilescreens/lifestyle/lifestyle_details_view.dart';
+
+import '../datamodels/martching_profile.dart';
+import '../locator.dart';
+import '../repo/chat_repo.dart';
+import '../views/meet/views/meet_form_view.dart';
+import '../views/profile_detail_view/profile_view.dart';
+import '../views/profile_detail_view/profile_view_bloc.dart';
+import '../views/profile_detail_view/profile_view_event.dart';
+import '../views/stackviewscreens/sidebar screens/my_profile/myprofile.dart';
 
 class MmmButtons {
   static Widget walletApps(String title, String icon) {
@@ -111,15 +129,16 @@ class MmmButtons {
         width: 40,
         height: 40,
         padding: EdgeInsets.all(2),
+        margin: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
         decoration: BoxDecoration(
             color: kWhite,
             borderRadius: BorderRadius.all(Radius.circular(5.85))),
         child: ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(5.85)),
-          child: Image.network(
-            image,
-            fit: BoxFit.cover,
-          ),
+          child: Image.network(image,
+              fit: BoxFit.cover,
+              errorBuilder: (context, obj, str) =>
+                  Container(color: Colors.grey, child: Icon(Icons.error))),
         ),
       ),
       onTap: action,
@@ -141,210 +160,169 @@ class MmmButtons {
       int sistersMarried,
       {Function()? action}) {
     return Container(
-        decoration: BoxDecoration(
-          color: kWhite,
-          boxShadow: [MmmShadow.elevation1()],
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(
-            color: Color(0xffF0EFF5),
-            width: 1,
-          ),
+      decoration: BoxDecoration(
+        color: kWhite,
+        boxShadow: [MmmShadow.elevation1()],
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: Color(0xffF0EFF5),
+          width: 1,
         ),
-        child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: action,
-              child: Container(
-                // alignment: Alignment.center,
-                // height: 264,
-                padding: EdgeInsets.all(9),
-
-                child: Column(children: [
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Row(
-                    children: [
-                      SvgPicture.asset(
-                        "images/family.svg",
-                        color: kPrimary,
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: action,
+          child: Container(
+            padding: EdgeInsets.all(9),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 8,
+                ),
+                Row(
+                  children: [
+                    SvgPicture.asset(
+                      "images/family.svg",
+                      color: kPrimary,
+                      fit: BoxFit.cover,
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: SizedBox(),
+                    ),
+                    Text(
+                      "Family",
+                      textScaleFactor: 1.0,
+                      //textAlign: TextAlign.start,
+                      style: MmmTextStyles.heading5(textColor: kPrimary),
+                    ),
+                    Expanded(
+                      flex: 20,
+                      child: SizedBox(),
+                    ),
+                    Container(
+                      child: SvgPicture.asset(
+                        "images/arrowUp.svg",
+                        color: Color(0xff878D96),
                         fit: BoxFit.cover,
                       ),
-                      Expanded(
-                        flex: 1,
-                        child: SizedBox(),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Container(
+                  //margin: kMargin16,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                        //  width: 84,
+                        height: 46,
+                        child: Stack(
+                          children: <Widget>[
+                            Text(
+                              'Status',
+                              textAlign: TextAlign.left,
+                              style: TextStyle( fontFamily: 'MakeMyMarry', 
+                                  color: Color.fromRGBO(135, 141, 150, 1),
+                                  
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.normal,
+                                  height: 1.6666666666666667),
+                            ),
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                              child: Text(
+                                AppHelper.getStringFromEnum(
+                                    familyAfluenceLevel),
+                                textAlign: TextAlign.left,
+                                style: TextStyle( fontFamily: 'MakeMyMarry', 
+                                    color: Color.fromRGBO(18, 22, 25, 1),
+                                    
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.normal,
+                                    height: 1.5714285714285714),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      Text(
-                        "Family",
-                        textScaleFactor: 1.0,
-                        //textAlign: TextAlign.start,
-                        style: MmmTextStyles.heading5(textColor: kPrimary),
-                      ),
-                      Expanded(
-                        flex: 20,
-                        child: SizedBox(),
+                      SizedBox(
+                        height: 5,
                       ),
                       Container(
-                        child: SvgPicture.asset(
-                          "images/arrowUp.svg",
-                          color: Color(0xff878D96),
-                          fit: BoxFit.cover,
+                        height: 46,
+                        child: Stack(
+                          children: <Widget>[
+                            Text(
+                              'Type',
+                              textAlign: TextAlign.left,
+                              style: TextStyle( fontFamily: 'MakeMyMarry', 
+                                  color: Color.fromRGBO(135, 141, 150, 1),
+                                  
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.normal,
+                                  height: 1.6666666666666667),
+                            ),
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                              child: Text(
+                                AppHelper.getStringFromEnum(familyType),
+                                textAlign: TextAlign.left,
+                                style: TextStyle( fontFamily: 'MakeMyMarry', 
+                                    color: Color.fromRGBO(18, 22, 25, 1),
+                                    
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.normal,
+                                    height: 1.5714285714285714),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Container(
-                    //margin: kMargin16,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                            //  width: 84,
-                            height: 46,
-                            child: Stack(children: <Widget>[
-                              Text(
-                                'Status',
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                        width: 300,
+                        height: 46,
+                        child: Stack(
+                          children: <Widget>[
+                            Text(
+                              'Values',
+                              textAlign: TextAlign.left,
+                              style: TextStyle( fontFamily: 'MakeMyMarry', 
+                                  color: Color.fromRGBO(135, 141, 150, 1),
+                                  
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.normal,
+                                  height: 1.6666666666666667),
+                            ),
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                              child: Text(
+                                AppHelper.getStringFromEnum(familyValues),
                                 textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    color: Color.fromRGBO(135, 141, 150, 1),
-                                    fontFamily: 'Poppins',
-                                    fontSize: 12,
+                                style: TextStyle( fontFamily: 'MakeMyMarry', 
+                                    color: Color.fromRGBO(18, 22, 25, 1),
+                                    
+                                    fontSize: 14,
                                     fontWeight: FontWeight.normal,
-                                    height: 1.6666666666666667),
+                                    height: 1.5714285714285714),
                               ),
-                              Container(
-                                margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                                child: Text(
-                                  describeEnum(familyAfluenceLevel),
-                                  // this.profileDetails != null
-                                  //     ? profileDetails!
-                                  //         .familyAfluenceLevel.name
-                                  //     : "",
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(18, 22, 25, 1),
-                                      fontFamily: 'Poppins',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.normal,
-                                      height: 1.5714285714285714),
-                                ),
-                              ),
-                            ])),
-                        // Row(
-                        //   children: [
-                        //     Text(
-                        //       'Status: ',
-                        //       style: MmmTextStyles.heading6(textColor: kDark5),
-                        //     ),
-                        //     Text(
-                        //       describeEnum(familyAfluenceLevel),
-                        //       style: MmmTextStyles.bodySmall(textColor: kDark5),
-                        //     )
-                        //   ],
-                        // ),
-                        SizedBox(
-                          height: 5,
+                            ),
+                          ],
                         ),
-                        Container(
-
-                            //  width: 84,
-                            height: 46,
-                            child: Stack(children: <Widget>[
-                              Text(
-                                'Type',
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    color: Color.fromRGBO(135, 141, 150, 1),
-                                    fontFamily: 'Poppins',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.normal,
-                                    height: 1.6666666666666667),
-                              ),
-                              Container(
-                                margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                                child: Text(
-                                  describeEnum(familyType),
-                                  // this.profileDetails != null
-                                  //     ? profileDetails!
-                                  //         .familyAfluenceLevel.name
-                                  //     : "",
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(18, 22, 25, 1),
-                                      fontFamily: 'Poppins',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.normal,
-                                      height: 1.5714285714285714),
-                                ),
-                              ),
-                            ])),
-                        // Row(
-                        //   children: [
-                        //     Text(
-                        //       'Type: ',
-                        //       style: MmmTextStyles.heading6(textColor: kDark5),
-                        //     ),
-                        //     Text(
-                        //       describeEnum(familyType),
-                        //       style: MmmTextStyles.bodySmall(textColor: kDark5),
-                        //     )
-                        //   ],
-                        // ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                            width: 300,
-                            height: 46,
-                            child: Stack(children: <Widget>[
-                              Text(
-                                'Values',
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    color: Color.fromRGBO(135, 141, 150, 1),
-                                    fontFamily: 'Poppins',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.normal,
-                                    height: 1.6666666666666667),
-                              ),
-                              Container(
-                                margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                                child: Text(
-                                  describeEnum(familyValues),
-                                  // this.profileDetails != null
-                                  //     ? profileDetails!
-                                  //         .familyAfluenceLevel.name
-                                  //     : "",
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(18, 22, 25, 1),
-                                      fontFamily: 'Poppins',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.normal,
-                                      height: 1.5714285714285714),
-                                ),
-                              ),
-                            ])),
-                        // Row(
-                        //   children: [
-                        //     Text(
-                        //       'Values: ',
-                        //       style: MmmTextStyles.heading6(textColor: kDark5),
-                        //     ),
-                        //     Text(
-                        //       describeEnum(familyValues),
-                        //       style: MmmTextStyles.bodySmall(textColor: kDark5),
-                        //     )
-                        //   ],
-                        // ),
-                        SizedBox(
-                          height: 5,
-                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      if ((city + state + country).isNotEmpty) ...[
                         Container(
                             width: 300,
                             height: 46,
@@ -352,9 +330,9 @@ class MmmButtons {
                               Text(
                                 'Location',
                                 textAlign: TextAlign.left,
-                                style: TextStyle(
+                                style: TextStyle( fontFamily: 'MakeMyMarry', 
                                     color: Color.fromRGBO(135, 141, 150, 1),
-                                    fontFamily: 'Poppins',
+                                    
                                     fontSize: 12,
                                     fontWeight: FontWeight.normal,
                                     height: 1.6666666666666667),
@@ -363,274 +341,162 @@ class MmmButtons {
                                 margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
                                 child: Text(
                                   '$city, $state, $country',
-                                  // this.profileDetails != null
-                                  //     ? profileDetails!
-                                  //         .familyAfluenceLevel.name
-                                  //     : "",
                                   textAlign: TextAlign.left,
-                                  style: TextStyle(
+                                  style: TextStyle( fontFamily: 'MakeMyMarry', 
                                       color: Color.fromRGBO(18, 22, 25, 1),
-                                      fontFamily: 'Poppins',
+                                      
                                       fontSize: 14,
                                       fontWeight: FontWeight.normal,
                                       height: 1.5714285714285714),
                                 ),
                               ),
                             ])),
-                        // Row(
-                        //   children: [
-                        //     Text(
-                        //       'Location: ',
-                        //       style: MmmTextStyles.heading6(textColor: kDark5),
-                        //     ),
-                        //     Text(
-                        //       '$city,$state,$country',
-                        //       style: MmmTextStyles.bodySmall(textColor: kDark5),
-                        //     )
-                        //   ],
-                        // ),
                         SizedBox(
                           height: 5,
                         ),
-                        Container(
-                            width: 300,
-                            height: 46,
-                            child: Stack(children: <Widget>[
-                              Text(
-                                "Father's Occupation",
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    color: Color.fromRGBO(135, 141, 150, 1),
-                                    fontFamily: 'Poppins',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.normal,
-                                    height: 1.6666666666666667),
-                              ),
-                              Container(
-                                margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                                child: Text(
-                                  describeEnum(fatherOccupation),
-                                  // this.profileDetails != null
-                                  //     ? profileDetails!
-                                  //         .familyAfluenceLevel.name
-                                  //     : "",
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(18, 22, 25, 1),
-                                      fontFamily: 'Poppins',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.normal,
-                                      height: 1.5714285714285714),
-                                ),
-                              ),
-                            ])),
-                        // Row(
-                        //   children: [
-                        //     Text(
-                        //       'Father’s Occupation: ',
-                        //       style: MmmTextStyles.heading6(textColor: kDark5),
-                        //     ),
-                        //     Text(
-                        //       describeEnum(fatherOccupation),
-                        //       style: MmmTextStyles.bodySmall(textColor: kDark5),
-                        //     )
-                        //   ],
-                        // ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                            width: 300,
-                            height: 46,
-                            child: Stack(children: <Widget>[
-                              Text(
-                                "Mother's Occupation",
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    color: Color.fromRGBO(135, 141, 150, 1),
-                                    fontFamily: 'Poppins',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.normal,
-                                    height: 1.6666666666666667),
-                              ),
-                              Container(
-                                margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                                child: Text(
-                                  describeEnum(motherOccupation),
-                                  // this.profileDetails != null
-                                  //     ? profileDetails!
-                                  //         .familyAfluenceLevel.name
-                                  //     : "",
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(18, 22, 25, 1),
-                                      fontFamily: 'Poppins',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.normal,
-                                      height: 1.5714285714285714),
-                                ),
-                              ),
-                            ])),
-                        // Row(
-                        //   children: [
-                        //     Text(
-                        //       'Mother’s Occupation: ',
-                        //       style: MmmTextStyles.heading6(textColor: kDark5),
-                        //     ),
-                        //     Text(
-                        //       describeEnum(motherOccupation),
-                        //       style: MmmTextStyles.bodySmall(textColor: kDark5),
-                        //     )
-                        //   ],
-                        // ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                            width: 300,
-                            height: 46,
-                            child: Stack(children: <Widget>[
-                              Text(
-                                "No. of Brothers/Married",
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    color: Color.fromRGBO(135, 141, 150, 1),
-                                    fontFamily: 'Poppins',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.normal,
-                                    height: 1.6666666666666667),
-                              ),
-                              Container(
-                                margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                                child: Text(
-                                  '$noOfBrother out of $brothersMarried Married',
-                                  // this.profileDetails != null
-                                  //     ? profileDetails!
-                                  //         .familyAfluenceLevel.name
-                                  //     : "",
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(18, 22, 25, 1),
-                                      fontFamily: 'Poppins',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.normal,
-                                      height: 1.5714285714285714),
-                                ),
-                              ),
-                            ])),
-                        // Row(
-                        //   children: [
-                        //     Expanded(
-                        //       child: Row(
-                        //         children: [
-                        //           Text(
-                        //             'No. of brothers: ',
-                        //             style: MmmTextStyles.heading6(
-                        //                 textColor: kDark5),
-                        //           ),
-                        //           Text(
-                        //             '$noOfBrother',
-                        //             style: MmmTextStyles.bodySmall(
-                        //                 textColor: kDark5),
-                        //           )
-                        //         ],
-                        //       ),
-                        //     ),
-                        //     Expanded(
-                        //       child: Row(
-                        //         children: [
-                        //           Text(
-                        //             'Married: ',
-                        //             style: MmmTextStyles.heading6(
-                        //                 textColor: kDark5),
-                        //           ),
-                        //           Text(
-                        //             '$brothersMarried/$noOfBrother',
-                        //             style: MmmTextStyles.bodySmall(
-                        //                 textColor: kDark5),
-                        //           )
-                        //         ],
-                        //       ),
-                        //     )
-                        //   ],
-                        // ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                            width: 300,
-                            height: 46,
-                            child: Stack(children: <Widget>[
-                              Text(
-                                "No. of Sister's/Married",
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    color: Color.fromRGBO(135, 141, 150, 1),
-                                    fontFamily: 'Poppins',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.normal,
-                                    height: 1.6666666666666667),
-                              ),
-                              Container(
-                                margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                                child: Text(
-                                  '$noOfSister out of $sistersMarried Married',
-                                  // this.profileDetails != null
-                                  //     ? profileDetails!
-                                  //         .familyAfluenceLevel.name
-                                  //     : "",
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(18, 22, 25, 1),
-                                      fontFamily: 'Poppins',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.normal,
-                                      height: 1.5714285714285714),
-                                ),
-                              ),
-                            ])),
-                        // Row(
-                        //   children: [
-                        //     Expanded(
-                        //       child: Row(
-                        //         children: [
-                        //           Text(
-                        //             'No. of sisters: ',
-                        //             style: MmmTextStyles.heading6(
-                        //                 textColor: kDark5),
-                        //           ),
-                        //           Text(
-                        //             '$noOfSister',
-                        //             style: MmmTextStyles.bodySmall(
-                        //                 textColor: kDark5),
-                        //           )
-                        //         ],
-                        //       ),
-                        //     ),
-                        //     Expanded(
-                        //       child: Row(
-                        //         children: [
-                        //           Text(
-                        //             'Married: ',
-                        //             style: MmmTextStyles.heading6(
-                        //                 textColor: kDark5),
-                        //           ),
-                        //           Text(
-                        //             '$sistersMarried/$noOfSister',
-                        //             style: MmmTextStyles.bodySmall(
-                        //                 textColor: kDark5),
-                        //           )
-                        //         ],
-                        //       ),
-                        //     )
-                        //   ],
-                        // ),
                       ],
-                    ),
+                      Container(
+                        width: 300,
+                        height: 46,
+                        child: Stack(
+                          children: <Widget>[
+                            Text(
+                              "Father's Occupation",
+                              textAlign: TextAlign.left,
+                              style: TextStyle( fontFamily: 'MakeMyMarry', 
+                                  color: Color.fromRGBO(135, 141, 150, 1),
+                                  
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.normal,
+                                  height: 1.6666666666666667),
+                            ),
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                              child: Text(
+                                AppHelper.getStringFromEnum(fatherOccupation),
+                                textAlign: TextAlign.left,
+                                style: TextStyle( fontFamily: 'MakeMyMarry', 
+                                    color: Color.fromRGBO(18, 22, 25, 1),
+                                    
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.normal,
+                                    height: 1.5714285714285714),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                        width: 300,
+                        height: 46,
+                        child: Stack(
+                          children: <Widget>[
+                            Text(
+                              "Mother's Occupation",
+                              textAlign: TextAlign.left,
+                              style: TextStyle( fontFamily: 'MakeMyMarry', 
+                                  color: Color.fromRGBO(135, 141, 150, 1),
+                                  
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.normal,
+                                  height: 1.6666666666666667),
+                            ),
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                              child: Text(
+                                AppHelper.getStringFromEnum(motherOccupation),
+                                textAlign: TextAlign.left,
+                                style: TextStyle( fontFamily: 'MakeMyMarry', 
+                                    color: Color.fromRGBO(18, 22, 25, 1),
+                                    
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.normal,
+                                    height: 1.5714285714285714),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                        width: 300,
+                        height: 46,
+                        child: Stack(
+                          children: <Widget>[
+                            Text(
+                              "No. of Brothers/Married",
+                              textAlign: TextAlign.left,
+                              style: TextStyle( fontFamily: 'MakeMyMarry', 
+                                  color: Color.fromRGBO(135, 141, 150, 1),
+                                  
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.normal,
+                                  height: 1.6666666666666667),
+                            ),
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                              child: Text(
+                                '$noOfBrother out of $brothersMarried Married',
+                                textAlign: TextAlign.left,
+                                style: TextStyle( fontFamily: 'MakeMyMarry', 
+                                    color: Color.fromRGBO(18, 22, 25, 1),
+                                    
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.normal,
+                                    height: 1.5714285714285714),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                        width: 300,
+                        height: 46,
+                        child: Stack(
+                          children: <Widget>[
+                            Text(
+                              "No. of Sister's/Married",
+                              textAlign: TextAlign.left,
+                              style: TextStyle( fontFamily: 'MakeMyMarry', 
+                                  color: Color.fromRGBO(135, 141, 150, 1),
+                                  
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.normal,
+                                  height: 1.6666666666666667),
+                            ),
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                              child: Text(
+                                '$noOfSister out of $sistersMarried Married',
+                                textAlign: TextAlign.left,
+                                style: TextStyle( fontFamily: 'MakeMyMarry', 
+                                    color: Color.fromRGBO(18, 22, 25, 1),
+                                    
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.normal,
+                                    height: 1.5714285714285714),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ]),
-              ),
-            )));
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   static Container aboutProfileViewButtons(String icon, String label,
@@ -755,6 +621,7 @@ class MmmButtons {
             padding: EdgeInsets.all(9),
 
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
                   height: 8,
@@ -763,7 +630,7 @@ class MmmButtons {
                   children: [
                     SvgPicture.asset(
                       "images/religion.svg",
-                      color: Color(0xff121619),
+                      color: kPrimary,
                       fit: BoxFit.cover,
                     ),
                     Expanded(
@@ -774,7 +641,9 @@ class MmmButtons {
                       "Religion",
                       textScaleFactor: 1.0,
                       //textAlign: TextAlign.start,
-                      style: MmmTextStyles.heading5(textColor: kDark6),
+                      style: MmmTextStyles.heading5(
+                        textColor: kPrimary,
+                      ),
                     ),
                     Expanded(
                       flex: 20,
@@ -793,47 +662,108 @@ class MmmButtons {
                   height: 8,
                 ),
                 Container(
-                  margin: kMargin16,
+                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Text('Religion: ', style: MmmTextStyles.heading6()),
-                          Text(religion, style: MmmTextStyles.bodySmall()),
-                        ],
+                      Text('Religion',
+                          style: TextStyle( fontFamily: 'MakeMyMarry', 
+                              color: Color.fromRGBO(135, 141, 150, 1),
+                              
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                              height: 1.6666666666666667)),
+                      Text(
+                        religion,
+                        style: TextStyle( fontFamily: 'MakeMyMarry', 
+                            color: Color.fromRGBO(18, 22, 25, 1),
+                            
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                            height: 1.5714285714285714),
                       ),
-                      cast != "null" || cast.length == 0
-                          ? Row(
-                              children: [
-                                Text('Caste: ',
-                                    style: MmmTextStyles.heading6()),
-                                Text(cast, style: MmmTextStyles.bodySmall()),
-                              ],
-                            )
-                          : Container(),
-                      gothra != null && gothra.length == 0
-                          ? Row(
-                              children: [
-                                Text('Gothra: ',
-                                    style: MmmTextStyles.heading6()),
-                                Text(gothra, style: MmmTextStyles.bodySmall()),
-                              ],
-                            )
-                          : Container(),
-                      Row(
-                        children: [
-                          Text('Manglik: ', style: MmmTextStyles.heading6()),
-                          Text(describeEnum(manglik),
-                              style: MmmTextStyles.bodySmall()),
-                        ],
+                      SizedBox(
+                        height: 6,
                       ),
-                      Row(
-                        children: [
-                          Text('Mother Tongue: ',
-                              style: MmmTextStyles.heading6()),
-                          Text(motherTongue, style: MmmTextStyles.bodySmall()),
-                        ],
+                      if (cast != "null" || cast.length == 0) ...[
+                        Text('Caste',
+                            style: TextStyle( fontFamily: 'MakeMyMarry', 
+                                color: Color.fromRGBO(135, 141, 150, 1),
+                                
+                                fontSize: 12,
+                                fontWeight: FontWeight.normal,
+                                height: 1.6666666666666667)),
+                        Text(
+                          cast,
+                          style: TextStyle( fontFamily: 'MakeMyMarry', 
+                              color: Color.fromRGBO(18, 22, 25, 1),
+                              
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                              height: 1.5714285714285714),
+                        ),
+                      ],
+                      SizedBox(
+                        height: 6,
                       ),
+                      if (gothra != null && gothra.length == 0) ...[
+                        Text('Gothra',
+                            style: TextStyle( fontFamily: 'MakeMyMarry', 
+                                color: Color.fromRGBO(135, 141, 150, 1),
+                                
+                                fontSize: 12,
+                                fontWeight: FontWeight.normal,
+                                height: 1.6666666666666667)),
+                        Text(
+                          gothra,
+                          style: TextStyle( fontFamily: 'MakeMyMarry', 
+                              color: Color.fromRGBO(18, 22, 25, 1),
+                              
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                              height: 1.5714285714285714),
+                        ),
+                      ],
+                      SizedBox(
+                        height: 6,
+                      ),
+                      Text('Manglik',
+                          style: TextStyle( fontFamily: 'MakeMyMarry', 
+                              color: Color.fromRGBO(135, 141, 150, 1),
+                              
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                              height: 1.6666666666666667)),
+                      Text(
+                        describeEnum(manglik),
+                        style: TextStyle( fontFamily: 'MakeMyMarry', 
+                            color: Color.fromRGBO(18, 22, 25, 1),
+                            
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                            height: 1.5714285714285714),
+                      ),
+                      SizedBox(
+                        height: 6,
+
+                      ),
+                      Text('Mother Tongue',
+                          style: TextStyle( fontFamily: 'MakeMyMarry', 
+                              color: Color.fromRGBO(135, 141, 150, 1),
+                              
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                              height: 1.6666666666666667)),
+                      Text(
+                        motherTongue,
+                        style: TextStyle( fontFamily: 'MakeMyMarry', 
+                            color: Color.fromRGBO(18, 22, 25, 1),
+                            
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                            height: 1.5714285714285714),
+                      ),
+
                     ],
                   ),
                 )
@@ -848,7 +778,7 @@ class MmmButtons {
   static Container carrerProfileView(
       //String employedin,
       String occupation,
-      AnualIncome annualIncome,
+      AnnualIncome annualIncome,
       String city,
       String state,
       String country,
@@ -874,6 +804,7 @@ class MmmButtons {
             padding: EdgeInsets.all(9),
 
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
                   height: 8,
@@ -882,7 +813,7 @@ class MmmButtons {
                   children: [
                     SvgPicture.asset(
                       "images/education.svg",
-                      color: Color(0xff121619),
+                      color: kPrimary,
                       fit: BoxFit.cover,
                     ),
                     Expanded(
@@ -892,8 +823,8 @@ class MmmButtons {
                     Text(
                       "Career & Education",
                       textScaleFactor: 1.0,
-                      //textAlign: TextAlign.start,
-                      style: MmmTextStyles.heading5(textColor: kDark6),
+
+                      style: MmmTextStyles.heading5(textColor: kPrimary),
                     ),
                     Expanded(
                       flex: 20,
@@ -908,54 +839,77 @@ class MmmButtons {
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 8,
-                ),
+
                 Container(
-                  margin: kMargin16,
+                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Row(
-                      //   children: [
-                      //     Text('Employed In: ',
-                      //         style: MmmTextStyles.heading6()),
-                      //     Text(employedin, style: MmmTextStyles.bodySmall()),
-                      //   ],
-                      // ),
-                      Row(
-                        children: [
-                          Text('Occupation: ', style: MmmTextStyles.heading6()),
-                          Text(occupation, style: MmmTextStyles.bodySmall()),
-                        ],
+
+                      Text('Occupation', style: TextStyle( fontFamily: 'MakeMyMarry', 
+                          color: Color.fromRGBO(135, 141, 150, 1),
+                          
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                          height: 1.6666666666666667)),
+                      Text(occupation, style: TextStyle( fontFamily: 'MakeMyMarry', 
+                          color: Color.fromRGBO(18, 22, 25, 1),
+                          
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                          height: 1.5714285714285714),),
+                      SizedBox(height: 6,),
+                      Text('Annual Income',
+                          style: TextStyle( fontFamily: 'MakeMyMarry', 
+                              color: Color.fromRGBO(135, 141, 150, 1),
+                              
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                              height: 1.6666666666666667)),
+                      Text(AppHelper.getStringFromEnum(annualIncome),
+                          style: TextStyle( fontFamily: 'MakeMyMarry', 
+                              color: Color.fromRGBO(18, 22, 25, 1),
+                              
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                              height: 1.5714285714285714),),
+                      SizedBox(height: 6,),
+
+                      Text('Job Location',
+                          style:TextStyle( fontFamily: 'MakeMyMarry', 
+                              color: Color.fromRGBO(135, 141, 150, 1),
+                              
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                              height: 1.6666666666666667)),
+                      Text(
+                        "$city${city.isNotEmpty ? "," : ""} $state,$country",
+                        style:  TextStyle( fontFamily: 'MakeMyMarry', 
+                            color: Color.fromRGBO(18, 22, 25, 1),
+                            
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                            height: 1.5714285714285714),
+                        maxLines: 2,
                       ),
-                      Row(
-                        children: [
-                          Text('Annual Income: ',
-                              style: MmmTextStyles.heading6()),
-                          Text(AppHelper.getStringFromEnum(annualIncome),
-                              style: MmmTextStyles.bodySmall()),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text('Job Location: ',
-                              style: MmmTextStyles.heading6()),
-                          Text("$city,$state,$country",
-                              style: MmmTextStyles.bodySmall()),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text('Highest Education: ',
-                              style: MmmTextStyles.heading6()),
-                          Expanded(
-                            child: Text(highiestEducation,
-                                overflow: TextOverflow.ellipsis,
-                                // maxLines: 2,
-                                style: MmmTextStyles.bodySmall()),
-                          )
-                        ],
-                      ),
+                      SizedBox(height: 6,),
+
+                      Text('Highest Education',
+                          style: TextStyle( fontFamily: 'MakeMyMarry', 
+                              color: Color.fromRGBO(135, 141, 150, 1),
+                              
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                              height: 1.6666666666666667)),
+                      Text(highiestEducation,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 10,
+                          style:  TextStyle( fontFamily: 'MakeMyMarry', 
+                              color: Color.fromRGBO(18, 22, 25, 1),
+                              
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                              height: 1.5714285714285714),)
                     ],
                   ),
                 )
@@ -1008,7 +962,7 @@ class MmmButtons {
                       child: SizedBox(),
                     ),
                     Text(
-                      "Interests",
+                      "Habits",
                       textScaleFactor: 1.0,
                       //textAlign: TextAlign.start,
                       style: MmmTextStyles.heading5(textColor: kPrimary),
@@ -1038,22 +992,21 @@ class MmmButtons {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                              // margin: EdgeInsets.fromLTRB(15, 50, 20, 0),
-                              width: 250,
-                              height: 100,
-                              child: Stack(children: <Widget>[
+                            width: 250,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
                                 Text(
                                   'Eating',
                                   textAlign: TextAlign.left,
-                                  style: TextStyle(
+                                  style: TextStyle( fontFamily: 'MakeMyMarry', 
                                       color: Color.fromARGB(212, 0, 0, 0),
-                                      fontFamily: 'Poppins',
                                       fontSize: 14,
                                       fontWeight: FontWeight.normal,
                                       height: 1.6666666666666667),
                                 ),
                                 Container(
-                                  margin: EdgeInsets.fromLTRB(0, 30, 20, 0),
+                                  margin: EdgeInsets.fromLTRB(0, 8, 20, 0),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(8),
@@ -1078,17 +1031,17 @@ class MmmButtons {
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
-                                      Image.asset(
+                                      SvgPicture.asset(
                                         describeEnum(eatingHabit) ==
                                                 " Vegetarrian"
-                                            ? 'images/LeafyGreen.png'
+                                            ? 'images/Veg2.svg'
                                             : describeEnum(eatingHabit) ==
                                                     "Nonvegetarrian"
-                                                ? 'images/chicken.png'
+                                                ? 'images/non veg.svg'
                                                 : describeEnum(eatingHabit) ==
                                                         "Eggitarrian"
-                                                    ? 'images/egggg.png'
-                                                    : "images/download.png",
+                                                    ? 'images/egg.svg'
+                                                    : "images/egg.svg",
                                         height: 28,
                                         width: 28,
                                       ),
@@ -1099,16 +1052,13 @@ class MmmButtons {
                                           mainAxisSize: MainAxisSize.min,
                                           children: <Widget>[
                                             Text(
-                                              describeEnum(eatingHabit),
-                                              // this.profileDetails != null
-                                              //     ? profileDetails!
-                                              //         .eatingHabit.name
-                                              //     : "",
+                                              AppHelper.getStringFromEnum(
+                                                  eatingHabit),
                                               textAlign: TextAlign.left,
-                                              style: TextStyle(
+                                              style: TextStyle( fontFamily: 'MakeMyMarry', 
                                                   color: Color.fromRGBO(
                                                       18, 22, 25, 1),
-                                                  fontFamily: 'Poppins',
+                                                  
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.normal,
                                                   height: 1.625),
@@ -1119,80 +1069,25 @@ class MmmButtons {
                                     ],
                                   ),
                                 ),
-                              ])),
-                          // Container(
-                          //   height: 50,
-                          //   width: MediaQuery.of(context).size.width * 0.37,
-                          //   alignment: Alignment.center,
-                          //   decoration: BoxDecoration(
-                          //       color: kLight2,
-                          //       border:
-                          //           Border.all(width: 1, color: kInputBorder),
-                          //       borderRadius:
-                          //           BorderRadius.all(Radius.circular(12))),
-                          //   child: Row(
-                          //     mainAxisAlignment: MainAxisAlignment.center,
-                          //     children: [
-                          //       SvgPicture.asset(
-                          //         "images/Veg2.svg",
-                          //         fit: BoxFit.cover,
-                          //       ),
-                          //       SizedBox(
-                          //         width: 6,
-                          //       ),
-                          //       Text(
-                          //         describeEnum(eatingHabit),
-                          //         style: MmmTextStyles.bodyMedium(
-                          //             textColor: kBlack),
-                          //       )
-                          //     ],
-                          //   ),
-                          // ),
-
-                          // Container(
-                          //   height: 50,
-                          //   width: MediaQuery.of(context).size.width * 0.37,
-                          //   alignment: Alignment.center,
-                          //   decoration: BoxDecoration(
-                          //       color: kLight2,
-                          //       border:
-                          //           Border.all(width: 1, color: kInputBorder),
-                          //       borderRadius:
-                          //           BorderRadius.all(Radius.circular(12))),
-                          //   child: Row(
-                          //     mainAxisAlignment: MainAxisAlignment.center,
-                          //     children: [
-                          //       SvgPicture.asset(
-                          //         "images/alcoholic.svg",
-                          //         fit: BoxFit.cover,
-                          //       ),
-                          //       SizedBox(
-                          //         width: 6,
-                          //       ),
-                          //       Text(
-                          //         describeEnum(drinkingHabit),
-                          //         style: MmmTextStyles.bodyMedium(
-                          //             textColor: kBlack),
-                          //       )
-                          //     ],
-                          //   ),
-                          // )
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                       SizedBox(
-                        height: 16,
+                        height: 8,
                       ),
                       Container(
-                          //margin: EdgeInsets.fromLTRB(15, 150, 20, 0),
-                          width: 250,
-                          height: 100,
-                          child: Stack(children: <Widget>[
+                        width: 250,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
                             Text(
                               'Smoking',
                               textAlign: TextAlign.left,
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'MakeMyMarry', 
                                   color: Color.fromARGB(212, 0, 0, 0),
-                                  fontFamily: 'Poppins',
+                                  
                                   fontSize: 14,
                                   letterSpacing:
                                       0 /*percentages not used in flutter. defaulting to zero*/,
@@ -1200,7 +1095,7 @@ class MmmButtons {
                                   height: 1.6666666666666667),
                             ),
                             Container(
-                              margin: EdgeInsets.fromLTRB(0, 30, 20, 0),
+                              margin: EdgeInsets.fromLTRB(0, 8, 20, 0),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(8),
@@ -1224,12 +1119,12 @@ class MmmButtons {
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
-                                  Image.asset(
+                                  SvgPicture.asset(
                                       describeEnum(smokingHabit) == "Smoker"
-                                          ? 'images/cigarette.png'
+                                          ? 'images/smoke.svg'
                                           : describeEnum(smokingHabit) ==
                                                   "NonSmoker"
-                                              ? 'images/nonsmokerr.png'
+                                              ? 'images/smoke.svg'
                                               : describeEnum(smokingHabit) ==
                                                       "Occasionally"
                                                   ? 'images/cigarette.png'
@@ -1243,16 +1138,13 @@ class MmmButtons {
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[
                                         Text(
-                                          describeEnum(smokingHabit),
-                                          // this.profileDetails != null
-                                          //     ? profileDetails!
-                                          //         .smokingHabit.name
-                                          //     : "",
+                                          AppHelper.getStringFromEnum(
+                                              smokingHabit),
                                           textAlign: TextAlign.left,
-                                          style: TextStyle(
+                                          style: TextStyle( fontFamily: 'MakeMyMarry', 
                                               color:
                                                   Color.fromRGBO(18, 22, 25, 1),
-                                              fontFamily: 'Poppins',
+                                              
                                               fontSize: 16,
                                               fontWeight: FontWeight.normal,
                                               height: 1.625),
@@ -1263,22 +1155,23 @@ class MmmButtons {
                                 ],
                               ),
                             ),
-                          ])),
-
+                          ],
+                        ),
+                      ),
                       SizedBox(
-                        height: 16,
+                        height: 8,
                       ),
                       Container(
-                          //margin: EdgeInsets.fromLTRB(15, 150, 20, 0),
-                          width: 250,
-                          height: 100,
-                          child: Stack(children: <Widget>[
+                        width: 250,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
                             Text(
-                              'Alchoholic',
+                              'Alcoholic',
                               textAlign: TextAlign.left,
-                              style: TextStyle(
+                              style: TextStyle( fontFamily: 'MakeMyMarry', 
                                   color: Color.fromARGB(212, 0, 0, 0),
-                                  fontFamily: 'Poppins',
+                                  
                                   fontSize: 14,
                                   letterSpacing:
                                       0 /*percentages not used in flutter. defaulting to zero*/,
@@ -1286,7 +1179,7 @@ class MmmButtons {
                                   height: 1.6666666666666667),
                             ),
                             Container(
-                              margin: EdgeInsets.fromLTRB(0, 30, 20, 0),
+                              margin: EdgeInsets.fromLTRB(0, 8, 20, 0),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(8),
@@ -1310,16 +1203,16 @@ class MmmButtons {
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
-                                  Image.asset(
+                                  SvgPicture.asset(
                                       describeEnum(drinkingHabit) == "Alcoholic"
-                                          ? 'images/Beer.png'
+                                          ? 'images/alcoholic.svg'
                                           : describeEnum(drinkingHabit) ==
                                                   "Nonalcoholic"
-                                              ? 'images/nonalcoholiya.png'
+                                              ? 'images/non_alcoholic.svg'
                                               : describeEnum(drinkingHabit) ==
                                                       "Occasionally"
-                                                  ? 'images/Beer.png'
-                                                  : "images/download.png",
+                                                  ? 'images/occasionally.svg'
+                                                  : "images/occasionally.svg",
                                       height: 28,
                                       width: 28),
                                   SizedBox(width: 8),
@@ -1329,16 +1222,13 @@ class MmmButtons {
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[
                                         Text(
-                                          describeEnum(drinkingHabit),
-                                          // this.profileDetails != null
-                                          //     ? profileDetails!
-                                          //         .smokingHabit.name
-                                          //     : "",
+                                          AppHelper.getStringFromEnum(
+                                              drinkingHabit),
                                           textAlign: TextAlign.left,
-                                          style: TextStyle(
+                                          style: TextStyle( fontFamily: 'MakeMyMarry', 
                                               color:
                                                   Color.fromRGBO(18, 22, 25, 1),
-                                              fontFamily: 'Poppins',
+                                              
                                               fontSize: 16,
                                               fontWeight: FontWeight.normal,
                                               height: 1.625),
@@ -1349,309 +1239,217 @@ class MmmButtons {
                                 ],
                               ),
                             ),
-                          ])),
+                          ],
+                        ),
+                      ),
                       SizedBox(height: 10),
-
-                      Container(
-                          // margin: EdgeInsets.fromLTRB(15, 350, 0, 0),
-                          width: 400,
-                          height: 320,
-                          child: Stack(children: <Widget>[
-                            Text(
-                              'Hobbies',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  color: Color.fromARGB(212, 0, 0, 0),
-                                  fontFamily: 'Poppins',
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.normal,
-                                  height: 1.6666666666666667),
-                            ),
-                            Container(
-                              margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(8),
-                                  topRight: Radius.circular(8),
-                                  bottomLeft: Radius.circular(8),
-                                  bottomRight: Radius.circular(8),
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Color.fromARGB(13, 255, 77, 110),
-                                      offset: Offset(0, 4),
-                                      blurRadius: 14)
-                                ],
-                                border: Border.all(
-                                  color: Color.fromRGBO(193, 199, 205, 1),
-                                  width: 1,
-                                ),
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 12),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Image.asset(
-                                    'images/paint.png',
-                                  ),
-                                  SizedBox(width: 8),
-                                  Container(
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        Text(
-                                          'Painting',
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                              color:
-                                                  Color.fromRGBO(18, 22, 25, 1),
-                                              fontFamily: 'Poppins',
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.normal,
-                                              height: 1.625),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.fromLTRB(140, 30, 0, 0),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(8),
-                                  topRight: Radius.circular(8),
-                                  bottomLeft: Radius.circular(8),
-                                  bottomRight: Radius.circular(8),
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Color.fromARGB(13, 255, 77, 110),
-                                      offset: Offset(0, 4),
-                                      blurRadius: 14)
-                                ],
-                                border: Border.all(
-                                  color: Color.fromRGBO(193, 199, 205, 1),
-                                  width: 1,
-                                ),
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 12),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Image.asset(
-                                    'images/Camera.png',
-                                  ),
-                                  SizedBox(width: 8),
-                                  Container(
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        Text(
-                                          'Photography',
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                              color:
-                                                  Color.fromRGBO(18, 22, 25, 1),
-                                              fontFamily: 'Poppins',
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.normal,
-                                              height: 1.625),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.fromLTRB(0, 100, 20, 0),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(8),
-                                  topRight: Radius.circular(8),
-                                  bottomLeft: Radius.circular(8),
-                                  bottomRight: Radius.circular(8),
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Color.fromARGB(13, 255, 77, 110),
-                                      offset: Offset(0, 4),
-                                      blurRadius: 14)
-                                ],
-                                border: Border.all(
-                                  color: Color.fromRGBO(193, 199, 205, 1),
-                                  width: 1,
-                                ),
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 12),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Image.asset(
-                                    'images/Mountain.png',
-                                  ),
-                                  SizedBox(width: 8),
-                                  Container(
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        Text(
-                                          'Mountain Hiking',
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                              color:
-                                                  Color.fromRGBO(18, 22, 25, 1),
-                                              fontFamily: 'Poppins',
-                                              fontSize: 16,
-                                              letterSpacing:
-                                                  0 /*percentages not used in flutter. defaulting to zero*/,
-                                              fontWeight: FontWeight.normal,
-                                              height: 1.625),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.fromLTRB(0, 170, 0, 0),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(8),
-                                  topRight: Radius.circular(8),
-                                  bottomLeft: Radius.circular(8),
-                                  bottomRight: Radius.circular(8),
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Color.fromARGB(13, 255, 77, 110),
-                                      offset: Offset(0, 4),
-                                      blurRadius: 14)
-                                ],
-                                border: Border.all(
-                                  color: Color.fromRGBO(193, 199, 205, 1),
-                                  width: 1,
-                                ),
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 12),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Image.asset(
-                                    'images/cook.png',
-                                  ),
-                                  SizedBox(width: 8),
-                                  Container(
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        Text(
-                                          'Cooking',
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                              color:
-                                                  Color.fromRGBO(18, 22, 25, 1),
-                                              fontFamily: 'Poppins',
-                                              fontSize: 16,
-                                              letterSpacing:
-                                                  0 /*percentages not used in flutter. defaulting to zero*/,
-                                              fontWeight: FontWeight.normal,
-                                              height: 1.625),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.fromLTRB(0, 240, 20, 0),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(8),
-                                  topRight: Radius.circular(8),
-                                  bottomLeft: Radius.circular(8),
-                                  bottomRight: Radius.circular(8),
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Color.fromARGB(13, 255, 77, 110),
-                                      offset: Offset(0, 4),
-                                      blurRadius: 14)
-                                ],
-                                border: Border.all(
-                                  color: Color.fromRGBO(193, 199, 205, 1),
-                                  width: 1,
-                                ),
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 12),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Image.asset(
-                                    'images/Book.png',
-                                  ),
-                                  SizedBox(width: 8),
-                                  Container(
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        Text(
-                                          'Reading Books',
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                              color:
-                                                  Color.fromRGBO(18, 22, 25, 1),
-                                              fontFamily: 'Poppins',
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.normal,
-                                              height: 1.625),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ])),
-                      // Container(
-                      //   height: 50,
-                      //   width: MediaQuery.of(context).size.width * 0.37,
-                      //   alignment: Alignment.center,
-                      //   decoration: BoxDecoration(
-                      //       color: kLight2,
-                      //       border: Border.all(width: 1, color: kInputBorder),
-                      //       borderRadius:
-                      //           BorderRadius.all(Radius.circular(12))),
-                      //   child: Row(
-                      //     mainAxisAlignment: MainAxisAlignment.center,
-                      //     children: [
-                      //       SvgPicture.asset(
-                      //         "images/smoke.svg",
-                      //         fit: BoxFit.cover,
-                      //       ),
-                      //       SizedBox(
-                      //         width: 6,
-                      //       ),
-                      //       Text(
-                      //         describeEnum(smokingHabit),
-                      //         style:
-                      //             MmmTextStyles.bodyMedium(textColor: kBlack),
-                      //       )
-                      //     ],
-                      //   ),
-                      // )
                     ],
                   ),
                 )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  static Container hoobiesProfileViewButtons(
+      BuildContext context, List<String>? hobbies,
+      {Function()? action}) {
+    return Container(
+      decoration: BoxDecoration(
+        color: kWhite,
+        boxShadow: [MmmShadow.elevation1()],
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: Color(0xffF0EFF5),
+          width: 1,
+        ),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: action,
+          child: Container(
+            alignment: Alignment.center,
+            //height: 264,
+            padding: EdgeInsets.all(9),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 8,
+                ),
+                Row(
+                  children: [
+                    SvgPicture.asset(
+                      "images/occasionally.svg",
+                      color: kPrimary,
+                      fit: BoxFit.cover,
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: SizedBox(),
+                    ),
+                    Text(
+                      "Hobbies",
+                      textScaleFactor: 1.0,
+                      //textAlign: TextAlign.start,
+                      style: MmmTextStyles.heading5(textColor: kPrimary),
+                    ),
+                    Expanded(
+                      flex: 20,
+                      child: SizedBox(),
+                    ),
+                    Container(
+                      child: SvgPicture.asset(
+                        "images/arrowUp.svg",
+                        color: Color(0xff878D96),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Container(
+                  margin: kMargin16,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (hobbies.isNotNullEmpty)
+                        Container(
+                          margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          width: 400,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Text(
+                              //   'Hobbies',
+                              //   textAlign: TextAlign.left,
+                              //   style: TextStyle( fontFamily: 'MakeMyMarry', 
+                              //       color: Color.fromARGB(212, 0, 0, 0),
+                              //       
+                              //       fontSize: 14,
+                              //       fontWeight: FontWeight.normal,
+                              //       height: 1.6666666666666667),
+                              // ),
+                              Wrap(
+                                crossAxisAlignment: WrapCrossAlignment.start,
+                                runAlignment: WrapAlignment.start,
+                                alignment: WrapAlignment.start,
+                                children: <Widget>[
+                                  ...(hobbies
+                                          ?.map(
+                                            (e) => ProfileHobbyTile(
+                                                hobby: HobbyType.values
+                                                    .where((element) =>
+                                                        element.name == e)
+                                                    .first),
+                                          )
+                                          .toList() ??
+                                      <Widget>[]),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  static Container lifestyleProfileViewButtons(
+      BuildContext context, List<String>? lifeStyles,
+      {Function()? action}) {
+    return Container(
+      decoration: BoxDecoration(
+        color: kWhite,
+        boxShadow: [MmmShadow.elevation1()],
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: Color(0xffF0EFF5),
+          width: 1,
+        ),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: action,
+          child: Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.all(8),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 8,
+                ),
+                Row(
+                  children: [
+                    SvgPicture.asset(
+                      "images/lifestyle.svg",
+                      color: kPrimary,
+                      fit: BoxFit.cover,
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: SizedBox(),
+                    ),
+                    Text(
+                      'LifeStyle',
+                      textScaleFactor: 1.0,
+                      //textAlign: TextAlign.start,
+                      style: MmmTextStyles.heading5(textColor: kPrimary),
+                    ),
+                    Expanded(
+                      flex: 20,
+                      child: SizedBox(),
+                    ),
+                    Container(
+                      child: SvgPicture.asset(
+                        "images/arrowUp.svg",
+                        color: Color(0xff878D96),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  width: 400,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.start,
+                        runAlignment: WrapAlignment.start,
+                        alignment: WrapAlignment.start,
+                        children: <Widget>[
+                          ...(lifeStyles
+                                  ?.map(
+                                    (e) => LifeStyleTile(
+                                        lifestyle: LifeStyleType.values
+                                            .where(
+                                                (element) => element.name == e)
+                                            .first),
+                                  )
+                                  .toList() ??
+                              <Widget>[]),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -2010,7 +1808,10 @@ class MmmButtons {
         Container(
           height: 66,
           decoration: BoxDecoration(
-            color: kWhite,
+            gradient: LinearGradient(
+                colors: [kPrimary, kSecondary],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight) ,
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               MmmShadow.filterButton(),
@@ -2031,13 +1832,13 @@ class MmmButtons {
                       Text(
                         hintText,
                         textScaleFactor: 1.0,
-                        style: MmmTextStyles.bodyMedium(textColor: kDark5),
+                        style: MmmTextStyles.bodyMedium(textColor: kWhite),
                       ),
                       SvgPicture.asset(
                         'images/rightArrow.svg',
                         width: 24,
                         height: 24,
-                        color: gray3,
+                        color: kWhite,
                         fit: BoxFit.cover,
                       ),
                     ],
@@ -2104,21 +1905,22 @@ class MmmButtons {
       bool required = true}) {
     return Column(
       children: [
-        Row(
-          children: [
-            Text(
-              labelText,
-              textScaleFactor: 1.0,
-              style: MmmTextStyles.bodySmall(textColor: kDark5),
-            ),
-            required
-                ? Text(
-                    '',
-                    style: MmmTextStyles.bodySmall(textColor: kredStar),
-                  )
-                : Container()
-          ],
-        ),
+        if (labelText.isNotNullEmpty)
+          Row(
+            children: [
+              Text(
+                labelText,
+                textScaleFactor: 1.0,
+                style: MmmTextStyles.bodySmall(textColor: kDark5),
+              ),
+              required
+                  ? Text(
+                      '',
+                      style: MmmTextStyles.bodySmall(textColor: kredStar),
+                    )
+                  : Container()
+            ],
+          ),
         SizedBox(
           height: 4,
         ),
@@ -2396,14 +2198,20 @@ class MmmButtons {
   }
 
   static Widget appBarCurvedProfile(
-      String title, BuildContext context, String image) {
+      String title,
+      BuildContext context,
+      String image,
+      String uid,
+      ProposalStatus? connectStatus,
+      ProfileDetails profileDetails) {
+    ValueNotifier<bool> isDialOpen = ValueNotifier(false);
     return PreferredSize(
       //preferredSize: Size.fromHeight(120),
-      preferredSize: Size.fromHeight(MediaQuery.of(context).size.height * 0.17),
+      preferredSize: Size.fromHeight(MediaQuery.of(context).size.height * 0.15),
       child: Stack(
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.175,
+            height: MediaQuery.of(context).size.height * 0.15,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(bottomRight: Radius.circular(32)),
               gradient: LinearGradient(
@@ -2465,41 +2273,32 @@ class MmmButtons {
                     CircleAvatar(
                       radius: 24,
                       child: ClipOval(
-                        child: Image.network(
-                          image,
-                          width: double.infinity,
-                          height: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
+                        child: Image.network(image,
+                            width: double.infinity,
+                            height: double.infinity,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, obj, str) => Container(
+                                color: Colors.grey, child: Icon(Icons.error))),
                       ),
                     ),
                     Positioned(
-                      right: 0,
-                      child: Stack(
-                        children: [
-                          Container(
-                            width: 12,
-                            height: 12,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: kWhite,
-                            ),
-                          ),
-                          Positioned(
-                            top: 2,
-                            bottom: 2,
-                            right: 2,
-                            left: 2,
-                            child: Container(
-                                width: 8,
-                                height: 8,
-                                decoration: BoxDecoration(
+                      right: 2,
+                      top: 2,
+                      child: StreamBuilder<bool>(
+                          stream: getIt<ChatRepo>().getOnlineStatus(uid),
+                          builder: (context, snapshot) {
+                            return Container(
+                              height: 8,
+                              width: 8,
+                              decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: kGreen,
-                                )),
-                          )
-                        ],
-                      ),
+                                  color: snapshot.data == null
+                                      ? kGray
+                                      : snapshot.data!
+                                          ? kGreen
+                                          : kError),
+                            );
+                          }),
                     )
                   ],
                 ),
@@ -2519,15 +2318,201 @@ class MmmButtons {
             shadowColor: Colors.transparent,
             elevation: 0.0,
           ),
-          Positioned(
+
+          if (connectStatus == ProposalStatus.Accepted &&
+              profileDetails.gender.index !=
+                  getIt<UserRepository>().useDetails?.gender) ...[
+            Positioned(
+              right: MediaQuery.of(context).size.width * 0.1,
               bottom: 0,
-              //right: 80,
-              right: MediaQuery.of(context).size.width * 0.2,
-              child: Transform.scale(scale: 0.9, child: MmmIcons.cancel())),
-          Positioned(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  ConnectWidget(
+                    isDialOpen: isDialOpen,
+                    profileDetails: profileDetails,
+                    direction: SpeedDialDirection.down,
+                  ),
+                  SizedBox(width: 12),
+                  MmmIcons.meet(
+                    context,
+                    action: () async {
+                      showModalBottomSheet(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(25),
+                              topRight: Radius.circular(25)),
+                        ),
+                        context: context,
+                        builder: (context) => MmmWidgets.selectMeetWidget(
+                            context, profileDetails),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ] else if ((connectStatus == ProposalStatus.Reverted ||
+                  connectStatus == ProposalStatus.Rejected ||
+                  connectStatus == null) &&
+              profileDetails.gender.index !=
+                  getIt<UserRepository>().useDetails?.gender) ...[
+            Positioned(
+              right: MediaQuery.of(context).size.width * 0.1,
               bottom: 0,
-              right: MediaQuery.of(context).size.width * 0.06,
-              child: Transform.scale(scale: 0.9, child: MmmIcons.meet(context)))
+              child: InkWell(
+                  onTap: () {
+                    BlocProvider.of<ProfileViewBloc>(context)
+                        .add(SendLikeRequest());
+                  },
+                  child: Stack(
+                    children: [
+                      Container(
+                        height: 48,
+                        width: 48,
+                        child: Center(
+                          child: SvgPicture.asset(
+                            "images/heart.svg",
+                            color: Colors.white,
+                            height: 24,
+                            width: 24,
+                          ),
+                        ),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: MmmDecorations.primaryGradient(),
+                            border:
+                                Border.all(color: Colors.white, width: 1.2)),
+                      ),
+                      Container(
+                          height: 48,
+                          width: 48,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: kPrimary.withAlpha(50),
+                              border:
+                                  Border.all(color: Colors.white, width: 1.2)))
+                    ],
+                  )),
+            )
+          ] else if (connectStatus == ProposalStatus.Sent &&
+              profileDetails.gender.index !=
+                  getIt<UserRepository>().useDetails?.gender) ...[
+            Positioned(
+              right: MediaQuery.of(context).size.width * 0.1,
+              bottom: 0,
+              child: Row(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      BlocProvider.of<ProfileViewBloc>(context)
+                          .add(CancelLikeRequest());
+                    },
+                    child: Stack(
+                      children: [
+                        Container(
+                          height: 48,
+                          width: 48,
+                          child: Center(
+                            child: SvgPicture.asset(
+                              "images/cancel.svg",
+                              color: Colors.white,
+                              height: 24,
+                              width: 24,
+                            ),
+                          ),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: MmmDecorations.primaryGradient(),
+                              border:
+                                  Border.all(color: Colors.white, width: 1.2)),
+                        ),
+                        Container(
+                            height: 48,
+                            width: 48,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: kPrimary.withAlpha(50),
+                                border: Border.all(
+                                    color: Colors.white, width: 1.2)))
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 6),
+                  InkWell(
+                    onTap: () {
+                      BlocProvider.of<ProfileViewBloc>(context)
+                          .add(MakeConnectRequest());
+                    },
+                    child: Stack(
+                      children: [
+                        Container(
+                          height: 48,
+                          width: 48,
+                          child: Center(
+                            child: SvgPicture.asset(
+                              "images/chat.svg",
+                              color: Colors.white,
+                              height: 24,
+                              width: 24,
+                            ),
+                          ),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: MmmDecorations.primaryGradient(),
+                              border:
+                                  Border.all(color: Colors.white, width: 1.2)),
+                        ),
+                        Container(
+                            height: 48,
+                            width: 48,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: kPrimary.withAlpha(50),
+                                border: Border.all(
+                                    color: Colors.white, width: 1.2)))
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ] else if (profileDetails.proposalStatus == ProposalStatus.Received &&
+              profileDetails.gender.index !=
+                  getIt<UserRepository>().useDetails?.gender) ...[
+            Positioned(
+              right: MediaQuery.of(context).size.width * 0.1,
+              bottom: 0,
+              child: Row(
+                children: [
+                  MmmIcons.largeReject(
+                    action: () {
+                      BlocProvider.of<ProfileViewBloc>(context)
+                          .add(RejectLikeRequest());
+                    },
+                  ),
+                  SizedBox(width: 6),
+                  MmmIcons.largeAccept(
+                    action: () {
+                      BlocProvider.of<ProfileViewBloc>(context)
+                          .add(AcceptLikeRequest());
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+
+          // Positioned(
+          //     bottom: 0,
+          //     //right: 80,
+          //     right: MediaQuery.of(context).size.width * 0.2,
+          //     child: Transform.scale(scale: 0.9, child: MmmIcons.cancel())),
+          // Positioned(
+          //     bottom: 0,
+          //     right: MediaQuery.of(context).size.width * 0.06,
+          //     child: Transform.scale(scale: 0.9, child: MmmIcons.meet(context)))
         ],
       ),
     );
@@ -2607,44 +2592,53 @@ class MmmButtons {
     );
   }
 
-  static PreferredSize appBarCurved(String title, {BuildContext? context}) {
+  static PreferredSize appBarCurved(String title,
+      {BuildContext? context, bool isTopLevel = false}) {
     return PreferredSize(
       preferredSize: Size.fromHeight(74.0),
       child: Container(
         child: AppBar(
-          leading: Container(
-            margin: EdgeInsets.fromLTRB(20, 20, 0, 20),
-            decoration: BoxDecoration(
-                color: kLight2.withOpacity(0.60),
-                borderRadius: BorderRadius.all(Radius.circular(8)),
-                boxShadow: [
-                  MmmShadow.elevationbBackButton(
-                      shadowColor: kShadowColorForWhite)
-                ]),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: () {
-                    if (context != null) {
-                      Navigator.of(context).pop();
-                    }
-                  },
-                  child: Container(
-                      height: 32,
-                      width: 32,
-                      alignment: Alignment.center,
-                      child: SvgPicture.asset(
-                        'images/arrowLeft.svg',
-                        height: 17.45,
-                        width: 17.45,
-                        color: gray3,
-                      )),
-                ),
-              ),
-            ),
-          ),
+          leading: (context != null
+                  ? ((navigatorKey.currentState?.canPop() ?? true) &&
+                      Navigator.of(context).canPop())
+                  : false)
+              ? Container(
+                  margin: EdgeInsets.fromLTRB(20, 20, 0, 20),
+                  decoration: BoxDecoration(
+                    color: kLight2.withOpacity(0.60),
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    boxShadow: [
+                      MmmShadow.elevationbBackButton(
+                        shadowColor: kShadowColorForWhite,
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () async {
+                          var res = await Navigator.of(context).maybePop();
+                          if (!res) {
+                            SystemNavigator.pop();
+                          }
+                        },
+                        child: Container(
+                            height: 32,
+                            width: 32,
+                            alignment: Alignment.center,
+                            child: SvgPicture.asset(
+                              'images/arrowLeft.svg',
+                              height: 17.45,
+                              width: 17.45,
+                              color: gray3,
+                            )),
+                      ),
+                    ),
+                  ),
+                )
+              : null,
           toolbarHeight: 74.0,
           title: Text(
             title,
@@ -2711,12 +2705,12 @@ class MmmButtons {
               children: [
                 ClipRRect(
                     borderRadius: BorderRadius.circular(37),
-                    child: Image.network(
-                      image,
-                      height: 74,
-                      fit: BoxFit.cover,
-                      width: 74,
-                    )),
+                    child: Image.network(image,
+                        height: 74,
+                        fit: BoxFit.cover,
+                        width: 74,
+                        errorBuilder: (context, obj, str) => Container(
+                            color: Colors.grey, child: Icon(Icons.error)))),
                 SizedBox(
                   width: 16,
                 ),
@@ -3209,126 +3203,90 @@ class MmmButtons {
     );
   }
 
-  static Container checkMatchButtonModified(double height, String text,
+  static Widget checkMatchButtonModified(double height, String text,
       {Function()? action}) {
-    return Container(
-        width: 380,
-        height: 115,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(8),
-            topRight: Radius.circular(8),
-            bottomLeft: Radius.circular(8),
-            bottomRight: Radius.circular(8),
-          ),
-          boxShadow: [
-            BoxShadow(
-                color: Color.fromRGBO(61, 75, 92, 0.11999999731779099),
-                offset: Offset(0, 12),
-                blurRadius: 22)
-          ],
-          color: Color.fromRGBO(255, 255, 255, 1),
-          border: Border.all(
-            color: Color.fromRGBO(240, 239, 245, 1),
-            width: 1,
-          ),
-        ),
-        child: Stack(children: <Widget>[
-          Container(
-              margin: EdgeInsets.fromLTRB(10, 60, 1, 1),
-              width: 347,
-              height: 8,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(8),
-                  topRight: Radius.circular(8),
-                  bottomLeft: Radius.circular(8),
-                  bottomRight: Radius.circular(8),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                      color: Color.fromRGBO(61, 75, 92, 0.07000000029802322),
-                      offset: Offset(0, 10),
-                      blurRadius: 25)
-                ],
-                color: Color.fromRGBO(255, 193, 204, 1),
-              ),
-              child: Stack(children: <Widget>[])),
-          Container(
-              margin: EdgeInsets.fromLTRB(265, 50, 1, 1),
-              child: Image.asset(
-                'images/hrt3.png',
-              )),
-          Container(
-              margin: EdgeInsets.fromLTRB(10, 60, 1, 1),
-              width: 258,
-              height: 8,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(8),
-                  topRight: Radius.circular(8),
-                  bottomLeft: Radius.circular(8),
-                  bottomRight: Radius.circular(8),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                      color: Color.fromRGBO(61, 75, 92, 0.07000000029802322),
-                      offset: Offset(0, 10),
-                      blurRadius: 25)
-                ],
-                border: Border.all(
-                  color: Color.fromRGBO(225, 223, 235, 1),
-                  width: 1,
-                ),
-                gradient: LinearGradient(colors: [
-                  Color.fromARGB(255, 201, 24, 74),
-                  Color.fromARGB(245, 235, 90, 131)
-                ]),
-              ),
-              child: Stack(children: <Widget>[])),
-          Container(
-            margin: EdgeInsets.only(top: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Match meter 75%',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontFamily: 'Poppins',
-                      color: kPrimary,
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                      height: 1.625),
-                ),
-              ],
+    return BlocBuilder<MatchingPercentageBloc, MatchingPercentageState>(
+        builder: (context, state) {
+      if (state is OnProfileVisited) {
+        return Container(
+          width: 380,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(8),
+              topRight: Radius.circular(8),
+              bottomLeft: Radius.circular(8),
+              bottomRight: Radius.circular(8),
+            ),
+            boxShadow: [
+              BoxShadow(
+                  color: Color.fromRGBO(61, 75, 92, 0.11999999731779099),
+                  offset: Offset(0, 12),
+                  blurRadius: 22)
+            ],
+            color: Color.fromRGBO(255, 255, 255, 1),
+            border: Border.all(
+              color: Color.fromRGBO(240, 239, 245, 1),
+              width: 1,
             ),
           ),
-          Container(
-            margin: EdgeInsets.fromLTRB(125, 75, 0, 1),
-            decoration: BoxDecoration(),
-            child: Row(
-              children: <Widget>[
-                InkWell(
-                  onTap: action,
-                  child: Text(
-                    'View more',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Color.fromRGBO(201, 24, 74, 1),
-                        fontFamily: 'Poppins',
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        height: 1.5714285714285714),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(top: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      'Match meter ${(state).matchingPercentage}%',
+                      textAlign: TextAlign.center,
+                      style: TextStyle( fontFamily: 'MakeMyMarry', 
+                          
+                          color: kPrimary,
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                          height: 1.625),
+                    ),
+                  ],
+                ),
+              ),
+              CupertinoSlider(
+                  value: (state as OnProfileVisited).matchingPercentage / 100,
+                  onChanged: (value) {}),
+
+              InkWell(
+                onTap: action,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 12.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        'View more',
+                        textAlign: TextAlign.center,
+                        style: TextStyle( fontFamily: 'MakeMyMarry',
+                            color: Color.fromRGBO(201, 24, 74, 1),
+
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            height: 1.5714285714285714),
+                      ),
+                      Container(
+                          margin: EdgeInsets.fromLTRB(5, 7, 1, 1),
+                          child: Image.asset('images/doublearrow.png'))
+                    ],
                   ),
                 ),
-                Container(
-                    margin: EdgeInsets.fromLTRB(5, 7, 1, 1),
-                    child: Image.asset('images/doublearrow.png'))
-              ],
-            ),
+              ),
+
+            ],
           ),
-        ]));
+        );
+      } else {
+        return Container();
+      }
+    });
   }
 
   static Container checkMatchButton(double height, String text,
@@ -3608,9 +3566,10 @@ class MmmButtons {
                 height: 30,
                 width: 30,
                 child: Image.network(
-                  "https://pbs.twimg.com/profile_images/1526231349354303489/3Bg-2ZsT_400x400.jpg",
-                  fit: BoxFit.cover,
-                ),
+                    "https://pbs.twimg.com/profile_images/1526231349354303489/3Bg-2ZsT_400x400.jpg",
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, obj, str) => Container(
+                        color: Colors.grey, child: Icon(Icons.error))),
               ),
               SizedBox(
                 width: 10,
@@ -3827,24 +3786,23 @@ class MmmButtons {
     );
   }
 
-  static Widget lifeStyleChip(
-      double height, double width, String icon, String text, bool isActive, void Function() onToggle) {
+  static Widget lifeStyleChip(double height, double width, String icon,
+      String text, bool isActive, void Function() onToggle) {
     return InkWell(
-      onTap: (){
+      onTap: () {
         onToggle.call();
       },
       child: Container(
-        margin:  EdgeInsets.all(12.0),
-        padding:  EdgeInsets.symmetric(horizontal: 12.0),
+        margin: EdgeInsets.all(12.0),
+        padding: EdgeInsets.symmetric(horizontal: 12.0),
         decoration: BoxDecoration(
-            color: isActive ? Color(0xffFF4D6D) : Color(0xffF0EFF5),
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: Color(0xffF0EFF5),
-              width: 1,
-            ),
+          color: isActive ? Color(0xffFF4D6D) : Color(0xffF0EFF5),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: Color(0xffF0EFF5),
+            width: 1,
+          ),
         ),
-
         height: height,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -3862,7 +3820,8 @@ class MmmButtons {
               text,
               textAlign: TextAlign.center,
               textScaleFactor: 1.0,
-              style: MmmTextStyles.bodyRegular(textColor: isActive ? gray7 : kDark5),
+              style: MmmTextStyles.bodyRegular(
+                  textColor: isActive ? gray7 : kDark5),
             ),
           ],
         ),
@@ -3889,7 +3848,7 @@ class MmmButtons {
           child: Container(
             alignment: Alignment.center,
             height: containerheight,
-            padding: const EdgeInsets.symmetric(horizontal: 2),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
 
             // width: containerwidth,
             child: Row(
@@ -4329,7 +4288,7 @@ class MmmButtons {
     );
   }
 
-  static Container rescheduleButtonMeet() {
+  static Widget rescheduleButtonMeet(Function onTap) {
     return Container(
       height: 28,
       width: 127,
@@ -4340,7 +4299,9 @@ class MmmButtons {
           child: Material(
             color: Colors.transparent,
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                onTap.call();
+              },
               child: Center(
                 child: Row(
                   children: [
@@ -4404,6 +4365,37 @@ class MmmButtons {
                   SizedBox(
                     width: 8,
                   ),
+                  Text(
+                    text,
+                    textAlign: TextAlign.center,
+                    textScaleFactor: 1.0,
+                    style: MmmTextStyles.caption(textColor: gray7),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  static Container unblockButton(String text, {Function()? action}) {
+    return Container(
+      decoration: MmmDecorations.primaryButtonDecoration(),
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(8)),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: action,
+            child: Container(
+              padding: EdgeInsets.fromLTRB(12, 4, 12, 4),
+              //alignment: Alignment.center,
+              height: 28,
+              width: 104,
+              child: Row(
+                children: [
                   Text(
                     text,
                     textAlign: TextAlign.center,
@@ -4509,7 +4501,7 @@ class MmmButtons {
     );
   }
 
-  static Container acceptMeetScreen() {
+  static Container acceptMeetScreen(void Function() onTap) {
     return Container(
       height: 28,
       width: 91,
@@ -4518,7 +4510,9 @@ class MmmButtons {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () {},
+            onTap: () {
+              onTap.call();
+            },
             child: Center(
               child: Row(
                 children: [

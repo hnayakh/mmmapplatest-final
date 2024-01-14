@@ -1,6 +1,4 @@
 import 'package:makemymarry/utils/app_constants.dart';
-import 'package:makemymarry/utils/app_helper.dart';
-import 'package:makemymarry/views/home/menu/wallet/recharge_history/RechargeHistoryScreen.dart';
 
 class CouponDetails {
   late String id, code;
@@ -61,7 +59,7 @@ class ConnectPriceDetailsResponse {
 
     if (this.status == AppConstants.SUCCESS) {
       this.couponDetails =
-          ConnectPriceDetails.fromJson((json["data"] as List).last);
+          ConnectPriceDetails.fromJson((json["data"] as List).first);
     }
   }
 

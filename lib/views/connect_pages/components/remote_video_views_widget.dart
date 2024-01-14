@@ -104,11 +104,11 @@ class _RemoteVideoViewsWidgetState extends State<RemoteVideoViewsWidget> {
                     widget.connectionUid != null
                         ? 'localuid: ${widget.connectionUid}'
                         : '',
-                    style: const TextStyle(color: Colors.white, fontSize: 10),
+                    style: const TextStyle( fontFamily: 'MakeMyMarry', color: Colors.white, fontSize: 10),
                   ),
                   Text(
                     'remoteuid: $key',
-                    style: const TextStyle(color: Colors.white, fontSize: 10),
+                    style: const TextStyle( fontFamily: 'MakeMyMarry', color: Colors.white, fontSize: 10),
                   ),
                 ],
               )

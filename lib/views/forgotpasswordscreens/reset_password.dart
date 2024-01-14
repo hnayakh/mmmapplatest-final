@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
@@ -176,7 +177,9 @@ class _ResetPasswordState extends State<ResetPassword> {
                 height: 44,
               ),
               currentTextnew == currentTextconfirm
-                  ? MmmButtons.enabledRedButtonbodyMedium(50, 'Reset Password')
+                  ? MmmButtons.enabledRedButtonbodyMedium(50, 'Reset Password', action: (){
+
+              })
                   : MmmButtons.disabledGreyButton(50, 'Reset Password')
             ],
           ),

@@ -1,9 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:makemymarry/app/bloc/app_bloc.dart';
+import 'package:makemymarry/app/bloc/app_event.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
+import 'package:makemymarry/locator.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/app_constants.dart';
+import 'package:makemymarry/utils/helper.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
-import 'package:makemymarry/views/forgotpasswordscreens/otp_screen.dart';
 
 import 'mobile_verification_event.dart';
 import 'mobile_verification_state.dart';
@@ -47,7 +50,7 @@ class MobileVerificationBloc
         if (result.status == AppConstants.SUCCESS) {
           if (otpType != OtpType.Registration)
             this.userRepository.useDetails = result.userDetails;
-          // await this.userRepository.saveUserDetails();
+
           if (this.otpType == OtpType.Registration) {
             UserDetails userDetails = this.userRepository.useDetails!;
             var result = await this.userRepository.register(
@@ -76,18 +79,40 @@ class MobileVerificationBloc
                   result.userDetails!.lifecycleStatus;
               this.userRepository.useDetails!.activationStatus =
                   result.userDetails!.activationStatus;
-              // this.userRepository.useDetails!.relationship =
-              //     result.userDetails!.relationship;
+
 
               this
                   .userRepository
                   .storageService
                   .saveUserDetails(this.userRepository.useDetails!);
-
+              await this
+                  .userRepository
+                  .updateRegistartionStep(this.userRepository.useDetails!.id, 2);
               this.userRepository.updateRegistrationStep(2);
+              getIt<UserRepository>().useDetails = this.userRepository.useDetails;
+              BlocProvider.of<AppBloc>(navigatorKey.currentContext!).add(SignInEvent(userDetails: this.userRepository.useDetails!));
               yield OnRegister();
             }
           } else {
+            this.userRepository.useDetails = result.userDetails;
+            var res = await this.userRepository.getOtheruserDetails(
+                this.userRepository.useDetails!.id,
+                ProfileActivationStatus
+                    .values[userRepository.useDetails!.activationStatus]);
+            if(res.status == AppConstants.SUCCESS){
+              this.userRepository.useDetails?.dateOfBirth = res.profileDetails.dateOfBirth;
+              this.userRepository.useDetails?.name = res.profileDetails.name;
+              this.userRepository.useDetails?.height = res.profileDetails.height;
+              this.userRepository.useDetails?.gender = res.profileDetails.gender.index;
+              this.userRepository.useDetails?.maritalStatus = res.profileDetails.maritalStatus;
+              this.userRepository.useDetails?.abilityStatus = res.profileDetails.abilityStatus;
+              this.userRepository.useDetails?.activationStatus = res.profileDetails.activationStatus.index;
+              this.userRepository.useDetails?.imageUrl = res.profileDetails.images.isNotNullEmpty ? res.profileDetails.images.first : "";
+            }
+            await this
+                .userRepository
+                .storageService
+                .saveUserDetails(result.userDetails!);
             yield OnSignIn();
           }
         } else {

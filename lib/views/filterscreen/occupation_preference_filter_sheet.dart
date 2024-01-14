@@ -25,8 +25,9 @@ class _OccupationFilterBottomSheetState
 
   @override
   void initState() {
-    filtered = widget.list;
     super.initState();
+    filtered = widget.list;
+
   }
 
   @override

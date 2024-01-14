@@ -1,5 +1,4 @@
 import 'package:makemymarry/base_event_state.dart';
-import 'package:makemymarry/views/profilescreens/occupation/occupation_event.dart';
 
 class ForgotPasswordState extends BaseEventState {}
 

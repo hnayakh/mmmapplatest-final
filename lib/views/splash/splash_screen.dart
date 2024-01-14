@@ -1,30 +1,27 @@
 import 'dart:async';
-import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:makemymarry/views/splash/IntroductionScreen.dart';
-import 'package:makemymarry/views/splash/splash_bloc.dart';
 import 'package:makemymarry/locator.dart';
 import 'package:makemymarry/repo/user_repo.dart';
+import 'package:makemymarry/saurabh/partner_preference.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/profile_loader/profile_loader.dart';
-import 'package:makemymarry/views/profilescreens/about/about.dart';
-import 'package:makemymarry/views/profilescreens/bio/bio.dart';
+import 'package:makemymarry/views/profilescreens/about/views/about.dart';
+import 'package:makemymarry/views/profilescreens/bio/views/bio.dart';
 import 'package:makemymarry/views/profilescreens/family/family.dart';
 import 'package:makemymarry/views/profilescreens/habbit/habits.dart';
-import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference.dart';
-import 'package:makemymarry/views/profilescreens/religion/religion.dart';
 import 'package:makemymarry/views/signinscreens/signin_page.dart';
+import 'package:makemymarry/views/splash/IntroductionScreen.dart';
+import 'package:makemymarry/views/splash/splash_bloc.dart';
 import 'package:makemymarry/views/splash/splash_event.dart';
 import 'package:makemymarry/views/splash/splash_state.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
-import '../intro.dart';
-import '../profilescreens/occupation/occupation.dart';
+import '../profilescreens/occupation/views/occupation.dart';
+import '../profilescreens/religion/views/religion.dart';
 
 class Splash extends StatelessWidget {
   @override
@@ -104,7 +101,6 @@ class SplashScreenState extends State<SplashScreen> {
 
   void checkRegistrationStepAndNavigate() {
     var userRepo = BlocProvider.of<SplashBloc>(context).userRepository;
-
     switch (userRepo.useDetails!.registrationStep) {
       case 10:
         {
@@ -120,7 +116,7 @@ class SplashScreenState extends State<SplashScreen> {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                 builder: (context) =>
-                    ProfilePreference(userRepository: userRepo),
+                    PartnerPrefsScreen(userRepository: userRepo),
               ),
               (route) => false);
           break;

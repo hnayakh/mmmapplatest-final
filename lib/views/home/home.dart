@@ -4,20 +4,18 @@ import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/saurabh/custom_drawer.dart';
 import 'package:makemymarry/saurabh/partner_preference.dart';
-import 'package:makemymarry/saurabh/profile_detail.dart';
+
+import 'package:makemymarry/utils/app_constants.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
-import 'package:makemymarry/views/home/matching_profile/bloc/matching_profile_bloc.dart';
-import 'package:makemymarry/views/home/menu/sidebar_account_screen.dart';
-import 'package:makemymarry/views/home/my_connects/my_connects_screen.dart';
-import 'package:makemymarry/views/profileviewscreens/profile_view_bloc.dart';
-import 'package:makemymarry/views/stackviewscreens/meet%20status/meet_status_screen.dart';
-import 'package:makemymarry/views/stackviewscreens/meet%20status/meet_timing/schedule_meeting_time.dart';
-import 'package:makemymarry/views/stackviewscreens/notification_list.dart';
+import 'package:makemymarry/views/home/notifications/notification_list.dart';
 import 'package:makemymarry/views/stackviewscreens/search_screen.dart';
-import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/my_profile/myprofile.dart';
-import 'interests/interest_status_screen.dart';
+
+import '../../locator.dart';
+import '../profile_detail_view/profile_view_bloc.dart';
+import 'interests/views/interest_status_screen.dart';
 import 'matching_profile/views/matching_profile.dart';
+import 'menu/wallet/recharge/recharge_connect_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final UserRepository userRepository;
@@ -28,18 +26,20 @@ class HomeScreen extends StatefulWidget {
   final List<MatchingProfile> recentViewList;
   final List<MatchingProfile> profileVisitorList;
   final List<MatchingProfile> onlineMembersList;
+  final bool firstTime;
 
-  const HomeScreen(
-      {Key? key,
-      required this.userRepository,
-      required this.list,
-      required this.premiumList,
-      required this.screenName,
-      required this.searchList,
-      required this.recentViewList,
-      required this.profileVisitorList,
-      required this.onlineMembersList})
-      : super(key: key);
+  const HomeScreen({
+    Key? key,
+    required this.userRepository,
+    required this.list,
+    required this.premiumList,
+    required this.screenName,
+    required this.searchList,
+    required this.recentViewList,
+    required this.profileVisitorList,
+    required this.onlineMembersList,
+    required this.firstTime,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -51,8 +51,42 @@ class HomeScreenState extends State<HomeScreen> {
   var index = 0;
 
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      if(widget.firstTime) {
+        var response = await getIt<UserRepository>().fetchCurrentBalance();
+        if (response.status == AppConstants.SUCCESS) {
+          if (response.balance <= 0) {
+            await showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return MmmWidgets.lowBalanceWidget(
+                  message : 'Recharge Your Wallet to Connect Instantly',
+                  onConfirm: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            RechargeConnect(
+                              userRepository: getIt<UserRepository>(),
+                            ),
+                      ),
+                    );
+                  },
+                );
+              },
+            );
+          }
+        }
+      }
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: AppDrawer(userRepository: widget.userRepository),
       body: getContent(),
       backgroundColor: gray5,
       bottomNavigationBar: BottomAppBar(
@@ -93,13 +127,18 @@ class HomeScreenState extends State<HomeScreen> {
                   this.index = 3;
                 });
               }),
-              MmmWidgets.bottomBarUnits(
-                  'images/menu.svg', 'Menu', index == 4 ? kPrimary : gray3,
-                  action: () {
-                setState(() {
-                  this.index = 4;
-                });
-              })
+              Builder(
+                builder: (context) {
+                  return MmmWidgets.bottomBarUnits(
+                      'images/menu.svg', 'Menu', index == 4 ? kPrimary : gray3,
+                      action: () {
+                        Scaffold.of(context).openDrawer();
+                    // setState(() {
+                    //   this.index = 4;
+                    // });
+                  });
+                }
+              )
             ],
           ),
           padding: const EdgeInsets.only(left: 12, right: 12, top: 12),
@@ -111,93 +150,47 @@ class HomeScreenState extends State<HomeScreen> {
   Widget getContent() {
     switch (index) {
       case -1:
-        return BlocProvider<MatchingProfileBloc>(
-            create: (context) => MatchingProfileBloc(
-                widget.userRepository,
-                widget.list,
-                widget.searchList,
-                widget.premiumList,
-                widget.recentViewList,
-                widget.profileVisitorList,
-                widget.onlineMembersList),
-            child: Builder(builder: (context) {
-              return MatchingProfileScreen(
-                  userRepository: widget.userRepository,
-                  list: widget.list,
-                  searchList: widget.searchList,
-                  screenName: "",
-                  premiumList: widget.premiumList,
-                  recentViewList: widget.recentViewList,
-                  profileVisitorList: widget.profileVisitorList,
-                  onlineMembersList: widget.onlineMembersList);
-            }));
+        return MatchingProfileScreen(
+          list: widget.list,
+        );
 
       case 0:
-        return BlocProvider<MatchingProfileBloc>(
-            create: (context) => MatchingProfileBloc(
-                widget.userRepository,
-                widget.list,
-                widget.searchList,
-                widget.premiumList,
-                widget.recentViewList,
-                widget.profileVisitorList,
-                widget.onlineMembersList),
-            child: Builder(builder: (context) {
-              return MatchingProfileScreen(
-                  userRepository: widget.userRepository,
-                  list: widget.list,
-                  searchList: widget.searchList,
-                  screenName: widget.screenName,
-                  premiumList: widget.premiumList,
-                  recentViewList: widget.recentViewList,
-                  profileVisitorList: widget.profileVisitorList,
-                  onlineMembersList: widget.onlineMembersList);
-            }));
+        return MatchingProfileScreen(
+          list: widget.list,
+        );
       case 1:
         return
+          PartnerPrefsScreen(
+              userRepository:
+              widget.userRepository,
+              forFilters: true
+          );
             // ScheduleMeetingTime();
-            BlocProvider(
-          create: (context) =>
-              ProfileViewBloc(widget.userRepository, ProfileDetails()),
-          child: SearchScreen(
-            userRepository: widget.userRepository,
-            list: widget.list,
-            searchList: widget.searchList,
-            premiumList: widget.premiumList,
-            recentViewList: widget.recentViewList,
-            profileVisitorList: widget.profileVisitorList,
-            onlineMembersList: widget.onlineMembersList,
-          ),
-        );
+        //     BlocProvider(
+        //   create: (context) =>
+        //       ProfileViewBloc(widget.userRepository, ProfileDetails()),
+        //   child: SearchScreen(
+        //     userRepository: widget.userRepository,
+        //     list: widget.list,
+        //     searchList: widget.searchList,
+        //     premiumList: widget.premiumList,
+        //     recentViewList: widget.recentViewList,
+        //     profileVisitorList: widget.profileVisitorList,
+        //     onlineMembersList: widget.onlineMembersList,
+        //   ),
+        // );
       //     PartnerPrefsScreen(
       //   userRepository: widget.userRepository,
       // );
       case 2:
-        return
-            // MyprofileScreen(
-            //   userRepository: widget.userRepository,
-            // );
-            // ScheduleMeetingTime();
-            Interests(
+        return Interests(
           userRepository: widget.userRepository,
         );
-      // case 3:
-      //   return MyConnects(userRepository: widget.userRepository);
-      case 3:
-        return Notifications(userRepository: widget.userRepository);
-      //  return MeetStatusScreen();
-      // return ProfileDetailsScreen();
 
+      case 3:
+        return Notifications.getWidget(userRepository: widget.userRepository);
       case 4:
         return AppDrawer(userRepository: widget.userRepository);
-      // return SidebarAccount(
-      //     userRepository: widget.userRepository,
-      //     list: widget.list,
-      //     searchList: widget.searchList,
-      //     premiumList: widget.premiumList,
-      //     recentViewList: widget.recentViewList,
-      //     profileVisitorList: widget.profileVisitorList,
-      //     onlineMembersList: widget.onlineMembersList);
     }
     return Container();
   }

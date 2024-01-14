@@ -1,11 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:makemymarry/repo/user_repo.dart';
-import 'package:makemymarry/saurabh/hexcolor.dart';
-import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/view_decorations.dart';
 import 'package:makemymarry/views/signinscreens/signin_page.dart';
@@ -24,11 +21,11 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 
   void _onIntroEnd(context) {
     Navigator.of(context).push(
-      MaterialPageRoute(
-          builder: (_) => SignInPage()),
+      MaterialPageRoute(builder: (_) => SignInPage()),
     );
   }
 
+ int  pageIndex  = 0 ;
   Widget _buildFullscreenImage() {
     return Image.asset(
       'images/bio.jpg',
@@ -57,12 +54,12 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 
   @override
   Widget build(BuildContext context) {
-    const bodyStyle = TextStyle(
+    const bodyStyle = TextStyle( fontFamily: 'MakeMyMarry', 
       fontSize: 16.0,
     );
 
     const pageDecoration = const PageDecoration(
-      titleTextStyle: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
+      titleTextStyle: TextStyle( fontFamily: 'MakeMyMarry', fontSize: 28.0, fontWeight: FontWeight.w700),
       bodyTextStyle: bodyStyle,
       bodyAlignment: Alignment(0.7, 0.5),
       pageColor: Colors.white,
@@ -71,6 +68,11 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
     return IntroductionScreen(
       key: introKey,
       globalBackgroundColor: Colors.white,
+     onChange: (index) {
+        setState(() {
+          pageIndex = index;
+        });
+     },
       globalHeader: Align(
         child: SafeArea(
           child: Padding(
@@ -79,17 +81,6 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
           ),
         ),
       ),
-      // globalFooter: SizedBox(
-      //   width: double.infinity,
-      //   height: 60,
-      //   child: ElevatedButton(
-      //     child: const Text(
-      //       'Let\'s go right away!',
-      //       style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-      //     ),
-      //     onPressed: () => _onIntroEnd(context),
-      //   ),
-      // ),
       pages: [
         PageViewModel(
           title: "This is  an onboarding screen 1",
@@ -113,13 +104,16 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       onDone: () => _onIntroEnd(context),
       onSkip: () => _onIntroEnd(context),
 
-      showSkipButton: true,
+      showBackButton: true,
+
       nextFlex: 0,
 
-      skip: Container(
+      skipOrBackFlex: 2,
+
+      back: Container(
         margin: EdgeInsets.fromLTRB(0, 170, 0, 0),
         child: const Text('Previous',
-            style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black)),
+            style: TextStyle( fontFamily: 'MakeMyMarry', fontWeight: FontWeight.w600, color: Colors.black)),
       ),
 
       next: Container(
@@ -130,7 +124,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         child: Center(
           child: Text(
             'Next',
-            style: TextStyle(
+            style: TextStyle( fontFamily: 'MakeMyMarry', 
                 color: Color.fromARGB(255, 255, 255, 255), fontSize: 17),
           ),
         ),
@@ -145,7 +139,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         child: Center(
           child: const Text(
             'Continue',
-            style: TextStyle(
+            style: TextStyle( fontFamily: 'MakeMyMarry', 
                 color: Color.fromARGB(255, 255, 255, 255), fontSize: 16),
           ),
         ),

@@ -1,16 +1,13 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart' as http;
 import 'package:makemymarry/locator.dart';
-import 'package:makemymarry/views/signinscreens/signin_bloc.dart';
-import 'package:makemymarry/views/signinscreens/signin_event.dart';
-import 'package:makemymarry/views/signinscreens/signin_state.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
@@ -20,19 +17,22 @@ import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/forgotpasswordscreens/forgot_password.dart';
 import 'package:makemymarry/views/profile_loader/profile_loader.dart';
-import 'package:makemymarry/views/profilescreens/about/about.dart';
-import 'package:makemymarry/views/profilescreens/bio/bio.dart';
+import 'package:makemymarry/views/profilescreens/about/views/about.dart';
+import 'package:makemymarry/views/profilescreens/bio/views/bio.dart';
 import 'package:makemymarry/views/profilescreens/family/family.dart';
 import 'package:makemymarry/views/profilescreens/habbit/habits.dart';
-import 'package:makemymarry/views/profilescreens/occupation/occupation.dart';
-import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference.dart';
-import 'package:makemymarry/views/profilescreens/religion/religion.dart';
+import 'package:makemymarry/views/profilescreens/occupation/views/occupation.dart';
 import 'package:makemymarry/views/signinscreens/authentication_service.dart';
 import 'package:makemymarry/views/signinscreens/phone%20signin/phone_screen.dart';
+import 'package:makemymarry/views/signinscreens/signin_bloc.dart';
+import 'package:makemymarry/views/signinscreens/signin_event.dart';
+import 'package:makemymarry/views/signinscreens/signin_state.dart';
 import 'package:makemymarry/views/signupscreens/create_account/create_account_screen.dart';
 import 'package:makemymarry/views/signupscreens/create_account/signup_option_bottom_sheet.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
-import 'package:http/http.dart' as http;
+
+import '../../saurabh/partner_preference.dart';
+import '../profilescreens/religion/views/religion.dart';
 
 final Dio dio = Dio();
 
@@ -446,12 +446,12 @@ class SignInScreenState extends State<SignInScreen> {
                                                 _googleSignIn
                                                     .signIn()
                                                     .then((userData) {
+                                                  setState(() {
+                                                    currentText = userData?.email ?? "";
+                                                  });
                                                   emailController.text =
                                                       userData?.email ?? "";
-                                                  // setState(() {
-                                                  //   _isLoggedIn = true;
-                                                  //   _userObj = userData;
-                                                  // });
+
                                                 }).catchError((e) {
                                                   print(e);
                                                 });
@@ -531,32 +531,7 @@ class SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  // void navigateToHome(
-  //     List<MatchingProfile> list, List<MatchingProfile> seachList) {
-  //   var userRepo = BlocProvider.of<ProfileLoaderBloc>(context).userRepository;
-  //   Navigator.of(context).push(
-  //       MaterialPageRoute(
-  //           builder: (context) => HomeScreen(
-  //               userRepository: userRepo, list: list, searchList: seachList)),
-  //   )
-  // }
-  // void navigateToHome(
-  //     List<MatchingProfile> list, List<MatchingProfile> seachList) {
-  //   print("Home");
-  //   var userRepo = BlocProvider.of<SignInBloc>(context).userRepository;
-  //   Navigator.of(context).push(MaterialPageRoute(
-  //       builder: (context) => HomeScreen(
-  //           userRepository: userRepo, list: list, searchList: seachList)));
-  // }
 
-  // void navigateToHome() {
-  //   var userRepo = BlocProvider.of<SignInBloc>(context).userRepository;
-  //   Navigator.of(context).push(MaterialPageRoute(
-  //       builder: (context) => HomeScreen(
-  //             userRepository: userRepo,
-  //              list: list, searchList: seachList
-  //           )));
-  // }
   void navigateToForgotPassword() {
     var userRepo = BlocProvider.of<SignInBloc>(context).userRepository;
     Navigator.of(context).push(MaterialPageRoute(
@@ -584,18 +559,7 @@ class SignInScreenState extends State<SignInScreen> {
         context: context,
         builder: (context) => SignupOptionBottomSheet());
 
-    // var result = await showModalBottomSheet(
-    //     context: context,
-    //     backgroundColor: Colors.transparent,
-    //     isScrollControlled: true,
-    //     builder: (context) => DrinkStatusFilterSheet(
-    //           selectedDrinkStatus: drinkStatus,
-    //         ));
-    // if (result != null && result is SimpleMasterData) {
-    //   BlocProvider.of<FilterBloc>(context)
-    //       .add(OnReligionFilterSelected(result));
-    //   this.initCaste = 0;
-    // }
+
   }
 
   navigateToRegister() {
@@ -615,13 +579,19 @@ class SignInScreenState extends State<SignInScreen> {
       case 10:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-                builder: (context) => ProfileLoader(userRepository: userRepo)),
+                builder: (context) => ProfileLoader(userRepository: userRepo, firstTime: true,)),
             (route) => false);
+        break;
+      case 11:
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => ProfileLoader(userRepository: userRepo, firstTime: true,)),
+                (route) => false);
         break;
       case 9:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-                builder: (context) => ProfilePreference(
+                builder: (context) => PartnerPrefsScreen(
                       userRepository: userRepo,
                     )),
             (route) => false);

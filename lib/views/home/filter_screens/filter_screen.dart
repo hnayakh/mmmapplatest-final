@@ -5,21 +5,15 @@ import 'package:makemymarry/datamodels/martching_profile.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/datamodels/user_model.dart';
 import 'package:makemymarry/repo/user_repo.dart';
-import 'package:makemymarry/utils/app_helper.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/mmm_enums.dart';
-import 'package:makemymarry/utils/text_field.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/utils/widgets_large.dart';
 import 'package:makemymarry/views/profile_loader/profile_loader.dart';
-import 'package:makemymarry/views/profilescreens/occupation/education_bottom_sheet.dart';
-import 'package:makemymarry/views/profilescreens/occupation/occupation_bottom_sheet.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/annual_income_preference.dart';
-
 import 'package:makemymarry/views/profilescreens/profile_preference/city_preference_bottom_sheet.dart';
-import 'package:makemymarry/views/profilescreens/profile_preference/country_preference_sheet.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/drinking_habit.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/eating_prefs.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/education_preference_sheet.dart';
@@ -33,8 +27,8 @@ import 'package:makemymarry/views/profilescreens/profile_preference/religion_pre
 import 'package:makemymarry/views/profilescreens/profile_preference/smoking_prefs.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/state_preference_sheet.dart';
 import 'package:makemymarry/views/profilescreens/profile_preference/subcast_preference_sheet.dart';
-import 'package:makemymarry/views/profilescreens/religion/mother_tongue_bottom_sheet.dart';
 
+import '../matching_profile/views/matching_profile.dart';
 import 'country_filter_sheet.dart';
 
 class Filter extends StatelessWidget {
@@ -45,7 +39,7 @@ class Filter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ProfilePreferenceBloc(userRepository),
+      create: (context) => ProfilePreferenceBloc(userRepository, forFilters: true),
       child: ProfilePreferenceScreen(),
     );
   }
@@ -72,8 +66,8 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
   late List<SimpleMasterData> motherTongue;
   late List<String?> occupation;
   late List<Education> education;
-  late List<AnualIncome> annualIncome;
-  late List<AnualIncome> annualIncomeMax;
+  late List<AnnualIncome> annualIncome;
+  late List<AnnualIncome> annualIncomeMax;
   String titleRedOcc = '';
   TextEditingController annIncomeController = TextEditingController();
   late List<EatingHabit> eatingHabit;
@@ -334,13 +328,23 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
           //   navigateToFetchProfile();
           // }
           if (state is OnError) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(state.message),
-              backgroundColor: kError,
-            ));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+                backgroundColor: kError,
+              ),
+            );
           }
           if (state is ProfileFilterComplete) {
-            Navigator.of(context).pop(state.list);
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => MatchingProfileScreen(
+                  list: state.list,
+                  filter: ProfilesFilter.onlineMembers,
+                  isTopLevel: false,
+                ),
+              ),
+            );
           }
         },
       ),
@@ -958,7 +962,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
               list: this.annualIncome,
               listMax: this.annualIncomeMax,
             ));
-    if (result != null && result is List<AnualIncome>) {
+    if (result != null && result is List<AnnualIncome>) {
       BlocProvider.of<ProfilePreferenceBloc>(context)
           .add(IncomeSelected(result));
       for (int i = 0; i < result.length; i++) {
@@ -994,7 +998,7 @@ class ProfilePreferenceScreenState extends State<ProfilePreferenceScreen> {
             ));
     if (result != null && result is List<EatingHabit>) {
       BlocProvider.of<ProfilePreferenceBloc>(context)
-          .add(DietrySelected(result));
+          .add(DietarySelected(result));
     }
   }
 

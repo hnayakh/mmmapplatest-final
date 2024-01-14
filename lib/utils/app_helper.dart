@@ -1,6 +1,5 @@
 import 'package:intl/intl.dart';
 import 'package:makemymarry/utils/app_constants.dart';
-import 'package:makemymarry/utils/mmm_enums.dart';
 
 class Height {
   int feet;
@@ -15,6 +14,10 @@ class AppHelper {
     return String.fromCharCode(firstLetter) + String.fromCharCode(secondLetter);
   }
 
+  static String heightString(double height) {
+    return "${(height ~/ 12)}'${(height % 12).toInt()}''";
+  }
+
   // static List<double> getHeights() {
   //   List<double> heights = [];
   //   //convert to ft in change
@@ -24,10 +27,9 @@ class AppHelper {
   //   return heights;
   // }
   static String getFormtedHeight(double height) {
-    print("height$height");
     var intPart = height.toInt();
     var decimalPart = ((height - height.toInt()) * 10).round();
-    print("decimal part$decimalPart");
+
     String result = '$intPart.$decimalPart';
     if (intPart > 4 && decimalPart < 2) {
       result = '${intPart - 1}.${10 + decimalPart}';
@@ -40,31 +42,17 @@ class AppHelper {
 
   static List<String> getHeights() {
     List<Height> result = [];
-    var requiredIndices = [];
-
-    for (double i = 4.5; i <= 8.5; i += 0.1) {
-      var intPart = i.toInt();
-      var decimalPart = ((i - i.toInt()) * 10).round();
-      print('decimalPart$decimalPart');
+    for (double i = 48; i <= 84; i++) {
+      var intPart = i ~/ 12;
+      var decimalPart = (i % 12).toInt();
       var item = new Height(intPart, decimalPart);
       result.add(item);
-      if (decimalPart == 9) {
-        var requiredIndex = result.indexWhere(
-            (item) => item.feet == intPart && item.inch == decimalPart);
-        print('requiredIndex$requiredIndex');
-
-        result.add(new Height(intPart, 11));
-        result.add(new Height(intPart + 1, 0));
-      }
     }
-    result.sort((a, b) =>
-        (((a.feet * 12 + (a.inch)) - (b.feet * 12 + (b.inch))).toInt()));
-
-    var finalResult = result.map((height) {
-      return "${height.feet}.${(height.inch)}";
-    });
-    print(finalResult);
-    //var heights = finalResult;
+    var finalResult = result.map(
+      (height) {
+        return "${height.feet}${(height.inch)}";
+      },
+    );
     return finalResult.toList();
   }
 
@@ -78,9 +66,88 @@ class AppHelper {
     return heights;
   }
 
+  static String getLabelOfComparitiveField(String field) {
+    switch (field) {
+      case "country":
+        {
+          return "Country";
+        }
+      case "challenged":
+        {
+          return "Physically Ability";
+        }
+      case "minAge":
+        {
+          return "Min Age";
+        }
+      case "maxAge":
+        {
+          return "Max Age";
+        }
+      case "minHeight":
+        {
+          return "Min Height";
+        }
+      case "maxHeight":
+        {
+          return "Max Height";
+        }
+      case "maritalStatus":
+        {
+          return "Marital Status";
+        }
+      case "religion":
+        {
+          return "Religion";
+        }
+      case "motherTongue":
+        {
+          return "Mother Tongue";
+        }
+      case "caste":
+        {
+          return "Caste";
+        }
+      case "caste":
+        {
+          return "Caste";
+        }
+      case "occupation":
+        {
+          return "Occupation";
+        }
+      case "highestEducation":
+        {
+          return "Education";
+        }
+      case "dietaryHabits":
+        {
+          return "Eating Habits";
+        }
+      case "smokingHabits":
+        {
+          return "Smoking Habits";
+        }
+      case "drinkingHabits":
+        {
+          return "Drinking Habits";
+        }
+      case "maxIncome":
+        {
+          return "Max Income";
+        }
+      case "minIncome":
+        {
+          return "Min Income";
+        }
+    }
+    return field;
+  }
+
   static String getAgeFromDob(String dateOfBirth) {
     DateFormat dateFormat = DateFormat(AppConstants.SERVERDATEFORMAT);
-    var date = dateFormat.parse(dateOfBirth);
+    var date =
+        dateFormat.parse(dateOfBirth.isEmpty ? "2000-01-01" : dateOfBirth);
     return (DateTime.now().difference(date).inDays / 365).round().toString();
   }
 
@@ -112,20 +179,13 @@ class AppHelper {
     return dateFormat1.format(dateOfBirth);
   }
 
-  static String getHeight(index) {
-    String heightFitInch = AppHelper.getHeights()[index];
-    double heightCm = (double.parse(heightFitInch.split(".")[0]) * 30.48) +
-        (double.parse(heightFitInch.split(".")[1]) * 2.54);
-    heightCm.round();
-    print(heightCm);
-    // String heightText =
-    //     '$heightFitInch ft';
-    return (heightFitInch.split(".")[0] +
+  static String getHeight(int index) {
+    var inches = index + 48;
+    return ((inches ~/ 12).toString() +
         "' " +
-        '.' +
-        heightFitInch.split(".")[1] +
+        ((inches % 12).toInt().toString()) +
         '"' +
-        " (${heightCm.round()}" +
+        " (${(inches * 2.54).round()}" +
         " cm)");
   }
 
@@ -141,7 +201,7 @@ class AppHelper {
       return maritalStatuses[enumEntry.index];
     } else if (enumName == 'MaritalStatusFilter') {
       List<String> maritalFilter = [
-        'Doesnot Matter',
+        'Does not Matter',
         'Never Married',
         'Divorced',
         'Widowed',
@@ -150,7 +210,7 @@ class AppHelper {
       return maritalFilter[enumEntry.index];
     } else if (enumName == 'Interest') {
       List<String> interestFilter = [
-        'DoesnotMatter',
+        'Does not Matter',
         'Sports',
         'Travel',
         'Photography',
@@ -162,7 +222,28 @@ class AppHelper {
         'Art',
         'Cooking',
         'Fashion',
-        'vblogging',
+        'Vlogging',
+        'Animals',
+        'Nature',
+        'Tech',
+        'Social'
+      ];
+      return interestFilter[enumEntry.index];
+    } else if (enumName == 'InterestFilter') {
+      List<String> interestFilter = [
+        'Does not Matter',
+        'Sports',
+        'Travel',
+        'Photography',
+        'Gaming',
+        'Singing',
+        'Dance',
+        'Food',
+        'Music',
+        'Art',
+        'Cooking',
+        'Fashion',
+        'vlogging',
         'Animals',
         'Nature',
         'Tech',
@@ -184,36 +265,39 @@ class AppHelper {
       return childrenStatus[enumEntry.index];
     } else if (enumName == 'EatingHabit') {
       List<String> eatingStatus = [
-        'Vegetarrian',
-        'Eggitarrian',
-        'Nonvegetarrian',
+        'Not Specified',
+        'Vegetarian',
+        'Eggetarian',
+        'Non Vegetarian',
       ];
       return eatingStatus[enumEntry.index];
     } else if (enumName == 'EatingHabitFilter') {
       List<String> eatingFilterStatus = [
-        'Doesnot matter'
-            'Vegetarrian',
-        'Eggitarrian',
-        'Nonvegetarrian',
+        'Does not matter',
+        'Vegetarian',
+        'Eggetarian',
+        'Non Vegetarian',
       ];
       return eatingFilterStatus[enumEntry.index];
     } else if (enumName == 'SmokingHabit') {
       List<String> smokingStatus = [
+        'Not Specified',
         'Smoker',
-        'NonSmoker',
+        'Non Smoker',
         'Occasionally',
       ];
       return smokingStatus[enumEntry.index];
     } else if (enumName == 'SmokingHabitFilter') {
       List<String> smokingFilterStatus = [
-        'Doesnot matter'
-            'Smoker',
+        'Does not matter',
+        'Smoker',
         'NonSmoker',
         'Occasionally',
       ];
       return smokingFilterStatus[enumEntry.index];
     } else if (enumName == 'DrinkingHabit') {
       List<String> drinkingStatus = [
+        'Not Specified',
         'Alcoholic',
         'Non alcoholic',
         'Occasionally',
@@ -221,13 +305,13 @@ class AppHelper {
       return drinkingStatus[enumEntry.index];
     } else if (enumName == 'DrinkingHabitFilter') {
       List<String> drinkingFilterStatus = [
-        'Doesnot matter'
-            'Alcoholic',
+        'Does not matter',
+        'Alcoholic',
         'Non alcoholic',
         'Occasionally',
       ];
       return drinkingFilterStatus[enumEntry.index];
-    } else if (enumName == 'AnualIncome') {
+    } else if (enumName == 'AnnualIncome') {
       List<String> incomes = [
         'No Income',
         '0-1 lakh',
@@ -244,18 +328,36 @@ class AppHelper {
         '35-50 lakh',
         '50-75 lakh',
         '75 lakh- 1 crore',
-        '1 crore and above'
+        '1 crore and above',
+        'Not Mentioned'
       ];
       return incomes[enumEntry.index];
     } else if (enumName == 'FamilyAfluenceLevel') {
       List<String> familyLevel = [
-        'Rich',
-        'Upper middle class',
-        'Middle class',
-        'Lower middle class'
-            'NotMentioned'
+        'Affluent',
+        'Upper Middle Class',
+        'Middle Class',
+        'Lower Middle Class',
+        'Not Mentioned'
       ];
       return familyLevel[enumEntry.index];
+    } else if (enumName == 'FamilyValues') {
+      List<String> familyValue = [
+        'Orthodox',
+        'Conservative',
+        'Moderate',
+        'Liberal',
+        'Not Mentioned'
+      ];
+      return familyValue[enumEntry.index];
+    } else if (enumName == 'FamilyType') {
+      List<String> familyValue = [
+        'Nuclear',
+        'Joint',
+        'Other',
+        'Not Mentioned',
+      ];
+      return familyValue[enumEntry.index];
     } else if (enumName == 'NoOfChildren') {
       List<String> children = ['One', 'Two', 'Three or more'];
       return children[enumEntry.index];
@@ -265,7 +367,8 @@ class AppHelper {
         'Business Man',
         'Retired',
         'Not employed',
-        'Passed away'
+        'Passed away',
+        'Not Mentioned'
       ];
       return fatherOcc[enumEntry.index];
     } else if (enumName == 'MotherOccupation') {
@@ -274,7 +377,8 @@ class AppHelper {
         'Employed',
         'Business woman',
         'Retired',
-        'Passed away'
+        'Passed away',
+        'Not Mentioned'
       ];
       return motherOcc[enumEntry.index];
     }

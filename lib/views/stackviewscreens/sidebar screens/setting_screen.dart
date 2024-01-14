@@ -20,15 +20,9 @@ class SettingScreen extends StatelessWidget {
       appBar: MmmButtons.appBarCurved('Setting', context: context),
       body: Column(
         children: [
-          // SizedBox(
-          //   height: 20,
-          // ),
-
           MmmButtons.searchScreenButton('Privacy Setting', action: () {
             Navigator.of(context).push(
-              MaterialPageRoute(
-                  builder: (context) =>
-                      Privacy(userRepository: userRepository)),
+              Privacy.getRoute(),
             );
           }),
           MmmButtons.searchScreenButton('Change Password', action: () {
@@ -40,8 +34,7 @@ class SettingScreen extends StatelessWidget {
           }),
           MmmButtons.searchScreenButton('Hide/Deactive', action: () {
             Navigator.of(context).push(
-              MaterialPageRoute(
-                  builder: (context) => Hide(userRepository: userRepository)),
+              Hide.getRoute(),
             );
           }),
           MmmButtons.searchScreenButton('Delete Profile', action: () {
@@ -53,22 +46,12 @@ class SettingScreen extends StatelessWidget {
           }),
           MmmButtons.searchScreenButton('Notifications Settings', action: () {
             Navigator.of(context).push(
-              MaterialPageRoute(
-                  builder: (context) =>
-                      NotificationsSwitch(userRepository: userRepository)),
+              NotificationsSwitch.getRoute(),
             );
           }),
-          MmmButtons.searchScreenButton('Other Settings', action: () {
-            // Navigator.of(context).push(
-            //   MaterialPageRoute(
-            //       builder: (context) =>
-            //           Privacy(userRepository: userRepository)),
-            // );
-          }),
+          MmmButtons.searchScreenButton('Other Settings', action: () {}),
           MmmButtons.searchScreenButton('Log Out', action: () {
-            Navigator.of(context).push(
-                SignInPage.getRoute());
-
+            Navigator.of(context).push(SignInPage.getRoute());
           }),
         ],
       ),

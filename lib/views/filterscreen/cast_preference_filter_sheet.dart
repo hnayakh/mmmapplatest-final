@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
@@ -22,8 +20,9 @@ class _CastFilterBottomSheetState extends State<CastFilterBottomSheet> {
 
   @override
   void initState() {
-    filtered = widget.list;
     super.initState();
+    filtered = widget.list;
+
   }
 
   @override

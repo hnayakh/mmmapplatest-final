@@ -1,18 +1,16 @@
 import 'package:makemymarry/base_event_state.dart';
+import 'package:makemymarry/datamodels/martching_profile.dart';
 
 class MyProfileState extends BaseEventState {}
 
-class OnProfileFetched extends MyProfileState {}
-
 class MyProfileInitialState extends MyProfileState {}
 
-// class OnLoading extends MatchingPercentageState {}
+class OnProfileFetched extends MyProfileState {
+  final ProfileDetails userDetails;
 
-// class OnProfileVisited extends MatchingPercentageState {
-//   final int matchingPercentage;
-//   final String images;
-//   OnProfileVisited(this.matchingPercentage, this.images);
-// }
+  OnProfileFetched({required this.userDetails});
+
+}
 
 class OnErrorFetch extends MyProfileState {
   final String message;

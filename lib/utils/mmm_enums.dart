@@ -50,6 +50,7 @@ enum AbilityStatus {
 enum NoOfChildren { One, Two, ThreeOrMore }
 
 enum ChildrenStatus { No, YesLivingTogether, YesNotLivingTogether }
+enum ProposalStatus { Sent, Accepted, Rejected, Reverted, Received }
 
 enum EatingHabit {
   Notspecified,
@@ -97,7 +98,7 @@ enum IdProofType { Passport, VoterIdCard, AadharCard, DrivingLicence, PanCard }
 
 enum FamilyType { Nuclear, Joint, Other, Notmentioned }
 
-enum FamilyValues { Traditional, Moderate, Liberal, NotMentioned }
+enum FamilyValues {Orthodox ,  Conservative, Moderate, Liberal, NotMentioned }
 
 enum FamilyAfluenceLevel {
   Rich,
@@ -168,7 +169,11 @@ enum OtpType {
   ForgotPassword,
 }
 
-enum Manglik { Yes, No, NotApplicable }
+enum Manglik { Yes('Yes'), No('No'), NotApplicable('Not Applicable');
+
+final String label;
+const Manglik(this.label);
+}
 
 enum ManglikFilter { DoesnotMatter, Yes, No, NotApplicable }
 
@@ -199,7 +204,7 @@ enum InterestFilter {
   Social
 }
 
-enum AnualIncome {
+enum AnnualIncome {
   NoIncome,
   LessThanOneLacs,
   OneToTwoLacs,
@@ -214,8 +219,9 @@ enum AnualIncome {
   TwentyFiveToThirtyFiveLacs,
   ThirtyFiveToFiftyLacs,
   FiftyToSeventyFiveLacs,
-  SeventyFivelacToOneCrore,
-  MoreThanOneCrore
+  SeventyFiveLacToOneCrore,
+  MoreThanOneCrore,
+  NotMentioned
 }
 
 enum Index { test }

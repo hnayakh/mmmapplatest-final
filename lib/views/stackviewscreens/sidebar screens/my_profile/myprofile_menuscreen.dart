@@ -2,31 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:makemymarry/views/profilescreens/about/about_bloc.dart';
-import 'package:makemymarry/views/signinscreens/signin_bloc.dart';
 import 'package:makemymarry/repo/user_repo.dart';
 import 'package:makemymarry/saurabh/myprofile/add_interest.dart';
-import 'package:makemymarry/saurabh/filter_preference.dart';
 import 'package:makemymarry/saurabh/partner_preference.dart';
 import 'package:makemymarry/utils/buttons.dart';
 import 'package:makemymarry/utils/colors.dart';
 import 'package:makemymarry/utils/dimens.dart';
 import 'package:makemymarry/utils/text_styles.dart';
 import 'package:makemymarry/views/home/menu/account_menu_bloc.dart';
-import 'package:makemymarry/views/profilescreens/about/about.dart';
-import 'package:makemymarry/views/profilescreens/bio/bio.dart';
-import 'package:makemymarry/views/profilescreens/profile_preference/profile_preference.dart';
-import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/sidebar_about_screen.dart';
 import 'package:makemymarry/views/stackviewscreens/sidebar%20screens/status_screen.dart';
 
 import '../../../../datamodels/martching_profile.dart';
-import '../../../../saurabh/myprofile/about_profile.dart';
 import '../../../../utils/widgets_large.dart';
 import '../../../home/menu/account_menu_event.dart';
 import '../../../home/menu/account_menu_state.dart' as Menu;
-import '../../../profilescreens/bio/bio_bloc.dart';
-import '../../../profilescreens/bio/bio_event.dart';
-import '../../../profilescreens/bio/image_picker_dialog.dart';
+import '../../../profilescreens/bio/bloc/bio_bloc.dart';
+import '../../../profilescreens/bio/bloc/bio_event.dart';
+import '../../../profilescreens/bio/views/image_picker_dialog.dart';
 
 class MyprofileMenuScreen extends StatelessWidget {
   final UserRepository userRepository;
@@ -104,6 +96,10 @@ class _MyProfileMenuState extends State<MyProfileMenu> {
                                 width: double.infinity,
                                 fit: BoxFit.cover,
                                 height: double.infinity,
+                    errorBuilder: (context, obj, str) => Container(
+                    color: Colors.grey,
+                    child: Icon(Icons.error))
+
                               ),
                             ),
                           ),
@@ -311,21 +307,21 @@ class _MyProfileMenuState extends State<MyProfileMenu> {
     // }
   }
 
-  void onEdit() {
-    print("hekllo222");
-    // Navigator.of(context)
-    //     .push(MaterialPageRoute(builder: (context) => AboutScreen()));
-    //var userRepository = BlocProvider.of<AboutBloc>(context).userRepository;
-    print("hekllo333");
-    Navigator.of(context).push(
-      MaterialPageRoute<AboutBloc>(
-        builder: (context) => BlocProvider<AboutBloc>(
-          create: (context) => AboutBloc(widget.userRepository),
-          child: AboutScreen(),
-        ),
-      ),
-    );
-  }
+  // void onEdit() {
+  //   print("hekllo222");
+  //   // Navigator.of(context)
+  //   //     .push(MaterialPageRoute(builder: (context) => AboutScreen()));
+  //   //var userRepository = BlocProvider.of<AboutBloc>(context).userRepository;
+  //   print("hekllo333");
+  //   Navigator.of(context).push(
+  //     MaterialPageRoute<AboutBloc>(
+  //       builder: (context) => BlocProvider<AboutBloc>(
+  //         create: (context) => AboutBloc(widget.userRepository),
+  //         child: AboutScreen(toUpdate: null,),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   void showImagePickerDialog() async {
     var result = await showModalBottomSheet(
@@ -368,7 +364,7 @@ class _MyProfileMenuState extends State<MyProfileMenu> {
                 SizedBox(height: 70),
                 Text(
                   "Select your Status",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                  style: TextStyle( fontFamily: 'MakeMyMarry', fontWeight: FontWeight.bold, fontSize: 24),
                 ),
                 const SizedBox(height: 30),
                 ClipRRect(
@@ -381,7 +377,7 @@ class _MyProfileMenuState extends State<MyProfileMenu> {
                 const SizedBox(height: 20),
                 const Text(
                   "Abhishek Sharma",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  style: TextStyle( fontFamily: 'MakeMyMarry', fontWeight: FontWeight.bold, fontSize: 18),
                 ),
                 const SizedBox(height: 8),
                 Row(children: [
@@ -389,7 +385,7 @@ class _MyProfileMenuState extends State<MyProfileMenu> {
                     margin: const EdgeInsets.only(left: 130),
                     child: const Text(
                       "MMY23456",
-                      style: TextStyle(
+                      style: TextStyle( fontFamily: 'MakeMyMarry', 
                         fontSize: 14,
                       ),
                     ),
@@ -427,7 +423,7 @@ class _MyProfileMenuState extends State<MyProfileMenu> {
                       ),
 
                       // filled: true,
-                      hintStyle: const TextStyle(
+                      hintStyle: const TextStyle( fontFamily: 'MakeMyMarry', 
                         color: Colors.white,
                         fontSize: 18,
                         height: .5,
@@ -451,7 +447,7 @@ class _MyProfileMenuState extends State<MyProfileMenu> {
                       ),
 
                       // filled: true,
-                      hintStyle: const TextStyle(
+                      hintStyle: const TextStyle( fontFamily: 'MakeMyMarry', 
                         color: Colors.black,
                         fontSize: 18,
                         height: .5,

@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemymarry/datamodels/master_data.dart';
 import 'package:makemymarry/repo/user_repo.dart';
-
 import 'package:makemymarry/utils/mmm_enums.dart';
 
 import 'filter_event.dart';

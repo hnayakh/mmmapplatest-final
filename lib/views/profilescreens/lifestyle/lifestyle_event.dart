@@ -1,24 +1,13 @@
 import 'package:makemymarry/base_event_state.dart';
-import 'package:makemymarry/utils/mmm_enums.dart';
 
 import 'lifestyle_details_view.dart';
 
 class LifeStyleEvent extends BaseEventState {}
-class UpdateLifeStyle extends LifeStyleEvent {
-  late final EatingHabit eatingHabit;
-  late final SmokingHabit smokingHabit;
-  late final DrinkingHabit drinkingHabit;
-  bool isAnUpdate;
 
-  UpdateLifeStyle(
-      this.eatingHabit, this.drinkingHabit, this.smokingHabit, this.isAnUpdate);
-}
+class LoadLifeCycleData extends LifeStyleEvent {}
 
-class LifeStyleDataLoaded extends LifeStyleEvent {
-  final LifeStyleData data;
+class SaveLifeStyleData extends LifeStyleEvent {}
 
-  LifeStyleDataLoaded(this.data);
-}
 
 class LifeStyleToggled extends LifeStyleEvent {
   final LifeStyleData data;

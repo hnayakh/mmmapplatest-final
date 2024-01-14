@@ -2,19 +2,20 @@ import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 import 'package:makemymarry/utils/helper.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 final logger = Logger();
+
 class UtilityService {
   // Display a message to the user.
 
-
   // Print message on console
   static void cprint(
-      String message, {
-        dynamic error,
-        String? label,
-        StackTrace? stackTrace,
-        bool enableLogger = true,
-      }) {
+    String message, {
+    dynamic error,
+    String? label,
+    StackTrace? stackTrace,
+    bool enableLogger = true,
+  }) {
     if (kDebugMode) {
       // ignore: avoid_print
       if (error != null) {
@@ -58,5 +59,20 @@ class UtilityService {
 
     await launchUrl(uri);
   }
+}
 
+extension DurationFormatter on Duration {
+  String formatDuration() {
+    return this.inDays > 30
+        ? '${(this.inDays ~/ 30)} months ago'
+        : this.inDays > 0
+            ? '${this.inDays}d ago'
+            : this.inHours > 0
+                ? '${this.inHours}h ago'
+                : this.inMinutes > 0
+                    ? '${this.inMinutes}m ago'
+                    : this.inSeconds > 0
+                        ? '${this.inSeconds}secs ago'
+                        : "just now";
+  }
 }

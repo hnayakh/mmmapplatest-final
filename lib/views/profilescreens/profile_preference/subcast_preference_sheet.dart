@@ -17,14 +17,11 @@ class SubCastPreferenceSheet extends StatefulWidget {
 }
 
 class _SubCastPreferenceSheetState extends State<SubCastPreferenceSheet> {
-  List<CastSubCast> filtered = [];
+  final List<CastSubCast> filtered = [];
 
   @override
   void initState() {
-    this.filtered = List.of(widget.list, growable: true);
-    //for (int i = 1; i < filtered.length; i++) {
-    //   filtered.addAll(filtered[i]);
-    //  }
+    this.filtered.addAll(widget.list);
     super.initState();
   }
 
@@ -58,20 +55,20 @@ class _SubCastPreferenceSheetState extends State<SubCastPreferenceSheet> {
             cursorColor: kDark5,
             onChanged: (value) {
               setState(() {
-                //   this.filtered = filtered
-                //        .where((element) => element.name
-                //             .toLowerCase()
-                //             .contains(value.toLowerCase()))
-                //          .toList();
-                for (int i = 0; i < filtered.length; i++) {
-                  filtered[i].subCasts = filtered[i]
-                      .subCasts
-                      .where((element) =>
-                          element.toLowerCase().contains(value.toLowerCase()))
-                      .toList();
+                for (int i = 0; i < widget.list.length; i++) {
+                  final caste = widget.list[i];
+                  filtered.replaceRange(i, i + 1, [
+                    CastSubCast(
+                        caste.cast,
+                        caste.subCasts
+                            .where((element) => element
+                                .toLowerCase()
+                                .contains(value.toLowerCase()))
+                            .toList())
+                  ]);
                 }
                 if (value == '') {
-                  this.filtered = List.of(widget.list, growable: true);
+                  this.filtered.addAll(widget.list);
                 }
               });
             },
@@ -179,17 +176,9 @@ class _SubCastPreferenceSheetState extends State<SubCastPreferenceSheet> {
                       ],
                     ),
                   ),
-                  // onTap: () {
-                  //   Navigator.of(context).pop(filtered[index]);
-                  //  },
                 );
               },
-              itemCount: filtered.length,
-              // separatorBuilder: (context, index) {
-              //   return Divider(
-              //     color: kLight4,
-              //   );
-              // },
+              itemCount: widget.list.length,
             ),
           ),
           MmmButtons.primaryButton("Done", () {
